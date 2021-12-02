@@ -17,211 +17,220 @@ import "@pnp/sp/hubsites/web";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/regional-settings/web";
 import "@pnp/sp/clientside-pages";
+import "@pnp/sp/security";
 import { SPFI } from "@pnp/sp";
 import { INavNodeInfo } from "@pnp/sp/navigation/types.js";
 import testSPInvokables from "../test-invokable-props.js";
 
 describe("Webs", function () {
 
-    if (testSettings.enableWebTests) {
-        let _spfi: SPFI = null;
+    let _spfi: SPFI = null;
 
-        before(function () {
-            _spfi = getSP();
-        });
+    before(function () {
 
-        it(".add 1", function () {
-            const title = `Test_ChildWebAdd1_${getRandomString(8)}`;
-            return expect(_spfi.web.webs.add(title, title)).to.eventually.be.fulfilled;
-        });
+        if (!testSettings.enableWebTests) {
+            this.skip();
+            return;
+        }
 
-        it(".add 2", function () {
-            const title = `Test_ChildWebAdd2_${getRandomString(8)}`;
-            return expect(_spfi.web.webs.add(title, title, "description", "FunSite#0", 1033, false)).to.eventually.be.fulfilled;
-        });
-    }
+        _spfi = getSP();
+    });
+
+    it(".add 1", function () {
+        const title = `Test_ChildWebAdd1_${getRandomString(8)}`;
+        return expect(_spfi.web.webs.add(title, title)).to.eventually.be.fulfilled;
+    });
+
+    it(".add 2", function () {
+        const title = `Test_ChildWebAdd2_${getRandomString(8)}`;
+        return expect(_spfi.web.webs.add(title, title, "description", "FunSite#0", 1033, false)).to.eventually.be.fulfilled;
+    });
 });
 
 describe("Web", function () {
 
-    if (testSettings.enableWebTests) {
-        let _spfi: SPFI = null;
+    let _spfi: SPFI = null;
 
-        before(function () {
-            _spfi = getSP();
-        });
+    before(function () {
 
-        describe("Invokable Properties", testSPInvokables(() => _spfi.web,
-            "roleDefinitions",
-            "webs",
-            "contentTypes",
-            "lists",
-            "siteUserInfoList",
-            "defaultDocumentLibrary",
-            "customListTemplates",
-            "siteUsers",
-            "siteGroups",
-            "userCustomActions",
-            "allProperties",
-            "webinfos",
-            "features",
-            "fields",
-            "availablefields",
-            "folders",
-            "rootFolder",
-            "regionalSettings"));
+        if (!testSettings.enableWebTests) {
+            this.skip();
+            return;
+        }
 
-        it(".navigation", async function () {
-            const ql: INavNodeInfo[] = await _spfi.web.navigation.quicklaunch();
-            const tn: INavNodeInfo[] = await _spfi.web.navigation.topNavigationBar();
-            const success = (ql.constructor === Array) && (tn.constructor === Array);
-            return expect(success).to.be.true;
-        });
+        _spfi = getSP();
+    });
 
-        it(".getParentWeb", async function () {
+    describe("Invokable Properties", testSPInvokables(() => _spfi.web,
+        "roleDefinitions",
+        "webs",
+        "contentTypes",
+        "lists",
+        "siteUserInfoList",
+        "defaultDocumentLibrary",
+        "customListTemplates",
+        "siteUsers",
+        "siteGroups",
+        "userCustomActions",
+        "allProperties",
+        "webinfos",
+        "features",
+        "fields",
+        "availablefields",
+        "folders",
+        "rootFolder",
+        "regionalSettings"));
 
-            const v = await _spfi.web.getParentWeb();
-            const parentWeb = await v.select("Title")();
+    it(".navigation", async function () {
+        const ql: INavNodeInfo[] = await _spfi.web.navigation.quicklaunch();
+        const tn: INavNodeInfo[] = await _spfi.web.navigation.topNavigationBar();
+        const success = (ql.constructor === Array) && (tn.constructor === Array);
+        return expect(success).to.be.true;
+    });
 
-            return expect(parentWeb).to.haveOwnProperty("Title");
-        });
+    it(".getParentWeb", async function () {
 
-        it(".getSubwebsFilteredForCurrentUser", async function () {
+        const v = await _spfi.web.getParentWeb();
+        const parentWeb = await v.select("Title")();
 
-            return expect(_spfi.web.getSubwebsFilteredForCurrentUser()()).to.eventually.be.fulfilled;
-        });
+        return expect(parentWeb).to.haveOwnProperty("Title");
+    });
 
-        it(".update", function () {
+    it(".getSubwebsFilteredForCurrentUser", async function () {
 
-            const p = _spfi.web.select("Title")<{ Title: string }>().then(function (w) {
+        return expect(_spfi.web.getSubwebsFilteredForCurrentUser()()).to.eventually.be.fulfilled;
+    });
 
-                const newTitle = w.Title + " updated";
-                _spfi.web.update({ Title: newTitle }).then(function () {
+    it(".update", function () {
 
-                    _spfi.web.select("Title")<{ Title: string }>().then(function (w2) {
-                        if (w2.Title !== newTitle) {
-                            throw Error("Update web failed");
-                        }
-                    });
+        const p = _spfi.web.select("Title")<{ Title: string }>().then(function (w) {
+
+            const newTitle = w.Title + " updated";
+            _spfi.web.update({ Title: newTitle }).then(function () {
+
+                _spfi.web.select("Title")<{ Title: string }>().then(function (w2) {
+                    if (w2.Title !== newTitle) {
+                        throw Error("Update web failed");
+                    }
                 });
             });
-
-            return expect(p).to.eventually.be.fulfilled;
         });
 
-        // skipping this test as the code hasn't changed in years and it takes longer than any other test
-        it.skip(".applyTheme", function () {
+        return expect(p).to.eventually.be.fulfilled;
+    });
 
-            // this takes a long time to process
-            this.timeout(60000);
+    // skipping this test as the code hasn't changed in years and it takes longer than any other test
+    it.skip(".applyTheme", function () {
 
-            const index = testSettings.sp.testWebUrl.indexOf("/sites/");
-            const colorUrl = "/" + combine(testSettings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/palette011.spcolor");
-            const fontUrl = "/" + combine(testSettings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+        // this takes a long time to process
+        this.timeout(60000);
 
-            return expect(_spfi.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
+        const index = testSettings.sp.testWebUrl.indexOf("/sites/");
+        const colorUrl = "/" + combine(testSettings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/palette011.spcolor");
+        const fontUrl = "/" + combine(testSettings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+
+        return expect(_spfi.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
+    });
+
+    // Cannot test because once a template has been applied a new site must be created to apply a different template
+    it(".applyWebTemplate");
+
+    it(".availableWebTemplates", async function () {
+
+        const webTemplates = await _spfi.web.availableWebTemplates()();
+        return expect(webTemplates).to.be.an.instanceOf(Array).and.be.not.empty;
+    });
+
+    it(".getChanges", function () {
+
+        return expect(_spfi.web.getChanges({
+            Add: true,
+        })).to.eventually.be.fulfilled;
+    });
+
+    it(".mapToIcon", function () {
+
+        return expect(_spfi.web.mapToIcon("test.docx")).to.eventually.be.fulfilled;
+    });
+
+    it(".delete", async function () {
+        this.timeout(60000);
+        const url = getRandomString(4);
+        const result = await _spfi.web.webs.add("Better be deleted!", url);
+        return expect(result.web.delete()).to.eventually.be.fulfilled;
+    });
+
+    describe("client-side-pages", function () {
+        it(".getClientSideWebParts", async function () {
+            const webparts = await _spfi.web.getClientsideWebParts();
+            return expect(webparts).to.be.an.instanceOf(Array).and.be.not.empty;
+        });
+    });
+
+    describe("files", function () {
+        it(".getFileByServerRelativePath", async function () {
+            const w = await _spfi.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
+            const path = combine("/", w.ServerRelativeUrl, "SitePages", "Home.aspx");
+            const file = await _spfi.web.getFileByServerRelativePath(path)();
+            return expect(file.Name).to.equal("Home.aspx");
+        });
+    });
+
+    describe("folders", function () {
+        it(".getFolderByServerRelativePath", async function () {
+            const w = await _spfi.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
+            const path = combine("/", w.ServerRelativeUrl, "SitePages");
+            const folder = await _spfi.web.getFolderByServerRelativePath(path)();
+            return expect(folder.Name).to.equal("SitePages");
+        });
+    });
+
+    describe("hub-sites", function () {
+
+        it(".hubSiteData", async function () {
+
+            return expect(_spfi.web.hubSiteData()).to.eventually.be.fulfilled;
         });
 
-        // Cannot test because once a template has been applied a new site must be created to apply a different template
-        it(".applyWebTemplate");
+        it(".hubSiteData force refresh", async function () {
 
-        it(".availableWebTemplates", async function () {
-
-            const webTemplates = await _spfi.web.availableWebTemplates()();
-            return expect(webTemplates).to.be.an.instanceOf(Array).and.be.not.empty;
+            return expect(_spfi.web.hubSiteData(true)).to.eventually.be.fulfilled;
         });
 
-        it(".getChanges", function () {
+        it(".syncHubSiteTheme", async function () {
 
-            return expect(_spfi.web.getChanges({
-                Add: true,
-            })).to.eventually.be.fulfilled;
+            return expect(_spfi.web.syncHubSiteTheme()).to.eventually.be.fulfilled;
+        });
+    });
+
+    describe("lists", function () {
+
+        it(".getList", async function () {
+            const w = await _spfi.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
+            const url = combine(w.ServerRelativeUrl, "SitePages");
+            const list = await _spfi.web.getList(url)();
+            return expect(list.Title).to.equal("Site Pages");
         });
 
-        it(".mapToIcon", function () {
-
-            return expect(_spfi.web.mapToIcon("test.docx")).to.eventually.be.fulfilled;
+        it(".getCatalog", function () {
+            return expect(_spfi.web.getCatalog(113)).to.eventually.be.fulfilled;
         });
+    });
 
-        it(".delete", async function () {
-            this.timeout(60000);
-            const url = getRandomString(4);
-            const result = await _spfi.web.webs.add("Better be deleted!", url);
-            return expect(result.web.delete()).to.eventually.be.fulfilled;
+    describe("related-items", function () {
+
+        it(".relatedItems", function () {
+
+            return expect(_spfi.web.relatedItems).to.not.be.null;
         });
+    });
 
-        describe("client-side-pages", function () {
-            it(".getClientSideWebParts", async function () {
-                const webparts = await _spfi.web.getClientsideWebParts();
-                return expect(webparts).to.be.an.instanceOf(Array).and.be.not.empty;
-            });
+    describe("site-users", function () {
+
+        it(".getUserById", async function () {
+
+            const users = await _spfi.web.siteUsers();
+            return expect(_spfi.web.getUserById(users[0].Id)()).to.eventually.be.fulfilled;
         });
-
-        describe("files", function () {
-            it(".getFileByServerRelativePath", async function () {
-                const w = await _spfi.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
-                const path = combine("/", w.ServerRelativeUrl, "SitePages", "Home.aspx");
-                const file = await _spfi.web.getFileByServerRelativePath(path)();
-                return expect(file.Name).to.equal("Home.aspx");
-            });
-        });
-
-        describe("folders", function () {
-            it(".getFolderByServerRelativePath", async function () {
-                const w = await _spfi.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
-                const path = combine("/", w.ServerRelativeUrl, "SitePages");
-                const folder = await _spfi.web.getFolderByServerRelativePath(path)();
-                return expect(folder.Name).to.equal("SitePages");
-            });
-        });
-
-        describe("hub-sites", function () {
-
-            it(".hubSiteData", async function () {
-
-                return expect(_spfi.web.hubSiteData()).to.eventually.be.fulfilled;
-            });
-
-            it(".hubSiteData force refresh", async function () {
-
-                return expect(_spfi.web.hubSiteData(true)).to.eventually.be.fulfilled;
-            });
-
-            it(".syncHubSiteTheme", async function () {
-
-                return expect(_spfi.web.syncHubSiteTheme()).to.eventually.be.fulfilled;
-            });
-        });
-
-        describe("lists", function () {
-
-            it(".getList", async function () {
-                const w = await _spfi.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
-                const url = combine(w.ServerRelativeUrl, "SitePages");
-                const list = await _spfi.web.getList(url)();
-                return expect(list.Title).to.equal("Site Pages");
-            });
-
-            it(".getCatalog", function () {
-                return expect(_spfi.web.getCatalog(113)).to.eventually.be.fulfilled;
-            });
-        });
-
-        describe("related-items", function () {
-
-            it(".relatedItems", function () {
-
-                return expect(_spfi.web.relatedItems).to.not.be.null;
-            });
-        });
-
-        describe("site-users", function () {
-
-            it(".getUserById", async function () {
-
-                const users = await _spfi.web.siteUsers();
-                return expect(_spfi.web.getUserById(users[0].Id)()).to.eventually.be.fulfilled;
-            });
-        });
-    }
+    });
 });

@@ -9,7 +9,7 @@ import findup from "findup-sync";
 import { ISettings, ITestingSettings } from "./settings.js";
 import { SPFI } from "@pnp/sp";
 import "@pnp/sp/webs";
-import { IWeb, IWebInfo } from "@pnp/sp/webs";
+import { IWeb, IWebInfo, Webs } from "@pnp/sp/webs";
 import { graphfi, GraphFI } from "@pnp/graph";
 import { LogLevel } from "@pnp/logging";
 // import { RequestRecorderCache } from "./test-recorder.js";
@@ -96,6 +96,7 @@ switch (mode) {
 
         settings = {
             testing: {
+                testUser: readEnvVar("PNPTESTING_TESTUSER") || null,
                 enableWebTests: true,
                 graph: {
                     msal: {
@@ -239,6 +240,7 @@ before("Setup Testing", async function () {
 });
 
 after("Finalize Testing", async function () {
+
     // this may take some time, don't timeout early
     this.timeout(120000);
 
@@ -246,6 +248,7 @@ after("Finalize Testing", async function () {
     console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
 
     try {
+
         if (deleteAllWebs) {
 
             await cleanUpAllSubsites(_spRoot.web);
@@ -255,6 +258,7 @@ after("Finalize Testing", async function () {
             console.log(`Deleting web ${extractWebUrl(_sp.web.toUrl())} created during testing.`);
 
             const web = await _sp.web;
+
             await cleanUpAllSubsites(web);
 
             console.log("All subsites have been removed.");
@@ -276,23 +280,24 @@ after("Finalize Testing", async function () {
     }
 
     console.log("All done. Have a nice day :)");
+
+    return;
 });
 
 // Function deletes all test subsites
 async function cleanUpAllSubsites(spObj: IWeb & IInvokable<any>): Promise<void> {
-    const w = await spObj.webs();
-    if (w != null && w.length > 0) {
-        console.log(`${w.length} subwebs were found.`);
-        w.forEach(async (e: IWebInfo) => {
 
-            const webUrl = extractWebUrl(e["odata.id"]);
+    const webs = await spObj.webs.select("Title")();
 
-            const spObjSub = spfi(webUrl).using(SPDefault({
-                msal: {
-                    config: settings.testing.sp.msal.init,
-                    scopes: settings.testing.sp.msal.scopes,
-                },
-            }));
+    if (webs !== null && webs.length > 0) {
+
+        console.log(`${webs.length} subwebs were found.`);
+
+        for (let i = 0; i < webs.length; i++) {
+
+            const webUrl = extractWebUrl(webs[i]["odata.id"]);
+
+            const spObjSub = spfi([spObj, webUrl]);
 
             console.log(`Deleting: ${webUrl}`);
 
@@ -304,10 +309,10 @@ async function cleanUpAllSubsites(spObj: IWeb & IInvokable<any>): Promise<void> 
             await spObjSub.web.delete();
 
             console.log(`Deleted: ${webUrl}`);
-        });
+        }
+
     } else {
+
         console.log(`No subwebs found for site ${extractWebUrl(spObj.toUrl())}`);
     }
-
-    return;
 }

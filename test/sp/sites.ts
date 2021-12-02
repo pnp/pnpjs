@@ -5,108 +5,117 @@ import "@pnp/sp/lists/web";
 import { getSP, testSettings } from "../main.js";
 import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
-import { combine, getRandomString } from "@pnp/core";
+import { combine, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
 
 describe("Sites", function () {
 
-    if (testSettings.enableWebTests) {
-        let _spfi: SPFI = null;
+    let _spfi: SPFI = null;
 
-        before(function () {
-            _spfi = getSP();
-        });
+    before(function () {
 
-        it(".rootWeb", async function () {
-            return expect(_spfi.site.rootWeb()).to.eventually.be.fulfilled;
-        });
+        if (!testSettings.enableWebTests) {
+            this.skip();
+            return;
+        }
 
-        it(".getRootWeb", async function () {
-            const rootWeb: IWeb = await _spfi.site.getRootWeb();
-            return expect(rootWeb).to.haveOwnProperty("_url");
-        });
+        _spfi = getSP();
+    });
 
-        it(".getContextInfo", async function () {
-            const oContext: IContextInfo = await _spfi.site.getContextInfo();
-            return expect(oContext).to.haveOwnProperty("SiteFullUrl");
-        });
+    it(".rootWeb", async function () {
+        return expect(_spfi.site.rootWeb()).to.eventually.be.fulfilled;
+    });
 
-        it(".getDocumentLibraries", async function () {
-            const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("Url")();
-            const docLibs: IDocumentLibraryInformation[] = await _spfi.site.getDocumentLibraries(webInfo.Url);
-            return docLibs.forEach((docLib) => {
-                expect(docLib).to.haveOwnProperty("Title");
-            });
-        });
+    it(".getRootWeb", async function () {
+        const rootWeb: IWeb = await _spfi.site.getRootWeb();
+        return expect(rootWeb).to.haveOwnProperty("_url");
+    });
 
-        it(".getWebUrlFromPageUrl", async function () {
-            const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
-            const path = combine(webInfo.Url, "SitePages", "Home.aspx");
-            const webUrl: string = await _spfi.site.getWebUrlFromPageUrl(path);
-            return expect(webUrl).to.be.equal(testSettings.sp.testWebUrl);
-        });
+    it(".getContextInfo", async function () {
+        const oContext: IContextInfo = await _spfi.site.getContextInfo();
+        return expect(oContext).to.haveOwnProperty("SiteFullUrl");
+    });
 
-        it(".openWebById", async function () {
-            const oWeb = await _spfi.site.rootWeb();
-            const webIDResult: IOpenWebByIdResult = await _spfi.site.openWebById(oWeb.Id);
-            return expect(webIDResult).to.haveOwnProperty("data");
+    it(".getDocumentLibraries", async function () {
+        const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("Url")();
+        const docLibs: IDocumentLibraryInformation[] = await _spfi.site.getDocumentLibraries(webInfo.Url);
+        return docLibs.forEach((docLib) => {
+            expect(docLib).to.haveOwnProperty("Title");
         });
+    });
 
-        it(".openWebById - chainable", async function () {
-            const oWeb = await _spfi.site.rootWeb();
-            const webIDResult: IOpenWebByIdResult = await _spfi.site.openWebById(oWeb.Id);
-            return expect(webIDResult.web.lists()).to.eventually.be.fulfilled;
-        });
+    it(".getWebUrlFromPageUrl", async function () {
+        const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
+        const path = combine(webInfo.Url, "SitePages", "Home.aspx");
+        const webUrl: string = await _spfi.site.getWebUrlFromPageUrl(path);
+        return expect(webUrl).to.be.equal(testSettings.sp.testWebUrl);
+    });
 
-        it(".exists", async function () {
-            const oWeb = await _spfi.site();
-            const exists: boolean = await _spfi.site.exists(oWeb.Url);
-            const notExists: boolean = await _spfi.site.exists(`${oWeb.Url}/RANDOM`);
-            const success = exists && !notExists;
-            return expect(success).to.be.true;
-        });
-    }
+    it(".openWebById", async function () {
+        const oWeb = await _spfi.site.rootWeb();
+        const webIDResult: IOpenWebByIdResult = await _spfi.site.openWebById(oWeb.Id);
+        return expect(webIDResult).to.haveOwnProperty("data");
+    });
+
+    it(".openWebById - chainable", async function () {
+        const oWeb = await _spfi.site.rootWeb();
+        const webIDResult: IOpenWebByIdResult = await _spfi.site.openWebById(oWeb.Id);
+        return expect(webIDResult.web.lists()).to.eventually.be.fulfilled;
+    });
+
+    it(".exists", async function () {
+        const oWeb = await _spfi.site();
+        const exists: boolean = await _spfi.site.exists(oWeb.Url);
+        const notExists: boolean = await _spfi.site.exists(`${oWeb.Url}/RANDOM`);
+        const success = exists && !notExists;
+        return expect(success).to.be.true;
+    });
 });
 
 describe("createModern Team & Comm Sites", function () {
-    if (testSettings.enableWebTests && testSettings.testUser?.length > 0) {
-        let _spfi: SPFI = null;
-        let testUserEmail = "";
 
-        before(function () {
-            _spfi = getSP();
+    let _spfi: SPFI = null;
+    let testUserEmail = "";
 
-            const testUserEmailArray = testSettings.testUser.split("|");
-            testUserEmail = testUserEmailArray[testUserEmailArray.length - 1];
-        });
+    before(function () {
 
-        // these work but permissions are wonky
-        it.skip(".createModernTeamSite", async function () {
-            this.timeout(90000);
-            const randomNum = getRandomString(5);
-            const promise = _spfi.site.createModernTeamSite(
-                "TestModernTeamSite01" + randomNum,
-                "Alias",
-                false,
-                1033,
-                "TestModernTeamSite01" + randomNum + " description", "HBI", [testUserEmail]);
+        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
+            this.skip();
+            return;
+        }
 
-            return expect(promise).to.eventually.be.fulfilled;
-        });
+        _spfi = getSP();
 
-        // these work but permissions are wonky
-        it.skip(".createCommunicationSite", async function () {
-            this.timeout(90000);
-            const randomNum = getRandomString(5);
-            const promise = _spfi.site.createCommunicationSite(
-                "TestModernCommSite01" + randomNum, 1033,
-                false,
-                testSettings.sp.testWebUrl + "/sites/commSite" + randomNum,
-                "TestModernCommSite01", "HBI",
-                "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",
-                testUserEmail);
+        const testUserEmailArray = testSettings.testUser.split("|");
+        testUserEmail = testUserEmailArray[testUserEmailArray.length - 1];
+    });
 
-            return expect(promise).to.eventually.be.fulfilled;
-        });
-    }
+    // these work but permissions are wonky
+    it.skip(".createModernTeamSite", async function () {
+        this.timeout(90000);
+        const randomNum = getRandomString(5);
+        const promise = _spfi.site.createModernTeamSite(
+            "TestModernTeamSite01" + randomNum,
+            "Alias",
+            false,
+            1033,
+            "TestModernTeamSite01" + randomNum + " description", "HBI", [testUserEmail]);
+
+        return expect(promise).to.eventually.be.fulfilled;
+    });
+
+    // these work but permissions are wonky
+    it.skip(".createCommunicationSite", async function () {
+        this.timeout(90000);
+        const randomNum = getRandomString(5);
+        const promise = _spfi.site.createCommunicationSite(
+            "TestModernCommSite01" + randomNum, 1033,
+            false,
+            testSettings.sp.testWebUrl + "/sites/commSite" + randomNum,
+            "TestModernCommSite01", "HBI",
+            "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",
+            testUserEmail);
+
+        return expect(promise).to.eventually.be.fulfilled;
+    });
 });

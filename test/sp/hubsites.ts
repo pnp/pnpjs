@@ -6,36 +6,41 @@ import { spfi, SPFI } from "@pnp/sp";
 
 describe("Hubsites", function () {
 
-    if (testSettings.enableWebTests) {
-        let _spfi: SPFI = null;
-        let hubSiteId: string;
+    let _spfi: SPFI = null;
+    let hubSiteId: string;
 
-        before(async function () {
+    before(async function () {
 
-            // Must use root site
-            _spfi = getSP();
+        if (!testSettings.enableWebTests) {
+            this.skip();
+            return;
+        }
 
-            const rootSite = spfi([_spfi.site, testSettings.sp.url]);
+        // Must use root site
+        _spfi = getSP();
 
-            await rootSite.site.registerHubSite();
-            const r = await rootSite.site.select("Id")();
-            hubSiteId = r.Id;
-        });
+        const rootSite = spfi([_spfi.site, testSettings.sp.url]);
 
-        it(".getById", function () {
-            return expect(_spfi.hubSites.getById(hubSiteId)()).to.eventually.be.fulfilled;
-        });
+        await rootSite.site.registerHubSite();
+        const r = await rootSite.site.select("Id")();
+        hubSiteId = r.Id;
+    });
 
-        it(".getSite", async function () {
+    it(".getById", function () {
+        return expect(_spfi.hubSites.getById(hubSiteId)()).to.eventually.be.fulfilled;
+    });
 
-            const hs = await _spfi.hubSites.getById(hubSiteId).getSite();
+    it(".getSite", async function () {
 
-            return expect(hs.select("Title")()).to.eventually.be.fulfilled;
-        });
+        const hs = await _spfi.hubSites.getById(hubSiteId).getSite();
 
-        // unregister the test site, so that tests will run successfully next time as well
-        after(async function () {
+        return expect(hs.select("Title")()).to.eventually.be.fulfilled;
+    });
+
+    // unregister the test site, so that tests will run successfully next time as well
+    after(async function () {
+        if (testSettings.enableWebTests) {
             await _spfi.site.unRegisterHubSite();
-        });
-    }
+        }
+    });
 });
