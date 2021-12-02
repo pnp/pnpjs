@@ -3,34 +3,37 @@ import { getSP, testSettings } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/subscriptions";
-import { dateAdd } from "@pnp/core";
+import { dateAdd, stringIsNullOrEmpty } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
 
 describe("Subscriptions", function () {
 
+    let listTitle = "Documents";
+    let notificationUrl = testSettings.sp.notificationUrl;
+    let after120Days = (dateAdd(new Date(), "day", 120).toISOString());
+    let after180Days = (dateAdd(new Date(), "day", 180).toISOString());
     let _spfi: SPFI = null;
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.sp.notificationUrl)) {
             this.skip();
             return;
         }
 
         _spfi = getSP();
+        listTitle = "Documents";
+        notificationUrl = testSettings.sp.notificationUrl;
+        after120Days = (dateAdd(new Date(), "day", 120).toISOString());
+        after180Days = (dateAdd(new Date(), "day", 180).toISOString());
     });
 
-    const listTitle = "Documents";
-    const notificationUrl = testSettings.sp.notificationUrl;
-    const after120Days = (dateAdd(new Date(), "day", 120).toISOString());
-    const after180Days = (dateAdd(new Date(), "day", 180).toISOString());
-
-    it("-invoke", function () {
+    it("invoke", function () {
 
         return expect(_spfi.web.lists.getByTitle(listTitle).subscriptions(), "Fetched the list of all webhooks").to.be.eventually.fulfilled;
     });
 
-    it(".add", async function () {
+    it("add", async function () {
 
         const r = await _spfi.web.lists.getByTitle(listTitle).subscriptions.add(notificationUrl, after120Days, "pnp client state");
         const subID = r.data.id;
@@ -38,7 +41,7 @@ describe("Subscriptions", function () {
         return expect(subID, `A new webhook with id :${subID} should be created`).to.not.be.null.and.not.be.empty.and.be.an.instanceOf(Number);
     });
 
-    it(".getById", async function () {
+    it("getById", async function () {
 
         const res = await _spfi.web.lists.getByTitle(listTitle).subscriptions.add(notificationUrl, after120Days);
 
@@ -47,7 +50,7 @@ describe("Subscriptions", function () {
         return expect(p, "Get the details of a webhook with the given id").to.be.eventually.fulfilled;
     });
 
-    it(".update() - Update a webhook", async function () {
+    it("update() - Update a webhook", async function () {
 
         const res = await _spfi.web.lists.getByTitle(listTitle).subscriptions.add(notificationUrl, after120Days, "pnp client state");
 
@@ -56,7 +59,7 @@ describe("Subscriptions", function () {
         return expect(p, "The webhook should have been updated with the new expiry date").to.be.eventually.fulfilled;
     });
 
-    it(".delete() - Delete a webhook", async function () {
+    it("delete() - Delete a webhook", async function () {
 
         const res = await _spfi.web.lists.getByTitle(listTitle).subscriptions.add(notificationUrl, after120Days, "pnp client state");
 

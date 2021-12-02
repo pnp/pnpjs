@@ -54,7 +54,7 @@ describe("Clientside Pages", function () {
         return expect(promise).to.eventually.be.fulfilled;
     });
 
-    it(".load", async function () {
+    it("load", async function () {
 
         const pageFileName = `TestingLoad_${getRandomString(4)}.aspx`;
 
@@ -258,15 +258,15 @@ describe("Clientside Pages", function () {
             page = await _spfi.web.addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
         });
 
-        it(".like()", function () {
+        it("like()", function () {
             return expect(page.like()).to.eventually.be.fulfilled;
         });
 
-        it(".unlike()", function () {
+        it("unlike()", function () {
             return expect(page.unlike()).to.eventually.be.fulfilled;
         });
 
-        it(".getLikedByInformation", function () {
+        it("getLikedByInformation", function () {
             return expect(page.getLikedByInformation()).to.eventually.be.fulfilled;
         });
     });
@@ -293,7 +293,7 @@ describe("Clientside Pages", function () {
                 userPrincipalName = ensureTestUser.data.Email;
             });
 
-            it(".setAuthorById()", async function () {
+            it("setAuthorById()", async function () {
 
                 await page.setAuthorById(userId);
                 await page.save();
@@ -302,7 +302,7 @@ describe("Clientside Pages", function () {
                 expect(page2.authorByLine).to.eq(userPrincipalName);
             });
 
-            it(".setAuthorByLoginName()", async function () {
+            it("setAuthorByLoginName()", async function () {
                 await page.setAuthorByLoginName(testSettings.testUser);
                 await page.save();
 

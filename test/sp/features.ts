@@ -23,11 +23,11 @@ describe("Features", function () {
         // Web feature - Following Content
         const webFeatureId = "a7a2793e-67cd-4dc1-9fd0-43f61581207a";
 
-        it(".getbyid", function () {
+        it("getbyid", function () {
             return expect(_spfi.web.features.getById(webFeatureId)());
         });
 
-        it(".add", async function () {
+        it("add", async function () {
 
             // Check if feature is already active.
             const res = await _spfi.web.features.getById(webFeatureId)();
@@ -43,12 +43,12 @@ describe("Features", function () {
             }
         });
 
-        it(".add (force)", function () {
+        it("add (force)", function () {
 
             return expect(_spfi.web.features.add(webFeatureId, true)).to.be.eventually.fulfilled;
         });
 
-        it(".remove", async function () {
+        it("remove", async function () {
 
             // Check if feature is active.
             const res = await _spfi.web.features.getById(webFeatureId)();
@@ -64,7 +64,7 @@ describe("Features", function () {
             }
         });
 
-        it(".remove (force)", async function () {
+        it("remove (force)", async function () {
 
             // Check if feature is active.
             const res = await _spfi.web.features.getById(webFeatureId)();
@@ -80,7 +80,7 @@ describe("Features", function () {
             }
         });
 
-        it(".deactivate", async function () {
+        it("deactivate", async function () {
 
             // Check if feature is active.
             const res = await _spfi.web.features.getById(webFeatureId)();
@@ -96,7 +96,7 @@ describe("Features", function () {
             }
         });
 
-        it(".deactivate (force)", async function () {
+        it("deactivate (force)", async function () {
 
             // Check if feature is active.
             const res = await _spfi.web.features.getById(webFeatureId)();
@@ -117,11 +117,11 @@ describe("Features", function () {
         // Site feature - SharePoint Lists and Libraries experience
         const siteFeatureId = "e3540c7d-6bea-403c-a224-1a12eafee4c4";
 
-        it(".getbyid", function () {
+        it("getbyid", function () {
             return expect(_spfi.site.features.getById(siteFeatureId)());
         });
 
-        it(".add", async function () {
+        it("add", async function () {
 
             // Check if feature is already active.
             const res = await _spfi.site.features.getById(siteFeatureId)();
@@ -137,11 +137,11 @@ describe("Features", function () {
             }
         });
 
-        it(".add (force)", function () {
+        it("add (force)", function () {
             return expect(_spfi.site.features.add(siteFeatureId, true)).to.be.eventually.fulfilled;
         });
 
-        it(".remove", async function () {
+        it("remove", async function () {
 
             // Check if feature is active.
             const res = await _spfi.site.features.getById(siteFeatureId)();
@@ -157,7 +157,7 @@ describe("Features", function () {
             }
         });
 
-        it(".remove (force)", async function () {
+        it("remove (force)", async function () {
 
             // Check if feature is active.
             const res = await _spfi.site.features.getById(siteFeatureId)();
@@ -173,7 +173,7 @@ describe("Features", function () {
             }
         });
 
-        it(".deactivate", async function () {
+        it("deactivate", async function () {
 
             // Check if feature is active.
             const res = await _spfi.site.features.getById(siteFeatureId)();
@@ -189,7 +189,7 @@ describe("Features", function () {
             }
         });
 
-        it(".deactivate (force)", async function () {
+        it("deactivate (force)", async function () {
 
             // Check if feature is active.
             const res = await _spfi.site.features.getById(siteFeatureId)();

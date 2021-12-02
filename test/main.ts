@@ -9,7 +9,7 @@ import findup from "findup-sync";
 import { ISettings, ITestingSettings } from "./settings.js";
 import { SPFI } from "@pnp/sp";
 import "@pnp/sp/webs";
-import { IWeb, IWebInfo, Webs } from "@pnp/sp/webs";
+import { IWeb } from "@pnp/sp/webs";
 import { graphfi, GraphFI } from "@pnp/graph";
 import { LogLevel } from "@pnp/logging";
 // import { RequestRecorderCache } from "./test-recorder.js";

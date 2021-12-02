@@ -29,7 +29,7 @@ describe.skip("SiteDesigns", function () {
 
     const createdSiteDesignIds: string[] = [];
 
-    it(".createSiteDesign", async function () {
+    it("createSiteDesign", async function () {
         const title = `Test_create_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
             Title: title,
@@ -40,7 +40,7 @@ describe.skip("SiteDesigns", function () {
         return expect(sd.Title).to.be.equal(title);
     });
 
-    it(".deleteSiteDesign", async function () {
+    it("deleteSiteDesign", async function () {
 
         const title = `Test_to_be_deleted_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -52,7 +52,7 @@ describe.skip("SiteDesigns", function () {
             `site design '${title}' should've been deleted`).to.eventually.be.fulfilled;
     });
 
-    it(".getSiteDesignMetadata", async function () {
+    it("getSiteDesignMetadata", async function () {
 
         const title = `Test_get_metadata_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -66,7 +66,7 @@ describe.skip("SiteDesigns", function () {
             `metadata of site design '${title}' should have been retrieved`).to.eventually.be.fulfilled;
     });
 
-    it(".applySiteDesign", async function () {
+    it("applySiteDesign", async function () {
 
         const title = `Test_applying_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -78,7 +78,7 @@ describe.skip("SiteDesigns", function () {
         return expect(_spfi.siteDesigns.applySiteDesign(sd.Id, testSettings.sp.testWebUrl)).to.eventually.be.fulfilled;
     });
 
-    it(".updateSiteDesign", async function () {
+    it("updateSiteDesign", async function () {
 
         const title = `Test_to_update_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -95,13 +95,13 @@ describe.skip("SiteDesigns", function () {
         }), `site design '${title}' should've been updated`).to.eventually.be.fulfilled;
     });
 
-    it(".getSiteDesigns", async function () {
+    it("getSiteDesigns", async function () {
 
         return expect(_spfi.siteDesigns.getSiteDesigns(),
             "all the site designs should've been fetched").to.eventually.be.fulfilled;
     });
 
-    it(".getSiteDesignRights", async function () {
+    it("getSiteDesignRights", async function () {
 
         const title = `Test_to_get_sitedesign_rights__${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -115,7 +115,7 @@ describe.skip("SiteDesigns", function () {
             `rights for the site design '${title}' should've been fetched`).to.eventually.be.fulfilled;
     });
 
-    it(".grantSiteDesignRights", async function () {
+    it("grantSiteDesignRights", async function () {
 
         const title = `Test_grant_rights_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -131,7 +131,7 @@ describe.skip("SiteDesigns", function () {
         ), `rights of site design '${title}' should have been granted to user '${testuser}'`).to.eventually.be.fulfilled;
     });
 
-    it(".revokeSiteDesignRights", async function () {
+    it("revokeSiteDesignRights", async function () {
 
         const title = `Test_revoke_rights_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -147,13 +147,13 @@ describe.skip("SiteDesigns", function () {
             `rights of site design '${title}' should have been revoked from user '${testuser}'`).to.eventually.be.fulfilled;
     });
 
-    it(".getSiteDesignRuns", async function () {
+    it("getSiteDesignRuns", async function () {
 
         return expect(_spfi.web.getSiteDesignRuns(),
             "site design runs should've been fetched").to.eventually.be.fulfilled;
     });
 
-    it(".addSiteDesignTask (Absolute Url)", async function () {
+    it("addSiteDesignTask (Absolute Url)", async function () {
 
         const title = `Test_add_task_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -166,7 +166,7 @@ describe.skip("SiteDesigns", function () {
         return expect(siteDesignTask).to.be.equal(sd.Id);
     });
 
-    it(".addSiteDesignTask", async function () {
+    it("addSiteDesignTask", async function () {
 
         const title = `Test_add_task_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -181,7 +181,7 @@ describe.skip("SiteDesigns", function () {
             "site design task should've been created").to.not.be.null;
     });
 
-    it(".getSiteDesignTask", async function () {
+    it("getSiteDesignTask", async function () {
 
         const title = `Test_get_task_run_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({
@@ -197,7 +197,7 @@ describe.skip("SiteDesigns", function () {
             "site design task should've been fetched").to.eventually.be.fulfilled;
     });
 
-    it(".getSiteDesignRunStatus", async function () {
+    it("getSiteDesignRunStatus", async function () {
 
         const title = `Test_add_task_run_sitedesign_${getRandomString(8)}`;
         const sd = await _spfi.siteDesigns.createSiteDesign({

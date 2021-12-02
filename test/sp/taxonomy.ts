@@ -29,7 +29,7 @@ describe("Taxonomy", function () {
             return expect(info).has.property("id");
         });
 
-        it(".groups", async function () {
+        it("groups", async function () {
             const info = await _spfi.termStore.groups();
 
             if (info === undefined || info.length < 1) {
@@ -51,7 +51,7 @@ describe("Taxonomy", function () {
             return expect(info[0]).has.property("id");
         });
 
-        it(".groups.getById", async function () {
+        it("groups.getById", async function () {
 
             const info = await _spfi.termStore.groups();
 
@@ -101,7 +101,7 @@ describe("Taxonomy", function () {
             termset = _spfi.termStore.groups.getById(groupId).sets.getById(termsetId);
         });
 
-        it(".terms", async function () {
+        it("terms", async function () {
             const terms = await termset.terms();
             return expect(terms).to.be.an("Array");
         });
@@ -112,17 +112,17 @@ describe("Taxonomy", function () {
             return expect(parentGroup).has.property("id");
         });
 
-        it(".children", async function () {
+        it("children", async function () {
             const children = await termset.children();
             return expect(children).to.be.an("Array");
         });
 
-        it(".relations", async function () {
+        it("relations", async function () {
             const relations = await termset.relations();
             return expect(relations).to.be.an("Array");
         });
 
-        it(".getTermById", async function () {
+        it("getTermById", async function () {
             const terms = await termset.terms();
             if (terms.length < 1) {
                 return;
@@ -164,7 +164,7 @@ describe("Taxonomy", function () {
             term = _spfi.termStore.groups.getById(groupId).sets.getById(setId).terms.getById(termId);
         });
 
-        it(".getById", async function () {
+        it("getById", async function () {
             const info = await term();
             return expect(info).has.property("id");
         });
@@ -220,7 +220,7 @@ describe("Taxonomy", function () {
             relation = _spfi.termStore.groups.getById(groupId).sets.getById(setId).relations.getById(relationId);
         });
 
-        it(".getById", async function () {
+        it("getById", async function () {
             const invoke = await relation();
             return expect(invoke).has.property("id");
         });

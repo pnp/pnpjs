@@ -48,39 +48,39 @@ describe("Security", function () {
         }
     });
 
-    it(".roleAssignments", function () {
+    it("roleAssignments", function () {
 
         return expect(list.roleAssignments()).to.eventually.be.fulfilled;
     });
 
-    it(".firstUniqueAncestorSecurableObject", function () {
+    it("firstUniqueAncestorSecurableObject", function () {
 
         return expect(list.firstUniqueAncestorSecurableObject()).to.eventually.be.fulfilled;
     });
 
-    it(".getUserEffectivePermissions", async function () {
+    it("getUserEffectivePermissions", async function () {
 
         const users = await _spfi.web.siteUsers.top(1).select("LoginName")();
         return expect(list.getUserEffectivePermissions(users[0].LoginName)).to.eventually.be.fulfilled;
     });
 
-    it(".getCurrentUserEffectivePermissions", async function () {
+    it("getCurrentUserEffectivePermissions", async function () {
 
         return expect(list.getCurrentUserEffectivePermissions()).to.eventually.be.fulfilled;
     });
 
-    it(".userHasPermissions", async function () {
+    it("userHasPermissions", async function () {
 
         const users = await _spfi.web.siteUsers.top(1).select("LoginName")();
         return expect(list.userHasPermissions(users[0].LoginName, PermissionKind.AddListItems)).to.eventually.be.fulfilled;
     });
 
-    it(".currentUserHasPermissions", async function () {
+    it("currentUserHasPermissions", async function () {
 
         return expect(list.currentUserHasPermissions(PermissionKind.AddListItems)).to.eventually.be.fulfilled;
     });
 
-    it(".breakRoleInheritance", async function () {
+    it("breakRoleInheritance", async function () {
 
         return expect(list.breakRoleInheritance(true, true)).to.eventually.be.fulfilled;
     });

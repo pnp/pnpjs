@@ -55,7 +55,7 @@ describe("Directory Objects", function () {
         testParentGroupID = result.data.id;
     });
 
-    it(".delete", async function () {
+    it("delete", async function () {
         const groupName = `TestGroup_${getRandomString(4)}`;
         const result = await _graphfi.groups.add(groupName, groupName, GroupType.Security, {
             "members@odata.bind": [

@@ -37,20 +37,20 @@ describe("Items", function () {
         }
     });
 
-    it(".items", async function () {
+    it("items", async function () {
 
         const items = await list.items();
         expect(items.length).to.be.gt(0);
     });
 
-    it(".getById", async function () {
+    it("getById", async function () {
 
         const items = await list.items.select("Id").top(1)();
         const item = items[0];
         return expect(list.items.getById(item.Id)()).to.eventually.be.fulfilled;
     });
 
-    it(".getPaged", async function () {
+    it("getPaged", async function () {
 
         let page = await list.items.top(2).getPaged();
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -62,44 +62,44 @@ describe("Items", function () {
         expect(page.results.length).to.eql(2);
     });
 
-    it(".getAll", async function () {
+    it("getAll", async function () {
 
         const itemCount = await list.select("ItemCount")().then(r => r.ItemCount);
         const page = await list.items.getAll();
         return expect(page.length).to.eq(itemCount);
     });
 
-    it(".effectiveBasePermissions", async function () {
+    it("effectiveBasePermissions", async function () {
 
         const item = await list.items.top(1)().then(r => r[0]);
         return expect(list.items.getById(item.Id).effectiveBasePermissions()).to.eventually.be.fulfilled;
     });
 
-    it(".effectiveBasePermissionsForUI", async function () {
+    it("effectiveBasePermissionsForUI", async function () {
 
         const item = await list.items.top(1)().then(r => r[0]);
         return expect(list.items.getById(item.Id).effectiveBasePermissionsForUI()).to.eventually.be.fulfilled;
     });
 
-    it(".fieldValuesAsHTML", async function () {
+    it("fieldValuesAsHTML", async function () {
 
         const item = await list.items.top(1)().then(r => r[0]);
         return expect(list.items.getById(item.Id).fieldValuesAsHTML()).to.eventually.be.fulfilled;
     });
 
-    it(".fieldValuesAsText", async function () {
+    it("fieldValuesAsText", async function () {
 
         const item = await list.items.top(1)().then(r => r[0]);
         return expect(list.items.getById(item.Id).fieldValuesAsText()).to.eventually.be.fulfilled;
     });
 
-    it(".versions", async function () {
+    it("versions", async function () {
 
         const item = await list.items.top(1)().then(r => r[0]);
         return expect(list.items.getById(item.Id).versions()).to.eventually.be.fulfilled;
     });
 
-    it(".list", async function () {
+    it("list", async function () {
 
         const item = await list.items.top(1)().then(r => r[0]);
         const listTitle = await list.select("Title")().then(r => r.Title);
@@ -107,7 +107,7 @@ describe("Items", function () {
         return expect(listTitle).to.eq(itemListTitle);
     });
 
-    it(".update", async function () {
+    it("update", async function () {
 
         const item = await list.items.select("Id").top(1)().then(r => r[0]);
         const iur = await list.items.getById(item.Id).update({
@@ -117,7 +117,7 @@ describe("Items", function () {
         expect(iur).to.not.be.null;
     });
 
-    it(".recycle", async function () {
+    it("recycle", async function () {
 
         const item = await list.items.add({
             Title: "Recycle Me",
@@ -144,7 +144,7 @@ describe("Items", function () {
         expect(r.length).to.eq(0);
     });
 
-    it(".getWopiFrameUrl", async function () {
+    it("getWopiFrameUrl", async function () {
 
         const item = await list.items.select("Id").top(1)().then(r => r[0]);
         return expect(list.items.getById(item.Id).getWopiFrameUrl()).to.eventually.be.fulfilled;

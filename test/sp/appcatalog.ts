@@ -38,7 +38,7 @@ describe("AppCatalog", function () {
         return expect(appCatalog(), "all apps should've been fetched").to.eventually.be.fulfilled;
     });
 
-    it(".add", async function () {
+    it("add", async function () {
         const appName: string = getRandomString(25);
 
         const app = await appCatalog.add(appName, sppkgData);
@@ -50,7 +50,7 @@ describe("AppCatalog", function () {
         return expect(app.data.Name).to.eq(appName);
     });
 
-    it(".getAppById", async function () {
+    it("getAppById", async function () {
         return expect(appCatalog.getAppById(appId)(), `app '${appId}' should've been fetched`).to.eventually.be.fulfilled;
     });
 
@@ -89,7 +89,7 @@ describe("AppCatalog", function () {
     });
 
     describe("App", function () {
-        it(".deploy", async function () {
+        it("deploy", async function () {
             const myApp = appCatalog.getAppById(appId);
             return expect(myApp.deploy(), `app '${appId}' should've been deployed`).to.eventually.be.fulfilled;
         });
@@ -99,17 +99,17 @@ describe("AppCatalog", function () {
             return expect(appCatalog.syncSolutionToTeams(appId), `app '${appId}' should've been synchronized to the Microsoft Teams App Catalog`).to.eventually.be.fulfilled;
         });
 
-        it(".syncSolutionToTeams (fail)", async function () {
+        it("syncSolutionToTeams (fail)", async function () {
             const msg = "app 'random' should not have been synchronized to the Microsoft Teams App Catalog";
             return expect(appCatalog.syncSolutionToTeams("random"), msg).to.not.eventually.be.fulfilled;
         });
 
-        it(".install", async function () {
+        it("install", async function () {
             const myApp = _spfi.web.appcatalog.getAppById(appId);
             return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
-        it(".uninstall", async function () {
+        it("uninstall", async function () {
             // We have to make sure the app is installed before we can uninstall it otherwise we get the following error message:
             // Another job exists for this app instance. Please retry after that job is done.
             const myApp = _spfi.web.appcatalog.getAppById(appId);
@@ -128,17 +128,17 @@ describe("AppCatalog", function () {
             return expect(myApp.uninstall(), `app '${appId}' should've been uninstalled on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
-        it(".upgrade", async function () {
+        it("upgrade", async function () {
             const myApp = _spfi.web.appcatalog.getAppById(appId);
             return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
-        it(".retract", async function () {
+        it("retract", async function () {
             const myApp = appCatalog.getAppById(appId);
             return expect(myApp.retract(), `app '${appId}' should've been retracted`).to.eventually.be.fulfilled;
         });
 
-        it(".remove", async function () {
+        it("remove", async function () {
             const myApp = appCatalog.getAppById(appId);
             return expect(myApp.remove(), `app '${appId}' should've been removed`).to.eventually.be.fulfilled;
         });

@@ -26,11 +26,11 @@ describe("Hubsites", function () {
         hubSiteId = r.Id;
     });
 
-    it(".getById", function () {
+    it("getById", function () {
         return expect(_spfi.hubSites.getById(hubSiteId)()).to.eventually.be.fulfilled;
     });
 
-    it(".getSite", async function () {
+    it("getSite", async function () {
 
         const hs = await _spfi.hubSites.getById(hubSiteId).getSite();
 

@@ -39,7 +39,7 @@ describe("Site Users", function () {
             _spfi = getSP();
         });
 
-        it(".siteUsers", async function () {
+        it("siteUsers", async function () {
             const siteUsers: ISiteUserInfo[] = await _spfi.web.siteUsers();
             const hasResults = siteUsers.length > 0;
             const siteUser = siteUsers[0];
@@ -47,18 +47,18 @@ describe("Site Users", function () {
             return expect(hasResults && hasProps).to.be.true;
         });
 
-        it(".currentUser", async function () {
+        it("currentUser", async function () {
             const currentUser: ISiteUserInfo = await _spfi.web.currentUser();
             const hasProps = testISiteUserInfo(currentUser);
             return expect(hasProps).to.be.true;
         });
 
-        it(".ensureUser", async function () {
+        it("ensureUser", async function () {
             const e: ISiteUserProps = await _spfi.web.currentUser();
             return expect(_spfi.web.ensureUser(e.LoginName)).to.eventually.fulfilled;
         });
 
-        it(".getUserById", async function () {
+        it("getUserById", async function () {
             const user: ISiteUserProps = await _spfi.web.currentUser();
             return expect(_spfi.web.getUserById(user.Id)()).to.eventually.fulfilled;
         });
@@ -72,19 +72,19 @@ describe("Site Users", function () {
             _spfi = getSP();
         });
 
-        it(".getById", async function () {
+        it("getById", async function () {
             const e: ISiteUserProps = await _spfi.web.currentUser();
             return expect(_spfi.web.siteUsers.getById(e.Id)()).to.eventually.fulfilled;
         });
 
-        it(".getByEmail", async function () {
+        it("getByEmail", async function () {
             const e: ISiteUserProps = await _spfi.web.currentUser();
             if (!stringIsNullOrEmpty(e.Email)) {
                 return expect(_spfi.web.siteUsers.getByEmail(e.Email)()).to.eventually.fulfilled;
             }
         });
 
-        it(".getByLoginName", async function () {
+        it("getByLoginName", async function () {
             const e: ISiteUserProps = await _spfi.web.currentUser();
             return expect(_spfi.web.siteUsers.getByLoginName(e.LoginName)()).to.eventually.fulfilled;
         });
@@ -98,11 +98,11 @@ describe("Site Users", function () {
             _spfi = getSP();
         });
 
-        it(".groups", async function () {
+        it("groups", async function () {
             const e: ISiteGroups = await _spfi.web.currentUser.groups();
             return expect(e.length).to.be.gte(0);
         });
-        it(".update", async function () {
+        it("update", async function () {
             const _props: ISiteUserProps = await _spfi.web.currentUser();
             _props.Title = "Changed Title";
             const e: IUserUpdateResult = await _spfi.web.currentUser.update(_props);

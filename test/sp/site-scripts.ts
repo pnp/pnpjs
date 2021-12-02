@@ -35,7 +35,7 @@ describe("SiteScripts", function () {
         _rootSite = spfi([_spfi.site, testSettings.sp.url]);
     });
 
-    it(".createSiteScript", function () {
+    it("createSiteScript", function () {
 
         const title = `Test_create_sitescript_${getRandomString(8)}`;
         const description = `${getRandomString(100)}`;
@@ -45,7 +45,7 @@ describe("SiteScripts", function () {
         return expect(p, `site script '${title}' should've been created`).to.eventually.be.fulfilled;
     });
 
-    it(".createSiteScript (fail - bad title)", function () {
+    it("createSiteScript (fail - bad title)", function () {
 
         const title = `Test_create_sitescript_${getRandomString(8)}'`;
         const description = `${getRandomString(100)}`;
@@ -55,7 +55,7 @@ describe("SiteScripts", function () {
         return expect(p, `site script '${title}' should not have been created`).to.eventually.be.fulfilled;
     });
 
-    it(".createSiteScript (fail - no actions)", function () {
+    it("createSiteScript (fail - no actions)", function () {
 
         const schema = {
             "$schema": "schema.json",
@@ -71,7 +71,7 @@ describe("SiteScripts", function () {
             `site script '${title}' should not have been created`).to.eventually.be.rejected;
     });
 
-    it(".deleteSiteScript", async function () {
+    it("deleteSiteScript", async function () {
 
         const title = `Test_create_sitescript_to_be_deleted_${getRandomString(8)}`;
         const description = `${getRandomString(100)}`;
@@ -81,13 +81,13 @@ describe("SiteScripts", function () {
             `site script '${title}' should've been deleted`).to.eventually.be.fulfilled;
     });
 
-    it(".deleteSiteScript (fail)", function () {
+    it("deleteSiteScript (fail)", function () {
 
         return expect(_rootSite.siteScripts.deleteSiteScript(null),
             "site script should NOT have been deleted").to.eventually.be.rejected;
     });
 
-    it(".getSiteScriptMetadata", async function () {
+    it("getSiteScriptMetadata", async function () {
 
         const title = `Test_get_metadata_sitescript${getRandomString(8)}`;
         const description = `${getRandomString(100)}`;
@@ -100,7 +100,7 @@ describe("SiteScripts", function () {
     });
 
 
-    it(".updateSiteScript", async function () {
+    it("updateSiteScript", async function () {
 
         const title = `Test_to_update_sitescript_${getRandomString(8)}`;
         const description = `${getRandomString(100)}`;
@@ -128,13 +128,13 @@ describe("SiteScripts", function () {
         }, updatedScriptSchema), `site script '${title}' should've been updated`).to.eventually.be.fulfilled;
     });
 
-    it(".getSiteScripts", async function () {
+    it("getSiteScripts", async function () {
 
         return expect(_rootSite.siteScripts.getSiteScripts(),
             "all the site scripts should've been fetched").to.eventually.be.fulfilled;
     });
 
-    it(".getSiteScript (list)", async function () {
+    it("getSiteScript (list)", async function () {
         const listTitle = `sc_list_${getRandomString(8)}`;
         const listResult = await _rootSite.web.lists.add(listTitle);
         createdLists.push(listResult.list);

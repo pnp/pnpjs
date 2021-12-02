@@ -41,14 +41,14 @@ describe("Related Items", function () {
         targetListName = ler2.data.Id;
     });
 
-    it(".addSingleLink", async function () {
+    it("addSingleLink", async function () {
 
         const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` });
         const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
         return expect(_spfi.web.relatedItems.addSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl)).to.eventually.be.fulfilled;
     });
 
-    it(".addSingleLinkToUrl", async function () {
+    it("addSingleLinkToUrl", async function () {
 
         const file = await _spfi.web.defaultDocumentLibrary.rootFolder.files
             .addUsingPath(`test${getRandomString(4)}.txt`, "Test File", { Overwrite: true });
@@ -57,7 +57,7 @@ describe("Related Items", function () {
         return expect(_spfi.web.relatedItems.addSingleLinkToUrl(targetListName, targetItem.data.Id, file.data.ServerRelativeUrl)).to.eventually.be.fulfilled;
     });
 
-    it(".deleteSingleLink", async function () {
+    it("deleteSingleLink", async function () {
 
         const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` });
         const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
@@ -68,7 +68,7 @@ describe("Related Items", function () {
         return expect(promise).to.eventually.be.fulfilled;
     });
 
-    it(".getRelatedItems", async function () {
+    it("getRelatedItems", async function () {
 
         const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
         const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
@@ -82,7 +82,7 @@ describe("Related Items", function () {
         return expect(items).to.be.an.instanceOf(Array).and.have.lengthOf(2);
     });
 
-    it(".getPageOneRelatedItems", async function () {
+    it("getPageOneRelatedItems", async function () {
 
         const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
         const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);

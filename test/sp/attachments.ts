@@ -26,7 +26,7 @@ describe("Attachments", function () {
         list = listData.list;
     });
 
-    it(".attachmentFiles", async function () {
+    it("attachmentFiles", async function () {
 
         // add some attachments to an item
         const r = await list.items.add({
@@ -39,7 +39,7 @@ describe("Attachments", function () {
         return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
     });
 
-    it(".getByName", async function () {
+    it("getByName", async function () {
 
         // add some attachments to an item
         const r = await list.items.add({
@@ -54,7 +54,7 @@ describe("Attachments", function () {
         return expect(info.FileName).to.eq(name);
     });
 
-    it(".getText", async function () {
+    it("getText", async function () {
 
         // add some attachments to an item
         const r = await list.items.add({
@@ -70,7 +70,7 @@ describe("Attachments", function () {
         expect(text).to.eq(content);
     });
 
-    it(".setContent", async function () {
+    it("setContent", async function () {
 
         // add some attachments to an item
         const r = await list.items.add({
@@ -92,7 +92,7 @@ describe("Attachments", function () {
         expect(text2).to.eq(content2);
     });
 
-    it(".recycle", async function () {
+    it("recycle", async function () {
 
         // add some attachments to an item
         const r = await list.items.add({

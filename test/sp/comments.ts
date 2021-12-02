@@ -34,7 +34,7 @@ describe("Comments", function () {
         }
     });
 
-    it(".add - clientside page", async function () {
+    it("add - clientside page", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -43,7 +43,7 @@ describe("Comments", function () {
         expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
     });
 
-    it(".add - item", async function () {
+    it("add - item", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -55,7 +55,7 @@ describe("Comments", function () {
     });
 
     if (testSettings.testUser?.length > 0) {
-        it(".add - at mention", async function () {
+        it("add - at mention", async function () {
 
             const pageName = `CommentPage_${getRandomString(4)}`;
             const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -69,7 +69,7 @@ describe("Comments", function () {
         });
     }
 
-    it(".getById - clientside page", async function () {
+    it("getById - clientside page", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -80,7 +80,7 @@ describe("Comments", function () {
         return expect(page.getCommentById(parseInt(comment.id, 10))).to.eventually.be.fulfilled;
     });
 
-    it(".getById - clientside page 2", async function () {
+    it("getById - clientside page 2", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -93,7 +93,7 @@ describe("Comments", function () {
         return expect(comment2.select("likeCount")()).to.eventually.be.fulfilled;
     });
 
-    it(".getById - item", async function () {
+    it("getById - item", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -107,7 +107,7 @@ describe("Comments", function () {
         return expect(comment2).to.not.be.null;
     });
 
-    it(".clear - clientside page", async function () {
+    it("clear - clientside page", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -126,7 +126,7 @@ describe("Comments", function () {
         expect(page.getComments()).to.eventually.have.length(0);
     });
 
-    it(".clear - item", async function () {
+    it("clear - item", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -147,7 +147,7 @@ describe("Comments", function () {
         expect(item.comments()).to.eventually.have.length(0);
     });
 
-    it(".like & unlike", async function () {
+    it("like & unlike", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -159,7 +159,7 @@ describe("Comments", function () {
         return expect(comment.unlike()).to.eventually.be.fulfilled;
     });
 
-    it(".replies - add", async function () {
+    it("replies - add", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
@@ -169,7 +169,7 @@ describe("Comments", function () {
         return expect(comment.replies.add("Reply")).to.eventually.be.fulfilled;
     });
 
-    it(".replies - add 2", async function () {
+    it("replies - add 2", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
         const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");

@@ -36,18 +36,18 @@ describe("Outlook", function () {
         }
     });
 
-    it(".outlook", async function () {
+    it("outlook", async function () {
         const outlookUser = await _graphfi.users.getById(testUserName).outlook();
         return expect(outlookUser).is.not.null;
     });
 
     describe("Master Categories", function () {
-        it(".masterCategories", async function () {
+        it("masterCategories", async function () {
             const categories = await _graphfi.users.getById(testUserName).outlook.masterCategories();
             return expect(categories.length).is.gt(0);
         });
 
-        it(".add", async function () {
+        it("add", async function () {
             // there is no method to clean up after add, so generate a random name
             const testCategory: OutlookCategory = {
                 displayName: `Test category-${getRandomString(8)}`,
@@ -60,7 +60,7 @@ describe("Outlook", function () {
             return expect(addedCategory).is.not.null;
         });
 
-        it(".update", async function () {
+        it("update", async function () {
             const testCategory: OutlookCategory = {
                 displayName: `Test category-${getRandomString(8)}`,
                 color: "preset2",
@@ -78,7 +78,7 @@ describe("Outlook", function () {
             return expect(updatedCategory).to.eventually.be.fulfilled;
         });
 
-        it(".delete", async function () {
+        it("delete", async function () {
             const testCategory: OutlookCategory = {
                 displayName: `Test category-${getRandomString(8)}`,
                 color: "preset2",

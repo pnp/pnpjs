@@ -22,21 +22,21 @@ describe("Sites", function () {
         _spfi = getSP();
     });
 
-    it(".rootWeb", async function () {
+    it("rootWeb", async function () {
         return expect(_spfi.site.rootWeb()).to.eventually.be.fulfilled;
     });
 
-    it(".getRootWeb", async function () {
+    it("getRootWeb", async function () {
         const rootWeb: IWeb = await _spfi.site.getRootWeb();
         return expect(rootWeb).to.haveOwnProperty("_url");
     });
 
-    it(".getContextInfo", async function () {
+    it("getContextInfo", async function () {
         const oContext: IContextInfo = await _spfi.site.getContextInfo();
         return expect(oContext).to.haveOwnProperty("SiteFullUrl");
     });
 
-    it(".getDocumentLibraries", async function () {
+    it("getDocumentLibraries", async function () {
         const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("Url")();
         const docLibs: IDocumentLibraryInformation[] = await _spfi.site.getDocumentLibraries(webInfo.Url);
         return docLibs.forEach((docLib) => {
@@ -44,26 +44,26 @@ describe("Sites", function () {
         });
     });
 
-    it(".getWebUrlFromPageUrl", async function () {
+    it("getWebUrlFromPageUrl", async function () {
         const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
         const path = combine(webInfo.Url, "SitePages", "Home.aspx");
         const webUrl: string = await _spfi.site.getWebUrlFromPageUrl(path);
         return expect(webUrl).to.be.equal(testSettings.sp.testWebUrl);
     });
 
-    it(".openWebById", async function () {
+    it("openWebById", async function () {
         const oWeb = await _spfi.site.rootWeb();
         const webIDResult: IOpenWebByIdResult = await _spfi.site.openWebById(oWeb.Id);
         return expect(webIDResult).to.haveOwnProperty("data");
     });
 
-    it(".openWebById - chainable", async function () {
+    it("openWebById - chainable", async function () {
         const oWeb = await _spfi.site.rootWeb();
         const webIDResult: IOpenWebByIdResult = await _spfi.site.openWebById(oWeb.Id);
         return expect(webIDResult.web.lists()).to.eventually.be.fulfilled;
     });
 
-    it(".exists", async function () {
+    it("exists", async function () {
         const oWeb = await _spfi.site();
         const exists: boolean = await _spfi.site.exists(oWeb.Url);
         const notExists: boolean = await _spfi.site.exists(`${oWeb.Url}/RANDOM`);

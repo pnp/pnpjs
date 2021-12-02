@@ -23,7 +23,7 @@ describe("UserCustomActions", function () {
         return expect(actions).to.be.an("Array");
     });
 
-    it(".getById", async function () {
+    it("getById", async function () {
         const actions = await _spfi.web.userCustomActions();
         if (actions === undefined || actions.length < 1) {
             this.skip();
@@ -33,7 +33,7 @@ describe("UserCustomActions", function () {
         return expect(action).to.haveOwnProperty("update");
     });
 
-    it(".clear", function () {
+    it("clear", function () {
         return expect(_spfi.web.userCustomActions.clear()).to.eventually.to.fulfilled;
     });
 });

@@ -30,24 +30,24 @@ describe("SiteGroups", function () {
     });
 
     describe("Web", function () {
-        it(".siteGroups()", function () {
+        it("siteGroups()", function () {
             return expect(_spfi.web.siteGroups()).to.eventually.be.fulfilled;
         });
 
-        it(".associatedOwnerGroup()", function () {
+        it("associatedOwnerGroup()", function () {
             return expect(_spfi.web.associatedOwnerGroup()).to.eventually.be.fulfilled;
         });
 
-        it(".associatedMemberGroup()", function () {
+        it("associatedMemberGroup()", function () {
             return expect(_spfi.web.associatedMemberGroup()).to.eventually.be.fulfilled;
         });
 
-        it(".associatedVisitorGroup()", function () {
+        it("associatedVisitorGroup()", function () {
             return expect(_spfi.web.associatedVisitorGroup()).to.eventually.be.fulfilled;
         });
 
         if (testSettings.testUser?.length > 0) {
-            it(".createDefaultAssociatedGroups()", async function () {
+            it("createDefaultAssociatedGroups()", async function () {
                 await _spfi.web.ensureUser(testSettings.testUser);
                 const groupName = `TestGroup_${getRandomString(4)}`;
                 return expect(_spfi.web.createDefaultAssociatedGroups(groupName,
@@ -58,36 +58,36 @@ describe("SiteGroups", function () {
         }
     });
 
-    it(".getById()", async function () {
+    it("getById()", async function () {
         return expect(_spfi.web.siteGroups.getById(newGroup.data.Id)());
     });
 
-    it(".add()", function () {
+    it("add()", function () {
         const newGroupTitle = `test_add_new_sitegroup_${getRandomString(8)}`;
         return expect(_spfi.web.siteGroups.add({ "Title": newGroupTitle })).to.be.eventually.fulfilled;
     });
 
-    it(".getByName()", function () {
+    it("getByName()", function () {
         return expect(_spfi.web.siteGroups.getByName(newGroup.data.Title)()).to.be.eventually.fulfilled;
     });
 
-    it(".removeById()", async function () {
+    it("removeById()", async function () {
         const newGroupTitle = `test_remove_group_by_id_${getRandomString(8)}`;
         const g = await _spfi.web.siteGroups.add({ "Title": newGroupTitle });
         return expect(_spfi.web.siteGroups.removeById(g.data.Id)).to.be.eventually.fulfilled;
     });
 
-    it(".removeByLoginName()", async function () {
+    it("removeByLoginName()", async function () {
         const newGroupTitle = `test_remove_group_by_name_${getRandomString(8)}`;
         const g = await _spfi.web.siteGroups.add({ "Title": newGroupTitle });
         return expect(_spfi.web.siteGroups.removeByLoginName(g.data.LoginName)).to.be.eventually.fulfilled;
     });
 
-    it(".users()", async function () {
+    it("users()", async function () {
         return expect(_spfi.web.siteGroups.getById(newGroup.data.Id).users()).to.be.eventually.fulfilled;
     });
 
-    it(".update()", async function () {
+    it("update()", async function () {
         const newTitle = `Updated_${newGroup.data.Title}`;
         await _spfi.web.siteGroups.getByName(newGroup.data.Title).update({ "Title": newTitle });
         const p = _spfi.web.siteGroups.getById(newGroup.data.Id).select("Title")<{ "Title": string }>().then(g2 => {
@@ -99,7 +99,7 @@ describe("SiteGroups", function () {
         return true;
     });
 
-    it(".setUserAsOwner()", async function () {
+    it("setUserAsOwner()", async function () {
         return expect(_spfi.web.siteGroups.getById(newGroup.data.Id).setUserAsOwner(testuserId)).to.be.eventually.fulfilled;
     });
 });

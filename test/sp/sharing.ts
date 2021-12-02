@@ -66,7 +66,7 @@ describe("Sharing", function () {
         });
 
         // // these tests cover share link
-        it(".getShareLink (OrganizationView)", function () {
+        it("getShareLink (OrganizationView)", function () {
 
             return expect(folder.getShareLink(SharingLinkKind.OrganizationView))
                 .to.eventually.be.fulfilled
@@ -74,14 +74,14 @@ describe("Sharing", function () {
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        it(".getShareLink (AnonymousView)", function () {
+        it("getShareLink (AnonymousView)", function () {
             return expect(folder.getShareLink(SharingLinkKind.AnonymousView))
                 .to.eventually.be.fulfilled
                 .and.have.property("sharingLinkInfo")
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        it(".getShareLink (ExpirationDate)", function () {
+        it("getShareLink (ExpirationDate)", function () {
             return expect(folder.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5)))
                 .to.eventually.be.fulfilled
                 .and.have.property("sharingLinkInfo")
@@ -104,26 +104,26 @@ describe("Sharing", function () {
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
-            it(".checkSharingPermissions", function () {
+            it("checkSharingPermissions", function () {
 
                 return expect(folder.checkSharingPermissions([{ alias: testSettings.testUser }]))
                     .to.eventually.be.fulfilled;
             });
         }
 
-        it(".getSharingInformation", function () {
+        it("getSharingInformation", function () {
 
             return expect(folder.getSharingInformation())
                 .to.eventually.be.fulfilled;
         });
 
-        it(".getObjectSharingSettings", function () {
+        it("getObjectSharingSettings", function () {
 
             return expect(folder.getObjectSharingSettings(true))
                 .to.eventually.be.fulfilled;
         });
 
-        it(".unshare", function () {
+        it("unshare", function () {
 
             return expect(folder.unshare())
                 .to.eventually.be.fulfilled;
@@ -140,7 +140,7 @@ describe("Sharing", function () {
             file = _spfi.web.getFileByServerRelativePath("/" + combine(webRelativeUrl, `${testSharingLib}/${testSharingFile}`));
         });
 
-        it(".getShareLink (OrganizationView)", function () {
+        it("getShareLink (OrganizationView)", function () {
 
             return expect(file.getShareLink(SharingLinkKind.OrganizationView))
                 .to.eventually.be.fulfilled
@@ -148,14 +148,14 @@ describe("Sharing", function () {
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        it(".getShareLink (AnonymousView)", function () {
+        it("getShareLink (AnonymousView)", function () {
             return expect(file.getShareLink(SharingLinkKind.AnonymousView))
                 .to.eventually.be.fulfilled
                 .and.have.property("sharingLinkInfo")
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        it(".getShareLink (ExpirationDate)", function () {
+        it("getShareLink (ExpirationDate)", function () {
             return expect(file.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5)))
                 .to.eventually.be.fulfilled
                 .and.have.property("sharingLinkInfo")
@@ -163,40 +163,40 @@ describe("Sharing", function () {
         });
 
         if (testSettings.testUser?.length > 0) {
-            it(".shareWith (Edit)", function () {
+            it("shareWith (Edit)", function () {
 
                 return expect(file.shareWith(testSettings.testUser, SharingRole.Edit))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
-            it(".shareWith (Edit-All)", function () {
+            it("shareWith (Edit-All)", function () {
 
                 return expect(file.shareWith(testSettings.testUser, SharingRole.Edit, true))
                     .to.eventually.be.fulfilled
                     .and.have.property("ErrorMessage").that.is.null;
             });
 
-            it(".checkSharingPermissions", function () {
+            it("checkSharingPermissions", function () {
 
                 return expect(file.checkSharingPermissions([{ alias: testSettings.testUser }]))
                     .to.eventually.be.fulfilled;
             });
         }
 
-        it(".getSharingInformation", function () {
+        it("getSharingInformation", function () {
 
             return expect(file.getSharingInformation())
                 .to.eventually.be.fulfilled;
         });
 
-        it(".getObjectSharingSettings", function () {
+        it("getObjectSharingSettings", function () {
 
             return expect(file.getObjectSharingSettings(true))
                 .to.eventually.be.fulfilled;
         });
 
-        it(".unshare", function () {
+        it("unshare", function () {
 
             return expect(file.unshare())
                 .to.eventually.be.fulfilled;
@@ -212,7 +212,7 @@ describe("Sharing", function () {
             item = _spfi.web.lists.getByTitle(testSharingLib).items.getById(1);
         });
 
-        it(".getShareLink (OrganizationView)", function () {
+        it("getShareLink (OrganizationView)", function () {
 
             return expect(item.getShareLink(SharingLinkKind.OrganizationView))
                 .to.eventually.be.fulfilled
@@ -220,14 +220,14 @@ describe("Sharing", function () {
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        it(".getShareLink (AnonymousView)", function () {
+        it("getShareLink (AnonymousView)", function () {
             return expect(item.getShareLink(SharingLinkKind.AnonymousView))
                 .to.eventually.be.fulfilled
                 .and.have.property("sharingLinkInfo")
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        it(".getShareLink (ExpirationDate)", function () {
+        it("getShareLink (ExpirationDate)", function () {
             return expect(item.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5)))
                 .to.eventually.be.fulfilled
                 .and.have.property("sharingLinkInfo")
@@ -247,26 +247,26 @@ describe("Sharing", function () {
                 return expect(itemShare).has.property("ErrorMessage").that.is.null;
             });
 
-            it(".checkSharingPermissions", function () {
+            it("checkSharingPermissions", function () {
 
                 return expect(item.checkSharingPermissions([{ alias: testSettings.testUser }]))
                     .to.eventually.be.fulfilled;
             });
         }
 
-        it(".getSharingInformation", function () {
+        it("getSharingInformation", function () {
 
             return expect(item.getSharingInformation())
                 .to.eventually.be.fulfilled;
         });
 
-        it(".getObjectSharingSettings", function () {
+        it("getObjectSharingSettings", function () {
 
             return expect(item.getObjectSharingSettings(true))
                 .to.eventually.be.fulfilled;
         });
 
-        it(".unshare", function () {
+        it("unshare", function () {
 
             return expect(item.unshare())
                 .to.eventually.be.fulfilled;
@@ -276,7 +276,7 @@ describe("Sharing", function () {
     describe("Web", function () {
 
         if (testSettings.testUser?.length > 0) {
-            it(".shareObject", async function () {
+            it("shareObject", async function () {
                 const shareObj = combine(webAbsUrl, `${testSharingLib}/${testSharingFile}`);
                 const shareWeb = await _spfi.web.shareObject(shareObj, testSettings.testUser, SharingRole.View);
                 return expect(shareWeb).has.property("ErrorMessage").that.is.null;

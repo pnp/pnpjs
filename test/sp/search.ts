@@ -19,11 +19,11 @@ describe.skip("Search", function () {
         _spfi = getSP();
     });
 
-    it(".search (Basic)", function () {
+    it("search (Basic)", function () {
         return expect(_spfi.search("test")).to.eventually.be.fulfilled;
     });
 
-    it(".search (Advanced)", function () {
+    it("search (Advanced)", function () {
 
         return expect(_spfi.search({
             ProcessBestBets: true,
@@ -32,14 +32,14 @@ describe.skip("Search", function () {
         })).to.eventually.be.fulfilled;
     });
 
-    it(".search (BestBets)", function () {
+    it("search (BestBets)", function () {
 
         const builder = SearchQueryBuilder("test").processBestBets.rowLimit(10);
 
         return expect(_spfi.search(builder)).to.eventually.be.fulfilled;
     });
 
-    it(".searchSuggest", function () {
+    it("searchSuggest", function () {
 
         return expect(_spfi.searchSuggest({ querytext: "test" })).to.eventually.be.fulfilled;
     });

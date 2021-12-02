@@ -36,12 +36,12 @@ describe("Webs", function () {
         _spfi = getSP();
     });
 
-    it(".add 1", function () {
+    it("add 1", function () {
         const title = `Test_ChildWebAdd1_${getRandomString(8)}`;
         return expect(_spfi.web.webs.add(title, title)).to.eventually.be.fulfilled;
     });
 
-    it(".add 2", function () {
+    it("add 2", function () {
         const title = `Test_ChildWebAdd2_${getRandomString(8)}`;
         return expect(_spfi.web.webs.add(title, title, "description", "FunSite#0", 1033, false)).to.eventually.be.fulfilled;
     });
@@ -81,14 +81,14 @@ describe("Web", function () {
         "rootFolder",
         "regionalSettings"));
 
-    it(".navigation", async function () {
+    it("navigation", async function () {
         const ql: INavNodeInfo[] = await _spfi.web.navigation.quicklaunch();
         const tn: INavNodeInfo[] = await _spfi.web.navigation.topNavigationBar();
         const success = (ql.constructor === Array) && (tn.constructor === Array);
         return expect(success).to.be.true;
     });
 
-    it(".getParentWeb", async function () {
+    it("getParentWeb", async function () {
 
         const v = await _spfi.web.getParentWeb();
         const parentWeb = await v.select("Title")();
@@ -96,12 +96,12 @@ describe("Web", function () {
         return expect(parentWeb).to.haveOwnProperty("Title");
     });
 
-    it(".getSubwebsFilteredForCurrentUser", async function () {
+    it("getSubwebsFilteredForCurrentUser", async function () {
 
         return expect(_spfi.web.getSubwebsFilteredForCurrentUser()()).to.eventually.be.fulfilled;
     });
 
-    it(".update", function () {
+    it("update", function () {
 
         const p = _spfi.web.select("Title")<{ Title: string }>().then(function (w) {
 
@@ -133,27 +133,27 @@ describe("Web", function () {
     });
 
     // Cannot test because once a template has been applied a new site must be created to apply a different template
-    it(".applyWebTemplate");
+    it("applyWebTemplate");
 
-    it(".availableWebTemplates", async function () {
+    it("availableWebTemplates", async function () {
 
         const webTemplates = await _spfi.web.availableWebTemplates()();
         return expect(webTemplates).to.be.an.instanceOf(Array).and.be.not.empty;
     });
 
-    it(".getChanges", function () {
+    it("getChanges", function () {
 
         return expect(_spfi.web.getChanges({
             Add: true,
         })).to.eventually.be.fulfilled;
     });
 
-    it(".mapToIcon", function () {
+    it("mapToIcon", function () {
 
         return expect(_spfi.web.mapToIcon("test.docx")).to.eventually.be.fulfilled;
     });
 
-    it(".delete", async function () {
+    it("delete", async function () {
         this.timeout(60000);
         const url = getRandomString(4);
         const result = await _spfi.web.webs.add("Better be deleted!", url);
@@ -161,14 +161,14 @@ describe("Web", function () {
     });
 
     describe("client-side-pages", function () {
-        it(".getClientSideWebParts", async function () {
+        it("getClientSideWebParts", async function () {
             const webparts = await _spfi.web.getClientsideWebParts();
             return expect(webparts).to.be.an.instanceOf(Array).and.be.not.empty;
         });
     });
 
     describe("files", function () {
-        it(".getFileByServerRelativePath", async function () {
+        it("getFileByServerRelativePath", async function () {
             const w = await _spfi.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
             const path = combine("/", w.ServerRelativeUrl, "SitePages", "Home.aspx");
             const file = await _spfi.web.getFileByServerRelativePath(path)();
@@ -177,7 +177,7 @@ describe("Web", function () {
     });
 
     describe("folders", function () {
-        it(".getFolderByServerRelativePath", async function () {
+        it("getFolderByServerRelativePath", async function () {
             const w = await _spfi.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
             const path = combine("/", w.ServerRelativeUrl, "SitePages");
             const folder = await _spfi.web.getFolderByServerRelativePath(path)();
@@ -187,17 +187,17 @@ describe("Web", function () {
 
     describe("hub-sites", function () {
 
-        it(".hubSiteData", async function () {
+        it("hubSiteData", async function () {
 
             return expect(_spfi.web.hubSiteData()).to.eventually.be.fulfilled;
         });
 
-        it(".hubSiteData force refresh", async function () {
+        it("hubSiteData force refresh", async function () {
 
             return expect(_spfi.web.hubSiteData(true)).to.eventually.be.fulfilled;
         });
 
-        it(".syncHubSiteTheme", async function () {
+        it("syncHubSiteTheme", async function () {
 
             return expect(_spfi.web.syncHubSiteTheme()).to.eventually.be.fulfilled;
         });
@@ -205,21 +205,21 @@ describe("Web", function () {
 
     describe("lists", function () {
 
-        it(".getList", async function () {
+        it("getList", async function () {
             const w = await _spfi.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
             const url = combine(w.ServerRelativeUrl, "SitePages");
             const list = await _spfi.web.getList(url)();
             return expect(list.Title).to.equal("Site Pages");
         });
 
-        it(".getCatalog", function () {
+        it("getCatalog", function () {
             return expect(_spfi.web.getCatalog(113)).to.eventually.be.fulfilled;
         });
     });
 
     describe("related-items", function () {
 
-        it(".relatedItems", function () {
+        it("relatedItems", function () {
 
             return expect(_spfi.web.relatedItems).to.not.be.null;
         });
@@ -227,7 +227,7 @@ describe("Web", function () {
 
     describe("site-users", function () {
 
-        it(".getUserById", async function () {
+        it("getUserById", async function () {
 
             const users = await _spfi.web.siteUsers();
             return expect(_spfi.web.getUserById(users[0].Id)()).to.eventually.be.fulfilled;
