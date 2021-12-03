@@ -6,56 +6,60 @@ import { SPFI } from "@pnp/sp";
 
 describe("Regional Settings", function () {
 
-    if (testSettings.enableWebTests) {
-        let _spfi: SPFI = null;
+    let _spfi: SPFI = null;
 
-        before(function () {
-            _spfi = getSP();
-        });
+    before(function () {
 
-        it(".regionalsettings()", function () {
-            return expect(_spfi.web.regionalSettings()).to.eventually.be.fulfilled;
-        });
+        if (!testSettings.enableWebTests) {
+            this.skip();
+            return;
+        }
 
-        it(".regionalsettings.select()()", function () {
-            return expect(_spfi.web.regionalSettings.select("DecimalSeparator", "ListSeparator", "IsUIRightToLeft")()).to.eventually.be.fulfilled;
-        });
+        _spfi = getSP();
+    });
 
-        it(".getInstalledLanguages", function () {
-            return expect(_spfi.web.regionalSettings.getInstalledLanguages()).to.eventually.be.fulfilled;
-        });
+    it("regionalsettings()", function () {
+        return expect(_spfi.web.regionalSettings()).to.eventually.be.fulfilled;
+    });
 
-        it(".timeZones", function () {
-            return expect(_spfi.web.regionalSettings.timeZones()).to.eventually.be.fulfilled;
-        });
+    it("regionalsettings.select()()", function () {
+        return expect(_spfi.web.regionalSettings.select("DecimalSeparator", "ListSeparator", "IsUIRightToLeft")()).to.eventually.be.fulfilled;
+    });
 
-        it(".timeZones.getById", async function () {
+    it("getInstalledLanguages", function () {
+        return expect(_spfi.web.regionalSettings.getInstalledLanguages()).to.eventually.be.fulfilled;
+    });
 
-            const tz = await _spfi.web.regionalSettings.timeZones.getById(23);
+    it("timeZones", function () {
+        return expect(_spfi.web.regionalSettings.timeZones()).to.eventually.be.fulfilled;
+    });
 
-            return expect(tz).to.haveOwnProperty("Description");
-        });
+    it("timeZones.getById", async function () {
 
-        it(".timeZone", function () {
-            return expect(_spfi.web.regionalSettings.timeZone()).to.eventually.be.fulfilled;
-        });
+        const tz = await _spfi.web.regionalSettings.timeZones.getById(23);
 
-        it(".timeZone.localTimeToUTC", function () {
-            return expect(_spfi.web.regionalSettings.timeZone.localTimeToUTC(new Date())).to.eventually.be.fulfilled;
-        });
+        return expect(tz).to.haveOwnProperty("Description");
+    });
 
-        it(".timeZone.utcToLocalTime", function () {
-            return expect(_spfi.web.regionalSettings.timeZone.utcToLocalTime(new Date())).to.eventually.be.fulfilled;
-        });
+    it("timeZone", function () {
+        return expect(_spfi.web.regionalSettings.timeZone()).to.eventually.be.fulfilled;
+    });
 
-        it(".titleResource", function () {
+    it("timeZone.localTimeToUTC", function () {
+        return expect(_spfi.web.regionalSettings.timeZone.localTimeToUTC(new Date())).to.eventually.be.fulfilled;
+    });
 
-            return expect(_spfi.web.titleResource("en-us")).to.eventually.be.fulfilled;
-        });
+    it("timeZone.utcToLocalTime", function () {
+        return expect(_spfi.web.regionalSettings.timeZone.utcToLocalTime(new Date())).to.eventually.be.fulfilled;
+    });
 
-        it(".descriptionResource", function () {
+    it("titleResource", function () {
 
-            return expect(_spfi.web.descriptionResource("en-us")).to.eventually.be.fulfilled;
-        });
-    }
+        return expect(_spfi.web.titleResource("en-us")).to.eventually.be.fulfilled;
+    });
+
+    it("descriptionResource", function () {
+
+        return expect(_spfi.web.descriptionResource("en-us")).to.eventually.be.fulfilled;
+    });
 });

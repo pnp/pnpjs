@@ -10,101 +10,105 @@ import { SPFI } from "@pnp/sp";
 
 describe("Attachments", function () {
 
-    if (testSettings.enableWebTests) {
-        let _spfi: SPFI = null;
-        let list: IList = null;
+    let _spfi: SPFI = null;
+    let list: IList = null;
 
-        before(async function () {
-            _spfi = getSP();
-            // we need to add a list and some attachments.
-            const listData = await _spfi.web.lists.ensure(`AttachmentTest_${getRandomString(4)}`);
-            list = listData.list;
+    before(async function () {
+
+        if (!testSettings.enableWebTests) {
+            this.skip();
+            return;
+        }
+
+        _spfi = getSP();
+        // we need to add a list and some attachments.
+        const listData = await _spfi.web.lists.ensure(`AttachmentTest_${getRandomString(4)}`);
+        list = listData.list;
+    });
+
+    it("attachmentFiles", async function () {
+
+        // add some attachments to an item
+        const r = await list.items.add({
+            Title: `Test_1_${getRandomString(4)}`,
         });
 
-        it(".attachmentFiles", async function () {
+        await r.item.attachmentFiles.add(`att_${getRandomString(4)}.txt`, "Some Content");
+        await r.item.attachmentFiles.add(`att_${getRandomString(4)}.txt`, "Some Content");
 
-            // add some attachments to an item
-            const r = await list.items.add({
-                Title: `Test_1_${getRandomString(4)}`,
-            });
+        return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
+    });
 
-            await r.item.attachmentFiles.add(`att_${getRandomString(4)}.txt`, "Some Content");
-            await r.item.attachmentFiles.add(`att_${getRandomString(4)}.txt`, "Some Content");
+    it("getByName", async function () {
 
-            return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
+        // add some attachments to an item
+        const r = await list.items.add({
+            Title: `Test_1_${getRandomString(4)}`,
         });
 
-        it(".getByName", async function () {
+        const name = `att_${getRandomString(4)}.txt`;
+        await r.item.attachmentFiles.add(name, "Some Content");
 
-            // add some attachments to an item
-            const r = await list.items.add({
-                Title: `Test_1_${getRandomString(4)}`,
-            });
+        const info = await r.item.attachmentFiles.getByName(name)();
 
-            const name = `att_${getRandomString(4)}.txt`;
-            await r.item.attachmentFiles.add(name, "Some Content");
+        return expect(info.FileName).to.eq(name);
+    });
 
-            const info = await r.item.attachmentFiles.getByName(name)();
+    it("getText", async function () {
 
-            return expect(info.FileName).to.eq(name);
+        // add some attachments to an item
+        const r = await list.items.add({
+            Title: `Test_1_${getRandomString(4)}`,
         });
 
-        it(".getText", async function () {
+        const content = "Some Content";
+        const name = `att_${getRandomString(4)}.txt`;
+        await r.item.attachmentFiles.add(name, content);
 
-            // add some attachments to an item
-            const r = await list.items.add({
-                Title: `Test_1_${getRandomString(4)}`,
-            });
+        const text = await r.item.attachmentFiles.getByName(name).getText();
 
-            const content = "Some Content";
-            const name = `att_${getRandomString(4)}.txt`;
-            await r.item.attachmentFiles.add(name, content);
+        expect(text).to.eq(content);
+    });
 
-            const text = await r.item.attachmentFiles.getByName(name).getText();
+    it("setContent", async function () {
 
-            expect(text).to.eq(content);
+        // add some attachments to an item
+        const r = await list.items.add({
+            Title: `Test_1_${getRandomString(4)}`,
         });
 
-        it(".setContent", async function () {
+        const content = "Some Content";
+        const name = `att_${getRandomString(4)}.txt`;
+        await r.item.attachmentFiles.add(name, content);
 
-            // add some attachments to an item
-            const r = await list.items.add({
-                Title: `Test_1_${getRandomString(4)}`,
-            });
+        const text = await r.item.attachmentFiles.getByName(name).getText();
 
-            const content = "Some Content";
-            const name = `att_${getRandomString(4)}.txt`;
-            await r.item.attachmentFiles.add(name, content);
+        expect(text).to.eq(content);
 
-            const text = await r.item.attachmentFiles.getByName(name).getText();
+        const content2 = "Different Content";
+        await r.item.attachmentFiles.getByName(name).setContent(content2);
 
-            expect(text).to.eq(content);
+        const text2 = await r.item.attachmentFiles.getByName(name).getText();
+        expect(text2).to.eq(content2);
+    });
 
-            const content2 = "Different Content";
-            await r.item.attachmentFiles.getByName(name).setContent(content2);
+    it("recycle", async function () {
 
-            const text2 = await r.item.attachmentFiles.getByName(name).getText();
-            expect(text2).to.eq(content2);
+        // add some attachments to an item
+        const r = await list.items.add({
+            Title: `Test_1_${getRandomString(4)}`,
         });
 
-        it(".recycle", async function () {
+        const name = `att_${getRandomString(4)}.txt`;
 
-            // add some attachments to an item
-            const r = await list.items.add({
-                Title: `Test_1_${getRandomString(4)}`,
-            });
+        await r.item.attachmentFiles.add(name, "Some Content");
 
-            const name = `att_${getRandomString(4)}.txt`;
+        const attachmentInfo = await r.item.attachmentFiles();
 
-            await r.item.attachmentFiles.add(name, "Some Content");
+        expect(attachmentInfo).to.be.an("Array").and.have.length(1);
 
-            const attachmentInfo = await r.item.attachmentFiles();
+        await r.item.attachmentFiles.getByName(name).recycle();
 
-            expect(attachmentInfo).to.be.an("Array").and.have.length(1);
-
-            await r.item.attachmentFiles.getByName(name).recycle();
-
-            return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
-        });
-    }
+        return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
+    });
 });

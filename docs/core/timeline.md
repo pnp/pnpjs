@@ -29,7 +29,7 @@ export type FirstObserver = (this: any, counter: number) => Promise<[number]>;
 // the second observer is a function taking a number and returning void
 export type SecondObserver = (this: any, result: number) => void;
 
-// this is a custom moment definition as an example. Please read more about moments on the moments page
+// this is a custom moment definition as an example.
 export function report<T extends ObserverAction>(): (observers: T[], ...args: any[]) => void {
 
     return function (observers: T[], ...args: any[]): void {
@@ -142,18 +142,20 @@ Now that you implemented a simple timeline let's take a minute to understand the
 
 ### Timeline Lifecycle
 
-- init
-- your moments as defined in execute, in our example
-  - first
-  - second
-- dispose
+- .on.init (always)
+- your moments as defined in execute, in our example:
+  - .on.first
+  - .on.second
+- .on.dispose (always)
+
+As well the moments log and error exist on every Timeline derived class and can occur at any point during the lifecycle.
 
 ## Observer Inheritance
 
 Let's say that you want to contruct a system whereby you can create Timeline based instances from other Timeline based instances - which is what [Queryable](../queryable/queryable.md) does. Imagine we have a class with a pseudo-signature like:
 
 ```TypeScript
-class ATimeline extends Timeline<typeof SomeMoments> {
+class ExampleTimeline extends Timeline<typeof SomeMoments> {
 
     // we create two unique refs for our implementation we will use
     // to resolve the execute promise
@@ -173,12 +175,12 @@ class ATimeline extends Timeline<typeof SomeMoments> {
 We can then use it like:
 
 ```TypeScript
-const tl1 = new ATimeline();
+const tl1 = new ExampleTimeline();
 tl1.on.first(async (n) => [++n]);
 tl1.on.second(async (n) => [++n]);
 
-// at this point tl2's observer collection is a pointer/reference to the same collection as tl1
-const tl2 = new ATimeline(tl1);
+// at this point tl2's observer collection is a pointer to the same collection as tl1
+const tl2 = new ExampleTimeline(tl1);
 
 // we add a second observer to first, it is applied to BOTH tl1 and tl2
 tl1.on.first(async (n) => [++n]);

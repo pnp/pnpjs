@@ -48,11 +48,11 @@ const retries = yargs.noretries ? "0" : "2";
 
 const config = {
     package: "./package.json",
-    reporter: reporter,
-    slow: 3000,
+    reporter,
+    slow: 2000,
     timeout: 40000,
     ui: "bdd",
-    retries: retries,
+    retries,
     require: [
         resolve("./", "build/testing/tools/local-module-resolver/register.js"),
     ],

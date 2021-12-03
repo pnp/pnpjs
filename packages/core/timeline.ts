@@ -1,6 +1,5 @@
 import { broadcast, lifecycle } from "./moments.js";
 import { objectDefinedNotNull, isArray, isFunc } from "./util.js";
-// import cloneDeep from "lodash.clonedeep";
 
 /**
  * Represents an observer that does not affect the timeline
@@ -267,7 +266,7 @@ export abstract class Timeline<T extends Moments> {
  *
  * @param target The object to which events are registered
  * @param moment The name of the moment to which the observer is registered
- * @param prepend If true the observer is prepended to the collection (default: false)
+ * @param addBehavior Determines how the observer is added to the collection
  *
  */
 function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: "add" | "replace" | "prepend"): any[] {
