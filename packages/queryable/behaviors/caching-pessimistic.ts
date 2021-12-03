@@ -30,7 +30,7 @@ export function CachingPessimisticRefresh(
     const putStorage = (key: string, o: string) => {
         try {
             if (isFunc(expireFunc)) {
-                // TODO:: Think about making PnPClientStorage handle no expiration date.
+                // TODO:: Think about making PnPClientStorage handle no expiration date. (PKR: it does, unsure on need here)
                 const storage = new PnPClientStorage();
                 const s = type === "session" ? storage.session : storage.local;
                 s.put(key, o, expireFunc());

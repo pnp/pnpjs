@@ -105,10 +105,9 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
         return graphPatch(this, body({ name, ...parentReference }));
     }
 
-    // TODO:: make sure this works
     public async getContent(): Promise<Blob> {
         const info = await this();
-        const query = GraphQueryable([this, info["@microsoft.graph.downloadUrl"]], null).using(BlobParse);
+        const query = GraphQueryable([this, info["@microsoft.graph.downloadUrl"]], null).using(BlobParse());
 
         query.on.pre(async (url, init, result) => {
 

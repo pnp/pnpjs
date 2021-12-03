@@ -165,10 +165,6 @@ export class _RoleDefinition extends _SPInstance<IRoleDefinitionInfo> {
 
         const s = ["BasePermissions"];
         if (hOP(properties, s[0]) !== undefined) {
-
-            // TODO:: remove/clean this up
-            // properties[s[0]] = assign(metadata(`SP.${s[0]}`), properties[s[0]]);
-
             const bpObj = properties[s[0]];
             bpObj.High = bpObj.High.toString();
             bpObj.Low = bpObj.Low.toString();
