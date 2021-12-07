@@ -29,7 +29,6 @@ describe("Fields", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();

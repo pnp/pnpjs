@@ -19,7 +19,6 @@ describe("NodeJS: sp-extensions", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();

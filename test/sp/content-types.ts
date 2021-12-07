@@ -12,7 +12,6 @@ describe("Content Types", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();
@@ -43,7 +42,6 @@ describe("Content Type", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();

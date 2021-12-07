@@ -12,7 +12,6 @@ describe("UserCustomActions", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();
@@ -27,7 +26,6 @@ describe("UserCustomActions", function () {
         const actions = await _spfi.web.userCustomActions();
         if (actions === undefined || actions.length < 1) {
             this.skip();
-            return;
         }
         const action = await _spfi.web.userCustomActions.getById(actions[0].Id)();
         return expect(action).to.haveOwnProperty("update");

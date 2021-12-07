@@ -24,7 +24,6 @@ describe("Behaviors", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         try {
@@ -56,7 +55,6 @@ describe("Behaviors", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         try {
@@ -93,7 +91,6 @@ describe("Behaviors", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         try {

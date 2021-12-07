@@ -14,7 +14,6 @@ describe("Navigation Service", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();
@@ -77,7 +76,6 @@ describe("navigation", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();

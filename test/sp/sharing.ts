@@ -26,7 +26,6 @@ describe("Sharing", function () {
 
         if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();

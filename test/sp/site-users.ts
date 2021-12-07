@@ -27,7 +27,6 @@ describe("Site Users", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
     });
 

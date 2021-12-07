@@ -20,7 +20,6 @@ describe("Calendar", function () {
 
         if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
             this.skip();
-            return;
         }
 
         _graphfi = getGraph();

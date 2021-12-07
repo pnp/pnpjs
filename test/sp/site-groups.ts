@@ -17,7 +17,6 @@ describe("SiteGroups", function () {
 
         if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();
@@ -96,7 +95,6 @@ describe("SiteGroups", function () {
             }
         });
         return expect(p).to.be.eventually.fulfilled;
-        return true;
     });
 
     it("setUserAsOwner()", async function () {

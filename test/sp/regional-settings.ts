@@ -12,7 +12,6 @@ describe("Regional Settings", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();

@@ -21,7 +21,6 @@ describe.skip("SiteDesigns", function () {
 
         if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();

@@ -21,7 +21,6 @@ describe("Batching", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();

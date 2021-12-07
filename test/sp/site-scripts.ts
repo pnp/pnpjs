@@ -28,7 +28,6 @@ describe("SiteScripts", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         const _spfi = getSP();

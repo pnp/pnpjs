@@ -16,7 +16,6 @@ describe("Taxonomy", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();
@@ -88,14 +87,12 @@ describe("Taxonomy", function () {
 
             if (groups === undefined || groups?.length < 1) {
                 this.skip();
-                return;
             }
             const groupId = groups[0].id;
 
             const sets = await _spfi.termStore.groups.getById(groupId).sets();
             if (sets === undefined || sets?.length < 1) {
                 this.skip();
-                return;
             }
             const termsetId = sets[0].id;
             termset = _spfi.termStore.groups.getById(groupId).sets.getById(termsetId);
@@ -143,7 +140,6 @@ describe("Taxonomy", function () {
 
             if (groups === undefined || groups?.length < 1) {
                 this.skip();
-                return;
             }
             const groupId = groups[0].id;
 
@@ -151,14 +147,12 @@ describe("Taxonomy", function () {
 
             if (sets === undefined || sets?.length < 1) {
                 this.skip();
-                return;
             }
             const setId = sets[0].id;
 
             const terms = await _spfi.termStore.groups.getById(groupId).sets.getById(setId).terms();
             if (terms === undefined || terms?.length < 1) {
                 this.skip();
-                return;
             }
             const termId = terms[0].id;
             term = _spfi.termStore.groups.getById(groupId).sets.getById(setId).terms.getById(termId);
@@ -197,7 +191,6 @@ describe("Taxonomy", function () {
 
             if (groups === undefined || groups?.length < 1) {
                 this.skip();
-                return;
             }
             const groupId = groups[0].id;
 
@@ -205,7 +198,6 @@ describe("Taxonomy", function () {
 
             if (sets === undefined || sets?.length < 1) {
                 this.skip();
-                return;
             }
             const setId = sets[0].id;
 
@@ -213,7 +205,6 @@ describe("Taxonomy", function () {
 
             if (relations === undefined || relations?.length < 1) {
                 this.skip();
-                return;
             }
 
             const relationId = relations[0].id;
