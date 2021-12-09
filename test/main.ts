@@ -1,7 +1,7 @@
 import { delay, getGUID, TimelinePipe } from "@pnp/core";
-import { IInvokable, Queryable, ThrowErrors } from "@pnp/queryable";
+import { IInvokable, Queryable } from "@pnp/queryable";
 import { GraphDefault, SPDefault } from "@pnp/nodejs";
-import { spfi } from "@pnp/sp";
+import { extractWebUrl, spfi } from "@pnp/sp";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import "mocha";
@@ -9,9 +9,11 @@ import findup from "findup-sync";
 import { ISettings, ITestingSettings } from "./settings.js";
 import { SPFI } from "@pnp/sp";
 import "@pnp/sp/webs";
-import { IWeb, IWebInfo } from "@pnp/sp/webs";
+import { IWeb } from "@pnp/sp/webs";
 import { graphfi, GraphFI } from "@pnp/graph";
 import { LogLevel } from "@pnp/logging";
+// import { RequestRecorderCache } from "./test-recorder.js";
+// import { join } from "path";
 
 chai.use(chaiAsPromised);
 
@@ -94,6 +96,7 @@ switch (mode) {
 
         settings = {
             testing: {
+                testUser: readEnvVar("PNPTESTING_TESTUSER") || null,
                 enableWebTests: true,
                 graph: {
                     msal: {
@@ -162,13 +165,12 @@ async function spTestSetup(ts: ISettings): Promise<void> {
         ts.sp.testWebUrl = site;
         siteUsed = true;
     }
-    // TODO: Clean up the addition of the ThrowErrors behavior if it gets added to default.
     const rootSP = spfi(ts.sp.testWebUrl).using(SPDefault({
         msal: {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(ThrowErrors());
+    }));
     _spRoot = rootSP;
 
     if (siteUsed) {
@@ -189,7 +191,7 @@ async function spTestSetup(ts: ISettings): Promise<void> {
             config: settings.testing.sp.msal.init,
             scopes: settings.testing.sp.msal.scopes,
         },
-    })).using(ThrowErrors()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
+    })); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 async function graphTestSetup(): Promise<void> {
@@ -198,7 +200,7 @@ async function graphTestSetup(): Promise<void> {
             config: settings.testing.graph.msal.init,
             scopes: settings.testing.graph.msal.scopes,
         },
-    })).using(ThrowErrors()); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
+    })); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
 export const testSettings: ISettings = settings.testing;
@@ -238,70 +240,79 @@ before("Setup Testing", async function () {
 });
 
 after("Finalize Testing", async function () {
+
     // this may take some time, don't timeout early
     this.timeout(120000);
 
     const testEnd = Date.now();
     console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
 
-    if (deleteAllWebs) {
+    try {
 
-        await cleanUpAllSubsites(_spRoot.web);
+        if (deleteAllWebs) {
 
-    } else if (deleteWeb && testSettings.enableWebTests) {
-        console.log(`Deleting web ${_sp.web.toUrl()} created during testing.`);
+            await cleanUpAllSubsites(_spRoot.web);
 
-        const web = await _sp.web;
-        await cleanUpAllSubsites(web);
+        } else if (deleteWeb && testSettings.enableWebTests) {
 
-        console.log("All subsites have been removed.");
+            console.log(`Deleting web ${extractWebUrl(_sp.web.toUrl())} created during testing.`);
 
-        // Delay so that web can be deleted
-        await delay(500);
+            const web = await _sp.web;
 
-        await _sp.web.delete();
+            await cleanUpAllSubsites(web);
 
-        console.log(`Deleted web ${testSettings.sp.testWebUrl} created during testing.`);
+            console.log("All subsites have been removed.");
 
-    } else if (testSettings.enableWebTests) {
+            // Delay so that web can be deleted
+            await delay(500);
 
-        console.log(`Leaving ${testSettings.sp.testWebUrl} alone.`);
+            await web.delete();
+
+            console.log(`Deleted web ${testSettings.sp.testWebUrl} created during testing.`);
+
+        } else if (testSettings.enableWebTests) {
+
+            console.log(`Leaving ${testSettings.sp.testWebUrl} alone.`);
+        }
+
+    } catch (e) {
+        console.error(`Error during cleanup: ${JSON.stringify(e)}`);
     }
 
     console.log("All done. Have a nice day :)");
+
+    return;
 });
 
 // Function deletes all test subsites
 async function cleanUpAllSubsites(spObj: IWeb & IInvokable<any>): Promise<void> {
-    try {
-        const w = await spObj.webs();
-        if (w != null && w.length > 0) {
-            console.log(`${w.length} subwebs were found.`);
-            w.forEach(async (e: IWebInfo) => {
 
-                const spObjSub = spfi(e["odata.id"]).using(SPDefault({
-                    msal: {
-                        config: settings.testing.sp.msal.init,
-                        scopes: settings.testing.sp.msal.scopes,
-                    },
-                }));
+    const webs = await spObj.webs.select("Title")();
 
-                console.log(`Deleting: ${e["odata.id"]}`);
+    if (webs !== null && webs.length > 0) {
 
-                await cleanUpAllSubsites(spObjSub.web);
+        console.log(`${webs.length} subwebs were found.`);
 
-                // Delay so that web can be deleted
-                await delay(500);
+        for (let i = 0; i < webs.length; i++) {
 
-                await spObjSub.web.delete();
+            const webUrl = extractWebUrl(webs[i]["odata.id"]);
 
-                console.log(`Deleted: ${e["odata.id"]}`);
-            });
-        } else {
-            console.log(`No subwebs found for site ${spObj.toUrl()}`);
+            const spObjSub = spfi([spObj, webUrl]);
+
+            console.log(`Deleting: ${webUrl}`);
+
+            await cleanUpAllSubsites(spObjSub.web);
+
+            // Delay so that web can be deleted
+            await delay(500);
+
+            await spObjSub.web.delete();
+
+            console.log(`Deleted: ${webUrl}`);
         }
-    } catch (err) {
-        console.log(`Error cleaning up sub sites for ${spObj.toUrl()} - ${err.message}`);
+
+    } else {
+
+        console.log(`No subwebs found for site ${extractWebUrl(spObj.toUrl())}`);
     }
-    return;
 }

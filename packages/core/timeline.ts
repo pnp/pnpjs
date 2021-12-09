@@ -1,6 +1,5 @@
 import { broadcast, lifecycle } from "./moments.js";
 import { objectDefinedNotNull, isArray, isFunc } from "./util.js";
-import cloneDeep from "lodash.clonedeep";
 
 /**
  * Represents an observer that does not affect the timeline
@@ -110,7 +109,7 @@ export abstract class Timeline<T extends Moments> {
 
                 }, {
                     toArray: (): ValidObserver[] => {
-                        return Reflect.has(target.observers, p) ? cloneDeep(Reflect.get(target.observers, p)) : [];
+                        return Reflect.has(target.observers, p) ? [...Reflect.get(target.observers, p)] : [];
                     },
                     replace: (handler: ValidObserver) => {
 
@@ -148,16 +147,8 @@ export abstract class Timeline<T extends Moments> {
      * @param message The message to log
      * @param level The level at which the message applies
      */
-    public log(message: string, level: number): void {
+    public log(message: string, level = 0): void {
         this.emit.log(message, level);
-    }
-
-    /**
-     * Shorthand method to emit a dispose event tied to this timeline
-     *
-     */
-    protected dispose(): void {
-        this.emit.dispose();
     }
 
     /**
@@ -172,14 +163,6 @@ export abstract class Timeline<T extends Moments> {
     }
 
     /**
-     * Shorthand method to emit an init event tied to this timeline
-     *
-     */
-    protected init(): void {
-        this.emit.init();
-    }
-
-    /**
      * Property allowing access to invoke a moment from within this timeline
      */
     protected get emit(): EmitProxyType<T> {
@@ -190,16 +173,13 @@ export abstract class Timeline<T extends Moments> {
 
                 get: (target: any, p: string) => (...args: any[]) => {
 
-                    // handle the case there are no observers registered to the target
+                    // handle the case where no observers registered for the target moment
                     const observers = Reflect.has(target.observers, p) ? Reflect.get(target.observers, p) : [];
 
-                    if (!isArray(observers) || observers.length < 1) {
+                    if ((!isArray(observers) || observers.length < 1) && p === "error") {
 
-                        if (p === "error") {
-
-                            // if we are emitting an error, and no error observers are defined, we throw
-                            throw Error(`Unhandled Exception: ${args[0]}`);
-                        }
+                        // if we are emitting an error, and no error observers are defined, we throw
+                        throw Error(`Unhandled Exception: ${args[0]}`);
                     }
 
                     try {
@@ -207,6 +187,7 @@ export abstract class Timeline<T extends Moments> {
                         // default to broadcasting any events without specific impl (will apply to log and error)
                         const moment = Reflect.has(target.moments, p) ? Reflect.get(target.moments, p) : p === "init" || p === "dispose" ? lifecycle() : broadcast();
 
+                        // pass control to the individual moment's implementation
                         return Reflect.apply(moment, target, [observers, ...args]);
 
                     } catch (e) {
@@ -241,20 +222,18 @@ export abstract class Timeline<T extends Moments> {
         try {
 
             // initialize our timeline
-            this.init();
+            this.emit.init();
 
             // execute the timeline
+            // (this await is required to ensure dispose is called AFTER execute completes)
+            // we do not catch here so that any promise rejects in execute bubble up to the caller
             return await this.execute(init);
-
-        } catch (e) {
-
-            this.error(e);
 
         } finally {
 
             try {
 
-                this.dispose();
+                this.emit.dispose();
 
             } catch (e) {
 
@@ -277,7 +256,7 @@ export abstract class Timeline<T extends Moments> {
     protected cloneObserversOnChange() {
         if (this._inheritingObservers) {
             this._inheritingObservers = false;
-            this.observers = cloneDeep(this.observers);
+            this.observers = cloneObserverCollection(this.observers);
         }
     }
 }
@@ -287,7 +266,7 @@ export abstract class Timeline<T extends Moments> {
  *
  * @param target The object to which events are registered
  * @param moment The name of the moment to which the observer is registered
- * @param prepend If true the observer is prepended to the collection (default: false)
+ * @param addBehavior Determines how the observer is added to the collection
  *
  */
 function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: "add" | "replace" | "prepend"): any[] {
@@ -319,4 +298,14 @@ function addObserver(target: Record<string, any>, moment: string, observer: Vali
     }
 
     return target[moment];
+}
+
+export function cloneObserverCollection(source: ObserverCollection): ObserverCollection {
+
+    return Reflect.ownKeys(source).reduce((clone: ObserverCollection, key: string) => {
+
+        clone[key] = [...source[key]];
+
+        return clone;
+    }, {});
 }

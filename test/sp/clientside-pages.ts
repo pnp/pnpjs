@@ -11,328 +11,331 @@ import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, Clientsid
 
 describe("Clientside Pages", function () {
 
-    if (testSettings.enableWebTests) {
-        let relUrl = "";
-        let _spfi: SPFI = null;
+    let relUrl = "";
+    let _spfi: SPFI = null;
 
-        before(function () {
-            _spfi = getSP();
-            relUrl = "/" + testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/"));
+    before(function () {
+
+        if (!testSettings.enableWebTests) {
+            this.skip();
+        }
+
+        _spfi = getSP();
+        relUrl = "/" + testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/"));
+    });
+
+    it("web.addClientSidePage", async function () {
+        const pageName = `TestingAdd_${getRandomString(4)}.aspx`;
+        const pageUrl = combine(relUrl, "SitePages", pageName);
+        await _spfi.web.addClientsidePage(pageName);
+        const page = await _spfi.web.getFileByServerRelativePath(pageUrl)();
+        return expect(page.Name).to.equal(pageName);
+    });
+
+    it("CreateClientSidePage", function () {
+
+        return expect(CreateClientsidePage(_spfi.web, `TestingAdd_${getRandomString(4)}.aspx`, "title")).to.eventually.be.fulfilled;
+    });
+
+    it("web.addClientSidePage - promoted state 1", async function () {
+        const p = await _spfi.web.addClientsidePage(`TestingAdd_${getRandomString(4)}.aspx`, "A Title", "Article", PromotedState.PromoteOnPublish);
+        return expect(p.save(true)).to.eventually.be.fulfilled;
+    });
+
+    it("CreateClientSidePage - promoted state 1", async function () {
+        const p = await CreateClientsidePage(_spfi.web, `TestingAdd_${getRandomString(4)}.aspx`, "title", "Article", PromotedState.PromoteOnPublish);
+        return expect(p.save(true)).to.eventually.be.fulfilled;
+    });
+
+    it("CreateClientSidePage - SingleWebPartAppPage", function () {
+
+        const promise = CreateClientsidePage(_spfi.web, `TestingAdd_${getRandomString(4)}.aspx`, "SingleWebPartAppPage", "SingleWebPartAppPage");
+        return expect(promise).to.eventually.be.fulfilled;
+    });
+
+    it("load", async function () {
+
+        const pageFileName = `TestingLoad_${getRandomString(4)}.aspx`;
+
+        await _spfi.web.addClientsidePage(pageFileName);
+
+        // need to make the path relative
+        const rel = testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/"));
+        const promise = ClientsidePageFromFile(_spfi.web.getFileByServerRelativePath(combine("/", rel, "SitePages", pageFileName)));
+        return expect(promise).to.eventually.be.fulfilled;
+    });
+
+    describe("web.loadClientsidePage", async function () {
+
+        let page: IClientsidePage;
+
+        const pageName = `TestingloadClientsidePage_${getRandomString(4)}.aspx`;
+
+        before(async function () {
+            this.timeout(0);
+            page = await _spfi.web.addClientsidePage(pageName);
+            await page.save();
         });
 
-        it("web.addClientSidePage", async function () {
-            const pageName = `TestingAdd_${getRandomString(4)}.aspx`;
-            const pageUrl = combine(relUrl, "SitePages", pageName);
-            await _spfi.web.addClientsidePage(pageName);
-            const page = await _spfi.web.getFileByServerRelativePath(pageUrl)();
-            return expect(page.Name).to.equal(pageName);
+        it("can load a page", async function () {
+
+            const serverRelativePath = combine("/", testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/")), "SitePages", pageName);
+
+            page = await _spfi.web.loadClientsidePage(serverRelativePath);
+
+            return expect(page).to.not.be.null.and.not.undefined;
+        });
+    });
+
+    describe("promoteToNews", async function () {
+
+        let page: IClientsidePage;
+
+        const pageName = `TestingpromoteToNews_${getRandomString(4)}.aspx`;
+
+        before(async function () {
+            this.timeout(0);
+            page = await _spfi.web.addClientsidePage(pageName);
+            await page.save();
         });
 
-        it("CreateClientSidePage", function () {
+        it("can promote a page", async function () {
 
-            return expect(CreateClientsidePage(_spfi.web, `TestingAdd_${getRandomString(4)}.aspx`, "title")).to.eventually.be.fulfilled;
+            return expect(page.promoteToNews()).to.eventually.be.fulfilled.and.eq(true);
         });
+    });
 
-        it("web.addClientSidePage - promoted state 1", async function () {
-            const p = await _spfi.web.addClientsidePage(`TestingAdd_${getRandomString(4)}.aspx`, "A Title", "Article", PromotedState.PromoteOnPublish);
-            return expect(p.save(true)).to.eventually.be.fulfilled;
-        });
+    it("web.getClientsideWebParts", function () {
+        return expect(_spfi.web.getClientsideWebParts()).to.eventually.be.fulfilled;
+    });
 
-        it("CreateClientSidePage - promoted state 1", async function () {
-            const p = await CreateClientsidePage(_spfi.web, `TestingAdd_${getRandomString(4)}.aspx`, "title", "Article", PromotedState.PromoteOnPublish);
-            return expect(p.save(true)).to.eventually.be.fulfilled;
-        });
+    describe("save", function () {
 
-        it("CreateClientSidePage - SingleWebPartAppPage", function () {
+        it("Should update a pages content with a text control", function () {
+            return _spfi.web.addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
 
-            const promise = CreateClientsidePage(_spfi.web, `TestingAdd_${getRandomString(4)}.aspx`, "SingleWebPartAppPage", "SingleWebPartAppPage");
-            return expect(promise).to.eventually.be.fulfilled;
-        });
+                page.addSection().addControl(new ClientsideText("This is test text!!!"));
 
-        it(".load", async function () {
-
-            const pageFileName = `TestingLoad_${getRandomString(4)}.aspx`;
-
-            await _spfi.web.addClientsidePage(pageFileName);
-
-            // need to make the path relative
-            const rel = testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/"));
-            const promise = ClientsidePageFromFile(_spfi.web.getFileByServerRelativePath(combine("/", rel, "SitePages", pageFileName)));
-            return expect(promise).to.eventually.be.fulfilled;
-        });
-
-        describe("web.loadClientsidePage", async function () {
-
-            let page: IClientsidePage;
-
-            const pageName = `TestingloadClientsidePage_${getRandomString(4)}.aspx`;
-
-            before(async function () {
-                this.timeout(0);
-                page = await _spfi.web.addClientsidePage(pageName);
-                await page.save();
+                return expect(page.save()).to.eventually.be.fulfilled;
             });
-
-            it("can load a page", async function () {
-
-                const serverRelativePath = combine("/", testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/")), "SitePages", pageName);
-
-                page = await _spfi.web.loadClientsidePage(serverRelativePath);
-
-                return expect(page).to.not.be.null.and.not.undefined;
-            });
         });
 
-        describe("promoteToNews", async function () {
+        it("Should update a pages content with an embed control", function () {
+            return _spfi.web.getClientsideWebParts().then(parts => {
 
-            let page: IClientsidePage;
+                _spfi.web.addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
 
-            const pageName = `TestingpromoteToNews_${getRandomString(4)}.aspx`;
+                    const part = ClientsideWebpart.fromComponentDef(parts.filter(c => c.Id === "490d7c76-1824-45b2-9de3-676421c997fa")[0]);
 
-            before(async function () {
-                this.timeout(0);
-                page = await _spfi.web.addClientsidePage(pageName);
-                await page.save();
-            });
+                    part.setProperties<{ embedCode: string }>({
+                        embedCode: "https://www.youtube.com/watch?v=IWQFZ7Lx-rg",
+                    });
 
-            it("can promote a page", async function () {
-
-                return expect(page.promoteToNews()).to.eventually.be.fulfilled.and.eq(true);
-            });
-        });
-
-        it("web.getClientsideWebParts", function () {
-            return expect(_spfi.web.getClientsideWebParts()).to.eventually.be.fulfilled;
-        });
-
-        describe("save", function () {
-
-            it("Should update a pages content with a text control", function () {
-                return _spfi.web.addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
-
-                    page.addSection().addControl(new ClientsideText("This is test text!!!"));
+                    page.addSection().addControl(part);
 
                     return expect(page.save()).to.eventually.be.fulfilled;
                 });
             });
+        });
+    });
 
-            it("Should update a pages content with an embed control", function () {
-                return _spfi.web.getClientsideWebParts().then(parts => {
+    describe("Page comments", function () {
 
-                    _spfi.web.addClientsidePage(`TestingSave_${getRandomString(4)}.aspx`).then(page => {
+        let page: IClientsidePage;
 
-                        const part = ClientsideWebpart.fromComponentDef(parts.filter(c => c.Id === "490d7c76-1824-45b2-9de3-676421c997fa")[0]);
-
-                        part.setProperties<{ embedCode: string }>({
-                            embedCode: "https://www.youtube.com/watch?v=IWQFZ7Lx-rg",
-                        });
-
-                        page.addSection().addControl(part);
-
-                        return expect(page.save()).to.eventually.be.fulfilled;
-                    });
-                });
-            });
+        before(async function () {
+            this.timeout(0);
+            page = await _spfi.web.addClientsidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
         });
 
-        describe("Page comments", function () {
-
-            let page: IClientsidePage;
-
-            before(async function () {
-                this.timeout(0);
-                page = await _spfi.web.addClientsidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
-            });
-
-            it("Should disable", function () {
-                return expect(page.disableComments()).to.eventually.be.fulfilled;
-            });
-
-            it("Should enable", function () {
-                return expect(page.enableComments()).to.eventually.be.fulfilled;
-            });
+        it("Should disable", function () {
+            return expect(page.disableComments()).to.eventually.be.fulfilled;
         });
 
-        describe("Sections and Columns", function () {
+        it("Should enable", function () {
+            return expect(page.enableComments()).to.eventually.be.fulfilled;
+        });
+    });
 
-            let page: IClientsidePage;
+    describe("Sections and Columns", function () {
 
-            this.beforeEach(async function () {
-                this.timeout(0);
-                page = await _spfi.web.addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`);
-            });
+        let page: IClientsidePage;
 
-            it("Default section, 2 empty columns", async function () {
-
-                page.sections = [];
-                await page.save();
-
-                if (page.sections.length < 1) {
-                    page.addSection();
-                }
-
-                page.sections[0].addColumn(6);
-                page.sections[0].addColumn(6);
-
-                // save
-                await page.save();
-
-                // reload
-                await page.load();
-
-                expect(page.sections.length === 1);
-                expect(page.sections[0].columns.length === 2);
-                expect(page.sections[0].columns[0].factor === 6);
-                expect(page.sections[0].columns[1].factor === 6);
-            });
-
-            it("vertical section", async function () {
-
-                page.sections = [];
-                await page.save();
-
-                if (page.sections.length < 1) {
-                    page.addSection();
-                }
-
-                page.sections[0].addColumn(6);
-                page.sections[0].addColumn(6);
-
-                const vertSection = page.addVerticalSection();
-                vertSection.addControl(new ClientsideText("Hello."));
-                vertSection.addControl(new ClientsideText("I'm second."));
-
-                // save
-                await page.save();
-
-                // reload
-                await page.load();
-
-                const webData = await _spfi.web.select("ServerRelativeUrl")();
-
-                // we need a full reload
-                page = await _spfi.web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
-
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                expect(page.hasVerticalSection).to.be.true;
-                expect(page.verticalSection.columns[0].controls.length).to.eq(2);
-                const ctrl = <ClientsideText>page.verticalSection.columns[0].controls[1];
-                expect(ctrl.text).to.match(/I'm second\./);
-            });
-
-            it("vertical section 2", async function () {
-
-                page.addVerticalSection();
-                page.verticalSection.addControl(new ClientsideText("Hello."));
-                page.verticalSection.addControl(new ClientsideText("I'm second."));
-
-                // save
-                await page.save();
-                // load to update the data with correct url
-                await page.load();
-
-                const webData = await _spfi.web.select("ServerRelativeUrl")();
-
-                // we need a full reload
-                page = await _spfi.web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
-
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                expect(page.hasVerticalSection).to.be.true;
-                expect(page.verticalSection.columns[0].controls.length).to.eq(2);
-                const ctrl = <ClientsideText>page.verticalSection.columns[0].controls[1];
-                expect(ctrl.text).to.match(/I'm second\./);
-            });
+        this.beforeEach(async function () {
+            this.timeout(0);
+            page = await _spfi.web.addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`);
         });
 
-        describe("like and unlike", function () {
+        it("Default section, 2 empty columns", async function () {
 
-            let page: IClientsidePage;
+            page.sections = [];
+            await page.save();
 
-            before(async function () {
-                this.timeout(0);
-                page = await _spfi.web.addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
-            });
+            if (page.sections.length < 1) {
+                page.addSection();
+            }
 
-            it(".like()", function () {
-                return expect(page.like()).to.eventually.be.fulfilled;
-            });
+            page.sections[0].addColumn(6);
+            page.sections[0].addColumn(6);
 
-            it(".unlike()", function () {
-                return expect(page.unlike()).to.eventually.be.fulfilled;
-            });
+            // save
+            await page.save();
 
-            it(".getLikedByInformation", function () {
-                return expect(page.getLikedByInformation()).to.eventually.be.fulfilled;
-            });
+            // reload
+            await page.load();
+
+            expect(page.sections.length === 1);
+            expect(page.sections[0].columns.length === 2);
+            expect(page.sections[0].columns[0].factor === 6);
+            expect(page.sections[0].columns[1].factor === 6);
         });
 
-        if (testSettings.testUser?.length > 0) {
-            describe("author", function () {
-                let page: IClientsidePage;
-                let userId: number;
-                let userPrincipalName: string;
-                let pageUrl: string;
+        it("vertical section", async function () {
 
-                before(async function () {
-                    this.timeout(0);
-                    page = await _spfi.web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
-                    await page.save();
-                    // we need the updated url info from the published page so we re-load things.
-                    await page.load();
+            page.sections = [];
+            await page.save();
 
-                    const serverRelUrl = (await _spfi.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
-                    pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
+            if (page.sections.length < 1) {
+                page.addSection();
+            }
 
-                    const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
-                    userId = ensureTestUser.data.Id;
-                    userPrincipalName = ensureTestUser.data.Email;
-                });
+            page.sections[0].addColumn(6);
+            page.sections[0].addColumn(6);
 
-                it(".setAuthorById()", async function () {
+            const vertSection = page.addVerticalSection();
+            vertSection.addControl(new ClientsideText("Hello."));
+            vertSection.addControl(new ClientsideText("I'm second."));
 
-                    await page.setAuthorById(userId);
-                    await page.save();
+            // save
+            await page.save();
 
-                    const page2 = await _spfi.web.loadClientsidePage(pageUrl);
-                    expect(page2.authorByLine).to.eq(userPrincipalName);
-                });
+            // reload
+            await page.load();
 
-                it(".setAuthorByLoginName()", async function () {
-                    await page.setAuthorByLoginName(testSettings.testUser);
-                    await page.save();
+            const webData = await _spfi.web.select("ServerRelativeUrl")();
 
-                    const page2 = await _spfi.web.loadClientsidePage(pageUrl);
+            // we need a full reload
+            page = await _spfi.web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
 
-                    expect(page2.authorByLine).to.eq(userPrincipalName);
-                });
-            });
-        }
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            expect(page.hasVerticalSection).to.be.true;
+            expect(page.verticalSection.columns[0].controls.length).to.eq(2);
+            const ctrl = <ClientsideText>page.verticalSection.columns[0].controls[1];
+            expect(ctrl.text).to.match(/I'm second\./);
+        });
 
-        describe("description", function () {
+        it("vertical section 2", async function () {
+
+            page.addVerticalSection();
+            page.verticalSection.addControl(new ClientsideText("Hello."));
+            page.verticalSection.addControl(new ClientsideText("I'm second."));
+
+            // save
+            await page.save();
+            // load to update the data with correct url
+            await page.load();
+
+            const webData = await _spfi.web.select("ServerRelativeUrl")();
+
+            // we need a full reload
+            page = await _spfi.web.loadClientsidePage(combine("/", webData.ServerRelativeUrl, (<any>page).json.Path.DecodedUrl));
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            expect(page.hasVerticalSection).to.be.true;
+            expect(page.verticalSection.columns[0].controls.length).to.eq(2);
+            const ctrl = <ClientsideText>page.verticalSection.columns[0].controls[1];
+            expect(ctrl.text).to.match(/I'm second\./);
+        });
+    });
+
+    describe("like and unlike", function () {
+
+        let page: IClientsidePage;
+
+        before(async function () {
+            this.timeout(0);
+            page = await _spfi.web.addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
+        });
+
+        it("like()", function () {
+            return expect(page.like()).to.eventually.be.fulfilled;
+        });
+
+        it("unlike()", function () {
+            return expect(page.unlike()).to.eventually.be.fulfilled;
+        });
+
+        it("getLikedByInformation", function () {
+            return expect(page.getLikedByInformation()).to.eventually.be.fulfilled;
+        });
+    });
+
+    if (testSettings.testUser?.length > 0) {
+        describe("author", function () {
             let page: IClientsidePage;
+            let userId: number;
+            let userPrincipalName: string;
             let pageUrl: string;
 
             before(async function () {
                 this.timeout(0);
-                page = await _spfi.web.addClientsidePage(`TestingSettingDescription_${getRandomString(4)}.aspx`);
+                page = await _spfi.web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
                 await page.save();
                 // we need the updated url info from the published page so we re-load things.
                 await page.load();
 
                 const serverRelUrl = (await _spfi.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
                 pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
+
+                const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
+                userId = ensureTestUser.data.Id;
+                userPrincipalName = ensureTestUser.data.Email;
             });
 
-            it("set", async function () {
+            it("setAuthorById()", async function () {
 
-                const description = `Test Desc ${getRandomString(10)}`;
-                page.description = description;
+                await page.setAuthorById(userId);
+                await page.save();
+
+                const page2 = await _spfi.web.loadClientsidePage(pageUrl);
+                expect(page2.authorByLine).to.eq(userPrincipalName);
+            });
+
+            it("setAuthorByLoginName()", async function () {
+                await page.setAuthorByLoginName(testSettings.testUser);
                 await page.save();
 
                 const page2 = await _spfi.web.loadClientsidePage(pageUrl);
 
-                expect(page2.description).to.eq(description);
+                expect(page2.authorByLine).to.eq(userPrincipalName);
             });
         });
     }
+
+    describe("description", function () {
+        let page: IClientsidePage;
+        let pageUrl: string;
+
+        before(async function () {
+            this.timeout(0);
+            page = await _spfi.web.addClientsidePage(`TestingSettingDescription_${getRandomString(4)}.aspx`);
+            await page.save();
+            // we need the updated url info from the published page so we re-load things.
+            await page.load();
+
+            const serverRelUrl = (await _spfi.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
+            pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
+        });
+
+        it("set", async function () {
+
+            const description = `Test Desc ${getRandomString(10)}`;
+            page.description = description;
+            await page.save();
+
+            const page2 = await _spfi.web.loadClientsidePage(pageUrl);
+
+            expect(page2.description).to.eq(description);
+        });
+    });
 });

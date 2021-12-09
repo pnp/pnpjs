@@ -256,7 +256,6 @@ export class PnPClientStorage {
      */
     public get session(): IPnPClientStore {
 
-        // BUG: sessionStorage is undefined
         if (this._session === null) {
             this._session = new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? new MemoryStorage() : sessionStorage);
         }

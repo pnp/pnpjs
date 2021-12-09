@@ -9,82 +9,85 @@ import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
 
 describe("Outlook", function () {
-    if (testSettings.enableWebTests) {
-        let _graphfi: GraphFI = null;
-        let testUserName = "";
-        const testCategoryList: string[] = [];
 
-        // Ensure we have the data to test against
-        this.beforeAll(async function () {
-            _graphfi = getGraph();
-            const userInfo = await getValidUser();
-            testUserName = userInfo.userPrincipalName;
+    let _graphfi: GraphFI = null;
+    let testUserName = "";
+    const testCategoryList: string[] = [];
 
-        });
+    // Ensure we have the data to test against
+    this.beforeAll(async function () {
 
-        // Clean up testing categories
-        this.afterAll(async function () {
-            if (!stringIsNullOrEmpty(testUserName) && testCategoryList.length > 0) {
-                for (let i = 0; i < testCategoryList.length; i++) {
-                    await _graphfi.users.getById(testUserName).outlook.masterCategories.getById(testCategoryList[i]).delete();
-                }
+        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
+            this.skip();
+        }
+
+        _graphfi = getGraph();
+        const userInfo = await getValidUser();
+        testUserName = userInfo.userPrincipalName;
+    });
+
+    // Clean up testing categories
+    this.afterAll(async function () {
+        if (!stringIsNullOrEmpty(testUserName) && testCategoryList.length > 0) {
+            for (let i = 0; i < testCategoryList.length; i++) {
+                await _graphfi.users.getById(testUserName).outlook.masterCategories.getById(testCategoryList[i]).delete();
             }
+        }
+    });
+
+    it("outlook", async function () {
+        const outlookUser = await _graphfi.users.getById(testUserName).outlook();
+        return expect(outlookUser).is.not.null;
+    });
+
+    describe("Master Categories", function () {
+        it("masterCategories", async function () {
+            const categories = await _graphfi.users.getById(testUserName).outlook.masterCategories();
+            return expect(categories.length).is.gt(0);
         });
 
-        it(".outlook", async function () {
-            const outlookUser = await _graphfi.users.getById(testUserName).outlook();
-            return expect(outlookUser).is.not.null;
+        it("add", async function () {
+            // there is no method to clean up after add, so generate a random name
+            const testCategory: OutlookCategory = {
+                displayName: `Test category-${getRandomString(8)}`,
+                color: "preset2",
+            };
+
+            const addedCategory = await _graphfi.users.getById(testUserName).outlook.masterCategories.add(testCategory);
+            testCategoryList.push(addedCategory.data.id);
+
+            return expect(addedCategory).is.not.null;
         });
 
-        describe("Master Categories", function () {
-            it(".masterCategories", async function () {
-                const categories = await _graphfi.users.getById(testUserName).outlook.masterCategories();
-                return expect(categories.length).is.gt(0);
-            });
+        it("update", async function () {
+            const testCategory: OutlookCategory = {
+                displayName: `Test category-${getRandomString(8)}`,
+                color: "preset2",
+            };
 
-            it(".add", async function () {
-                // there is no method to clean up after add, so generate a random name
-                const testCategory: OutlookCategory = {
-                    displayName: `Test category-${getRandomString(8)}`,
-                    color: "preset2",
-                };
+            const addedCategory = await _graphfi.users.getById(testUserName).outlook.masterCategories.add(testCategory);
+            testCategoryList.push(addedCategory.data.id);
 
-                const addedCategory = await _graphfi.users.getById(testUserName).outlook.masterCategories.add(testCategory);
-                testCategoryList.push(addedCategory.data.id);
+            const updateCategory: OutlookCategory = {
+                color: "preset3",
+            };
 
-                return expect(addedCategory).is.not.null;
-            });
+            const updatedCategory = _graphfi.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.data.id).update(updateCategory);
 
-            it(".update", async function () {
-                const testCategory: OutlookCategory = {
-                    displayName: `Test category-${getRandomString(8)}`,
-                    color: "preset2",
-                };
-
-                const addedCategory = await _graphfi.users.getById(testUserName).outlook.masterCategories.add(testCategory);
-                testCategoryList.push(addedCategory.data.id);
-
-                const updateCategory: OutlookCategory = {
-                    color: "preset3",
-                };
-
-                const updatedCategory = _graphfi.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.data.id).update(updateCategory);
-
-                return expect(updatedCategory).to.eventually.be.fulfilled;
-            });
-
-            it(".delete", async function () {
-                const testCategory: OutlookCategory = {
-                    displayName: `Test category-${getRandomString(8)}`,
-                    color: "preset2",
-                };
-
-                const addedCategory = await _graphfi.users.getById(testUserName).outlook.masterCategories.add(testCategory);
-
-                const deleteCategory = _graphfi.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.data.id).delete();
-
-                return expect(deleteCategory).to.eventually.be.fulfilled;
-            });
+            return expect(updatedCategory).to.eventually.be.fulfilled;
         });
-    }
+
+        it("delete", async function () {
+            const testCategory: OutlookCategory = {
+                displayName: `Test category-${getRandomString(8)}`,
+                color: "preset2",
+            };
+
+            const addedCategory = await _graphfi.users.getById(testUserName).outlook.masterCategories.add(testCategory);
+
+            const deleteCategory = _graphfi.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.data.id).delete();
+
+            return expect(deleteCategory).to.eventually.be.fulfilled;
+        });
+    });
 });

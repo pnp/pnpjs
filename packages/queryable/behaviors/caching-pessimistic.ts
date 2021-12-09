@@ -30,7 +30,7 @@ export function CachingPessimisticRefresh(
     const putStorage = (key: string, o: string) => {
         try {
             if (isFunc(expireFunc)) {
-                // TODO:: Think about making PnPClientStorage handle no expiration date.
+                // TODO:: Think about making PnPClientStorage handle no expiration date. (PKR: it does, unsure on need here)
                 const storage = new PnPClientStorage();
                 const s = type === "session" ? storage.session : storage.local;
                 s.put(key, o, expireFunc());
@@ -76,10 +76,9 @@ export function CachingPessimisticRefresh(
                         const requestId = getGUID();
 
                         const emitError = (e) => {
-                            this.emit.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
-                            this.emit[this.InternalRejectEvent](e);
+                            this.log(`[id:${requestId}] Emitting error: "${e.message || e}"`, 3);
                             this.emit.error(e);
-                            this.emit.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, 3);
+                            this.log(`[id:${requestId}] Emitted error: "${e.message || e}"`, 3);
                         };
 
                         try {
@@ -87,40 +86,39 @@ export function CachingPessimisticRefresh(
 
                             const emitSend = async (): Promise<any> => {
 
-                                this.emit.log(`[id:${requestId}] Emitting auth`, 0);
+                                this.log(`[id:${requestId}] Emitting auth`, 0);
                                 [requestUrl, init] = await this.emit.auth(requestUrl, init);
-                                this.emit.log(`[id:${requestId}] Emitted auth`, 0);
+                                this.log(`[id:${requestId}] Emitted auth`, 0);
 
                                 // we always resepect user supplied init over observer modified init
                                 init = { ...init, ...userInit, headers: { ...init.headers, ...userInit.headers } };
 
-                                this.emit.log(`[id:${requestId}] Emitting send`, 0);
+                                this.log(`[id:${requestId}] Emitting send`, 0);
                                 let response = await this.emit.send(requestUrl, init);
-                                this.emit.log(`[id:${requestId}] Emitted send`, 0);
+                                this.log(`[id:${requestId}] Emitted send`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting parse`, 0);
+                                this.log(`[id:${requestId}] Emitting parse`, 0);
                                 [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
-                                this.emit.log(`[id:${requestId}] Emitted parse`, 0);
+                                this.log(`[id:${requestId}] Emitted parse`, 0);
 
-                                this.emit.log(`[id:${requestId}] Emitting post`, 0);
+                                this.log(`[id:${requestId}] Emitting post`, 0);
                                 [requestUrl, result] = await this.emit.post(requestUrl, result);
-                                this.emit.log(`[id:${requestId}] Emitted post`, 0);
+                                this.log(`[id:${requestId}] Emitted post`, 0);
 
                                 return result;
                             };
 
                             const emitData = () => {
-                                this.emit.log(`[id:${requestId}] Emitting data`, 0);
-                                this.emit[this.InternalResolveEvent](retVal);
+                                this.log(`[id:${requestId}] Emitting data`, 0);
                                 this.emit.data(retVal);
-                                this.emit.log(`[id:${requestId}] Emitted data`, 0);
+                                this.log(`[id:${requestId}] Emitted data`, 0);
                             };
 
-                            this.emit.log(`[id:${requestId}] Beginning request`, 1);
+                            this.log(`[id:${requestId}] Beginning request`, 1);
 
                             let [requestUrl, init, result] = await this.emit.pre(this.toRequestUrl(), {}, undefined);
 
-                            this.emit.log(`[id:${requestId}] Url: ${requestUrl}`, 1);
+                            this.log(`[id:${requestId}] Url: ${requestUrl}`, 1);
 
                             if (typeof result !== "undefined") {
                                 retVal = result;
@@ -140,26 +138,20 @@ export function CachingPessimisticRefresh(
                                     }, 0);
                                 }
 
-                                this.emit.log(`[id:${requestId}] Returning cached results and updating cache async`, 1);
+                                this.log(`[id:${requestId}] Returning cached results and updating cache async`, 1);
 
                                 emitData();
                             } else {
                                 retVal = await emitSend();
 
-                                // TODO:: how do we handle the case where the request pipeline has worked as expected, however
-                                // the result remains undefined? We shouldn't emit data as we don't have any, but should we have a
-                                // completed event to signal the request is completed?
-                                if (typeof retVal !== "undefined") {
+                                this.log(`[id:${requestId}] Returning results`, 1);
 
-                                    this.emit.log(`[id:${requestId}] Returning results`, 1);
-
-                                    emitData();
-                                }
+                                emitData();
                             }
                         } catch (e) {
                             emitError(e);
                         } finally {
-                            this.emit.log(`[id:${requestId}] Finished request`, 1);
+                            this.log(`[id:${requestId}] Finished request`, 1);
                         }
                     }, 0);
 

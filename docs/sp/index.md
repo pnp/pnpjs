@@ -13,12 +13,12 @@ Install the library and required dependencies
 Import the library into your application and access the root sp object
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
 (function main() {
-
-    // here we will load the current web's title
+    // here we setup the root sp object with the sharepoint context which will be used to load the current web's title
+    const sp = spfi("{tenant url}").using(SPFx(this.context));
     const w = await sp.web.select("Title")();
     console.log(`Web Title: ${w.Title}`);
 )()
@@ -71,22 +71,21 @@ Install the library and required dependencies
 Import the library into your application, setup the node client, make a request
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import { GraphDefault, SPDefault } from "@pnp/nodejs";
+import {ThrowErrors} from "@pnp/queryable";
 import "@pnp/sp/webs";
-import { SPFetchClient } from "@pnp/nodejs";
 
 // do this once per page load
-sp.setup({
-    sp: {
-        fetchClientFactory: () => {
-            return new SPFetchClient("{your site url}", "{your client id}", "{your client secret}");
-        },
-    },
-});
+const sp = spfi().using(SPDefault({
+  baseUrl: siteUrl,
+  msal: {
+    config: config,
+    scopes: [ 'https://{tenant}.sharepoint.com/.default' ]
+  }
+})).using(ThrowErrors());
 
 // now make any calls you need using the configured client
-
 const w = await sp.web.select("Title")();
 console.log(`Web Title: ${w.Title}`);
-
 ```

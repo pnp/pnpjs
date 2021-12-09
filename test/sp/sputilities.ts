@@ -4,70 +4,81 @@ import "@pnp/sp/site-users/web";
 import "@pnp/sp/sputilities";
 import { getSP, testSettings } from "../main.js";
 import { PrincipalType, PrincipalSource } from "@pnp/sp";
-import { combine } from "@pnp/core";
+import { combine, stringIsNullOrEmpty } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
 import { IEmailProperties } from "@pnp/sp/sputilities";
 
 // cannot test with app permissions
 describe.skip("SPUtilities", function () {
-    if (testSettings.enableWebTests) {
-        let _spfi: SPFI = null;
 
-        before(async function () {
-            _spfi = getSP();
+    let _spfi: SPFI = null;
 
-            // we need a user to share to
-            if (testSettings.testUser?.length > 0) {
-                await _spfi.web.ensureUser(testSettings.testUser);
-            }
-        });
+    before(async function () {
 
-        it("getCurrentUserEmailAddresses", function () {
-            return expect(_spfi.utility.getCurrentUserEmailAddresses()).to.eventually.be.fulfilled;
-        });
-
-        it("resolvePrincipal", async function () {
-            const currentUserEmailAddress = await _spfi.utility.getCurrentUserEmailAddresses();
-
-            return expect(_spfi.utility.resolvePrincipal(currentUserEmailAddress, PrincipalType.User, PrincipalSource.All, true, false, true)).to.be.eventually.fulfilled;
-        });
-
-        it("createEmailBodyForInvitation", async function () {
-            const homePageAddress = combine(testSettings.sp.testWebUrl, "/SitePages/Home.aspx");
-            return expect(_spfi.utility.createEmailBodyForInvitation(homePageAddress)).to.be.eventually.fulfilled;
-        });
-
-        it("expandGroupsToPrincipals", async function () {
-            return expect(_spfi.utility.expandGroupsToPrincipals(["Everyone"], 10)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;
-        });
-
-        if (testSettings.testUser?.length > 0) {
-            it("sendEmail", async function () {
-                const currentUserEmailAddress = await _spfi.utility.getCurrentUserEmailAddresses();
-
-                const headers = {
-                    "content-type": "text/html",
-                };
-
-                const emailProps: IEmailProperties = {
-                    AdditionalHeaders: headers,
-                    BCC: [currentUserEmailAddress],
-                    Body: "Here is the body. <b>It supports html</b>",
-                    CC: [currentUserEmailAddress],
-                    Subject: "This email is about...",
-                    To: [currentUserEmailAddress],
-                };
-
-                return expect(_spfi.utility.sendEmail(emailProps)).to.eventually.be.fulfilled;
-            });
-
-            it("searchPrincipals", async function () {
-                const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
-                const userId = ensureTestUser.data.Id;
-                const user = await _spfi.web.siteUsers.getById(userId)();
-
-                return expect(_spfi.utility.searchPrincipals(user.Title, PrincipalType.User, PrincipalSource.All, "", 1)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;
-            });
+        if (!testSettings.enableWebTests) {
+            this.skip();
         }
-    }
+
+        _spfi = getSP();
+
+        if (!stringIsNullOrEmpty(testSettings.testUser)) {
+            await _spfi.web.ensureUser(testSettings.testUser);
+        }
+    });
+
+    it("getCurrentUserEmailAddresses", function () {
+        return expect(_spfi.utility.getCurrentUserEmailAddresses()).to.eventually.be.fulfilled;
+    });
+
+    it("resolvePrincipal", async function () {
+        const currentUserEmailAddress = await _spfi.utility.getCurrentUserEmailAddresses();
+
+        return expect(_spfi.utility.resolvePrincipal(currentUserEmailAddress, PrincipalType.User, PrincipalSource.All, true, false, true)).to.be.eventually.fulfilled;
+    });
+
+    it("createEmailBodyForInvitation", async function () {
+        const homePageAddress = combine(testSettings.sp.testWebUrl, "/SitePages/Home.aspx");
+        return expect(_spfi.utility.createEmailBodyForInvitation(homePageAddress)).to.be.eventually.fulfilled;
+    });
+
+    it("expandGroupsToPrincipals", async function () {
+        return expect(_spfi.utility.expandGroupsToPrincipals(["Everyone"], 10)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;
+    });
+
+    it("sendEmail", async function () {
+
+        if (stringIsNullOrEmpty(testSettings.testUser)) {
+            this.skip();
+        }
+
+        const currentUserEmailAddress = await _spfi.utility.getCurrentUserEmailAddresses();
+
+        const headers = {
+            "content-type": "text/html",
+        };
+
+        const emailProps: IEmailProperties = {
+            AdditionalHeaders: headers,
+            BCC: [currentUserEmailAddress],
+            Body: "Here is the body. <b>It supports html</b>",
+            CC: [currentUserEmailAddress],
+            Subject: "This email is about...",
+            To: [currentUserEmailAddress],
+        };
+
+        return expect(_spfi.utility.sendEmail(emailProps)).to.eventually.be.fulfilled;
+    });
+
+    it("searchPrincipals", async function () {
+
+        if (stringIsNullOrEmpty(testSettings.testUser)) {
+            this.skip();
+        }
+
+        const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
+        const userId = ensureTestUser.data.Id;
+        const user = await _spfi.web.siteUsers.getById(userId)();
+
+        return expect(_spfi.utility.searchPrincipals(user.Title, PrincipalType.User, PrincipalSource.All, "", 1)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;
+    });
 });

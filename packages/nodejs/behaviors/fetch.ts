@@ -9,7 +9,7 @@ export function NodeFetch(): TimelinePipe<Queryable> {
 
         instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit) {
 
-            this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
+            this.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
             return nodeFetch(url.toString(), init);
         });
@@ -46,13 +46,14 @@ export function NodeFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Qu
 
                             // if we have gotten a header, use that value as the delay value in seconds
                             wait = parseInt(response.headers.get("Retry-After"), 10) * 1000;
+
                         } else {
 
                             // Increment our counters.
                             wait *= 2;
                         }
 
-                        this.emit.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, LogLevel.Verbose);
+                        this.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, LogLevel.Verbose);
                         count++;
 
                         await delay(wait);
@@ -60,7 +61,7 @@ export function NodeFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Qu
 
                     try {
 
-                        this.emit.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
+                        this.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
                         response = await nodeFetch(url.toString(), init);
 

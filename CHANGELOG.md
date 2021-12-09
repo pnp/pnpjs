@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Introduced "Timeline" concept with Timline, moments, and observers
   - delay utility function
 
+- logging
+  - new PnPLogging behavior to integrate with new model
+
 ### Changed
 
 - Renamed package "odata" -> "queryable"
@@ -101,4 +104,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - removed attachments addMultiple, deleteMultiple, and recycleMultiple => write a for loop in calling code
   - removed regional settings.installedLanguages => use getInstalledLanguages
   - removed metadata method
+
+- sp-addinhelpers
+  - Dropped entire package, no longer needed
   

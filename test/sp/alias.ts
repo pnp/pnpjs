@@ -13,37 +13,40 @@ describe("Alias Parameters", function () {
 
     let webRelativeUrl = "";
 
-    if (testSettings.enableWebTests) {
-        let _spfi: SPFI = null;
+    let _spfi: SPFI = null;
 
-        before(async function () {
-            _spfi = getSP();
+    before(async function () {
 
-            const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
+        if (!testSettings.enableWebTests) {
+            this.skip();
+        }
 
-            // make sure we have the correct server relative url
-            webRelativeUrl = webInfo.ServerRelativeUrl;
+        _spfi = getSP();
 
-            const ler = await _spfi.web.lists.ensure("AliasTestLib", "Used to test alias parameters", 101);
+        const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
 
-            await ler.list.rootFolder.folders.addUsingPath("MyTestFolder");
-            await ler.list.rootFolder.files.addUsingPath("text.txt", "Some file content!");
-        });
+        // make sure we have the correct server relative url
+        webRelativeUrl = webInfo.ServerRelativeUrl;
 
-        it("Folders", function () {
+        const ler = await _spfi.web.lists.ensure("AliasTestLib", "Used to test alias parameters", 101);
 
-            return expect(_spfi.web.getFolderByServerRelativePath(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/MyTestFolder")}`)()).to.eventually.be.fulfilled;
-        });
+        await ler.list.rootFolder.folders.addUsingPath("MyTestFolder");
+        await ler.list.rootFolder.files.addUsingPath("text.txt", "Some file content!");
+    });
 
-        it("Files", function () {
+    it("Folders", function () {
 
-            return expect(_spfi.web.getFileByServerRelativePath(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/text.txt")}`)()).to.eventually.be.fulfilled;
-        });
+        return expect(_spfi.web.getFolderByServerRelativePath(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/MyTestFolder")}`)()).to.eventually.be.fulfilled;
+    });
 
-        it("Sub-parameters", function () {
+    it("Files", function () {
 
-            const folder = _spfi.web.getFolderByServerRelativePath(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/MyTestFolder")}`);
-            return expect(folder.files.addUsingPath("!@p2::myfilename.txt", "new file content")).to.eventually.be.fulfilled;
-        });
-    }
+        return expect(_spfi.web.getFileByServerRelativePath(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/text.txt")}`)()).to.eventually.be.fulfilled;
+    });
+
+    it("Sub-parameters", function () {
+
+        const folder = _spfi.web.getFolderByServerRelativePath(`!@p1::/${combine(webRelativeUrl, "AliasTestLib/MyTestFolder")}`);
+        return expect(folder.files.addUsingPath("!@p2::myfilename.txt", "new file content")).to.eventually.be.fulfilled;
+    });
 });

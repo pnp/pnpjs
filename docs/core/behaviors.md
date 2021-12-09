@@ -32,6 +32,8 @@ export function MyBehavior(specialSecret: string): TimelinePipe {
 obj.using(MyBehavior("HereIsMySuperSecretValue"));
 ```
 
+[](#assignfrom)
+
 ## Core Behaviors
 
 Please also see available behaviors in [@pnp/queryable]("../../../queryable/behaviors.md), [@pnp/sp]("../../../sp/behaviors.md), and [@pnp/graph]("../../../graph/behaviors.md)
@@ -55,12 +57,10 @@ target.on.log(console.log);
 
 ### CopyFrom
 
-Similar to AssignFrom, this method creates a copy (using [cloneDeep from lodash](https://www.npmjs.com/package/lodash.clonedeep)) of all the observers on the source and applies them to the target. This can be done either as a `replace` or `append` operation using the second parameter. The default is "append".
+Similar to AssignFrom, this method creates a copy of all the observers on the source and applies them to the target. This can be done either as a `replace` or `append` operation using the second parameter. The default is "append".
 
 - "replace" will first clear each source moment's registered observers then apply each in source-order via the `on` operation.
 - "append" will apply each source moment's registered observers in source-order via the `on` operation
-
-> In both cases no effort is made to determine if the obserers being registered are against valid moments on the target.
 
 ```TypeScript
 import { CopyFrom } from "@pnp/core";

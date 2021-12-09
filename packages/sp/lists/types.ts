@@ -93,20 +93,13 @@ export class _Lists extends _SPCollection<IListInfo[]> {
         try {
 
             await list.select("Title")();
+
             const data = await list.update(addOrUpdateSettings).then(r => r.data);
 
-            if (data === undefined) {
-                const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
-                if (data === undefined) {
-                    return { created: false, data, list };
-                } else {
-                    return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
-                }
-            } else {
-                return { created: false, data, list: this.getByTitle(addOrUpdateSettings.Title) };
-            }
+            return { created: false, data, list: this.getByTitle(addOrUpdateSettings.Title) };
 
         } catch (e) {
+
             const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
             return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
         }
@@ -209,7 +202,7 @@ export class _List extends _SPInstance<IListInfo> {
      */
     public getListItemChangesSinceToken(query: IChangeLogItemQuery): Promise<string> {
 
-        return spPost(List(this, "getlistitemchangessincetoken").using(TextParse), body({ "query": query }));
+        return spPost(List(this, "getlistitemchangessincetoken").using(TextParse()), body({ query }));
     }
 
     /**

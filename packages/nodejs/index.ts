@@ -29,7 +29,6 @@ export {
 export * from "./behaviors/msal.js";
 export * from "./behaviors/fetch.js";
 export * from "./behaviors/proxy.js";
-export * from "./behaviors/agent.js";
 export * from "./behaviors/stream-parse.js";
 export * from "./behaviors/spdefault.js";
 export * from "./behaviors/graphdefault.js";

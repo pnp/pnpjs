@@ -30,7 +30,7 @@ export class _HubSite extends _SPInstance<IHubSiteInfo> {
      */
     public async getSite(): Promise<ISite> {
         const d = await this.select("SiteUrl")();
-        return Site(d.SiteUrl);
+        return Site([this, d.SiteUrl]);
     }
 }
 export interface IHubSite extends _HubSite {}

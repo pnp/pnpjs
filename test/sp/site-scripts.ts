@@ -19,143 +19,146 @@ describe("SiteScripts", function () {
         version: 1,
     };
 
-    if (testSettings.enableWebTests) {
-        let _rootSite: SPFI = null;
+    let _rootSite: SPFI = null;
 
-        const createdSiteScriptIds: string[] = [];
-        const createdLists: IList[] = [];
+    const createdSiteScriptIds: string[] = [];
+    const createdLists: IList[] = [];
 
-        before(function () {
-            const _spfi = getSP();
-            _rootSite = spfi([_spfi.site, testSettings.sp.url]);
-        });
+    before(function () {
 
-        it(".createSiteScript", function () {
+        if (!testSettings.enableWebTests) {
+            this.skip();
+        }
 
-            const title = `Test_create_sitescript_${getRandomString(8)}`;
-            const description = `${getRandomString(100)}`;
-            const p = _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema)
-                .then(ss => createdSiteScriptIds.push(ss.Id));
+        const _spfi = getSP();
+        _rootSite = spfi([_spfi.site, testSettings.sp.url]);
+    });
 
-            return expect(p, `site script '${title}' should've been created`).to.eventually.be.fulfilled;
-        });
+    it("createSiteScript", function () {
 
-        it(".createSiteScript (fail - bad title)", function () {
+        const title = `Test_create_sitescript_${getRandomString(8)}`;
+        const description = `${getRandomString(100)}`;
+        const p = _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema)
+            .then(ss => createdSiteScriptIds.push(ss.Id));
 
-            const title = `Test_create_sitescript_${getRandomString(8)}'`;
-            const description = `${getRandomString(100)}`;
-            const p = _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema)
-                .then(ss => createdSiteScriptIds.push(ss.Id));
+        return expect(p, `site script '${title}' should've been created`).to.eventually.be.fulfilled;
+    });
 
-            return expect(p, `site script '${title}' should not have been created`).to.eventually.be.fulfilled;
-        });
+    it("createSiteScript (fail - bad title)", function () {
 
-        it(".createSiteScript (fail - no actions)", function () {
+        const title = `Test_create_sitescript_${getRandomString(8)}'`;
+        const description = `${getRandomString(100)}`;
+        const p = _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema)
+            .then(ss => createdSiteScriptIds.push(ss.Id));
 
-            const schema = {
-                "$schema": "schema.json",
-                "actions": [],
-                "bindata": {},
-                "version": 1,
-            };
+        return expect(p, `site script '${title}' should not have been created`).to.eventually.be.fulfilled;
+    });
 
-            const title = `Test_create_sitescript_no_actions_${getRandomString(8)}`;
-            const description = `${getRandomString(100)}`;
+    it("createSiteScript (fail - no actions)", function () {
 
-            return expect(_rootSite.siteScripts.createSiteScript(title, description, schema),
-                `site script '${title}' should not have been created`).to.eventually.be.rejected;
-        });
+        const schema = {
+            "$schema": "schema.json",
+            "actions": [],
+            "bindata": {},
+            "version": 1,
+        };
 
-        it(".deleteSiteScript", async function () {
+        const title = `Test_create_sitescript_no_actions_${getRandomString(8)}`;
+        const description = `${getRandomString(100)}`;
 
-            const title = `Test_create_sitescript_to_be_deleted_${getRandomString(8)}`;
-            const description = `${getRandomString(100)}`;
-            const ss = await _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema);
+        return expect(_rootSite.siteScripts.createSiteScript(title, description, schema),
+            `site script '${title}' should not have been created`).to.eventually.be.rejected;
+    });
 
-            return expect(_rootSite.siteScripts.deleteSiteScript(ss.Id),
-                `site script '${title}' should've been deleted`).to.eventually.be.fulfilled;
-        });
+    it("deleteSiteScript", async function () {
 
-        it(".deleteSiteScript (fail)", function () {
+        const title = `Test_create_sitescript_to_be_deleted_${getRandomString(8)}`;
+        const description = `${getRandomString(100)}`;
+        const ss = await _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema);
 
-            return expect(_rootSite.siteScripts.deleteSiteScript(null),
-                "site script should NOT have been deleted").to.eventually.be.rejected;
-        });
+        return expect(_rootSite.siteScripts.deleteSiteScript(ss.Id),
+            `site script '${title}' should've been deleted`).to.eventually.be.fulfilled;
+    });
 
-        it(".getSiteScriptMetadata", async function () {
+    it("deleteSiteScript (fail)", function () {
 
-            const title = `Test_get_metadata_sitescript${getRandomString(8)}`;
-            const description = `${getRandomString(100)}`;
-            const ss = await _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema);
+        return expect(_rootSite.siteScripts.deleteSiteScript(null),
+            "site script should NOT have been deleted").to.eventually.be.rejected;
+    });
 
-            createdSiteScriptIds.push(ss.Id);
+    it("getSiteScriptMetadata", async function () {
 
-            return expect(_rootSite.siteScripts.getSiteScriptMetadata(ss.Id),
-                `metadata of site script '${title}' should have been retrieved`).to.eventually.be.fulfilled;
-        });
+        const title = `Test_get_metadata_sitescript${getRandomString(8)}`;
+        const description = `${getRandomString(100)}`;
+        const ss = await _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema);
+
+        createdSiteScriptIds.push(ss.Id);
+
+        return expect(_rootSite.siteScripts.getSiteScriptMetadata(ss.Id),
+            `metadata of site script '${title}' should have been retrieved`).to.eventually.be.fulfilled;
+    });
 
 
-        it(".updateSiteScript", async function () {
+    it("updateSiteScript", async function () {
 
-            const title = `Test_to_update_sitescript_${getRandomString(8)}`;
-            const description = `${getRandomString(100)}`;
-            const ss = await _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema);
+        const title = `Test_to_update_sitescript_${getRandomString(8)}`;
+        const description = `${getRandomString(100)}`;
+        const ss = await _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema);
 
-            createdSiteScriptIds.push(ss.Id);
+        createdSiteScriptIds.push(ss.Id);
 
-            const updatedTitle = `Test_updated_title_sitescript_${getRandomString(8)}`;
+        const updatedTitle = `Test_updated_title_sitescript_${getRandomString(8)}`;
 
-            const updatedScriptSchema = {
-                "$schema": "schema.json",
-                actions: [
-                    {
-                        themeName: "Dummy Theme 2",
-                        verb: "applyTheme",
-                    },
-                ],
-                bindata: {},
-                version: 2,
-            };
+        const updatedScriptSchema = {
+            "$schema": "schema.json",
+            actions: [
+                {
+                    themeName: "Dummy Theme 2",
+                    verb: "applyTheme",
+                },
+            ],
+            bindata: {},
+            version: 2,
+        };
 
-            return expect(_rootSite.siteScripts.updateSiteScript({
-                Id: ss.Id,
-                Title: updatedTitle,
-            }, updatedScriptSchema), `site script '${title}' should've been updated`).to.eventually.be.fulfilled;
-        });
+        return expect(_rootSite.siteScripts.updateSiteScript({
+            Id: ss.Id,
+            Title: updatedTitle,
+        }, updatedScriptSchema), `site script '${title}' should've been updated`).to.eventually.be.fulfilled;
+    });
 
-        it(".getSiteScripts", async function () {
+    it("getSiteScripts", async function () {
 
-            return expect(_rootSite.siteScripts.getSiteScripts(),
-                "all the site scripts should've been fetched").to.eventually.be.fulfilled;
-        });
+        return expect(_rootSite.siteScripts.getSiteScripts(),
+            "all the site scripts should've been fetched").to.eventually.be.fulfilled;
+    });
 
-        it(".getSiteScript (list)", async function () {
-            const listTitle = `sc_list_${getRandomString(8)}`;
-            const listResult = await _rootSite.web.lists.add(listTitle);
-            createdLists.push(listResult.list);
+    it("getSiteScript (list)", async function () {
+        const listTitle = `sc_list_${getRandomString(8)}`;
+        const listResult = await _rootSite.web.lists.add(listTitle);
+        createdLists.push(listResult.list);
 
-            return expect(listResult.list.getSiteScript(),
-                "the lists site script should've been fetched").to.eventually.be.fulfilled;
-        });
+        return expect(listResult.list.getSiteScript(),
+            "the lists site script should've been fetched").to.eventually.be.fulfilled;
+    });
 
-        it(".getSiteScript (web)", async function () {
-            return expect(_rootSite.web.getSiteScript(),
-                "the webs site script should've been fetched").to.eventually.be.fulfilled;
-        });
+    it.skip(".getSiteScript (web)", async function () {
+        return expect(_rootSite.web.getSiteScript(),
+            "the webs site script should've been fetched").to.eventually.be.fulfilled;
+    });
 
-        after(function () {
+    // after(function () {
 
-            const promises: Promise<void>[] = [];
+    //     const promises: Promise<void>[] = [];
 
-            createdSiteScriptIds.forEach((sdId) => {
-                promises.push(_rootSite.siteScripts.deleteSiteScript(sdId));
-            });
+    //     createdSiteScriptIds.forEach((sdId) => {
+    //         promises.push(_rootSite.siteScripts.deleteSiteScript(sdId));
+    //     });
 
-            createdLists.forEach((list: IList) => {
-                promises.push(list.delete());
-            });
+    //     createdLists.forEach((list: IList) => {
+    //         promises.push(list.delete());
+    //     });
 
-            return Promise.all(promises);
-        });
-    }
+    //     return Promise.all(promises);
+    // });
 });

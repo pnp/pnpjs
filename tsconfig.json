@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "target": "ES2019",
         "module": "commonjs",
         "composite": true,
         "declaration": true,
@@ -15,10 +15,10 @@
         "baseUrl": ".",
         "rootDir": ".",
         "outDir": "./build",
-        "allowUnreachableCode": true,
+        "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
-        "noUnusedLocals": false,
+        "noUnusedLocals": true,
         "noUnusedParameters": false,
         "pretty": true,
         "experimentalDecorators": true,
@@ -38,6 +38,6 @@
         }
     },
     "include": [
-        "./packages/**/*.ts", "packages/logging/behaviors",
+        "./packages/**/*.ts",
     ]
 }
