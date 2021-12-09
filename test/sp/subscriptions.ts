@@ -18,7 +18,6 @@ describe("Subscriptions", function () {
 
         if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings?.sp?.notificationUrl)) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();

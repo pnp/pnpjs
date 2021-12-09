@@ -13,7 +13,6 @@ describe("Hubsites", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         // Must use root site

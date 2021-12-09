@@ -16,7 +16,6 @@ describe("Sites", function () {
 
         if (!testSettings.enableWebTests) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();
@@ -81,7 +80,6 @@ describe("createModern Team & Comm Sites", function () {
 
         if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
             this.skip();
-            return;
         }
 
         _spfi = getSP();
