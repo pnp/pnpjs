@@ -1,0 +1,40 @@
+name: v3 Nightly Builds
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish-build-system:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          ref: version-3    
+      # setup nodejs
+      - name: Use Node.js 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
+      # cache node modules
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+      # if cache failed, use npm to install
+      - name: Restore dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: npm run pnp-publish-v3nightly
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
