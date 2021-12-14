@@ -1,12 +1,13 @@
 {
     "name": "@pnp/monorepo",
     "private": true,
+    "type": "module",
     "version": "3.0.0",
     "description": "A JavaScript library for SharePoint & Graph development.",
     "devDependencies": {
         "@azure/msal-node": "^1.0.1",
         "@microsoft/microsoft-graph-types": "^1.32.0",
-        "@pnp/buildsystem": "^2.3.9",
+        "@pnp/buildsystem": "file:tools/buildsystem",
         "@types/chai": "^4.2.22",
         "@types/chai-as-promised": "^7.1.4",
         "@types/core-js": "^2.5.4",

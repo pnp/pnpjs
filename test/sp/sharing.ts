@@ -87,28 +87,36 @@ describe("Sharing", function () {
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        if (testSettings.testUser?.length > 0) {
-            // TODO: shareWith eventually calls line 252 in /packages/sp/sharing/funcs.ts which is not able to retrieve a role definition for Edit
-            it.skip(".shareWith (Edit)", function () {
+        it(".shareWith (Edit)", function () {
 
-                return expect(folder.shareWith(testSettings.testUser, SharingRole.Edit))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
-            // TODO: shareWith eventually calls line 252 in /packages/sp/sharing/funcs.ts which is not able to retrieve a role definition for Edit
-            it.skip(".shareWith (Edit-All)", function () {
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
 
-                return expect(folder.shareWith(testSettings.testUser, SharingRole.Edit, true))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+            return expect(folder.shareWith(testSettings.testUser, SharingRole.Edit))
+                .to.eventually.be.fulfilled
+                .and.have.property("ErrorMessage").that.is.null;
+        });
+        it(".shareWith (Edit-All)", function () {
 
-            it("checkSharingPermissions", function () {
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
 
-                return expect(folder.checkSharingPermissions([{ alias: testSettings.testUser }]))
-                    .to.eventually.be.fulfilled;
-            });
-        }
+            return expect(folder.shareWith(testSettings.testUser, SharingRole.Edit, true))
+                .to.eventually.be.fulfilled
+                .and.have.property("ErrorMessage").that.is.null;
+        });
+
+        it("checkSharingPermissions", function () {
+
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
+
+            return expect(folder.checkSharingPermissions([{ alias: testSettings.testUser }]))
+                .to.eventually.be.fulfilled;
+        });
 
         it("getSharingInformation", function () {
 
@@ -129,7 +137,7 @@ describe("Sharing", function () {
         });
     });
 
-    // files sharing is not testable
+    // TODO:: is this true: files sharing is not testable
     describe.skip("File", function () {
 
         let file: IFile = null;
@@ -161,27 +169,37 @@ describe("Sharing", function () {
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        if (testSettings.testUser?.length > 0) {
-            it("shareWith (Edit)", function () {
+        it("shareWith (Edit)", function () {
 
-                return expect(file.shareWith(testSettings.testUser, SharingRole.Edit))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
 
-            it("shareWith (Edit-All)", function () {
+            return expect(file.shareWith(testSettings.testUser, SharingRole.Edit))
+                .to.eventually.be.fulfilled
+                .and.have.property("ErrorMessage").that.is.null;
+        });
 
-                return expect(file.shareWith(testSettings.testUser, SharingRole.Edit, true))
-                    .to.eventually.be.fulfilled
-                    .and.have.property("ErrorMessage").that.is.null;
-            });
+        it("shareWith (Edit-All)", function () {
 
-            it("checkSharingPermissions", function () {
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
 
-                return expect(file.checkSharingPermissions([{ alias: testSettings.testUser }]))
-                    .to.eventually.be.fulfilled;
-            });
-        }
+            return expect(file.shareWith(testSettings.testUser, SharingRole.Edit, true))
+                .to.eventually.be.fulfilled
+                .and.have.property("ErrorMessage").that.is.null;
+        });
+
+        it("checkSharingPermissions", function () {
+
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
+
+            return expect(file.checkSharingPermissions([{ alias: testSettings.testUser }]))
+                .to.eventually.be.fulfilled;
+        });
 
         it("getSharingInformation", function () {
 
@@ -233,25 +251,35 @@ describe("Sharing", function () {
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        if (testSettings.testUser?.length > 0) {
-            // TODO: shareWith eventually calls line 252 in /packages/sp/sharing/funcs.ts which is not able to retrieve a role definition for Edit
-            it.skip(".shareWith (Edit)", async function () {
-                const itemShare = await item.shareWith(testSettings.testUser, SharingRole.Edit);
-                return expect(itemShare).has.property("ErrorMessage").that.is.null;
-            });
+        it(".shareWith (Edit)", async function () {
 
-            // TODO: shareWith eventually calls line 252 in /packages/sp/sharing/funcs.ts which is not able to retrieve a role definition for Edit
-            it.skip(".shareWith (Edit-All)", async function () {
-                const itemShare = await item.shareWith(testSettings.testUser, SharingRole.Edit, true);
-                return expect(itemShare).has.property("ErrorMessage").that.is.null;
-            });
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
 
-            it("checkSharingPermissions", function () {
+            const itemShare = await item.shareWith(testSettings.testUser, SharingRole.Edit);
+            return expect(itemShare).has.property("ErrorMessage").that.is.null;
+        });
 
-                return expect(item.checkSharingPermissions([{ alias: testSettings.testUser }]))
-                    .to.eventually.be.fulfilled;
-            });
-        }
+        it(".shareWith (Edit-All)", async function () {
+
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
+
+            const itemShare = await item.shareWith(testSettings.testUser, SharingRole.Edit, true);
+            return expect(itemShare).has.property("ErrorMessage").that.is.null;
+        });
+
+        it("checkSharingPermissions", function () {
+
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
+
+            return expect(item.checkSharingPermissions([{ alias: testSettings.testUser }]))
+                .to.eventually.be.fulfilled;
+        });
 
         it("getSharingInformation", function () {
 
@@ -274,12 +302,15 @@ describe("Sharing", function () {
 
     describe("Web", function () {
 
-        if (testSettings.testUser?.length > 0) {
-            it("shareObject", async function () {
-                const shareObj = combine(webAbsUrl, `${testSharingLib}/${testSharingFile}`);
-                const shareWeb = await _spfi.web.shareObject(shareObj, testSettings.testUser, SharingRole.View);
-                return expect(shareWeb).has.property("ErrorMessage").that.is.null;
-            });
-        }
+        it("shareObject", async function () {
+
+            if (testSettings.testUser?.length < 1) {
+                this.skip();
+            }
+
+            const shareObj = combine(webAbsUrl, `${testSharingLib}/${testSharingFile}`);
+            const shareWeb = await _spfi.web.shareObject(shareObj, testSettings.testUser, SharingRole.View);
+            return expect(shareWeb).has.property("ErrorMessage").that.is.null;
+        });
     });
 });

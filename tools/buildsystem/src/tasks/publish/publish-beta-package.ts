@@ -1,9 +1,9 @@
 import { exec } from "child_process";
 import { PublishSchema } from "../../config.js";
-const colors = require("ansi-colors");
-import * as path from "path";
+import { resolve } from "path";
 import getSubDirNames from "../../lib/getSubDirectoryNames.js";
-const log = require("fancy-log");
+import log from "fancy-log";
+import colors from "ansi-colors";
 
 export function publishBetaPackage(_version: string, config: PublishSchema): Promise<any> {
 
@@ -11,25 +11,25 @@ export function publishBetaPackage(_version: string, config: PublishSchema): Pro
 
     config.packageRoots.forEach(packageRoot => {
 
-        const publishRoot = path.resolve(packageRoot);
+        const publishRoot = resolve(packageRoot);
         const packageFolders = getSubDirNames(publishRoot).filter(name => name !== "documentation");
 
         for (let i = 0; i < packageFolders.length; i++) {
 
-            promises.push(new Promise((resolve, reject) => {
+            promises.push(new Promise((res, reject) => {
 
-                const packagePath = path.resolve(publishRoot, packageFolders[i]);
+                const packagePath = resolve(publishRoot, packageFolders[i]);
 
                 log(`${colors.bgBlue(" ")} Publishing BETA ${packagePath}`);
 
                 exec("npm publish --tag beta --access public",
                     {
-                        cwd: path.resolve(publishRoot, packageFolders[i]),
+                        cwd: resolve(publishRoot, packageFolders[i]),
                     }, (error, stdout, _stderr) => {
 
                         if (error === null) {
                             log(`${colors.bgGreen(" ")} Published BETA ${packagePath}`);
-                            resolve();
+                            res();
                         } else {
                             console.error(error);
                             reject(stdout);

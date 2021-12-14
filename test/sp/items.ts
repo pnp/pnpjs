@@ -7,11 +7,14 @@ import "@pnp/sp/items/get-all";
 import "@pnp/sp/batching";
 import { IList } from "@pnp/sp/lists";
 import { SPFI } from "@pnp/sp";
+import testSPInvokables from "../test-invokable-props.js";
+import { IItem } from "@pnp/sp/items";
 
 describe("Items", function () {
 
     let _spfi: SPFI = null;
     let list: IList = null;
+    let item: IItem = null;
     const listTitle = "ItemTestList";
 
     before(async function () {
@@ -24,7 +27,7 @@ describe("Items", function () {
         const ler = await _spfi.web.lists.ensure(listTitle, "Used to test item operations");
         list = ler.list;
 
-        if (ler.data !== undefined) {
+        if (ler.created) {
             // add a few items to get started
             const [spBatch, execute] = _spfi.batched();
             spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
@@ -34,7 +37,21 @@ describe("Items", function () {
             spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
             await execute();
         }
+
+        const itemData = await _spfi.web.lists.getByTitle(listTitle).items.select("Id").top(1)<{ Id: number }[]>();
+        item = _spfi.web.lists.getByTitle(listTitle).items.getById(itemData[0].Id);
     });
+
+    describe("Invokable Properties - IItem", testSPInvokables(() => item,
+        "effectiveBasePermissions",
+        "effectiveBasePermissionsForUI",
+        "fieldValuesAsHTML",
+        "fieldValuesAsText",
+        "fieldValuesForEdit",
+        "versions",
+        "getParentInfos",
+        "list",
+        "getWopiFrameUrl"));
 
     it("items", async function () {
 
