@@ -1,9 +1,10 @@
 import { PublishSchema } from "../../config.js";
-const colors = require("ansi-colors");
-import * as path from "path";
+import { join, resolve } from "path";
 import getSubDirNames from "../../lib/getSubDirectoryNames.js";
-const log = require("fancy-log");
 import { writeFileSync } from "fs";
+import log from "fancy-log";
+import colors from "ansi-colors";
+import importJSON from "../../lib/importJSON.js";
 
 export function updateV3NightlyVersion(_version: string, config: PublishSchema): Promise<any> {
 
@@ -11,44 +12,42 @@ export function updateV3NightlyVersion(_version: string, config: PublishSchema):
 
     config.packageRoots.forEach(packageRoot => {
 
-        const publishRoot = path.resolve(packageRoot);
+        const publishRoot = resolve(packageRoot);
         const packageFolders = getSubDirNames(publishRoot).filter(name => name !== "documentation");
         const date = new Date();
         const versionStr = `-v3nightly.${date.getFullYear()}${date.getMonth().toString().padStart(2, "0")}${date.getDate().toString().padStart(2, "0")}`;
 
         for (let i = 0; i < packageFolders.length; i++) {
 
-            promises.push(new Promise((resolve, reject) => {
+            promises.push(new Promise((res, reject) => {
 
-                const packagePath = path.resolve(publishRoot, packageFolders[i]);
-                const packageJsonPath = path.join(packagePath, "package.json");
+                const packagePath = resolve(publishRoot, packageFolders[i]);
+                const packageJsonPath = join(packagePath, "package.json");
+                const packageJson = importJSON(packageJsonPath);
 
-                import(packageJsonPath).then(packageJson => {
+                try {
 
-                    try {
+                    log(`${colors.bgBlue(" ")} Updating package.json version ${packagePath} to ${versionStr}`);
 
-                        log(`${colors.bgBlue(" ")} Updating package.json version ${packagePath} to ${versionStr}`);
+                    packageJson.version += versionStr;
 
-                        packageJson.version += versionStr;
-
-                        if (packageJson.dependencies) {
-                            const keys = Object.getOwnPropertyNames(packageJson.dependencies);
-                            for (let i = 0; i < keys.length; i++) {
-                                if (keys[i].startsWith("@pnp")) {
-                                    packageJson.dependencies[keys[i]] += versionStr;
-                                }
+                    if (packageJson.dependencies) {
+                        const keys = Object.getOwnPropertyNames(packageJson.dependencies);
+                        for (let i = 0; i < keys.length; i++) {
+                            if (keys[i].startsWith("@pnp")) {
+                                packageJson.dependencies[keys[i]] += versionStr;
                             }
                         }
-
-                        writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-
-                        resolve();
-
-                    } catch (e) {
-
-                        reject(e);
                     }
-                });
+
+                    writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+
+                    res();
+
+                } catch (e) {
+
+                    reject(e);
+                }
             }));
         }
     });

@@ -1,66 +1,70 @@
 #!/usr/bin/env node
 
-import * as LiftOff from "liftoff";
-import { jsVariants } from "interpret";
-import * as yargs from "yargs";
-import * as findup from "findup-sync";
+import Liftoff from "liftoff";
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
+import { join } from "path";
+import { cwd } from "process";
 import { ConfigCollection, BuildSchema, PackageSchema, PublishSchema } from "../src/config.js";
 import { builder } from "../src/builder.js";
 import { packager } from "../src/packager.js";
 import { publisher } from "../src/publisher.js";
+import importJSON from "../src/lib/importJSON.js";
 
-const args = yargs.argv;
+const args: any = yargs(hideBin(process.argv)).argv;
 
-const packagePath = findup("package.json");
+const packagePath = join(cwd(), 'package.json');
 
-const BuildSystem = new LiftOff({
+const BuildSystem = new Liftoff({
     configName: "buildsystem-config",
-    extensions: jsVariants,
     name: "buildsystem",
 });
 
-BuildSystem.launch({}, async (env: LiftOff.LiftoffEnv) => {
+BuildSystem.prepare({}, function (env) {
 
-    if (typeof env.configPath === "undefined" || env.configPath === null || env.configPath === "") {
-        throw Error("No config file found.");
-    }
+    BuildSystem.execute(env, async function (env: Liftoff.LiftoffEnv) {
 
-    const configs: { default: ConfigCollection } = await import(env.configPath);
-    const pkg: { version: string } = await import(packagePath);
+        if (typeof env.configPath === "undefined" || env.configPath === null || env.configPath === "") {
+            throw Error("No config file found.");
+        }
 
-    let name = <string>(args.n || args.name);
+        const configs: { default: ConfigCollection } = await import("file://" + env.configPath);
+        const pkg: { version: string } = importJSON(packagePath);
 
-    if (typeof name === "undefined" || name === null || name === "") {
-        // default to build if no name is supplied
-        name = "build";
-    }
+        let name = <string>(args.n || args.name);
 
-    // locate config by name
-    const config = configs.default.filter(c => c.name.toLowerCase() === name.toLowerCase());
+        if (typeof name === "undefined" || name === null || name === "") {
+            // default to build if no name is supplied
+            name = "build";
+        }
 
-    if (config.length < 1) {
-        throw Error(`No configuration entry found in ${env.configPath} with name ${name}.`);
-    }
+        // locate config by name
+        const config = configs.default.filter(c => c.name.toLowerCase() === name.toLowerCase());
 
-    switch (config[0].role) {
+        if (config.length < 1) {
+            throw Error(`No configuration entry found in ${env.configPath} with name ${name}.`);
+        }
 
-        case "build":
+        switch (config[0].role) {
 
-            await builder(pkg.version, <BuildSchema>config[0]);
-            break;
+            case "build":
 
-        case "package":
+                await builder(pkg.version, <BuildSchema>config[0]);
+                break;
 
-            await packager(pkg.version, <PackageSchema>config[0]);
-            break;
+            case "package":
 
-        case "publish":
+                await packager(pkg.version, <PackageSchema>config[0]);
+                break;
 
-            await publisher(pkg.version, <PublishSchema>config[0]);
-            break;
+            case "publish":
 
-        default:
+                await publisher(pkg.version, <PublishSchema>config[0]);
+                break;
 
-            throw Error(`Unrecognized role in config.`);
-    }
+            default:
+
+                throw Error(`Unrecognized role in config.`);
+        }
+    });
 });

@@ -129,6 +129,7 @@ export default <ConfigCollection>[
         postPublishTasks: [],
     },
     <BuildSchema>{
+
         name: "build-debug",
 
         role: "build",
