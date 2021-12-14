@@ -1,4 +1,4 @@
-name: v3 Nightly Builds
+name: Publish Build System
 
 on:
   workflow_dispatch:
@@ -35,6 +35,8 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: npm run pnp-publish-v3nightly
+        run: |
+          cd tools/buildsystem
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
