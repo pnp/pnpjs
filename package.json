@@ -7,7 +7,7 @@
     "devDependencies": {
         "@azure/msal-node": "^1.0.1",
         "@microsoft/microsoft-graph-types": "^1.32.0",
-        "@pnp/buildsystem": "file:tools/buildsystem",
+        "@pnp/buildsystem": "^3.0.0",
         "@types/chai": "^4.2.22",
         "@types/chai-as-promised": "^7.1.4",
         "@types/core-js": "^2.5.4",
