@@ -1,6 +1,6 @@
 {
     "name": "@pnp/buildsystem",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "bin": {
         "pnpbuild": "bin/buildsystem.js"
     },

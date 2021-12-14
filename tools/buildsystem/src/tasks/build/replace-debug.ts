@@ -1,6 +1,7 @@
 import { BuildSchema } from "../../config.js";
 import replace from "replace-in-file";
 import { resolve, dirname } from "path";
+import importJSON from "../../lib/importJSON.js";
 
 interface TSConfig {
     compilerOptions: {
@@ -32,7 +33,7 @@ export function createDebugReplace(versionReplacePaths: string[]): (version: str
         for (let i = 0; i < config.buildTargets.length; i++) {
 
             // read our outDir from the build target (which will be a tsconfig file)
-            const buildConfig: TSConfig = require(config.buildTargets[i]);
+            const buildConfig: TSConfig = importJSON(config.buildTargets[i]);
             const sourceRoot = resolve(dirname(config.buildTargets[i]));
             const outDir = buildConfig.compilerOptions.outDir;
 
