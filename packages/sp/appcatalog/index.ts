@@ -1,5 +1,5 @@
-import { extractWebUrl } from "..";
-import { SPFI } from "../fi";
+import { extractWebUrl } from "../utils/extract-web-url.js";
+import { SPFI } from "../fi.js";
 import { IWeb, Web } from "../webs/types.js";
 
 import "./web.js";

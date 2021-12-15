@@ -4,7 +4,7 @@ import "@pnp/sp/navigation";
 import "@pnp/sp/webs";
 import { SPFI } from "@pnp/sp";
 import { INavigationNodes } from "@pnp/sp/navigation";
-import { getRandomString } from "@pnp/core/util.js";
+import { getRandomString } from "@pnp/core";
 
 describe("Navigation Service", function () {
 

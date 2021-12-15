@@ -10,7 +10,7 @@ import { getRandomString, combine } from "@pnp/core";
 import { IFiles, TemplateFileType } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
-import findupSync = require("findup-sync");
+import findupSync from "findup-sync";
 import { SPFI } from "@pnp/sp";
 
 // give ourselves a single reference to the projectRoot

@@ -11,8 +11,6 @@
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
         "@pnp/sp": "0.0.0-PLACEHOLDER",
         "@pnp/graph": "0.0.0-PLACEHOLDER",
-        "https-proxy-agent": "^5.0.0",
-        "jsonwebtoken": "8.5.1",
         "node-fetch": "2.6.1",
         "tslib": "2.1.0"
     },

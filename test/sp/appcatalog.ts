@@ -8,7 +8,7 @@ import "@pnp/sp/appcatalog";
 import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
-import findupSync = require("findup-sync");
+import findupSync from "findup-sync";
 import { SPFI } from "@pnp/sp";
 
 // give ourselves a single reference to the projectRoot

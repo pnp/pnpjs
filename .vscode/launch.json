@@ -11,7 +11,9 @@
       "preLaunchTask": "build",
       "runtimeExecutable": null,
       "runtimeArgs": [
-        "--nolazy"
+        "--nolazy",
+        "--experimental-loader",
+        "file://${workspaceRoot}/build/debugging/tools/local-module-resolver/esm.js"
       ],
       "env": {
         "NODE_ENV": "development"

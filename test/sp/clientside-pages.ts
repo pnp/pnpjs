@@ -270,47 +270,51 @@ describe("Clientside Pages", function () {
         });
     });
 
-    if (testSettings.testUser?.length > 0) {
-        describe("author", function () {
-            let page: IClientsidePage;
-            let userId: number;
-            let userPrincipalName: string;
-            let pageUrl: string;
+    describe("author", function () {
 
-            before(async function () {
-                this.timeout(0);
-                page = await _spfi.web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
-                await page.save();
-                // we need the updated url info from the published page so we re-load things.
-                await page.load();
+        let page: IClientsidePage;
+        let userId: number;
+        let userPrincipalName: string;
+        let pageUrl: string;
 
-                const serverRelUrl = (await _spfi.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
-                pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
+        before(async function () {
 
-                const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
-                userId = ensureTestUser.data.Id;
-                userPrincipalName = ensureTestUser.data.Email;
-            });
+            if (testSettings.testUser?.length > 0) {
+                this.skip();
+            }
 
-            it("setAuthorById()", async function () {
+            this.timeout(0);
+            page = await _spfi.web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
+            await page.save();
+            // we need the updated url info from the published page so we re-load things.
+            await page.load();
 
-                await page.setAuthorById(userId);
-                await page.save();
+            const serverRelUrl = (await _spfi.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
+            pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
 
-                const page2 = await _spfi.web.loadClientsidePage(pageUrl);
-                expect(page2.authorByLine).to.eq(userPrincipalName);
-            });
-
-            it("setAuthorByLoginName()", async function () {
-                await page.setAuthorByLoginName(testSettings.testUser);
-                await page.save();
-
-                const page2 = await _spfi.web.loadClientsidePage(pageUrl);
-
-                expect(page2.authorByLine).to.eq(userPrincipalName);
-            });
+            const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
+            userId = ensureTestUser.data.Id;
+            userPrincipalName = ensureTestUser.data.Email;
         });
-    }
+
+        it("setAuthorById()", async function () {
+
+            await page.setAuthorById(userId);
+            await page.save();
+
+            const page2 = await _spfi.web.loadClientsidePage(pageUrl);
+            expect(page2.authorByLine).to.eq(userPrincipalName);
+        });
+
+        it("setAuthorByLoginName()", async function () {
+            await page.setAuthorByLoginName(testSettings.testUser);
+            await page.save();
+
+            const page2 = await _spfi.web.loadClientsidePage(pageUrl);
+
+            expect(page2.authorByLine).to.eq(userPrincipalName);
+        });
+    });
 
     describe("description", function () {
         let page: IClientsidePage;

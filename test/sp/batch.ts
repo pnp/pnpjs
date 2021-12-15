@@ -114,33 +114,36 @@ describe("Batching", function () {
         }
     });
 
-    if (testSettings.testUser?.length > 0) {
-        it("Cloned Requests (not items.add)", async function () {
-            const order: number[] = [];
-            const expected: number[] = [1, 2, 3];
+    it("Cloned Requests (not items.add)", async function () {
 
-            const { Id: groupId } = await _spfi.web.associatedVisitorGroup.select("Id")<{ Id: number }>();
+        if (testSettings.testUser?.length < 1) {
+            this.skip();
+        }
 
-            if (groupId !== undefined) {
-                const [batchedSP, execute] = _spfi.batched();
+        const order: number[] = [];
+        const expected: number[] = [1, 2, 3];
 
-                batchedSP.web.siteGroups.getById(groupId).users().then(function () {
-                    order.push(1);
-                });
+        const { Id: groupId } = await _spfi.web.associatedVisitorGroup.select("Id")<{ Id: number }>();
 
-                batchedSP.web.siteGroups.getById(groupId).users.add(testSettings.testUser).then(function () {
-                    order.push(2);
-                });
+        if (groupId !== undefined) {
+            const [batchedSP, execute] = _spfi.batched();
 
-                await execute();
+            batchedSP.web.siteGroups.getById(groupId).users().then(function () {
+                order.push(1);
+            });
 
-                order.push(3);
-                return expect(order.toString()).to.eql(expected.toString());
-            } else {
-                assert.fail("Did not succesfully retrieve visitors group id");
-            }
-        });
-    }
+            batchedSP.web.siteGroups.getById(groupId).users.add(testSettings.testUser).then(function () {
+                order.push(2);
+            });
+
+            await execute();
+
+            order.push(3);
+            return expect(order.toString()).to.eql(expected.toString());
+        } else {
+            assert.fail("Did not succesfully retrieve visitors group id");
+        }
+    });
 
     it("Complex Ordering", async function () {
         const order: number[] = [];

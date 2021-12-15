@@ -12,7 +12,7 @@ describe.skip("SiteDesigns", function () {
 
     this.timeout(120000);
 
-    const testuser = testSettings.testUser;
+    let testuser;
 
     let _spfi: SPFI = null;
 
@@ -21,6 +21,8 @@ describe.skip("SiteDesigns", function () {
         if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
             this.skip();
         }
+
+        testuser = testSettings.testUser;
 
         _spfi = getSP();
     });

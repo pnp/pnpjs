@@ -53,20 +53,22 @@ describe("Comments", function () {
         expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
     });
 
-    if (testSettings.testUser?.length > 0) {
-        it("add - at mention", async function () {
+    it("add - at mention", async function () {
 
-            const pageName = `CommentPage_${getRandomString(4)}`;
-            const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
-            await page.save();
-            const commentInfo: Partial<ICommentInfo> = {
-                mentions: [{ loginName: testUserLogin, email: testUserEmail, name: testUser }],
-                text: "This is the test comment with at mentions",
-            };
-            const comment = await page.addComment(commentInfo);
-            expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
-        });
-    }
+        if (testSettings.testUser?.length < 0) {
+            this.skip();
+        }
+
+        const pageName = `CommentPage_${getRandomString(4)}`;
+        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        await page.save();
+        const commentInfo: Partial<ICommentInfo> = {
+            mentions: [{ loginName: testUserLogin, email: testUserEmail, name: testUser }],
+            text: "This is the test comment with at mentions",
+        };
+        const comment = await page.addComment(commentInfo);
+        expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
+    });
 
     it("getById - clientside page", async function () {
 

@@ -45,16 +45,15 @@ describe("SiteGroups", function () {
             return expect(_spfi.web.associatedVisitorGroup()).to.eventually.be.fulfilled;
         });
 
-        if (testSettings.testUser?.length > 0) {
-            it("createDefaultAssociatedGroups()", async function () {
-                await _spfi.web.ensureUser(testSettings.testUser);
-                const groupName = `TestGroup_${getRandomString(4)}`;
-                return expect(_spfi.web.createDefaultAssociatedGroups(groupName,
-                    testSettings.testUser,
-                    false,
-                    false)).to.be.eventually.fulfilled;
-            });
-        }
+        it("createDefaultAssociatedGroups()", async function () {
+
+            await _spfi.web.ensureUser(testSettings.testUser);
+            const groupName = `TestGroup_${getRandomString(4)}`;
+            return expect(_spfi.web.createDefaultAssociatedGroups(groupName,
+                testSettings.testUser,
+                false,
+                false)).to.be.eventually.fulfilled;
+        });
     });
 
     it("getById()", async function () {

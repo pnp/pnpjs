@@ -1,7 +1,6 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
-        "module": "CommonJS",
         "outDir": "../build/testing",
         "declaration": true,
         "declarationMap": false,
@@ -19,6 +18,6 @@
     },
     "include": [
         "./**/*.ts",
-        "../tools/local-module-resolver/**/*.ts"
+        "../tools/local-module-resolver/esm.ts"
     ]
 }

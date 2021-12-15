@@ -12,8 +12,6 @@ import "@pnp/sp/webs";
 import { IWeb } from "@pnp/sp/webs";
 import { graphfi, GraphFI } from "@pnp/graph";
 import { LogLevel } from "@pnp/logging";
-// import { RequestRecorderCache } from "./test-recorder.js";
-// import { join } from "path";
 
 chai.use(chaiAsPromised);
 
@@ -127,7 +125,7 @@ switch (mode) {
         break;
     default:
 
-        settings = require(findup("settings.js"));
+        settings = await import(findup("settings.js"));
         if (skipWeb) {
             settings.testing.enableWebTests = false;
         }

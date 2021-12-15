@@ -55,8 +55,6 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
 
-
-
         const i = await sp.web();
 
         console.log(i);
