@@ -574,7 +574,7 @@ import "@pnp/sp/lists";
 import { IList } from "@pnp/sp/lists";
 
 const sp = spfi("{tenant url}").using(SPFx(this.content));
-const list: IList = web.siteUserInfoList;
+const list: IList = sp.web.siteUserInfoList;
 
 const data = await list();
 
@@ -589,7 +589,8 @@ Get a reference the default documents library of a web
 ```TypeScript
 import { IList } from "@pnp/sp/lists";
 
-const list: IList = web.defaultDocumentLibrary;
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const list: IList = sp.web.defaultDocumentLibrary;
 ```
 
 ### customListTemplates
@@ -599,6 +600,7 @@ Gets the collection of all list definitions and list templates that are availabl
 ```TypeScript
 import { IList } from "@pnp/sp/lists";
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 const templates = await sp.web.customListTemplates();
 
 // odata operators chain off the collection as expected
@@ -612,9 +614,10 @@ Gets a list by server relative url (list's root folder)
 ```TypeScript
 import { IList } from "@pnp/sp/lists";
 
-const list: IList = web.getList("/sites/dev/lists/test");
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const list: IList = sp.web.getList("/sites/dev/lists/test");
 
-const listData = list();
+const listData = await list();
 ```
 
 ### getCatalog
@@ -635,6 +638,7 @@ AppDataCatalog | 125
 ```TypeScript
 import { IList } from "@pnp/sp/lists";
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 const templateCatalog: IList = await sp.web.getCatalog(111);
 
 const themeCatalog: IList = await sp.web.getCatalog(123);
@@ -655,9 +659,8 @@ Gets a navigation object that represents navigation on the Web site, including t
 ```TypeScript
 import { INavigation } from "@pnp/sp/navigation";
 
-const nav: INavigation = web.navigation;
-
-const navData = await nav();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const nav: INavigation = sp.web.navigation;
 ```
 
 ## regional-settings imports
@@ -671,7 +674,8 @@ Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 ```TypeScript
 import { IRegionalSettings } from "@pnp/sp/navigation";
 
-const settings: IRegionalSettings = web.regionalSettings;
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const settings: IRegionalSettings = sp.web.regionalSettings;
 
 const settingsData = await settings();
 ```
@@ -687,7 +691,8 @@ Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 ```TypeScript
 import { IRelatedItemManager, IRelatedItem } from "@pnp/sp/related-items";
 
-const manager: IRelatedItemManager = web.relatedItems;
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const manager: IRelatedItemManager = sp.web.relatedItems;
 
 const data: IRelatedItem[] = await manager.getRelatedItems("{list name}", 4);
 ```
@@ -713,9 +718,10 @@ Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 The site groups
 
 ```TypeScript
-const groups = await web.siteGroups();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const groups = await sp.web.siteGroups();
 
-const groups2 = await web.siteGroups.top(2)();
+const groups2 = await sp.web.siteGroups.top(2)();
 ```
 
 ### associatedOwnerGroup
@@ -723,9 +729,11 @@ const groups2 = await web.siteGroups.top(2)();
 The web's owner group
 
 ```TypeScript
-const group = await web.associatedOwnerGroup();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
-const users = await web.associatedOwnerGroup.users();
+const group = await sp.web.associatedOwnerGroup();
+
+const users = await sp.web.associatedOwnerGroup.users();
 ```
 
 ### associatedMemberGroup
@@ -733,9 +741,11 @@ const users = await web.associatedOwnerGroup.users();
 The web's member group
 
 ```TypeScript
-const group = await web.associatedMemberGroup();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
-const users = await web.associatedMemberGroup.users();
+const group = await sp.web.associatedMemberGroup();
+
+const users = await sp.web.associatedMemberGroup.users();
 ```
 
 ### associatedVisitorGroup
@@ -743,9 +753,11 @@ const users = await web.associatedMemberGroup.users();
 The web's visitor group
 
 ```TypeScript
-const group = await web.associatedVisitorGroup();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
-const users = await web.associatedVisitorGroup.users();
+const group = await sp.web.associatedVisitorGroup();
+
+const users = await sp.web.associatedVisitorGroup.users();
 ```
 
 ### createDefaultAssociatedGroups
@@ -753,16 +765,18 @@ const users = await web.associatedVisitorGroup.users();
 Creates the default associated groups (Members, Owners, Visitors) and gives them the default permissions on the site. The target site must have unique permissions and no associated members / owners / visitors groups
 
 ```TypeScript
-await web.createDefaultAssociatedGroups("Contoso", "{first owner login}");
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+await sp.web.createDefaultAssociatedGroups("Contoso", "{first owner login}");
 
 // copy the role assignments
-await web.createDefaultAssociatedGroups("Contoso", "{first owner login}", true);
+await sp.web.createDefaultAssociatedGroups("Contoso", "{first owner login}", true);
 
 // don't clear sub assignments
-await web.createDefaultAssociatedGroups("Contoso", "{first owner login}", false, false);
+await sp.web.createDefaultAssociatedGroups("Contoso", "{first owner login}", false, false);
 
 // specify secondary owner, don't copy permissions, clear sub scopes
-await web.createDefaultAssociatedGroups("Contoso", "{first owner login}", false, true, "{second owner login}");
+await sp.web.createDefaultAssociatedGroups("Contoso", "{first owner login}", false, true, "{second owner login}");
 ```
 
 ## site-users imports
@@ -778,11 +792,13 @@ Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 The site users
 
 ```TypeScript
-const users = await web.siteUsers();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
-const users2 = await web.siteUsers.top(5)();
+const users = await sp.web.siteUsers();
 
-const users3 = await web.siteUsers.filter(`startswith(LoginName, '${encodeURIComponent("i:0#.f|m")}')`)();
+const users2 = await sp.web.siteUsers.top(5)();
+
+const users3 = await sp.web.siteUsers.filter(`startswith(LoginName, '${encodeURIComponent("i:0#.f|m")}')`)();
 ```
 
 ### currentUser
@@ -790,10 +806,12 @@ const users3 = await web.siteUsers.filter(`startswith(LoginName, '${encodeURICom
 Information on the current user
 
 ```TypeScript
-const user = await web.currentUser();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const user = await sp.web.currentUser();
 
 // check the login name of the current user
-const user2 = await web.currentUser.select("LoginName")();
+const user2 = await sp.web.currentUser.select("LoginName")();
 ```
 
 ### ensureUser
@@ -803,7 +821,9 @@ Checks whether the specified login name belongs to a valid user in the web. If t
 ```TypeScript
 import { IWebEnsureUserResult } from "@pnp/sp/site-users/";
 
-const result: IWebEnsureUserResult = await web.ensureUser("i:0#.f|membership|user@domain.onmicrosoft.com");
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const result: IWebEnsureUserResult = await sp.web.ensureUser("i:0#.f|membership|user@domain.onmicrosoft.com");
 ```
 
 ### getUserById
@@ -813,7 +833,9 @@ Returns the user corresponding to the specified member identifier for the curren
 ```TypeScript
 import { ISiteUser } from "@pnp/sp/site-users/";
 
-const user: ISiteUser = web.getUserById(23);
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const user: ISiteUser = sp.web.getUserById(23);
 
 const userData = await user();
 
@@ -835,7 +857,9 @@ Gets a newly refreshed collection of the SPWeb's SPUserCustomActionCollection
 ```TypeScript
 import { IUserCustomActions } from "@pnp/sp/user-custom-actions";
 
-const actions: IUserCustomActions = web.userCustomActions;
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const actions: IUserCustomActions = sp.web.userCustomActions;
 
 const actionsData = await actions();
 ```
