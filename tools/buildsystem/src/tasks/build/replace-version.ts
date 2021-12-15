@@ -9,7 +9,7 @@ interface TSConfig {
     };
 }
 
-export function createReplaceVersion(paths: string[]): (version: string, config: BuildSchema) => Promise<void> {
+export function createReplaceVersion(paths: string[], versionMask = /\$\$Version\$\$/ig): (version: string, config: BuildSchema) => Promise<void> {
 
     /**
      * Replaces the $$Version$$ string in the SharePoint HttpClient
@@ -21,7 +21,7 @@ export function createReplaceVersion(paths: string[]): (version: string, config:
 
         const options = {
             files: [],
-            from: /\$\$Version\$\$/ig,
+            from: versionMask,
             to: version,
         };
 
