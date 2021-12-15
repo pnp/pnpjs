@@ -8,18 +8,20 @@ Webs are one of the fundamental entry points when working with SharePoint. Webs 
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";|
-|Preset: All|import { sp, Webs, IWebs } from "@pnp/sp/presets/all";|
-|Preset: Core|import { sp, Webs, IWebs } from "@pnp/sp/presets/core";|
+|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs";|
+|Selective 2|import { spfi, SPFx} from "@pnp/sp";<br />import "@pnp/sp/webs";|
+|Preset: All|import { spfi, SPFx, Webs, IWebs } from "@pnp/sp/presets/all";|
+|Preset: Core|import { spfi, SPFx, Webs, IWebs } from "@pnp/sp/presets/core";|
 
 ### Add Web
 
 Using the library you can add a web to another web's collection of subwebs. The simplest usage requires only a title and url. This will result in a team site with all of the default settings. You can also provide other settings such as description, template, language, and inherit permissions.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import { IWebAddResult } from "@pnp/sp/webs";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 const result = await sp.web.webs.add("title", "subweb1");
 
@@ -27,7 +29,7 @@ const result = await sp.web.webs.add("title", "subweb1");
 console.log(result.data);
 
 // we can immediately operate on the new web
-result.web.select("Title").get().then((w: IWebAddResult)  => {
+result.web.select("Title")().then((w: IWebInfo)  => {
 
     // show our title
     console.log(w.Title);
@@ -35,8 +37,10 @@ result.web.select("Title").get().then((w: IWebAddResult)  => {
 ```
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import { IWebAddResult } from "@pnp/sp/webs";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // create a German language wiki site with title, url, description, which does not inherit permissions
 sp.web.webs.add("wiki", "subweb2", "a wiki web", "WIKI#0", 1031, false).then((w: IWebAddResult) => {
@@ -51,47 +55,44 @@ sp.web.webs.add("wiki", "subweb2", "a wiki web", "WIKI#0", 1031, false).then((w:
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Web, IWeb } from "@pnp/sp/webs";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";|
-|Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presets/all";|
-|Preset: Core|import { sp, Web, IWeb } from "@pnp/sp/presets/core";|
+|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import { Web, IWeb } from "@pnp/sp/webs";|
+|Selective 2|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";|
+|Preset: All|import { spfi, SPFx, Web, IWeb } from "@pnp/sp/presets/all";|
+|Preset: Core|import { spfi, SPFx, Web, IWeb } from "@pnp/sp/presets/core";|
 
 ### Access a Web
 
 There are several ways to access a web instance, each of these methods is equivalent in that you will have an IWeb instance to work with. All of the examples below use a variable named "web" which represents an IWeb instance - regardless of how it was initially accessed.
 
-**Access the web from the imported "sp" object using selective import:**
+**Access the web from the imported "spfi" object using selective import:**
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const r = await sp.web();
-```
-
-**Access the web from the imported "sp" using the 'all' preset**
-
-```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 const r = await sp.web();
 ```
 
-**Access the web from the imported "sp" using the 'core' preset**
+**Access the web from the imported "spfi" object using the 'all' preset**
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/core";
+import { spfi, SPFx } from "@pnp/sp/presets/all";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 const r = await sp.web();
 ```
 
-**Create a web instance using the factory function**
+**Access the web from the imported "spfi" object using the 'core' preset**
 
 ```TypeScript
-import { Web } from "@pnp/sp/webs";
+import { spfi, SPFx } from "@pnp/sp/presets/core";
 
-const web = Web("https://something.sharepoint.com/sites/dev");
-const r = await web();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const r = await sp.web();
 ```
 
 ### webs
@@ -99,20 +100,25 @@ const r = await web();
 Access the child [webs collection](#Webs%20Collection) of this web
 
 ```TypeScript
-const webs = web.webs();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const web = sp.web;
+const webs = await web.webs();
 ```
 
 ### Get A Web's properties
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // basic get of the webs properties
-const props = await web();
+const props = await sp.web();
 
 // use odata operators to get specific fields
-const props2 = await web.select("Title")();
+const props2 = await sp.web.select("Title")();
 
 // type the result to match what you are requesting
-const props3 = await web.select("Title")<{ Title: string }>();
+const props3 = await sp.web.select("Title")<{ Title: string }>();
 ```
 
 ### getParentWeb
@@ -120,8 +126,8 @@ const props3 = await web.select("Title")<{ Title: string }>();
 Get the data and IWeb instance for the parent web for the given web instance
 
 ```TypeScript
-import { IOpenWebByIdResult } from "@pnp/sp/sites";
-const web: IOpenWebByIdResult = web.getParentWeb();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const web = web.getParentWeb();
 ```
 
 ### getSubwebsFilteredForCurrentUser
@@ -129,7 +135,10 @@ const web: IOpenWebByIdResult = web.getParentWeb();
 Returns a collection of objects that contain metadata about subsites of the current site in which the current user is a member.
 
 ```TypeScript
-const subWebs = await web.getSubwebsFilteredForCurrentUser()();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const web = sp.web;
+const subWebs = web.getSubwebsFilteredForCurrentUser()();
 
 // apply odata operations to the collection
 const subWebs2 = await sp.web.getSubwebsFilteredForCurrentUser().select("Title", "Language").orderBy("Created", true)();
@@ -142,6 +151,9 @@ const subWebs2 = await sp.web.getSubwebsFilteredForCurrentUser().select("Title",
 Allows access to the web's all properties collection. This is readonly in REST.
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const web = sp.web;
 const props = await web.allProperties();
 
 // select certain props
@@ -153,6 +165,9 @@ const props2 = await web.allProperties.select("prop1", "prop2")();
 Gets a collection of WebInfos for this web's subwebs
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const web = sp.web;
+
 const infos = await web.webinfos();
 
 // or select certain fields
@@ -176,6 +191,8 @@ Updates this web instance with the supplied properties
 
 ```TypeScript
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const web = sp.web;
 // update the web's title and description
 const result = await web.update({
     Title: "New Title",
@@ -183,14 +200,13 @@ const result = await web.update({
 });
 
 // a project implementation could wrap the update to provide type information for your expected fields:
-import { IWebUpdateResult } from "@pnp/sp/webs";
 
 interface IWebUpdateProps {
     Title: string;
     Description: string;
 }
 
-function updateWeb(props: IWebUpdateProps): Promise<IWebUpdateResult> {
+function updateWeb(props: IWebUpdateProps): Promise<void> {
     web.update(props);
 }
 ```
@@ -198,6 +214,9 @@ function updateWeb(props: IWebUpdateProps): Promise<IWebUpdateResult> {
 ### Delete a Web
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const web = sp.web;
+
 await web.delete();
 ```
 
@@ -208,8 +227,8 @@ Applies the theme specified by the contents of each of the files specified in th
 ```TypeScript
 import { combine } from "@pnp/core";
 
-// we are going to apply the theme to this sub web as an example
-const web = Web("https://{tenant}.sharepoint.com/sites/dev/subweb");
+const sp = spfi("https://{tenant}.sharepoint.com/sites/dev/subweb").using(SPFx(this.content));
+const web = sp.web;
 
 // the urls to the color and font need to both be from the catalog at the root
 // these urls can be constants or calculated from existing urls
@@ -226,6 +245,8 @@ await web.applyTheme(colorUrl, fontUrl, "", false);
 Applies the specified site definition or site template to the Web site that has no template applied to it. This is seldom used outside provisioning scenarios.
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const web = sp.web;
 const templates = (await web.availableWebTemplates().select("Name")<{ Name: string }[]>()).filter(t => /ENTERWIKI#0/i.test(t.Name));
 
 // apply the wiki template
@@ -239,11 +260,13 @@ await web.applyWebTemplate(template);
 Returns the collection of changes from the change log that have occurred within the web, based on the specified query.
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const web = sp.web;
 // get the web changes including add, update, and delete
 const changes = await web.getChanges({
         Add: true,
-        ChangeTokenEnd: null,
-        ChangeTokenStart: null,
+        ChangeTokenEnd: undefined,
+        ChangeTokenStart: undefined,
         DeleteObject: true,
         Update: true,
         Web: true,
@@ -263,6 +286,7 @@ const iconFileName = await web.mapToIcon("test.docx");
 const iconFullPath = `https://{tenant}.sharepoint.com/sites/dev/_layouts/images/${iconFileName}`;
 
 // OR dynamically
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 const webData = await sp.web.select("Url")();
 const iconFullPath2 = combine(webData.Url, "_layouts", "images", iconFileName);
 
@@ -277,15 +301,17 @@ const icon32FileName = await web.mapToIcon("test.docx", 1);
 ### storage entities
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import { IStorageEntity } from "@pnp/sp/webs";
 
 // needs to be unique, GUIDs are great
 const key = "my-storage-key";
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // read an existing entity
-const entity: IStorageEntity = await web.getStorageEntity(key);
+const entity: IStorageEntity = await sp.web.getStorageEntity(key);
 
 // setStorageEntity and removeStorageEntity must be called in the context of the tenant app catalog site
 // you can get the tenant app catalog using the getTenantAppCatalogWeb
@@ -296,7 +322,7 @@ tenantAppCatalogWeb.setStorageEntity(key, "new value");
 // set other properties
 tenantAppCatalogWeb.setStorageEntity(key, "another value", "description", "comments");
 
-const entity2: IStorageEntity = await web.getStorageEntity(key);
+const entity2: IStorageEntity = await sp.web.getStorageEntity(key);
 /*
 entity2 === {
     Value: "another value",
@@ -315,38 +341,39 @@ await tenantAppCatalogWeb.removeStorageEntity(key);
 |--|--|
 |Selective 1|import "@pnp/sp/appcatalog";|
 |Selective 2|import "@pnp/sp/appcatalog/web";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
+|Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";|
 
 ### getAppCatalog
 
 Returns this web as an IAppCatalog instance or creates a new IAppCatalog instance from the provided url.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
 import { IApp } from "@pnp/sp/appcatalog";
 
-const appWeb = web.getAppCatalog();
-// appWeb url === web url
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
+const appWeb = sp.web.appcatalog;
 const app: IApp = appWeb.getAppById("{your app id}");
-
-const appWeb2 = web.getAppCatalog("https://tenant.sharepoing.com/sites/someappcatalog");
-// appWeb2 url === "https://tenant.sharepoing.com/sites/someappcatalog"
+// appWeb url === web url
 ```
 
 ## client-side-pages imports
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import "@pnp/sp/client-side-pages";|
-|Selective 2|import "@pnp/sp/client-side-pages/web";|
-|Preset: All|import { sp, Web, IWeb } from "@pnp/sp/presets/all";|
+|Selective 1|import "@pnp/sp/clientside-pages";|
+|Selective 2|import "@pnp/sp/clientside-pages/web";|
+|Preset: All|import { spfi, SPFx, Web, IWeb } from "@pnp/sp/presets/all";|
 
 You can create and load clientside page instances directly from a web. More details on [working with clientside pages](clientside-pages.md) are available in the dedicated article.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // simplest add a page example
 const page = await sp.web.addClientsidePage("mypage1");
@@ -362,17 +389,19 @@ const page = await sp.web.loadClientsidePage("/sites/dev/sitepages/mypage3.aspx"
 |--|--|
 |Selective 1|import "@pnp/sp/content-types";|
 |Selective 2|import "@pnp/sp/content-types/web";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
+|Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";|
 
 ### contentTypes
 
 Allows access to the collection of content types in this web.
 
 ```TypeScript
-const cts = await web.contentTypes();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const cts = await sp.web.contentTypes();
 
 // you can also select fields and use other odata operators
-const cts2 = await web.contentTypes.select("Name")();
+const cts2 = await sp.web.contentTypes.select("Name")();
 ```
 
 ## features imports
@@ -381,14 +410,16 @@ const cts2 = await web.contentTypes.select("Name")();
 |--|--|
 |Selective 1|import "@pnp/sp/features";|
 |Selective 2|import "@pnp/sp/features/web";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
+|Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";|
 
 ### features
 
 Allows access to the collection of content types in this web.
 
 ```TypeScript
-const features = await web.features();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const features = await sp.web.features();
 ```
 
 ## fields imports
@@ -397,14 +428,15 @@ const features = await web.features();
 |--|--|
 |Selective 1|import "@pnp/sp/fields";|
 |Selective 2|import "@pnp/sp/fields/web";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
+|Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";|
 
 ### fields
 
 Allows access to the collection of fields in this web.
 
 ```TypeScript
-const fields = await web.fields();
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const fields = await sp.web.fields();
 ```
 
 ## files imports
@@ -413,25 +445,17 @@ const fields = await web.fields();
 |--|--|
 |Selective 1|import "@pnp/sp/files";|
 |Selective 2|import "@pnp/sp/files/web";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
+|Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";|
 
-### getFileByServerRelativeUrl
-
-Gets a file by server relative url
-
-```TypeScript
-import { IFile } from "@pnp/sp/files";
-
-const file: IFile = web.getFileByServerRelativeUrl("/sites/dev/library/myfile.docx");
-```
 
 ### getFileByServerRelativePath
 
 Gets a file by server relative url if your file name contains # and % characters
 
 ```TypeScript
-import { IFile } from "@pnp/sp/files";
+import { IFile } from "@pnp/sp/files/types";
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 const file: IFile = web.getFileByServerRelativePath("/sites/dev/library/my # file%.docx");
 ```
 
@@ -441,20 +465,25 @@ const file: IFile = web.getFileByServerRelativePath("/sites/dev/library/my # fil
 |--|--|
 |Selective 1|import "@pnp/sp/folders";|
 |Selective 2|import "@pnp/sp/folders/web";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
+|Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";|
 
 ### folders
 
 Gets the collection of folders in this web
 
 ```TypeScript
-const folders = await web.folders();
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/folders";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const folders = await sp.web.folders();
 
 // you can also filter and select as with any collection
-const folders2 = await web.folders.select("ServerRelativeUrl", "TimeLastModified").filter("ItemCount gt 0")();
+const folders2 = await sp.web.folders.select("ServerRelativeUrl", "TimeLastModified").filter("ItemCount gt 0")();
 
 // or get the most recently modified folder
-const folders2 = await web.folders.orderBy("TimeLastModified").top(1)();
+const folders2 = await sp.web.folders.orderBy("TimeLastModified").top(1)();
 ```
 
 ### rootFolder
@@ -462,17 +491,9 @@ const folders2 = await web.folders.orderBy("TimeLastModified").top(1)();
 Gets the root folder of the web
 
 ```TypeScript
-const folder = await web.rootFolder();
-```
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
-### getFolderByServerRelativeUrl
-
-Gets a folder by server relative url
-
-```TypeScript
-import { IFolder } from "@pnp/sp/folders";
-
-const folder: IFolder = web.getFolderByServerRelativeUrl("/sites/dev/library");
+const folder = await sp.web.rootFolder();
 ```
 
 ### getFolderByServerRelativePath
@@ -481,6 +502,7 @@ Gets a folder by server relative url if your folder name contains # and % charac
 
 ```TypeScript
 import { IFolder } from "@pnp/sp/folders";
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 const folder: IFolder = web.getFolderByServerRelativePath("/sites/dev/library/my # folder%/");
 ```
@@ -491,17 +513,18 @@ const folder: IFolder = web.getFolderByServerRelativePath("/sites/dev/library/my
 |--|--|
 |Selective 1|import "@pnp/sp/hubsites";|
 |Selective 2|import "@pnp/sp/hubsites/web";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
+|Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";|
 
 ### hubSiteData
 
 Gets hub site data for the current web
 
 ```TypeScript
-import { IHubSiteWebData } from "@pnp/sp/hubsites";
+import "@pnp/sp/hubsites";
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 // get the data and force a refresh
-const data: IHubSiteWebData = await web.hubSiteData(true);
+const data = await sp.web.hubSiteData(true);
 ```
 
 ### syncHubSiteTheme
@@ -509,7 +532,10 @@ const data: IHubSiteWebData = await web.hubSiteData(true);
 Applies theme updates from the parent hub site collection
 
 ```TypeScript
-await web.syncHubSiteTheme();
+import "@pnp/sp/hubsites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+await sp.web.syncHubSiteTheme();
 ```
 
 ## lists imports
@@ -518,23 +544,25 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/lists";
 Selective 2|import "@pnp/sp/lists/web";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
-Preset: Core|import { sp } from "@pnp/sp/presets/core";
+Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
+Preset: Core|import { spfi, SPFx } from "@pnp/sp/presets/core";
 
 ### lists
 
 Gets the collection of all lists that are contained in the Web site
 
 ```TypeScript
+import "@pnp/sp/lists";
 import { ILists } from "@pnp/sp/lists";
 
-const lists: ILists = web.lists;
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+const lists: ILists = sp.web.lists;
 
 // you can always order the lists and select properties
 const data = await lists.select("Title").orderBy("Title")();
 
 // and use other odata operators as well
-const data2 = await web.lists.top(3).orderBy("LastItemModifiedDate")();
+const data2 = await sp.web.lists.top(3).orderBy("LastItemModifiedDate")();
 ```
 
 ### siteUserInfoList
@@ -542,8 +570,10 @@ const data2 = await web.lists.top(3).orderBy("LastItemModifiedDate")();
 Gets the UserInfo list of the site collection that contains the Web site
 
 ```TypeScript
+import "@pnp/sp/lists";
 import { IList } from "@pnp/sp/lists";
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 const list: IList = web.siteUserInfoList;
 
 const data = await list();
@@ -569,10 +599,10 @@ Gets the collection of all list definitions and list templates that are availabl
 ```TypeScript
 import { IList } from "@pnp/sp/lists";
 
-const templates = await web.customListTemplates();
+const templates = await sp.web.customListTemplates();
 
 // odata operators chain off the collection as expected
-const templates2 = await web.customListTemplates.select("Title")();
+const templates2 = await sp.web.customListTemplates.select("Title")();
 ```
 
 ### getList
@@ -605,9 +635,9 @@ AppDataCatalog | 125
 ```TypeScript
 import { IList } from "@pnp/sp/lists";
 
-const templateCatalog: IList = await web.getCatalog(111);
+const templateCatalog: IList = await sp.web.getCatalog(111);
 
-const themeCatalog: IList = await web.getCatalog(123);
+const themeCatalog: IList = await sp.web.getCatalog(123);
 ```
 
 ## navigation imports
@@ -616,7 +646,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/navigation";
 Selective 2|import "@pnp/sp/navigation/web";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
+Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 
 ### navigation
 
@@ -636,7 +666,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/regional-settings";
 Selective 2|import "@pnp/sp/regional-settings/web";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
+Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 
 ```TypeScript
 import { IRegionalSettings } from "@pnp/sp/navigation";
@@ -652,7 +682,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/related-items";
 Selective 2|import "@pnp/sp/related-items/web";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
+Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 
 ```TypeScript
 import { IRelatedItemManager, IRelatedItem } from "@pnp/sp/related-items";
@@ -676,7 +706,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/site-groups";
 Selective 2|import "@pnp/sp/site-groups/web";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
+Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 
 ### siteGroups
 
@@ -741,7 +771,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/site-users";
 Selective 2|import "@pnp/sp/site-users/web";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
+Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 
 ### siteUsers
 
@@ -796,7 +826,7 @@ Scenario|Import Statement
 --|--
 Selective 1|import "@pnp/sp/user-custom-actions";
 Selective 2|import "@pnp/sp/user-custom-actions/web";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
+Preset: All|import { spfi, SPFx } from "@pnp/sp/presets/all";
 
 ## userCustomActions
 
