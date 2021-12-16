@@ -17,7 +17,7 @@ const cache = new Map<string, ResolvedValue>();
 
 export interface ResolvedValue {
     url: string;
-    format?: "module" | "commonjs";
+    format?: "module";
 }
 
 export interface ResolveContext {
@@ -25,7 +25,11 @@ export interface ResolveContext {
     parentUrl?: string | undefined;
 }
 
-export function createResolve(innerPath: string): (specifier: string, context: ResolveContext, defaultResolve: Function) => Promise<ResolvedValue> {
+export interface ResolverFunc {
+    (specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue>;
+}
+
+export function createResolve(innerPath: string): ResolverFunc {
 
     return async function (specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue> {
 
@@ -66,17 +70,12 @@ export function createResolve(innerPath: string): (specifier: string, context: R
             return resolved;
         }
 
-        // if (specifier.indexOf("_mocha") > -1) {
-        //     return {
-        //         url: specifier,
-        //         format: "commonjs",
-        //     };
-        // }
-
         if (specifier.indexOf("settings.js") > -1 && /^[a-z]:[\\|/]/i.test(specifier) && isWin32) {
             specifier = "file://" + specifier;
-            log(`patching file path for win32: ${specifier}`);
+            log(`patching settings.js import path for win32: ${specifier}`);
         }
+
+
         
         // Defer to Node.js for all other specifiers.
         return defaultResolve(specifier, context, defaultResolve);

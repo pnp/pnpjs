@@ -15,9 +15,6 @@
         "--experimental-loader",
         "file://${workspaceRoot}/build/debugging/tools/local-module-resolver/esm-debug.js"
       ],
-      "env": {
-        "NODE_ENV": "development"
-      },
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
       "sourceMaps": true,
@@ -32,20 +29,17 @@
       "name": "Debug Tests",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+      "program": "${workspaceRoot}/node_modules/mocha/bin/mocha",
       "cwd": "${workspaceRoot}",
       "preLaunchTask": "test-build",
-      "runtimeArgs": [
-        "--experimental-loader",
-        "file://${workspaceRoot}/build/testing/tools/local-module-resolver/esm-test.js"
-      ],
       "sourceMaps": true,
       "outFiles": [],
       "args": [
         "--retries",
         "0",
         "--verbose",
-        "--logging"
+        "--logging",
+        "--skip-web"
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
