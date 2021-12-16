@@ -5,7 +5,7 @@ import "@pnp/sp/folders/list";
 import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { getRandomString, isFunc } from "@pnp/core";
 import * as fs from "fs";
 import * as path from "path";
@@ -17,7 +17,7 @@ describe("NodeJS: sp-extensions", function () {
     let _spfi: SPFI = null;
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

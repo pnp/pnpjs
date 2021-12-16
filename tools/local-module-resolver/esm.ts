@@ -15,60 +15,70 @@ log(`process.platform: ${process.platform}`);
 
 const cache = new Map<string, ResolvedValue>();
 
-interface ResolvedValue {
-    url: string,
-    format?: "module"
+export interface ResolvedValue {
+    url: string;
+    format?: "module" | "commonjs";
 }
 
-interface ResolveContext {
+export interface ResolveContext {
     conditions?: [];
     parentUrl?: string | undefined;
 }
 
-export async function resolve(specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue> {
+export function createResolve(innerPath: string): (specifier: string, context: ResolveContext, defaultResolve: Function) => Promise<ResolvedValue> {
 
-    if (specifier.startsWith("@pnp")) {
+    return async function (specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue> {
 
-        const modulePath = specifier.substring(4);
+        if (specifier.startsWith("@pnp")) {
 
-        if (cache.has(modulePath)) {
-            return cache.get(modulePath);
+            const modulePath = specifier.substring(4);
+
+            if (cache.has(modulePath)) {
+                return cache.get(modulePath);
+            }
+
+            let candidate = join(projectRoot, innerPath, modulePath);
+
+            if (existsSync(candidate + ".js")) {
+
+                candidate = candidate + ".js"
+
+            } else {
+
+                candidate = join(candidate, "index.js");
+            }
+
+            if (isWin32) {
+                candidate = "file://" + candidate;
+            }
+
+            const url = new URL(candidate).href;
+
+            log(`Resolved: ${specifier} => ${url}`);
+
+            const resolved: ResolvedValue = {
+                url,
+                format: "module",
+            };
+
+            cache.set(modulePath, resolved);
+
+            return resolved;
         }
 
-        let candidate = join(projectRoot, "/build/testing/packages", modulePath);
+        // if (specifier.indexOf("_mocha") > -1) {
+        //     return {
+        //         url: specifier,
+        //         format: "commonjs",
+        //     };
+        // }
 
-        if (existsSync(candidate + ".js")) {
-
-            candidate = candidate + ".js"
-
-        } else {
-
-            candidate = join(candidate, "index.js");
+        if (specifier.indexOf("settings.js") > -1 && /^[a-z]:[\\|/]/i.test(specifier) && isWin32) {
+            specifier = "file://" + specifier;
+            log(`patching file path for win32: ${specifier}`);
         }
-
-        if (isWin32) {
-            candidate = "file://" + candidate;
-        }
-
-        const url = new URL(candidate).href;
-
-        log(`Resolved: ${specifier} => ${url}`);
-
-        const resolved: ResolvedValue = {
-            url,
-            format: "module",
-        };
-
-        cache.set(modulePath, resolved);
-
-        return resolved;
+        
+        // Defer to Node.js for all other specifiers.
+        return defaultResolve(specifier, context, defaultResolve);
     }
-
-    if (/^[a-z]:[\\|/]/i.test(specifier) && isWin32) {
-        specifier = "file://" + specifier;
-        log(`patching file path for win32: ${specifier}`);
-    }
-
-    // Defer to Node.js for all other specifiers.
-    return defaultResolve(specifier, context, defaultResolve);
 }

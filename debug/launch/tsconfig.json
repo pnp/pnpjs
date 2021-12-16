@@ -22,6 +22,6 @@
     },
     "files": [
         "./main.ts",
-        "../../tools/local-module-resolver/esm.ts"
+        "../../tools/local-module-resolver/esm-debug.ts"
     ]
 }

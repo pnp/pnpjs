@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getGraph, testSettings } from "../main.js";
+import { getGraph } from "../main.js";
 import { GraphFI } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/groups";
@@ -19,7 +19,7 @@ describe("Directory Objects", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
+        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 
@@ -110,7 +110,7 @@ describe("Directory Objects", function () {
 
     // Remove the test data we created
     after(async function () {
-        if (testSettings.enableWebTests) {
+        if (this.settings.enableWebTests) {
             await _graphfi.groups.getById(testChildGroupID).delete();
             await _graphfi.groups.getById(testParentGroupID).delete();
         }

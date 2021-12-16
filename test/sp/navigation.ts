@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/navigation";
 import "@pnp/sp/webs";
 import { SPFI } from "@pnp/sp";
@@ -12,7 +12,7 @@ describe("Navigation Service", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -74,7 +74,7 @@ describe("navigation", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

@@ -53,7 +53,7 @@ const config = {
     timeout: 40000,
     ui: "bdd",
     retries,
-    "node-option": [`experimental-loader=file://${resolve("./build/testing/tools/local-module-resolver/esm.js")}`],
+    "node-option": [`experimental-loader=file://${resolve("./build/testing/tools/local-module-resolver/esm-test.js")}`],
     spec: paths,
 };
 

@@ -5,7 +5,7 @@ import "@pnp/sp/folders/list";
 import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { combine } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
 
@@ -17,7 +17,7 @@ describe("Alias Parameters", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

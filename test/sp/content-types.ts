@@ -1,4 +1,4 @@
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/content-types";
 import "@pnp/sp/lists/web";
@@ -10,7 +10,7 @@ describe("Content Types", function () {
     let _spfi: SPFI = null;
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -40,7 +40,7 @@ describe("Content Type", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

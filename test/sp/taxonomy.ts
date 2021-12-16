@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "@pnp/sp/taxonomy";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
 import { IRelation, ITermSet } from "@pnp/sp/taxonomy";
 
@@ -14,7 +14,7 @@ describe("Taxonomy", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

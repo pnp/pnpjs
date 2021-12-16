@@ -8,7 +8,7 @@ import "@pnp/sp/site-groups/web";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/batching";
 import { CheckinType } from "@pnp/sp/files";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
 import { AssignFrom, getRandomString } from "@pnp/core";
 
@@ -19,7 +19,7 @@ describe("Batching", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -116,7 +116,7 @@ describe("Batching", function () {
 
     it("Cloned Requests (not items.add)", async function () {
 
-        if (testSettings.testUser?.length < 1) {
+        if (this.settings.testUser?.length < 1) {
             this.skip();
         }
 
@@ -132,7 +132,7 @@ describe("Batching", function () {
                 order.push(1);
             });
 
-            batchedSP.web.siteGroups.getById(groupId).users.add(testSettings.testUser).then(function () {
+            batchedSP.web.siteGroups.getById(groupId).users.add(this.settings.testUser).then(function () {
                 order.push(2);
             });
 

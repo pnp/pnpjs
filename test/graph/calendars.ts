@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getGraph, testSettings } from "../main.js";
+import { getGraph } from "../main.js";
 import { GraphFI } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/calendars";
@@ -18,7 +18,7 @@ describe("Calendar", function () {
     // Ensure we have the data to test against
     before(async function () {
 
-        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
+        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 

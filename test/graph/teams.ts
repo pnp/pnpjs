@@ -1,6 +1,6 @@
 import { getRandomString, delay } from "@pnp/core";
 import { expect } from "chai";
-import { getGraph, testSettings } from "../main.js";
+import { getGraph } from "../main.js";
 import { GraphFI } from "@pnp/graph";
 import "@pnp/graph/teams";
 import "@pnp/graph/groups";
@@ -16,7 +16,7 @@ describe("Teams", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

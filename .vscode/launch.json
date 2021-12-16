@@ -13,7 +13,7 @@
       "runtimeArgs": [
         "--nolazy",
         "--experimental-loader",
-        "file://${workspaceRoot}/build/debugging/tools/local-module-resolver/esm.js"
+        "file://${workspaceRoot}/build/debugging/tools/local-module-resolver/esm-debug.js"
       ],
       "env": {
         "NODE_ENV": "development"
@@ -35,10 +35,18 @@
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "cwd": "${workspaceRoot}",
       "preLaunchTask": "test-build",
-      "runtimeArgs": [],
+      "runtimeArgs": [
+        "--experimental-loader",
+        "file://${workspaceRoot}/build/testing/tools/local-module-resolver/esm-test.js"
+      ],
       "sourceMaps": true,
       "outFiles": [],
-      "args": ["--retries", "0", "--verbose", "--logging"],
+      "args": [
+        "--retries",
+        "0",
+        "--verbose",
+        "--logging"
+      ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": [

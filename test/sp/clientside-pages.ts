@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
 import { getRandomString, combine } from "@pnp/core";
 import "@pnp/sp/webs";
@@ -16,12 +16,12 @@ describe("Clientside Pages", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
         _spfi = getSP();
-        relUrl = "/" + testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/"));
+        relUrl = "/" + this.settings.sp.testWebUrl.substr(this.settings.sp.testWebUrl.indexOf("/sites/"));
     });
 
     it("web.addClientSidePage", async function () {
@@ -60,7 +60,7 @@ describe("Clientside Pages", function () {
         await _spfi.web.addClientsidePage(pageFileName);
 
         // need to make the path relative
-        const rel = testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/"));
+        const rel = this.settings.sp.testWebUrl.substr(this.settings.sp.testWebUrl.indexOf("/sites/"));
         const promise = ClientsidePageFromFile(_spfi.web.getFileByServerRelativePath(combine("/", rel, "SitePages", pageFileName)));
         return expect(promise).to.eventually.be.fulfilled;
     });
@@ -79,7 +79,7 @@ describe("Clientside Pages", function () {
 
         it("can load a page", async function () {
 
-            const serverRelativePath = combine("/", testSettings.sp.testWebUrl.substr(testSettings.sp.testWebUrl.indexOf("/sites/")), "SitePages", pageName);
+            const serverRelativePath = combine("/", this.settings.sp.testWebUrl.substr(this.settings.sp.testWebUrl.indexOf("/sites/")), "SitePages", pageName);
 
             page = await _spfi.web.loadClientsidePage(serverRelativePath);
 
@@ -279,7 +279,7 @@ describe("Clientside Pages", function () {
 
         before(async function () {
 
-            if (testSettings.testUser?.length > 0) {
+            if (this.settings.testUser?.length > 0) {
                 this.skip();
             }
 
@@ -292,7 +292,7 @@ describe("Clientside Pages", function () {
             const serverRelUrl = (await _spfi.web.select("ServerRelativeUrl")()).ServerRelativeUrl;
             pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
 
-            const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
+            const ensureTestUser = await _spfi.web.ensureUser(this.settings.testUser);
             userId = ensureTestUser.data.Id;
             userPrincipalName = ensureTestUser.data.Email;
         });
@@ -307,7 +307,7 @@ describe("Clientside Pages", function () {
         });
 
         it("setAuthorByLoginName()", async function () {
-            await page.setAuthorByLoginName(testSettings.testUser);
+            await page.setAuthorByLoginName(this.settings.testUser);
             await page.save();
 
             const page2 = await _spfi.web.loadClientsidePage(pageUrl);
