@@ -24,7 +24,7 @@ describe("Calendar", function () {
 
         _graphfi = getGraph();
 
-        const userInfo = await getValidUser();
+        const userInfo = await getValidUser(this.settings.testUser);
         testUserName = userInfo.userPrincipalName;
 
         // Get default calendar

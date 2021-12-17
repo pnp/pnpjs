@@ -97,7 +97,8 @@ describe("Sharing", function () {
                 .to.eventually.be.fulfilled
                 .and.have.property("ErrorMessage").that.is.null;
         });
-        it(".shareWith (Edit-All)", function () {
+
+        it.skip(".shareWith (Edit-All)", function () {
 
             if (this.settings.testUser?.length < 1) {
                 this.skip();
@@ -180,7 +181,7 @@ describe("Sharing", function () {
                 .and.have.property("ErrorMessage").that.is.null;
         });
 
-        it("shareWith (Edit-All)", function () {
+        it.skip("shareWith (Edit-All)", function () {
 
             if (this.settings.testUser?.length < 1) {
                 this.skip();
@@ -302,7 +303,7 @@ describe("Sharing", function () {
 
     describe("Web", function () {
 
-        it("shareObject", async function () {
+        it.skip("shareObject", async function () {
 
             if (this.settings.testUser?.length < 1) {
                 this.skip();

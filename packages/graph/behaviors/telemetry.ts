@@ -9,6 +9,7 @@ export function Telemetry(): TimelinePipe<Queryable> {
 
             init.headers = { ...init.headers, ["SdkVersion"]: "PnPCoreJS/$$Version$$" };
 
+            // eslint-disable-next-line @typescript-eslint/dot-notation
             this.log(`Request Tag: ${init.headers["SdkVersion"]}`, 0);
 
             return [url, init, result];

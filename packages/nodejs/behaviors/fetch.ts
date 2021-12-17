@@ -11,7 +11,7 @@ export function NodeFetch(): TimelinePipe<Queryable> {
 
             this.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
-            return nodeFetch(url.toString(), init);
+            return <any>nodeFetch(url.toString(), <any>init);
         });
 
         return instance;
@@ -63,7 +63,7 @@ export function NodeFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Qu
 
                         this.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
-                        response = await nodeFetch(url.toString(), init);
+                        response = await <any>nodeFetch(url.toString(), <any>init);
 
                         // if we got a good response, return it, otherwise see if we can retry
                         return response.ok ? response : retry();

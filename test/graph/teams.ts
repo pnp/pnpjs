@@ -21,7 +21,7 @@ describe("Teams", function () {
         }
 
         _graphfi = getGraph();
-        const userInfo = await getValidUser();
+        const userInfo = await getValidUser(this.settings.testUser);
         testUserId = userInfo.id;
         teamBody = {
             "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",

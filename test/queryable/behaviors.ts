@@ -182,7 +182,7 @@ describe("Behaviors", function () {
         query.using(Timeout(controller.signal));
         query.using(ResolveOnData(), RejectOnError());
 
-        query.on.send.replace(async (url, init) => nodeFetch(url, init));
+        query.on.send.replace(async (url, init) => <any>nodeFetch(url.toString(), <any>init));
 
         try {
 

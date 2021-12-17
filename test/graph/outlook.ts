@@ -22,7 +22,7 @@ describe("Outlook", function () {
         }
 
         _graphfi = getGraph();
-        const userInfo = await getValidUser();
+        const userInfo = await getValidUser(this.settings.testUser);
         testUserName = userInfo.userPrincipalName;
     });
 

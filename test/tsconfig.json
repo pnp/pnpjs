@@ -6,13 +6,6 @@
         "declarationMap": false,
         "composite": false,
         "incremental": false,
-        "types": [
-            "chai",
-            "chai-as-promised",
-            "node",
-            "mocha",
-            "sharepoint"
-        ],
         "removeComments": true,
         "esModuleInterop": true
     },

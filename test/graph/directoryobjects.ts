@@ -26,7 +26,7 @@ describe("Directory Objects", function () {
         _graphfi = getGraph();
 
         // Get a sample user
-        userInfo = await getValidUser();
+        userInfo = await getValidUser(this.settings.testUser);
         testUserName = userInfo.userPrincipalName;
 
         // Create a test group to ensure we have a directory object

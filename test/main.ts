@@ -88,11 +88,13 @@ function readEnvVar(key: string, parse = false): any {
 
 async function loadSettings(md: typeof mode): Promise<ITestingSettings> {
 
+    let settings: ITestingSettings = null;
+
     switch (md) {
 
         case "online":
 
-            return {
+            settings = {
                 testing: {
                     testUser: readEnvVar("PNPTESTING_TESTUSER") || null,
                     enableWebTests: true,
@@ -112,25 +114,27 @@ async function loadSettings(md: typeof mode): Promise<ITestingSettings> {
                     },
                 },
             };
+            break;
 
         case "online-noweb":
 
-            return {
+            settings = {
                 testing: {
                     enableWebTests: false,
                 },
             };
+            break;
 
         default:
 
-            const settings = await import(findup("settings.js")).then(s => s.settings);
+            settings = await import(findup("settings.js")).then(s => s.settings);
 
             if (skipWeb) {
                 settings.testing.enableWebTests = false;
             }
-
-            return settings;
     }
+
+    return settings;
 }
 
 
