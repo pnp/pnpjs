@@ -7,27 +7,13 @@ const projectRoot = presolve(dirname(findup("package.json")));
 const isWin32 = process.platform === "win32";
 
 function log(_message: string) {
-    // console.log(`PnP Debug Loader: ${message}`);
+    // console.log(`PnP Node Local Module Loader: ${message}`);
 }
 
 log("Loaded");
 log(`process.platform: ${process.platform}`);
 
 const cache = new Map<string, ResolvedValue>();
-
-export interface ResolvedValue {
-    url: string;
-    format?: "module";
-}
-
-export interface ResolveContext {
-    conditions?: [];
-    parentUrl?: string | undefined;
-}
-
-export interface ResolverFunc {
-    (specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue>;
-}
 
 export function createResolve(innerPath: string): ResolverFunc {
 
@@ -74,10 +60,22 @@ export function createResolve(innerPath: string): ResolverFunc {
             specifier = "file://" + specifier;
             log(`patching settings.js import path for win32: ${specifier}`);
         }
-
-
         
         // Defer to Node.js for all other specifiers.
         return defaultResolve(specifier, context, defaultResolve);
     }
+}
+
+export interface ResolvedValue {
+    url: string;
+    format?: "module";
+}
+
+export interface ResolveContext {
+    conditions?: [];
+    parentUrl?: string | undefined;
+}
+
+export interface ResolverFunc {
+    (specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue>;
 }

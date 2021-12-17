@@ -3,7 +3,7 @@ import { resolve, dirname, join } from "path";
 import { writeFile } from "fs";
 
 import { PackageTargetMap } from "../../config.js";
-import getSubDirNames from "../../lib/getSubDirectoryNames.js";
+import getSubDirNames from "../../lib/getSubDirs.js";
 import importJSON from "../../lib/importJSON.js";
 
 interface TSConfig {
