@@ -262,7 +262,7 @@ describe("Sharing", function () {
             return expect(itemShare).has.property("ErrorMessage").that.is.null;
         });
 
-        it(".shareWith (Edit-All)", async function () {
+        it.skip(".shareWith (Edit-All)", async function () {
 
             if (this.settings.testUser?.length < 1) {
                 this.skip();
