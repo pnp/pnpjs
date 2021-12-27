@@ -3,7 +3,7 @@ import { SPFI } from "@pnp/sp";
 import "@pnp/sp/sites";
 import "@pnp/sp/lists";
 import "@pnp/sp/forms";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 
 describe("Forms", function () {
     const listName = "Documents";
@@ -12,7 +12,7 @@ describe("Forms", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

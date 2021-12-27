@@ -5,16 +5,14 @@
     "main": "./index.js",
     "typings": "./index",
     "dependencies": {
-        "@azure/msal-node": "^1.0.1",
+        "@azure/msal-node": "^1.4.0",
         "@pnp/core": "0.0.0-PLACEHOLDER",
         "@pnp/logging": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
         "@pnp/sp": "0.0.0-PLACEHOLDER",
         "@pnp/graph": "0.0.0-PLACEHOLDER",
-        "https-proxy-agent": "^5.0.0",
-        "jsonwebtoken": "8.5.1",
-        "node-fetch": "2.6.1",
-        "tslib": "2.1.0"
+        "node-fetch": "3.1.0",
+        "tslib": "2.3.1"
     },
     "author": {
         "name": "Microsoft and other contributors"

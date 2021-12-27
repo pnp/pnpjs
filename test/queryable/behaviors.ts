@@ -13,7 +13,7 @@ import { spfi } from "@pnp/sp";
 import { AbortController } from "node-abort-controller";
 import { default as nodeFetch } from "node-fetch";
 
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
 
@@ -22,7 +22,7 @@ describe("Behaviors", function () {
 
     it("CachingPessimistic", async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -53,7 +53,7 @@ describe("Behaviors", function () {
 
     it("CachingPessimistic (headers)", async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -89,7 +89,7 @@ describe("Behaviors", function () {
 
     it("Caching", async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -182,7 +182,7 @@ describe("Behaviors", function () {
         query.using(Timeout(controller.signal));
         query.using(ResolveOnData(), RejectOnError());
 
-        query.on.send.replace(async (url, init) => nodeFetch(url, init));
+        query.on.send.replace(async (url, init) => <any>nodeFetch(url.toString(), <any>init));
 
         try {
 

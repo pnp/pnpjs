@@ -1,8 +1,8 @@
-import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory, GraphQueryableInstance } from "../graphqueryable";
+import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory, GraphQueryableInstance } from "../graphqueryable.js";
 import { body, HeaderParse } from "@pnp/queryable";
-import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators";
-import { graphPost } from "../operations";
-import { defaultPath } from "../decorators";
+import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
+import { graphPost } from "../operations.js";
+import { defaultPath } from "../decorators.js";
 import { Team as ITeamType, TeamsAsyncOperation as ITeamsAsyncOperation, TeamsTab as ITeamsTabType } from "@microsoft/microsoft-graph-types";
 
 /**

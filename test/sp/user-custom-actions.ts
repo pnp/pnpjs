@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/user-custom-actions";
 import { SPFI } from "@pnp/sp";
@@ -10,7 +10,7 @@ describe("UserCustomActions", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

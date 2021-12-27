@@ -1,4 +1,4 @@
-import { SPFI } from "../fi";
+import { SPFI } from "../fi.js";
 import { ISite, Site } from "./types.js";
 
 export {

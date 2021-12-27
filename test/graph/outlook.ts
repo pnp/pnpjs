@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "@pnp/graph/users";
 import "@pnp/graph/outlook";
-import { getGraph, testSettings } from "../main.js";
+import { getGraph } from "../main.js";
 import { GraphFI } from "@pnp/graph";
 import { OutlookCategory } from "@microsoft/microsoft-graph-types";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
@@ -17,12 +17,12 @@ describe("Outlook", function () {
     // Ensure we have the data to test against
     this.beforeAll(async function () {
 
-        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
+        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 
         _graphfi = getGraph();
-        const userInfo = await getValidUser();
+        const userInfo = await getValidUser(this.settings.testUser);
         testUserName = userInfo.userPrincipalName;
     });
 

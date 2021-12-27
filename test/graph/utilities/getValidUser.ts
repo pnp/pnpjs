@@ -2,18 +2,18 @@ import { User as IUser } from "@microsoft/microsoft-graph-types";
 import { GraphFI } from "@pnp/graph";
 import "@pnp/graph/users";
 import { Logger, LogLevel } from "@pnp/logging";
-import { getGraph, testSettings } from "../../main.js";
+import { getGraph } from "../../main.js";
 
 let cachedValidUser = null;
 const usersToCheck = 20;
 
-export default async function getValidUser(ignoreCache = false): Promise<IUser> {
+export default async function getValidUser(userName: string, ignoreCache = false): Promise<IUser> {
 
     if (!ignoreCache && cachedValidUser !== null) {
         return cachedValidUser;
     }
 
-    const testUserName = testSettings.testUser.substr(testSettings.testUser.lastIndexOf("|") + 1);
+    const testUserName = userName.substring(userName.lastIndexOf("|") + 1);
 
     try {
         const _graphFI: GraphFI = getGraph();

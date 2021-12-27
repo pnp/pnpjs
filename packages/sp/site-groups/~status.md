@@ -1,3 +1,2 @@
-// TODO: MODULE STATUS: NOT DONE!!, pending testing
+// TODO: MODULE STATUS: done, pending testing
 
-// BUG: fixed missing site-groups on web

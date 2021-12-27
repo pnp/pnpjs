@@ -1,10 +1,9 @@
-declare var require: (s: string) => any;
-const path = require("path");
+import { resolve } from "path";
 
 import { exec } from "child_process";
 import { BuildSchema } from "../../config.js";
 
-const tscPath = path.resolve("./node_modules/.bin/tsc");
+const tscPath = resolve("./node_modules/.bin/tsc");
 
 /**
  * Builds the project based on the supplied tsconfig.json file
