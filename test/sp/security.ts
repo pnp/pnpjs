@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/security";
@@ -18,7 +18,7 @@ describe("Security", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -41,7 +41,7 @@ describe("Security", function () {
     });
 
     after(async function () {
-        if (testSettings.enableWebTests) {
+        if (this.settings.enableWebTests) {
             // reset the list incase we use it again it will be ready
             await list.resetRoleInheritance();
         }

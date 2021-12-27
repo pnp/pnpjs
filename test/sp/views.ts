@@ -3,7 +3,7 @@ import { getRandomString } from "@pnp/core";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { IList } from "@pnp/sp/lists";
 import { SPFI } from "@pnp/sp";
 
@@ -15,7 +15,7 @@ describe("Views", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

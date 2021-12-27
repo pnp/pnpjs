@@ -245,18 +245,6 @@ export class _Item extends _SPInstance {
             },
         };
     }
-
-    // /**
-    //  * Ensures we have the proper list item entity type name, either from the value provided or from the list
-    //  *
-    //  * @param candidatelistItemEntityTypeFullName The potential type name
-    //  */
-    // private async ensureListItemEntityTypeName(candidatelistItemEntityTypeFullName: string): Promise<string> {
-
-    //     return candidatelistItemEntityTypeFullName ?
-    //         candidatelistItemEntityTypeFullName :
-    //         this.list.getListItemEntityTypeFullName();
-    // }
 }
 export interface IItem extends _Item, IDeleteableWithETag { }
 export const Item = spInvokableFactory<IItem>(_Item);

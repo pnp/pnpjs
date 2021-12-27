@@ -191,10 +191,15 @@ describe("hOP", function () {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(hOP({ test: true }, "test")).to.be.true;
     });
+    it("Fail", function () {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        expect(hOP({ test: true }, "nope")).to.be.false;
+    });
 });
 
 describe("getHashCode", function () {
     it("Success", function () {
         expect(getHashCode("test string value")).to.be.a("number");
+        expect(getHashCode("test string value !@#$%^&*()_+{}<>,.?/'\"")).to.be.a("number");
     });
 });

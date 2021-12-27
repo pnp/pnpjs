@@ -1,30 +1,36 @@
 {
     "name": "@pnp/buildsystem",
-    "version": "2.3.9",
+    "version": "3.0.3",
     "bin": {
         "pnpbuild": "bin/buildsystem.js"
     },
-    "description": "pnp - the build system used within the @pnp repo",
+    "description": "pnp - the build system used within the @pnp/pnpjs monorepo",
     "main": "./index.js",
+    "type": "module",
     "typings": "./index",
     "dependencies": {
-        "@pnp/common": "^2.8.0",
-        "@pnp/logging": "^2.8.0",
         "ansi-colors": "^4.1.1",
         "fancy-log": "^1.3.3",
-        "findup": "^0.1.5",
         "gulp": "^4.0.2",
-        "through2": "^4.0.2",
-        "interpret": "^1.2.0",
-        "liftoff": "^3.1.0",
-        "mkdirp": "^0.5.1",
+        "liftoff": "^4.0.0",
+        "mkdirp": "^1.0.4",
         "pump": "^3.0.0",
-        "replace-in-file": "^4.2.0",
-        "yargs": "^14.2.0"
+        "replace-in-file": "^6.3.2",
+        "through2": "^4.0.2",
+        "webpack": "^5.65.0",
+        "yargs": "^17.3.0"
     },
-    "peerDependencies": {},
+    "devDependencies": {
+        "@types/gulp": "^4.0.9",
+        "@types/liftoff": "^4.0.0",
+        "@types/mkdirp": "^1.0.2",
+        "@types/pump": "^1.1.1",
+        "@types/yargs": "^17.0.7",
+        "del-cli": "^4.0.1",
+        "typescript": "^4.5.4"
+    },
     "engines": {
-        "node": ">=8.9.4"
+        "node": ">=14.15.1"
     },
     "author": {
         "name": "Microsoft and other contributors"
@@ -41,17 +47,7 @@
     "scripts": {
         "build": "tsc -p .",
         "clean": "del-cli \"./!(node_modules)/**/*.?(js|js.map|d.ts|d.ts.map)\" \"./*.?(js|js.map|d.ts|d.ts.map)\"",
-        "prepublish": "npm run build"
-    },
-    "devDependencies": {
-        "@types/gulp": "^4.0.8",
-        "@types/interpret": "^1.1.1",
-        "@types/liftoff": "^2.5.0",
-        "@types/mkdirp": "^0.5.2",
-        "@types/pump": "^1.1.1",
-        "@types/yargs": "^13.0.0",
-        "del-cli": "^4.0.1",
-        "typescript": "^4.4.2"
+        "prepublishOnly": "npm run clean && npm run build"
     },
     "funding": {
         "type": "individual",

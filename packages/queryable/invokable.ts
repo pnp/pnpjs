@@ -1,4 +1,4 @@
-import { get, op } from "./operations";
+import { get, op } from "./operations.js";
 
 /**
  * Allows a decorated object to be invoked as a function, optionally providing an implementation for that action

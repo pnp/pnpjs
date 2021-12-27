@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/related-items/web";
 import "@pnp/sp/lists/web";
@@ -21,7 +21,7 @@ describe("Related Items", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

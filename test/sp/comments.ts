@@ -1,4 +1,4 @@
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/comments/item";
@@ -18,17 +18,17 @@ describe("Comments", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
         _spfi = getSP();
 
         // we need a user to share to
-        if (testSettings.testUser?.length > 0) {
-            await _spfi.web.ensureUser(testSettings.testUser);
-            testUserLogin = testSettings.testUser;
-            const tmp = testSettings.testUser.split("|");
+        if (this.settings.testUser?.length > 0) {
+            await _spfi.web.ensureUser(this.settings.testUser);
+            testUserLogin = this.settings.testUser;
+            const tmp = this.settings.testUser.split("|");
             testUserEmail = tmp[tmp.length - 1];
         }
     });
@@ -53,20 +53,22 @@ describe("Comments", function () {
         expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
     });
 
-    if (testSettings.testUser?.length > 0) {
-        it("add - at mention", async function () {
+    it("add - at mention", async function () {
 
-            const pageName = `CommentPage_${getRandomString(4)}`;
-            const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
-            await page.save();
-            const commentInfo: Partial<ICommentInfo> = {
-                mentions: [{ loginName: testUserLogin, email: testUserEmail, name: testUser }],
-                text: "This is the test comment with at mentions",
-            };
-            const comment = await page.addComment(commentInfo);
-            expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
-        });
-    }
+        if (this.settings.testUser?.length < 0) {
+            this.skip();
+        }
+
+        const pageName = `CommentPage_${getRandomString(4)}`;
+        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        await page.save();
+        const commentInfo: Partial<ICommentInfo> = {
+            mentions: [{ loginName: testUserLogin, email: testUserEmail, name: testUser }],
+            text: "This is the test comment with at mentions",
+        };
+        const comment = await page.addComment(commentInfo);
+        expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
+    });
 
     it("getById - clientside page", async function () {
 

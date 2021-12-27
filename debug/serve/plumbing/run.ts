@@ -1,6 +1,10 @@
 import { spawn } from "child_process";
 import { dirname, resolve } from "path";
 import findup from "findup-sync";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // give outselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findup("package.json")));

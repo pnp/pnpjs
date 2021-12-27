@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/site-users";
 import { ISiteUserProps, IUserUpdateResult, ISiteUserInfo } from "@pnp/sp/site-users";
 import { ISiteGroups } from "@pnp/sp/presets/all";
@@ -25,7 +25,7 @@ describe("Site Users", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
     });

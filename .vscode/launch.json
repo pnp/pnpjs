@@ -11,11 +11,10 @@
       "preLaunchTask": "build",
       "runtimeExecutable": null,
       "runtimeArgs": [
-        "--nolazy"
+        "--nolazy",
+        "--experimental-loader",
+        "file://${workspaceRoot}/build/debugging/tools/local-module-resolver/esm-debug.js"
       ],
-      "env": {
-        "NODE_ENV": "development"
-      },
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
       "sourceMaps": true,
@@ -30,13 +29,18 @@
       "name": "Debug Tests",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+      "program": "${workspaceRoot}/node_modules/mocha/bin/mocha",
       "cwd": "${workspaceRoot}",
       "preLaunchTask": "test-build",
-      "runtimeArgs": [],
       "sourceMaps": true,
       "outFiles": [],
-      "args": ["--retries", "0", "--verbose", "--logging", "--site", "https://318studios.sharepoint.com/sites/dev/08675be5-2bd0-42d9-9acf-0b8fca3788e2"],
+      "args": [
+        "--retries",
+        "0",
+        "--verbose",
+        "--logging",
+        "--skip-web"
+      ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": [

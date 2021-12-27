@@ -2,7 +2,7 @@ import { expect } from "chai";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/fields";
 import {
     DateTimeFieldFormatType,
@@ -27,7 +27,7 @@ describe("Fields", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

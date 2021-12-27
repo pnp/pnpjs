@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "es2015",
-        "module": "commonjs",
+        "target": "es2019",
+        "module": "esnext",
         "baseUrl": ".",
         "rootDir": ".",
         "declaration": true,
@@ -14,7 +14,7 @@
         "lib": [
             "es6",
             "dom"
-        ], 
+        ],
         "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
@@ -29,11 +29,11 @@
         "strictNullChecks": false,
         "preserveConstEnums": true,
         "importHelpers": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
     },
     "include": [
         "./index.ts",
-        "../node-utils/getSubDirectorieNames.js",
         "./**/*.*"
     ]
 }

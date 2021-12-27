@@ -1,4 +1,4 @@
-import { AssignFrom } from "@pnp/core/index.js";
+import { AssignFrom } from "@pnp/core";
 import { _Web } from "../webs/types.js";
 import { SiteScripts } from "./types.js";
 import { ISiteScriptSerializationInfo, ISiteScriptSerializationResult } from "./types.js";

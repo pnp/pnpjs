@@ -1,7 +1,7 @@
 import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe, isFunc } from "@pnp/core";
 import { InjectHeaders, IQueryableInternal, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
-import { spPost } from "./operations";
-import { _SPQueryable } from "./spqueryable";
+import { spPost } from "./operations.js";
+import { _SPQueryable } from "./spqueryable.js";
 import { SPFI } from "./fi.js";
 
 declare module "./fi" {

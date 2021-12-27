@@ -1,6 +1,6 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
@@ -15,7 +15,7 @@ describe("Attachments", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

@@ -13,11 +13,13 @@ export function Telemetry(): TimelinePipe<Queryable> {
             const { pathname } = new URL(url);
 
             // remove anything before the _api as that is potentially PII and we don't care, just want to get the called path to the REST API
-            clientTag += pathname.substr(pathname.indexOf("_api/") + 5).split("/").map((value, index, arr) => index === arr.length - 1 ? value : value[0]).join(".");
+            clientTag += pathname.substring(pathname.indexOf("_api/") + 5).split("/").map((value, index, arr) => index === arr.length - 1 ? value : value[0]).join(".");
 
             if (clientTag.length > 32) {
-                clientTag = clientTag.substr(0, 32);
+                clientTag = clientTag.substring(0, 32);
             }
+
+            this.log(`Request Tag: ${clientTag}`, 0);
 
             init.headers = { ...init.headers, ["X-ClientService-ClientTag"]: clientTag };
 

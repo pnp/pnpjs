@@ -1,14 +1,14 @@
 
 import { getRandomString, delay } from "@pnp/core";
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { IAppCatalog } from "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
-import findupSync = require("findup-sync");
+import findupSync from "findup-sync";
 import { SPFI } from "@pnp/sp";
 
 // give ourselves a single reference to the projectRoot
@@ -24,7 +24,7 @@ describe("AppCatalog", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -105,7 +105,7 @@ describe("AppCatalog", function () {
 
         it("install", async function () {
             const myApp = _spfi.web.appcatalog.getAppById(appId);
-            return expect(myApp.install(), `app '${appId}' should've been installed on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.install(), `app '${appId}' should've been installed on web ${this.settings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("uninstall", async function () {
@@ -124,12 +124,12 @@ describe("AppCatalog", function () {
                 retryCount++;
             } while (app.InstalledVersion === "");
 
-            return expect(myApp.uninstall(), `app '${appId}' should've been uninstalled on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.uninstall(), `app '${appId}' should've been uninstalled on web ${this.settings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("upgrade", async function () {
             const myApp = _spfi.web.appcatalog.getAppById(appId);
-            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${testSettings.sp.testWebUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${this.settings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("retract", async function () {

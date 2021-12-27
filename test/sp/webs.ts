@@ -1,4 +1,4 @@
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { combine, getRandomString } from "@pnp/core";
 import { expect } from "chai";
 import "@pnp/sp/webs";
@@ -28,7 +28,7 @@ describe("Webs", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -52,7 +52,7 @@ describe("Web", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -123,9 +123,9 @@ describe("Web", function () {
         // this takes a long time to process
         this.timeout(60000);
 
-        const index = testSettings.sp.testWebUrl.indexOf("/sites/");
-        const colorUrl = "/" + combine(testSettings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/palette011.spcolor");
-        const fontUrl = "/" + combine(testSettings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
+        const index = this.settings.sp.testWebUrl.indexOf("/sites/");
+        const colorUrl = "/" + combine(this.settings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/palette011.spcolor");
+        const fontUrl = "/" + combine(this.settings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/fontscheme007.spfont");
 
         return expect(_spfi.web.applyTheme(colorUrl, fontUrl, "", false)).to.eventually.be.fulfilled;
     });
