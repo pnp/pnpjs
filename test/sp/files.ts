@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -10,7 +10,7 @@ import { getRandomString, combine } from "@pnp/core";
 import { IFiles, TemplateFileType } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
-import findupSync = require("findup-sync");
+import findupSync from "findup-sync";
 import { SPFI } from "@pnp/sp";
 
 // give ourselves a single reference to the projectRoot
@@ -26,7 +26,7 @@ describe("Files", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -137,7 +137,7 @@ describe("File", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

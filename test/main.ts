@@ -12,12 +12,9 @@ import "@pnp/sp/webs";
 import { IWeb } from "@pnp/sp/webs";
 import { graphfi, GraphFI } from "@pnp/graph";
 import { LogLevel } from "@pnp/logging";
-// import { RequestRecorderCache } from "./test-recorder.js";
-// import { join } from "path";
 
 chai.use(chaiAsPromised);
 
-declare let process: any;
 const testStart = Date.now();
 
 let _sp: SPFI = null;
@@ -25,8 +22,7 @@ let _spRoot: SPFI = null;
 let _graph: GraphFI = null;
 
 // we need to load up the appropriate settings based on where we are running
-let settings: ITestingSettings = null;
-let mode = "cmd";
+let mode: "cmd" | "online" | "online-noweb" = "cmd";
 let site: string = null;
 let skipWeb = false;
 let deleteWeb = false;
@@ -90,50 +86,57 @@ function readEnvVar(key: string, parse = false): any {
     }
 }
 
-switch (mode) {
+async function loadSettings(md: typeof mode): Promise<ITestingSettings> {
 
-    case "online":
+    let settings: ITestingSettings = null;
 
-        settings = {
-            testing: {
-                testUser: readEnvVar("PNPTESTING_TESTUSER") || null,
-                enableWebTests: true,
-                graph: {
-                    msal: {
-                        init: readEnvVar("PNPTESTING_MSAL_GRAPH_CONFIG", true),
-                        scopes: readEnvVar("PNPTESTING_MSAL_GRAPH_SCOPES", true),
+    switch (md) {
+
+        case "online":
+
+            settings = {
+                testing: {
+                    testUser: readEnvVar("PNPTESTING_TESTUSER") || null,
+                    enableWebTests: true,
+                    graph: {
+                        msal: {
+                            init: readEnvVar("PNPTESTING_MSAL_GRAPH_CONFIG", true),
+                            scopes: readEnvVar("PNPTESTING_MSAL_GRAPH_SCOPES", true),
+                        },
+                    },
+                    sp: {
+                        msal: {
+                            init: readEnvVar("PNPTESTING_MSAL_SP_CONFIG", true),
+                            scopes: readEnvVar("PNPTESTING_MSAL_SP_SCOPES", true),
+                        },
+                        notificationUrl: readEnvVar("PNPTESTING_NOTIFICATIONURL") || null,
+                        url: readEnvVar("PNPTESTING_SITEURL"),
                     },
                 },
-                sp: {
-                    msal: {
-                        init: readEnvVar("PNPTESTING_MSAL_SP_CONFIG", true),
-                        scopes: readEnvVar("PNPTESTING_MSAL_SP_SCOPES", true),
-                    },
-                    notificationUrl: readEnvVar("PNPTESTING_NOTIFICATIONURL") || null,
-                    url: readEnvVar("PNPTESTING_SITEURL"),
+            };
+            break;
+
+        case "online-noweb":
+
+            settings = {
+                testing: {
+                    enableWebTests: false,
                 },
-            },
-        };
+            };
+            break;
 
-        break;
-    case "online-noweb":
+        default:
 
-        settings = {
-            testing: {
-                enableWebTests: false,
-            },
-        };
+            settings = await import(findup("settings.js")).then(s => s.settings);
 
-        break;
-    default:
+            if (skipWeb) {
+                settings.testing.enableWebTests = false;
+            }
+    }
 
-        settings = require(findup("settings.js"));
-        if (skipWeb) {
-            settings.testing.enableWebTests = false;
-        }
-
-        break;
+    return settings;
 }
+
 
 // ** A custom Behavior to push logging onto a string array that can be used within a specific test */
 export function TestReporting(report: string[]): TimelinePipe<Queryable> {
@@ -158,6 +161,7 @@ export function TestReporting(report: string[]): TimelinePipe<Queryable> {
 
 
 async function spTestSetup(ts: ISettings): Promise<void> {
+
     let siteUsed = false;
     ts.sp.testWebUrl = ts.sp.url;
 
@@ -167,8 +171,8 @@ async function spTestSetup(ts: ISettings): Promise<void> {
     }
     const rootSP = spfi(ts.sp.testWebUrl).using(SPDefault({
         msal: {
-            config: settings.testing.sp.msal.init,
-            scopes: settings.testing.sp.msal.scopes,
+            config: ts.sp.msal.init,
+            scopes: ts.sp.msal.scopes,
         },
     }));
     _spRoot = rootSP;
@@ -188,22 +192,20 @@ async function spTestSetup(ts: ISettings): Promise<void> {
 
     _sp = spfi(ts.sp.testWebUrl).using(SPDefault({
         msal: {
-            config: settings.testing.sp.msal.init,
-            scopes: settings.testing.sp.msal.scopes,
+            config: ts.sp.msal.init,
+            scopes: ts.sp.msal.scopes,
         },
     })); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
 
-async function graphTestSetup(): Promise<void> {
+async function graphTestSetup(ts: ISettings): Promise<void> {
     _graph = graphfi().using(GraphDefault({
         msal: {
-            config: settings.testing.graph.msal.init,
-            scopes: settings.testing.graph.msal.scopes,
+            config: ts.graph.msal.init,
+            scopes: ts.graph.msal.scopes,
         },
     })); // .using(RequestRecorderCache(join("C:/github/@pnp-fork", ".test-recording"), "record", () => false));
 }
-
-export const testSettings: ISettings = settings.testing;
 
 export const getSP = function (): SPFI {
     return _sp;
@@ -215,24 +217,28 @@ export const getGraph = function (): GraphFI {
 
 before("Setup Testing", async function () {
 
+    const allSettings = await loadSettings(mode);
+
+    this.settings = allSettings.testing;
+
     // this may take some time, don't timeout early
     this.timeout(90000);
 
     // establish the connection to sharepoint
-    if (testSettings.enableWebTests) {
+    if (this.settings.enableWebTests) {
 
-        if (testSettings.sp) {
+        if (this.settings.sp) {
             console.log("Setting up SharePoint tests...");
             const s = Date.now();
-            await spTestSetup(testSettings);
+            await spTestSetup(this.settings);
             const e = Date.now();
             console.log(`Setup SharePoint tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
         }
 
-        if (testSettings.graph) {
+        if (this.settings.graph) {
             console.log("Setting up Graph tests...");
             const s = Date.now();
-            await graphTestSetup();
+            await graphTestSetup(this.settings);
             const e = Date.now();
             console.log(`Setup Graph tests in ${((e - s) / 1000).toFixed(4)} seconds.`);
         }
@@ -253,7 +259,7 @@ after("Finalize Testing", async function () {
 
             await cleanUpAllSubsites(_spRoot.web);
 
-        } else if (deleteWeb && testSettings.enableWebTests) {
+        } else if (deleteWeb && this.settings.enableWebTests) {
 
             console.log(`Deleting web ${extractWebUrl(_sp.web.toUrl())} created during testing.`);
 
@@ -268,11 +274,11 @@ after("Finalize Testing", async function () {
 
             await web.delete();
 
-            console.log(`Deleted web ${testSettings.sp.testWebUrl} created during testing.`);
+            console.log(`Deleted web ${this.settings.sp.testWebUrl} created during testing.`);
 
-        } else if (testSettings.enableWebTests) {
+        } else if (this.settings.testing.enableWebTests) {
 
-            console.log(`Leaving ${testSettings.sp.testWebUrl} alone.`);
+            console.log(`Leaving ${this.settings.sp.testWebUrl} alone.`);
         }
 
     } catch (e) {

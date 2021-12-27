@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getGraph, testSettings } from "../main.js";
+import { getGraph } from "../main.js";
 import { GraphFI } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/contacts";
@@ -19,14 +19,14 @@ describe("Contacts", function () {
     // Ensure we have the data to test against
     before(async function () {
 
-        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
+        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 
         _graphfi = getGraph();
 
         // Get a sample user
-        testUserName = testSettings.testUser.substr(testSettings.testUser.lastIndexOf("|") + 1);
+        testUserName = this.settings.testUser.substr(this.settings.testUser.lastIndexOf("|") + 1);
         const testFolderName = `TestFolder_${getRandomString(4)}`;
         const testSubFolderName = `TestSubFolder_${getRandomString(4)}`;
         // Create a test contact

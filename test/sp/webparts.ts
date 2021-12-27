@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "@pnp/sp/webs";
 import { combine, getRandomString } from "@pnp/core";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { ILimitedWebPartManager, WebPartsPersonalizationScope } from "@pnp/sp/presets/all";
 import { SPFI } from "@pnp/sp";
 
@@ -11,7 +11,7 @@ describe("WebParts", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

@@ -1,6 +1,6 @@
 import { PublishSchema } from "../../config.js";
 import { join, resolve } from "path";
-import getSubDirNames from "../../lib/getSubDirectoryNames.js";
+import getSubDirNames from "../../lib/getSubDirs.js";
 import { writeFileSync } from "fs";
 import log from "fancy-log";
 import colors from "ansi-colors";

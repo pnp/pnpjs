@@ -1,5 +1,5 @@
 import { getRandomString } from "@pnp/core";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
@@ -19,7 +19,7 @@ describe("Items", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

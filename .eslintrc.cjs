@@ -1,6 +1,6 @@
 module.exports = {
     root: true,
-    parser: '@typescript-eslint/parser',
+    parser: "@typescript-eslint/parser",
     parserOptions: {
         project: [
             "./tsconfig.json",
@@ -9,11 +9,11 @@ module.exports = {
         sourceType: "module",
     },
     plugins: [
-        '@typescript-eslint',
+        "@typescript-eslint",
     ],
     extends: [
-        'eslint:recommended',
-        'plugin:@typescript-eslint/recommended',
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
     ],
     rules: {
         // updated to address conflicts with code base / typescript such as interface redeclare, etc.

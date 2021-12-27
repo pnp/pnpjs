@@ -1,5 +1,5 @@
 import { PackageTargetMap } from "../../config.js";
-import getSubDirNames from "../../lib/getSubDirectoryNames.js";
+import getSubDirNames from "../../lib/getSubDirs.js";
 import { cwd } from "process";
 import mkdir from "mkdirp";
 import { resolve, dirname, join } from "path";

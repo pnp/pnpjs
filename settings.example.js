@@ -1,4 +1,4 @@
-var settings = {
+export const settings = {
 
     testing: {
         enableWebTests: true,
@@ -45,5 +45,3 @@ var settings = {
         },
     }
 }
-
-module.exports = settings;

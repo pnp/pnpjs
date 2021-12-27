@@ -2,7 +2,7 @@ import { expect } from "chai";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/sputilities";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { PrincipalType, PrincipalSource } from "@pnp/sp";
 import { combine, stringIsNullOrEmpty } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
@@ -15,14 +15,14 @@ describe.skip("SPUtilities", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
         _spfi = getSP();
 
-        if (!stringIsNullOrEmpty(testSettings.testUser)) {
-            await _spfi.web.ensureUser(testSettings.testUser);
+        if (!stringIsNullOrEmpty(this.settings.testUser)) {
+            await _spfi.web.ensureUser(this.settings.testUser);
         }
     });
 
@@ -37,7 +37,7 @@ describe.skip("SPUtilities", function () {
     });
 
     it("createEmailBodyForInvitation", async function () {
-        const homePageAddress = combine(testSettings.sp.testWebUrl, "/SitePages/Home.aspx");
+        const homePageAddress = combine(this.settings.sp.testWebUrl, "/SitePages/Home.aspx");
         return expect(_spfi.utility.createEmailBodyForInvitation(homePageAddress)).to.be.eventually.fulfilled;
     });
 
@@ -47,7 +47,7 @@ describe.skip("SPUtilities", function () {
 
     it("sendEmail", async function () {
 
-        if (stringIsNullOrEmpty(testSettings.testUser)) {
+        if (stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 
@@ -71,11 +71,11 @@ describe.skip("SPUtilities", function () {
 
     it("searchPrincipals", async function () {
 
-        if (stringIsNullOrEmpty(testSettings.testUser)) {
+        if (stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 
-        const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
+        const ensureTestUser = await _spfi.web.ensureUser(this.settings.testUser);
         const userId = ensureTestUser.data.Id;
         const user = await _spfi.web.siteUsers.getById(userId)();
 

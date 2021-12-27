@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "@pnp/sp/search";
 import { SearchQueryBuilder } from "@pnp/sp/search";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
 
 // we skip these tests due to app level permissions not being able to use search
@@ -11,7 +11,7 @@ describe.skip("Search", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

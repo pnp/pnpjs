@@ -1,7 +1,7 @@
 import { exec } from "child_process";
 import { PublishSchema } from "../../config.js";
 import { resolve } from "path";
-import getSubDirNames from "../../lib/getSubDirectoryNames.js";
+import getSubDirNames from "../../lib/getSubDirs.js";
 import log from "fancy-log";
 import colors from "ansi-colors";
 

@@ -2,7 +2,7 @@ import pump from "pump";
 import gulp from "gulp";
 import { resolve, dirname } from "path";
 import { PackageTargetMap, PackageFunction } from "../../config.js";
-import getSubDirectoryNames from "../../lib/getSubDirectoryNames.js";
+import getSubDirNames from "../../lib/getSubDirs.js";
 import { obj, TransformFunction } from "through2";
 import importJSON from "../../lib/importJSON.js";
 
@@ -22,7 +22,7 @@ export function createCopyTargetFiles(targetOverride = "", subDir = "", transfor
         const sourceRoot = resolve(dirname(usedTarget));
         const buildOutDir = resolve(sourceRoot, buildConfig.compilerOptions.outDir);
 
-        const dirs = getSubDirectoryNames(buildOutDir);
+        const dirs = getSubDirNames(buildOutDir);
 
         dirs.forEach(async dir => {
 

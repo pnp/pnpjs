@@ -34,7 +34,6 @@
     },
     "include": [
         "./index.ts",
-        "../node-utils/getSubDirectorieNames.js",
         "./**/*.*"
     ]
 }

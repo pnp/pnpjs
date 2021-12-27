@@ -1,4 +1,4 @@
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/lists";
 import "@pnp/sp/content-types/list";
@@ -21,7 +21,7 @@ describe("Lists", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -103,7 +103,7 @@ describe("List", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
