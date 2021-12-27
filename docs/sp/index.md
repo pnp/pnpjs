@@ -17,10 +17,10 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
 (function main() {
-    // here we setup the root sp object with the sharepoint context which will be used to load the current web's title
-    const sp = spfi("{tenant url}").using(SPFx(this.context));
-    const w = await sp.web.select("Title")();
-    console.log(`Web Title: ${w.Title}`);
+  // here we setup the root sp object with the sharepoint context which will be used to load the current web's title
+  const sp = spfi("{tenant url}").using(SPFx(this.context));
+  const w = await sp.web.select("Title")();
+  console.log(`Web Title: ${w.Title}`);
 )()
 ```
 
@@ -30,35 +30,22 @@ Install the library and required dependencies
 
 `npm install @pnp/sp --save`
 
-Import the library into your application, update OnInit, and access the root sp object in render
+Import the library into your application, and access the sp object in render
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
 // ...
 
-public onInit(): Promise<void> {
-
-  return super.onInit().then(_ => {
-
-    // other init code may be present
-
-    sp.setup({
-      spfxContext: this.context
-    });
-  });
-}
-
-// ...
-
 public render(): void {
+  // A simple loading message
+  this.domElement.innerHTML = `Loading...`;
 
-    // A simple loading message
-    this.domElement.innerHTML = `Loading...`;
+  const sp = spfi().using(SPFx(this.context));
+  const w = await sp.web.select("Title")();
 
-    const w = await sp.web.select("Title")();
-    this.domElement.innerHTML = `Web Title: ${w.Title}`;
+this.domElement.innerHTML = `Web Title: ${w.Title}`;
 }
 ```
 
@@ -76,7 +63,20 @@ import { GraphDefault, SPDefault } from "@pnp/nodejs";
 import {ThrowErrors} from "@pnp/queryable";
 import "@pnp/sp/webs";
 
-// do this once per page load
+const buffer = readFileSync("c:/temp/key.pem");
+
+// we create the config to use with the node clients
+const config:any = {
+  auth: {
+    authority: "https://login.microsoftonline.com/{my tenant}/",
+    clientId: "{application (client) id}",
+    clientCertificate: {
+      thumbprint: "{certificate thumbprint, displayed in AAD}",
+      privateKey: buffer.toString(),
+    },
+  },
+};
+
 const sp = spfi().using(SPDefault({
   baseUrl: siteUrl,
   msal: {
