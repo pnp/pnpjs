@@ -2,7 +2,7 @@
 
 It is our hope that the transition from version 2.* to 3.* will be as painless as possible, however given the transition we have made from a global sp object to an instance based object some architectural and inital setup changes will need to be addressed. In the following sections we endevor to provide an overview of what changes will be required. If we missed something, please let us know in the issues list so we can update the guide. Thanks!
 
-For a full, detailed list of what's been added, updated, and removed please see our [CHANGELOG](../CHANGELOG.md)
+For a full, detailed list of what's been added, updated, and removed please see our [CHANGELOG](../../CHANGELOG.md)
 
 ## Global vs Instance Architecture
 

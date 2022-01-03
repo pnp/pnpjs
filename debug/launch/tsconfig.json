@@ -1,8 +1,6 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "target": "esnext",
-        "module": "commonjs",
         "composite": false,
         "baseUrl": ".",
         "rootDir": "../../",
@@ -12,9 +10,6 @@
         "allowUnreachableCode": true,
         "allowUnusedLabels": true,
         "esModuleInterop": true,
-        "types": [
-            "sharepoint"
-        ],
         "lib": [
             "dom",
             "es2015"
@@ -26,9 +21,7 @@
         }
     },
     "files": [
-        "./main.ts"
-    ],
-    "exclude": [
-        "../../packages/graph/*"
+        "./main.ts",
+        "../../tools/local-module-resolver/esm-debug.ts"
     ]
 }

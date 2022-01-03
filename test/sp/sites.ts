@@ -2,7 +2,7 @@ import { expect } from "chai";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
 import { combine, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
@@ -14,7 +14,7 @@ describe("Sites", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
@@ -47,7 +47,7 @@ describe("Sites", function () {
         const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
         const path = combine(webInfo.Url, "SitePages", "Home.aspx");
         const webUrl: string = await _spfi.site.getWebUrlFromPageUrl(path);
-        return expect(webUrl).to.be.equal(testSettings.sp.testWebUrl);
+        return expect(webUrl).to.be.equal(this.settings.sp.testWebUrl);
     });
 
     it("openWebById", async function () {
@@ -78,13 +78,13 @@ describe("createModern Team & Comm Sites", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
+        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 
         _spfi = getSP();
 
-        const testUserEmailArray = testSettings.testUser.split("|");
+        const testUserEmailArray = this.settings.testUser.split("|");
         testUserEmail = testUserEmailArray[testUserEmailArray.length - 1];
     });
 
@@ -109,7 +109,7 @@ describe("createModern Team & Comm Sites", function () {
         const promise = _spfi.site.createCommunicationSite(
             "TestModernCommSite01" + randomNum, 1033,
             false,
-            testSettings.sp.testWebUrl + "/sites/commSite" + randomNum,
+            this.settings.sp.testWebUrl + "/sites/commSite" + randomNum,
             "TestModernCommSite01", "HBI",
             "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",
             testUserEmail);

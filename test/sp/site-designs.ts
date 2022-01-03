@@ -5,23 +5,24 @@ import "@pnp/sp/webs";
 import "@pnp/sp/site-designs";
 import "@pnp/sp/site-users/web";
 import { ISiteDesignRun, ISiteDesignTask } from "@pnp/sp/site-designs";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
 
-// TODO: Can only run on a new site collection -- Create one?
 describe.skip("SiteDesigns", function () {
 
     this.timeout(120000);
 
-    const testuser = testSettings.testUser;
+    let testuser;
 
     let _spfi: SPFI = null;
 
     before(function () {
 
-        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
+        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
+
+        testuser = this.settings.testUser;
 
         _spfi = getSP();
     });
@@ -74,7 +75,7 @@ describe.skip("SiteDesigns", function () {
         });
 
         createdSiteDesignIds.push(sd.Id);
-        return expect(_spfi.siteDesigns.applySiteDesign(sd.Id, testSettings.sp.testWebUrl)).to.eventually.be.fulfilled;
+        return expect(_spfi.siteDesigns.applySiteDesign(sd.Id, this.settings.sp.testWebUrl)).to.eventually.be.fulfilled;
     });
 
     it("updateSiteDesign", async function () {
@@ -161,7 +162,7 @@ describe.skip("SiteDesigns", function () {
         });
 
         createdSiteDesignIds.push(sd.Id);
-        const siteDesignTask: ISiteDesignTask = await _spfi.siteDesigns.addSiteDesignTask(testSettings.sp.testWebUrl, sd.Id);
+        const siteDesignTask: ISiteDesignTask = await _spfi.siteDesigns.addSiteDesignTask(this.settings.sp.testWebUrl, sd.Id);
         return expect(siteDesignTask).to.be.equal(sd.Id);
     });
 
@@ -222,7 +223,7 @@ describe.skip("SiteDesigns", function () {
     });
 
     after(function () {
-        if (testSettings.enableWebTests) {
+        if (this.settings.enableWebTests) {
             return Promise.all(createdSiteDesignIds.map((sdId) => {
                 return _spfi.siteDesigns.deleteSiteDesign(sdId);
             }));

@@ -55,18 +55,11 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
 
-        const web = sp.web;
+        const i = await sp.web({
+            headers: {}
+        });
 
-        web.on.log((msg) => console.log(msg));
-
-        web.on.data((d) => console.info(d));
-
-        const i = await web();
-
-        
-        const web2 = sp.web;
-
-        const i2 = await web2();
+        console.log(i);
 
     } catch (e) {
 

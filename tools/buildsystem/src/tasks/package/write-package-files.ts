@@ -1,10 +1,10 @@
-declare var require: (s: string) => any;
-const fs = require("fs"),
-    path = require("path");
-import { sync as ensurePath } from "mkdirp";
+import mkdir from "mkdirp";
+import { resolve, dirname, join } from "path";
+import { writeFile } from "fs";
 
 import { PackageTargetMap } from "../../config.js";
-import getSubDirNames from "../../lib/getSubDirectoryNames.js";
+import getSubDirNames from "../../lib/getSubDirs.js";
+import importJSON from "../../lib/importJSON.js";
 
 interface TSConfig {
     compilerOptions: {
@@ -25,9 +25,9 @@ export function createWritePackageFiles(transform: (pkg: any) => any = (p) => Ob
         const promises: Promise<void>[] = [];
 
         // read the outdir from the packagetarget
-        const buildConfig: TSConfig = require(target.target);
-        const sourceRoot = path.resolve(path.dirname(target.target));
-        const buildOutDir = path.resolve(sourceRoot, buildConfig.compilerOptions.outDir);
+        const buildConfig: TSConfig = importJSON(target.target);
+        const sourceRoot = resolve(dirname(target.target));
+        const buildOutDir = resolve(sourceRoot, buildConfig.compilerOptions.outDir);
 
         // get the sub directories from the output, these will match the folder structure
         // in the .ts source directory
@@ -36,7 +36,7 @@ export function createWritePackageFiles(transform: (pkg: any) => any = (p) => Ob
         for (let j = 0; j < builtFolders.length; j++) {
 
             // read the package.json from the root of the original source
-            let pkg = require(path.resolve(sourceRoot, builtFolders[j], "package.json"));
+            let pkg = importJSON(resolve(sourceRoot, builtFolders[j], "package.json"));
 
             pkg.version = version;
             pkg.main = `./index.js`;
@@ -57,16 +57,16 @@ export function createWritePackageFiles(transform: (pkg: any) => any = (p) => Ob
             // finally call our transform function giving the caller the ability to make any final edits
             pkg = transform(pkg);
 
-            promises.push(new Promise((resolve, reject) => {
-                const folderPath = path.resolve(target.outDir, builtFolders[j]);
-                ensurePath(folderPath);
-                fs.writeFile(path.join(folderPath, "package.json"), JSON.stringify(pkg, null, 4), (err) => {
+            promises.push(new Promise((res, reject) => {
+                const folderPath = resolve(target.outDir, builtFolders[j]);
+                mkdir.sync(folderPath);
+                writeFile(join(folderPath, "package.json"), JSON.stringify(pkg, null, 4), (err) => {
 
                     if (err) {
                         console.error(err);
                         reject(err);
                     } else {
-                        resolve();
+                        res();
                     }
                 });
             }));

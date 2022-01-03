@@ -5,21 +5,13 @@ docs_dir: 'docs'
 nav:
   - Home: 'index.md'
   - 'Getting Started': 'getting-started.md'
-    - 'Authentication':
-      - 'Getting Started': 'authentication/index.md'
-      - 'SPFx Auth': 'authentication/client-spfx.md'
-      - 'MSAL Client': 'authentication/msaljsclient.md'
-      - 'SPA Auth': 'authentication/client-spa.md'
-      - 'NodeJS Auth': 'authentication/server-nodejs.md'
-      - 'Bearer Token Client': 'authentication/bearertokenclient.md'
-    - 'Working in Nodejs': 'nodejs-support.md'
-    - 'Selective Imports': 'concepts/selective-imports.md'
-    - 'Error Handling': 'concepts/error-handling.md'
-  - 'Transition Guide V3': 'transition-guide.md'
+  - 'V2->V3 Transition': 'transition-guide.md'
   - 'Library Usage Tips':
     - 'Batching': 'concepts/batching.md'   
     - 'Using Behaviors': 'concepts/using-behaviors.md'
     - 'Typings': 'concepts/typings.md'
+    - 'Working in Nodejs': 'nodejs-support.md'
+    - 'Selective Imports': 'concepts/selective-imports.md'
   - Packages:
     - Packages: 'packages.md'
     - core:
@@ -104,10 +96,6 @@ nav:
       - Views: 'sp/views.md'
       - Webs: 'sp/webs.md'
       - 'Custom Request Client': 'sp/custom-irequestclient.md'
-    - sp-addinhelpers:
-      - sp-addinhelpers: 'sp-addinhelpers/index.md'
-      - SPRequestExecutorClient:  'sp-addinhelpers/sp-request-executor-client.md'
-      - SPRestAddIn: 'sp-addinhelpers/sp-rest-addin.md'
   - Advanced:
     - 'Custom Bundle': 'concepts/custom-bundle.md'
     - 'Custom Call/Path': 'concepts/invokable.md'
@@ -126,10 +114,9 @@ nav:
     - 'Writing Tests': 'contributing/debug-tests.md'
     - 'Update Documentation': 'contributing/documentation.md'
     - 'Submit a Pull Request': 'contributing/pull-requests.md'
-  - Version 1 Docs:
-    - Home: 'v1/index.html'
-  - Version 2 Docs:
-    - Home: 'v2/index.html'
+  - Legacy Docs:
+    - V1: 'v1/index.html'
+    - V2: 'v2/index.html'
 
 theme:
   name: 'material'

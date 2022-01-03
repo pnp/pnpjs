@@ -1,11 +1,11 @@
 import { addProp, body } from "@pnp/queryable";
-import { GraphFI } from "../fi";
-import { _Group, Group } from "../groups/types";
-import { ITeamCreateResult, ITeam, Team, ITeams, Teams } from "./types";
+import { GraphFI } from "../fi.js";
+import { _Group, Group } from "../groups/types.js";
+import { ITeamCreateResult, ITeam, Team, ITeams, Teams } from "./types.js";
 import { Team as ITeamType } from "@microsoft/microsoft-graph-types";
-import { graphPut } from "../operations";
+import { graphPut } from "../operations.js";
 
-import "./users";
+import "./users.js";
 
 export {
     Channel,

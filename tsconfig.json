@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ES2019",
-        "module": "commonjs",
+        "module": "esnext",
         "composite": true,
         "declaration": true,
         "declarationMap": true,

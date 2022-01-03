@@ -1,5 +1,5 @@
 import findup from "findup-sync";
-import { ConsoleListener, LogLevel, Logger } from "@pnp/logging";
+import { ConsoleListener, Logger } from "@pnp/logging";
 import { ITestingSettings } from "../../test/settings.js";
 
 // importing the example debug scenario and running it
@@ -17,7 +17,7 @@ import { Example } from "./v3-patrick.js";
 // if you don't have a settings file defined this will error
 // you can comment it out and put the values here directly, or better yet
 // create a settings file using settings.example.js as a template
-import(findup("settings.js")).then((settings: ITestingSettings) => {
+import(findup("settings.js")).then((settings: { settings: ITestingSettings }) => {
 
     // // setup console logger
     Logger.subscribe(ConsoleListener("Debug", {
@@ -27,7 +27,7 @@ import(findup("settings.js")).then((settings: ITestingSettings) => {
         warning: "yellow",
     }));
 
-    Example(settings);
+    Example(settings.settings);
 
     // you can also set break points inside the src folder to examine how things are working
     // within the library while debugging

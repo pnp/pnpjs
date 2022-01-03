@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/subscriptions";
@@ -16,12 +16,12 @@ describe("Subscriptions", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings?.sp?.notificationUrl)) {
+        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings?.sp?.notificationUrl)) {
             this.skip();
         }
 
         _spfi = getSP();
-        notificationUrl = testSettings.sp.notificationUrl;
+        notificationUrl = this.settings.sp.notificationUrl;
         after120Days = (dateAdd(new Date(), "day", 120).toISOString());
         after180Days = (dateAdd(new Date(), "day", 180).toISOString());
     });

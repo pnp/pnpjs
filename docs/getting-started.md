@@ -26,7 +26,7 @@ import { getRandomString } from "@pnp/core";
 
 ## Getting Started with SharePoint Framework
 
-The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises please [read this note](SPFx-on-premises.md) on a workaround for the included TypeScript version. If you are targeting SharePoint online you do not need to take any additional steps.
+The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises please you will need to use version 2 of the library. If you are targeting SharePoint online you do not need to take any additional steps.
 
 ### Establish Context
 
@@ -34,66 +34,18 @@ Because SharePoint Framework provides a local context to each component we need 
 
 The setup is always done in the onInit method to ensure it runs before your other life-cycle code. You can also set any other settings at this time.
 
-#### Using @pnp/core setup
-
-```TypeScript
-import { setup as pnpSetup } from "@pnp/core";
-
-// ...
-
-protected onInit(): Promise<void> {
-
-  return super.onInit().then(_ => {
-
-    // other init code may be present
-
-    pnpSetup({
-      spfxContext: this.context
-    });
-  });
-}
-
-// ...
-
-```
-
 #### Using @pnp/sp setup
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
-
-// ...
-
-protected onInit(): Promise<void> {
-
-  return super.onInit().then(_ => {
-
-    // other init code may be present
-
-    sp.setup({
-      spfxContext: this.context
-    });
-  });
-}
-
-// ...
-
-```
-
-Sp setup also supports passing just the SPFx context object directly as this is the most common case
-
-```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+import { spfi, SPFx } from "@pnp/sp";
 
 // ...
 
 protected async onInit(): Promise<void> {
 
   await super.onInit();
+  const sp = spfi().using(SPFx(this.content));
 
-  // other init code may be present
-  
-  sp.setup(this.context);
 }
 
 // ...
@@ -103,20 +55,15 @@ protected async onInit(): Promise<void> {
 #### Using @pnp/graph setup
 
 ```TypeScript
-import { graph } from "@pnp/graph/presets/all";
+import { graphfi, SPFx } from "@pnp/graph";
 
 // ...
 
-protected onInit(): Promise<void> {
+protected async onInit(): Promise<void> {
 
-  return super.onInit().then(_ => {
+  await super.onInit();
+  const graph = graphfi().using(SPFx(this.content));
 
-    // other init code may be present
-
-    graph.setup({
-      spfxContext: this.context
-    });
-  });
 }
 
 // ...

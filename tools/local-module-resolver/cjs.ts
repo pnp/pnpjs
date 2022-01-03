@@ -1,19 +1,19 @@
 // based off the work in tsconfig-paths-webpack-plugin, thanks!
 import { resolve, dirname, join } from "path";
 import findup from "findup-sync";
+import { Module } from "module";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findup("package.json")));
 
 /**
- * Installs a custom module load function that can resolve our build dir files
- * Returns a function to undo paths registration.
- */
-export function register(internalPath = "/build/testing/packages"): () => void {
+* Installs a custom module load function that can resolve our build dir files
+* Returns a function to undo paths registration.
+*/
+export function register(internalPath: string): () => void {
 
-  const Module = require("module");
-  const originalResolveFilename = Module._resolveFilename;
-  Module._resolveFilename = function (request: string, _parent: any): string {
+  const originalResolveFilename = (<any>Module)._resolveFilename;
+  (<any>Module)._resolveFilename = function (request: string, _parent: any): string {
 
     if (request.startsWith("@pnp")) {
 
@@ -26,6 +26,8 @@ export function register(internalPath = "/build/testing/packages"): () => void {
 
   return () => {
     // Return node's module loading to original state.
-    Module._resolveFilename = originalResolveFilename;
+    (<any>Module)._resolveFilename = originalResolveFilename;
   };
 }
+
+register("/build/testing/packages");

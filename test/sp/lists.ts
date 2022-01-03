@@ -1,4 +1,4 @@
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/lists";
 import "@pnp/sp/content-types/list";
@@ -13,6 +13,7 @@ import "@pnp/sp/batching";
 import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, RenderListDataOptions } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
+import testSPInvokables from "../test-invokable-props.js";
 
 describe("Lists", function () {
 
@@ -20,12 +21,19 @@ describe("Lists", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
         _spfi = getSP();
     });
+
+    describe("Invokable Properties", testSPInvokables(() => _spfi.web.lists.getByTitle("Documents"),
+        "effectiveBasePermissions",
+        "eventReceivers",
+        "relatedFields",
+        "informationRightsManagementSettings",
+        "getParentInfos"));
 
     it("getById", async function () {
         const list = await _spfi.web.lists.getByTitle("Documents").select("ID")<{ Id: string }>();
@@ -95,7 +103,7 @@ describe("List", function () {
 
     before(function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 

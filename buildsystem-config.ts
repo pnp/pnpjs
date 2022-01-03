@@ -129,6 +129,7 @@ export default <ConfigCollection>[
         postPublishTasks: [],
     },
     <BuildSchema>{
+
         name: "build-debug",
 
         role: "build",
@@ -144,8 +145,8 @@ export default <ConfigCollection>[
         ],
 
         postBuildTasks: [
-            // the folder structure for debug is slightly different so we account for the "packages" needed for the output path
-            Tasks.Build.createDebugReplace([
+
+            Tasks.Build.createReplaceVersion([
                 "packages/sp/behaviors/telemetry.js",
                 "packages/graph/behaviors/telemetry.js",
             ]),

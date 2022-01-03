@@ -1,10 +1,10 @@
-declare var require: (path: string) => any;
-import * as pump from "pump";
-import { src, dest } from "gulp";
+import pump from "pump";
+import gulp from "gulp";
 import { resolve, dirname } from "path";
 import { PackageTargetMap, PackageFunction } from "../../config.js";
-import getSubDirectoryNames from "../../lib/getSubDirectoryNames.js";
+import getSubDirNames from "../../lib/getSubDirs.js";
 import { obj, TransformFunction } from "through2";
+import importJSON from "../../lib/importJSON.js";
 
 interface TSConfig {
     compilerOptions: {
@@ -18,22 +18,22 @@ export function createCopyTargetFiles(targetOverride = "", subDir = "", transfor
 
         // read the outdir from the packagetarget
         const usedTarget = targetOverride === "" ? target.target : targetOverride;
-        const buildConfig: TSConfig = require(usedTarget);
+        const buildConfig: TSConfig = importJSON(usedTarget);
         const sourceRoot = resolve(dirname(usedTarget));
         const buildOutDir = resolve(sourceRoot, buildConfig.compilerOptions.outDir);
 
-        const dirs = getSubDirectoryNames(buildOutDir);
+        const dirs = getSubDirNames(buildOutDir);
 
         dirs.forEach(async dir => {
 
             await new Promise<void>((res, rej) => {
 
                 pump([
-                    src(["./**/*.d.ts", "./**/*.js", "./**/*.js.map", "./**/*.d.ts.map"], {
+                    gulp.src(["./**/*.d.ts", "./**/*.js", "./**/*.js.map", "./**/*.d.ts.map"], {
                         cwd: resolve(buildOutDir, dir),
                     }),
                     ...transforms.map(t => obj(t)),
-                    dest(resolve(target.outDir, dir, subDir), {
+                    gulp.dest(resolve(target.outDir, dir, subDir), {
                         overwrite: true,
                     }),
                 ], (err: (Error | null)) => {

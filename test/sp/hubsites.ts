@@ -1,4 +1,4 @@
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/sites";
 import "@pnp/sp/hubsites";
@@ -11,14 +11,14 @@ describe("Hubsites", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests) {
+        if (!this.settings.enableWebTests) {
             this.skip();
         }
 
         // Must use root site
         _spfi = getSP();
 
-        const rootSite = spfi([_spfi.site, testSettings.sp.url]);
+        const rootSite = spfi([_spfi.site, this.settings.sp.url]);
 
         await rootSite.site.registerHubSite();
         const r = await rootSite.site.select("Id")();
@@ -38,7 +38,7 @@ describe("Hubsites", function () {
 
     // unregister the test site, so that tests will run successfully next time as well
     after(async function () {
-        if (testSettings.enableWebTests) {
+        if (this.settings.enableWebTests) {
             await _spfi.site.unRegisterHubSite();
         }
     });

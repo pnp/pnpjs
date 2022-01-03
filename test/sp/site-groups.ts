@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSP, testSettings } from "../main.js";
+import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups";
 import "@pnp/sp/site-users/web";
@@ -15,15 +15,15 @@ describe("SiteGroups", function () {
 
     before(async function () {
 
-        if (!testSettings.enableWebTests || stringIsNullOrEmpty(testSettings.testUser)) {
+        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 
         _spfi = getSP();
         const groupName = `test_new_sitegroup_${getRandomString(6)}`;
         newGroup = await _spfi.web.siteGroups.add({ "Title": groupName });
-        if (testSettings.testUser?.length > 0) {
-            const ensureTestUser = await _spfi.web.ensureUser(testSettings.testUser);
+        if (this.settings.testUser?.length > 0) {
+            const ensureTestUser = await _spfi.web.ensureUser(this.settings.testUser);
             testuserId = ensureTestUser.data.Id;
         }
     });
@@ -45,16 +45,15 @@ describe("SiteGroups", function () {
             return expect(_spfi.web.associatedVisitorGroup()).to.eventually.be.fulfilled;
         });
 
-        if (testSettings.testUser?.length > 0) {
-            it("createDefaultAssociatedGroups()", async function () {
-                await _spfi.web.ensureUser(testSettings.testUser);
-                const groupName = `TestGroup_${getRandomString(4)}`;
-                return expect(_spfi.web.createDefaultAssociatedGroups(groupName,
-                    testSettings.testUser,
-                    false,
-                    false)).to.be.eventually.fulfilled;
-            });
-        }
+        it("createDefaultAssociatedGroups()", async function () {
+
+            await _spfi.web.ensureUser(this.settings.testUser);
+            const groupName = `TestGroup_${getRandomString(4)}`;
+            return expect(_spfi.web.createDefaultAssociatedGroups(groupName,
+                this.settings.testUser,
+                false,
+                false)).to.be.eventually.fulfilled;
+        });
     });
 
     it("getById()", async function () {

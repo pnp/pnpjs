@@ -2,7 +2,7 @@ import { isFunc, TimelinePipe, dateAdd, getHashCode } from "@pnp/core";
 import { Queryable } from "@pnp/queryable";
 import { statSync, readFileSync, existsSync, writeFileSync, mkdirSync } from "fs";
 import { join, basename } from "path";
-import { getSync } from "stacktrace-js";
+import * as stacktrace from "stacktrace-js";
 
 export function RequestRecorderCache(resolvedRecordingPath: string, mode: "readonly" | "record", isExpired?: (Date) => boolean): TimelinePipe {
 
@@ -19,7 +19,7 @@ export function RequestRecorderCache(resolvedRecordingPath: string, mode: "reado
 
         instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
-            const stack = getSync();
+            const stack = stacktrace.getSync();
 
             this[recorderFileKey] = getHashCode(`${basename(stack[0].fileName)}:${stack[0].lineNumber}:${stack[0].columnNumber}`).toString();
             this[recorderFilePath] = join(resolvedRecordingPath, `result.${this[recorderFileKey]}.json`);
