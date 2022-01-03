@@ -20,10 +20,12 @@ All errors resulting from executed web requests will be returned as an `HttpRequ
 
 ## Basic Handling
 
-For all operations involving a web request you should account for the possibility they might fail. That failure might be transient or permanent - you won't know until they happen 😉. The most basic type of error handling involves a simple try-catch.
+For all operations involving a web request you should account for the possibility they might fail. That failure might be transient or permanent - you won't know until they happen 😉. The most basic type of error handling involves a simple try-catch when using the [async/await promises pattern](https://javascript.info/async-await).
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
 
 try {
 
@@ -38,7 +40,7 @@ try {
 
 This will produce output like:
 
-```
+```console
 Error making HttpClient request in queryable [404] Not Found ::> {"odata.error":{"code":"-1, System.ArgumentException","message":{"lang":"en-US","value":"List 'no' does not exist at site with URL 'https://tenant.sharepoint.com/sites/dev'."}}} Data: {"response":{"size":0,"timeout":0},"status":404,"statusText":"Not Found","isHttpRequestError":true}
 ```
 
@@ -49,7 +51,9 @@ This is very descriptive and provides full details as to what happened, but you 
 In some cases the response body will have additional details such as a localized error messages which can be nicer to display rather than our normalized string. You can read the response directly and process it however you desire:
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
 import { HttpRequestError } from "@pnp/queryable";
 
 try {
@@ -88,7 +92,9 @@ Using the [PnPjs Logging Framework](../logging/index.md) you can directly pass t
 
 ```TypeScript
 import { Logger } from "@pnp/logging";
-import { sp } from "@pnp/sp/presets/all";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
 
 try {
   // get a list that doesn't exist
@@ -103,7 +109,9 @@ You may want to read the response and customize the message as described above:
 
 ```TypeScript
 import { Logger } from "@pnp/logging";
-import { sp } from "@pnp/sp/presets/all";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
 import { HttpRequestError } from "@pnp/queryable";
 
 try {
@@ -177,7 +185,9 @@ export async function handleError(e: Error | HttpRequestError): Promise<void> {
 ### web-request.ts
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
 import { handleError } from "./errorhandler";
 
 try {
@@ -193,7 +203,9 @@ try {
 ### web-request2.ts
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists/web";
 import { handleError } from "./errorhandler";
 
 try {
@@ -204,4 +216,30 @@ try {
 
   await handleError(e);
 }
+```
+
+## Building a Custom Error Handler
+
+In Version 3 the library introduced the concept of a Timeline object and moments. One of the broadcast moments is error. To create your own custom error handler you can define a special handler for the error moment something like the following:
+
+```TypeScript
+
+//Custom Error Behavior
+export function CustomError(): TimelinePipe<Queryable> {
+
+    return (instance: Queryable) => {
+
+        instance.on.error((err) => {
+            if (logging) {
+                console.log(`🛑 PnPjs Testing Error - ${err.toString()}`);
+            }
+        });
+
+        return instance;
+    };
+}
+
+//Adding our CustomError behavior to our timline
+
+const sp = spfi().using(SPDefault(this.context)).using(CustomError());
 ```

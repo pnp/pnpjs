@@ -2,16 +2,15 @@
 
 PnPjs is a collection of fluent libraries for consuming SharePoint, Graph, and Office 365 REST APIs in a type-safe way. You can use it within SharePoint Framework, Nodejs, or any JavaScript project. This an open source initiative and we encourage contributions and constructive feedback from the community.
 
-![Fluent API in action](img/PnPJS_FluentAPI.gif)
-
-_Animation of the library in use, note intellisense help in building your queries_
-
 These articles provide general guidance for working with the libraries. If you are migrating from V2 please review the [transition guide](transition-guide.md).
 
 * **[Getting Started](getting-started.md)**
 * [Authentication](./authentication/index.md)
 * [Get Started Contributing](./contributing/index.md)
-* [npm scripts](npm-scripts.md)
+
+![Fluent API in action](img/PnPJS_FluentAPI.gif)
+
+_Animation of the library in use, note intellisense help in building your queries_
 
 ## Packages
 
@@ -22,16 +21,13 @@ The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%
 |     ||  |
 | ---| -------------|-------------|
 | @pnp/| | |
-|| [adaljsclient](./authentication/adaljsclient.md)  | Provides an adaljs wrapper suitable for use with PnPjs |
-|| [common](./common/index.md)  | Provides shared functionality across all pnp libraries |
-|| [config-store](./config-store/index.md) | Provides a way to manage configuration within your application |
+|| [core](./core/index.md)  | Provides shared functionality across all pnp libraries |
 || [graph](./graph/index.md) | Provides a fluent api for working with Microsoft Graph |
 || [logging](./logging/index.md) | Light-weight, subscribable logging framework |
 || [msaljsclient](./authentication/msaljsclient.md)  | Provides an msal wrapper suitable for use with PnPjs |
 || [nodejs](./nodejs/index.md) | Provides functionality enabling the @pnp libraries within nodejs |
-|| [odata](./odata/index.md) | Provides shared odata functionality and base classes |
+|| [queryable](./queryable/index.md) | Provides shared query functionality and base classes |
 || [sp](./sp/index.md) | Provides a fluent api for working with SharePoint REST |
-|| [sp-addinhelpers](./sp-addinhelpers/index.md) | Provides functionality for working within SharePoint add-ins |
 
 ## Authentication
 

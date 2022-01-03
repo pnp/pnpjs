@@ -6,8 +6,7 @@ This package supplies helper code when using the @pnp libraries within the conte
 
 ## Getting Started
 
-Install the library and required dependencies. You will also need to install other libraries such as [@pnp/sp](../sp/index.md) or [@pnp/graph](../graph/index.md) to use the
-exported functionality.
+Install the library and required dependencies. You will also need to install other libraries such as [@pnp/sp](../sp/index.md) or [@pnp/graph](../graph/index.md) to use the exported functionality.
 
 `npm install @pnp/sp @pnp/nodejs --save`
 

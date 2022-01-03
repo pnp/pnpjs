@@ -40,6 +40,8 @@ Please also see available behaviors in [@pnp/queryable]("../../../queryable/beha
 
 ### AssignFrom
 
+//TODO:: Patrick make it more clear what source and target are.
+
 This behavior creates a ref to the supplied Timeline implementation's observers and resets the inheriting flag. This means that changes to the parent, here being the supplied Timeline, will begin affecting the target to which this behavior is applied.
 
 ```TypeScript
