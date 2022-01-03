@@ -6,15 +6,12 @@ PnPjs is a collection of fluent libraries for consuming SharePoint, Graph, and O
 
 _Animation of the library in use, note intellisense help in building your queries_
 
-## General Guidance
-
-These articles provide general guidance for working with the libraries. If you are migrating from v1 please review the [transition guide](transition-guide.md).
+These articles provide general guidance for working with the libraries. If you are migrating from V2 please review the [transition guide](transition-guide.md).
 
 * **[Getting Started](getting-started.md)**
 * [Authentication](./authentication/index.md)
 * [Get Started Contributing](./contributing/index.md)
 * [npm scripts](npm-scripts.md)
-* [Polyfills](concepts/polyfill.md)
 
 ## Packages
 
