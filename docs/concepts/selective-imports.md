@@ -1,6 +1,6 @@
 # Selective Imports
 
-As the libraries have grown to support more of the SharePoint and Graph API they have also grown in size. On one hand this is good as more functionality becomes available but you had to include lots of code you didn't use if you were only doing simple operations. To solve this we introduced selective imports in v2. This allows you to only import the parts of the sp or graph library you need, allowing you to greatly reduce your overall solution bundle size - and enables [treeshaking](https://github.com/rollup/rollup#tree-shaking).
+As the libraries have grown to support more of the SharePoint and Graph API they have also grown in size. On one hand this is good as more functionality becomes available but you had to include lots of code you didn't use if you were only doing simple operations. To solve this we introduced selective imports. This allows you to only import the parts of the sp or graph library you need, allowing you to greatly reduce your overall solution bundle size - and enables [treeshaking](https://github.com/rollup/rollup#tree-shaking).
 
 This concept works well with [custom bundling](./custom-bundle.md) to create a shared package tailored exactly to your needs.
 
@@ -8,12 +8,15 @@ If you would prefer to not worry about selective imports please see the section 
 
 ```TypeScript
 // the sp var now has almost nothing attached at import time and relies on
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 // we need to import each of the pieces we need to "attach" them for chaining
 // here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
+
+// placeholder for fully configuring the sp interface
+const sp = spfi();
 
 const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1)();
 ```
@@ -22,12 +25,15 @@ Above we are being very specific in what we are importing, but you can also impo
 
 ```TypeScript
 // the sp var now has almost nothing attached at import time and relies on
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 // we need to import each of the pieces we need to "attach" them for chaining
 // here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+
+// placeholder for fully configuring the sp interface
+const sp = spfi();
 
 const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1)();
 ```
@@ -46,7 +52,7 @@ If you only need to access content types on the web object you can reduce size b
 
 ```TypeScript
 // this will fail
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { IList } from "@pnp/sp/lists";
 
@@ -56,30 +62,28 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import { IList } from "@pnp/sp/lists";
 
+// placeholder for fully configuring the sp interface
+const sp = spfi();
+
 const lists = await sp.web.lists();
 ```
 
 ## Presets
 
-Sometimes you don't care as much about bundle size - testing or node development for example. In these cases we have provided what we are calling presets to allow you to skip importing each module individually.
+Sometimes you don't care as much about bundle size - testing or node development for example. In these cases we have provided what we are calling presets to allow you to skip importing each module individually. Both libraries supply an "all" preset that will attach all of the available library functionality.
+
+> While the presets provided may be useful, we encourage you to look at making your own [project presets](./project-preset.md) or [custom bundles](./custom-bundle.md) as a preferred solution. Use of the presets in client-side solutions is not recommended.
 
 ## SP
 
-For the sp library there are two presets "all" and "core". The all preset mimics the behavior in v1 and includes everything in the library already attached to the sp var.
-
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+import "@pnp/sp/presets/all";
+import { spfi } from "@pnp/sp";
 
-// sp.* exists as it did in v1, tree shaking will not work
-const lists = await sp.web.lists();
-```
+// placeholder for fully configuring the sp interface
+const sp = spfi();
 
-The "core" preset includes sites, webs, lists, and items.
-
-```TypeScript
-import { sp } from "@pnp/sp/presets/core";
-
-// sp.* exists as it did in v1, tree shaking will not work
+// sp.* will have all of the library functionality bound to it, tree shaking will not work
 const lists = await sp.web.lists();
 ```
 
@@ -88,9 +92,12 @@ const lists = await sp.web.lists();
 The graph library contains a single preset, "all" mimicking the v1 structure.
 
 ```TypeScript
-import { graph } from "@pnp/graph/presets/all";
+import "@pnp/graph/presets/all";
+import { graphfi } from "@pnp/graph";
 
-// graph.* exists as it did in v1, tree shaking will not work
+// placeholder for fully configuring the sp interface
+const graph = graphfi();
+
+// graph.* will have all of the library functionality bound to it, tree shaking will not work
+const me = await graph.me();
 ```
-
-> While the presets provided may be useful, we encourage you to look at making your own [custom bundles](./custom-bundle.md) as a preferred solution.

@@ -1,8 +1,9 @@
 import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe, isFunc } from "@pnp/core";
-import { InjectHeaders, IQueryableInternal, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
+import { InjectHeaders, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "./operations.js";
-import { _SPQueryable } from "./spqueryable.js";
-import { SPFI } from "./fi.js";
+import { ISPQueryable, _SPQueryable } from "./spqueryable.js";
+import { spfi, SPFI } from "./fi.js";
+import { Web, IWeb, _Web } from "./webs/types.js";
 
 declare module "./fi" {
     interface SPFI {
@@ -11,20 +12,50 @@ declare module "./fi" {
          * Creates a batch behavior and associated execute function
          *
          */
-        batched(): [SPFI, () => Promise<void>];
+        batched(props?: ISPBatchProps): [SPFI, () => Promise<void>];
     }
 }
 
-SPFI.prototype.batched = function (this: SPFI): [SPFI, () => Promise<void>] {
+declare module "./webs/types" {
+    interface _Web {
 
-    const batchedRest = new SPFI(this._root);
+        /**
+         * Creates a batch behavior and associated execute function
+         *
+         */
+        batched(props?: ISPBatchProps): [IWeb, () => Promise<void>];
+    }
+}
 
-    const [behavior, execute] = createBatch(batchedRest._root);
+SPFI.prototype.batched = function (this: SPFI, props?: ISPBatchProps): [SPFI, () => Promise<void>] {
 
-    batchedRest._root.using(behavior);
+    const batched = spfi(this);
 
-    return [batchedRest, execute];
+    const [behavior, execute] = createBatch(batched._root, props);
+
+    batched.using(behavior);
+
+    return [batched, execute];
 };
+
+_Web.prototype.batched = function (this: IWeb, props?: ISPBatchProps): [IWeb, () => Promise<void>] {
+
+    const batched = Web(this);
+
+    const [behavior, execute] = createBatch(batched, props);
+
+    batched.using(behavior);
+
+    return [batched, execute];
+};
+
+interface ISPBatchProps {
+    /**
+     * Controls the headers copied from the original request into the batched request, applied to all items
+     * default: /Accept|Content-Type|IF-Match/i
+     */
+    headersCopyPattern?: RegExp;
+}
 
 /**
  * The request record defines a tuple that is
@@ -50,7 +81,7 @@ function BatchParse(): TimelinePipe {
 
 class BatchQueryable extends _SPQueryable {
 
-    constructor(base: IQueryableInternal, public requestBaseUrl = base.toUrl().replace(/[\\|/]_api[\\|/].*$/i, "")) {
+    constructor(base: ISPQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]_api[\\|/].*$/i, "")) {
 
         super(requestBaseUrl, "_api/$batch");
 
@@ -62,13 +93,18 @@ class BatchQueryable extends _SPQueryable {
     }
 }
 
-export function createBatch(base: IQueryableInternal): [TimelinePipe, () => Promise<void>] {
+export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [TimelinePipe, () => Promise<void>] {
 
     const registrationPromises: Promise<void>[] = [];
     const completePromises: Promise<void>[] = [];
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
     const batchQuery = new BatchQueryable(base);
+
+    const propsWithDefaults: Required<ISPBatchProps> = {
+        headersCopyPattern: /Accept|Content-Type|IF-Match/i,
+        ...props,
+    };
 
     const execute = async () => {
 
@@ -143,7 +179,7 @@ export function createBatch(base: IQueryableInternal): [TimelinePipe, () => Prom
 
             // write headers into batch body
             headers.forEach((value: string, name: string) => {
-                if (/Accept|Content-Type|IF-Match/i.test(name)) {
+                if (propsWithDefaults.headersCopyPattern.test(name)) {
                     batchBody.push(`${name}: ${value}\n`);
                 }
             });

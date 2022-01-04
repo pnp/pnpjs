@@ -11,20 +11,24 @@ declare module "./fi" {
          * Creates a batch behavior and associated execute function
          *
          */
-        batched(): [GraphFI, () => Promise<void>];
+        batched(props?: IGraphBatchProps): [GraphFI, () => Promise<void>];
     }
 }
 
-GraphFI.prototype.batched = function (this: GraphFI): [GraphFI, () => Promise<void>] {
+GraphFI.prototype.batched = function (this: GraphFI, props?: IGraphBatchProps): [GraphFI, () => Promise<void>] {
 
     const batchedRest = new GraphFI(this._root);
 
-    const [behavior, execute] = createBatch(batchedRest._root);
+    const [behavior, execute] = createBatch(batchedRest._root, props);
 
     batchedRest._root.using(behavior);
 
     return [batchedRest, execute];
 };
+
+interface IGraphBatchProps {
+    maxRequests?: number;
+}
 
 interface IGraphBatchRequestFragment {
     id: string;
@@ -106,7 +110,7 @@ class BatchQueryable extends _GraphQueryable {
     }
 }
 
-export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelinePipe, () => Promise<void>] {
+export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [TimelinePipe, () => Promise<void>] {
 
     const registrationPromises: Promise<void>[] = [];
     const completePromises: Promise<void>[] = [];
@@ -118,6 +122,11 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
         "Accept": "application/json",
         "Content-Type": "application/json",
     }));
+
+    const propsWithDefaults: Required<IGraphBatchProps> = {
+        maxRequests: 30,
+        ...props,
+    };
 
     const execute = async () => {
 
@@ -133,7 +142,7 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
         // this is the root of our promise chain
         while (requestsWorkingCopy.length > 0) {
 
-            const requestsChunk = requestsWorkingCopy.splice(0, maxRequests);
+            const requestsChunk = requestsWorkingCopy.splice(0, propsWithDefaults.maxRequests);
 
             const batchRequest: IGraphBatchRequest = {
                 requests: formatRequests(requestsChunk, batchId),
