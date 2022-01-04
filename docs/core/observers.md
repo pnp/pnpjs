@@ -98,9 +98,3 @@ const didChange = obj.on.log.clear();
 ## Special Behaviors
 
 The core library includes two special behaviors used to help manage observer inheritance. The best case is to manage inheritance using the methods described above, but these provide quick shorthand to help in certain scenarios. These are [AssignFrom](./behaviors.md#assignfrom) and [CopyFrom](./behaviors.md#copyfrom).
-
-
-
-
-
-

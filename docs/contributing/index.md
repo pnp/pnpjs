@@ -4,6 +4,7 @@ Thank you for your interest in contributing to PnPjs. We have updated our contri
 
 |Section|Description|
 |---|---|
+|[NPM Scripts](./npm-scripts.md)|Explains the npm scripts and their uses|
 |[Setup Dev Machine](./setup-dev-machine.md)|Covers setting up your machine to ensure you are ready to debug the solution|
 |[Local Debug Configuration](./local-debug-configuration.md)|Discusses the steps required to establish local configuration used for debugging and running tests|
 |[Debugging](./debugging.md)|Describes how to debug PnPjs locally
@@ -11,7 +12,6 @@ Thank you for your interest in contributing to PnPjs. We have updated our contri
 |[Writing Tests](./debug-tests.md)|How to write and debug tests|
 |[Update Documentation](./documentation.md)|Describes the steps required to edit and locally view the documentation|
 |[Submit a Pull Request](./pull-requests.md)|Outlines guidance for submitting a pull request|
-
 
 ## Need Help?
 

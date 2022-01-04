@@ -5,17 +5,7 @@ docs_dir: 'docs'
 nav:
   - Home: 'index.md'
   - 'Getting Started': 'getting-started.md'
-    - 'Authentication':
-      - 'Getting Started': 'authentication/index.md'
-      - 'SPFx Auth': 'authentication/client-spfx.md'
-      - 'MSAL Client': 'authentication/msaljsclient.md'
-      - 'SPA Auth': 'authentication/client-spa.md'
-      - 'NodeJS Auth': 'authentication/server-nodejs.md'
-      - 'Bearer Token Client': 'authentication/bearertokenclient.md'
-    - 'Working in Nodejs': 'nodejs-support.md'
-    - 'Selective Imports': 'concepts/selective-imports.md'
-    - 'Error Handling': 'concepts/error-handling.md'
-  - 'Transition Guide V3': 'transition-guide.md'
+  - 'V2->V3 Transition': 'transition-guide.md'
   - 'Library Usage Tips':
     - 'Batching': 'concepts/batching.md'   
     - 'Using Behaviors': 'concepts/using-behaviors.md'
@@ -25,12 +15,14 @@ nav:
     - core:
       - core: 'core/index.md'
       - behaviors: 'core/behaviors.md'
+      - observers: 'core/observers.md'
       - moments: 'core/moments.md'
-      - storage: 'core/storage.md'
       - timeline: 'core/timeline.md'
+      - storage: 'core/storage.md'
       - util: 'core/util.md'
     - graph: 
       - graph: 'graph/index.md'
+      - groups: 'graph/groups.md'
       - groups: 'graph/groups.md'
       - insights: 'graph/insights.md'
       - contacts: 'graph/contacts.md'
@@ -49,7 +41,6 @@ nav:
     - nodejs:
       - nodejs: 'nodejs/index.md'
       - SPFetchClient: 'nodejs/sp-fetch-client.md'     
-      - AdalFetchClient: 'nodejs/adal-fetch-client.md'
       - BearerTokenFetchClient: 'nodejs/bearer-token-fetch-client.md'       
       - ProviderHostedRequestContext: 'nodejs/provider-hosted-app.md'
       - 'sp Extensions': 'nodejs\sp-extensions.md'
@@ -108,24 +99,20 @@ nav:
     - 'Custom Bundle': 'concepts/custom-bundle.md'
     - 'Custom Call/Path': 'concepts/invokable.md'
     - 'Behaviors': 'core/behaviors.md'
+    - 'Behavior Recipes': 'core/behavior-recipes.md'
     - 'Queryable': 'core/queryable.md'
-    - 'Timeline/Moments': 'core/timeline-moments.md'
+    - 'Timeline/Moments': 'core/timeline.md'
     - 'Client-Side Pages': 'concepts/client-side-pages.md'
   - Contributing:
     - 'Contributing': 'contributing/index.md'
-    - 'Settings': 'concepts/settings.md'
-    - 'Npm Scripts': 'npm-scripts.md'
-    - 'Setup Dev Machine': 'contributing/setup-dev-machine.md'
-    - 'Local Debug Configuration': 'contributing/local-debug-configuration.md'
-    - 'Debugging': 'contributing/debugging.md'
-    - 'Extending the library': 'contributing/extending-the-library.md'
-    - 'Writing Tests': 'contributing/debug-tests.md'
-    - 'Update Documentation': 'contributing/documentation.md'
-    - 'Submit a Pull Request': 'contributing/pull-requests.md'
-  - Version 1 Docs:
-    - Home: 'v1/index.html'
-  - Version 2 Docs:
-    - Home: 'v2/index.html'
+    - 'Settings': 'contributing/settings.md'
+    - 'Understanding Library Internals': 'core/timeline.md'
+    - 'Npm Scripts': 'contributing/npm-scripts.md'
+    - 'Testing': 'contributing/debug-tests.md'
+    - 'Documentation': 'contributing/documentation.md'
+  - Legacy Docs:
+    - V1: 'v1/index.html'
+    - V2: 'v2/index.html'
 
 theme:
   name: 'material'

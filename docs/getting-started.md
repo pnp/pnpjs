@@ -1,17 +1,16 @@
 # Getting Started
 
-These libraries are geared towards folks working with TypeScript but will work equally well for JavaScript projects. To get started you need to install the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.
+This library is geared towards folks working with TypeScript but will work equally well for JavaScript projects. To get started you need to install the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.
 
-If you need to support older browsers please review the article on [polyfills](concepts/polyfill.md) for required functionality.
+If you need to support older browsers please revert to version 2 of the library and see related documentation on [polyfills](v2/concepts/polyfill.md) for required functionality.
 
 ## Install
 
-First you will need to install those libraries you want to use in your application. Here we will install the most frequently used packages. This step applies to any environment or project.
+First you will need to install those libraries you want to use in your application. Here we will install the most frequently used packages. `@pnp/sp` to access the SharePoint REST API and `@pnp/graph` to access some of the Microsoft Graph API. This step applies to any environment or project.
 
 `npm install @pnp/sp @pnp/graph --save`
 
-Next we can import and use the functionality within our application. Below is a very simple example, please see the individual package documentation
-for more details and examples.
+Next we can import and use the functionality within our application. Below is a very simple example, please see the individual package documentation for more details and examples.
 
 ```TypeScript
 import { getRandomString } from "@pnp/core";
@@ -26,112 +25,59 @@ import { getRandomString } from "@pnp/core";
 
 ## Getting Started with SharePoint Framework
 
-The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises please [read this note](SPFx-on-premises.md) on a workaround for the included TypeScript version. If you are targeting SharePoint online you do not need to take any additional steps.
+The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises you will need to use [version 2](./v2/SPFx-on-premises) of the library. If you are targeting SharePoint online you will need to take the additional steps outlined below based on the version of the SharePoint Framework you are targeting.
 
-### Establish Context
+//TODO:: Add additonal SPFx configuration steps based on SPFx Version
 
-Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request urls as well as use the SPFx HttpGraphClient within @pnp/graph. There are two ways to provide the SPFx context to the library. Either through the setup method imported from @pnp/core or using the setup method on either the @pnp/sp or @pnp/graph main export. All three are shown below and are equivalent, meaning if you are already importing the sp variable from @pnp/sp or the graph variable from @pnp/graph you should use their setup method to reduce imports.
+Because SharePoint Framework provides a local context to each component we need to set that context within the library. This allows us to determine request urls as well as use the SPFx HttpGraphClient within @pnp/graph. To establish context within the library you will need to use the SharePoint or Graph Factory Interface depending on which set of APIs you want to utilize. For SharePoint you will use the `spfi` interface and for the Microsoft Graph you will use the `graphfi` interface whic are both in the main export of the corresponding package. Examples of both methods are shown below.
 
-The setup is always done in the onInit method to ensure it runs before your other life-cycle code. You can also set any other settings at this time.
+Depending on how you architect your solution establishing context is done where you want to make calls to the API. The examples demonstrate doing so in the onInit method as a local variable but this could also be done to a private variable or passed into a service.
 
-#### Using @pnp/core setup
-
-```TypeScript
-import { setup as pnpSetup } from "@pnp/core";
-
-// ...
-
-protected onInit(): Promise<void> {
-
-  return super.onInit().then(_ => {
-
-    // other init code may be present
-
-    pnpSetup({
-      spfxContext: this.context
-    });
-  });
-}
-
-// ...
-
-```
-
-#### Using @pnp/sp setup
+### Using @pnp/sp `spfi` factory interface
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
-
-// ...
-
-protected onInit(): Promise<void> {
-
-  return super.onInit().then(_ => {
-
-    // other init code may be present
-
-    sp.setup({
-      spfxContext: this.context
-    });
-  });
-}
-
-// ...
-
-```
-
-Sp setup also supports passing just the SPFx context object directly as this is the most common case
-
-```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+import { spfi, SPFx } from "@pnp/sp";
 
 // ...
 
 protected async onInit(): Promise<void> {
 
   await super.onInit();
+  const sp = spfi().using(SPFx(this.context));
 
-  // other init code may be present
-  
-  sp.setup(this.context);
 }
 
 // ...
 
 ```
 
-#### Using @pnp/graph setup
+### Using @pnp/graph `graphfi` factory interface
 
 ```TypeScript
-import { graph } from "@pnp/graph/presets/all";
+import { graphfi, SPFx } from "@pnp/graph";
 
 // ...
 
-protected onInit(): Promise<void> {
+protected async onInit(): Promise<void> {
 
-  return super.onInit().then(_ => {
+  await super.onInit();
+  const graph = graphfi().using(SPFx(this.context));
 
-    // other init code may be present
-
-    graph.setup({
-      spfxContext: this.context
-    });
-  });
 }
 
 // ...
 
 ```
 
-#### Establish context within an SPFx service
+### Establish context within an SPFx service
 
-Because you do not have full access to the context object within a service you need to setup things a little differently. If you do not need AAD tokens you can leave that part out and specify just the pageContext.
+Because you do not have full access to the context object within a service you need to setup things a little differently. If you do not need AAD tokens you can leave that part out and specify just the pageContext (Option 2).
 
 ```TypeScript
 import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
 import { PageContext } from "@microsoft/sp-page-context";
 import { AadTokenProviderFactory } from "@microsoft/sp-http";
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 
@@ -142,6 +88,7 @@ export interface ISampleService {
 export class SampleService {
 
   public static readonly serviceKey: ServiceKey<ISampleService> = ServiceKey.create<ISampleService>('SPFx:SampleService', SampleService);
+  private _sp: SPFI;
 
   constructor(serviceScope: ServiceScope) {
 
@@ -150,36 +97,38 @@ export class SampleService {
       const pageContext = serviceScope.consume(PageContext.serviceKey);
       const tokenProviderFactory = serviceScope.consume(AadTokenProviderFactory.serviceKey);
 
-      // we need to "spoof" the context object with the parts we need for PnPjs
-      sp.setup({
+      //Option 1 - with AADTokenProvider
+      this._sp = spfi().using(SPFx({
         spfxContext: {
-          aadTokenProviderFactory: tokenProviderFactory,
-          pageContext: pageContext,
+        aadTokenProviderFactory: tokenProviderFactory,
+        pageContext: pageContext,
         }
-      });
+      }));
 
-      // This approach also works if you do not require AAD tokens
-      // you don't need to do both
-      // sp.setup({
-      //   sp : {
-      //     baseUrl : pageContext.web.absoluteUrl
-      //   }
-      // });
+      //Option 2 - without AADTokenProvider
+      this._sp = spfi().using(SPFx(pageContext));
+
     });
   }
+
   public getLists(): Promise<any[]> {
-    return sp.web.lists();
+    return this._sp.web.lists();
   }
 }
 ```
 
-## Connect to SharePoint from Node
+## Getting started with NodeJS
 
-> Please see the [main article on how we support node versions](../nodejs) that require commonjs modules.
+### Using @pnp/sp `spfi` factory interface
 
-`npm i @pnp/sp @pnp/nodejs`
+> Please see the [main article on how we support node versions](./nodejs-support.md) that require commonjs modules.
 
-This will install the sp and nodejs packages. You can read more about what each package does starting on the [packages](packages.md) page.
+The first step is to install the packages that will be needed. You can read more about what each package does starting on the [packages](packages.md) page.
+
+```cmd
+npm i @pnp/sp @pnp/nodejs
+```
+
 Once these are installed you need to import them into your project, to communicate with SharePoint from node we'll need the following imports:
 
 ```TypeScript
@@ -187,47 +136,42 @@ import { spfi } from "@pnp/sp";
 import { SPDefault } from "@pnp/nodejs";
 import "@pnp/sp/webs";
 import { readFileSync } from 'fs';
+import { Configuration } from "@azure/msal-node";
+
+function() {
+    // configure your node options (only once in your application)
+    const buffer = readFileSync("c:/temp/key.pem");
+
+    const config: Configuration = {
+      auth: {
+        authority: "https://login.microsoftonline.com/{tenant id or common}/",
+        clientId: "{application (client) id}",
+        clientCertificate: {
+        thumbprint: "{certificate thumbprint, displayed in AAD}",
+        privateKey: buffer.toString(),
+        },
+      },
+    };
+
+    const sp = spfi().using(SPDefault({
+      baseUrl: 'https://{my tenant}.sharepoint.com/sites/dev/',
+      msal: {
+        config: config,
+        scopes: [ 'https://{my tenant}.sharepoint.com/.default' ]
+      }
+    }));
+
+    // make a call to SharePoint and log it in the console
+    const w = await sp.web.select("Title", "Description").get();
+    console.log(JSON.stringify(w, null, 4));
+}();
 ```
 
-Once you have imported the necessary resources you can update your code to setup the node fetch client as well as make a call to SharePoint.
+### Using @pnp/graph `graphfi` factory interface
 
+Similar to the above you can also make calls to the Microsoft Graph API from node using the libraries. Again we start with installing the required resources. You can see [./debug/launch/graph.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/graph.ts) for a live example.
 
-```TypeScript
-// configure your node options (only once in your application)
-const buffer = readFileSync("c:/temp/key.pem");
-
-const config:any = {
-  auth: {
-    authority: "https://login.microsoftonline.com/{tenant id or common}/",
-    clientId: "{application (client) id}",
-    clientCertificate: {
-      thumbprint: "{certificate thumbprint, displayed in AAD}",
-      privateKey: buffer.toString(),
-    },
-  },
-};
-
-const sp = spfi('https://{my tenant}.sharepoint.com/sites/dev/')
-.using(SPDefault({
-  baseUrl: 'https://{my tenant}.sharepoint.com/sites/dev/',
-  msal: {
-    config: config,
-    scopes: [ 'https://{my tenant}.sharepoint.com/.default' ]
-  }
-}));
-
-// make a call to SharePoint and log it in the console
-sp.web.select("Title", "Description").get().then(w => {
-  console.log(JSON.stringify(w, null, 4));
-});
-```
-
-## Connect to Microsoft Graph From Node
-
-Similar to the above you can also make calls to the Graph api from node using the libraries. Again we start with installing the required resources. You can see
-[./debug/launch/graph.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/graph.ts) for a live example.
-
-```CMD
+```cmd
 npm i @pnp/graph @pnp/nodejs
 ```
 
@@ -237,65 +181,62 @@ Now we need to import what we'll need to call graph
 import { graphfi } from "@pnp/graph";
 import { GraphDefault } from "@pnp/nodejs";
 import "@pnp/graph/users";
+
+function() {
+    const graph = graphfi().using(GraphDefault({
+      baseUrl: 'https://graph.microsoft.com',
+      msal: {
+        config: config,
+        scopes: [ 'https://graph.microsoft.com/.default' ]
+      }
+    }));
+    // make a call to Graph and get all the groups
+    const userInfo = await graph.users.top(1)();
+    console.log(JSON.stringify(userInfo, null, 4));
+}();
 ```
 
-Now we can make our graph calls after setting up the MSAL client. Note you'll need to setup an AzureAD App registration with the necessary permissions.
+## Single Page Application Context
+
+In some cases you may be working in a client-side application that doesn't have context to the SharePoint site. In that case you will need to utilize the MSAL Client, you can get the details on creating that connection in this [article](./authentication/msaljsclient.md).
+
+## Selective Imports
+
+This library has a lot of functionality and you may not need all of it. For that reason, we support selective imports which allow you to only import the parts of the sp or graph library you need, which reduces your overall solution bundle size - and enables [treeshaking](https://github.com/rollup/rollup#tree-shaking).
+
+You can read more about [selective imports](./concepts/selective-imports.md).
+
+## Error Handling
+
+This [article](./concepts/error-handling.md) describes the most common types of errors generated by the library. It provides context on the error object, and ways to handle the errors. As always you should tailor your error handling to what your application needs. These are ideas that can be applied to many different patterns.
+
+## Extending the Library
+
+Because of the way the fluent library is designed by definition it's extendible. That means that if you want to build your own custom functions that extend the features of the library this can be done fairly simply. To get more information about creating your own custom extensions check out [extending the library](./contributing/extending-the-library.md) article.
+
+## Connect to a different Web
+
+The new factory function allows you to create a connection to a different web maintaining the same setup as your existing interface. You have two options, either to  'AssignFrom' or 'CopyFrom' the base timeline's observers. The below example utilizes 'AssignFrom' but the method would be the same regadless of which route you choose. For more information on these behaviors see [Core/Behaviors](./core/behaviors.md).
 
 ```TypeScript
-const graph = graphfi()
-.using(GraphDefault({
-  baseUrl: 'https://graph.microsoft.com',
-  msal: {
-    config: config,
-    scopes: [ 'https://graph.microsoft.com/.default' ]
-  }
-}));
-// make a call to Graph and get all the groups
-const userInfo = await graph.users.top(1)();
-console.log(JSON.stringify(userInfo, null, 4));
-```
+import { spfi, SPFx } from "@pnp/sp";
+import { AssignFrom } from "@pnp/core";
+import "@pnp/sp/webs";
 
-## Getting Started outside SharePoint Framework
+//Connection to the current context's Web
+const sp = spfi().using(SPFx(this.context));
 
-In some cases you may be working in a way such that we cannot determine the base url for the web. In this scenario you have two options.
+// Option 1: Create a new instance of Queryable
+const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
 
-### Set baseUrl through setup
+// Option 2: Copy/Assign a new instance of Queryable using the existing
+const spWebB = spfi({Other Web URL}).using(AssignFrom(sp.web));
 
-Here we are setting the baseUrl via the sp.setup method. We are also setting the headers to use `verbose` mode, something you may have to do when
-working against unpatched versions of SharePoint 2013 as [discussed here](https://blogs.msdn.microsoft.com/patrickrodgers/2016/06/13/pnp-jscore-1-0-1/).
-This is optional for 2016 or SharePoint Online. The library does not support setting the headers to use `nometadata` as we rely on the metadata in the response to do some of the more complicated functions. Some of the pure data calls will probably work but it is not a supported configuration.
+// Option 3: Create a new instance of Queryable using other credentials?
+const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
 
-```TypeScript
-import { sp } from "@pnp/sp/presets/all";
-
-sp.setup({
-  sp: {
-    headers: {
-      Accept: "application/json;odata=verbose",
-    },
-    baseUrl: "{Absolute SharePoint Web URL}"
-  },
-});
-
-const w = await sp.web.get();
-```
-
-### Create Web instances directly
-
-Using this method you create the web directly with the url you want to use as the base.
-
-```TypeScript
-import { Web } from "@pnp/sp/presets/all";
-
-const web = Web("{Absolute SharePoint Web URL}");
-const w = await web.get();
 ```
 
 ## Next Steps
 
 Be sure to [review the article describing all of the available settings](./concepts/configuration.md) across the libraries.
-
-
-
-
-

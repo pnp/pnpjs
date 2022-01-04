@@ -12,26 +12,26 @@ There are two places the PnPjs libraries can be used to connect to various servi
 ## Client Scenarios
 
 - SharePoint Framework
-    - Connect As:
-        - [Current User](./client-spfx.md#connect-to-sharepoint-as-current-user)
-        - [User + AAD App via MSAL](./client-spfx.md#msal-client)
-        - [User + AAD App via ADAL](./client-spfx.md#adal-client)
-    - Connect To:
-        - SharePoint as:
-            - [Current User](./client-spfx.md#connect-to-sharepoint-as-current-user)
-            - [User + AAD App via MSAL](./msaljsclient.md#calling-sharepoint-via-msal)
-        - Graph as:
-            - [Current User](./client-spfx.md#connect-to-graph-as-current-user)
-            - [User + AAD App via MSAL](./msaljsclient.md#calling-graph-via-msal)
-        - Both as:
-            - [Current User](./client-spfx.md#auth-as-current-user)
-            - [User + AAD App via MSAL](./msaljsclient.md#calling-graph-via-msal)
+  - Connect As:
+    - [Current User](./client-spfx.md#connect-to-sharepoint-as-current-user)
+    - [User + AAD App via MSAL](./client-spfx.md#msal-client)
+    - [User + AAD App via ADAL](./client-spfx.md#adal-client)
+  - Connect To:
+    - SharePoint as:
+      - [Current User](./client-spfx.md#connect-to-sharepoint-as-current-user)
+      - [User + AAD App via MSAL](./msaljsclient.md#calling-sharepoint-via-msal)
+    - Graph as:
+      - [Current User](./client-spfx.md#connect-to-graph-as-current-user)
+      - [User + AAD App via MSAL](./msaljsclient.md#calling-graph-via-msal)
+    - Both as:
+      - [Current User](./client-spfx.md#auth-as-current-user)
+      - [User + AAD App via MSAL](./msaljsclient.md#calling-graph-via-msal)
 - Single Page Application
-    - [User + AAD App via MSAL](./msaljsclient.md#use-in-single-page-applications)
+  - [User + AAD App via MSAL](./msaljsclient.md#use-in-single-page-applications)
 
 ## Server Scenarios
 
 - NodeJS
-    - [SharePoint App Registration (App-Only)](./server-nodejs.md#sharepoint-app-registration)
-    - [ADAL (App-Only)](server-nodejs.md#adal)
-    - [MSAL (App-Only)](server-nodejs.md#msal) - coming soon
+  - [SharePoint App Registration (App-Only)](./server-nodejs.md#sharepoint-app-registration)
+  - [ADAL (App-Only)](server-nodejs.md#adal)
+  - [MSAL (App-Only)](server-nodejs.md#msal) - coming soon

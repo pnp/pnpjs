@@ -14,7 +14,7 @@ public get webs(): IWebs {
 
 ## Understanding Factory Functions
 
-PnPjs v2 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions in sp and graph have a similar form.
+PnPjs v3 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions in sp and graph have a similar form.
 
 ```ts
 // create a constant which is a function of type ISPInvokableFactory having the name Webs

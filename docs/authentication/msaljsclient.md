@@ -23,20 +23,30 @@ The second parameter when configuring the PnP client is the list of scope you ar
 > When calling the SharePoint REST API we must use only a special scope "https://{tenant}.sharepoint.com/.default"
 
 ```TypeScript
-import { MsalClientSetup  } from "@pnp/msaljsclient";
-import { sp } from "@pnp/sp/presets/all";
+import { MSAL } from "@pnp/msaljsclient";
+import { AuthenticationParameters, Configuration } from "msal";
+import { BrowserFetchWithRetry, DefaultParse } from "@pnp/queryable";
+import { spfi, DefaultHeaders, DefaultInit } from "@pnp/sp";
 
-sp.setup({
-    sp: {
-        fetchClientFactory: MsalClientSetup({
-            auth: {
-                authority: "https://login.microsoftonline.com/mytentant.onmicrosoft.com/",
-                clientId: "00000000-0000-0000-0000-000000000000",
-                redirectUri: "https://mytentant.sharepoint.com/sites/dev/SitePages/test.aspx",
-            },
-        }, ["https://mytentant.sharepoint.com/.default"]),
-    },
-});
+const config: Configuration = {
+  auth: {
+    authority: "https://login.microsoftonline.com/mytentant.onmicrosoft.com/",
+    clientId: "00000000-0000-0000-0000-000000000000",
+    redirectUri: "https://mytentant.sharepoint.com/sites/dev/SitePages/test.aspx"
+  }
+}
+
+const authParams: AuthenticationParameters = {
+  scopes: ["https://mytentant.sharepoint.com/.default"]
+};
+
+const sp = spfi({SharePoint Web URL}).using(
+  MSAL(config, authParams),
+  DefaultHeaders(),
+  DefaultInit(),
+  BrowserFetchWithRetry(),
+  DefaultParse()
+);
 
 const r = await sp.web();
 ```
@@ -46,20 +56,30 @@ const r = await sp.web();
 > When calling the graph API you must specify the scopes you need and ensure they are configured in AAD
 
 ```TypeScript
-import { MsalClientSetup } from "@pnp/msaljsclient";
-import { graph } from "@pnp/graph/presets/all";
+import { MSAL } from "@pnp/msaljsclient";
+import { AuthenticationParameters, Configuration } from "msal";
+import { BrowserFetchWithRetry, DefaultParse } from "@pnp/queryable";
+import { graphfi, DefaultHeaders, DefaultInit } from "@pnp/graph";
 
-graph.setup({
-    graph: {
-        fetchClientFactory: MsalClientSetup({
-            auth: {
-                authority: "https://login.microsoftonline.com/tenant.onmicrosoft.com/",
-                clientId: "00000000-0000-0000-0000-000000000000",
-                redirectUri: "https://tenant.sharepoint.com/sites/dev/SitePages/test.aspx",
-            },
-        }, ["Group.Read.All"]),
-    },
-});
+const config: Configuration = {
+  auth: {
+    authority: "https://login.microsoftonline.com/mytentant.onmicrosoft.com/",
+    clientId: "00000000-0000-0000-0000-000000000000",
+    redirectUri: "https://mytentant.sharepoint.com/sites/dev/SitePages/test.aspx"
+  }
+}
+
+const authParams: AuthenticationParameters = {
+  scopes: ["Group.Read.All"]
+};
+
+const graph = graphfi().using(
+  MSAL(config, authParams),
+  DefaultHeaders(),
+  DefaultInit(),
+  BrowserFetchWithRetry(),
+  DefaultParse()
+);
 
 const r = await graph.groups();
 ```
@@ -108,5 +128,3 @@ const token = await client.getToken(["Group.Read.All"]);
 
 const token2 = await client.getToken(["Files.Read"]);
 ```
-
-

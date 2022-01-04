@@ -6,18 +6,6 @@ This concept works well with [custom bundling](./custom-bundle.md) to create a s
 
 If you would prefer to not worry about selective imports please see the section on [presets](#presets).
 
-## Old way
-
-```TypeScript
-// the sp var came with all library functionality already attached
-// meaning treeshaking couldn't reduce the size
-import { sp } from "@pnp/sp";
-
-const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1).get();
-```
-
-## New Way
-
 ```TypeScript
 // the sp var now has almost nothing attached at import time and relies on
 import { sp } from "@pnp/sp";
@@ -105,4 +93,4 @@ import { graph } from "@pnp/graph/presets/all";
 // graph.* exists as it did in v1, tree shaking will not work
 ```
 
-> While we may look to add additional presets in the future you are encouraged to look at making your own [custom bundles](./custom-bundle.md) as a preferred solution.
+> While the presets provided may be useful, we encourage you to look at making your own [custom bundles](./custom-bundle.md) as a preferred solution.
