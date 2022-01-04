@@ -9,10 +9,10 @@
 
 
 // we import the extendFactory function for use below
-import { extendFactory } from "@pnp/queryable";
+import { extendFactory } from "@pnp/core";
 
-// we grab the SPRest object so we can export an sp const from this "preset"
-import { SPRest } from "@pnp/sp";
+// we grab the SPRest object so we can export an sp const from this module
+import { spfi } from "@pnp/sp";
 
 // we import all the ambient features we need in our project in one place
 // no need to do them in every file where we want to use them (one place to update)
@@ -36,18 +36,17 @@ declare module "@pnp/sp/webs/types" {
     }
 }
 
-
 // we can also add an extension here that will be applied within our entire project
-// for more info checkout the article on extensions: ./docs/queryable/extensions.md
+// for more info checkout the article on extensions: ./docs/odata/extensions.md
 extendFactory(Web, {
 
-    ensureSpecialList: async function (this: IWeb, title: string, description: string = "An example"): Promise<void> {
+    ensureSpecialList: async function (this: IWeb, title: string, description = "An example"): Promise<void> {
 
         // just an example but we want a way to ensure any web we are working with has a list with a certain shape
         const r = await this.lists.ensure(title, description, 101);
 
         if (r.created) {
-            const batch = this.createBatch();
+            const batch = this
             r.list.fields.inBatch(batch).addText("TextField");
             r.list.fields.inBatch(batch).addUrl("UrlField", UrlFieldFormatType.Hyperlink);
             await batch.execute();
@@ -62,3 +61,6 @@ export { UrlFieldFormatType, IFieldAddResult, IField, ChoiceFieldFormatType } fr
 // this creates an sp const with all of the functionality we imported
 // attached for easy import in the rest of your project
 export const sp = new SPRest();
+
+
+

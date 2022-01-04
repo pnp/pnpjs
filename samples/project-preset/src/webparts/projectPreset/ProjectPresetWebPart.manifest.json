@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
-  "id": "088dc7bb-d843-47b2-b495-f9b104fe18d9",
-  "alias": "ProjectPresetExampleWebPart",
+  "id": "4530a515-8ba7-45bb-9a27-be06b33c59d4",
+  "alias": "ProjectPresetWebPart",
   "componentType": "WebPart",
 
   // The "*" signifies that the version should be taken from the package.json
@@ -12,16 +12,17 @@
   // Components that allow authors to embed arbitrary script code should set this to true.
   // https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f
   "requiresCustomScript": false,
-  "supportedHosts": ["SharePointWebPart"],
+  "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
+  "supportsThemeVariants": true,
 
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
     "group": { "default": "Other" },
-    "title": { "default": "ProjectPresetExample" },
-    "description": { "default": "ProjectPresetExample description" },
+    "title": { "default": "ProjectPreset" },
+    "description": { "default": "ProjectPreset description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "ProjectPresetExample"
+      "description": "ProjectPreset"
     }
   }]
 }
