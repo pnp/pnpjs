@@ -1,6 +1,7 @@
-import { spfi, DefaultInit, DefaultHeaders } from "@pnp/sp";
+import { spfi, DefaultInit, DefaultHeaders, RequestDigest} from "@pnp/sp";
 import { BrowserFetchWithRetry, DefaultParse } from "@pnp/queryable";
 import "@pnp/sp/webs";
+import { getRandomString } from "@pnp/core";
 // import { graph } from "@pnp/graph/presets/all";
 
 // ******
@@ -33,7 +34,9 @@ document.onreadystatechange = async () => {
                 BrowserFetchWithRetry(),
                 DefaultParse());
 
-            const r = await sp.web();
+            const r = await sp.web.update({
+                Title: "New Title: " + getRandomString(4),
+            });
 
             html.push(`<textarea cols="200" rows="40">${JSON.stringify(r, null, 4)}</textarea>`);
 
