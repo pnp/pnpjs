@@ -9,12 +9,13 @@
     "test": "gulp test"
   },
   "dependencies": {
+    "@microsoft/rush-stack-compiler-4.2": "^0.1.1",
     "@microsoft/sp-core-library": "1.13.1",
     "@microsoft/sp-lodash-subset": "1.13.1",
     "@microsoft/sp-office-ui-fabric-core": "1.13.1",
     "@microsoft/sp-property-pane": "1.13.1",
     "@microsoft/sp-webpart-base": "1.13.1",
-    "@pnp/sp": "^3.0.0-v3nightly.20220004"
+    "@pnp/sp": "^3.0.0-v3nightly.20220005"
   },
   "devDependencies": {
     "@microsoft/sp-build-web": "1.13.1",

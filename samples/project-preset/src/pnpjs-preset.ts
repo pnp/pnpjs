@@ -12,10 +12,11 @@
 import { extendFactory } from "@pnp/core";
 
 // we grab the SPRest object so we can export an sp const from this module
-import { spfi } from "@pnp/sp";
+import { SPFI, spfi, SPFx } from "@pnp/sp";
 
 // we import all the ambient features we need in our project in one place
 // no need to do them in every file where we want to use them (one place to update)
+import "@pnp/sp/batching";
 import "@pnp/sp/webs";
 import "@pnp/sp/items";
 import "@pnp/sp/lists";
@@ -23,6 +24,7 @@ import "@pnp/sp/sites";
 import "@pnp/sp/fields";
 import { Web, IWeb } from "@pnp/sp/webs";
 import { UrlFieldFormatType } from "@pnp/sp/fields";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 // for extensions to correctly appear in intellisense we need to extend the interface
 // to do this we extend the modules and need to append the /types to the normal import path
@@ -46,10 +48,11 @@ extendFactory(Web, {
         const r = await this.lists.ensure(title, description, 101);
 
         if (r.created) {
-            const batch = this
-            r.list.fields.inBatch(batch).addText("TextField");
-            r.list.fields.inBatch(batch).addUrl("UrlField", UrlFieldFormatType.Hyperlink);
-            await batch.execute();
+            const [batchedWeb, execute] = this.batched();
+            const list = batchedWeb.lists.getById(r.data.Id);
+            list.fields.addText("TextField");
+            list.fields.addUrl("UrlField", { DisplayFormat: UrlFieldFormatType.Hyperlink });
+            await execute();
         }
     },
 });
@@ -58,9 +61,14 @@ extendFactory(Web, {
 export { IWeb, Web } from "@pnp/sp/webs";
 export { UrlFieldFormatType, IFieldAddResult, IField, ChoiceFieldFormatType } from "@pnp/sp/fields";
 
-// this creates an sp const with all of the functionality we imported
-// attached for easy import in the rest of your project
-export const sp = new SPRest();
+export function mySPFi(context: WebPartContext): SPFI {
+
+    // we would include any behaviors we want here
+    const sp = spfi().using(SPFx(context));
+
+
+    return sp;
+}
 
 
 

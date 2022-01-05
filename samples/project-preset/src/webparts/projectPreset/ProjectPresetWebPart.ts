@@ -1,61 +1,66 @@
-import { Version } from '@microsoft/sp-core-library';
+import { Version } from "@microsoft/sp-core-library";
 import {
-  IPropertyPaneConfiguration,
-  PropertyPaneTextField
-} from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-import { escape } from '@microsoft/sp-lodash-subset';
+    IPropertyPaneConfiguration,
+    PropertyPaneTextField,
+} from "@microsoft/sp-property-pane";
+import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
+import { escape } from "@microsoft/sp-lodash-subset";
 
-import styles from './ProjectPresetWebPart.module.scss';
-import * as strings from 'ProjectPresetWebPartStrings';
+import styles from "./ProjectPresetWebPart.module.scss";
+import * as strings from "ProjectPresetWebPartStrings";
+
+
+import { mySPFi } from "../../pnpjs-preset";
 
 export interface IProjectPresetWebPartProps {
-  description: string;
+    description: string;
 }
 
 export default class ProjectPresetWebPart extends BaseClientSideWebPart<IProjectPresetWebPartProps> {
 
-  public render(): void {
-    this.domElement.innerHTML = `
-      <div class="${ styles.projectPreset }">
-        <div class="${ styles.container }">
-          <div class="${ styles.row }">
-            <div class="${ styles.column }">
-              <span class="${ styles.title }">Welcome to SharePoint!</span>
-              <p class="${ styles.subTitle }">Customize SharePoint experiences using Web Parts.</p>
-              <p class="${ styles.description }">${escape(this.properties.description)}</p>
-              <a href="https://aka.ms/spfx" class="${ styles.button }">
-                <span class="${ styles.label }">Learn more</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>`;
-  }
+    public render(): void {
 
-  protected get dataVersion(): Version {
-    return Version.parse('1.0');
-  }
+        const sp = mySPFi(this.context);
 
-  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    return {
-      pages: [
-        {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
-          groups: [
-            {
-              groupName: strings.BasicGroupName,
-              groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
-              ]
-            }
-          ]
-        }
-      ]
-    };
-  }
+        // create a button
+        const button = document.createElement("button");
+        button.innerHTML = "Ensure List";
+        button.addEventListener("click", async (e: MouseEvent) => {
+
+            // call our extension method for cleaner code within our components
+            await sp.web.ensureSpecialList("My Title", "A description");
+
+            // and provide some feedback that stuff happened, again just using appendChild
+            this.domElement.appendChild(new Text("List should now be there"));
+        });
+
+        // old school appendChild!
+        this.domElement.appendChild(button);
+    }
+
+    protected get dataVersion(): Version {
+        return Version.parse("1.0");
+    }
+
+    protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+        return {
+            pages: [
+                {
+                    header: {
+                        description: strings.PropertyPaneDescription,
+                    },
+                    groups: [
+                        {
+                            groupName: strings.BasicGroupName,
+                            groupFields: [
+                                PropertyPaneTextField("description", {
+                                    label: strings.DescriptionFieldLabel,
+                                }),
+                            ],
+                        },
+                    ],
+                },
+            ],
+        };
+    }
 }

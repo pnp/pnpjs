@@ -358,7 +358,7 @@ export const List = spInvokableFactory<IList>(_List);
  */
 export interface IListAddResult {
     list: IList;
-    data: any;
+    data: IListInfo;
 }
 
 /**
@@ -366,7 +366,7 @@ export interface IListAddResult {
  */
 export interface IListUpdateResult {
     list: IList;
-    data: any;
+    data: IListInfo;
 }
 
 /**
@@ -375,7 +375,7 @@ export interface IListUpdateResult {
 export interface IListEnsureResult {
     list: IList;
     created: boolean;
-    data: any;
+    data: IListInfo;
 }
 
 /**
