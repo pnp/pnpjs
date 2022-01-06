@@ -1,5 +1,4 @@
-import { spfi, DefaultInit, DefaultHeaders, RequestDigest} from "@pnp/sp";
-import { BrowserFetchWithRetry, DefaultParse } from "@pnp/queryable";
+import { spfi, SPBrowser } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
 // import { graph } from "@pnp/graph/presets/all";
@@ -28,11 +27,7 @@ document.onreadystatechange = async () => {
 
         try {
 
-            const sp = spfi("https://318studios.sharepoint.com/sites/dev/").using(
-                DefaultInit(),
-                DefaultHeaders(),
-                BrowserFetchWithRetry(),
-                DefaultParse());
+            const sp = spfi("https://318studios.sharepoint.com/sites/dev/").using(SPBrowser());
 
             const r = await sp.web.update({
                 Title: "New Title: " + getRandomString(4),

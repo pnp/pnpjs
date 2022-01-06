@@ -39,7 +39,7 @@ export function RequestDigest(hook?: (url: string, init: RequestInit) => IDigest
                 digest = hook(urlAsString, init);
             }
 
-            // TODO:: do we want to include this? very few things run on classic pages to its wasted space and maybe wasted time.
+            // TODO:: do we want to include this? very few things run on classic pages so its wasted space and maybe wasted time.
             // if (!objectDefinedNotNull(digest)) {
             //     // we can try and grab it from the input on classic pages
             //     const input = <HTMLInputElement>document.getElementById("__REQUESTDIGEST");
