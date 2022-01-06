@@ -35,14 +35,13 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
             DefaultInit(),
             BrowserFetchWithRetry(),
             DefaultParse(),
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             RequestDigest(() => {
 
-                if (context?.pageContext?.legacyPageContext) {
+                if (context?.pageContext?.legacyPageContext?.formDigestValue) {
 
                     return {
                         value: context.pageContext.legacyPageContext.formDigestValue,
-                        expiration: dateAdd(new Date(), "second", context.pageContext.legacyPageContext.formDigestTimeoutSeconds),
+                        expiration: dateAdd(new Date(), "second", context.pageContext.legacyPageContext?.formDigestTimeoutSeconds || 1600),
                     };
                 }
             }));

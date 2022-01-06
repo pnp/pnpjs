@@ -19,4 +19,5 @@ export * from "./utils/odata-url-from.js";
 export * from "./behaviors/defaults.js";
 export * from "./behaviors/telemetry.js";
 export * from "./behaviors/request-digest.js";
+export * from "./behaviors/spbrowser.js";
 export * from "./behaviors/spfx.js";
