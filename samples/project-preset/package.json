@@ -15,7 +15,7 @@
     "@microsoft/sp-office-ui-fabric-core": "1.13.1",
     "@microsoft/sp-property-pane": "1.13.1",
     "@microsoft/sp-webpart-base": "1.13.1",
-    "@pnp/sp": "^3.0.0-v3nightly.20220005"
+    "@pnp/sp": "^3.0.0-v3nightly.20220006"
   },
   "devDependencies": {
     "@microsoft/sp-build-web": "1.13.1",

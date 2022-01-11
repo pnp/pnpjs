@@ -6,6 +6,11 @@ export function DefaultInit(graphUrl = "https://graph.microsoft.com/v1.0"): Time
 
     return (instance: Queryable) => {
 
+        instance.using(
+            Telemetry(),
+            RejectOnError(),
+            ResolveOnData());
+
         instance.on.pre(async (url, init, result) => {
 
             init.cache = "default";
@@ -17,11 +22,6 @@ export function DefaultInit(graphUrl = "https://graph.microsoft.com/v1.0"): Time
 
             return [url, init, result];
         });
-
-        instance.using(
-            Telemetry(),
-            RejectOnError(),
-            ResolveOnData());
 
         return instance;
     };

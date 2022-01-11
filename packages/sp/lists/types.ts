@@ -235,7 +235,7 @@ export class _List extends _SPInstance<IListInfo> {
     public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, query = new Map<string, string>()): Promise<IRenderListDataAsStreamResult> {
 
         if (hOP(parameters, "RenderOptions") && isArray(parameters.RenderOptions)) {
-            parameters.RenderOptions = (<RenderListDataOptions[]>parameters.RenderOptions).reduce((v, c) => v + c);
+            parameters.RenderOptions = parameters.RenderOptions.reduce((v, c) => v + c);
         }
 
         const clone = List(this, "RenderListDataAsStream");

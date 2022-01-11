@@ -2,11 +2,24 @@ import { Queryable } from "../queryable.js";
 import { delay, TimelinePipe } from "@pnp/core";
 import { HttpRequestError } from "./parsers.js";
 
-export function BrowserFetch(): TimelinePipe<Queryable> {
+interface BrowserFetchProps {
+    replace?: boolean;
+}
+
+export function BrowserFetch(props?: BrowserFetchProps): TimelinePipe<Queryable> {
+
+    const { replace } = {
+        replace: true,
+        ...props,
+    };
 
     return (instance: Queryable) => {
 
-        instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit): Promise<any> {
+        if (replace) {
+            instance.on.send.clear();
+        }
+
+        instance.on.send(function (this: Queryable, url: URL, init: RequestInit): Promise<any> {
 
             this.log(`Fetch: ${init.method} ${url.toString()}`, 0);
 
@@ -18,11 +31,27 @@ export function BrowserFetch(): TimelinePipe<Queryable> {
     };
 }
 
-export function BrowserFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Queryable> {
+interface BrowserFetchWithRetryProps extends BrowserFetchProps {
+    retries?: number;
+    interval?: number;
+}
+
+export function BrowserFetchWithRetry(props?: BrowserFetchWithRetryProps): TimelinePipe<Queryable> {
+
+    const { interval, replace, retries } = {
+        replace: true,
+        interval: 200,
+        retries: 3,
+        ...props,
+    };
 
     return (instance: Queryable) => {
 
-        instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit): Promise<Response> {
+        if (replace) {
+            instance.on.send.clear();
+        }
+
+        instance.on.send(function (this: Queryable, url: URL, init: RequestInit): Promise<Response> {
 
             let response: Response;
             let wait = interval;

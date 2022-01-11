@@ -1,16 +1,15 @@
 import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
 import { BrowserFetchWithRetry, DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "./defaults.js";
-import { RequestDigest } from "./request-digest.js";
 
-export interface ISPBrowserProps {
+export interface IGraphBrowserProps {
     baseUrl?: string;
 }
 
-export function SPBrowser(props?: ISPBrowserProps): TimelinePipe<Queryable> {
+export function GraphBrowser(props?: IGraphBrowserProps): TimelinePipe<Queryable> {
 
     if (props?.baseUrl && !isUrlAbsolute(props.baseUrl)) {
-        throw Error("SPBrowser props.baseUrl must be absolute when supplied.");
+        throw Error("GraphBrowser props.baseUrl must be absolute when supplied.");
     }
 
     return (instance: Queryable) => {
@@ -19,8 +18,7 @@ export function SPBrowser(props?: ISPBrowserProps): TimelinePipe<Queryable> {
             DefaultHeaders(),
             DefaultInit(),
             BrowserFetchWithRetry(),
-            DefaultParse(),
-            RequestDigest());
+            DefaultParse());
 
         if (isUrlAbsolute(props?.baseUrl)) {
 

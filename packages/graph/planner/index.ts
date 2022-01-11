@@ -37,6 +37,6 @@ Reflect.defineProperty(GraphFI.prototype, "planner", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphFI) {
-        this.create(Planner);
+        return this.create(Planner);
     },
 });

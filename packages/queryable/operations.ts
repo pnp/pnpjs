@@ -1,15 +1,8 @@
 import { IQueryableInternal } from "./queryable";
-import { objectDefinedNotNull } from "@pnp/core";
 
-function ensureInit(method: string, init?: RequestInit): RequestInit {
+function ensureInit(method: string, init: RequestInit = { headers: {} }): RequestInit {
 
-    if (!objectDefinedNotNull(init)) {
-        init = { headers: {} };
-    }
-
-    init.method = method;
-
-    return init;
+    return { method, ...init, headers: { ...init.headers } };
 }
 
 export type Operation = <T = any>(this: IQueryableInternal, init?: RequestInit) => Promise<T>;

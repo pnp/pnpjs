@@ -1,7 +1,7 @@
-import { _SPInstance, spInvokableFactory } from "../spqueryable.js";
+import { _SPInstance, spInvokableFactory, SPInit } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
-import { hOP } from "@pnp/core";
+import { hOP, isArray } from "@pnp/core";
 import { body, TextParse } from "@pnp/queryable";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost } from "../operations.js";
@@ -12,6 +12,20 @@ import { emptyGuid } from "../types.js";
 
 @defaultPath("_api/site")
 export class _Site extends _SPInstance {
+
+    constructor(base: SPInit, path?: string) {
+
+        // we try and fix up the web url to not duplicate the _api/site
+        if (typeof base === "string") {
+            base = extractWebUrl(base);
+        } else if (isArray(base)) {
+            base = [base[0], extractWebUrl(base[1])];
+        } else {
+            base = [base, extractWebUrl(base.toUrl())];
+        }
+
+        super(base, path);
+    }
 
     /**
      * Gets the root web of the site collection

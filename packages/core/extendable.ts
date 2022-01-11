@@ -1,4 +1,4 @@
-import { getGUID, isFunc } from "./util.js";
+import { getGUID, isArray, isFunc } from "./util.js";
 
 export type ValidProxyMethods = "apply" | "get" | "has" | "set";
 
@@ -116,7 +116,7 @@ export function extendFactory<T extends (...args: any[]) => any>(factory: T, ext
 }
 
 function extendCol(a: ExtensionType[], e: ExtensionType | ExtensionType[]) {
-    if (Array.isArray(e)) {
+    if (isArray(e)) {
         a.push(...e);
     } else {
         a.push(e);

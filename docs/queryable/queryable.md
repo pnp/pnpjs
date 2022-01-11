@@ -11,7 +11,7 @@ The first parameter can be another queryable, a string, or a tuple of [Queryable
 |---|---|
 |Queryable|The new queryable inherits all of the supplied queryable's observers. Any supplied path (second constructor param) is appended to the supplied queryable's url becoming the url of the newly constructed queryable|
 |string|The new queryable will have NO registered observers. Any supplied path (second constructor param) is appended to the string becoming the url of the newly constructed queryable|
-|tuple|The observers from the supplied queryable are used by the new queryable. The url is a combination of the second tuple argument (string) and any supplied path.
+|[Queryable, string]|The observers from the supplied queryable are used by the new queryable. The url is a combination of the second tuple argument (string) and any supplied path.
 
 > The tuple constructor call can be used to rebase a queryable to call a different host in an otherwise identical way to another queryable.
 

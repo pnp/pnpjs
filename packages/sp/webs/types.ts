@@ -9,12 +9,16 @@ import {
     ISPInstance,
     IDeleteable,
     deleteable,
+    SPInit,
+    ISPQueryable,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost, spPostMerge } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escape-query-str.js";
+import { extractWebUrl } from "../index.js";
+import { isArray } from "@pnp/core";
 
 @defaultPath("webs")
 export class _Webs extends _SPCollection<IWebInfo[]> {
@@ -60,7 +64,23 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
 @defaultPath("_api/web")
 export class _Web extends _SPInstance<IWebInfo> {
 
-    public delete = deleteable();
+    public delete: (this: ISPQueryable) => Promise<void>;
+
+    constructor(base: SPInit, path?: string) {
+
+        // we try and fix up the web url to not duplicate the _api/web
+        if (typeof base === "string") {
+            base = extractWebUrl(base);
+        } else if (isArray(base)) {
+            base = [base[0], extractWebUrl(base[1])];
+        } else {
+            base = [base, extractWebUrl(base.toUrl())];
+        }
+
+        super(base, path);
+
+        this.delete = deleteable();
+    }
 
     /**
      * Gets this web's subwebs

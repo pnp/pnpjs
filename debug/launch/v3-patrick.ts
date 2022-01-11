@@ -7,9 +7,17 @@ import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 import "@pnp/sp/batching";
 import { Web } from "@pnp/sp/webs";
-import { AssignFrom, CopyFrom, getRandomString } from "@pnp/core";
+import { AssignFrom, CopyFrom, getRandomString, TimelinePipe } from "@pnp/core";
 import { RequestRecorderCache } from "../../test/test-recorder.js";
 import { join } from "path";
+import { Queryable } from "@pnp/queryable/queryable.js";
+import { indexOf } from "core-js/core/array";
+import { IList } from "@pnp/sp/lists";
+
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/invitations";
+import "@pnp/graph/users";
+import "@pnp/graph/batching";
 
 declare var process: { exit(code?: number): void };
 
@@ -48,18 +56,44 @@ export async function Example(settings: ITestingSettings) {
 
         // const recordingPath = join("C:/github/@pnp-fork", ".test-recording");
 
-        const sp = spfi("https://318studios.sharepoint.com/sites/dev").using(SPDefault({
+        const graph = graphfi().using(GraphDefault({
             msal: {
-                config: settings.testing.sp.msal.init,
-                scopes: settings.testing.sp.msal.scopes,
+                config: settings.testing.graph.msal.init,
+                scopes: settings.testing.graph.msal.scopes,
             },
-        })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
+        })).using(PnPLogging(LogLevel.Verbose)); 
 
-        const i = await sp.web({
-            headers: {}
-        });
+        // gain a batched instance of the graph
+        const [batchedGraph, execute] = graph.batched();
 
-        console.log(i);
+        // we take a reference to the value returned from .users
+        const users = batchedGraph.users;
+
+        // we invoke it, adding it to the batch (this is a request to /users), it will succeed
+        users();
+
+        // we invoke it again, because this instance has already been added to the batch, this request will throw an error
+        users();
+
+        // we execute the batch, this promise will resolve
+        await execute();               
+
+        console.log("here!?");
+
+
+        // const list: IList = sp.web.lists.getByTitle("Config");
+        // const [batchedListBehavior, execute] = createBatch(list);
+        // // this list is now batching all its requests
+        // list.using(batchedListBehavior);
+
+        // list.items.add({ Title: `1: ${getRandomString(4)}` });
+        // list.items.add({ Title: `2: ${getRandomString(4)}` });
+        // list.items.add({ Title: `3: ${getRandomString(4)}` });
+        // list.items.add({ Title: `4: ${getRandomString(4)}` });
+
+        // await execute();
+
+        // console.log(i);
 
     } catch (e) {
 

@@ -5,7 +5,7 @@
     "main": "./index.js",
     "typings": "./index",
     "dependencies": {
-        "@azure/msal-node": "^1.4.0",
+        "@azure/msal-node": "1.4.0",
         "@pnp/core": "0.0.0-PLACEHOLDER",
         "@pnp/logging": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
