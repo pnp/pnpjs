@@ -18,7 +18,7 @@ import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost, spPostMerge } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { extractWebUrl } from "../index.js";
-import { isArray } from "@pnp/core";
+import { combine, isArray } from "@pnp/core";
 
 @defaultPath("webs")
 export class _Webs extends _SPCollection<IWebInfo[]> {
@@ -58,6 +58,36 @@ export interface IWebs extends _Webs { }
 export const Webs = spInvokableFactory<IWebs>(_Webs);
 
 /**
+ * Ensures the url passed to the constructor is correctly rebased to a web url
+ *
+ * @param candidate The candidate web url
+ * @param path The caller supplied path, which may contain _api, meaning we don't append _api/web
+ */
+function rebaseWebUrl(candidate: string, path: string | undefined): string {
+
+    let replace = "_api/web";
+
+    // this allows us to both:
+    // - test if `candidate` already has an api path
+    // - ensure that we append the correct one as sometimes a web is not defined
+    //   by _api/web, in the case of _api/site/rootweb for example
+    const matches = /(_api[/|\\](site|web))/i.exec(candidate);
+    if (matches?.length > 0) {
+        // we want just the base url part (before the _api)
+        candidate = extractWebUrl(candidate);
+        // we want to ensure we put back the correct string
+        replace = matches[1];
+    }
+
+    // we only need to append the _api part IF `path` doesn't already include it.
+    if (path?.indexOf("_api") < 0) {
+        candidate = combine(candidate, replace);
+    }
+
+    return candidate;
+}
+
+/**
  * Describes a web
  *
  */
@@ -68,13 +98,12 @@ export class _Web extends _SPInstance<IWebInfo> {
 
     constructor(base: SPInit, path?: string) {
 
-        // we try and fix up the web url to not duplicate the _api/web
         if (typeof base === "string") {
-            base = extractWebUrl(base);
+            base = rebaseWebUrl(base, path);
         } else if (isArray(base)) {
-            base = [base[0], extractWebUrl(base[1])];
+            base = [base[0], rebaseWebUrl(base[1], path)];
         } else {
-            base = [base, extractWebUrl(base.toUrl())];
+            base = [base, rebaseWebUrl(base.toUrl(), path)];
         }
 
         super(base, path);
@@ -173,7 +202,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param progId The ProgID of the application that was used to create the file, in the form OLEServerName.ObjectName
      */
     public mapToIcon(filename: string, size = 0, progId = ""): Promise<string> {
-        return Web(this, `maptoicon(filename='${escapeQueryStrValue(filename)}', progid='${escapeQueryStrValue(progId)}', size=${size})`)();
+        return Web(this, `maptoicon(filename='${escapeQueryStrValue(filename)}',progid='${escapeQueryStrValue(progId)}',size=${size})`)();
     }
 
     /**
@@ -228,7 +257,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param includeCrossLanguage When true, includes language-neutral site templates; otherwise false (default = true)
      */
     public availableWebTemplates(language = 1033, includeCrossLanugage = true): ISPCollection {
-        return SPCollection(this, `getavailablewebtemplates(lcid=${language}, doincludecrosslanguage=${includeCrossLanugage})`);
+        return SPCollection(this, `getavailablewebtemplates(lcid=${language},doincludecrosslanguage=${includeCrossLanugage})`);
     }
 }
 export interface IWeb extends _Web, IDeleteable { }

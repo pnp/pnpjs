@@ -283,7 +283,6 @@ describe("Clientside Pages", function () {
                 this.skip();
             }
 
-            this.timeout(0);
             page = await _spfi.web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
             await page.save();
             // we need the updated url info from the published page so we re-load things.
@@ -317,11 +316,12 @@ describe("Clientside Pages", function () {
     });
 
     describe("description", function () {
+
         let page: IClientsidePage;
         let pageUrl: string;
 
         before(async function () {
-            this.timeout(0);
+
             page = await _spfi.web.addClientsidePage(`TestingSettingDescription_${getRandomString(4)}.aspx`);
             await page.save();
             // we need the updated url info from the published page so we re-load things.

@@ -19,7 +19,7 @@ declare module "../fi" {
 
 SPFI.prototype.getTenantAppCatalogWeb = async function (this: SPFI): Promise<IWeb> {
 
-    const data = await Web(this._root, "/_api/SP_TenantSettings_Current")<{ CorporateCatalogUrl: string }>();
+    const data = await Web(this._root, "_api/SP_TenantSettings_Current")<{ CorporateCatalogUrl: string }>();
 
     return Web([this._root, data.CorporateCatalogUrl]);
 };

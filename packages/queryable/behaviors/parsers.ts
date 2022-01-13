@@ -46,7 +46,8 @@ export async function errorCheck(url: URL, response: Response, result: any): Pro
 
     if (!response.ok) {
         // within observers we just throw to indicate an unrecoverable error within the pipeline
-        throw await HttpRequestError.init(response);
+        const y = await HttpRequestError.init(response);
+        throw y;
     }
 
     return [url, response, result];

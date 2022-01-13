@@ -52,24 +52,24 @@ describe("Web static Tests", function () {
     it("properly parses different contructor args", function () {
 
         const w1 = Web("https://something.com");
-        expect(w1.toUrl()).to.eq("https://something.com/_api/web");
+        expect(w1.toUrl(), "test 1").to.eq("https://something.com/_api/web");
 
         const w2 = Web("https://something.com/_api/web");
-        expect(w2.toUrl()).to.eq("https://something.com/_api/web");
+        expect(w2.toUrl(), "test 2").to.eq("https://something.com/_api/web");
 
         const w3 = Web("https://something.com/_api/web/_api/web");
-        expect(w3.toUrl()).to.eq("https://something.com/_api/web");
+        expect(w3.toUrl(), "test 3").to.eq("https://something.com/_api/web");
 
         const w4 = Web("https://something.com/_api/web/lists/getById('2984791847')/items");
-        expect(w4.toUrl()).to.eq("https://something.com/_api/web");
+        expect(w4.toUrl(), "test 4").to.eq("https://something.com/_api/web");
 
         const w5a = Web("https://something.com/");
         const w5b = Web(w5a);
-        expect(w5b.toUrl()).to.eq("https://something.com/_api/web");
+        expect(w5b.toUrl(), "test 5").to.eq("https://something.com/_api/web");
 
         const w6a = Web("https://something.com/_api/web/rootweb/something/random('asdfa')");
         const w6b = Web(w6a);
-        expect(w6b.toUrl()).to.eq("https://something.com/_api/web");
+        expect(w6b.toUrl(), "test 6").to.eq("https://something.com/_api/web");
     });
 });
 
