@@ -72,7 +72,7 @@ describe("Clientside Pages", function () {
         const pageName = `TestingloadClientsidePage_${getRandomString(4)}.aspx`;
 
         before(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(pageName);
             await page.save();
         });
@@ -94,7 +94,7 @@ describe("Clientside Pages", function () {
         const pageName = `TestingpromoteToNews_${getRandomString(4)}.aspx`;
 
         before(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(pageName);
             await page.save();
         });
@@ -144,7 +144,7 @@ describe("Clientside Pages", function () {
         let page: IClientsidePage;
 
         before(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
         });
 
@@ -162,7 +162,7 @@ describe("Clientside Pages", function () {
         let page: IClientsidePage;
 
         this.beforeEach(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`);
         });
 
@@ -253,7 +253,7 @@ describe("Clientside Pages", function () {
         let page: IClientsidePage;
 
         before(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
         });
 

@@ -130,7 +130,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
                 log("Beginning request", 1);
 
                 // eslint-disable-next-line prefer-const
-                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), {}, undefined);
+                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), userInit || {}, undefined);
 
                 log(`Url: ${url}`, 1);
 

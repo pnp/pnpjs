@@ -17,7 +17,7 @@ export function RequestDigest(hook?: (url: string, init: RequestInit) => IDigest
         instance.on.pre(async function (url, init, result) {
 
             // eslint-disable-next-line @typescript-eslint/dot-notation
-            if (/get/i.test(init.method) && init.headers && !hOP(init.headers, "X-RequestDigest") && !hOP(init.headers, "Authorization")) {
+            if (/get/i.test(init.method) || (init.headers && (hOP(init.headers, "X-RequestDigest") || hOP(init.headers, "Authorization")))) {
                 return [url, init, result];
             }
 
@@ -44,6 +44,7 @@ export function RequestDigest(hook?: (url: string, init: RequestInit) => IDigest
 
                 if (!objectDefinedNotNull(digest)) {
 
+                    // let's get one from the server
                     digest = await fetch(combine(webUrl, "/_api/contextinfo"), {
                         cache: "no-cache",
                         credentials: "same-origin",
@@ -60,11 +61,13 @@ export function RequestDigest(hook?: (url: string, init: RequestInit) => IDigest
 
                 if (objectDefinedNotNull(digest)) {
 
+                    // if we got a digest, set it in the headers
                     init.headers = {
                         "X-RequestDigest": digest.value,
                         ...init.headers,
                     };
 
+                    // and cache it for future requests
                     digests.set(webUrl, digest);
                 }
 

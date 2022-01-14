@@ -1,18 +1,19 @@
 import webpack from "webpack";
-import server from "webpack-dev-server";
+import devserver from "webpack-dev-server";
 import config from "./webpack.config.js";
 
 const serverSettings = {
-    https: true,
-}
+    server: {
+        type: "https",
+    },
+};
 
 // Start a webpack-dev-server
-new server(webpack(<any>config), serverSettings).listen(8080, "localhost", (err: Error | undefined) => {
+const server = new devserver(serverSettings, webpack(<any>config));
 
-    if (err) {
-        throw err;
-    }
-
+const runServer = async () => {
     console.log("File will be served from: https://localhost:8080/assets/pnp.js");
-});
+    await server.start();
+};
 
+runServer();

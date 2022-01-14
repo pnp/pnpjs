@@ -81,14 +81,6 @@ export function isFunc(f: any): f is Function {
 }
 
 /**
- * Determines if an object is both defined and not null
- * @param obj Object to test
- */
-export function objectDefinedNotNull(obj: any): boolean {
-    return typeof obj !== "undefined" && obj !== null;
-}
-
-/**
  * @returns whether the provided parameter is a JavaScript Array or not.
 */
 export function isArray(array: any): array is any[] {
@@ -111,6 +103,14 @@ export function isUrlAbsolute(url: string): boolean {
  */
 export function stringIsNullOrEmpty(s: string): boolean {
     return s === undefined || s === null || s.length < 1;
+}
+
+/**
+ * Determines if an object is both defined and not null
+ * @param obj Object to test
+ */
+export function objectDefinedNotNull(obj: any): boolean {
+    return typeof obj !== "undefined" && obj !== null;
 }
 
 /**

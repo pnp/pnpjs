@@ -1,19 +1,12 @@
 import { ITestingSettings } from "../../test/settings.js";
-import { GraphDefault, SPDefault } from "@pnp/nodejs";
+import { SPDefault } from "@pnp/nodejs";
 import { LogLevel, PnPLogging } from "@pnp/logging";
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import "@pnp/sp/fields";
+import "@pnp/sp/items";
 import "@pnp/sp/site-scripts";
 import { Web } from "@pnp/sp/webs";
-import { AssignFrom, CopyFrom, getRandomString, TimelinePipe } from "@pnp/core";
-import { RequestRecorderCache } from "../../test/test-recorder.js";
-import { join } from "path";
-import { Queryable } from "@pnp/queryable/queryable.js";
-import { indexOf } from "core-js/core/array";
-import { IList } from "@pnp/sp/lists";
-
 
 declare var process: { exit(code?: number): void };
 
@@ -57,17 +50,15 @@ export async function Example(settings: ITestingSettings) {
                 config: settings.testing.sp.msal.init,
                 scopes: settings.testing.sp.msal.scopes,
             },
-        })).using(PnPLogging(LogLevel.Verbose)); 
+        })).using(PnPLogging(LogLevel.Verbose));
 
-        const scripts = await sp.siteScripts.getSiteScripts();
+        const items = await sp.web.lists.getByTitle("Generic").items;
 
-        console.log(scripts.length);
+        const u1 = items.toUrl();
 
-        console.log(JSON.stringify(scripts));
+        const web = Web(items);
 
-        for (let i = 0; i < scripts.length; i++) {
-            await sp.siteScripts.deleteSiteScript(scripts[i].Id);
-        }
+        const webInfo = await web();
 
         // const list: IList = sp.web.lists.getByTitle("Config");
         // const [batchedListBehavior, execute] = createBatch(list);
@@ -81,7 +72,7 @@ export async function Example(settings: ITestingSettings) {
 
         // await execute();
 
-        // console.log(i);
+        console.log(webInfo);
 
     } catch (e) {
 

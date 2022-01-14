@@ -45,7 +45,7 @@ const sp = spfi().using(RequestDigest());
 await sp.web();
 ```
 
-With a hook
+With a hook:
 
 ```TypeScript
 import { dateAdd } from "@pnp/core";
@@ -55,7 +55,7 @@ import "@pnp/sp/webs";
 const sp = spfi().using(RequestDigest((url, init) => {
 
     // the url will be a URL instance representing the request url
-    // init will be the RequestInit 
+    // init will be the RequestInit
 
     return {
         expiration: dateAdd(new Date(), "minute", 20);

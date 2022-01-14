@@ -128,7 +128,7 @@ The `pre` observer's signature is: `(this: IQueryable, url: string, init: Reques
 
 > The `pre`, `auth`, `parse`, and `post` are asyncReduce moments, meaning you are expected to always asyncronously return a tuple of the arguments supplied to the function. These are then passed to the next observer registered to the moment.
 
-Example of when to use pre are updates to the init, caching scenarios, or manipulation of the url (ensuring it is absolute). The init passed to pre (and auth) is the same object that will be eventually passed to fetch, meaning you can add any properties/congifuration you need. The result should always be left undefined unless you intend to end the lifecycle. If pre completes and result has any value other than undefined that value will be emitted to `data` and the lifecycle will end.
+Example of when to use pre are updates to the init, caching scenarios, or manipulation of the url (ensuring it is absolute). The init passed to pre (and auth) is the same object that will be eventually passed to fetch, meaning you can add any properties/congifuration you need. The result should always be left undefined unless you intend to end the lifecycle. If pre completes and result has any value other than undefined that value will be emitted to `data` and the timeline lifecycle will end.
 
 ```TypeScript
 query.on.pre(async function(url, init, result) {
