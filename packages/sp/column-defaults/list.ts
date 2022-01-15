@@ -151,7 +151,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
 
                 case "MultiChoice":
                     if (isArray(fieldDefault.value)) {
-                        value = (<any[]>fieldDefault.value).map(v => `${v}`).join(";");
+                        value = fieldDefault.value.map(v => `${v}`).join(";");
                     } else {
                         value = `${fieldDefault.value}`;
                     }
@@ -159,7 +159,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
 
                 case "UserMulti":
                     if (isArray(fieldDefault.value)) {
-                        value = (<any[]>fieldDefault.value).map(v => `${v}`).join(";#");
+                        value = fieldDefault.value.map(v => `${v}`).join(";#");
                     } else {
                         value = `${fieldDefault.value}`;
                     }
@@ -170,16 +170,16 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
                     if (isArray(fieldDefault.value)) {
                         throw Error(`The type '${fieldDef.TypeAsString}' does not support multiple values.`);
                     } else {
-                        value = `${(<any>fieldDefault.value).wssId};#${(<any>fieldDefault.value).termName}|${(<any>fieldDefault.value).termId}`;
+                        value = `${fieldDefault.value.wssId};#${(<any>fieldDefault.value).termName}|${(<any>fieldDefault.value).termId}`;
                     }
                     break;
 
                 case "TaxonomyMulti":
                 case "TaxonomyFieldTypeMulti":
                     if (isArray(fieldDefault.value)) {
-                        value = (<{ wssId: string; termName: string; termId: string }[]>fieldDefault.value).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
+                        value = fieldDefault.value.map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
                     } else {
-                        value = (<{ wssId: string; termName: string; termId: string }[]>[fieldDefault.value]).map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
+                        value = [fieldDefault.value].map(v => `${v.wssId};#${v.termName}|${v.termId}`).join(";#");
                     }
                     break;
             }

@@ -75,22 +75,15 @@ export function getGUID(): string {
  *
  * @param f The thing to test for functionness
  */
-export function isFunc(f: any): boolean {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function isFunc(f: any): f is Function {
     return typeof f === "function";
-}
-
-/**
- * Determines if an object is both defined and not null
- * @param obj Object to test
- */
-export function objectDefinedNotNull(obj: any): boolean {
-    return typeof obj !== "undefined" && obj !== null;
 }
 
 /**
  * @returns whether the provided parameter is a JavaScript Array or not.
 */
-export function isArray(array: any): boolean {
+export function isArray(array: any): array is any[] {
     return Array.isArray(array);
 }
 
@@ -110,6 +103,14 @@ export function isUrlAbsolute(url: string): boolean {
  */
 export function stringIsNullOrEmpty(s: string): boolean {
     return s === undefined || s === null || s.length < 1;
+}
+
+/**
+ * Determines if an object is both defined and not null
+ * @param obj Object to test
+ */
+export function objectDefinedNotNull(obj: any): boolean {
+    return typeof obj !== "undefined" && obj !== null;
 }
 
 /**

@@ -1,21 +1,27 @@
 import { Queryable } from "../queryable.js";
-import { isFunc, getHashCode, PnPClientStorage, dateAdd, TimelinePipe } from "@pnp/core";
+import { getHashCode, PnPClientStorage, dateAdd, TimelinePipe } from "@pnp/core";
 
 export type CacheKeyFactory = (url: string) => string;
 export type CacheExpireFunc = (url: string) => Date;
 
-export function Caching(store: "local" | "session" = "session", keyFactory?: CacheKeyFactory, expireFunc?: CacheExpireFunc): TimelinePipe<Queryable> {
+export interface ICachingProps {
+    store?: "local" | "session";
+    keyFactory?: CacheKeyFactory;
+    expireFunc?: CacheExpireFunc;
+}
+
+export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
 
     const storage = new PnPClientStorage();
+
+    const { store, keyFactory, expireFunc } = {
+        store: "local",
+        keyFactory: (url: string) => getHashCode(url.toLowerCase()).toString(),
+        expireFunc: () => dateAdd(new Date(), "minute", 5),
+        ...props,
+    };
+
     const s = store === "session" ? storage.session : storage.local;
-
-    if (!isFunc(keyFactory)) {
-        keyFactory = (url: string) => getHashCode(url.toLowerCase()).toString();
-    }
-
-    if (!isFunc(expireFunc)) {
-        expireFunc = () => dateAdd(new Date(), "minute", 5);
-    }
 
     return (instance: Queryable) => {
 

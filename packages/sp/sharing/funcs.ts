@@ -1,5 +1,5 @@
 import { body } from "@pnp/queryable";
-import { jsS } from "@pnp/core";
+import { isArray, jsS } from "@pnp/core";
 import { SPCollection, SPInstance } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { Web } from "../webs/types.js";
@@ -48,7 +48,7 @@ export async function shareObject(o: ShareableQueryable, options: IShareObjectOp
     const roleValue = await getRoleValue(options.role, options.group);
 
     // handle the multiple input types
-    if (!Array.isArray(options.loginNames)) {
+    if (!isArray(options.loginNames)) {
         options.loginNames = [options.loginNames];
     }
 
@@ -179,7 +179,7 @@ export async function shareWith(
     emailData?: ISharingEmailData): Promise<ISharingResult> {
 
     // handle the multiple input types
-    if (!Array.isArray(loginNames)) {
+    if (!isArray(loginNames)) {
         loginNames = [loginNames];
     }
 
@@ -190,7 +190,7 @@ export async function shareWith(
 
     // start by looking up the role definition id we need to set the roleValue
     const def = await SPCollection([o, extractWebUrl(o.toUrl())], "_api/web/roledefinitions").select("Id").filter(`RoleTypeKind eq ${roleFilter}`)();
-    if (!Array.isArray(def) || def.length < 1) {
+    if (!isArray(def) || def.length < 1) {
         throw Error(`Could not locate a role defintion with RoleTypeKind ${roleFilter}`);
     }
 

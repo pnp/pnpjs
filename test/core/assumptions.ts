@@ -59,4 +59,41 @@ describe("Assumptions", function () {
         expect(test5, "test 5").to.eql({});
 
     });
+
+    it("should destructure how we assume", function () {
+
+        const props = {
+            yes: false,
+            no: true,
+        };
+
+        const { replace, no, yes } = {
+            replace: true,
+            ...props,
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        expect(replace).to.be.true;
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        expect(no).to.be.true;
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        expect(yes).to.be.false;
+
+        const props2 = {
+            title: "hello",
+            another: "something",
+        };
+
+        const { title, another } = {
+            title: "default",
+            another: "different",
+            ...props2,
+        };
+
+        expect(title).to.eq("hello");
+
+        expect(another).to.eq("something");
+    });
 });

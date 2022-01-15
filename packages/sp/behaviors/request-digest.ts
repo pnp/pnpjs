@@ -14,73 +14,67 @@ export function RequestDigest(hook?: (url: string, init: RequestInit) => IDigest
 
     return (instance: Queryable) => {
 
-        instance.on.auth(async (url, init) => {
+        instance.on.pre(async function (url, init, result) {
 
             // eslint-disable-next-line @typescript-eslint/dot-notation
-            if (/get/i.test(init.method) && init.headers && !hOP(init.headers, "X-RequestDigest") && !hOP(init.headers, "Authorization")) {
-                return [url, init];
+            if (/get/i.test(init.method) || (init.headers && (hOP(init.headers, "X-RequestDigest") || hOP(init.headers, "Authorization")))) {
+                return [url, init, result];
             }
 
-            const urlAsString = url.toString();
-            const webUrl = extractWebUrl(urlAsString);
+            // add the request to the auth moment of the timeline
+            this.on.auth(async (url, init) => {
 
-            // do we have one in the cache that is still valid
-            let digest: IDigestInfo = digests.get(webUrl);
-            if (digest !== undefined) {
+                const urlAsString = url.toString();
+                const webUrl = extractWebUrl(urlAsString);
 
-                const now = new Date();
-                if (now > digest.expiration) {
-                    digest = null;
+                // do we have one in the cache that is still valid
+                let digest: IDigestInfo = digests.get(webUrl);
+                if (digest !== undefined) {
+
+                    const now = new Date();
+                    if (now > digest.expiration) {
+                        digest = null;
+                    }
                 }
-            }
 
-            if (!objectDefinedNotNull(digest) && typeof hook === "function") {
-                // we assume anything we get from the hook is not already expired
-                digest = hook(urlAsString, init);
-            }
+                if (!objectDefinedNotNull(digest) && typeof hook === "function") {
+                    // we assume anything we get from the hook is not already expired
+                    digest = hook(urlAsString, init);
+                }
 
-            // TODO:: do we want to include this? very few things run on classic pages so its wasted space and maybe wasted time.
-            // if (!objectDefinedNotNull(digest)) {
-            //     // we can try and grab it from the input on classic pages
-            //     const input = <HTMLInputElement>document.getElementById("__REQUESTDIGEST");
-            //     if (objectDefinedNotNull(input)) {
-            //         digest = {
-            //             value: input.value,
-            //             expiration: dateAdd(new Date(), "second", 1800),
-            //         };
-            //     }
-            // }
+                if (!objectDefinedNotNull(digest)) {
 
-            if (!objectDefinedNotNull(digest)) {
-
-                await fetch(combine(webUrl, "/_api/contextinfo"), {
-                    cache: "no-cache",
-                    credentials: "same-origin",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json;odata=verbose;charset=utf-8",
-                    },
-                    method: "POST",
-                }).then(r => r.json()).then(p => {
-
-                    digest = {
+                    // let's get one from the server
+                    digest = await fetch(combine(webUrl, "/_api/contextinfo"), {
+                        cache: "no-cache",
+                        credentials: "same-origin",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                        },
+                        method: "POST",
+                    }).then(r => r.json()).then(p => ({
                         expiration: dateAdd(new Date(), "second", p.FormDigestTimeoutSeconds),
                         value: p.FormDigestValue,
+                    }));
+                }
+
+                if (objectDefinedNotNull(digest)) {
+
+                    // if we got a digest, set it in the headers
+                    init.headers = {
+                        "X-RequestDigest": digest.value,
+                        ...init.headers,
                     };
-                });
-            }
 
-            if (objectDefinedNotNull(digest)) {
+                    // and cache it for future requests
+                    digests.set(webUrl, digest);
+                }
 
-                init.headers = {
-                    "X-RequestDigest": digest.value,
-                    ...init.headers,
-                };
+                return [url, init];
+            });
 
-                digests.set(webUrl, digest);
-            }
-
-            return [url, init];
+            return [url, init, result];
         });
 
         return instance;

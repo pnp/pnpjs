@@ -84,7 +84,7 @@ You a already familiar with `broadcast` which passes the emited args to all subs
 
 ### broadcast
 
-Passes the emited args to all subscribed observers. Takes a single type parameter defining the observer signature and always returns void. Is not async.
+Creates a moment that passes the emited args to all subscribed observers. Takes a single type parameter defining the observer signature and always returns void. Is not async.
 
 ```TypeScript
 import { broadcast } from "@pnp/core";
@@ -105,7 +105,7 @@ obj.emit.example("Hello");
 
 ### asyncReduce
 
-Defines a moment that executes each observer asynchronously, awaiting the result and passes the returned arguments as the arguments to the next observer. This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state.
+Creates a moment that executes each observer asynchronously, awaiting the result and passes the returned arguments as the arguments to the next observer. This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state.
 
 ```TypeScript
 import { asyncReduce } from "@pnp/core";
@@ -133,7 +133,7 @@ obj.emit.example("Hello", 42);
 
 ### request
 
-Defines a moment where the first registered observer is used to asynchronously execute a request, returning a single result. If no result is returned (undefined) no further action is taken and the result will be undefined (i.e. additional observers are not used).
+Creates a moment where the first registered observer is used to asynchronously execute a request, returning a single result. If no result is returned (undefined) no further action is taken and the result will be undefined (i.e. additional observers are not used).
 
 This is used by us to execute web requets, but would also serve to represent any async request such as a database read, file read, or provisioning step.
 
@@ -151,7 +151,7 @@ obj.on.example(async function (this: Timeline<any>, arg1: string, arg2: number) 
 
     this.log(`Sending request: ${arg1}`, 0);
 
-    // always return a tuple of the passed arguments, possibly modified
+    // request expects a single value result
     return `result value ${arg2}`;
 });
 

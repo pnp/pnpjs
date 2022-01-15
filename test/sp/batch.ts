@@ -1,12 +1,12 @@
 import { assert, expect } from "chai";
-import "@pnp/sp/webs";
+import { Web } from "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
 import "@pnp/sp/files/item";
 import "@pnp/sp/folders/list";
 import "@pnp/sp/site-groups/web";
 import "@pnp/sp/site-users/web";
-import "@pnp/sp/batching";
+import { createBatch } from "@pnp/sp/batching";
 import { CheckinType } from "@pnp/sp/files";
 import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
@@ -181,5 +181,70 @@ describe("Batching", function () {
         order.push(4);
 
         return expect(order.toString()).to.eql(expected.toString());
+    });
+
+    it("Web batch", async function () {
+
+        const order: number[] = [];
+        const expected: number[] = [1, 2, 3];
+
+        const [batchedWeb, execute] = await _spfi.web.batched();
+
+        batchedWeb().then(() => order.push(1));
+
+        batchedWeb.lists().then(() => order.push(2));
+
+        await execute().then(() => order.push(3));
+
+        return expect(order.toString()).to.eql(expected.toString());
+    });
+
+    it("Should work with the same Queryable when properly cloned (Advanced)", async function () {
+
+        const web = _spfi.web;
+
+        const [batchedBehavior, execute] = createBatch(web);
+        web.using(batchedBehavior);
+
+        web();
+        _spfi.web.using(batchedBehavior)();
+        _spfi.web.using(batchedBehavior)();
+        _spfi.web.using(batchedBehavior)();
+
+        return expect(execute()).to.eventually.be.fulfilled;
+    });
+
+    it("Should work with the same Queryable when properly cloned by factory (Advanced)", async function () {
+
+        const web = _spfi.web;
+
+        const [batchedBehavior, execute] = createBatch(web);
+        web.using(batchedBehavior);
+
+        Web(web).using(batchedBehavior)();
+        Web(web).using(batchedBehavior)();
+        Web(web).using(batchedBehavior)();
+
+        return expect(execute()).to.eventually.be.fulfilled;
+    });
+
+    it("Should fail with the same Queryable (Advanced)", async function () {
+
+        const web = _spfi.web;
+
+        const [batchedBehavior, execute] = createBatch(web);
+        web.using(batchedBehavior);
+
+        web();
+
+        const p = web();
+
+        const p2 = execute();
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        expect(p).to.eventually.be.rejected;
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        expect(p2).to.eventually.be.fulfilled;
     });
 });

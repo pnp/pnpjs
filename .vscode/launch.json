@@ -38,8 +38,7 @@
         "--retries",
         "0",
         "--verbose",
-        "--logging",
-        "--skip-web"
+        "--logging"
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",

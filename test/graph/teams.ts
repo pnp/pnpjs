@@ -60,7 +60,7 @@ describe("Teams", function () {
 
             try {
 
-                this.timeout(0);
+                this.timeout(50000);
                 await delay(6000);
 
                 let isPending = true;

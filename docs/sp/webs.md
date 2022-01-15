@@ -85,14 +85,29 @@ const sp = spfi("{tenant url}").using(SPFx(this.content));
 const r = await sp.web();
 ```
 
-**Access the web from the imported "spfi" object using the 'core' preset**
+**Access the web using any SPQueryable as a base**
+
+In this scenario you might be deep in your code without access to the original start of the fluid chain (i.e. the instance produced from spfi). You can pass any queryable to the Web or Site factory and get back a valid IWeb instance. In this case all of the observers registered to the supplied instance will be referenced by the IWeb, and the url will be rebased to ensure a valid path.
 
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp/presets/core";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 const sp = spfi("{tenant url}").using(SPFx(this.content));
 
-const r = await sp.web();
+// we have a ref to the IItems instance
+const items = await sp.web.lists.getByTitle("Generic").items;
+
+// we create a new IWeb instance using the items as a base
+const web = Web(items);
+
+// gets the web info
+const webInfo = await web();
+
+// get a reference to a different list
+const list = web.lists.getByTitle("DifferentList");
 ```
 
 ### webs

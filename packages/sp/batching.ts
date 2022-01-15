@@ -68,8 +68,8 @@ interface ISPBatchProps {
  */
 type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
 
-const RegistrationCompleteSym = Symbol.for("batch_reg_done");
-const RequestCompleteSym = Symbol.for("batch_req_done");
+const RegistrationCompleteSym = Symbol.for("batch_registration");
+const RequestCompleteSym = Symbol.for("batch_request");
 
 function BatchParse(): TimelinePipe {
 
@@ -101,7 +101,7 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
     const batchId = getGUID();
     const batchQuery = new BatchQueryable(base);
 
-    const propsWithDefaults: Required<ISPBatchProps> = {
+    const { headersCopyPattern } = {
         headersCopyPattern: /Accept|Content-Type|IF-Match/i,
         ...props,
     };
@@ -179,7 +179,7 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
 
             // write headers into batch body
             headers.forEach((value: string, name: string) => {
-                if (propsWithDefaults.headersCopyPattern.test(name)) {
+                if (headersCopyPattern.test(name)) {
                     batchBody.push(`${name}: ${value}\n`);
                 }
             });
@@ -231,9 +231,13 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
 
         instance.on.init(function (this: Queryable) {
 
+            if (isFunc(this[RegistrationCompleteSym])) {
+                throw Error("This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse.");
+            }
+
             // we need to ensure we wait to start execute until all our batch children hit the .send method to be fully registered
             registrationPromises.push(new Promise((resolve) => {
-                (<any>this)[RegistrationCompleteSym] = resolve;
+                this[RegistrationCompleteSym] = resolve;
             }));
 
             return this;
@@ -257,10 +261,10 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
 
             // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
             completePromises.push(new Promise((resolve) => {
-                (<any>this)[RequestCompleteSym] = resolve;
+                this[RequestCompleteSym] = resolve;
             }));
 
-            (<any>this)[RegistrationCompleteSym]();
+            this[RegistrationCompleteSym]();
 
             return promise;
         });
@@ -268,14 +272,14 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
         // we need to know when each request in the batch's timeline has completed
         instance.on.dispose(function () {
 
-            if (isFunc((<any>this)[RequestCompleteSym])) {
+            if (isFunc(this[RequestCompleteSym])) {
 
                 // let things know we are done with this request
-                (<any>this)[RequestCompleteSym]();
+                this[RequestCompleteSym]();
                 delete this[RequestCompleteSym];
             }
 
-            if (isFunc((<any>this)[RegistrationCompleteSym])) {
+            if (isFunc(this[RegistrationCompleteSym])) {
                 // remove the symbol props we added for good hygene
                 delete this[RegistrationCompleteSym];
             }

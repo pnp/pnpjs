@@ -29,9 +29,11 @@ document.onreadystatechange = async () => {
 
             const sp = spfi("https://318studios.sharepoint.com/sites/dev/").using(SPBrowser());
 
-            const r = await sp.web.update({
-                Title: "New Title: " + getRandomString(4),
-            });
+            // const r = await sp.web.update({
+            //     Title: "New Title: " + getRandomString(4),
+            // });
+
+            const r = await sp.web();
 
             html.push(`<textarea cols="200" rows="40">${JSON.stringify(r, null, 4)}</textarea>`);
 

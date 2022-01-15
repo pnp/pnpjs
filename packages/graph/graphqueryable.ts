@@ -38,11 +38,11 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
 
         } else if (isArray(base)) {
 
-            this.parentUrl = (<IGraphQueryable<any>>base[0]).toUrl();
+            this.parentUrl = base[0].toUrl();
 
         } else {
 
-            this.parentUrl = (<IGraphQueryable<any>>base).toUrl();
+            this.parentUrl = base.toUrl();
         }
     }
 

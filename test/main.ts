@@ -248,7 +248,7 @@ before("Setup Testing", async function () {
 after("Finalize Testing", async function () {
 
     // this may take some time, don't timeout early
-    this.timeout(120000);
+    this.timeout(400000);
 
     const testEnd = Date.now();
     console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
@@ -286,8 +286,6 @@ after("Finalize Testing", async function () {
     }
 
     console.log("All done. Have a nice day :)");
-
-    return;
 });
 
 // Function deletes all test subsites

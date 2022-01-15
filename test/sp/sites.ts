@@ -3,7 +3,7 @@ import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { getSP } from "../main.js";
-import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult } from "@pnp/sp/sites";
+import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult, Site } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
 import { combine, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { SPFI } from "@pnp/sp";
@@ -68,6 +68,32 @@ describe("Sites", function () {
         const notExists: boolean = await _spfi.site.exists(`${oWeb.Url}/RANDOM`);
         const success = exists && !notExists;
         return expect(success).to.be.true;
+    });
+});
+
+describe("Site static Tests", function () {
+
+    it("properly parses different contructor args", function () {
+
+        const s1 = Site("https://something.com");
+        expect(s1.toUrl()).to.eq("https://something.com/_api/site");
+
+        const s2 = Site("https://something.com/_api/site");
+        expect(s2.toUrl()).to.eq("https://something.com/_api/site");
+
+        const s3 = Site("https://something.com/_api/web/_api/site");
+        expect(s3.toUrl()).to.eq("https://something.com/_api/site");
+
+        const s4 = Site("https://something.com/_api/site/rootweb/something/random('asdfa')");
+        expect(s4.toUrl()).to.eq("https://something.com/_api/site");
+
+        const s5a = Site("https://something.com/");
+        const s5b = Site(s5a);
+        expect(s5b.toUrl()).to.eq("https://something.com/_api/site");
+
+        const s6a = Site("https://something.com/_api/site/rootweb/something/random('asdfa')");
+        const s6b = Site(s6a);
+        expect(s6b.toUrl()).to.eq("https://something.com/_api/site");
     });
 });
 

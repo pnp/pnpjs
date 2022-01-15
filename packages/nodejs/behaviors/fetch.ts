@@ -3,11 +3,24 @@ import { HttpRequestError, Queryable } from "@pnp/queryable";
 import { default as nodeFetch } from "node-fetch";
 import { delay, TimelinePipe } from "@pnp/core";
 
-export function NodeFetch(): TimelinePipe<Queryable> {
+export interface INodeFetchProps {
+    replace?: boolean;
+}
+
+export function NodeFetch(props?: INodeFetchProps): TimelinePipe<Queryable> {
+
+    const { replace } = {
+        replace: true,
+        ...props,
+    };
 
     return (instance: Queryable) => {
 
-        instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit) {
+        if (replace) {
+            instance.on.send.clear();
+        }
+
+        instance.on.send(function (this: Queryable, url: URL, init: RequestInit) {
 
             this.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
@@ -18,11 +31,27 @@ export function NodeFetch(): TimelinePipe<Queryable> {
     };
 }
 
-export function NodeFetchWithRetry(retries = 3, interval = 200): TimelinePipe<Queryable> {
+export interface INodeFetchWithRetryProps extends INodeFetchProps {
+    retries?: number;
+    interval?: number;
+}
+
+export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePipe<Queryable> {
+
+    const { interval, replace, retries } = {
+        replace: true,
+        interval: 200,
+        retries: 3,
+        ...props,
+    };
 
     return (instance: Queryable) => {
 
-        instance.on.send.replace(function (this: Queryable, url: URL, init: RequestInit): Promise<Response> {
+        if (replace) {
+            instance.on.send.clear();
+        }
+
+        instance.on.send(function (this: Queryable, url: URL, init: RequestInit): Promise<Response> {
 
             let response: Response;
             let wait = interval;

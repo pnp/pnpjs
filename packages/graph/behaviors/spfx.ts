@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
+import { TimelinePipe } from "@pnp/core";
 import { BrowserFetchWithRetry, DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "./defaults.js";
 
@@ -21,7 +21,7 @@ interface ISPFXContext {
     };
 }
 
-export function SPFx(context: ISPFXContext, graphBaseUrl = "https://graph.microsoft.com"): TimelinePipe<Queryable> {
+export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
 
     return (instance: Queryable) => {
 
@@ -30,16 +30,6 @@ export function SPFx(context: ISPFXContext, graphBaseUrl = "https://graph.micros
             DefaultInit(),
             BrowserFetchWithRetry(),
             DefaultParse());
-
-        // we want to fix up the url first
-        instance.on.pre.prepend(async (url, init, result) => {
-
-            if (!isUrlAbsolute(url)) {
-                url = combine(graphBaseUrl, url);
-            }
-
-            return [url, init, result];
-        });
 
         instance.on.auth.replace(async function (url: URL, init: RequestInit) {
 

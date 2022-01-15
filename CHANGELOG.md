@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - listeners are now factory functions (new ConsoleListener() => ConsoleListener()), drop the 'new'
   - Console listener now supports pretty printing options with colors and improved formatting (@thechriskent)
 
+- core:
+  - improved typings on isArray such that TS understands the outcome and properly types arrays
+
 - queryable:
   - changed constructor to also accept a tuple of [queryable, string] to allow easy rebasing of url while inheriting observers
 
@@ -47,6 +50,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - odataUrlFrom moved to utils folder
   - getParent signature change, path is second param, baseUrl is third param and only supports string
   - removed "core" preset
+  - Improved web and site contructor to correctly rebase the web/site urls regardless of the url supplied (i.e. create a web from any sp queryable)
 
 - graph:
   - Renamed export "graph" -> "graphfi" with type GraphFI
@@ -69,18 +73,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - BearerTokenFetchClient -> use @pnp/Queryable BearerToken behavior
   - SPFetchClient -> Use SPNodeFetch which includes SP retry logic
 
-- common/core:
+- core (common):
   - Removed global extensions in favor of instance or factory. Global no longer aligned to our scoped model
   - Removed `assign` util method use Object.assign or { ...a, ...b}
   - Removed `getCtxCallback` util method
   - Removed ITypedHash => built in type Record<string, *>
-  - removed `sanitizeGuid` util method
+  - removed `sanitizeGuid` util method, wasn't used
 
 - graph:
   - setEndpoint removed => .using(EndPoint("v1.0")) | .using(EndPoint("beta"))
 
 - sp:
-  - Removed createBatch from Site, use web.createBatch or sp.createBatch
+  - Removed createBatch from Site, use web.batched or sp.batched
   - feature.deactivate => use features.remove
   - getTenantAppCatalogWeb moved from root object to IWeb when imported
   - removed use of ListItemEntityTypeFullName in item add/update and removed associated methods to get the value
@@ -94,8 +98,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - removed web.getFileByServerRelativeUrl => web.getFileByServerRelativePath
   - removed folder.contentTypeOrder => use .select("contentTypeOrder")
   - removed folder.uniqueContentTypeOrder => use .select("uniqueContentTypeOrder")
-  - removed folder.copyTo => folder.copyByPath
-  - removed folder.moveTo => folder.moveByPath
+  - removed folder.copyTo => use folder.copyByPath
+  - removed folder.moveTo => use folder.moveByPath
   - removed _SPInstance._update => refactored and unused
   - removed objectToSPKeyValueCollection
   - removed toAbsoluteUrl => use behaviors

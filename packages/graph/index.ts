@@ -16,5 +16,6 @@ export * from "./operations.js";
 
 export * from "./behaviors/defaults.js";
 export * from "./behaviors/endpoint.js";
+export * from "./behaviors/graphbrowser.js";
 export * from "./behaviors/telemetry.js";
 export * from "./behaviors/spfx.js";
