@@ -38,13 +38,9 @@ export function createResolve(innerPath: string): ResolverFunc {
                 candidate = join(candidate, "index.js");
             }
 
-            let url = candidate;
-            // if (isWin32) {
-            candidate = "file://" + candidate;
-            url = new URL(candidate).href;
-            // }
-
             try {
+
+                const url = new URL("file://" + candidate).href;
 
                 log(`Resolved: ${specifier} => ${url}`);
 
@@ -65,7 +61,7 @@ export function createResolve(innerPath: string): ResolverFunc {
             }
         }
 
-        if (specifier.indexOf("settings.js") > -1 && /^[a-z]:[\\|/]/i.test(specifier) && isWin32) {
+        if (specifier.indexOf("settings.js") > -1 && isWin32) {
             specifier = "file://" + specifier;
             log(`patching settings.js import path for win32: ${specifier}`);
         }
