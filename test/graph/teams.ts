@@ -1,4 +1,4 @@
-import { getRandomString, delay } from "@pnp/core";
+import { getRandomString, delay, stringIsNullOrEmpty } from "@pnp/core";
 import { expect } from "chai";
 import { getGraph } from "../main.js";
 import { GraphFI } from "@pnp/graph";
@@ -16,7 +16,7 @@ describe("Teams", function () {
 
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 

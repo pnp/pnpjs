@@ -50,7 +50,7 @@ describe("Sharing", function () {
     });
 
     after(async function () {
-        if (this.settings.enableWebTests) {
+        if (this.settings.enableWebTests && !stringIsNullOrEmpty(this.settings.testUser)) {
             await _spfi.web.lists.getByTitle(testSharingLib).delete();
         }
     });

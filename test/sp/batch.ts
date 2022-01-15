@@ -10,7 +10,7 @@ import { createBatch } from "@pnp/sp/batching";
 import { CheckinType } from "@pnp/sp/files";
 import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
-import { AssignFrom, getRandomString } from "@pnp/core";
+import { AssignFrom, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 
 describe("Batching", function () {
     this.timeout(120000);
@@ -116,7 +116,7 @@ describe("Batching", function () {
 
     it("Cloned Requests (not items.add)", async function () {
 
-        if (this.settings.testUser?.length < 1) {
+        if (stringIsNullOrEmpty(this.settings.testUser)) {
             this.skip();
         }
 

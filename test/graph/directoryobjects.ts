@@ -110,7 +110,7 @@ describe("Directory Objects", function () {
 
     // Remove the test data we created
     after(async function () {
-        if (this.settings.enableWebTests) {
+        if (this.settings.enableWebTests && !stringIsNullOrEmpty(this.settings.testUser)) {
             await _graphfi.groups.getById(testChildGroupID).delete();
             await _graphfi.groups.getById(testParentGroupID).delete();
         }
