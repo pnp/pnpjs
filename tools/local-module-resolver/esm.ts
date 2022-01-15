@@ -38,14 +38,13 @@ export function createResolve(innerPath: string): ResolverFunc {
                 candidate = join(candidate, "index.js");
             }
 
+            let url = candidate;
             if (isWin32) {
                 candidate = "file://" + candidate;
+                url = new URL(candidate).href;
             }
 
             try {
-
-
-                const url = new URL(candidate).href;
 
                 log(`Resolved: ${specifier} => ${url}`);
 
