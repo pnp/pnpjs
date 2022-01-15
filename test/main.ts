@@ -247,9 +247,6 @@ before("Setup Testing", async function () {
 
 after("Finalize Testing", async function () {
 
-    // this may take some time, don't timeout early
-    this.timeout(400000);
-
     const testEnd = Date.now();
     console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
 
@@ -276,16 +273,17 @@ after("Finalize Testing", async function () {
 
             console.log(`Deleted web ${this.settings.sp.testWebUrl} created during testing.`);
 
-        } else if (this.settings.testing.enableWebTests) {
+        } else if (this.settings.enableWebTests) {
 
             console.log(`Leaving ${this.settings.sp.testWebUrl} alone.`);
         }
 
+        console.log("All done. Have a nice day :)");
+
     } catch (e) {
+
         console.error(`Error during cleanup: ${JSON.stringify(e)}`);
     }
-
-    console.log("All done. Have a nice day :)");
 });
 
 // Function deletes all test subsites
