@@ -39,10 +39,10 @@ export function createResolve(innerPath: string): ResolverFunc {
             }
 
             let url = candidate;
-            if (isWin32) {
-                candidate = "file://" + candidate;
-                url = new URL(candidate).href;
-            }
+            // if (isWin32) {
+            candidate = "file://" + candidate;
+            url = new URL(candidate).href;
+            // }
 
             try {
 
