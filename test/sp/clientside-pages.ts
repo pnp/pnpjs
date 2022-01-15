@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
-import { getRandomString, combine } from "@pnp/core";
+import { getRandomString, combine, stringIsNullOrEmpty } from "@pnp/core";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users";
 import "@pnp/sp/clientside-pages";
@@ -279,7 +279,7 @@ describe("Clientside Pages", function () {
 
         before(async function () {
 
-            if (this.settings.testUser?.length > 0) {
+            if (stringIsNullOrEmpty(this.settings.testUser)) {
                 this.skip();
             }
 
