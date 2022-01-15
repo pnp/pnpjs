@@ -38,9 +38,7 @@
         "--retries",
         "0",
         "--verbose",
-        "--logging",
-        "--site",
-        "https://318studios.sharepoint.com/sites/dev/6434f51c-6adc-437a-a347-d8cefe6bc7c1"
+        "--logging"
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
