@@ -3,7 +3,7 @@ import {
     _SharePointQueryableInstance,
     _SharePointQueryableCollection,
     spInvokableFactory,
-} from "../sharepointqueryable";
+} from "../sharepointqueryable.js";
 import { spPost } from "../operations.js";
 import { odataUrlFrom } from "../odata.js";
 import { extractWebUrl } from "../utils/extractweburl.js";
