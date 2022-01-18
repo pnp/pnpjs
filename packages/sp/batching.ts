@@ -81,7 +81,7 @@ function BatchParse(): TimelinePipe {
 
 class BatchQueryable extends _SPQueryable {
 
-    constructor(base: ISPQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]_api[\\|/].*$/i, "")) {
+    constructor(base: ISPQueryable, public requestBaseUrl = base.toUrl().replace(/_api[\\|/].*$/i, "")) {
 
         super(requestBaseUrl, "_api/$batch");
 
