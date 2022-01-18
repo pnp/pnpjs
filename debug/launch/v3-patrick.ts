@@ -5,8 +5,9 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
-import "@pnp/sp/site-scripts";
+import "@pnp/sp/batching";
 import { Web } from "@pnp/sp/webs";
+import { getRandomString } from "@pnp/core";
 
 declare var process: { exit(code?: number): void };
 
@@ -58,7 +59,17 @@ export async function Example(settings: ITestingSettings) {
 
         const web = Web(items);
 
-        const webInfo = await web();
+        const [batched, execute] = web.batched();
+
+        const list = batched.lists.getByTitle("Generic");
+
+        for (let i = 0; i < 10; i++) {
+            list.items.add({
+                Title: getRandomString(5),
+            });
+        }
+       
+        await execute();
 
         // const list: IList = sp.web.lists.getByTitle("Config");
         // const [batchedListBehavior, execute] = createBatch(list);
@@ -71,8 +82,6 @@ export async function Example(settings: ITestingSettings) {
         // list.items.add({ Title: `4: ${getRandomString(4)}` });
 
         // await execute();
-
-        console.log(webInfo);
 
     } catch (e) {
 
