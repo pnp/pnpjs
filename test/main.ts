@@ -221,9 +221,6 @@ before("Setup Testing", async function () {
 
     this.settings = allSettings.testing;
 
-    // this may take some time, don't timeout early
-    this.timeout(90000);
-
     // establish the connection to sharepoint
     if (this.settings.enableWebTests) {
 
