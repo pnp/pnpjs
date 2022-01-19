@@ -82,7 +82,7 @@ export class _Comment extends _SharePointQueryableInstance<ICommentInfo> {
      */
     @tag("com.delete")
     public delete(): Promise<void> {
-        return spPost(this.clone(Comment, "DeleteComment"));
+        return spDelete(this);
     }
 }
 export interface IComment extends _Comment {}
