@@ -221,9 +221,6 @@ before("Setup Testing", async function () {
 
     this.settings = allSettings.testing;
 
-    // this may take some time, don't timeout early
-    this.timeout(90000);
-
     // establish the connection to sharepoint
     if (this.settings.enableWebTests) {
 
@@ -245,49 +242,50 @@ before("Setup Testing", async function () {
     }
 });
 
-after("Finalize Testing", async function () {
+after("Finalize Testing", function (done) {
 
-    // this may take some time, don't timeout early
-    this.timeout(120000);
+    setTimeout(async () => {
 
-    const testEnd = Date.now();
-    console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
+        const testEnd = Date.now();
+        console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
 
-    try {
+        try {
 
-        if (deleteAllWebs) {
+            if (deleteAllWebs) {
 
-            await cleanUpAllSubsites(_spRoot.web);
+                await cleanUpAllSubsites(_spRoot.web);
 
-        } else if (deleteWeb && this.settings.enableWebTests) {
+            } else if (deleteWeb && this.settings.enableWebTests) {
 
-            console.log(`Deleting web ${extractWebUrl(_sp.web.toUrl())} created during testing.`);
+                console.log(`Deleting web ${extractWebUrl(_sp.web.toUrl())} created during testing.`);
 
-            const web = await _sp.web;
+                const web = await _sp.web;
 
-            await cleanUpAllSubsites(web);
+                await cleanUpAllSubsites(web);
 
-            console.log("All subsites have been removed.");
+                console.log("All subsites have been removed.");
 
-            // Delay so that web can be deleted
-            await delay(500);
+                // Delay so that web can be deleted
+                await delay(500);
 
-            await web.delete();
+                await web.delete();
 
-            console.log(`Deleted web ${this.settings.sp.testWebUrl} created during testing.`);
+                console.log(`Deleted web ${this.settings.sp.testWebUrl} created during testing.`);
 
-        } else if (this.settings.testing.enableWebTests) {
+            } else if (this.settings.enableWebTests) {
 
-            console.log(`Leaving ${this.settings.sp.testWebUrl} alone.`);
+                console.log(`Leaving ${this.settings.sp.testWebUrl} alone.`);
+            }
+
+            console.log("All done. Have a nice day :)");
+            done();
+
+        } catch (e) {
+
+            console.error(`Error during cleanup: ${JSON.stringify(e)}`);
+            done(e);
         }
-
-    } catch (e) {
-        console.error(`Error during cleanup: ${JSON.stringify(e)}`);
-    }
-
-    console.log("All done. Have a nice day :)");
-
-    return;
+    }, 0);
 });
 
 // Function deletes all test subsites

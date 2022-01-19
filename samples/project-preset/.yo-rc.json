@@ -1,10 +1,11 @@
 {
   "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
     "isCreatingSolution": true,
     "environment": "spo",
-    "version": "1.9.1",
+    "version": "1.13.1",
     "libraryName": "project-preset",
-    "libraryId": "f7dffd0d-2b55-4a8d-8ea2-c95c761c808d",
+    "libraryId": "87471e12-9cd2-4b8c-ab1b-a2c469edf5ac",
     "packageManager": "npm",
     "isDomainIsolated": false,
     "componentType": "webpart"

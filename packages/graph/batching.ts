@@ -1,4 +1,4 @@
-import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull } from "@pnp/core";
+import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull, isFunc, combine } from "@pnp/core";
 import { parseBinderWithErrorCheck, Queryable, body, InjectHeaders } from "@pnp/queryable";
 import { IGraphQueryable, _GraphQueryable } from "./graphqueryable.js";
 import { graphPost } from "./operations.js";
@@ -11,20 +11,24 @@ declare module "./fi" {
          * Creates a batch behavior and associated execute function
          *
          */
-        batched(): [GraphFI, () => Promise<void>];
+        batched(props?: IGraphBatchProps): [GraphFI, () => Promise<void>];
     }
 }
 
-GraphFI.prototype.batched = function (this: GraphFI): [GraphFI, () => Promise<void>] {
+GraphFI.prototype.batched = function (this: GraphFI, props?: IGraphBatchProps): [GraphFI, () => Promise<void>] {
 
     const batchedRest = new GraphFI(this._root);
 
-    const [behavior, execute] = createBatch(batchedRest._root);
+    const [behavior, execute] = createBatch(batchedRest._root, props);
 
     batchedRest._root.using(behavior);
 
     return [batchedRest, execute];
 };
+
+interface IGraphBatchProps {
+    maxRequests?: number;
+}
 
 interface IGraphBatchRequestFragment {
     id: string;
@@ -74,8 +78,8 @@ type ParsedGraphResponse = { nextLink: string; responses: Response[] };
  */
 type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
 
-const RegistrationCompleteSym = Symbol.for("batch_reg_done");
-const RequestCompleteSym = Symbol.for("batch_req_done");
+const RegistrationCompleteSym = Symbol.for("batch_registration");
+const RequestCompleteSym = Symbol.for("batch_request");
 
 function BatchParse(): TimelinePipe {
 
@@ -94,7 +98,7 @@ function BatchParse(): TimelinePipe {
 
 class BatchQueryable extends _GraphQueryable {
 
-    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]v1\.0|beta[\\|/].*$/i, "")) {
+    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]v1\.0|beta[\\|/].*$/i || "", "")) {
 
         super(requestBaseUrl, "$batch");
 
@@ -102,11 +106,32 @@ class BatchQueryable extends _GraphQueryable {
         this.using(CopyFrom(base, "replace"));
 
         // this will replace any other parsing present
-        this.using(BatchParse());
+        this.using(BatchParse(), InjectHeaders({
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        }));
+
+        // do a fix up on the url once other pre behaviors have had a chance to run
+        this.on.pre(async function (this: BatchQueryable, url, init, result) {
+
+            const versRegex = /(https:\/\/.*?[\\|/]v1\.0|beta[\\|/])/i;
+
+            const m = url.match(versRegex);
+
+            // if we don't have the match we expect we don't make any changes and hope for the best
+            if (m.length > 0) {
+                // fix up the url, requestBaseUrl, and the _url
+                url = combine(m[0], "$batch");
+                this.requestBaseUrl = url;
+                this._url = url;
+            }
+
+            return [url, init, result];
+        });
     }
 }
 
-export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelinePipe, () => Promise<void>] {
+export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [TimelinePipe, () => Promise<void>] {
 
     const registrationPromises: Promise<void>[] = [];
     const completePromises: Promise<void>[] = [];
@@ -114,10 +139,10 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
     const batchId = getGUID();
     const batchQuery = new BatchQueryable(base);
 
-    batchQuery.using(InjectHeaders({
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    }));
+    const { maxRequests } = {
+        maxRequests: 30,
+        ...props,
+    };
 
     const execute = async () => {
 
@@ -142,13 +167,13 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
             const response: ParsedGraphResponse = await graphPost(batchQuery, body(batchRequest));
 
             // this structure ensures that we resolve the batched requests in the order we expect
-            await response.responses.reduce((p, response, index) => p.then(() => {
+            await response.responses.reduce((p, resp, index) => p.then(() => {
 
                 const [, , , resolve, reject] = requestsChunk[index];
 
                 try {
 
-                    resolve(response);
+                    resolve(resp);
 
                 } catch (e) {
 
@@ -163,9 +188,25 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
 
         instance.on.init(function (this: Queryable) {
 
+            // if we've already added "this" in a batch we can't include it in a second batch (or again in the same batch). If you need to
+            // make the same request twice in a single batch create a new instance of "this" to add to the batch:
+            // const users = graph.users;
+            // const [batchedBehavior, execute] = createBatch(users);
+            // users.using(batchedBehavior);
+            // users();
+            // // The below line will throw the error because "users" is already in the batch
+            // // users();
+            // the solution is to create a second instance of users as shown here
+            // graph.users.using(batchedBehavior)();
+            // Another option would be to drop it through the factory
+            // Users(users).using(batchedBehavior)();
+            if (isFunc(this[RegistrationCompleteSym])) {
+                throw Error("This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse.");
+            }
+
             // we need to ensure we wait to start execute until all our batch children hit the .send method to be fully registered
             registrationPromises.push(new Promise((resolve) => {
-                (<any>this)[RegistrationCompleteSym] = resolve;
+                this[RegistrationCompleteSym] = resolve;
             }));
 
             return this;
@@ -189,10 +230,10 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
 
             // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
             completePromises.push(new Promise((resolve) => {
-                (<any>this)[RequestCompleteSym] = resolve;
+                this[RequestCompleteSym] = resolve;
             }));
 
-            (<any>this)[RegistrationCompleteSym]();
+            this[RegistrationCompleteSym]();
 
             return promise;
         });
@@ -200,12 +241,17 @@ export function createBatch(base: IGraphQueryable, maxRequests = 20): [TimelineP
         // we need to know when each request in the batch's timeline has completed
         instance.on.dispose(function () {
 
-            // let things know we are done with this request
-            (<any>this)[RequestCompleteSym]();
+            if (isFunc(this[RequestCompleteSym])) {
 
-            // remove the symbol props we added for good hygene
-            delete this[RegistrationCompleteSym];
-            delete this[RequestCompleteSym];
+                // let things know we are done with this request
+                this[RequestCompleteSym]();
+                delete this[RequestCompleteSym];
+            }
+
+            if (isFunc(this[RegistrationCompleteSym])) {
+                // remove the symbol props we added for good hygene
+                delete this[RegistrationCompleteSym];
+            }
         });
 
         return instance;
@@ -234,12 +280,12 @@ function makeUrlRelative(url: string): string {
         if (index > -1) {
 
             // beta url
-            return url.substr(index + 6);
+            return url.substring(index + 6);
         }
 
     } else {
         // v1.0 url
-        return url.substr(index + 5);
+        return url.substring(index + 5);
     }
 
     // no idea

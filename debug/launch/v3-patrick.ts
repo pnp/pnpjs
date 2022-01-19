@@ -1,15 +1,13 @@
 import { ITestingSettings } from "../../test/settings.js";
-import { GraphDefault, SPDefault } from "@pnp/nodejs";
+import { SPDefault } from "@pnp/nodejs";
 import { LogLevel, PnPLogging } from "@pnp/logging";
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import "@pnp/sp/fields";
+import "@pnp/sp/items";
 import "@pnp/sp/batching";
 import { Web } from "@pnp/sp/webs";
-import { AssignFrom, CopyFrom, getRandomString } from "@pnp/core";
-import { RequestRecorderCache } from "../../test/test-recorder.js";
-import { join } from "path";
+import { getRandomString } from "@pnp/core";
 
 declare var process: { exit(code?: number): void };
 
@@ -53,13 +51,37 @@ export async function Example(settings: ITestingSettings) {
                 config: settings.testing.sp.msal.init,
                 scopes: settings.testing.sp.msal.scopes,
             },
-        })).using(PnPLogging(LogLevel.Verbose)); //.using(RequestRecorderCache(recordingPath, "record", () => false));
+        })).using(PnPLogging(LogLevel.Verbose));
 
-        const i = await sp.web({
-            headers: {}
-        });
+        const items = await sp.web.lists.getByTitle("Generic").items;
 
-        console.log(i);
+        const u1 = items.toUrl();
+
+        const web = Web(items);
+
+        const [batched, execute] = web.batched();
+
+        const list = batched.lists.getByTitle("Generic");
+
+        for (let i = 0; i < 10; i++) {
+            list.items.add({
+                Title: getRandomString(5),
+            });
+        }
+       
+        await execute();
+
+        // const list: IList = sp.web.lists.getByTitle("Config");
+        // const [batchedListBehavior, execute] = createBatch(list);
+        // // this list is now batching all its requests
+        // list.using(batchedListBehavior);
+
+        // list.items.add({ Title: `1: ${getRandomString(4)}` });
+        // list.items.add({ Title: `2: ${getRandomString(4)}` });
+        // list.items.add({ Title: `3: ${getRandomString(4)}` });
+        // list.items.add({ Title: `4: ${getRandomString(4)}` });
+
+        // await execute();
 
     } catch (e) {
 

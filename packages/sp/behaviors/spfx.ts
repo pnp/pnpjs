@@ -1,6 +1,7 @@
-import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
+import { combine, dateAdd, isUrlAbsolute, TimelinePipe } from "@pnp/core";
 import { BrowserFetchWithRetry, DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "./defaults.js";
+import { RequestDigest } from "./request-digest.js";
 
 interface ISPFXContext {
 
@@ -18,6 +19,10 @@ interface ISPFXContext {
         web: {
             absoluteUrl: string;
         };
+        legacyPageContext: {
+            formDigestTimeoutSeconds: number;
+            formDigestValue: string;
+        };
     };
 }
 
@@ -29,7 +34,17 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
             DefaultHeaders(),
             DefaultInit(),
             BrowserFetchWithRetry(),
-            DefaultParse());
+            DefaultParse(),
+            RequestDigest(() => {
+
+                if (context?.pageContext?.legacyPageContext?.formDigestValue) {
+
+                    return {
+                        value: context.pageContext.legacyPageContext.formDigestValue,
+                        expiration: dateAdd(new Date(), "second", context.pageContext.legacyPageContext?.formDigestTimeoutSeconds || 1600),
+                    };
+                }
+            }));
 
         // we want to fix up the url first
         instance.on.pre.prepend(async (url, init, result) => {

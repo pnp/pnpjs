@@ -1,7 +1,7 @@
-import { _SPInstance, spInvokableFactory } from "../spqueryable.js";
+import { _SPInstance, spInvokableFactory, SPInit } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
-import { hOP } from "@pnp/core";
+import { combine, hOP, isArray } from "@pnp/core";
 import { body, TextParse } from "@pnp/queryable";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost } from "../operations.js";
@@ -10,8 +10,53 @@ import { IChangeQuery } from "../types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { emptyGuid } from "../types.js";
 
+/**
+ * Ensures that whatever url is passed to the constructor we can correctly rebase it to a site url
+ *
+ * @param candidate The candidate site url
+ * @param path The caller supplied path, which may contain _api, meaning we don't append _api/site
+ */
+function rebaseSiteUrl(candidate: string, path: string | undefined): string {
+
+    let replace = "_api/site";
+
+    // this allows us to both:
+    // - test if `candidate` already has an api path
+    // - ensure that we append the correct one as sometimes a web is not defined
+    //   by _api/web, in the case of _api/site/rootweb for example
+    const matches = /(_api[/|\\](site|web))/i.exec(candidate);
+    if (matches?.length > 0) {
+
+        // we want just the base url part (before the _api)
+        candidate = extractWebUrl(candidate);
+
+        // we want to ensure we put back the correct string
+        replace = matches[1];
+    }
+
+    // we only need to append the _api part IF `path` doesn't already include it.
+    if (path?.indexOf("_api") < 0) {
+        candidate = combine(candidate, replace);
+    }
+
+    return candidate;
+}
+
 @defaultPath("_api/site")
 export class _Site extends _SPInstance {
+
+    constructor(base: SPInit, path?: string) {
+
+        if (typeof base === "string") {
+            base = rebaseSiteUrl(base, path);
+        } else if (isArray(base)) {
+            base = [base[0], rebaseSiteUrl(base[1], path)];
+        } else {
+            base = [base, rebaseSiteUrl(base.toUrl(), path)];
+        }
+
+        super(base, path);
+    }
 
     /**
      * Gets the root web of the site collection

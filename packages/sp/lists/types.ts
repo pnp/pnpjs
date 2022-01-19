@@ -235,7 +235,7 @@ export class _List extends _SPInstance<IListInfo> {
     public renderListDataAsStream(parameters: IRenderListDataParameters, overrideParameters: any = null, query = new Map<string, string>()): Promise<IRenderListDataAsStreamResult> {
 
         if (hOP(parameters, "RenderOptions") && isArray(parameters.RenderOptions)) {
-            parameters.RenderOptions = (<RenderListDataOptions[]>parameters.RenderOptions).reduce((v, c) => v + c);
+            parameters.RenderOptions = parameters.RenderOptions.reduce((v, c) => v + c);
         }
 
         const clone = List(this, "RenderListDataAsStream");
@@ -358,7 +358,7 @@ export const List = spInvokableFactory<IList>(_List);
  */
 export interface IListAddResult {
     list: IList;
-    data: any;
+    data: IListInfo;
 }
 
 /**
@@ -366,7 +366,7 @@ export interface IListAddResult {
  */
 export interface IListUpdateResult {
     list: IList;
-    data: any;
+    data: IListInfo;
 }
 
 /**
@@ -375,7 +375,7 @@ export interface IListUpdateResult {
 export interface IListEnsureResult {
     list: IList;
     created: boolean;
-    data: any;
+    data: IListInfo;
 }
 
 /**

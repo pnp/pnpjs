@@ -32,7 +32,7 @@ const config:any = {
 async function makeGraphRequest() {
     const graph = graphfi()
     .using(GraphDefault({
-        baseUrl: 'https://graph.microsoft.com',
+        baseUrl: 'https://graph.microsoft.com/v1.0',
         msal: {
             config: config,
             scopes: [ 'https://graph.microsoft.com/.default' ]

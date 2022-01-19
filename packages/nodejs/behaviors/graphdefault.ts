@@ -19,24 +19,24 @@ export function GraphDefault(props: IGraphDefaultProps): TimelinePipe<Queryable>
         throw Error("GraphDefault props.baseUrl must be absolute when supplied.");
     }
 
+    const { baseUrl, msal } = {
+        baseUrl: "https://graph.microsoft.com/",
+        ...props,
+    };
+
     return (instance: Queryable) => {
 
-        instance
-            .using(MSAL(props.msal.config, props?.msal?.scopes || ["https://graph.microsoft.com/.default"]))
-            .using(NodeFetchWithRetry())
-            .using(DefaultParse())
-            .using(DefaultHeaders())
-            .using(DefaultInit());
+        instance.using(
+            MSAL(msal.config, msal?.scopes || [combine(baseUrl, ".default")]),
+            NodeFetchWithRetry(),
+            DefaultParse(),
+            DefaultHeaders(),
+            DefaultInit());
 
         instance.on.pre(async (url, init, result) => {
 
             if (!isUrlAbsolute(url)) {
-
-                if (isUrlAbsolute(props.baseUrl)) {
-                    url = combine(props.baseUrl, url);
-                } else {
-                    url = combine("https://graph.microsoft.com/", url);
-                }
+                url = combine(baseUrl, url);
             }
 
             return [url, init, result];

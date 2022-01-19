@@ -2,17 +2,17 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
   "version": "2.0",
   "bundles": {
-    "project-preset-example-web-part": {
+    "project-preset-web-part": {
       "components": [
         {
-          "entrypoint": "./lib/webparts/projectPresetExample/ProjectPresetExampleWebPart.js",
-          "manifest": "./src/webparts/projectPresetExample/ProjectPresetExampleWebPart.manifest.json"
+          "entrypoint": "./lib/webparts/projectPreset/ProjectPresetWebPart.js",
+          "manifest": "./src/webparts/projectPreset/ProjectPresetWebPart.manifest.json"
         }
       ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "ProjectPresetExampleWebPartStrings": "lib/webparts/projectPresetExample/loc/{locale}.js"
+    "ProjectPresetWebPartStrings": "lib/webparts/projectPreset/loc/{locale}.js"
   }
 }

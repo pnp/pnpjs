@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { getSP } from "../main.js";
 import { SPFI } from "@pnp/sp";
-import { getRandomString, combine } from "@pnp/core";
+import { getRandomString, combine, stringIsNullOrEmpty } from "@pnp/core";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users";
 import "@pnp/sp/clientside-pages";
@@ -72,7 +72,7 @@ describe("Clientside Pages", function () {
         const pageName = `TestingloadClientsidePage_${getRandomString(4)}.aspx`;
 
         before(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(pageName);
             await page.save();
         });
@@ -94,7 +94,7 @@ describe("Clientside Pages", function () {
         const pageName = `TestingpromoteToNews_${getRandomString(4)}.aspx`;
 
         before(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(pageName);
             await page.save();
         });
@@ -144,7 +144,7 @@ describe("Clientside Pages", function () {
         let page: IClientsidePage;
 
         before(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(`TestingCommentToggle_${getRandomString(4)}.aspx`);
         });
 
@@ -162,7 +162,7 @@ describe("Clientside Pages", function () {
         let page: IClientsidePage;
 
         this.beforeEach(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(`TestingSectionsAndColumns_${getRandomString(4)}.aspx`);
         });
 
@@ -253,7 +253,7 @@ describe("Clientside Pages", function () {
         let page: IClientsidePage;
 
         before(async function () {
-            this.timeout(0);
+            this.timeout(50000);
             page = await _spfi.web.addClientsidePage(`TestingLikeUnlike_${getRandomString(4)}.aspx`);
         });
 
@@ -279,11 +279,10 @@ describe("Clientside Pages", function () {
 
         before(async function () {
 
-            if (this.settings.testUser?.length > 0) {
+            if (stringIsNullOrEmpty(this.settings.testUser)) {
                 this.skip();
             }
 
-            this.timeout(0);
             page = await _spfi.web.addClientsidePage(`TestingSettingAuthor_${getRandomString(4)}.aspx`);
             await page.save();
             // we need the updated url info from the published page so we re-load things.
@@ -317,11 +316,12 @@ describe("Clientside Pages", function () {
     });
 
     describe("description", function () {
+
         let page: IClientsidePage;
         let pageUrl: string;
 
         before(async function () {
-            this.timeout(0);
+
             page = await _spfi.web.addClientsidePage(`TestingSettingDescription_${getRandomString(4)}.aspx`);
             await page.save();
             // we need the updated url info from the published page so we re-load things.

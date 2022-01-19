@@ -2,10 +2,17 @@
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
     "name": "project-preset-client-side-solution",
-    "id": "f7dffd0d-2b55-4a8d-8ea2-c95c761c808d",
+    "id": "87471e12-9cd2-4b8c-ab1b-a2c469edf5ac",
     "version": "1.0.0.0",
     "includeClientSideAssets": true,
-    "isDomainIsolated": false
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.13.1"
+    }
   },
   "paths": {
     "zippedPackage": "solution/project-preset.sppkg"

@@ -17,6 +17,6 @@ Reflect.defineProperty(GraphFI.prototype, "invitations", {
     configurable: true,
     enumerable: true,
     get: function (this: GraphFI) {
-        this.create(Invitations);
+        return this.create(Invitations);
     },
 });

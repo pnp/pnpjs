@@ -309,7 +309,7 @@ export class _ClientsidePage extends _SPQueryable {
             let imgInfo: Pick<IFileInfo, "ListId" | "WebId" | "UniqueId" | "Name" | "SiteId">;
             let webUrl: string;
 
-            const web = Web([this, extractWebUrl(this.toUrl())]);
+            const web = Web(this);
 
             const [batch, execute] = createBatch(web);
             web.using(batch);
@@ -493,7 +493,7 @@ export class _ClientsidePage extends _SPQueryable {
                 const guidWeb = makeGuid(url.searchParams.get("guidWeb"));
                 const guidFile = makeGuid(url.searchParams.get("guidFile"));
 
-                const site = Site([this, extractWebUrl(this.toUrl())]);
+                const site = Site(this);
                 const id = await site.select("Id")<{ Id: string }>();
                 // the site guid must match the current site's guid or we are unable to set the image
                 if (id.Id === guidSite) {

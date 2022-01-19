@@ -37,7 +37,7 @@ describe("SiteScripts", function () {
     it("createSiteScript", function () {
 
         const title = `Test_create_sitescript_${getRandomString(8)}`;
-        const description = `${getRandomString(100)}`;
+        const description = `${getRandomString(25)}`;
         const p = _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema)
             .then(ss => createdSiteScriptIds.push(ss.Id));
 
@@ -47,7 +47,7 @@ describe("SiteScripts", function () {
     it("createSiteScript (fail - bad title)", function () {
 
         const title = `Test_create_sitescript_${getRandomString(8)}'`;
-        const description = `${getRandomString(100)}`;
+        const description = `${getRandomString(25)}`;
         const p = _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema)
             .then(ss => createdSiteScriptIds.push(ss.Id));
 
@@ -64,7 +64,7 @@ describe("SiteScripts", function () {
         };
 
         const title = `Test_create_sitescript_no_actions_${getRandomString(8)}`;
-        const description = `${getRandomString(100)}`;
+        const description = `${getRandomString(25)}`;
 
         return expect(_rootSite.siteScripts.createSiteScript(title, description, schema),
             `site script '${title}' should not have been created`).to.eventually.be.rejected;
@@ -73,7 +73,7 @@ describe("SiteScripts", function () {
     it("deleteSiteScript", async function () {
 
         const title = `Test_create_sitescript_to_be_deleted_${getRandomString(8)}`;
-        const description = `${getRandomString(100)}`;
+        const description = `${getRandomString(25)}`;
         const ss = await _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema);
 
         return expect(_rootSite.siteScripts.deleteSiteScript(ss.Id),
@@ -89,7 +89,7 @@ describe("SiteScripts", function () {
     it("getSiteScriptMetadata", async function () {
 
         const title = `Test_get_metadata_sitescript${getRandomString(8)}`;
-        const description = `${getRandomString(100)}`;
+        const description = `${getRandomString(25)}`;
         const ss = await _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema);
 
         createdSiteScriptIds.push(ss.Id);
@@ -102,7 +102,7 @@ describe("SiteScripts", function () {
     it("updateSiteScript", async function () {
 
         const title = `Test_to_update_sitescript_${getRandomString(8)}`;
-        const description = `${getRandomString(100)}`;
+        const description = `${getRandomString(25)}`;
         const ss = await _rootSite.siteScripts.createSiteScript(title, description, defaultScriptSchema);
 
         createdSiteScriptIds.push(ss.Id);
@@ -147,18 +147,18 @@ describe("SiteScripts", function () {
             "the webs site script should've been fetched").to.eventually.be.fulfilled;
     });
 
-    // after(function () {
+    after(function () {
 
-    //     const promises: Promise<void>[] = [];
+        const promises: Promise<void>[] = [];
 
-    //     createdSiteScriptIds.forEach((sdId) => {
-    //         promises.push(_rootSite.siteScripts.deleteSiteScript(sdId));
-    //     });
+        createdSiteScriptIds.forEach((sdId) => {
+            promises.push(_rootSite.siteScripts.deleteSiteScript(sdId));
+        });
 
-    //     createdLists.forEach((list: IList) => {
-    //         promises.push(list.delete());
-    //     });
+        createdLists.forEach((list: IList) => {
+            promises.push(list.delete());
+        });
 
-    //     return Promise.all(promises);
-    // });
+        return Promise.all(promises);
+    });
 });

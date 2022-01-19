@@ -38,29 +38,34 @@ export function createResolve(innerPath: string): ResolverFunc {
                 candidate = join(candidate, "index.js");
             }
 
-            if (isWin32) {
-                candidate = "file://" + candidate;
+            try {
+
+                const url = new URL("file://" + candidate).href;
+
+                log(`Resolved: ${specifier} => ${url}`);
+
+                const resolved: ResolvedValue = {
+                    url,
+                    format: "module",
+                };
+
+                cache.set(modulePath, resolved);
+
+                return resolved;
+
+            } catch (e) {
+
+                console.error(`Error in local module resolver candidate url: ${candidate}.`)
+                console.error(e);
+                throw e;
             }
-
-            const url = new URL(candidate).href;
-
-            log(`Resolved: ${specifier} => ${url}`);
-
-            const resolved: ResolvedValue = {
-                url,
-                format: "module",
-            };
-
-            cache.set(modulePath, resolved);
-
-            return resolved;
         }
 
-        if (specifier.indexOf("settings.js") > -1 && /^[a-z]:[\\|/]/i.test(specifier) && isWin32) {
+        if (specifier.indexOf("settings.js") > -1 && isWin32) {
             specifier = "file://" + specifier;
             log(`patching settings.js import path for win32: ${specifier}`);
         }
-        
+
         // Defer to Node.js for all other specifiers.
         return defaultResolve(specifier, context, defaultResolve);
     }

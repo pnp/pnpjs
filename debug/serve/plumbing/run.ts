@@ -12,12 +12,9 @@ const projectRoot = resolve(dirname(findup("package.json")));
 const isWin = process.platform === "win32";
 
 // start up tsc on the serve tsconfig, which will execute in watch mode
-const npx = spawn(isWin ? "npx.cmd" : "npx", ["tsc", "-p", "./debug/serve/tsconfig.json", "--watch"], {
+spawn(isWin ? "npx.cmd" : "npx", ["tsc", "-p", "./debug/serve/tsconfig.json", "--watch"], {
     cwd: projectRoot,
-});
-
-npx.stdout.on("data", (data) => {
-    console.log(`NPX: ${data}`);
+    stdio: "inherit",
 });
 
 // run our server

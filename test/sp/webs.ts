@@ -21,6 +21,7 @@ import "@pnp/sp/security";
 import { SPFI } from "@pnp/sp";
 import { INavNodeInfo } from "@pnp/sp/navigation/types.js";
 import testSPInvokables from "../test-invokable-props.js";
+import { Web } from "@pnp/sp/webs";
 
 describe("Webs", function () {
 
@@ -43,6 +44,32 @@ describe("Webs", function () {
     it("add 2", function () {
         const title = `Test_ChildWebAdd2_${getRandomString(8)}`;
         return expect(_spfi.web.webs.add(title, title, "description", "FunSite#0", 1033, false)).to.eventually.be.fulfilled;
+    });
+});
+
+describe("Web static Tests", function () {
+
+    it("properly parses different contructor args", function () {
+
+        const w1 = Web("https://something.com");
+        expect(w1.toUrl(), "test 1").to.eq("https://something.com/_api/web");
+
+        const w2 = Web("https://something.com/_api/web");
+        expect(w2.toUrl(), "test 2").to.eq("https://something.com/_api/web");
+
+        const w3 = Web("https://something.com/_api/web/_api/web");
+        expect(w3.toUrl(), "test 3").to.eq("https://something.com/_api/web");
+
+        const w4 = Web("https://something.com/_api/web/lists/getById('2984791847')/items");
+        expect(w4.toUrl(), "test 4").to.eq("https://something.com/_api/web");
+
+        const w5a = Web("https://something.com/");
+        const w5b = Web(w5a);
+        expect(w5b.toUrl(), "test 5").to.eq("https://something.com/_api/web");
+
+        const w6a = Web("https://something.com/_api/web/rootweb/something/random('asdfa')");
+        const w6b = Web(w6a);
+        expect(w6b.toUrl(), "test 6").to.eq("https://something.com/_api/web");
     });
 });
 

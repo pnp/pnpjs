@@ -95,7 +95,7 @@ describe("Behaviors", function () {
 
         try {
             // Testing a behavior, creating new instance of sp
-            const spInstance = spfi(getSP()).using(Caching("session"));
+            const spInstance = spfi(getSP()).using(Caching({ store: "session" }));
 
             // Test caching behavior
             const startCheckpoint = new Date();

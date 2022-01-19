@@ -21,7 +21,7 @@ describe("Views", function () {
 
         _spfi = getSP();
 
-        this.timeout(0);
+        this.timeout(50000);
 
         // we need to create a list for manipulating views
         const result = await _spfi.web.lists.ensure(`ViewTestList_${getRandomString(4)}`, "Testing Views");
@@ -104,21 +104,21 @@ describe("Views", function () {
         });
 
         it("move", async function () {
-            this.timeout(0);
+            this.timeout(50000);
             const r = await list.views.add(`move-Test-ViewFields_${getRandomString(4)}`);
             await r.view.fields.add("Modified");
             return expect(r.view.fields.move("Modified", 0)).to.eventually.be.fulfilled;
         });
 
         it("remove", async function () {
-            this.timeout(0);
+            this.timeout(50000);
             const r = await list.views.add(`remove-Test-ViewFields_${getRandomString(4)}`);
             await r.view.fields.add("Author");
             return expect(r.view.fields.remove("Author")).to.eventually.be.fulfilled;
         });
 
         it("removeAll", async function () {
-            this.timeout(0);
+            this.timeout(50000);
             const r = await list.views.add(`removeAll-Test-ViewFields_${getRandomString(4)}`);
             return expect(r.view.fields.removeAll()).to.eventually.be.fulfilled;
         });
