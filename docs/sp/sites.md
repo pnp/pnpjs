@@ -226,6 +226,6 @@ import { sp } from "@pnp/sp";
 
 // Specify which site to verify
 const siteUrl = "https://tenant.sharepoint.com/sites/subsite";
-const exists = sp.site.exists(siteUrl);
+const exists = await sp.site.exists(siteUrl);
 console.log(exists);
 ```
