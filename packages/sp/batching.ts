@@ -1,7 +1,7 @@
 import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe, isFunc } from "@pnp/core";
 import { InjectHeaders, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "./operations.js";
-import { ISPQueryable, _SPQueryable } from "./spqueryable.js";
+import { ISPQueryable, SPQueryable, _SPQueryable } from "./spqueryable.js";
 import { spfi, SPFI } from "./fi.js";
 import { Web, IWeb, _Web } from "./webs/types.js";
 
@@ -68,9 +68,25 @@ interface ISPBatchProps {
  */
 type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
 
+/**
+ * Tracks on a batched instance that registration is complete (the child request has gotten to the send moment and the request is included in the batch)
+ */
 const RegistrationCompleteSym = Symbol.for("batch_registration");
+
+/**
+ * Tracks on a batched instance that the child request timeline lifecycle is complete (called in child.dispose)
+ */
 const RequestCompleteSym = Symbol.for("batch_request");
 
+/**
+ * Tracks on a batched instance the original set of observers which are returned once the batch is complete
+ */
+const ObserverTrackerSym = Symbol.for("batch_original_observers");
+
+/**
+ * Special batch parsing behavior used to convert the batch response text into a set of Response objects for each request
+ * @returns A parser behavior
+ */
 function BatchParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(async (response): Promise<Response[]> => {
@@ -79,20 +95,28 @@ function BatchParse(): TimelinePipe {
     });
 }
 
+/**
+ * Internal class used to execute the batch request through the timeline lifecycle
+ */
 class BatchQueryable extends _SPQueryable {
 
     constructor(base: ISPQueryable, public requestBaseUrl = base.toUrl().replace(/_api[\\|/].*$/i, "")) {
 
         super(requestBaseUrl, "_api/$batch");
 
-        // this will copy over the current observables from the web associated with this batch
-        this.using(CopyFrom(base, "replace"));
-
+        // this will copy over the current observables from the base associated with this batch
         // this will replace any other parsing present
-        this.using(BatchParse());
+        this.using(CopyFrom(base, "replace"), BatchParse());
     }
 }
 
+/**
+ * Creates a batched version of the supplied base, meaning that all chained fluent operations from the new base are part of the batch
+ *
+ * @param base The base from which to initialize the batch
+ * @param props Any properties used to initialize the batch functionality
+ * @returns A tuple of [behavior used to assign objects to the batch, the execute function used to resolve the batch requests]
+ */
 export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [TimelinePipe, () => Promise<void>] {
 
     const registrationPromises: Promise<void>[] = [];
@@ -224,16 +248,21 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
                 reject(e);
             }
 
-        }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => void (0)));
+        }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => {
+            requests.length = 0;
+        }));
     };
 
-    const register = (instance: Queryable) => {
+    const register = (instance: ISPQueryable) => {
 
-        instance.on.init(function (this: Queryable) {
+        instance.on.init(function (this: ISPQueryable) {
 
             if (isFunc(this[RegistrationCompleteSym])) {
                 throw Error("This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse.");
             }
+
+            // we need to track the observers from the original instance and put them back later (see comment below)
+            this[ObserverTrackerSym] = SPQueryable(this);
 
             // we need to ensure we wait to start execute until all our batch children hit the .send method to be fully registered
             registrationPromises.push(new Promise((resolve) => {
@@ -251,12 +280,14 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
 
             let requestTuple: RequestRecord;
 
+            // this is the promise that user code will see
             const promise = new Promise<Response>((resolve, reject) => {
                 requestTuple = [this, url.toString(), init, resolve, reject];
             });
 
             this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
 
+            // add the request information into the batch
             requests.push(requestTuple);
 
             // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
@@ -264,12 +295,27 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
                 this[RequestCompleteSym] = resolve;
             }));
 
+            // indicate that registration of this request is complete
             this[RegistrationCompleteSym]();
 
-            return promise;
+            return promise.then((r) => {
+                // there is a code path where you may invoke a batch, say on items.add, whose return
+                // is an object like { data: any, item: IItem }. The expectation from v1 on is `item` in that object
+                // is immediately usable to make additional queries. Without this step when that IItem instance is
+                // created using "this.getById" within IITems.add all of the current observers of "this" are
+                // linked to the IItem instance created (expected), BUT they will be the set of observers setup
+                // to handle the batch, meaning invoking `item` will result in a half batched call that
+                // doesn't really work. To deliver the expected functionality we "reset" the
+                // observers using the original instance, mimicing the behavior had
+                // the IItem been created from that base without a batch involved. We use CopyFrom to ensure
+                // that we maintain the references to the InternalResolve and InternalReject events through
+                // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
+                // which ignores symbol properties.
+                this.using(CopyFrom(this[ObserverTrackerSym], "replace"));
+                return r;
+            });
         });
 
-        // we need to know when each request in the batch's timeline has completed
         instance.on.dispose(function () {
 
             if (isFunc(this[RequestCompleteSym])) {
@@ -280,8 +326,15 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
             }
 
             if (isFunc(this[RegistrationCompleteSym])) {
+
                 // remove the symbol props we added for good hygene
                 delete this[RegistrationCompleteSym];
+            }
+
+            if (this[ObserverTrackerSym]) {
+
+                // remove the symbol props we added for good hygene
+                delete this[ObserverTrackerSym];
             }
         });
 
@@ -307,11 +360,12 @@ function parseResponse(body: string): Response[] {
     let state = "batch";
     let status: number;
     let statusText: string;
+    let headers = {};
     for (let i = 0; i < lines.length; ++i) {
         const line = lines[i];
         switch (state) {
             case "batch":
-                if (line.substr(0, header.length) === header) {
+                if (line.substring(0, header.length) === header) {
                     state = "batchHeaders";
                 } else {
                     if (line.trim() !== "") {
@@ -337,11 +391,17 @@ function parseResponse(body: string): Response[] {
             case "statusHeaders":
                 if (line.trim() === "") {
                     state = "body";
+                } else {
+                    const headerParts = line.split(":");
+                    if (headerParts?.length === 2) {
+                        headers[headerParts[0].trim()] = headerParts[1].trim();
+                    }
                 }
                 break;
             case "body":
-                responses.push((status === 204) ? new Response() : new Response(line, { status: status, statusText: statusText }));
+                responses.push(new Response(status === 204 ? null : line, { status, statusText, headers }));
                 state = "batch";
+                headers = {};
                 break;
         }
     }

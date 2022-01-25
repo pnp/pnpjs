@@ -53,35 +53,45 @@ export async function Example(settings: ITestingSettings) {
             },
         })).using(PnPLogging(LogLevel.Verbose));
 
-        const items = await sp.web.lists.getByTitle("Generic").items;
+        const [batchedSP, execute] = await sp.batched();
 
-        const u1 = items.toUrl();
+        // const list = batchedSP.web.lists.getByTitle("Generic");
 
-        const web = Web(items);
+        // for (let i = 0; i < 3; i++) {
 
-        const [batched, execute] = web.batched();
+        // const items = list.items;
 
-        const list = batched.lists.getByTitle("Generic");
+        const y = batchedSP.web.lists.getByTitle("Generic").items.add({
+            
+            Title: getRandomString(5),
 
-        for (let i = 0; i < 10; i++) {
-            list.items.add({
-                Title: getRandomString(5),
+        }).then(async r => {
+
+            const y = await r.item.update({
+                Title: "maybe",
             });
-        }
-       
+
+            console.log(y);
+        });
+
+        // items.add({
+        //     Title: getRandomString(5),
+        // }).then(async r => {
+
+        //     const h = await r.item();
+
+        //     console.log("here");
+
+        // });
+        // }
+
         await execute();
 
-        // const list: IList = sp.web.lists.getByTitle("Config");
-        // const [batchedListBehavior, execute] = createBatch(list);
-        // // this list is now batching all its requests
-        // list.using(batchedListBehavior);
+        
 
-        // list.items.add({ Title: `1: ${getRandomString(4)}` });
-        // list.items.add({ Title: `2: ${getRandomString(4)}` });
-        // list.items.add({ Title: `3: ${getRandomString(4)}` });
-        // list.items.add({ Title: `4: ${getRandomString(4)}` });
 
-        // await execute();
+
+
 
     } catch (e) {
 

@@ -80,10 +80,22 @@ export abstract class Timeline<T extends Moments> {
     private _emitProxy: typeof Proxy | null = null;
     protected _inheritingObservers: boolean;
 
+    /**
+     * Creates a new instance of Timeline with the supplied moments and optionally any observers to include
+     *
+     * @param moments The moment object defining this timeline
+     * @param observers Any observers to include (optional)
+     */
     constructor(protected readonly moments: T, protected observers: ObserverCollection = {}) {
         this._inheritingObservers = true;
     }
 
+    /**
+     * Apply the supplied behavior(s) to this timeline
+     *
+     * @param behaviors One or more behaviors
+     * @returns `this` Timeline
+     */
     public using(...behaviors: TimelinePipe[]): this {
 
         for (let i = 0; i < behaviors.length; i++) {
@@ -94,7 +106,7 @@ export abstract class Timeline<T extends Moments> {
     }
 
     /**
-     * Property allowing access to subscribe observers to all the moments within this timeline
+     * Property allowing access to manage observers on moments within this timeline
      */
     public get on(): OnProxyType<T> {
 
@@ -233,10 +245,12 @@ export abstract class Timeline<T extends Moments> {
 
             try {
 
+                // provide an opportunity for cleanup of the timeline
                 this.emit.dispose();
 
             } catch (e) {
 
+                // shouldn't happen, but possible dispose throws - which may be missed as the usercode await will have resolved.
                 const e2 = Object.assign(Error("Error in dispose."), {
                     innerException: e,
                 });
@@ -253,6 +267,11 @@ export abstract class Timeline<T extends Moments> {
      */
     protected abstract execute(init?: any): Promise<any>;
 
+    /**
+     * By default a timeline references the same observer collection as a parent timeline,
+     * if any changes are made to the observers this method first clones them ensuring we
+     * maintain a local copy and de-ref the parent
+     */
     protected cloneObserversOnChange() {
         if (this._inheritingObservers) {
             this._inheritingObservers = false;
