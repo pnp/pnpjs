@@ -136,8 +136,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
                 if (typeof result !== "undefined") {
 
-                    log("Result returned from pre");
-                    log("Emitting data");
+                    log("Result returned from pre, Emitting data");
                     this.emit.data(result);
                     log("Emitted data");
                     return;
@@ -181,6 +180,8 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
         }, 0);
 
         return new Promise((resolve, reject) => {
+            // we overwrite any pre-existing internal events as a
+            // given queryable can only process a single request at a time
             this.on[this.InternalResolveEvent].replace(resolve);
             this.on[this.InternalRejectEvent].replace(reject);
         });

@@ -242,50 +242,39 @@ before("Setup Testing", async function () {
     }
 });
 
-after("Finalize Testing", function (done) {
+after("Finalize Testing", async function () {
 
-    setTimeout(async () => {
+    const testEnd = Date.now();
+    console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
 
-        const testEnd = Date.now();
-        console.log(`\n\n\n\nEnding...\nTesting completed in ${((testEnd - testStart) / 1000).toFixed(4)} seconds. \n`);
+    if (deleteAllWebs) {
 
-        try {
+        await cleanUpAllSubsites(_spRoot.web);
 
-            if (deleteAllWebs) {
+    } else if (deleteWeb && this.settings.enableWebTests) {
 
-                await cleanUpAllSubsites(_spRoot.web);
+        console.log(`Deleting web ${extractWebUrl(_sp.web.toUrl())} created during testing.`);
 
-            } else if (deleteWeb && this.settings.enableWebTests) {
+        const web = await _sp.web;
 
-                console.log(`Deleting web ${extractWebUrl(_sp.web.toUrl())} created during testing.`);
+        await cleanUpAllSubsites(web);
 
-                const web = await _sp.web;
+        console.log("All subsites have been removed.");
 
-                await cleanUpAllSubsites(web);
+        // Delay so that web can be deleted
+        await delay(500);
 
-                console.log("All subsites have been removed.");
+        await web.delete();
 
-                // Delay so that web can be deleted
-                await delay(500);
+        console.log(`Deleted web ${this.settings.sp.testWebUrl} created during testing.`);
 
-                await web.delete();
+    } else if (this.settings.enableWebTests) {
 
-                console.log(`Deleted web ${this.settings.sp.testWebUrl} created during testing.`);
+        console.log(`Leaving ${this.settings.sp.testWebUrl} alone.`);
+    }
 
-            } else if (this.settings.enableWebTests) {
+    console.log("All done. Have a nice day :)");
 
-                console.log(`Leaving ${this.settings.sp.testWebUrl} alone.`);
-            }
-
-            console.log("All done. Have a nice day :)");
-            done();
-
-        } catch (e) {
-
-            console.error(`Error during cleanup: ${JSON.stringify(e)}`);
-            done(e);
-        }
-    }, 0);
 });
 
 // Function deletes all test subsites

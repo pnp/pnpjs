@@ -74,7 +74,7 @@ export class _Items extends _SPCollection {
      */
     public async add(properties: Record<string, any> = {}): Promise<IItemAddResult> {
 
-        return spPost<{ Id: number }>(Items(this, ""), body(properties)).then((data) => ({
+        return spPost<{ Id: number }>(this, body(properties)).then((data) => ({
             data: data,
             item: this.getById(data.Id),
         }));
@@ -158,8 +158,7 @@ export class _Item extends _SPInstance {
             "X-HTTP-Method": "MERGE",
         }));
 
-        const poster = Item(this).using(ItemUpdatedParser());
-        const data = await spPost(poster, postBody);
+        const data = await spPost(Item(this).using(ItemUpdatedParser()), postBody);
 
         return {
             data,
@@ -315,8 +314,8 @@ function PagedItemParser(parent: _Items) {
 }
 
 function ItemUpdatedParser() {
-    return parseBinderWithErrorCheck(async (r) => ({
-        "odata.etag": r.headers.get("etag"),
+    return parseBinderWithErrorCheck(async (r) => (<IItemUpdateResultData>{
+        etag: r.headers.get("etag"),
     }));
 }
 
@@ -331,7 +330,7 @@ export interface IItemUpdateResult {
 }
 
 export interface IItemUpdateResultData {
-    "odata.etag": string;
+    etag: string;
 }
 
 export interface IItemDeleteParams {

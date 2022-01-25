@@ -55,6 +55,7 @@ const config = {
     retries,
     "node-option": [`experimental-loader=${process.platform === "win32" ? "file://" : ""}${resolve("./build/testing/tools/local-module-resolver/esm-test.js")}`],
     spec: paths,
+    require: `${basePath}mocha-root-hooks.js`,
 };
 
 console.info(`*****************************`);
