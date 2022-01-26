@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - getParent signature change, path is second param, baseUrl is third param and only supports string
   - removed "core" preset
   - Improved web and site contructor to correctly rebase the web/site urls regardless of the url supplied (i.e. create a web from any sp queryable)
+  - Renamed property in IItemUpdateResultData to "etag" from "odata.etag" to make it .etag vs ["odata.etag"]
 
 - graph:
   - Renamed export "graph" -> "graphfi" with type GraphFI

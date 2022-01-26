@@ -157,10 +157,11 @@ function extensionOrDefault(op: ValidProxyMethods, or: (...args: any[]) => any, 
             extensions.push(...Reflect.get(target, ObjExtensionsSym));
         }
 
-        for (let i = 0; i < extensions.length; i++) {
-            const extension = extensions[i];
+        let result = undefined;
 
-            let result = undefined;
+        for (let i = 0; i < extensions.length; i++) {
+
+            const extension = extensions[i];
 
             if (isFunc(extension)) {
 
@@ -169,7 +170,7 @@ function extensionOrDefault(op: ValidProxyMethods, or: (...args: any[]) => any, 
 
             } else if (op === "get" && Reflect.has(extension, rest[0])) {
 
-                // this extension is a named extension meaning we are overriding a specific method/property
+                // this extension is a named extension meaning we are adding/overriding a specific method/property
                 result = Reflect.get(extension, rest[0], target);
 
             } else if (Reflect.has(extension, op)) {
