@@ -9,7 +9,6 @@ import { escape } from "@microsoft/sp-lodash-subset";
 import styles from "./ProjectPresetWebPart.module.scss";
 import * as strings from "ProjectPresetWebPartStrings";
 
-
 import { mySPFi } from "../../pnpjs-preset";
 
 export interface IProjectPresetWebPartProps {
