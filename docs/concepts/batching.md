@@ -215,3 +215,41 @@ users2();
 // we execute the batch, this promise will resolve
 await execute();        
 ```
+
+## Case where batch result returns an object that can be invoked
+
+In the following example, the results of adding items to the list is an object with a type of **IItemAddResult** which is `{data: any, item: IItem}`. Since version v1 the expectation is that the `item` object is immediately usable to make additional queries. When this object is the result of a batched call, this was not the case so we have added additional code to reset the observers using the original base from witch the batch was created, mimicing the behavior had the **IItem** been created from that base withyout a batch involved. We use [CopyFrom](../core/behaviors.md#CopyFrom) to ensure that we maintain the references to the InternalResolve and InternalReject events through the end of this timelines lifecycle. 
+
+```TypeScript
+import { createBatch } from "@pnp/sp/batching";
+import { SPDefault } from "@pnp/nodejs";
+import { IList } from "@pnp/sp/lists";
+import "@pnp/sp/items/list";
+
+const sp = spfi("https://tenant.sharepoint.com/sites/dev").using(SPDefault({ /* ... */ }));
+
+// in one part of your application you setup a list instance
+const list: IList = sp.web.lists.getByTitle("MyList");
+
+const [batchedListBehavior, execute] = createBatch(list);
+// this list is now batching all its requests
+list.using(batchedListBehavior);
+
+let res: IItemAddResult[] = [];
+
+// these will all occur within a single batch
+list.items.add({ Title: `1: ${getRandomString(4)}` }).then(r => res.push(r));
+list.items.add({ Title: `2: ${getRandomString(4)}` }).then(r => res.push(r));
+list.items.add({ Title: `3: ${getRandomString(4)}` }).then(r => res.push(r));
+list.items.add({ Title: `4: ${getRandomString(4)}` }).then(r => res.push(r));
+
+await execute();
+
+let newItems: IItem[] = [];
+
+for(let i=0; i<res.length; i++){
+    //This line will correctly resolve
+    const newItem = await res[i].item.select("Title")<{Title: string}>();
+    newItems.push(newItem);
+}
+```
