@@ -1,8 +1,5 @@
 {
     "extends": "../tsconfig.esm.json",
-    "compilerOptions": {
-        "strictNullChecks": false
-    },
     "include": [
         "./**/*.ts",
         "../core/**/*.ts",

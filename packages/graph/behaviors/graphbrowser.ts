@@ -20,7 +20,7 @@ export function GraphBrowser(props?: IGraphBrowserProps): TimelinePipe<Queryable
             BrowserFetchWithRetry(),
             DefaultParse());
 
-        if (isUrlAbsolute(props?.baseUrl)) {
+        if (props?.baseUrl) {
 
             // we want to fix up the url first
             instance.on.pre.prepend(async (url, init, result) => {

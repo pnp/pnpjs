@@ -1,11 +1,5 @@
 {
     "extends": "../tsconfig.esm.json",
-    "compilerOptions": {
-        "strictNullChecks": false
-    },
-    "types": [
-        "adal"
-    ],
     "include": [
         "./**/*.ts",
         "../core/**/*.ts",

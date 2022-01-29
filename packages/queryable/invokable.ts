@@ -24,7 +24,8 @@ export function invokable(invokeableAction?: (this: any, init?: RequestInit) => 
 
                     // the "this" for our invoked object will be set by extendable OR we use invokableInstance directly
                     const localThis = typeof this === "undefined" ? invokableInstance : this;
-                    return Reflect.apply(invokeableAction, localThis, [init]);
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    return Reflect.apply(invokeableAction!, localThis, [init]);
 
                 }, Reflect.construct(clz, args, newTarget));
 

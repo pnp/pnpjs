@@ -30,11 +30,12 @@ export function dateAdd(date: Date, interval: DateAddInterval, units: number): D
  *
  * @param paths 0 to n path parts to combine
  */
-export function combine(...paths: string[]): string {
+export function combine(...paths: (string | null | undefined)[]): string {
 
     return paths
         .filter(path => !stringIsNullOrEmpty(path))
-        .map(path => path.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""))
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        .map(path => path!.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""))
         .join("/")
         .replace(/\\/g, "/");
 }
@@ -101,15 +102,15 @@ export function isUrlAbsolute(url: string): boolean {
  *
  * @param s The string to test
  */
-export function stringIsNullOrEmpty(s: string): boolean {
-    return s === undefined || s === null || s.length < 1;
+export function stringIsNullOrEmpty(s: string | undefined | null): s is undefined | null | "" {
+    return typeof s === "undefined" || s === null || s.length < 1;
 }
 
 /**
  * Determines if an object is both defined and not null
  * @param obj Object to test
  */
-export function objectDefinedNotNull(obj: any): boolean {
+export function objectDefinedNotNull<T>(obj: T | undefined | null): obj is T {
     return typeof obj !== "undefined" && obj !== null;
 }
 
@@ -128,9 +129,11 @@ export function jsS(o: any): string {
  * @param o Object to check for
  * @param p Name of the property
  */
-export function hOP(o: any, p: string): boolean {
+export function hOP<T extends string>(o: any, p: T): boolean {
     return Object.hasOwnProperty.call(o, p);
 }
+
+
 
 /**
  * Generates a ~unique hash code
