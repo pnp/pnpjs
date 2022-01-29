@@ -30,7 +30,7 @@ export function SPDefault(props: ISPDefaultProps): TimelinePipe<Queryable> {
 
         instance.on.pre.prepend(async (url, init, result) => {
 
-            if (!isUrlAbsolute(url) && isUrlAbsolute(props.baseUrl)) {
+            if (!isUrlAbsolute(url)) {
                 url = combine(props.baseUrl, url);
             }
 

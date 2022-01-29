@@ -1,4 +1,4 @@
-import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable, isArray, TimelinePipe } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryablePreObserver = (this: IQueryableInternal, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
@@ -38,7 +38,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
         super(DefaultMoments);
 
         let url = "";
-        let observers = undefined;
+        let observers: ObserverCollection | undefined = undefined;
 
         if (typeof init === "string") {
 

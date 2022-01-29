@@ -8,6 +8,7 @@ import "@pnp/sp/items";
 import "@pnp/sp/batching";
 import { Web } from "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
+import { IItem } from "@pnp/sp/items";
 
 declare var process: { exit(code?: number): void };
 
@@ -55,24 +56,74 @@ export async function Example(settings: ITestingSettings) {
 
         const [batchedSP, execute] = await sp.batched();
 
+        const items = [
+            {
+                Id: 22,
+            },
+            {
+                Id: 23,
+            },
+            {
+                Id: 24,
+            },
+            {
+                Id: 25,
+            }];;
+
+        let res: IItem[] = [];
+
+        for (let i = 0; i < items.length; i++) {
+
+            // you need to use .then syntax here as otherwise the application will stop and await the result
+            batchedSP.web.lists
+                .getByTitle("Generic")
+                .items
+                .getById(items[i].Id)
+                .update({ Title: `${getRandomString(5)}` })
+                .then(r => res.push(r.item));
+        }
+
+        await execute();
+
+        const item = await res[0].select("Id, Title")<{ Id: number, Title: string }>();
+        console.log(`HERE: ${JSON.stringify(item, null, 2)}`);
+
+        const [batchedSP2, execute2] = await sp.batched();
+
+        for (let i = 0; i < items.length; i++) {
+
+            // you need to use .then syntax here as otherwise the application will stop and await the result
+            batchedSP2.web.lists
+                .getByTitle("Generic")
+                .items
+                .add({ Title: `${getRandomString(5)}` })
+                .then(r => res.push(r.item));
+        }
+
+        await execute2();
+
+        const item2 = await res[0].select("Id, Title")<{ Id: number, Title: string }>();
+        console.log(`HERE: ${JSON.stringify(item2, null, 2)}`);
+
+
+
+
         // const list = batchedSP.web.lists.getByTitle("Generic");
 
         // for (let i = 0; i < 3; i++) {
 
         // const items = list.items;
 
-        const y = batchedSP.web.lists.getByTitle("Generic").items.add({
-            
-            Title: getRandomString(5),
+        // batchedSP.web.lists.getByTitle("Generic").items.getById(23).update({
 
-        }).then(async r => {
+        //     Title: getRandomString(5),
 
-            const y = await r.item.update({
-                Title: "maybe",
-            });
+        // }).then(async r => {
 
-            console.log(y);
-        });
+        //     const y = await r.item();
+
+        //     console.log(y);
+        // });
 
         // items.add({
         //     Title: getRandomString(5),
@@ -84,13 +135,6 @@ export async function Example(settings: ITestingSettings) {
 
         // });
         // }
-
-        await execute();
-
-        
-
-
-
 
 
     } catch (e) {

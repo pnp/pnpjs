@@ -119,6 +119,8 @@ Similar to AssignFrom, this method creates a copy of all the observers on the so
 - "replace" will first clear each source moment's registered observers then apply each in source-order via the `on` operation.
 - "append" will apply each source moment's registered observers in source-order via the `on` operation
 
+> By design CopyFrom does NOT include moments defined by symbol keys.
+
 ```TypeScript
 import { spfi, SPBrowser } from "@pnp/sp";
 import { CopyFrom } from "@pnp/core";
@@ -133,7 +135,7 @@ const target = spfi().using(MyCustomeBehavior());
 // any previously registered observers in target are maintained as the default behavior is to append
 target.using(CopyFrom(source));
 
-// target will have the observers assigned from source, but no reference to source. Changes to source's registered observers will not affect target.
+// target will have the observers copied from source, but no reference to source. Changes to source's registered observers will not affect target.
 // any previously registered observers in target are removed
 target.using(CopyFrom(source, "replace"));
 
@@ -142,3 +144,30 @@ target.using(CopyFrom(source, "replace"));
 target.using(SomeOtherBehavior());
 target.on.log(console.log);
 ```
+
+As well `CopyFrom` supports a filter parameter if you only want to copy the observers from a subset of moments. This filter is a predicate function taking a single string key and returning true if the observers from that moment should be copied to the target.
+
+```TypeScript
+import { spfi, SPBrowser } from "@pnp/sp";
+import { CopyFrom } from "@pnp/core";
+// some local project file
+import { MyCustomeBehavior } from "./behaviors.ts";
+
+const source = spfi().using(SPBrowser());
+
+const target = spfi().using(MyCustomeBehavior());
+
+// target will have the observers copied from source, but no reference to source. Changes to source's registered observers will not affect target.
+// any previously registered observers in target are maintained as the default behavior is to append
+target.using(CopyFrom(source));
+
+// target will have the observers `auth` and `send` copied from source, but no reference to source. Changes to source's registered observers will not affect target.
+// any previously registered observers in target are removed
+target.using(CopyFrom(source, "replace", (k) => /(auth|send)/i.test(k)));
+
+// you can always apply additional behaviors or register directly on the events
+// with CopyFrom no reference to source is maintained
+target.using(SomeOtherBehavior());
+target.on.log(console.log);
+```
+

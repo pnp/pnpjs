@@ -74,7 +74,7 @@ export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePi
                         if (response.headers.has("Retry-After")) {
 
                             // if we have gotten a header, use that value as the delay value in seconds
-                            wait = parseInt(response.headers.get("Retry-After"), 10) * 1000;
+                            wait = parseInt(response?.headers?.get("Retry-After") || "1", 10) * 1000;
 
                         } else {
 
