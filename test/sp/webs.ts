@@ -36,12 +36,12 @@ describe("Webs", function () {
         _spfi = getSP();
     });
 
-    it("add 1", function () {
+    it.skip("add 1", function () {
         const title = `Test_ChildWebAdd1_${getRandomString(8)}`;
         return expect(_spfi.web.webs.add(title, title)).to.eventually.be.fulfilled;
     });
 
-    it("add 2", function () {
+    it.skip("add 2", function () {
         const title = `Test_ChildWebAdd2_${getRandomString(8)}`;
         return expect(_spfi.web.webs.add(title, title, "description", "FunSite#0", 1033, false)).to.eventually.be.fulfilled;
     });

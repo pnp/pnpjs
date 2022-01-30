@@ -249,7 +249,7 @@ describe("Batching", function () {
         expect(p2).to.eventually.be.fulfilled;
     });
 
-    it.only("Should rebase all objects to allow queries on returned objects", async function () {
+    it("Should rebase objects to allow queries on returned objects", async function () {
 
         const res: IItem[] = [];
         const ids: number[] = [];
@@ -270,10 +270,6 @@ describe("Batching", function () {
 
         const [batchedBehavior, execute] = createBatch(list);
         list.using(batchedBehavior);
-        list.on.log((m) => {
-
-            console.log(m);
-        });
 
         for (let i = 0; i < 3; i++) {
             list.items.add({ Title: titles[i] }).then(r => {
@@ -292,10 +288,6 @@ describe("Batching", function () {
         const updateList = _spfi.web.lists.getByTitle(listName);
         const [batchedBehavior2, execute2] = createBatch(updateList);
         updateList.using(batchedBehavior2);
-        updateList.on.log((m) => {
-
-            console.log(m);
-        });
 
         res.length = 0;
 
