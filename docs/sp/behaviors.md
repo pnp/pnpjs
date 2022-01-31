@@ -4,7 +4,7 @@ The article describes the behaviors exported by the `@pnp/sp` library. Please al
 
 ## DefaultInit
 
-The `DefaultInit` behavior, itself a composed behavior includes Telemetry, RejectOnError, and ResolveOnData. Additionally, it sets the cache and credentials properties of the RequestInit.
+The `DefaultInit` behavior, is a composed behavior which includes Telemetry, RejectOnError, and ResolveOnData. Additionally, it sets the cache and credentials properties of the RequestInit.
 
 ```TypeScript
 import { spfi, DefaultInit } from "@pnp/sp";
@@ -83,7 +83,7 @@ const sp = spfi().using(SPBrowser());
 await sp.web();
 ```
 
-You can also set a baseUrl. This is equivelent to calling spfi with an absolute url.
+You can also set a baseUrl. This is equivalent to calling spfi with an absolute url.
 
 ```TypeScript
 import { spfi, SPBrowser } from "@pnp/sp";

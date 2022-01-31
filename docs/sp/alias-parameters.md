@@ -13,7 +13,11 @@ Example: "!@p1::\sites\dev" or "!@p2::\text.txt"
 ### Example without aliasing
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+import "@pnp/sp/folders";
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // still works as expected, no aliasing
 const query = sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/").files.select("Title").top(3);
@@ -21,22 +25,27 @@ const query = sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/"
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files
 console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files?$select=Title&$top=3
 
-const r = await query.get();
-console.log(r);;
+const r = await query();
+console.log(r);
 ```
 
 ### Example with aliasing
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+import "@pnp/sp/folders";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // same query with aliasing
 const query = sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
 
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files
-console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&$select=Title&$top=3
+console.log(query.toRequestUrl()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&$select=Title&$top=3
 
-const r = await query.get();
+const r = await query();
 console.log(r);
 ```
 
@@ -45,19 +54,23 @@ console.log(r);
 Aliasing is supported with batching as well:
 
 ```TypeScript
-import { sp } from "@pnp/sp/presets/all";
-// same query with aliasing and batching
-const batch = sp.web.createBatch();
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
 
-const query = sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+// same query with aliasing and batching
+const [batchedWeb, execute] = await sp.web.batched();
+
+const query = batchedWeb.web.getFolderByServerRelativePath("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
 
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files
-console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&$select=Title&$top=3
+console.log(query.toRequestUrl()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&$select=Title&$top=3
 
-query.inBatch(batch).get().then(r => {
+query().then(r => {
 
     console.log(r);
 });
 
-batch.execute();
+execute();
 ```
