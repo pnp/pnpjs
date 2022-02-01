@@ -1,7 +1,6 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
 import "@pnp/sp/site-scripts";
-import { getSP } from "../main.js";
 import { IList } from "@pnp/sp/lists";
 import { spfi, SPFI } from "@pnp/sp";
 
@@ -26,12 +25,11 @@ describe("SiteScripts", function () {
 
     before(function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        const _spfi = getSP();
-        _rootSite = spfi([_spfi.site, this.settings.sp.url]);
+        _rootSite = spfi([this.pnp.sp.site, this.pnp.settings.sp.url]);
     });
 
     it("createSiteScript", function () {

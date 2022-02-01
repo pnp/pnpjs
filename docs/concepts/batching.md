@@ -215,3 +215,5 @@ users2();
 // we execute the batch, this promise will resolve
 await execute();        
 ```
+
+> In addition you cannot continue using a batch after execute. Once execute has resolved the batch is done. You should create a new batch using one of the described methods to conduct another batched call.

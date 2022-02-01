@@ -1,4 +1,3 @@
-import { getSP } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/comments/item";
@@ -6,29 +5,25 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import { getRandomString } from "@pnp/core";
-import { SPFI } from "@pnp/sp";
 import { ICommentInfo } from "@pnp/sp/comments/types.js";
 
 describe("Comments", function () {
 
-    let _spfi: SPFI = null;
     let testUserLogin = "";
     let testUserEmail = "";
     const testUser = "Test User";
 
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        _spfi = getSP();
-
         // we need a user to share to
-        if (this.settings.testUser?.length > 0) {
-            await _spfi.web.ensureUser(this.settings.testUser);
-            testUserLogin = this.settings.testUser;
-            const tmp = this.settings.testUser.split("|");
+        if (this.pnp.settings.testUser?.length > 0) {
+            await this.pnp.sp.web.ensureUser(this.pnp.settings.testUser);
+            testUserLogin = this.pnp.settings.testUser;
+            const tmp = this.pnp.settings.testUser.split("|");
             testUserEmail = tmp[tmp.length - 1];
         }
     });
@@ -36,7 +31,7 @@ describe("Comments", function () {
     it("add - clientside page", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const comment = await page.addComment("A test comment");
         expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
@@ -45,7 +40,7 @@ describe("Comments", function () {
     it("add - item", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const item = await page.getItem();
         const comment = await item.comments.add("A test comment");
@@ -55,12 +50,12 @@ describe("Comments", function () {
 
     it("add - at mention", async function () {
 
-        if (this.settings.testUser?.length < 0) {
+        if (this.pnp.settings.testUser?.length < 0) {
             this.skip();
         }
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const commentInfo: Partial<ICommentInfo> = {
             mentions: [{ loginName: testUserLogin, email: testUserEmail, name: testUser }],
@@ -73,7 +68,7 @@ describe("Comments", function () {
     it("getById - clientside page", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const comment = await page.addComment("A test comment");
         expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
@@ -84,7 +79,7 @@ describe("Comments", function () {
     it("getById - clientside page 2", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const comment = await page.addComment("A test comment");
         expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
@@ -97,7 +92,7 @@ describe("Comments", function () {
     it("getById - item", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const comment = await page.addComment("A test comment");
         expect(parseInt(comment.id, 10)).to.be.greaterThan(0);
@@ -111,7 +106,7 @@ describe("Comments", function () {
     it("clear - clientside page", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         await page.addComment("A test comment");
         await page.addComment("A test comment");
@@ -130,7 +125,7 @@ describe("Comments", function () {
     it("clear - item", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const item = await page.getItem();
 
@@ -151,7 +146,7 @@ describe("Comments", function () {
     it("like & unlike", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const comment = await page.addComment("A test comment");
 
@@ -163,7 +158,7 @@ describe("Comments", function () {
     it("replies - add", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const comment = await page.addComment("A test comment");
 
@@ -173,7 +168,7 @@ describe("Comments", function () {
     it("replies - add 2", async function () {
 
         const pageName = `CommentPage_${getRandomString(4)}`;
-        const page = await CreateClientsidePage(_spfi.web, pageName, pageName, "Article");
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const comment = await page.addComment("A test comment");
         await comment.replies.add("Reply");

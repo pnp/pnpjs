@@ -117,7 +117,7 @@ class BatchQueryable extends _SPQueryable {
             // that we maintain the references to the InternalResolve and InternalReject events through
             // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
             // which ignores symbol properties.
-            base.using(CopyFrom(this, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
+            base.using(CopyFrom(this, "replace", (k) => /(auth|send|init)/i.test(k)));
         });
     }
 }
@@ -306,32 +306,32 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
 
         instance.on.dispose(function (this: ISPQueryable) {
 
-            if (isFunc(this[RequestCompleteSym])) {
-
-                // let things know we are done with this request
-                this[RequestCompleteSym]();
-                delete this[RequestCompleteSym];
-            }
-
             if (isFunc(this[RegistrationCompleteSym])) {
 
                 // remove the symbol props we added for good hygene
                 delete this[RegistrationCompleteSym];
             }
 
-            // there is a code path where you may invoke a batch, say on items.add, whose return
-            // is an object like { data: any, item: IItem }. The expectation from v1 on is `item` in that object
-            // is immediately usable to make additional queries. Without this step when that IItem instance is
-            // created using "this.getById" within IITems.add all of the current observers of "this" are
-            // linked to the IItem instance created (expected), BUT they will be the set of observers setup
-            // to handle the batch, meaning invoking `item` will result in a half batched call that
-            // doesn't really work. To deliver the expected functionality we "reset" the
-            // observers using the original instance, mimicing the behavior had
-            // the IItem been created from that base without a batch involved. We use CopyFrom to ensure
-            // that we maintain the references to the InternalResolve and InternalReject events through
-            // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
-            // which ignores symbol properties.
-            this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
+            if (isFunc(this[RequestCompleteSym])) {
+
+                // let things know we are done with this request
+                this[RequestCompleteSym]();
+                delete this[RequestCompleteSym];
+
+                // there is a code path where you may invoke a batch, say on items.add, whose return
+                // is an object like { data: any, item: IItem }. The expectation from v1 on is `item` in that object
+                // is immediately usable to make additional queries. Without this step when that IItem instance is
+                // created using "this.getById" within IITems.add all of the current observers of "this" are
+                // linked to the IItem instance created (expected), BUT they will be the set of observers setup
+                // to handle the batch, meaning invoking `item` will result in a half batched call that
+                // doesn't really work. To deliver the expected functionality we "reset" the
+                // observers using the original instance, mimicing the behavior had
+                // the IItem been created from that base without a batch involved. We use CopyFrom to ensure
+                // that we maintain the references to the InternalResolve and InternalReject events through
+                // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
+                // which ignores symbol properties.
+                this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
+            }
         });
 
         return instance;

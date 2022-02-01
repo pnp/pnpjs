@@ -3,28 +3,20 @@ import { getRandomString } from "@pnp/core";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
-import { getSP } from "../main.js";
 import { IList } from "@pnp/sp/lists";
-import { SPFI } from "@pnp/sp";
 
 describe("Views", function () {
 
     let list: IList;
 
-    let _spfi: SPFI = null;
-
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        _spfi = getSP();
-
-        this.timeout(50000);
-
         // we need to create a list for manipulating views
-        const result = await _spfi.web.lists.ensure(`ViewTestList_${getRandomString(4)}`, "Testing Views");
+        const result = await this.pnp.sp.web.lists.ensure(`ViewTestList_${getRandomString(4)}`, "Testing Views");
 
         list = result.list;
     });
@@ -104,21 +96,18 @@ describe("Views", function () {
         });
 
         it("move", async function () {
-            this.timeout(50000);
             const r = await list.views.add(`move-Test-ViewFields_${getRandomString(4)}`);
             await r.view.fields.add("Modified");
             return expect(r.view.fields.move("Modified", 0)).to.eventually.be.fulfilled;
         });
 
         it("remove", async function () {
-            this.timeout(50000);
             const r = await list.views.add(`remove-Test-ViewFields_${getRandomString(4)}`);
             await r.view.fields.add("Author");
             return expect(r.view.fields.remove("Author")).to.eventually.be.fulfilled;
         });
 
         it("removeAll", async function () {
-            this.timeout(50000);
             const r = await list.views.add(`removeAll-Test-ViewFields_${getRandomString(4)}`);
             return expect(r.view.fields.removeAll()).to.eventually.be.fulfilled;
         });

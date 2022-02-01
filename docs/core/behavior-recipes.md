@@ -40,7 +40,7 @@ export function Proxy(proxyInit: any): TimelinePipe<Queryable> {
 _usage_
 ```TypeScript
 import { Proxy } from "./proxy.ts";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 import { SPDefault } from "@pnp/nodejs";
 
@@ -82,7 +82,7 @@ export function CacheBust(): TimelinePipe<Queryable> {
 _usage_
 ```TypeScript
 import { CacheBust } from "./query-cache-param.ts";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 import { SPDefault } from "@pnp/nodejs";
 

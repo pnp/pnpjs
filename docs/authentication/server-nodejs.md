@@ -48,7 +48,7 @@ openssl rsa -in keytmp.pem -out key.pem -passin pass:HereIsMySuperPass
 Using the above code you end up with three files, "cert.pem", "key.pem", and "keytmp.pem". The "cert.pem" file is uploaded to your AAD application registration. The "key.pem" is read as the private key for the configuration.
 
 ```TypeScript
-import { spFI } from "@pnp/sp";
+
 import { SPDefault } from "@pnp/nodejs";
 import "@pnp/sp/webs";
 import { readFileSync } from "fs";

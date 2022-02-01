@@ -35,8 +35,6 @@
       "sourceMaps": true,
       "outFiles": [],
       "args": [
-        "--retries",
-        "0",
         "--verbose",
         "--logging"
       ],
