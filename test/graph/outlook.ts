@@ -11,7 +11,7 @@ describe("Outlook", function () {
     const testCategoryList: string[] = [];
 
     // Ensure we have the data to test against
-    this.beforeAll(async function () {
+    before(async function () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -22,7 +22,7 @@ describe("Outlook", function () {
     });
 
     // Clean up testing categories
-    this.afterAll(async function () {
+    after(async function () {
         if (!stringIsNullOrEmpty(testUserName) && testCategoryList.length > 0) {
             for (let i = 0; i < testCategoryList.length; i++) {
                 await this.pnp.graph.users.getById(testUserName).outlook.masterCategories.getById(testCategoryList[i]).delete();

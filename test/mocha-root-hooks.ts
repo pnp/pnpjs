@@ -3,9 +3,12 @@ import { getSettings, ISettings } from "./load-settings.js";
 import { Context } from "mocha";
 import { extractWebUrl, SPFI, spfi } from "@pnp/sp";
 import { graphfi, GraphFI } from "@pnp/graph";
-import { GraphDefault, SPDefault } from "@pnp/nodejs";
+import { GraphDefault, SPDefault, NodeFetch } from "@pnp/nodejs";
 import { getGUID, delay } from "@pnp/core";
 import { cleanUpAllSubsites } from "./clean-subsite.js";
+import * as chai from "chai";
+import chaiAsPromised from "chai-as-promised";
+import "mocha";
 
 declare module "mocha" {
     interface Context {
@@ -32,6 +35,8 @@ let testStart: number;
 export const mochaHooks = {
     beforeAll: [
         async function setup(this: Context) {
+
+            chai.use(chaiAsPromised);
 
             // start a timer
             testStart = Date.now();
@@ -66,7 +71,7 @@ export const mochaHooks = {
                         config: this.pnp.settings.sp.msal.init,
                         scopes: this.pnp.settings.sp.msal.scopes,
                     },
-                }));
+                }), NodeFetch({ replace: true }));
 
                 if (siteUsed) {
                     // we were given a site, so we don't need to create one
@@ -88,7 +93,7 @@ export const mochaHooks = {
                         config: this.pnp.settings.sp.msal.init,
                         scopes: this.pnp.settings.sp.msal.scopes,
                     },
-                }));
+                }), NodeFetch({ replace: true }));
             } finally {
                 const setupEnd = Date.now();
                 console.log(`SP Setup completed in ${((setupEnd - setupStart) / 1000).toFixed(4)} seconds.`);
@@ -108,7 +113,7 @@ export const mochaHooks = {
                         config: this.pnp.settings.graph.msal.init,
                         scopes: this.pnp.settings.graph.msal.scopes,
                     },
-                }));
+                }), NodeFetch({ replace: true }));
 
             } finally {
                 const setupEnd = Date.now();
@@ -160,7 +165,7 @@ export const mochaHooks = {
                 console.log(`SP Teardown completed in ${((teardownEnd - teardownStart) / 1000).toFixed(4)} seconds.`);
             }
 
-            return null;
+            return Promise.resolve();
         },
         function graphTeardown(this: Context) {
             const teardownStart = Date.now();

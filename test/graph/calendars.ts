@@ -198,7 +198,7 @@ describe("Calendar", function () {
     });
 
     // Remove the test data we created
-    this.afterAll(async function () {
+    after(async function () {
 
         if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testEventID)) {
             await this.pnp.graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
