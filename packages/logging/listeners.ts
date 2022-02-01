@@ -39,7 +39,7 @@ function withColor(msg: string, color: string | undefined): void {
  * @param entry The information to format into a string
  */
 function entryToString(entry: ILogEntry, prefix: string): string {
-    const msg = [];
+    const msg: string[] = [];
 
     if (prefix.length > 0) {
         msg.push(`${prefix} -`);

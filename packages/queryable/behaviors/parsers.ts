@@ -6,7 +6,8 @@ export function DefaultParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck(async (response) => {
 
-        if ((response.headers.has("Content-Length") && parseFloat(response.headers.get("Content-Length")) === 0) || response.status === 204) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if ((response.headers.has("Content-Length") && parseFloat(response.headers.get("Content-Length")!) === 0) || response.status === 204) {
             return {};
         }
 

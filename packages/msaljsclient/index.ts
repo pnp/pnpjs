@@ -30,8 +30,7 @@ export function MSAL(config: Configuration, authParams: AuthenticationParameters
                 }
             }
 
-            // eslint-disable-next-line @typescript-eslint/dot-notation
-            init.headers["Authorization"] = `Bearer ${accessToken}`;
+            init.headers = { ...init.headers, Authorization: `Bearer ${accessToken}` };
 
             return [url, init];
         });

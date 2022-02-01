@@ -1,8 +1,5 @@
 {
     "extends": "../tsconfig.cjs.json",
-    "compilerOptions": {
-        "strictNullChecks": false
-    },
     "include": [
         "./**/*.ts",
         "../core/**/*.ts",

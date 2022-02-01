@@ -65,7 +65,7 @@ interface IGraphBatchResponse {
     nextLink?: string;
 }
 
-type ParsedGraphResponse = { nextLink: string; responses: Response[] };
+type ParsedGraphResponse = { nextLink?: string; responses: Response[] };
 
 /**
  * The request record defines a tuple that is
@@ -119,7 +119,7 @@ class BatchQueryable extends _GraphQueryable {
             const m = url.match(versRegex);
 
             // if we don't have the match we expect we don't make any changes and hope for the best
-            if (m.length > 0) {
+            if (m && m.length > 0) {
                 // fix up the url, requestBaseUrl, and the _url
                 url = combine(m[0], "$batch");
                 this.requestBaseUrl = url;
@@ -218,15 +218,11 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         // we replace the send function with our batching logic
         instance.on.send.replace(async function (this: Queryable, url: URL, init: RequestInit) {
 
-            let requestTuple: RequestRecord;
-
             const promise = new Promise<Response>((resolve, reject) => {
-                requestTuple = [this, url.toString(), init, resolve, reject];
+                requests.push([this, url.toString(), init, resolve, reject]);
             });
 
             this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
-
-            requests.push(requestTuple);
 
             // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
             completePromises.push(new Promise((resolve) => {
@@ -302,7 +298,8 @@ function formatRequests(requests: RequestRecord[], batchId: string): IGraphBatch
 
         let requestFragment: IGraphBatchRequestFragment = {
             id: `${++index}`,
-            method: init.method,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            method: init.method!,
             url: makeUrlRelative(url),
         };
 

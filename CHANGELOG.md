@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Console listener now supports pretty printing options with colors and improved formatting (@thechriskent)
 
 - core:
-  - improved typings on isArray such that TS understands the outcome and properly types arrays
+  - improved typings on utility methods such that TS understands the outcome and properly types results
 
 - queryable:
   - changed constructor to also accept a tuple of [queryable, string] to allow easy rebasing of url while inheriting observers

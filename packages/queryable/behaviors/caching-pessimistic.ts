@@ -22,7 +22,6 @@ export function CachingPessimisticRefresh(
         store = (typeof localStorage === "undefined") ? new MemoryStorage() : localStorage;
     }
 
-
     if (!isFunc(keyFactory)) {
         keyFactory = (url: string) => getHashCode(url.toLowerCase()).toString();
     }
@@ -50,9 +49,8 @@ export function CachingPessimisticRefresh(
                 const s = type === "session" ? storage.session : storage.local;
                 retVal = s.get(key);
             } else {
-                let cache = undefined;
-                cache = store.getItem(key);
-                if (cache !== undefined) {
+                const cache = store.getItem(key);
+                if (typeof cache === "string") {
                     retVal = JSON.parse(cache);
                 }
             }
@@ -169,7 +167,8 @@ export function CachingPessimisticRefresh(
             // Reset refreshCache
             refreshCache = true;
 
-            const key = keyFactory(url.toString());
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const key = keyFactory!(url.toString());
 
             const cached = getStorage(key);
 

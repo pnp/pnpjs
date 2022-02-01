@@ -1,5 +1,5 @@
 import { ConfidentialClientApplication, Configuration } from "@azure/msal-node";
-import { TimelinePipe } from "@pnp/core";
+import { objectDefinedNotNull, TimelinePipe } from "@pnp/core";
 import { Queryable } from "@pnp/queryable";
 
 export function MSAL(config: Configuration, scopes: string[] = ["https://graph.microsoft.com/.default"]): TimelinePipe<Queryable> {
@@ -12,8 +12,9 @@ export function MSAL(config: Configuration, scopes: string[] = ["https://graph.m
 
             const token = await confidentialClient.acquireTokenByClientCredential({ scopes });
 
-            // eslint-disable-next-line @typescript-eslint/dot-notation
-            init.headers["Authorization"] = `${token.tokenType} ${token.accessToken}`;
+            if (objectDefinedNotNull(token)) {
+                init.headers = { ...init.headers, Authorization: `${token.tokenType} ${token.accessToken}` };
+            }
 
             return [url, init];
         });
