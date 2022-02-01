@@ -1,27 +1,23 @@
 import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
-import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 import { IList } from "@pnp/sp/lists";
-import { SPFI } from "@pnp/sp";
 
 describe("Attachments", function () {
 
-    let _spfi: SPFI = null;
     let list: IList = null;
 
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        _spfi = getSP();
         // we need to add a list and some attachments.
-        const listData = await _spfi.web.lists.ensure(`AttachmentTest_${getRandomString(4)}`);
+        const listData = await this.pnp.sp.web.lists.ensure(`AttachmentTest_${getRandomString(4)}`);
         list = listData.list;
     });
 

@@ -296,7 +296,7 @@ export class PagedItemCollection<T> {
     public async getNext(): Promise<PagedItemCollection<T> | null> {
 
         if (this.hasNext) {
-            const items = <IItems>Items([this.parent, this.nextUrl]);
+            const items = <IItems>Items([this.parent, this.nextUrl], "");
             return items.getPaged<T>();
         }
 

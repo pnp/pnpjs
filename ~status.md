@@ -7,7 +7,7 @@
 // TODO:: community extensions package for behaviors and library extensions
 // TODO:: drop -commonjs packages?
 // TODO:: update https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/guidance/use-sp-pnp-js-with-spfx-web-parts
-
+// TODO:: add a feature that just a random subset of tests runs
 
 // TODO:: discuss:
      const data = await graphPost<IInvitationType>(this, body(postBody));

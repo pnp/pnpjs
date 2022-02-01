@@ -1,5 +1,3 @@
-import { getGraph } from "../main.js";
-import { GraphFI } from "@pnp/graph";
 import { Users } from "@pnp/graph/users";
 import "@pnp/graph/groups";
 import "@pnp/graph/sites";
@@ -8,24 +6,18 @@ import { expect } from "chai";
 
 describe("Batching", function () {
 
-    this.timeout(120000);
-
-    let _graphfi: GraphFI = null;
-
     before(function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-
-        _graphfi = getGraph();
     });
 
     it("Single Request", async function () {
         const order: number[] = [];
         const expected: number[] = [1, 2];
 
-        const [batchedGraph, execute] = _graphfi.batched();
+        const [batchedGraph, execute] = this.pnp.graph.batched();
 
         batchedGraph.users().then(function () {
             order.push(1);
@@ -41,7 +33,7 @@ describe("Batching", function () {
         const order: number[] = [];
         const expected: number[] = [1, 2, 3];
 
-        const [batchedGraph, execute] = _graphfi.batched();
+        const [batchedGraph, execute] = this.pnp.graph.batched();
 
         batchedGraph.users().then(function () {
             order.push(1);
@@ -62,7 +54,7 @@ describe("Batching", function () {
         const order: number[] = [];
         const expected: number[] = [1, 2, 3, 4];
 
-        const [batchedGraph, execute] = _graphfi.batched();
+        const [batchedGraph, execute] = this.pnp.graph.batched();
 
         batchedGraph.users().then(function () {
             order.push(1);
@@ -84,22 +76,22 @@ describe("Batching", function () {
 
     it("Should work with the same Queryable when properly cloned (Advanced)", async function () {
 
-        const users = _graphfi.users;
+        const users = this.pnp.graph.users;
 
         const [batchedBehavior, execute] = createBatch(users);
         users.using(batchedBehavior);
 
         users();
-        _graphfi.users.using(batchedBehavior)();
-        _graphfi.users.using(batchedBehavior)();
-        _graphfi.users.using(batchedBehavior)();
+        this.pnp.graph.users.using(batchedBehavior)();
+        this.pnp.graph.users.using(batchedBehavior)();
+        this.pnp.graph.users.using(batchedBehavior)();
 
         return expect(execute()).to.eventually.be.fulfilled;
     });
 
     it("Should work with the same Queryable when properly cloned by factory (Advanced)", async function () {
 
-        const users = _graphfi.users;
+        const users = this.pnp.graph.users;
 
         const [batchedBehavior, execute] = createBatch(users);
         users.using(batchedBehavior);
@@ -113,7 +105,7 @@ describe("Batching", function () {
 
     it("Should fail with the same Queryable (Advanced)", async function () {
 
-        const users = _graphfi.users;
+        const users = this.pnp.graph.users;
 
         const [batchedBehavior, execute] = createBatch(users);
         users.using(batchedBehavior);

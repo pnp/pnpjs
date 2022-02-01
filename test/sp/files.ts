@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { getSP } from "../main.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -11,14 +10,12 @@ import { IFiles, TemplateFileType } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import findupSync from "findup-sync";
-import { SPFI } from "@pnp/sp";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findupSync("package.json")));
 
 describe("Files", function () {
 
-    let _spfi: SPFI = null;
     const testFileName = `testing - ${getRandomString(4)}.txt`;
     const testFileNamePercentPound = `testing %# - ${getRandomString(4)}.txt`;
     let testFileNamePercentPoundServerRelPath = "";
@@ -26,12 +23,11 @@ describe("Files", function () {
 
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        _spfi = getSP();
-        files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
+        files = this.pnp.sp.web.defaultDocumentLibrary.rootFolder.files;
         // ensure we have at least one file to get
         await files.addUsingPath(testFileName, "Test file!", { Overwrite: true });
         const res = await files.addUsingPath(testFileNamePercentPound, "Test file!", { Overwrite: true });
@@ -45,14 +41,14 @@ describe("Files", function () {
 
     it("getFileByServerRelativePath (%#)", async function () {
 
-        return expect(_spfi.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath)()).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath)()).to.eventually.be.fulfilled;
     });
 
     it("getFileByUrl", async function () {
 
-        const item = await _spfi.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath).getItem();
+        const item = await this.pnp.sp.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath).getItem();
         const urlData = await item.select("EncodedAbsUrl")();
-        return expect(_spfi.web.getFileByUrl(urlData.EncodedAbsUrl)()).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.getFileByUrl(urlData.EncodedAbsUrl)()).to.eventually.be.fulfilled;
     });
 
     it("addUsingPath", async function () {
@@ -90,7 +86,7 @@ describe("Files", function () {
 
         const name = `Testing Add & = + - ${getRandomString(4)}.txt`;
         const res = await files.addUsingPath(name, "Some test text content.");
-        const file = await _spfi.web.getFileByServerRelativePath(res.data.ServerRelativeUrl)();
+        const file = await this.pnp.sp.web.getFileByServerRelativePath(res.data.ServerRelativeUrl)();
         expect(file.Name).to.eq(name);
     });
 
@@ -106,7 +102,7 @@ describe("Files", function () {
 
     it("addTemplateFile", async function () {
 
-        const webData = await _spfi.web.select("ServerRelativeUrl")();
+        const webData = await this.pnp.sp.web.select("ServerRelativeUrl")();
         const path = combine("/", webData.ServerRelativeUrl, `/SitePages/Testing template file - ${getRandomString(4)}.aspx`);
         const far = await files.addTemplateFile(path, TemplateFileType.StandardPage);
         return expect(far.file()).to.eventually.be.fulfilled;
@@ -116,7 +112,7 @@ describe("Files", function () {
 
         const name = `Testing getFileById - ${getRandomString(4)}.txt`;
         const far = await files.addUsingPath(name, "Some test text content.");
-        const fileById = await _spfi.web.getFileById(far.data.UniqueId).select("UniqueId")();
+        const fileById = await this.pnp.sp.web.getFileById(far.data.UniqueId).select("UniqueId")();
         return expect(far.data.UniqueId).to.eq(fileById.UniqueId);
     });
 
@@ -131,18 +127,16 @@ describe("Files", function () {
 
 describe("File", function () {
 
-    let _spfi: SPFI = null;
     const testFileName = `testing - ${getRandomString(4)}.txt`;
     let files: IFiles = null;
 
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        _spfi = getSP();
-        files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
+        files = this.pnp.sp.web.defaultDocumentLibrary.rootFolder.files;
         await files.addUsingPath(testFileName, "Test file!", { Overwrite: true });
     });
 
@@ -205,7 +199,7 @@ describe("File", function () {
         const rand = getRandomString(4);
         const name = `Testing copyTo - ${rand}.txt`;
         await files.addUsingPath(name, getRandomString(42));
-        const folderData = await _spfi.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+        const folderData = await this.pnp.sp.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
         const name2 = `I Copied - ${rand}.aspx`;
         const path = combine("/", folderData.ServerRelativeUrl, name2);
 
@@ -220,7 +214,7 @@ describe("File", function () {
         const rand = getRandomString(4);
         const name = `Testing copyByPath - ${rand}.txt`;
         await files.addUsingPath(name, getRandomString(42));
-        const folderData = await _spfi.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+        const folderData = await this.pnp.sp.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
         const name2 = `I Copied - ${rand}.aspx`;
         const path = combine("/", folderData.ServerRelativeUrl, name2);
 
@@ -233,7 +227,7 @@ describe("File", function () {
         const rand = getRandomString(4);
         const name = `Testing moveByPath - ${rand}.txt`;
         await files.addUsingPath(name, getRandomString(42));
-        const folderData = await _spfi.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+        const folderData = await this.pnp.sp.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
         const name2 = `I Copied - ${rand}.aspx`;
         const path = combine("/", folderData.ServerRelativeUrl, name2);
 

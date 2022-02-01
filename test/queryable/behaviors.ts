@@ -9,26 +9,23 @@ import {
     RejectOnError,
     ResolveOnData,
 } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
 import { AbortController } from "node-abort-controller";
 import { default as nodeFetch } from "node-fetch";
-
-import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
-
+import { spfi } from "@pnp/sp";
 
 describe("Behaviors", function () {
 
     it("CachingPessimistic", async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
         try {
             // Testing a behavior, creating new instance of sp
-            const spInstance = spfi(getSP()).using(CachingPessimisticRefresh("session"));
+            const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh("session"));
 
             // Test caching behavior
             const startCheckpoint = new Date();
@@ -53,13 +50,13 @@ describe("Behaviors", function () {
 
     it("CachingPessimistic (headers)", async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
         try {
             // Testing a behavior, creating new instance of sp
-            const spInstance = spfi(getSP()).using(CachingPessimisticRefresh("session"));
+            const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh("session"));
 
             // Add a text field, which augments header, to validate that CachingPessimisticRefresh execute function honors header
             const testFieldNameRand = `CachingPessimisticRefreshField_${getRandomString(10)}`;
@@ -89,13 +86,13 @@ describe("Behaviors", function () {
 
     it("Caching", async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
         try {
             // Testing a behavior, creating new instance of sp
-            const spInstance = spfi(getSP()).using(Caching({ store: "session" }));
+            const spInstance = spfi(this.pnp.sp).using(Caching({ store: "session" }));
 
             // Test caching behavior
             const startCheckpoint = new Date();

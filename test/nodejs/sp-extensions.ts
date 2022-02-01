@@ -5,30 +5,26 @@ import "@pnp/sp/folders/list";
 import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import "@pnp/sp/lists/web";
-import { getSP } from "../main.js";
 import { getRandomString, isFunc } from "@pnp/core";
 import * as fs from "fs";
 import * as path from "path";
 import * as os from "os";
-import { SPFI } from "@pnp/sp";
+
 
 describe("NodeJS: sp-extensions", function () {
 
-    let _spfi: SPFI = null;
     before(function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-
-        _spfi = getSP();
     });
 
     it("Read Stream", async function () {
 
         const content = "Some test text content.";
         const name = `Testing setContent - ${getRandomString(4)}.txt`;
-        const files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
+        const files = this.pnp.sp.web.defaultDocumentLibrary.rootFolder.files;
         await files.addUsingPath(name, content);
 
         const stream = await files.getByUrl(name).getStream();
@@ -59,7 +55,7 @@ describe("NodeJS: sp-extensions", function () {
         fs.writeFileSync(tmpFilePath, content);
 
         const stream = fs.createReadStream(tmpFilePath);
-        const files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
+        const files = this.pnp.sp.web.defaultDocumentLibrary.rootFolder.files;
 
         await files.addChunked(name, stream, null, true);
 
@@ -79,7 +75,7 @@ describe("NodeJS: sp-extensions", function () {
         const name = `Testing addChunked (with Nodejs buffer) - ${getRandomString(4)}.txt`;
         const content = "Some test text content.";
 
-        const files = _spfi.web.defaultDocumentLibrary.rootFolder.files;
+        const files = this.pnp.sp.web.defaultDocumentLibrary.rootFolder.files;
 
         await files.addChunked(name, content as any, null, true, 10);
 
