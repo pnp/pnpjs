@@ -64,7 +64,7 @@ export function createResolve(innerPath: string): ResolverFunc {
 
             if (isAbsolute(specifier)) {
                 specifier = "file://" + specifier;
-            } else {
+            } else if (specifier.indexOf("node_modules") < 0) {
                 // any relative resolves will be our code (probably :))
                 specifier = defaultResolve(specifier, context, defaultResolve);
                 return {
