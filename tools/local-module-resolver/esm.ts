@@ -67,12 +67,12 @@ export function createResolve(innerPath: string): ResolverFunc {
             } else {
                 // any relative resolves will be our code (probably :))
                 specifier = defaultResolve(specifier, context, defaultResolve);
-                if (specifier.indexOf("node_modules") > -1) {
+                if ((<any>specifier).url.indexOf("node_modules") > -1) {
                     return <any>specifier;
                 } else {
                     return {
-                        format: "module",
                         ...<any>specifier,
+                        format: "module",
                     };
                 }
             }
