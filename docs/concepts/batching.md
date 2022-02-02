@@ -216,6 +216,8 @@ users2();
 await execute();        
 ```
 
+> In addition you cannot continue using a batch after execute. Once execute has resolved the batch is done. You should create a new batch using one of the described methods to conduct another batched call.
+
 ## Case where batch result returns an object that can be invoked
 
 In the following example, the results of adding items to the list is an object with a type of **IItemAddResult** which is `{data: any, item: IItem}`. Since version v1 the expectation is that the `item` object is immediately usable to make additional queries. When this object is the result of a batched call, this was not the case so we have added additional code to reset the observers using the original base from witch the batch was created, mimicing the behavior had the **IItem** been created from that base withyout a batch involved. We use [CopyFrom](../core/behaviors.md#CopyFrom) to ensure that we maintain the references to the InternalResolve and InternalReject events through the end of this timelines lifecycle. 

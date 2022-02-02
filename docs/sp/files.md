@@ -56,7 +56,7 @@ The addUsingPath method, supports the percent or pound characters in file names.
 declare var require: (s: string) => any;
 
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { spfi } from "@pnp/sp";
+
 import { Web } from "@pnp/sp/webs";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
@@ -111,7 +111,7 @@ If you are working in nodejs you can also add a file using a stream. This exampl
 
 ```TypeScript
 // triggers auto-application of extensions, in this case to add getStream
-import { spfi } from "@pnp/sp";
+
 import "@pnp/nodejs";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";

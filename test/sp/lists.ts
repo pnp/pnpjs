@@ -1,4 +1,3 @@
-import { getSP } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/lists";
 import "@pnp/sp/content-types/list";
@@ -12,23 +11,21 @@ import "@pnp/sp/user-custom-actions/list";
 import "@pnp/sp/batching";
 import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, RenderListDataOptions } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/core";
-import { SPFI } from "@pnp/sp";
 import testSPInvokables from "../test-invokable-props.js";
+import { Context } from "mocha";
 
 describe("Lists", function () {
 
-    let _spfi: SPFI = null;
-
+    let list;
     before(function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-
-        _spfi = getSP();
+        list = this.pnp.sp.web.lists.getByTitle("Documents");
     });
 
-    describe("Invokable Properties", testSPInvokables(() => _spfi.web.lists.getByTitle("Documents"),
+    describe("Invokable Properties", testSPInvokables(() => list,
         "effectiveBasePermissions",
         "eventReceivers",
         "relatedFields",
@@ -36,112 +33,110 @@ describe("Lists", function () {
         "getParentInfos"));
 
     it("getById", async function () {
-        const list = await _spfi.web.lists.getByTitle("Documents").select("ID")<{ Id: string }>();
-        const title = await _spfi.web.lists.getById(list.Id).select("Title")<{ Title: string }>();
+        const list = await this.pnp.sp.web.lists.getByTitle("Documents").select("ID")<{ Id: string }>();
+        const title = await this.pnp.sp.web.lists.getById(list.Id).select("Title")<{ Title: string }>();
         return expect(title).to.have.property("Title");
     });
 
     it("getByTitle", async function () {
-        return expect(_spfi.web.lists.getByTitle("Documents").select("Title")()).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.lists.getByTitle("Documents").select("Title")()).to.eventually.be.fulfilled;
     });
 
     it("add 1", function () {
         const title = `pnp testing add 1 ${getRandomString(4)}`;
-        return expect(_spfi.web.lists.add(title, title)).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.lists.add(title, title)).to.eventually.be.fulfilled;
     });
 
     it("add 2", function () {
         const title = `pnp testing add 2 ${getRandomString(4)}`;
-        return expect(_spfi.web.lists.add(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.lists.add(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
     });
 
     it("ensure", async function () {
         const title = "pnp testing ensure";
-        return expect(_spfi.web.lists.ensure(title)).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.lists.ensure(title)).to.eventually.be.fulfilled;
     });
 
     it("ensure with too long title", async function () {
         const title = getRandomString(512);
-        return expect(_spfi.web.lists.ensure(title)).to.eventually.be.rejected;
+        return expect(this.pnp.sp.web.lists.ensure(title)).to.eventually.be.rejected;
     });
 
     it("ensure fail update already existing list", async function () {
         const title = "pnp testing ensure fail update already existing list";
-        await _spfi.web.lists.ensure(title);
-        return expect(_spfi.web.lists.ensure(title, title, 100, false, <any>{ RandomPropertyThatDoesntExistOnObject: "RandomValue" })).to.eventually.be.rejected;
+        await this.pnp.sp.web.lists.ensure(title);
+        return expect(this.pnp.sp.web.lists.ensure(title, title, 100, false, <any>{ RandomPropertyThatDoesntExistOnObject: "RandomValue" })).to.eventually.be.rejected;
     });
 
     it("ensure with additional settings", async function () {
         const title = "pnp testing ensure with additional settings";
-        return expect(_spfi.web.lists.ensure(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.lists.ensure(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
     });
 
     it("ensure existing list with additional settings", async function () {
         const title = "pnp testing ensure existing list with additional settings";
-        await _spfi.web.lists.ensure(title);
-        return expect(_spfi.web.lists.ensure(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
+        await this.pnp.sp.web.lists.ensure(title);
+        return expect(this.pnp.sp.web.lists.ensure(title, title, 101, true, <any>{ OnQuickLaunch: true })).to.eventually.be.fulfilled;
     });
 
     it("ensure already existing list", async function () {
         const title = "pnp testing ensure";
-        await _spfi.web.lists.ensure(title);
-        return expect(_spfi.web.lists.ensure(title)).to.eventually.be.fulfilled;
+        await this.pnp.sp.web.lists.ensure(title);
+        return expect(this.pnp.sp.web.lists.ensure(title)).to.eventually.be.fulfilled;
     });
 
     it("ensureSiteAssetsLibrary", function () {
-        return expect(_spfi.web.lists.ensureSiteAssetsLibrary()).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.lists.ensureSiteAssetsLibrary()).to.eventually.be.fulfilled;
     });
 
     it("ensureSitePagesLibrary", function () {
-        return expect(_spfi.web.lists.ensureSitePagesLibrary()).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.lists.ensureSitePagesLibrary()).to.eventually.be.fulfilled;
     });
 });
 
 describe("List", function () {
-    let _spfi: SPFI = null;
+
     let list: IList;
 
     before(function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-
-        _spfi = getSP();
     });
 
     beforeEach(async function () {
-        list = await _spfi.web.lists.getByTitle("Documents");
+        list = await this.pnp.sp.web.lists.getByTitle("Documents");
     });
 
     it("effectiveBasePermissions", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing effectiveBasePermissions");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing effectiveBasePermissions");
         return expect(listEnsure.list.effectiveBasePermissions()).to.eventually.be.fulfilled;
     });
 
     it("eventReceivers", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing eventReceivers");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing eventReceivers");
         return expect(listEnsure.list.eventReceivers()).to.eventually.be.fulfilled;
     });
 
     it("relatedFields", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing relatedFields");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing relatedFields");
         return expect(listEnsure.list.relatedFields()).to.eventually.be.fulfilled;
     });
 
     it("informationRightsManagementSettings", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing informationRightsManagementSettings");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing informationRightsManagementSettings");
         return expect(listEnsure.list.informationRightsManagementSettings()).to.eventually.be.fulfilled;
     });
 
     it("update", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing update");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing update");
         const newTitle = "New title after update";
         return expect(listEnsure.list.update({ Title: newTitle })).to.eventually.be.fulfilled;
     });
 
     it("getChanges", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing getChanges");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing getChanges");
         return expect(listEnsure.list.getChanges({
             Add: true,
             DeleteObject: true,
@@ -150,7 +145,7 @@ describe("List", function () {
     });
 
     it("getItemsByCAMLQuery", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing getItemsByCAMLQuery");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing getItemsByCAMLQuery");
         const caml: ICamlQuery = {
             ViewXml: "<View><ViewFields><FieldRef Name='Title' /><FieldRef Name='RoleAssignments' /></ViewFields><RowLimit>5</RowLimit></View>",
         };
@@ -158,7 +153,7 @@ describe("List", function () {
     });
 
     it("getListItemChangesSinceToken", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing getListItemChangesSinceToken");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing getListItemChangesSinceToken");
         const query: IChangeLogItemQuery = {
             Contains: "<Contains><FieldRef Name=\"Title\"/><Value Type=\"Text\">Testing</Value></Contains>",
             // eslint-disable-next-line max-len
@@ -168,7 +163,7 @@ describe("List", function () {
     });
 
     it("recycle", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing recycle");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing recycle");
         const recycleResponse = await listEnsure.list.recycle();
         if (typeof recycleResponse !== "string") {
             throw Error("Expected a string returned from recycle.");
@@ -177,7 +172,7 @@ describe("List", function () {
     });
 
     it("renderListData", async function () {
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing renderListData");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing renderListData");
         await listEnsure.list.items.add({
             Title: "Item 1",
         });
@@ -191,9 +186,9 @@ describe("List", function () {
         return expect(listEnsure.list.renderListData("<View><RowLimit>5</RowLimit></View>")).to.eventually.have.property("Row").that.is.not.empty;
     });
 
-    const setupRenderListDataAsStream = async function (): Promise<IList> {
+    const setupRenderListDataAsStream = async function (this: Context): Promise<IList> {
 
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing renderListDataAsStream");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing renderListDataAsStream");
 
         if (listEnsure.created) {
             await listEnsure.list.items.add({
@@ -212,7 +207,7 @@ describe("List", function () {
 
     it("renderListDataAsStream", async function () {
 
-        const rList = await setupRenderListDataAsStream();
+        const rList = await setupRenderListDataAsStream.call(this);
 
         const renderListDataParams: IRenderListDataParameters = {
             ViewXml: "<View><RowLimit>5</RowLimit></View>",
@@ -223,7 +218,7 @@ describe("List", function () {
 
     it("renderListDataAsStream - advanced options", async function () {
 
-        const rList = await setupRenderListDataAsStream();
+        const rList = await setupRenderListDataAsStream.call(this);
 
         const renderListDataParams: IRenderListDataParameters = {
             AddRequiredFields: true,
@@ -246,7 +241,7 @@ describe("List", function () {
 
     it("renderListDataAsStream - no override params", async function () {
 
-        const rList = await setupRenderListDataAsStream();
+        const rList = await setupRenderListDataAsStream.call(this);
 
         const renderListDataParams: IRenderListDataParameters = {
             AddRequiredFields: true,
@@ -258,7 +253,7 @@ describe("List", function () {
 
     it("renderListDataAsStream - query params", async function () {
 
-        const rList = await setupRenderListDataAsStream();
+        const rList = await setupRenderListDataAsStream.call(this);
 
         const renderListDataParams: IRenderListDataParameters = {
             AddRequiredFields: false,
@@ -274,7 +269,7 @@ describe("List", function () {
 
     it("renderListFormData", async function () {
 
-        const listEnsure: IListEnsureResult = await _spfi.web.lists.ensure("pnp testing renderListFormData");
+        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing renderListFormData");
 
         await listEnsure.list.items.add({
             Title: "Item 1",
@@ -292,7 +287,7 @@ describe("List", function () {
 
     // it("addValidateUpdateItemUsingPath", async function () {
     //     const listTitle = "pnp-testing-addValidateUpdateItemUsingPath";
-    //     const listAddRes = await _spfi.web.lists.ensure(listTitle);
+    //     const listAddRes = await this.pnp.sp.web.lists.ensure(listTitle);
 
     //     const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
 
@@ -314,7 +309,7 @@ describe("List", function () {
     // it("addValidateUpdateItemUsingPath Folder", async function () {
 
     //     const listTitle = "pnp-testing-addValidateUpdateItemUsingPath2";
-    //     const listAddRes = await _spfi.web.lists.ensure(listTitle, "", 101);
+    //     const listAddRes = await this.pnp.sp.web.lists.ensure(listTitle, "", 101);
 
     //     const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
 
@@ -364,7 +359,7 @@ describe("List", function () {
     });
 
     it("delete", async function () {
-        const result = await _spfi.web.lists.add("pnp testing delete");
+        const result = await this.pnp.sp.web.lists.add("pnp testing delete");
         return expect(result.list.delete()).to.eventually.be.fulfilled;
     });
 });

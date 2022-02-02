@@ -2,70 +2,64 @@ import { expect } from "chai";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
-import { getSP } from "../main.js";
 import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult, Site } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
 import { combine, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
-import { SPFI } from "@pnp/sp";
 
 describe("Sites", function () {
 
-    let _spfi: SPFI = null;
-
     before(function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-
-        _spfi = getSP();
     });
 
     it("rootWeb", async function () {
-        return expect(_spfi.site.rootWeb()).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.site.rootWeb()).to.eventually.be.fulfilled;
     });
 
     it("getRootWeb", async function () {
-        const rootWeb: IWeb = await _spfi.site.getRootWeb();
+        const rootWeb: IWeb = await this.pnp.sp.site.getRootWeb();
         return expect(rootWeb).to.haveOwnProperty("_url");
     });
 
     it("getContextInfo", async function () {
-        const oContext: IContextInfo = await _spfi.site.getContextInfo();
+        const oContext: IContextInfo = await this.pnp.sp.site.getContextInfo();
         return expect(oContext).to.haveOwnProperty("SiteFullUrl");
     });
 
     it("getDocumentLibraries", async function () {
-        const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("Url")();
-        const docLibs: IDocumentLibraryInformation[] = await _spfi.site.getDocumentLibraries(webInfo.Url);
+        const webInfo: { ServerRelativeUrl: string; Url: string } = await this.pnp.sp.web.select("Url")();
+        const docLibs: IDocumentLibraryInformation[] = await this.pnp.sp.site.getDocumentLibraries(webInfo.Url);
         return docLibs.forEach((docLib) => {
             expect(docLib).to.haveOwnProperty("Title");
         });
     });
 
     it("getWebUrlFromPageUrl", async function () {
-        const webInfo: { ServerRelativeUrl: string; Url: string } = await _spfi.web.select("ServerRelativeUrl", "Url")();
+        const webInfo: { ServerRelativeUrl: string; Url: string } = await this.pnp.sp.web.select("ServerRelativeUrl", "Url")();
         const path = combine(webInfo.Url, "SitePages", "Home.aspx");
-        const webUrl: string = await _spfi.site.getWebUrlFromPageUrl(path);
-        return expect(webUrl).to.be.equal(this.settings.sp.testWebUrl);
+        const webUrl: string = await this.pnp.sp.site.getWebUrlFromPageUrl(path);
+        return expect(webUrl).to.be.equal(this.pnp.settings.sp.testWebUrl);
     });
 
     it("openWebById", async function () {
-        const oWeb = await _spfi.site.rootWeb();
-        const webIDResult: IOpenWebByIdResult = await _spfi.site.openWebById(oWeb.Id);
+        const oWeb = await this.pnp.sp.site.rootWeb();
+        const webIDResult: IOpenWebByIdResult = await this.pnp.sp.site.openWebById(oWeb.Id);
         return expect(webIDResult).to.haveOwnProperty("data");
     });
 
     it("openWebById - chainable", async function () {
-        const oWeb = await _spfi.site.rootWeb();
-        const webIDResult: IOpenWebByIdResult = await _spfi.site.openWebById(oWeb.Id);
+        const oWeb = await this.pnp.sp.site.rootWeb();
+        const webIDResult: IOpenWebByIdResult = await this.pnp.sp.site.openWebById(oWeb.Id);
         return expect(webIDResult.web.lists()).to.eventually.be.fulfilled;
     });
 
     it("exists", async function () {
-        const oWeb = await _spfi.site();
-        const exists: boolean = await _spfi.site.exists(oWeb.Url);
-        const notExists: boolean = await _spfi.site.exists(`${oWeb.Url}/RANDOM`);
+        const oWeb = await this.pnp.sp.site();
+        const exists: boolean = await this.pnp.sp.site.exists(oWeb.Url);
+        const notExists: boolean = await this.pnp.sp.site.exists(`${oWeb.Url}/RANDOM`);
         const success = exists && !notExists;
         return expect(success).to.be.true;
     });
@@ -99,26 +93,22 @@ describe("Site static Tests", function () {
 
 describe("createModern Team & Comm Sites", function () {
 
-    let _spfi: SPFI = null;
     let testUserEmail = "";
 
     before(function () {
 
-        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
+        if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
         }
 
-        _spfi = getSP();
-
-        const testUserEmailArray = this.settings.testUser.split("|");
+        const testUserEmailArray = this.pnp.settings.testUser.split("|");
         testUserEmail = testUserEmailArray[testUserEmailArray.length - 1];
     });
 
     // these work but permissions are wonky
     it.skip(".createModernTeamSite", async function () {
-        this.timeout(90000);
         const randomNum = getRandomString(5);
-        const promise = _spfi.site.createModernTeamSite(
+        const promise = this.pnp.sp.site.createModernTeamSite(
             "TestModernTeamSite01" + randomNum,
             "Alias",
             false,
@@ -130,12 +120,11 @@ describe("createModern Team & Comm Sites", function () {
 
     // these work but permissions are wonky
     it.skip(".createCommunicationSite", async function () {
-        this.timeout(90000);
         const randomNum = getRandomString(5);
-        const promise = _spfi.site.createCommunicationSite(
+        const promise = this.pnp.sp.site.createCommunicationSite(
             "TestModernCommSite01" + randomNum, 1033,
             false,
-            this.settings.sp.testWebUrl + "/sites/commSite" + randomNum,
+            this.pnp.settings.sp.testWebUrl + "/sites/commSite" + randomNum,
             "TestModernCommSite01", "HBI",
             "00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",
             testUserEmail);

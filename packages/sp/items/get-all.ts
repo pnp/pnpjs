@@ -47,10 +47,5 @@ _Items.prototype.getAll = async function (this: _Items, requestSize = 2000, acce
         return last.hasNext ? last.getNext().then(gatherer) : itemsCollector;
     };
 
-    try {
-        // start the cycle
-        return items.getPaged().then(gatherer);
-    } catch (e) {
-        this.error(e);
-    }
+    return items.getPaged().then(gatherer);
 };
