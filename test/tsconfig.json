@@ -7,7 +7,9 @@
         "composite": false,
         "incremental": false,
         "removeComments": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "allowUnreachableCode": true,
+        "noUnusedLocals": false
     },
     "include": [
         "./**/*.ts",

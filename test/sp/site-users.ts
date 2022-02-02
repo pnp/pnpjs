@@ -1,10 +1,8 @@
 import { expect } from "chai";
-import { getSP } from "../main.js";
 import "@pnp/sp/site-users";
 import { ISiteUserProps, IUserUpdateResult, ISiteUserInfo } from "@pnp/sp/site-users";
 import { ISiteGroups } from "@pnp/sp/presets/all";
 import { stringIsNullOrEmpty } from "@pnp/core";
-import { SPFI } from "@pnp/sp";
 
 function testISiteUserInfo(siteUser: ISiteUserInfo): boolean {
     return Reflect.has(siteUser, "Email") &&
@@ -25,21 +23,15 @@ describe("Site Users", function () {
 
     before(function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
     });
 
     describe(".web", function () {
 
-        let _spfi: SPFI = null;
-
-        before(function () {
-            _spfi = getSP();
-        });
-
         it("siteUsers", async function () {
-            const siteUsers: ISiteUserInfo[] = await _spfi.web.siteUsers();
+            const siteUsers: ISiteUserInfo[] = await this.pnp.sp.web.siteUsers();
             const hasResults = siteUsers.length > 0;
             const siteUser = siteUsers[0];
             const hasProps = testISiteUserInfo(siteUser);
@@ -47,64 +39,53 @@ describe("Site Users", function () {
         });
 
         it("currentUser", async function () {
-            const currentUser: ISiteUserInfo = await _spfi.web.currentUser();
+            const currentUser: ISiteUserInfo = await this.pnp.sp.web.currentUser();
             const hasProps = testISiteUserInfo(currentUser);
             return expect(hasProps).to.be.true;
         });
 
         it("ensureUser", async function () {
-            const e: ISiteUserProps = await _spfi.web.currentUser();
-            return expect(_spfi.web.ensureUser(e.LoginName)).to.eventually.fulfilled;
+            const e: ISiteUserProps = await this.pnp.sp.web.currentUser();
+            return expect(this.pnp.sp.web.ensureUser(e.LoginName)).to.eventually.fulfilled;
         });
 
         it("getUserById", async function () {
-            const user: ISiteUserProps = await _spfi.web.currentUser();
-            return expect(_spfi.web.getUserById(user.Id)()).to.eventually.fulfilled;
+            const user: ISiteUserProps = await this.pnp.sp.web.currentUser();
+            return expect(this.pnp.sp.web.getUserById(user.Id)()).to.eventually.fulfilled;
         });
     });
 
     describe(".siteUsers", function () {
 
-        let _spfi: SPFI = null;
-
-        before(async function () {
-            _spfi = getSP();
-        });
-
         it("getById", async function () {
-            const e: ISiteUserProps = await _spfi.web.currentUser();
-            return expect(_spfi.web.siteUsers.getById(e.Id)()).to.eventually.fulfilled;
+            const e: ISiteUserProps = await this.pnp.sp.web.currentUser();
+            return expect(this.pnp.sp.web.siteUsers.getById(e.Id)()).to.eventually.fulfilled;
         });
 
         it("getByEmail", async function () {
-            const e: ISiteUserProps = await _spfi.web.currentUser();
+            const e: ISiteUserProps = await this.pnp.sp.web.currentUser();
             if (!stringIsNullOrEmpty(e.Email)) {
-                return expect(_spfi.web.siteUsers.getByEmail(e.Email)()).to.eventually.fulfilled;
+                return expect(this.pnp.sp.web.siteUsers.getByEmail(e.Email)()).to.eventually.fulfilled;
             }
         });
 
         it("getByLoginName", async function () {
-            const e: ISiteUserProps = await _spfi.web.currentUser();
-            return expect(_spfi.web.siteUsers.getByLoginName(e.LoginName)()).to.eventually.fulfilled;
+            const e: ISiteUserProps = await this.pnp.sp.web.currentUser();
+            return expect(this.pnp.sp.web.siteUsers.getByLoginName(e.LoginName)()).to.eventually.fulfilled;
         });
     });
 
     describe(".currentUser", function () {
 
-        let _spfi: SPFI = null;
-
-        before(async function () {
-            _spfi = getSP();
-        });
-
         it("groups", async function () {
-            const e: ISiteGroups = await _spfi.web.currentUser.groups();
+            const e: ISiteGroups = await this.pnp.sp.web.currentUser.groups();
             return expect(e.length).to.be.gte(0);
         });
+
         it("update", async function () {
-            const _props: ISiteUserProps = await _spfi.web.currentUser();
+            const _props: ISiteUserProps = await this.pnp.sp.web.currentUser();
             _props.Title = "Changed Title";
-            const e: IUserUpdateResult = await _spfi.web.currentUser.update(_props);
+            const e: IUserUpdateResult = await this.pnp.sp.web.currentUser.update(_props);
             const _newProps = await e.user();
             return expect(_newProps.Title).to.be.eq("Changed Title");
         });

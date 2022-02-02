@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { getSP } from "../main.js";
 import { combine, dateAdd, stringIsNullOrEmpty } from "@pnp/core";
 import { IFolder } from "@pnp/sp/folders";
 import { IFile } from "@pnp/sp/files";
@@ -10,38 +9,34 @@ import "@pnp/sp/files";
 import "@pnp/sp/sharing";
 import "@pnp/sp/site-users";
 import { SharingRole, SharingLinkKind } from "@pnp/sp/sharing";
-import { SPFI } from "@pnp/sp";
+
 
 describe("Sharing", function () {
 
-    this.timeout(120000);
     const testSharingLib = "SharingTestLib";
     const testSharingFolder = "MyTestFolder";
     const testSharingFile = "test.txt";
     let webAbsUrl = "";
     let webRelativeUrl = "";
-    let _spfi: SPFI;
 
     before(async function () {
 
-        if (!this.settings.enableWebTests || stringIsNullOrEmpty(this.settings.testUser)) {
+        if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
         }
 
-        _spfi = getSP();
-
-        const urls = await _spfi.web.select("ServerRelativeUrl", "Url")();
+        const urls = await this.pnp.sp.web.select("ServerRelativeUrl", "Url")();
 
         // make sure we have the correct server relative url
         webRelativeUrl = urls.ServerRelativeUrl;
         webAbsUrl = urls.Url;
 
         // we need a doc lib with a file and folder in it
-        const ler = await _spfi.web.lists.ensure(testSharingLib, "Used to test sharing", 101);
+        const ler = await this.pnp.sp.web.lists.ensure(testSharingLib, "Used to test sharing", 101);
 
         // we need a user to share to
-        if (this.settings.testUser?.length > 0) {
-            await _spfi.web.ensureUser(this.settings.testUser);
+        if (this.pnp.settings.testUser?.length > 0) {
+            await this.pnp.sp.web.ensureUser(this.pnp.settings.testUser);
         }
 
         // add a file and folder
@@ -50,8 +45,8 @@ describe("Sharing", function () {
     });
 
     after(async function () {
-        if (this.settings.enableWebTests && !stringIsNullOrEmpty(this.settings.testUser)) {
-            await _spfi.web.lists.getByTitle(testSharingLib).delete();
+        if (this.pnp.settings.enableWebTests && !stringIsNullOrEmpty(this.pnp.settings.testUser)) {
+            await this.pnp.sp.web.lists.getByTitle(testSharingLib).delete();
         }
     });
 
@@ -61,7 +56,7 @@ describe("Sharing", function () {
 
         before(function () {
 
-            folder = _spfi.web.getFolderByServerRelativePath("/" + combine(webRelativeUrl, `${testSharingLib}/${testSharingFolder}`));
+            folder = this.pnp.sp.web.getFolderByServerRelativePath("/" + combine(webRelativeUrl, `${testSharingLib}/${testSharingFolder}`));
         });
 
         // // these tests cover share link
@@ -89,33 +84,33 @@ describe("Sharing", function () {
 
         it(".shareWith (Edit)", function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
-            return expect(folder.shareWith(this.settings.testUser, SharingRole.Edit))
+            return expect(folder.shareWith(this.pnp.settings.testUser, SharingRole.Edit))
                 .to.eventually.be.fulfilled
                 .and.have.property("ErrorMessage").that.is.null;
         });
 
         it.skip(".shareWith (Edit-All)", function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
-            return expect(folder.shareWith(this.settings.testUser, SharingRole.Edit, true))
+            return expect(folder.shareWith(this.pnp.settings.testUser, SharingRole.Edit, true))
                 .to.eventually.be.fulfilled
                 .and.have.property("ErrorMessage").that.is.null;
         });
 
         it("checkSharingPermissions", function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
-            return expect(folder.checkSharingPermissions([{ alias: this.settings.testUser }]))
+            return expect(folder.checkSharingPermissions([{ alias: this.pnp.settings.testUser }]))
                 .to.eventually.be.fulfilled;
         });
 
@@ -145,7 +140,7 @@ describe("Sharing", function () {
 
         before(function () {
 
-            file = _spfi.web.getFileByServerRelativePath("/" + combine(webRelativeUrl, `${testSharingLib}/${testSharingFile}`));
+            file = this.pnp.sp.web.getFileByServerRelativePath("/" + combine(webRelativeUrl, `${testSharingLib}/${testSharingFile}`));
         });
 
         it("getShareLink (OrganizationView)", function () {
@@ -172,33 +167,33 @@ describe("Sharing", function () {
 
         it("shareWith (Edit)", function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
-            return expect(file.shareWith(this.settings.testUser, SharingRole.Edit))
+            return expect(file.shareWith(this.pnp.settings.testUser, SharingRole.Edit))
                 .to.eventually.be.fulfilled
                 .and.have.property("ErrorMessage").that.is.null;
         });
 
         it.skip("shareWith (Edit-All)", function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
-            return expect(file.shareWith(this.settings.testUser, SharingRole.Edit, true))
+            return expect(file.shareWith(this.pnp.settings.testUser, SharingRole.Edit, true))
                 .to.eventually.be.fulfilled
                 .and.have.property("ErrorMessage").that.is.null;
         });
 
         it("checkSharingPermissions", function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
-            return expect(file.checkSharingPermissions([{ alias: this.settings.testUser }]))
+            return expect(file.checkSharingPermissions([{ alias: this.pnp.settings.testUser }]))
                 .to.eventually.be.fulfilled;
         });
 
@@ -227,7 +222,7 @@ describe("Sharing", function () {
 
         before(function () {
 
-            item = _spfi.web.lists.getByTitle(testSharingLib).items.getById(1);
+            item = this.pnp.sp.web.lists.getByTitle(testSharingLib).items.getById(1);
         });
 
         it("getShareLink (OrganizationView)", function () {
@@ -254,31 +249,31 @@ describe("Sharing", function () {
 
         it(".shareWith (Edit)", async function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
-            const itemShare = await item.shareWith(this.settings.testUser, SharingRole.Edit);
+            const itemShare = await item.shareWith(this.pnp.settings.testUser, SharingRole.Edit);
             return expect(itemShare).has.property("ErrorMessage").that.is.null;
         });
 
         it.skip(".shareWith (Edit-All)", async function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
-            const itemShare = await item.shareWith(this.settings.testUser, SharingRole.Edit, true);
+            const itemShare = await item.shareWith(this.pnp.settings.testUser, SharingRole.Edit, true);
             return expect(itemShare).has.property("ErrorMessage").that.is.null;
         });
 
         it("checkSharingPermissions", function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
-            return expect(item.checkSharingPermissions([{ alias: this.settings.testUser }]))
+            return expect(item.checkSharingPermissions([{ alias: this.pnp.settings.testUser }]))
                 .to.eventually.be.fulfilled;
         });
 
@@ -305,12 +300,12 @@ describe("Sharing", function () {
 
         it.skip("shareObject", async function () {
 
-            if (this.settings.testUser?.length < 1) {
+            if (this.pnp.settings.testUser?.length < 1) {
                 this.skip();
             }
 
             const shareObj = combine(webAbsUrl, `${testSharingLib}/${testSharingFile}`);
-            const shareWeb = await _spfi.web.shareObject(shareObj, this.settings.testUser, SharingRole.View);
+            const shareWeb = await this.pnp.sp.web.shareObject(shareObj, this.pnp.settings.testUser, SharingRole.View);
             return expect(shareWeb).has.property("ErrorMessage").that.is.null;
         });
     });

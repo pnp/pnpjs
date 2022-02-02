@@ -132,7 +132,7 @@ npm i @pnp/sp @pnp/nodejs
 Once these are installed you need to import them into your project, to communicate with SharePoint from node we'll need the following imports:
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+
 import { SPDefault } from "@pnp/nodejs";
 import "@pnp/sp/webs";
 import { readFileSync } from 'fs';

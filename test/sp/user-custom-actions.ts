@@ -1,37 +1,31 @@
 import { expect } from "chai";
-import { getSP } from "../main.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/user-custom-actions";
-import { SPFI } from "@pnp/sp";
 
 describe("UserCustomActions", function () {
 
-    let _spfi: SPFI = null;
-
     before(function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-
-        _spfi = getSP();
     });
 
     it("-invoke", async function () {
-        const actions = await _spfi.web.userCustomActions();
+        const actions = await this.pnp.sp.web.userCustomActions();
         return expect(actions).to.be.an("Array");
     });
 
     it("getById", async function () {
-        const actions = await _spfi.web.userCustomActions();
+        const actions = await this.pnp.sp.web.userCustomActions();
         if (actions === undefined || actions.length < 1) {
             this.skip();
         }
-        const action = await _spfi.web.userCustomActions.getById(actions[0].Id)();
+        const action = await this.pnp.sp.web.userCustomActions.getById(actions[0].Id)();
         return expect(action).to.haveOwnProperty("update");
     });
 
     it("clear", function () {
-        return expect(_spfi.web.userCustomActions.clear()).to.eventually.to.fulfilled;
+        return expect(this.pnp.sp.web.userCustomActions.clear()).to.eventually.to.fulfilled;
     });
 });
