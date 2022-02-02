@@ -57,18 +57,8 @@ Specialized parser used to parse the response using the .json() method with no o
 
 Specialized parser used to parse the response using the .arrayBuffer() [node] for .buffer() [browser] method with no other processing. Used primarily for files.
 
-## LambdaParser
+## Custom Parser
 
-Allows you to pass in any handler function you want, called if the request does not result in an error that transforms the raw, unread request into the result type.
+To create your own custom parser you would need to implement your own behavior that replaces the default parser functionality.
 
-```TypeScript
-import { LambdaParser } from "@pnp/queryable";
-import { sp } from "@pnp/sp";
-
-// here a simple parser duplicating the functionality of the JSONParser
-const parser = new LambdaParser((r: Response) => r.json());
-
-const webDataJson = await sp.web.get(parser);
-
-console.log(webDataJson);
-```
+Check out various [behavior recipes](../core/behavior-recipes.md) to get more information.
