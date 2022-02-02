@@ -4,7 +4,7 @@
 
 import { expect } from "chai";
 
-describe("Assumptions", function () {
+describe.only("Assumptions", function () {
 
     it("JS should merge objects how we expect", function () {
 
