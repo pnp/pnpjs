@@ -2,7 +2,7 @@
 
 It is our hope that the transition from version 2.\* to 3.\* will be as painless as possible, however given the transition we have made from a global sp object to an instance based object some architectural and inital setup changes will need to be addressed. In the following sections we endevor to provide an overview of what changes will be required. If we missed something, please let us know in the issues list so we can update the guide. Thanks!
 
-For a full, detailed list of what's been added, updated, and removed please see our [CHANGELOG](../../CHANGELOG.md)
+For a full, detailed list of what's been added, updated, and removed please see our [CHANGELOG](https://github.com/pnp/pnpjs/blob/main/CHANGELOG.md)
 
 ## Benefits and Advancements in V3
 
@@ -14,7 +14,7 @@ The biggest change in version 3 of the library is the movement away from the glo
 
 Becuase of this change, any architecture that relies on the `sp` or `graph` objects being configured during initialization and then reused throught the solution will need to be rethought. Either by creating a new `spfi`/`graphfi` object wherever it's required or by creating a [service arcitecture](./getting-started/#establish-context-within-an-spfx-service) that can return a previously configured instance or utilize an instance and return the results. Essentially the `sp` and `graph` objects have been deprecated and will need to be replaced.
 
-For more information on getting started with these new setup methods please see the [Getting Started](./getting-started.md) docs or for a deeper look into the Queryable interface see [Queryable](./querable/index.md).
+For more information on getting started with these new setup methods please see the [Getting Started](./getting-started.md) docs or for a deeper look into the Queryable interface see [Queryable](./queryable/index.md).
 
 ## AssignFrom and CopyFrom
 

@@ -8,7 +8,7 @@ nav:
   - 'V2->V3 Transition': 'transition-guide.md'
   - 'Library Usage Tips':
     - 'Batching': 'concepts/batching.md'   
-    - 'Using Behaviors': 'concepts/using-behaviors.md'
+    - 'Using Behaviors': 'core/behaviors.md'
     - 'Typings': 'concepts/typings.md'
   - Packages:
     - Packages: 'packages.md'
@@ -49,11 +49,8 @@ nav:
       - queryable: 'queryable/index.md'
       - caching: 'queryable/caching.md'
       - core: 'queryable/core.md'
-      - 'OData Batching': 'queryable/odata-batch.md'
       - 'Extending an OData library': 'queryable/extensions.md'
-      - 'Debugging Proxy Objects': 'queryable/debug.md'
       - Parsers: 'queryable/parsers.md'
-      - Pipeline: 'queryable/pipeline.md'
       - Queryable: 'queryable/queryable.md'
     - sp:
       - sp: 'sp/index.md'
@@ -100,7 +97,7 @@ nav:
     - 'Custom Call/Path': 'concepts/invokable.md'
     - 'Behaviors': 'core/behaviors.md'
     - 'Behavior Recipes': 'core/behavior-recipes.md'
-    - 'Queryable': 'core/queryable.md'
+    - 'Queryable': 'queryable/index.md'
     - 'Timeline/Moments': 'core/timeline.md'
     - 'Client-Side Pages': 'concepts/adv-clientside-pages.md'
   - Contributing:
