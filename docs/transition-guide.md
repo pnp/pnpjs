@@ -6,7 +6,13 @@ For a full, detailed list of what's been added, updated, and removed please see 
 
 ## Benefits and Advancements in V3
 
-//TODO: Patrick to write
+For version 2 the core themes were selective imports, a model based on factory functions & interfaces, and improving the docs. This foundation gave us the opportunity to re-write the entire request pipeline internals with minimal external library changes - showing the value of long-term planning. With version 3 your primary required updates are likely to be only the initial configuration of the library, a huge accomplishment when updating the entire internals.
+
+Our request pipeline remained largely unchanged since it was first written ~5 years ago, hard to change something so central to the library. The advantage of this update it is now super easy for developers to inject their own logic into the requst process. As always, this work was based on feedback over the years and understanding how we can be a better library. The new observer design allows you to customize every aspect of the request, in a much clearer way than was previously possible. In addition this work greatly reduced internal boilerplate code and optimized for library size. We reduced the size of sp & graph libraries by almost 2/3. As well we embraced a fully async design built around [Timeline](core/timeline.md). Check out the new model around authoring [observers](core/observers.md) and understand how they relate to [moments](core/moments.md). We feel this new architecture will allow far greater flexibility for consumers of the library to customize the behavior to exactly meet their needs.
+
+We also used this as an opportunity to remove duplicate methods, clean up and improve our typings & method signatures, and drop a lot of legacy methods. Be sure to review the [changelog](https://github.com/pnp/pnpjs/blob/version-3/CHANGELOG.md). As always we do our best to minimize breaking changes but major versions are breaking versions.
+
+We thank you for using the library, appreciate your continued feedback which drives these improvements, and look forward to seeing what you build!
 
 ## Global vs Instance Architecture
 
@@ -40,12 +46,14 @@ In V3 you would create a new instance of queryable connecting to the web of your
 const spWebA = spfi().using(SPDefault(this.context));
 
 // Create a new instance of Queryable
-const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
+const spWebB = spfi("{Other Web URL}").using(SPDefault(this.context));
 
 // Copy/Assign a new instance of Queryable using the existing
-const spWebB = spfi({Other Web URL}).using(AssignFrom(sp.web));
+const spWebC = spfi("{Other Web URL}").using(AssignFrom(sp.web));
 
 // Create a new instance of Queryable using other credentials?
-const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
+const spWebD = spfi("{Other Web URL}").using(SPDefault(this.context));
 
+// as well you can use the tuple pattern and the Web contructor, which will copy all the observers from the object but set the url to the one provided
+const spWebE = Web([spWebA, "{Other Web URL}"]).using(SPDefault(this.context));
 ```

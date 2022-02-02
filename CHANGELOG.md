@@ -79,7 +79,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Removed `assign` util method use Object.assign or { ...a, ...b}
   - Removed `getCtxCallback` util method
   - Removed ITypedHash => built in type Record<string, *>
-  - removed `sanitizeGuid` util method, wasn't used
+  - Removed `sanitizeGuid` util method, wasn't used
+  - Removed automatic cache expired item flushing -> use a timeout, shown in docs
 
 - graph:
   - setEndpoint removed => .using(EndPoint("v1.0")) | .using(EndPoint("beta"))

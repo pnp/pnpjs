@@ -14,6 +14,14 @@ declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
 
+    function expirer(timeout = 3000) {
+
+
+    
+        setTimeout(() => expirer(timeout), timeout)
+    
+    }
+
     // global logging subscribe for messages, included in usings per instance with different levels available per instance
     // already done in ./main.ts ::> Logger.subscribe(ConsoleListener());
 

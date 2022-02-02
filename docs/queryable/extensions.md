@@ -1,10 +1,6 @@
 # Extensions
 
-_introduced in 2.0.0_
-
 Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting custom functionality. Extensions work with any [invocable](../concepts/invokable.md). You can control any behavior of the library with extensions.
-
-> Extensions do not work in ie11 compatibility mode. This is by design.
 
 ## Types of Extensions
 
