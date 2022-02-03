@@ -11,7 +11,6 @@ Fields in SharePoint can be applied to both webs and lists. When referencing a w
 |Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Fields, IFields } from "@pnp/sp/fields";|
 |Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/fields";|
 |Preset: All|import { sp, Fields, IFields } from "@pnp/sp/presets/all";|
-|Preset: Core|import { sp, Fields, IFields } from "@pnp/sp/presets/core";|
 
 ### Get Field by Id
 
