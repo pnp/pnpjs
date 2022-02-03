@@ -1,5 +1,5 @@
 import { ITestingSettings } from "../../test/settings.js";
-import { SPFetchClient, MsalFetchClient, AdalFetchClient, setProxyUrl } from "@pnp/nodejs";
+import { SPFetchClient, MsalFetchClient, AdalFetchClient } from "@pnp/nodejs";
 import { sp } from "@pnp/sp";
 import { graph } from "@pnp/graph";
 

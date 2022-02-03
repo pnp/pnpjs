@@ -1,21 +1,20 @@
 import { resolve } from "path";
 import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "@pnp/buildsystem";
 const webpack = Tasks.Package.webpack;
-import * as wp from "webpack";
 
-const pkg = require("./package.json");
+// const pkg = require("./package.json");
 
-const banner = [
-    "/**",
-    ` * @license`,
-    ` * v${pkg.version}`,
-    ` * ${pkg.license} (https://github.com/pnp/pnpjs/blob/main/LICENSE)`,
-    ` * Copyright (c) ${new Date().getFullYear()} Microsoft`,
-    " * docs: https://pnp.github.io/pnpjs/",
-    ` * source: ${pkg.homepage}`,
-    ` * bugs: ${pkg.bugs.url}`,
-    " */",
-].join("\n");
+// const banner = [
+//     "/**",
+//     ` * @license`,
+//     ` * v${pkg.version}`,
+//     ` * ${pkg.license} (https://github.com/pnp/pnpjs/blob/main/LICENSE)`,
+//     ` * Copyright (c) ${new Date().getFullYear()} Microsoft`,
+//     " * docs: https://pnp.github.io/pnpjs/",
+//     ` * source: ${pkg.homepage}`,
+//     ` * bugs: ${pkg.bugs.url}`,
+//     " */",
+// ].join("\n");
 
 export default <ConfigCollection>[
     <BuildSchema>{
@@ -36,11 +35,7 @@ export default <ConfigCollection>[
 
         postBuildTasks: [
             // this task is scoped to the files within the task
-            Tasks.Build.createReplaceVersion([
-                "sp/sphttpclient.js",
-                "graph/graphhttpclient.js",
-                "sp/batch.js",
-            ]),
+            Tasks.Build.replaceVersion,
         ],
     },
     <PackageSchema>{
@@ -142,12 +137,6 @@ export default <ConfigCollection>[
                     maxAssetSize: 400000,
                     maxEntrypointSize: 400000,
                 },
-                plugins: [
-                    new wp.BannerPlugin({
-                        banner,
-                        raw: true,
-                    }),
-                ],
                 resolve: {
                     alias: {
                         // a list of module name aliases
@@ -205,11 +194,7 @@ export default <ConfigCollection>[
         ],
 
         postBuildTasks: [
-            Tasks.Build.createDebugReplace([
-                "packages/sp/sphttpclient.js",
-                "packages/graph/graphhttpclient.js",
-                "packages/sp/batch.js",
-            ]),,
+            Tasks.Build.replaceDebug,
         ],
     },
     <PublishSchema>{
