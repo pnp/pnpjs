@@ -21,6 +21,7 @@
         "replace-in-file": "^4.2.0",
         "through2": "^4.0.2",
         "tslib": "^2.3.1",
+        "webpack": "^5.68.0",
         "yargs": "^14.2.0"
     },
     "peerDependencies": {},
