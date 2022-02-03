@@ -565,7 +565,7 @@ export class _ClientsidePage extends _SharePointQueryable {
 
         this.json.BannerImageUrl = url;
         // update serverProcessedContent (page behavior change 2021-Oct-13)
-        this._layoutPart.serverProcessedContent = { imageSources: { imageSource: url }, };
+        this._layoutPart.serverProcessedContent = { imageSources: { imageSource: url } };
         this._bannerImageDirty = true;
         /*
             setting the banner image resets the thumbnail image (matching UI functionality)
