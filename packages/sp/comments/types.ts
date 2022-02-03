@@ -8,7 +8,7 @@ import { assign } from "@pnp/common";
 import { odataUrlFrom } from "../odata.js";
 import { metadata } from "../utils/metadata.js";
 import { body } from "@pnp/odata";
-import { spPost } from "../operations.js";
+import { spDelete, spPost } from "../operations.js";
 import { tag } from "../telemetry.js";
 
 @defaultPath("comments")
@@ -49,7 +49,7 @@ export class _Comments extends _SharePointQueryableCollection<ICommentInfo[]> {
         return spPost<boolean>(tag.configure(this.clone(Comments, "DeleteAll"), "coms.clear"));
     }
 }
-export interface IComments extends _Comments {}
+export interface IComments extends _Comments { }
 export const Comments = spInvokableFactory<IComments>(_Comments);
 
 export class _Comment extends _SharePointQueryableInstance<ICommentInfo> {
@@ -85,7 +85,7 @@ export class _Comment extends _SharePointQueryableInstance<ICommentInfo> {
         return spDelete(this);
     }
 }
-export interface IComment extends _Comment {}
+export interface IComment extends _Comment { }
 export const Comment = spInvokableFactory<IComment>(_Comment);
 
 @defaultPath("replies")
@@ -110,7 +110,7 @@ export class _Replies extends _SharePointQueryableCollection<ICommentInfo[]> {
         return assign(Comment(odataUrlFrom(d)), d);
     }
 }
-export interface IReplies extends _Replies {}
+export interface IReplies extends _Replies { }
 export const Replies = spInvokableFactory<IReplies>(_Replies);
 
 /**
