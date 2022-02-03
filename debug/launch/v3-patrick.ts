@@ -51,6 +51,8 @@ export async function Example(settings: ITestingSettings) {
     //     console.error(e);
     // }
 
+    PnPLogging(LogLevel.Error)
+
     try {
 
         // const recordingPath = join("C:/github/@pnp-fork", ".test-recording");
