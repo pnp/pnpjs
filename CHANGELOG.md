@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.12.0 - 2022-Feb-11
+
+### Fixed
+
+- sp: Fix delete comment from page and list items [@NZainchkovskiy](https://github.com/NZainchkovskiy) [[PR](https://github.com/pnp/pnpjs/pull/2015)]
+- all: Fixed build system mismatch error [@patrick-rodgers](https://github.com/patrick-rodgers) [[PR](https://github.com/pnp/pnpjs/pull/2049)]
+- all: fixed issue like in earlier commit 2a75991 and mentioned in issue #1737 [@RoelVB](https://github.com/RoelVB) [[PR](https://github.com/pnp/pnpjs/pull/2013)]
+- docs: fixed missing await [@ravichandran-blog](https://github.com/ravichandran-blog) [[PR](https://github.com/pnp/pnpjs/pull/2018)]
+
 ## 2.11.0 - 2021-Nov-15
 
 ### Fixed
@@ -285,18 +294,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - docs: Added article on library configuration [[PR](https://github.com/pnp/pnpjs/pull/1303)]
 
 ### Changed
+
 - msal: Fixed type name spelling [@biste5](https://github.com/biste5) [[PR](https://github.com/pnp/pnpjs/pull/1322)]
 
 ### Fixed
+
 - sp: Fixed issue with renderListDataAsStream when omitting overrideParameters [[PR](https://github.com/pnp/pnpjs/pull/1303)]
 - docs: Various updates, improvements, and corrections [@dcashpeterson](https://github.com/dcashpeterson) [[PR](https://github.com/pnp/pnpjs/pull/1310)]
 
 ### Removed
+
 - graph: Removed adaljslcient library dependency [[PR](https://github.com/pnp/pnpjs/pull/1303)]
 
 ## 2.0.7 - 2020-July-27
 
 ### Added
+
 - graph: Added calendar endpoints and docs [@JakeStanger](https://github.com/JakeStanger) [[PR](https://github.com/pnp/pnpjs/pull/1246)]
 - msaljsclient: Added a new client for MSAL in browser [[PR](https://github.com/pnp/pnpjs/pull/1266)]
 - docs: Added a new article on error handling [[PR](https://github.com/pnp/pnpjs/pull/1273)]
@@ -422,7 +435,6 @@ _Happy Valentine's Day ❤_
 - odata: fixed issue with core Proxy handler "has" operation [[PR](https://github.com/pnp/pnpjs/pull/1065)]
 - odata: updated interface to use I prefix, code cleanup [[PR](https://github.com/pnp/pnpjs/pull/1065)]
 
-
 ## 2.0.2 - 2020-Jan-23
 
 ### Added
@@ -497,4 +509,3 @@ _Happy Valentine's Day ❤_
 - tooling: removed gulp and replaced tasks with npm scripts
 - all: no longer building es5 code
 - common: removed getAttrValueFromString method
-
