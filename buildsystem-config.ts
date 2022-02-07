@@ -44,10 +44,25 @@ export default <ConfigCollection>[
                     Tasks.Package.createWritePackageFiles((p) => {
                         return Object.assign({}, p, {
                             funding: {
-                                "type": "individual",
-                                "url": "https://github.com/sponsors/patrick-rodgers/",
+                                type: "individual",
+                                url: "https://github.com/sponsors/patrick-rodgers/",
                             },
                             type: "module",
+                            engines: {
+                                node: ">=14.15.1"
+                            },
+                            author: {
+                                name: "Microsoft and other contributors"
+                            },
+                            license: "MIT",
+                            bugs: {
+                                url: "https://github.com/pnp/pnpjs/issues"
+                            },
+                            homepage: "https://github.com/pnp/pnpjs",
+                            repository: {
+                                type: "git",
+                                url: "git:github.com/pnp/pnpjs"
+                            }
                         });
                     }),
                 ],
