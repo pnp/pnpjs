@@ -1,3 +1,20 @@
 {
-    "extends": "./tsconfig.esm.json"
+    "extends": "../tsconfig.json",
+    "include": [
+        "./**/*.ts",
+        "../core/**/*.ts",
+        "../logging/**/*.ts",
+        "../queryable/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../core/tsconfig.json"
+        },
+        {
+            "path": "../logging/tsconfig.json"
+        },
+        {
+            "path": "../queryable/tsconfig.json"
+        }
+    ]
 }
