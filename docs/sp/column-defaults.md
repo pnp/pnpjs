@@ -6,19 +6,21 @@ The column defaults sub-module allows you to manage the default column values on
 
 | Scenario    | Import Statement                                                                                                                            |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Selective 1 | import { sp } from "@pnp/sp";<br />import { IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues } from "@pnp/sp/column-defaults"; |
-| Selective 2 | import { sp } from "@pnp/sp";<br />import "@pnp/sp/column-defaults";                                                                        |
-| Preset: All | import { sp, IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues } from "@pnp/sp/presents/all";                                   |
+| Selective 1 | import { spfi } from "@pnp/sp";<br />import { IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues } from "@pnp/sp/column-defaults"; |
+| Selective 2 | import { spfi } from "@pnp/sp";<br />import "@pnp/sp/column-defaults";                                                                        |
+| Preset: All | import { spfi, IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues } from "@pnp/sp/presents/all";                                   |
 
 ## Get Folder Defaults
 
 You can get the default values for a specific folder as shown below:
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/column-defaults";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 const defaults = await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_GHk5").getDefaultColumnValues();
 
@@ -49,10 +51,12 @@ When setting the defaults for a folder you need to include the field's internal 
 >_Note: Be very careful when setting the path as the site collection url is case sensitive_
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/column-defaults";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_GHk5").setDefaultColumnValues([{
   name: "TextField",
@@ -69,10 +73,12 @@ await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_G
 You can also get all of the defaults for the entire library.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 const defaults = await sp.web.lists.getByTitle("DefaultColumnValues").getDefaultColumnValues();
 
@@ -103,16 +109,18 @@ You can also set the defaults for an entire library at once (root and all sub-fo
 >_Note: Be very careful when setting the path as the site collection url is case sensitive_
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([{
-                name: "TextField",
-                path: "/sites/dev/DefaultColumnValues",
-                value: "#PnPjs Rocks!",
-            }]);
+  name: "TextField",
+  path: "/sites/dev/DefaultColumnValues",
+  value: "#PnPjs Rocks!",
+}]);
 ```
 
 ## Clear Folder Defaults
@@ -120,10 +128,12 @@ await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([{
 If you want to clear all of the folder defaults you can use the clear method:
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/column-defaults";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_GHk5").clearDefaultColumnValues();
 ```
@@ -133,10 +143,12 @@ await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_G
 If you need to clear all of the default column values in a library you can pass an empty array to the list's setDefaultColumnValues method.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([]);
 ```
@@ -206,10 +218,13 @@ The following is an example of the structure for setting the default column valu
 This example shows fully how to get the taxonomy values and set them as a default column value using PnPjs.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
+import "@pnp/sp/folders";
 import "@pnp/sp/column-defaults";
 import "@pnp/sp/taxonomy";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // get the term's info we want to use as the default
 const term = await sp.termStore.sets.getById("ea6fc521-d293-4f3d-9e84-f3a5bc0936ce").getTermById("775c9cf6-c3cd-4db9-8cfa-fc0aeefad93a")();
@@ -219,12 +234,12 @@ const defLabel = term.labels.find(v => v.isDefault);
 
 // set the default value using -1, the term id, and the term's default label name
 await sp.web.lists.getByTitle("MetaDataDocLib").rootFolder.setDefaultColumnValues([{
-    name: "MetaDataColumnInternalName",
-    value: {
-        wssId: "-1",
-        termId: term.id,
-        termName: defLabel.name,
-    }
+  name: "MetaDataColumnInternalName",
+  value: {
+      wssId: "-1",
+      termId: term.id,
+      termName: defLabel.name,
+  }
 }])
 
 // check that the defaults have updated
