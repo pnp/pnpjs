@@ -33,13 +33,18 @@ const txt = await new Promise<string>((resolve) => {
 ## IFiles.addChunked
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { SPDefault } from "@pnp/nodejs";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/folders/list";
 import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import * as fs from "fs";
+
+const sp = spfi("https://something.com").using(SPDefault({
+    // config
+}));
 
 // NOTE: you must supply the highWaterMark to determine the block size for stream uploads
 const stream = fs.createReadStream("{file path}", { highWaterMark: 10485760 });
@@ -52,13 +57,18 @@ await files.addChunked(name, stream, null, true);
 ## IFile.setStreamContentChunked
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { SPDefault } from "@pnp/nodejs";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/folders/list";
 import "@pnp/sp/files/web";
 import "@pnp/sp/files/folder";
 import * as fs from "fs";
+
+const sp = spfi("https://something.com").using(SPDefault({
+    // config
+}));
 
 // NOTE: you must supply the highWaterMark to determine the block size for stream uploads
 const stream = fs.createReadStream("{file path}", { highWaterMark: 10485760 });

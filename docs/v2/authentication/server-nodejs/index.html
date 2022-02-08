@@ -2200,7 +2200,7 @@ sp.setup({
 });
 
 // execute a library request as normal
-const w = await sp.web.get();
+const w = await sp.web();
 </code></pre>
 <h2 id="msal">MSAL<a class="headerlink" href="#msal" title="Permanent link">&para;</a></h2>
 <p><em>Added in 2.0.11</em></p>
@@ -2285,7 +2285,7 @@ graph.setup({
 });
 
 // execute a library request as normal
-const g = await graph.groups.get();
+const g = await graph.groups();
 
 console.log(JSON.stringify(g, null, 4));
 </code></pre>

@@ -162,7 +162,7 @@ function() {
     }));
 
     // make a call to SharePoint and log it in the console
-    const w = await sp.web.select("Title", "Description").get();
+    const w = await sp.web.select("Title", "Description")();
     console.log(JSON.stringify(w, null, 4));
 }();
 ```

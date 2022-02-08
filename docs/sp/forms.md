@@ -22,5 +22,5 @@ import "@pnp/sp/forms";
 import "@pnp/sp/lists";
 
 // get the field by Id for web
-const form = sp.web.lists.getByTitle("Documents").forms.getById("{c4486774-f1e2-4804-96f3-91edf3e22a19}").get();
+const form = sp.web.lists.getByTitle("Documents").forms.getById("{c4486774-f1e2-4804-96f3-91edf3e22a19}")();
 ```

@@ -122,7 +122,7 @@ const comments = await item.comments(spODataEntityArray<Comment, CommentData>(Co
 comments[0].replies.add({ text: "#PnPjs is pretty ok!" });
 
 //load the top 20 replies and comments for an item including likedBy information
-const comments = await item.comments.expand("replies", "likedBy", "replies/likedBy").top(20).get();
+const comments = await item.comments.expand("replies", "likedBy", "replies/likedBy").top(20)();
 ```
 
 ### Add Comment

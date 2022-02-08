@@ -2154,7 +2154,7 @@ import &quot;@pnp/graph/groups&quot;;
 (function main() {
 
     // here we will load the current web's properties
-    graph.groups.get().then(g =&gt; {
+    graph.groups().then(g =&gt; {
 
         console.log(`Groups: ${JSON.stringify(g, null, 4)}`);
     });
@@ -2189,7 +2189,7 @@ public render(): void {
     this.domElement.innerHTML = `Loading...`;
 
     // here we will load the current web's properties
-    graph.groups.get().then(groups =&gt; {
+    graph.groups().then(groups =&gt; {
 
         this.domElement.innerHTML = `Groups: &lt;ul&gt;${groups.map(g =&gt; `&lt;li&gt;${g.displayName}&lt;/li&gt;`).join(&quot;&quot;)}&lt;/ul&gt;`;
     });
@@ -2213,7 +2213,7 @@ graph.setup({
 });
 
 // here we will load the groups information
-graph.groups.get().then(g =&gt; {
+graph.groups().then(g =&gt; {
 
     console.log(`Groups: ${JSON.stringify(g, null, 4)}`);
 });

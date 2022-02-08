@@ -59,7 +59,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Removed
 
 - logging
-  - None of the other packages reference logging anymore, removing a dependency, logging still exists and can be used in your project as before and easily with the new model
+  - None of the other packages reference logging anymore, removing a dependency, logging still exists and can be used in your project as before and easily with the new behaviors model
 
 - queryable:
   - LambdaParser -> write an observer

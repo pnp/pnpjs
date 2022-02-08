@@ -2513,7 +2513,7 @@ console.log(folowers);
 <p>Gets user properties for the current user.</p>
 <pre><code class="language-typescript">myProperties(): _SharePointQueryableInstance
 </code></pre>
-<pre><code class="language-typescript">const profile = await sp.profiles.myProperties.get();
+<pre><code class="language-typescript">const profile = await sp.profiles.myProperties();
 console.log(profile.DisplayName);
 console.log(profile.Email);
 console.log(profile.Title);

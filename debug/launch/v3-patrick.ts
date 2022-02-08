@@ -1,7 +1,7 @@
-import { ITestingSettings } from "../../test/settings.js";
+import { ITestingSettings } from "../../test/load-settings.js";
 import { SPDefault } from "@pnp/nodejs";
 import { LogLevel, PnPLogging } from "@pnp/logging";
-
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
@@ -9,18 +9,11 @@ import "@pnp/sp/batching";
 import { Web } from "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
 import { IItem } from "@pnp/sp/items";
+import { Caching } from "@pnp/queryable";
 
 declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
-
-    function expirer(timeout = 3000) {
-
-
-    
-        setTimeout(() => expirer(timeout), timeout)
-    
-    }
 
     // global logging subscribe for messages, included in usings per instance with different levels available per instance
     // already done in ./main.ts ::> Logger.subscribe(ConsoleListener());
@@ -51,7 +44,7 @@ export async function Example(settings: ITestingSettings) {
     //     console.error(e);
     // }
 
-    PnPLogging(LogLevel.Error)
+    // PnPLogging(LogLevel.Error)
 
     try {
 
@@ -66,56 +59,32 @@ export async function Example(settings: ITestingSettings) {
 
         const [batchedSP, execute] = await sp.batched();
 
-        const items = [
-            {
-                Id: 22,
-            },
-            {
-                Id: 23,
-            },
-            {
-                Id: 24,
-            },
-            {
-                Id: 25,
-            }];;
+        batchedSP.using(Caching());
 
-        let res: IItem[] = [];
+        batchedSP.web().then(console.log);
 
-        for (let i = 0; i < items.length; i++) {
+        batchedSP.web.update({
+            Title: "dev web",
+        });
 
-            // you need to use .then syntax here as otherwise the application will stop and await the result
-            batchedSP.web.lists
-                .getByTitle("Generic")
-                .items
-                .getById(items[i].Id)
-                .update({ Title: `${getRandomString(5)}` })
-                .then(r => res.push(r.item));
-        }
+        batchedSP.web.lists().then(console.log);
 
         await execute();
 
-        const item = await res[0].select("Id, Title")<{ Id: number, Title: string }>();
-        console.log(`HERE: ${JSON.stringify(item, null, 2)}`);
-
+        
         const [batchedSP2, execute2] = await sp.batched();
 
-        for (let i = 0; i < items.length; i++) {
+        batchedSP2.using(Caching());
 
-            // you need to use .then syntax here as otherwise the application will stop and await the result
-            batchedSP2.web.lists
-                .getByTitle("Generic")
-                .items
-                .add({ Title: `${getRandomString(5)}` })
-                .then(r => res.push(r.item));
-        }
+        batchedSP2.web().then(console.log);
+
+        batchedSP2.web.lists().then(console.log);
+
+        batchedSP2.web.update({
+            Title: "dev web 2",
+        });
 
         await execute2();
-
-        const item2 = await res[0].select("Id, Title")<{ Id: number, Title: string }>();
-        console.log(`HERE: ${JSON.stringify(item2, null, 2)}`);
-
-
 
 
         // const list = batchedSP.web.lists.getByTitle("Generic");

@@ -64,10 +64,10 @@ The AppCatalog is itself a queryable collection so you can query this object dir
 
 ```TypeScript
 // get available apps
-await catalog.get();
+await catalog();
 
 // get available apps selecting two fields
-await catalog.select("Title", "Deployed").get();
+await catalog.select("Title", "Deployed")();
 ```
 
 ## Add an App
@@ -86,7 +86,7 @@ const r = await catalog.add("myapp.app", blob);
 console.log(JSON.stringify(r.data, null, 4));
 
 // all file operations are available
-const nameData = await r.file.select("Name").get();
+const nameData = await r.file.select("Name")();
 ```
 
 ## Get an App
@@ -94,7 +94,7 @@ const nameData = await r.file.select("Name").get();
 You can get the details of a single app by GUID id. This is also the branch point to perform specific app actions
 
 ```TypeScript
-const app = await catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c").get();
+const app = await catalog.getAppById("5137dff1-0b79-4ebc-8af4-ca01f7bd393c")();
 ```
 
 ## Perform app actions

@@ -109,7 +109,7 @@ Gets this user's social information
 import { sp } from "@pnp/sp";
 import "@pnp/sp/social";
 
-const r = await sp.social.my.get();
+const r = await sp.social.my();
 ```
 
 ### followed

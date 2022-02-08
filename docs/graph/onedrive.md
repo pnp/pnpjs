@@ -14,29 +14,29 @@ you can manage drives and drive items in Onedrive.
 
 ## Get the default drive
 
-Using the drive.get() you can get the default drive from Onedrive
+Using the drive you can get the default drive from Onedrive
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/onedrive";
 
-const drives = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.get();
+const drives = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives();
 
-const drives = await graphfi().me.drives.get();
+const drives = await graphfi().me.drive();
 
 ```
 
 ## Get all of the drives
 
-Using the drives.get() you can get the users available drives from Onedrive
+Using the drives() you can get the users available drives from Onedrive
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/onedrive";
 
-const drives = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.get();
+const drives = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives();
 
-const drives = await graphfi().me.drives.get();
+const drives = await graphfi().me.drives();
 
 ```
 
@@ -56,75 +56,75 @@ const drive = await graphfi().me.drives.getById('driveId');
 
 ## Get the associated list of a drive
 
-Using the list.get() you get the associated list
+Using the list() you get the associated list
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/onedrive";
 
-const list = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').list.get();
+const list = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').list();
 
-const list = await graphfi().me.drives.getById('driveId').list.get();
+const list = await graphfi().me.drives.getById('driveId').list();
 
 ```
 
 ## Get the recent files
 
-Using the recent.get() you get the recent files
+Using the recent() you get the recent files
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/onedrive";
 
-const files = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').recent.get();
+const files = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').recent();
 
-const files = await graphfi().me.drives.getById('driveId').recent.get();
+const files = await graphfi().me.drives.getById('driveId').recent();
 
 ```
 
 ## Get the files shared with me
 
-Using the sharedWithMe.get() you get the files shared with the user
+Using the sharedWithMe() you get the files shared with the user
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/onedrive";
 
-const shared = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').sharedWithMe.get();
+const shared = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').sharedWithMe();
 
-const shared = await graphfi().me.drives.getById('driveId').sharedWithMe.get();
+const shared = await graphfi().me.drives.getById('driveId').sharedWithMe();
 
 ```
 
 ## Get the Root folder
 
-Using the root.get() you get the root folder
+Using the root() you get the root folder
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/onedrive";
 
-const root = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.get();
+const root = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root();
 
-const root = await graphfi().me.drives.getById('driveId').root.get();
+const root = await graphfi().me.drives.getById('driveId').root();
 
 ```
 
 ## Get the Children
 
-Using the children.get() you get the children
+Using the children() you get the children
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/onedrive";
 
-const rootChildren = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.get();
+const rootChildren = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children();
 
-const rootChildren = await graphfi().me.drives.getById('driveId').root.children.get();
+const rootChildren = await graphfi().me.drives.getById('driveId').root.children();
 
-const itemChildren = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').children.get();
+const itemChildren = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').children();
 
-const itemChildren = await graphfi().me.drives.getById('driveId').root.items.getById('itemId').children.get();
+const itemChildren = await graphfi().me.drives.getById('driveId').root.items.getById('itemId').children();
 
 ```
 
@@ -145,15 +145,15 @@ const addFolder = await graphfi().me.drives.getById('driveId').root.children.add
 
 ## Search items
 
-Using the search.get() you can search for items, and optionally select properties
+Using the search() you can search for items, and optionally select properties
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/onedrive";
 
-const search = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')root.search('queryText').get();
+const search = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')root.search('queryText')();
 
-const search = await graphfi().me.drives.getById('driveId')root.search('queryText').get();
+const search = await graphfi().me.drives.getById('driveId')root.search('queryText')();
 
 ```
 
@@ -173,15 +173,15 @@ const item = await graphfi().me.drives.getById('driveId').items.getById('itemId'
 
 ## Get thumbnails
 
-Using the thumbnails.get() you get the thumbnails
+Using the thumbnails() you get the thumbnails
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/onedrive";
 
-const thumbs = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').thumbnails.get();
+const thumbs = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').thumbnails();
 
-const thumbs = await graphfi().me.drives.getById('driveId').items.getById('itemId').thumbnails.get();
+const thumbs = await graphfi().me.drives.getById('driveId').items.getById('itemId').thumbnails();
 
 ```
 

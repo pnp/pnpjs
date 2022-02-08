@@ -114,7 +114,7 @@ myProperties(): _SharePointQueryableInstance
 ```
 
 ```typescript
-const profile = await sp.profiles.myProperties.get();
+const profile = await sp.profiles.myProperties();
 console.log(profile.DisplayName);
 console.log(profile.Email);
 console.log(profile.Title);

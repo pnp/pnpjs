@@ -1,5 +1,14 @@
 import { dateAdd, jsS, objectDefinedNotNull } from "./util.js";
 
+let storageShim: MemoryStorage | undefined;
+
+function getStorageShim(): MemoryStorage {
+    if (typeof storageShim === "undefined") {
+        storageShim = new MemoryStorage();
+    }
+    return storageShim;
+}
+
 /**
  * A wrapper class to provide a consistent interface to browser based storage
  *
@@ -245,7 +254,7 @@ export class PnPClientStorage {
     public get local(): IPnPClientStore {
 
         if (this._local === null) {
-            this._local = new PnPClientStorageWrapper(typeof localStorage === "undefined" ? new MemoryStorage() : localStorage);
+            this._local = new PnPClientStorageWrapper(typeof localStorage === "undefined" ? getStorageShim() : localStorage);
         }
 
         return this._local;
@@ -257,7 +266,7 @@ export class PnPClientStorage {
     public get session(): IPnPClientStore {
 
         if (this._session === null) {
-            this._session = new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? new MemoryStorage() : sessionStorage);
+            this._session = new PnPClientStorageWrapper(typeof sessionStorage === "undefined" ? getStorageShim() : sessionStorage);
         }
 
         return this._session;

@@ -308,6 +308,10 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
 
             if (isFunc(this[RegistrationCompleteSym])) {
 
+                // if this request is in a batch and caching is in play we need to resolve the registration promises to unblock processing of the batch
+                // because the request will never reach the "send" moment as the result is returned from "pre"
+                this[RegistrationCompleteSym]();
+
                 // remove the symbol props we added for good hygene
                 delete this[RegistrationCompleteSym];
             }

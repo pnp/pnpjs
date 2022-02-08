@@ -1,10 +1,10 @@
 # Extensions
 
-Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting custom functionality. Extensions work with any [invocable](../concepts/invokable.md). You can control any behavior of the library with extensions.
+Extending is the concept of overriding or adding functionality into an object or environment without altering the underlying class instances. This can be useful for debugging, testing, or injecting custom functionality. Extensions work with any [invokable](../concepts/invokable.md) and allow you to control any behavior of the library with extensions.
 
 ## Types of Extensions
 
-There are three types of Extensions available as well as three methods for registration. You can register any type of extension with any of the registration options.
+There are two types of Extensions available as well as three methods for registration. You can register any type of extension with any of the registration options.
 
 ### Function Extensions
 
@@ -97,31 +97,7 @@ console.log(JSON.stringify(items.length, null, 2));
 
 ## Registering Extensions
 
-You can register Extensions either globally, on an invocable factory, or on a per-object basis, and you can register a single extension or an array of Extensions.
-
-### Global Registration
-
-Globally registering an extension allows you to inject functionality into every invocable that is instantiated within your application. It is important to remember that processing extensions happens on ALL property access and method invocation operations - so global extensions should be used sparingly.
-
-```TypeScript
-import { extendGlobal } from "@pnp/queryable";
-
-// we can add a logging method to very verbosely track what things are called in our application
-extendGlobal((op: string, _target: any, ...rest: any[]): void => {
-        switch (op) {
-            case "apply":
-                Logger.write(`${op} ::> ()`, LogLevel.Info);
-                break;
-                case "has":
-            case "get":
-            case "set":
-                Logger.write(`${op} ::> ${rest[0]}`, LogLevel.Info);
-                break;
-            default:
-                Logger.write(`unknown ${op}`, LogLevel.Info);
-        }
-});
-```
+You can register Extensions on an invocable factory or on a per-object basis, and you can register a single extension or an array of Extensions.
 
 ### Factory Registration
 
@@ -222,13 +198,4 @@ disableExtensions();
 
 // enable Extensions
 enableExtensions();
-
-// clear all the globally registered extensions
-clearGlobalExtensions();
 ```
-
-## Order of Operations
-
-It is important to understand the order in which extensions are executed and when a value is returned. Instance extensions* are always called first, followed by global Extensions - in both cases they are called in the order they were registered. This allows you to perhaps have some global functionality while maintaining the ability to override it again at the instance level. IF an extension returns a value other than `undefined` that value is returned and no other extensions are processed.
-
-> *extensions applied via an extended factory are considered instance extensions
