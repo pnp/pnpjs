@@ -2619,7 +2619,7 @@ sp.setup({
 });
 
 // make a call to SharePoint and log it in the console
-sp.web.select(&quot;Title&quot;, &quot;Description&quot;).get().then(w =&gt; {
+sp.web.select(&quot;Title&quot;, &quot;Description&quot;)().then(w =&gt; {
     console.log(JSON.stringify(w, null, 4));
 });
 </code></pre>
@@ -2642,7 +2642,7 @@ import { AdalFetchClient } from &quot;@pnp/nodejs-commonjs&quot;;
 });
 
 // make a call to Graph and get all the groups
-graph.groups.get().then(g =&gt; {
+graph.groups().then(g =&gt; {
     console.log(JSON.stringify(g, null, 4));
 });
 </code></pre>
@@ -2663,14 +2663,14 @@ sp.setup({
   },
 });
 
-const w = await sp.web.get();
+const w = await sp.web();
 </code></pre>
 <h3 id="create-web-instances-directly">Create Web instances directly<a class="headerlink" href="#create-web-instances-directly" title="Permanent link">&para;</a></h3>
 <p>Using this method you create the web directly with the url you want to use as the base.</p>
 <pre><code class="language-TypeScript">import { Web } from &quot;@pnp/sp/presets/all&quot;;
 
 const web = Web(&quot;{Absolute SharePoint Web URL}&quot;);
-const w = await web.get();
+const w = await web();
 </code></pre>
 <h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
 <p>Be sure to <a href="../concepts/configuration/">review the article describing all of the available settings</a> across the libraries.</p>

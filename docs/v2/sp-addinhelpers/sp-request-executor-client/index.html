@@ -2134,7 +2134,7 @@ const addInWenUrl = &quot;{The add-in web url, likely from the query string}&quo
 const hostWebUrl = &quot;{The host web url, likely from the query string}&quot;;
 
 // make requests into the host web via the SP.RequestExecutor
-sp.crossDomainWeb(addInWenUrl, hostWebUrl).get().then(w =&gt; {
+sp.crossDomainWeb(addInWenUrl, hostWebUrl)().then(w =&gt; {
     console.log(JSON.stringify(w, null, 4));
 });
 </code></pre>

@@ -7,7 +7,7 @@ export function MSAL(config: Configuration, authParams: AuthenticationParameters
 
     return (instance: Queryable) => {
 
-        instance.on.auth(async (url: URL, init: RequestInit) => {
+        instance.on.auth.replace(async (url: URL, init: RequestInit) => {
 
             let accessToken: string;
 

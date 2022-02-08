@@ -13,7 +13,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/security";
 import { Logger } from "@pnp/logging";
 
-const roles = await sp.web.roleAssignments.get();
+const roles = await sp.web.roleAssignments();
 Logger.writeJSON(roles);
 ```
 
@@ -26,7 +26,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/security";
 import { Logger } from "@pnp/logging";
 
-const obj = await sp.web.firstUniqueAncestorSecurableObject.get();
+const obj = await sp.web.firstUniqueAncestorSecurableObject();
 Logger.writeJSON(obj);
 ```
 

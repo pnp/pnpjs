@@ -21,15 +21,15 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
 // get all the items from a list
-const items: any[] = await sp.web.lists.getByTitle("My List").items.get();
+const items: any[] = await sp.web.lists.getByTitle("My List").items();
 console.log(items);
 
 // get a specific item by id.
-const item: any = await sp.web.lists.getByTitle("My List").items.getById(1).get();
+const item: any = await sp.web.lists.getByTitle("My List").items.getById(1)();
 console.log(item);
 
 // use odata operators for more efficient queries
-const items2: any[] = await sp.web.lists.getByTitle("My List").items.select("Title", "Description").top(5).orderBy("Modified", true).get();
+const items2: any[] = await sp.web.lists.getByTitle("My List").items.select("Title", "Description").top(5).orderBy("Modified", true)();
 console.log(items2);
 ```
 
@@ -133,10 +133,10 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-const items = await sp.web.lists.getByTitle("LookupList").items.select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get();
+const items = await sp.web.lists.getByTitle("LookupList").items.select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup")();
 console.log(items);
 
-const item = await sp.web.lists.getByTitle("LookupList").items.getById(1).select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup").get();
+const item = await sp.web.lists.getByTitle("LookupList").items.getById(1).select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup")();
 console.log(item);
 ```
 
@@ -169,7 +169,7 @@ try {
   const r = await w.lists.getByTitle("Pages").items
     .select("Title", "FileRef", "FieldValuesAsText/MetaInfo")
     .expand("FieldValuesAsText")
-    .get();
+    ();
 
   // look through the returned items.
   for (var i = 0; i < r.length; i++) {
@@ -347,7 +347,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
 // you are getting back a collection here
-const items: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'").get();
+const items: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'")();
 
 // see if we got something
 if (items.length > 0) {
@@ -460,7 +460,7 @@ const response =
     .fields
     .select('Title, EntityPropertyName')
     .filter(`Hidden eq false and Title eq '[Field's_Display_Name]'`)
-    .get();
+    ();
 
 console.log(response.map(field => {
   return {
@@ -483,6 +483,6 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/items";
 
-const item: any = await sp.web.lists.getByTitle("My List").items.getById(1).get();
+const item: any = await sp.web.lists.getByTitle("My List").items.getById(1)();
 await item.getParentInfos();
 ```  

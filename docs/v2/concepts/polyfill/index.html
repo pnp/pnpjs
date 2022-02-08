@@ -2206,7 +2206,7 @@
 <pre><code class="language-TypeScript">import &quot;@pnp/polyfill-ie11&quot;;
 import { sp } from &quot;@pnp/sp/presets/all&quot;;
 
-sp.web.lists.getByTitle(&quot;BigList&quot;).items.filter(`ID gt 6000`).get().then(r =&gt; {
+sp.web.lists.getByTitle(&quot;BigList&quot;).items.filter(`ID gt 6000`)().then(r =&gt; {
   this.domElement.innerHTML += r.map(l =&gt; `${l.Title}&lt;br /&gt;`);
 });
 </code></pre>
@@ -2224,7 +2224,7 @@ import &quot;@pnp/polyfill-ie11/dist/symbol&quot;;
 
 
 // works in IE11 and other browsers
-sp.web.lists.getByTitle(&quot;BigList&quot;).items.filter(`ID gt 6000`).get().then(r =&gt; {
+sp.web.lists.getByTitle(&quot;BigList&quot;).items.filter(`ID gt 6000`)().then(r =&gt; {
   this.domElement.innerHTML += r.map(l =&gt; `${l.Title}&lt;br /&gt;`);
 });
 </code></pre>

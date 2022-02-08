@@ -304,7 +304,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const properties = await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").properties.get();
+const properties = await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").properties();
 ```
 
 ### uniqueContentTypeOrder

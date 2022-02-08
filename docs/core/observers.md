@@ -10,9 +10,9 @@ Observers are used to implement all of the functionality within a [Timeline's](.
 
 ## Observer Inheritance
 
-Timelines created from other timelines (i.e. how sp and graph libraries work) inherit all of the observers from the parent. Observers added to the parent will appear for all children. This is why when you create a new sp or graph and setup the defaults you do not need to do it for every object.
+Timelines created from other timelines (i.e. how sp and graph libraries work) inherit all of the observers from the parent. Observers added to the parent will apply for all children.
 
-When you make a change to the set of observers through any of the subscription methods outlined below that inheritance is broken. Meaning changes to the parent will no longer apply to that child, and changes to a child never affect a parent. This applies to ALL moments if one changes, there is no per-moment inheritance concept.
+When you make a change to the set of observers through any of the subscription methods outlined below that inheritance is broken. Meaning changes to the parent will no longer apply to that child, and changes to a child never affect a parent. This applies to ALL moments on change of ANY moment, there is no per-moment inheritance concept.
 
 ```TypeScript
 const sp = new spfi().using(...lots of behaviors);
@@ -24,7 +24,7 @@ const web = sp.web;
 // but still includes everything that was registered in sp before this call
 web.on.log(...);
 
-// web2 inherits from sp as each invocation of .web creates a fresh IWeb
+// web2 inherits from sp as each invocation of .web creates a fresh IWeb instance
 const web2 = sp.web;
 
 // list inherits from web's observers and will contain the extra `log` observer added above
