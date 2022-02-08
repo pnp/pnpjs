@@ -12,7 +12,7 @@ You can learn more  by reading the [Official Microsoft Graph Documentation](http
 |--|--|
 |Selective 1|import { graphfi } from "@pnp/graph";<br />import {Outlook, IOutlook, MasterCategories, IMasterCategories, OutlookCategory, IOutlookCategory} from "@pnp/graph/outlook";|
 |Selective 2|import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/outlook";|
-|Preset: All|import { graph, Outlook, IOutlook, MasterCategories, IMasterCategories } from "@pnp/graph/presets/all";|
+|Preset: All|import { graphfi, Outlook, IOutlook, MasterCategories, IMasterCategories } from "@pnp/graph/presets/all";|
 
 ## Get All Categories User
 
