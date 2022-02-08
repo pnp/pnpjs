@@ -6,18 +6,18 @@ The search module allows you to access the Microsoft Graph Search API. You can r
 
 | Scenario    | Import Statement                                                  |
 | ----------- | ----------------------------------------------------------------- |
-| Selective   | import { graph } from "@pnp/graph";<br />import "@pnp/graph/search"; |
+| Selective   | import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/search"; |
 | Preset: All | import "@pnp/graph/presets/all";    |
 
-## Call graph.query
+## Call graphfi().query
 
 This example shows calling the search API via the `query` method of the root graph object.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/search";
 
-const results = await graph.query({
+const results = await graphfi().query({
     entityTypes: ["site"],
     query: {
         queryString: "test"

@@ -1,6 +1,5 @@
-import { ITestingSettings } from "../../test/settings.js";
+import { ITestingSettings } from "../../test/load-settings.js";
 import { Logger, LogLevel } from "@pnp/logging";
-import { sp } from "@pnp/sp";
 import { spSetup } from "./setup.js";
 import "@pnp/sp/webs";
 
@@ -8,7 +7,7 @@ declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
 
-  spSetup(settings);
+  const sp = spSetup(settings);
 
   const w = await sp.web();
 

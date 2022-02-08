@@ -2098,11 +2098,11 @@ const userSP = new SPRest().configure(await ctx.getUserConfig(), spSiteUrl);
 const addinSP = new SPRest().configure(await ctx.getAddInOnlyConfig(), spSiteUrl);
 
 // make a request on behalf of the user
-const user = await userSP.web.currentUser.get();
+const user = await userSP.web.currentUser();
 console.log(`Hello ${user.Title}`);
 
 // make an add-in only request
-const app = await addinSP.web.currentUser.get();
+const app = await addinSP.web.currentUser();
 console.log(`Add-in principal: ${app.Title}`);
 </code></pre>
                 

@@ -2178,7 +2178,7 @@
 import &quot;@pnp/sp/security&quot;;
 import { Logger } from &quot;@pnp/logging&quot;;
 
-const roles = await sp.web.roleAssignments.get();
+const roles = await sp.web.roleAssignments();
 Logger.writeJSON(roles);
 </code></pre>
 <h2 id="first-unique-ancestor-securable-object">First Unique Ancestor Securable Object<a class="headerlink" href="#first-unique-ancestor-securable-object" title="Permanent link">&para;</a></h2>
@@ -2187,7 +2187,7 @@ Logger.writeJSON(roles);
 import &quot;@pnp/sp/security&quot;;
 import { Logger } from &quot;@pnp/logging&quot;;
 
-const obj = await sp.web.firstUniqueAncestorSecurableObject.get();
+const obj = await sp.web.firstUniqueAncestorSecurableObject();
 Logger.writeJSON(obj);
 </code></pre>
 <h2 id="user-effective-permissions">User Effective Permissions<a class="headerlink" href="#user-effective-permissions" title="Permanent link">&para;</a></h2>

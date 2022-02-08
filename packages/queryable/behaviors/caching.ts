@@ -27,6 +27,11 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
 
         instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
+            // only cache get requested data
+            if (!/get/i.test(init.method)) {
+                return [url, init, result];
+            }
+
             const key = keyFactory(url.toString());
 
             const cached = s.get(key);

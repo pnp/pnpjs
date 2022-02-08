@@ -2474,15 +2474,15 @@ import &quot;@pnp/sp/lists&quot;;
 import &quot;@pnp/sp/items&quot;;
 
 // get all the items from a list
-const items: any[] = await sp.web.lists.getByTitle(&quot;My List&quot;).items.get();
+const items: any[] = await sp.web.lists.getByTitle(&quot;My List&quot;).items();
 console.log(items);
 
 // get a specific item by id.
-const item: any = await sp.web.lists.getByTitle(&quot;My List&quot;).items.getById(1).get();
+const item: any = await sp.web.lists.getByTitle(&quot;My List&quot;).items.getById(1)();
 console.log(item);
 
 // use odata operators for more efficient queries
-const items2: any[] = await sp.web.lists.getByTitle(&quot;My List&quot;).items.select(&quot;Title&quot;, &quot;Description&quot;).top(5).orderBy(&quot;Modified&quot;, true).get();
+const items2: any[] = await sp.web.lists.getByTitle(&quot;My List&quot;).items.select(&quot;Title&quot;, &quot;Description&quot;).top(5).orderBy(&quot;Modified&quot;, true)();
 console.log(items2);
 </code></pre>
 <h3 id="get-paged-items">Get Paged Items<a class="headerlink" href="#get-paged-items" title="Permanent link">&para;</a></h3>
@@ -2570,10 +2570,10 @@ import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists&quot;;
 import &quot;@pnp/sp/items&quot;;
 
-const items = await sp.web.lists.getByTitle(&quot;LookupList&quot;).items.select(&quot;Title&quot;, &quot;Lookup/Title&quot;, &quot;Lookup/ID&quot;).expand(&quot;Lookup&quot;).get();
+const items = await sp.web.lists.getByTitle(&quot;LookupList&quot;).items.select(&quot;Title&quot;, &quot;Lookup/Title&quot;, &quot;Lookup/ID&quot;).expand(&quot;Lookup&quot;)();
 console.log(items);
 
-const item = await sp.web.lists.getByTitle(&quot;LookupList&quot;).items.getById(1).select(&quot;Title&quot;, &quot;Lookup/Title&quot;, &quot;Lookup/ID&quot;).expand(&quot;Lookup&quot;).get();
+const item = await sp.web.lists.getByTitle(&quot;LookupList&quot;).items.getById(1).select(&quot;Title&quot;, &quot;Lookup/Title&quot;, &quot;Lookup/ID&quot;).expand(&quot;Lookup&quot;)();
 console.log(item);
 </code></pre>
 <h3 id="filter-using-metadata-fields">Filter using Metadata fields<a class="headerlink" href="#filter-using-metadata-fields" title="Permanent link">&para;</a></h3>
@@ -2598,7 +2598,7 @@ try {
   const r = await w.lists.getByTitle(&quot;Pages&quot;).items
     .select(&quot;Title&quot;, &quot;FileRef&quot;, &quot;FieldValuesAsText/MetaInfo&quot;)
     .expand(&quot;FieldValuesAsText&quot;)
-    .get();
+    ();
 
   // look through the returned items.
   for (var i = 0; i &lt; r.length; i++) {
@@ -2747,7 +2747,7 @@ import &quot;@pnp/sp/lists&quot;;
 import &quot;@pnp/sp/items&quot;;
 
 // you are getting back a collection here
-const items: any[] = await sp.web.lists.getByTitle(&quot;MyList&quot;).items.top(1).filter(&quot;Title eq 'A Title'&quot;).get();
+const items: any[] = await sp.web.lists.getByTitle(&quot;MyList&quot;).items.top(1).filter(&quot;Title eq 'A Title'&quot;)();
 
 // see if we got something
 if (items.length &gt; 0) {
@@ -2839,7 +2839,7 @@ const response =
     .fields
     .select('Title, EntityPropertyName')
     .filter(`Hidden eq false and Title eq '[Field's_Display_Name]'`)
-    .get();
+    ();
 
 console.log(response.map(field =&gt; {
   return {
@@ -2856,7 +2856,7 @@ console.log(response.map(field =&gt; {
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/items&quot;;
 
-const item: any = await sp.web.lists.getByTitle(&quot;My List&quot;).items.getById(1).get();
+const item: any = await sp.web.lists.getByTitle(&quot;My List&quot;).items.getById(1)();
 await item.getParentInfos();
 </code></pre>
                 

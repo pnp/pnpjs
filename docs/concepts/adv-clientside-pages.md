@@ -1,8 +1,8 @@
 # Client-Side Pages
 
-The client-side pages API included in this library is an implementation that was reverse engineered from the first-party API's and is unsupported by Microsoft. Given how flexible pages are we've done our best to give you the endpoints that will provide the functionality you need but that said, implementing these APIs is one of hte more complicated tasks you can do.
+The client-side pages API included in this library is an implementation that was reverse engineered from the first-party API's and is unsupported by Microsoft. Given how flexible pages are we've done our best to give you the endpoints that will provide the functionality you need but that said, implementing these APIs is one of the more complicated tasks you can do.
 
-It's especially important to understand that the product team is constantly changing the features of pages and often that will also end up changing how the APIs that we've hijacked behave and because they are not offical third-party APIs this can cause our implementation to break.  In order to fix those breaks we need to go back to the beginning and re-validate how the endpoints work searching for what has changed and then implementing those changes in our code. This is by no means simple. If you are reporting an issue with the pages API be aware that it may take significant time for us to unearth what is happening and fix it. Any research that you can provide when sharing your issue will go a long way in expediating that process, or better yet, if you can track it down and submit a PR with a fix we would be most greatful.
+It's especially important to understand the product team is constantly changing the features of pages and often that will also end up changing how the APIs that we've leveraged behave and because they are not offical third-party APIs this can cause our implementation to break.  In order to fix those breaks we need to go back to the beginning and re-validate how the endpoints work searching for what has changed and then implementing those changes in our code. This is by no means simple. If you are reporting an issue with the pages API be aware that it may take significant time for us to unearth what is happening and fix it. Any research that you can provide when sharing your issue will go a long way in expediating that process, or better yet, if you can track it down and submit a PR with a fix we would be most greatful.
 
 ## Tricks to help you figure out how to add first-party web parts to your page
 
@@ -140,7 +140,7 @@ interface IQLItem {
 }
 
 // we create a class to wrap our functionality in a reusable way
-class QucikLinksWebpart extends ClientsideWebpart {
+class QuickLinksWebpart extends ClientsideWebpart {
 
   constructor(control: ClientsideWebpart) {
     super((<any>control).json);
@@ -160,7 +160,7 @@ class QucikLinksWebpart extends ClientsideWebpart {
 const page = await sp.web.loadClientsidePage("/sites/PnPJS/SitePages/QuickLinks-Web-Part-Test.aspx");
 
 // get our part and pass it to the constructor of our wrapper class.
-const part = new QucikLinksWebpart(page.sections[0].columns[0].getControl(0));
+const part = new QuickLinksWebpart(page.sections[0].columns[0].getControl(0));
 
 //Need to set all the properties
 part.items = [{IQLItem_properties}];

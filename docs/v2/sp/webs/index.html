@@ -3192,7 +3192,7 @@ const result = await sp.web.webs.add(&quot;title&quot;, &quot;subweb1&quot;);
 console.log(result.data);
 
 // we can immediately operate on the new web
-result.web.select(&quot;Title&quot;).get().then((w: IWebAddResult)  =&gt; {
+result.web.select(&quot;Title&quot;)().then((w: IWebAddResult)  =&gt; {
 
     // show our title
     console.log(w.Title);

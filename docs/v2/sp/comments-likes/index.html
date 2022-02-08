@@ -2453,7 +2453,7 @@ const comments = await item.comments(spODataEntityArray&lt;Comment, CommentData&
 comments[0].replies.add({ text: &quot;#PnPjs is pretty ok!&quot; });
 
 //load the top 20 replies and comments for an item including likedBy information
-const comments = await item.comments.expand(&quot;replies&quot;, &quot;likedBy&quot;, &quot;replies/likedBy&quot;).top(20).get();
+const comments = await item.comments.expand(&quot;replies&quot;, &quot;likedBy&quot;, &quot;replies/likedBy&quot;).top(20)();
 </code></pre>
 <h3 id="add-comment">Add Comment<a class="headerlink" href="#add-comment" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">// you can add a comment as a string

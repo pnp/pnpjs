@@ -2112,9 +2112,9 @@
                 
                 
                 <h1 id="invokables">Invokables<a class="headerlink" href="#invokables" title="Permanent link">&para;</a></h1>
-<p>For people who have been using the library since the early days you are familiar with the need to use the <code>.get()</code> method to invoke a method chain:</p>
+<p>For people who have been using the library since the early days you are familiar with the need to use the <code>()</code> method to invoke a method chain:</p>
 <pre><code class="language-TypeScript">// an example of get
-const lists = await sp.web.lists.get();
+const lists = await sp.web.lists();
 </code></pre>
 <p>Starting with v2 this is no longer required, you can invoke the object directly to execute the default action for that class - typically a get.</p>
 <pre><code class="language-TypeScript">const lists = await sp.web.lists();

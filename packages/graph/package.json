@@ -9,17 +9,5 @@
         "tslib": "2.3.1",
         "@pnp/core": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER"
-    },
-    "author": {
-        "name": "Microsoft and other contributors"
-    },
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/pnp/pnpjs/issues"
-    },
-    "homepage": "https://github.com/pnp/pnpjs",
-    "repository": {
-        "type": "git",
-        "url": "git:github.com/pnp/pnpjs"
     }
 }

@@ -2785,7 +2785,7 @@ const parentFolder = await sp.web.getFolderByServerRelativePath(&quot;Shared Doc
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/folders&quot;;
 
-const properties = await sp.web.getFolderByServerRelativePath(&quot;Shared Documents/Folder2&quot;).properties.get();
+const properties = await sp.web.getFolderByServerRelativePath(&quot;Shared Documents/Folder2&quot;).properties();
 </code></pre>
 <h3 id="uniquecontenttypeorder">uniqueContentTypeOrder<a class="headerlink" href="#uniquecontenttypeorder" title="Permanent link">&para;</a></h3>
 <p>Gets a value that specifies the content type order.</p>

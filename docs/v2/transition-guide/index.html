@@ -2282,7 +2282,7 @@ import { sp, ClientSideWebpart, ClientSideWebpartPropertyTypes } from &quot;@pnp
 import &quot;@pnp/sp/webs&quot;;
 
 // old way (still works)
-const r1 = sp.web.get();
+const r1 = sp.web();
 
 // invokable
 const r2 = sp.web();
@@ -2301,7 +2301,7 @@ import { Web } from &quot;@pnp/sp&quot;;
 
 const web: Web = new Web(&quot;some absolute url&quot;);
 
-const r1 = web.get();
+const r1 = web();
 
 // v2
 import { Web, IWeb } from &quot;@pnp/sp/webs&quot;;

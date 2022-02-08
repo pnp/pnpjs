@@ -2178,7 +2178,7 @@ sp.setup({
 let w = new Web(&quot;{site url}&quot;);
 
 // this request will use your client.
-const result = await w.select(&quot;Title&quot;).get();
+const result = await w.select(&quot;Title&quot;)();
 console.log(result);
 </code></pre>
 <h2 id="subclassing-is-better">Subclassing is Better<a class="headerlink" href="#subclassing-is-better" title="Permanent link">&para;</a></h2>

@@ -13,8 +13,10 @@ import { MySpecialLoggingFunction } from "../mylogging.js";
 // top level function allows binding of values within the closure
 export function MyBehavior(specialSecret: string): TimelinePipe {
 
+    // returns the actual behavior function that is applied to the instance
     return (instance: Timeline<any>) => {
 
+        // register as many observers as needed
         instance.on.log(function (message: string, severity: number) {
 
             MySpecialLoggingFunction(message, severity, specialSecret);
@@ -29,12 +31,13 @@ export function MyBehavior(specialSecret: string): TimelinePipe {
     };
 }
 
+// apply the behavior to a Timeline/Queryable
 obj.using(MyBehavior("HereIsMySuperSecretValue"));
 ```
 
 ## Composing Behaviors
 
-We encourage you to use our defaults, or create your own default behavior appropriate to your needs. You can see all of the behaviors available in [@pnp/nodejs](../nodejs/behaviors.md), [@pnp/queryable](../queryable/behaviors.md), [@pnp/sp](../sp/behaviors.md), and [@pnp/graph](../graph/behaviors.md). These articles describe available defaults, as well as the foundational behaviors you can use to compose your own.
+We encourage you to use our defaults, or create your own default behavior appropriate to your needs. You can see all of the behaviors available in [@pnp/nodejs](../nodejs/behaviors.md), [@pnp/queryable](../queryable/behaviors.md), [@pnp/sp](../sp/behaviors.md), and [@pnp/graph](../graph/behaviors.md).
 
 As an example, let's create our own behavior for a nodejs project. We want to call the graph, default to the beta endpoint, setup MSAL, and include a custom header we need for our environment. To do so we create a composed behavior consisting of graph's DefaultInit, graph's DefaultHeaders, nodejs's MSAL, nodejs's NodeFetchWithRetry, and queryable's DefaultParse & InjectHeaders. Then we can import this behavior into all our projects to configure them.
 
@@ -70,8 +73,6 @@ export function CompanyDefault(): TimelinePipe<Queryable> {
 }
 ```
 
-> You can easily share your composed behaviors across your projects using [library components in SPFx](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/library-component-overview), a company CDN, or an npm package.
-
 _index.ts_
 ```TypeScript
 import { CompanyDefault } from "./company-default.ts";
@@ -80,6 +81,8 @@ import { graphfi } from "@pnp/graph";
 // we can consistently and easily setup our graph instance using a single behavior
 const graph = graphfi().using(CompanyDefault());
 ```
+
+> You can easily share your composed behaviors across your projects using [library components in SPFx](https://docs.microsoft.com/en-us/sharepoint/dev/spfx/library-component-overview), a company CDN, or an npm package.
 
 [](#assignfrom)
 

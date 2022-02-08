@@ -48,7 +48,7 @@ const w = await sp.site.openWebById("111ca453-90f5-482e-a381-cee1ff383c9e");
 console.log(w.data);
 
 // we can chain
-const w2 = await w.web.select("Title").get();
+const w2 = await w.web.select("Title")();
 ```
 
 ## Get site collection url from page
