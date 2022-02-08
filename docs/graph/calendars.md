@@ -12,12 +12,12 @@ More information can be found in the official Graph documentation:
 |Scenario|Import Statement|
 |--|--|
 |Selective 1|import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/calendars";|
-|Preset: All|import { graph } from "@pnp/graph/presets/all";|
+|Preset: All|import { graphfi } from "@pnp/graph/presets/all";|
 
 ## Get All Calendars For a User
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
@@ -30,7 +30,7 @@ const myCalendars = await graphfi().me.calendars();
 ## Get a Specific Calendar For a User
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
@@ -44,7 +44,7 @@ const myCalendar = await graphfi().me.calendars.getById(CALENDAR_ID)();
 ## Get a User's Default Calendar
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
@@ -56,7 +56,7 @@ const myCalendar = await graphfi().me.calendar();
 ## Get Events For a User's Default Calendar
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
@@ -76,7 +76,7 @@ const events = await graphfi().me.events();
 You can use .events.getByID to search through all the events in all calendars or narrow the request to a specific calendar.
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
@@ -100,7 +100,7 @@ const events = await graphfi().me.calendars.getByID(CalendarID).events.getByID(E
 This will work on any `IEvents` objects (e.g. anything accessed using an `events` key).
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
@@ -139,7 +139,7 @@ await graphfi().users.getById('user@tenant.onmicrosoft.com').calendar.events.add
 This will work on any `IEvents` objects (e.g. anything accessed using an `events` key).
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
@@ -155,7 +155,7 @@ await graphfi().users.getById('user@tenant.onmicrosoft.com').calendar.events.get
 This will work on any `IEvents` objects (e.g. anything accessed using an `events` key).
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
@@ -169,7 +169,7 @@ await graphfi().me.events.getById(EVENT_ID).delete();
 ## Get Calendar for a Group
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/groups';
 
@@ -179,7 +179,7 @@ const calendar = await graphfi().groups.getById('21aaf779-f6d8-40bd-88c2-4a03f45
 ## Get Events for a Group
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/groups';
 
@@ -194,7 +194,7 @@ const events = await graphfi().groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456e
 Gets the events in a calendar during a specified date range.
 
 ```ts
-import { graph } from '@pnp/graph';
+import { graphfi } from '@pnp/graph';
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
