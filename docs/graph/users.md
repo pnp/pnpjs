@@ -10,44 +10,44 @@ You can learn more about Microsoft Graph users by reading the [Official Microsof
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { graph } from "@pnp/graph";<br />import {IUser, IUsers, User, Users, IPeople, People} from "@pnp/graph/users";|
-|Selective 2|import { graph } from "@pnp/graph";<br />import "@pnp/graph/users";|
-|Preset: All|import { graph,IUser, IUsers, User, Users, IPeople, People } from "@pnp/graph/presets/all";|
+|Selective 1|import { graphfi } from "@pnp/graph";<br />import {IUser, IUsers, User, Users, IPeople, People} from "@pnp/graph/users";|
+|Selective 2|import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/users";|
+|Preset: All|import { graphfi ,IUser, IUsers, User, Users, IPeople, People } from "@pnp/graph/presets/all";|
 
 ## Current User
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const currentUser = await graph.me();
+const currentUser = await graphfi().me();
 ```
 
 ## Get All Users in the Organization
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const allUsers = await graph.users();
+const allUsers = await graphfi().users();
 ```
 
 ## Get a User by email address (or user id)
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const matchingUser = await graph.users.getById('jane@contoso.com')();
+const matchingUser = await graphfi().users.getById('jane@contoso.com')();
 ```
 
 ## Update Current User
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-await graph.me.update({
+await graphfi().me.update({
     displayName: 'John Doe'
 });
 ```
@@ -55,54 +55,54 @@ await graph.me.update({
 ## People
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const people = await graph.me.people();
+const people = await graphfi().me.people();
 
 // get the top 3 people
-const people = await graph.me.people.top(3)();
+const people = await graphfi().me.people.top(3)();
 ```
 
 ## People
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const people = await graph.me.people();
+const people = await graphfi().me.people();
 
 // get the top 3 people
-const people = await graph.me.people.top(3)();
+const people = await graphfi().me.people.top(3)();
 ```
 
 ## Manager
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const manager = await graph.me.manager();
+const manager = await graphfi().me.manager();
 ```
 
 ## Direct Reports
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const reports = await graph.me.directReports();
+const reports = await graphfi().me.directReports();
 ```
 
 ## Photo
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/photos";
 
-const currentUser = await graph.me.photo();
-const specificUser = await graph.users.getById('jane@contoso.com').photo();
+const currentUser = await graphfi().me.photo();
+const specificUser = await graphfi().users.getById('jane@contoso.com').photo();
 ```
 
 ## User Photo Operations

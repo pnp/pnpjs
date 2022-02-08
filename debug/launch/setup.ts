@@ -1,59 +1,29 @@
-import { ITestingSettings } from "../../test/settings.js";
-import { SPFetchClient, MsalFetchClient, AdalFetchClient, setProxyUrl } from "@pnp/nodejs";
-import { sp } from "@pnp/sp";
-import { graph } from "@pnp/graph";
+import { ITestingSettings } from "../../test/load-settings.js";
+import { SPDefault, GraphDefault } from "@pnp/nodejs";
+import { spfi, SPFI } from "@pnp/sp";
+import { GraphFI, graphfi } from "@pnp/graph";
+import { LogLevel, PnPLogging } from "@pnp/logging";
 
-export async function spSetup(settings: ITestingSettings): Promise<void> {
+export function spSetup(settings: ITestingSettings): SPFI {
 
-    // if we have an msal section, use that one
-    if (settings.testing.sp.msal) {
-        sp.setup({
-            sp: {
-                baseUrl: settings.testing.sp.url,
-                fetchClientFactory: () => {
-                    return new MsalFetchClient(settings.testing.sp.msal.init, settings.testing.sp.msal.scopes);
-                },
-            },
-        });
+    const sp = spfi(settings.testing.sp.url).using(SPDefault({
+        msal: {
+            config: settings.testing.sp.msal.init,
+            scopes: settings.testing.sp.msal.scopes,
+        },
+    })).using(PnPLogging(LogLevel.Verbose));
 
-    } else {
-        // configure your node options
-        sp.setup({
-            sp: {
-                fetchClientFactory: () => {
-                    return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret);
-                },
-            },
-        });
-    }
+    return sp;
 }
 
-export async function graphSetup(settings: ITestingSettings): Promise<void> {
+export function graphSetup(settings: ITestingSettings): GraphFI {
 
-    // if we have an msal section, use that one
-    if (settings.testing.graph.msal) {
-        graph.setup({
-            graph: {
-                fetchClientFactory: () => {
-                    // ignore certificate errors: ONLY FOR TESTING!!
-                    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    const graph = graphfi().using(GraphDefault({
+        msal: {
+            config: settings.testing.graph.msal.init,
+            scopes: settings.testing.graph.msal.scopes,
+        },
+    })).using(PnPLogging(LogLevel.Verbose));
 
-                    // this is my fiddler url locally
-                    // setProxyUrl("http://127.0.0.1:8888");
-                    //return new SPFetchClient(settings.testing.sp.url, settings.testing.sp.id, settings.testing.sp.secret, SPOAuthEnv.SPO);
-                    return new MsalFetchClient(settings.testing.graph.msal.init, settings.testing.graph.msal.scopes);
-                },
-            },
-        });
-
-    } else {
-        // configure your node options
-        graph.setup({
-            graph: {
-                fetchClientFactory: () => {
-                    return new AdalFetchClient(settings.testing.graph.tenant, settings.testing.graph.id, settings.testing.graph.secret);
-                },
-            },
-        });
-    }
+    return graph;
 }

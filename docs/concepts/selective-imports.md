@@ -8,7 +8,7 @@ If you would prefer to not worry about selective imports please see the section 
 
 ```TypeScript
 // the sp var now has almost nothing attached at import time and relies on
-import { spfi } from "@pnp/sp";
+
 // we need to import each of the pieces we need to "attach" them for chaining
 // here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
 import "@pnp/sp/webs";
@@ -25,7 +25,7 @@ Above we are being very specific in what we are importing, but you can also impo
 
 ```TypeScript
 // the sp var now has almost nothing attached at import time and relies on
-import { spfi } from "@pnp/sp";
+
 // we need to import each of the pieces we need to "attach" them for chaining
 // here we are importing the specific sub modules we need and attaching the functionality for lists to web and items to list
 import "@pnp/sp/webs";
@@ -52,7 +52,7 @@ If you only need to access content types on the web object you can reduce size b
 
 ```TypeScript
 // this will fail
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 import { IList } from "@pnp/sp/lists";
 
@@ -78,7 +78,7 @@ Sometimes you don't care as much about bundle size - testing or node development
 
 ```TypeScript
 import "@pnp/sp/presets/all";
-import { spfi } from "@pnp/sp";
+
 
 // placeholder for fully configuring the sp interface
 const sp = spfi();

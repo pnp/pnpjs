@@ -1,7 +1,6 @@
 
 import { getRandomString, delay } from "@pnp/core";
 import { expect } from "chai";
-import { getSP } from "../main.js";
 import { IAppCatalog } from "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 import "@pnp/sp/appcatalog";
@@ -9,14 +8,13 @@ import "@pnp/sp/lists";
 import * as fs from "fs";
 import * as path from "path";
 import findupSync from "findup-sync";
-import { SPFI } from "@pnp/sp";
+
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
 describe("AppCatalog", function () {
 
-    let _spfi: SPFI = null;
     let appCatalog: IAppCatalog;
     const dirname = path.join(projectRoot, "test/sp/assets", "helloworld.sppkg");
     const sppkgData: Uint8Array = new Uint8Array(fs.readFileSync(dirname));
@@ -24,12 +22,11 @@ describe("AppCatalog", function () {
 
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        _spfi = getSP();
-        const appCatWeb = await _spfi.getTenantAppCatalogWeb();
+        const appCatWeb = await this.pnp.sp.getTenantAppCatalogWeb();
         appCatalog = appCatWeb.appcatalog;
     });
 
@@ -59,7 +56,7 @@ describe("AppCatalog", function () {
         const key = `testingkey_${getRandomString(4)}`;
         const value = "Test Value";
 
-        const web = await _spfi.getTenantAppCatalogWeb();
+        const web = await this.pnp.sp.getTenantAppCatalogWeb();
 
         after(async function () {
             await web.removeStorageEntity(key);
@@ -76,7 +73,7 @@ describe("AppCatalog", function () {
         const key = `testingkey'${getRandomString(4)}`;
         const value = "Test Value";
 
-        const web = await _spfi.getTenantAppCatalogWeb();
+        const web = await this.pnp.sp.getTenantAppCatalogWeb();
 
         after(async function () {
             await web.removeStorageEntity(key);
@@ -104,14 +101,14 @@ describe("AppCatalog", function () {
         });
 
         it("install", async function () {
-            const myApp = _spfi.web.appcatalog.getAppById(appId);
-            return expect(myApp.install(), `app '${appId}' should've been installed on web ${this.settings.sp.testWebUrl}`).to.eventually.be.fulfilled;
+            const myApp = this.pnp.sp.web.appcatalog.getAppById(appId);
+            return expect(myApp.install(), `app '${appId}' should've been installed on web ${this.pnp.settings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("uninstall", async function () {
             // We have to make sure the app is installed before we can uninstall it otherwise we get the following error message:
             // Another job exists for this app instance. Please retry after that job is done.
-            const myApp = _spfi.web.appcatalog.getAppById(appId);
+            const myApp = this.pnp.sp.web.appcatalog.getAppById(appId);
             let app = { InstalledVersion: "" };
             let retryCount = 0;
 
@@ -124,12 +121,12 @@ describe("AppCatalog", function () {
                 retryCount++;
             } while (app.InstalledVersion === "");
 
-            return expect(myApp.uninstall(), `app '${appId}' should've been uninstalled on web ${this.settings.sp.testWebUrl}`).to.eventually.be.fulfilled;
+            return expect(myApp.uninstall(), `app '${appId}' should've been uninstalled on web ${this.pnp.settings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("upgrade", async function () {
-            const myApp = _spfi.web.appcatalog.getAppById(appId);
-            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${this.settings.sp.testWebUrl}`).to.eventually.be.fulfilled;
+            const myApp = this.pnp.sp.web.appcatalog.getAppById(appId);
+            return expect(myApp.upgrade(), `app '${appId}' should've been upgraded on web ${this.pnp.settings.sp.testWebUrl}`).to.eventually.be.fulfilled;
         });
 
         it("retract", async function () {

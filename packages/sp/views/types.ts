@@ -21,7 +21,7 @@ export class _Views extends _SPCollection<IViewInfo[]> {
      */
     public async add(Title: string, PersonalView = false, additionalSettings: Record<string, any> = {}): Promise<IViewAddResult> {
 
-        const data = await spPost(Views(this, null), body({
+        const data = await spPost(this, body({
             PersonalView,
             Title,
             ...additionalSettings,

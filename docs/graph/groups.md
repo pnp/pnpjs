@@ -12,20 +12,20 @@ You can learn more about Microsoft Graph Groups by reading the [Official Microso
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { graph } from "@pnp/graph";<br />import {Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups} from "@pnp/graph/groups";|
-|Selective 2|import { graph } from "@pnp/graph";<br />import "@pnp/graph/groups";|
-|Preset: All|import { graph, Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups } from "@pnp/graph/presets/all";|
+|Selective 1|import { graphfi } from "@pnp/graph";<br />import {Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups} from "@pnp/graph/groups";|
+|Selective 2|import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/groups";|
+|Preset: All|import { graphfi, Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups } from "@pnp/graph/presets/all";|
 
 ## Add a Group
 
 Add a new group.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 import { GroupType } from '@pnp/graph/groups';
 
-const groupAddResult = await graph.groups.add("GroupName", "Mail_NickName", GroupType.Office365);
+const groupAddResult = await graphfi().groups.add("GroupName", "Mail_NickName", GroupType.Office365);
 const group = await groupAddResult.group();
 ```
 
@@ -34,10 +34,10 @@ const group = await groupAddResult.group();
 Deletes an existing group.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").delete();
+await graphfi().groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").delete();
 ```
 
 ## Update Group Properties
@@ -45,10 +45,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").delete();
 Updates an existing group.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").update({ displayName: newName, propertyName: updatedValue});
+await graphfi().groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").update({ displayName: newName, propertyName: updatedValue});
 ```
 
 ## Add favorite
@@ -56,10 +56,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").update({ disp
 Add the group to the list of the current user's favorite groups. Supported for Office 365 groups only.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").addFavorite();
+await graphfi().groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").addFavorite();
 ```
 
 ## Remove favorite
@@ -67,10 +67,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").addFavorite()
 Remove the group from the list of the current user's favorite groups. Supported for Office 365 Groups only.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").removeFavorite();
+await graphfi().groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").removeFavorite();
 ```
 
 ## Reset Unseen Count
@@ -78,10 +78,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").removeFavorit
 Reset the unseenCount of all the posts that the current user has not seen since their last visit. Supported for Office 365 groups only.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").resetUnseenCount();
+await graphfi().groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").resetUnseenCount();
 ```
 
 ## Subscribe By Mail
@@ -89,10 +89,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").resetUnseenCo
 Calling this method will enable the current user to receive email notifications for this group, about new posts, events, and files in that group. Supported for Office 365 groups only.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").subscribeByMail();
+await graphfi().groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").subscribeByMail();
 ```
 
 ## Unsubscribe By Mail
@@ -100,10 +100,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").subscribeByMa
 Calling this method will prevent the current user from receiving email notifications for this group about new posts, events, and files in that group. Supported for Office 365 groups only.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").unsubscribeByMail();
+await graphfi().groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").unsubscribeByMail();
 ```
 
 ## Get Calendar View
@@ -111,13 +111,13 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").unsubscribeBy
 Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
 const startDate = new Date("2020-04-01");
 const endDate = new Date("2020-03-01");
 
-const events = graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").getCalendarView(startDate, endDate);
+const events = graphfi().groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").getCalendarView(startDate, endDate);
 ```
 
 ## Group Photo Operations
@@ -127,10 +127,10 @@ See [Photos](./photos.md)
 ## Get the Team Site for a Group
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 import "@pnp/graph/sites/group";
 
-const teamSite = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").sites.root();
+const teamSite = await graphfi().groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").sites.root();
 const url = teamSite.webUrl
 ```

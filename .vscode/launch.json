@@ -35,10 +35,9 @@
       "sourceMaps": true,
       "outFiles": [],
       "args": [
-        "--retries",
-        "0",
         "--verbose",
-        "--logging"
+        "--logging",
+        "--skip-web"
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",

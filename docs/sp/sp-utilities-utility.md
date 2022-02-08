@@ -136,6 +136,6 @@ let newPage : ICreateWikiPageResult = await sp.utility.createWikiPage({
 console.log(newPage.data);
 
 // newPage contains a File instance you can use to further update the new page
-let file = await newPage.file.get();
+let file = await newPage.file();
 console.log(file);
 ```

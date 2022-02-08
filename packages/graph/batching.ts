@@ -65,7 +65,7 @@ interface IGraphBatchResponse {
     nextLink?: string;
 }
 
-type ParsedGraphResponse = { nextLink: string; responses: Response[] };
+type ParsedGraphResponse = { nextLink?: string; responses: Response[] };
 
 /**
  * The request record defines a tuple that is
@@ -119,7 +119,7 @@ class BatchQueryable extends _GraphQueryable {
             const m = url.match(versRegex);
 
             // if we don't have the match we expect we don't make any changes and hope for the best
-            if (m.length > 0) {
+            if (m && m.length > 0) {
                 // fix up the url, requestBaseUrl, and the _url
                 url = combine(m[0], "$batch");
                 this.requestBaseUrl = url;
@@ -127,6 +127,23 @@ class BatchQueryable extends _GraphQueryable {
             }
 
             return [url, init, result];
+        });
+
+        this.on.dispose(() => {
+
+            // there is a code path where you may invoke a batch, say on items.add, whose return
+            // is an object like { data: any, item: IItem }. The expectation from v1 on is `item` in that object
+            // is immediately usable to make additional queries. Without this step when that IItem instance is
+            // created using "this.getById" within IITems.add all of the current observers of "this" are
+            // linked to the IItem instance created (expected), BUT they will be the set of observers setup
+            // to handle the batch, meaning invoking `item` will result in a half batched call that
+            // doesn't really work. To deliver the expected functionality we "reset" the
+            // observers using the original instance, mimicing the behavior had
+            // the IItem been created from that base without a batch involved. We use CopyFrom to ensure
+            // that we maintain the references to the InternalResolve and InternalReject events through
+            // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
+            // which ignores symbol properties.
+            base.using(CopyFrom(this, "replace", (k) => /(auth|send|init)/i.test(k)));
         });
     }
 }
@@ -218,15 +235,11 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         // we replace the send function with our batching logic
         instance.on.send.replace(async function (this: Queryable, url: URL, init: RequestInit) {
 
-            let requestTuple: RequestRecord;
-
             const promise = new Promise<Response>((resolve, reject) => {
-                requestTuple = [this, url.toString(), init, resolve, reject];
+                requests.push([this, url.toString(), init, resolve, reject]);
             });
 
             this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
-
-            requests.push(requestTuple);
 
             // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
             completePromises.push(new Promise((resolve) => {
@@ -241,16 +254,30 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         // we need to know when each request in the batch's timeline has completed
         instance.on.dispose(function () {
 
+            if (isFunc(this[RegistrationCompleteSym])) {
+                // remove the symbol props we added for good hygene
+                delete this[RegistrationCompleteSym];
+            }
+
             if (isFunc(this[RequestCompleteSym])) {
 
                 // let things know we are done with this request
                 this[RequestCompleteSym]();
                 delete this[RequestCompleteSym];
-            }
 
-            if (isFunc(this[RegistrationCompleteSym])) {
-                // remove the symbol props we added for good hygene
-                delete this[RegistrationCompleteSym];
+                // there is a code path where you may invoke a batch, say on items.add, whose return
+                // is an object like { data: any, item: IItem }. The expectation from v1 on is `item` in that object
+                // is immediately usable to make additional queries. Without this step when that IItem instance is
+                // created using "this.getById" within IITems.add all of the current observers of "this" are
+                // linked to the IItem instance created (expected), BUT they will be the set of observers setup
+                // to handle the batch, meaning invoking `item` will result in a half batched call that
+                // doesn't really work. To deliver the expected functionality we "reset" the
+                // observers using the original instance, mimicing the behavior had
+                // the IItem been created from that base without a batch involved. We use CopyFrom to ensure
+                // that we maintain the references to the InternalResolve and InternalReject events through
+                // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
+                // which ignores symbol properties.
+                this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
             }
         });
 
@@ -302,7 +329,8 @@ function formatRequests(requests: RequestRecord[], batchId: string): IGraphBatch
 
         let requestFragment: IGraphBatchRequestFragment = {
             id: `${++index}`,
-            method: init.method,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            method: init.method!,
             url: makeUrlRelative(url),
         };
 

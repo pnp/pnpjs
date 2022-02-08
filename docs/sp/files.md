@@ -4,7 +4,7 @@ One of the more challenging tasks on the client side is working with SharePoint 
 
 ## Reading Files
 
-Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your [own parser](../odata/parsers.md).
+Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your [own parser](../queryable/parsers.md).
 
 ```typescript
 import { spfi, SPFx } from "@pnp/sp";
@@ -56,7 +56,7 @@ The addUsingPath method, supports the percent or pound characters in file names.
 declare var require: (s: string) => any;
 
 import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { spfi } from "@pnp/sp";
+
 import { Web } from "@pnp/sp/webs";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
@@ -111,7 +111,7 @@ If you are working in nodejs you can also add a file using a stream. This exampl
 
 ```TypeScript
 // triggers auto-application of extensions, in this case to add getStream
-import { spfi } from "@pnp/sp";
+
 import "@pnp/nodejs";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";

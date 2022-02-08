@@ -1,35 +1,31 @@
 import { getRandomString } from "@pnp/core";
-import { getSP } from "../main.js";
 import { expect } from "chai";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
 import "@pnp/sp/items/get-all";
 import "@pnp/sp/batching";
 import { IList } from "@pnp/sp/lists";
-import { SPFI } from "@pnp/sp";
 import testSPInvokables from "../test-invokable-props.js";
 import { IItem } from "@pnp/sp/items";
 
 describe("Items", function () {
 
-    let _spfi: SPFI = null;
     let list: IList = null;
     let item: IItem = null;
     const listTitle = "ItemTestList";
 
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        _spfi = getSP();
-        const ler = await _spfi.web.lists.ensure(listTitle, "Used to test item operations");
+        const ler = await this.pnp.sp.web.lists.ensure(listTitle, "Used to test item operations");
         list = ler.list;
 
         if (ler.created) {
             // add a few items to get started
-            const [spBatch, execute] = _spfi.batched();
+            const [spBatch, execute] = this.pnp.sp.batched();
             spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
             spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
             spBatch.web.lists.getByTitle(listTitle).items.add({ Title: `Item ${getRandomString(4)}` });
@@ -38,8 +34,8 @@ describe("Items", function () {
             await execute();
         }
 
-        const itemData = await _spfi.web.lists.getByTitle(listTitle).items.select("Id").top(1)<{ Id: number }[]>();
-        item = _spfi.web.lists.getByTitle(listTitle).items.getById(itemData[0].Id);
+        const itemData = await this.pnp.sp.web.lists.getByTitle(listTitle).items.select("Id").top(1)<{ Id: number }[]>();
+        item = this.pnp.sp.web.lists.getByTitle(listTitle).items.getById(itemData[0].Id);
     });
 
     describe("Invokable Properties - IItem", testSPInvokables(() => item,
@@ -82,6 +78,14 @@ describe("Items", function () {
 
         const itemCount = await list.select("ItemCount")().then(r => r.ItemCount);
         const page = await list.items.getAll();
+        return expect(page.length).to.eq(itemCount);
+    });
+
+
+    it("getAll top(2)", async function () {
+
+        const itemCount = await list.select("ItemCount")().then(r => r.ItemCount);
+        const page = await list.items.top(2).getAll();
         return expect(page.length).to.eq(itemCount);
     });
 

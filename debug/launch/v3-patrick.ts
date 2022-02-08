@@ -1,4 +1,4 @@
-import { ITestingSettings } from "../../test/settings.js";
+import { ITestingSettings } from "../../test/load-settings.js";
 import { SPDefault } from "@pnp/nodejs";
 import { LogLevel, PnPLogging } from "@pnp/logging";
 import { spfi } from "@pnp/sp";
@@ -8,6 +8,8 @@ import "@pnp/sp/items";
 import "@pnp/sp/batching";
 import { Web } from "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
+import { IItem } from "@pnp/sp/items";
+import { Caching } from "@pnp/queryable";
 
 declare var process: { exit(code?: number): void };
 
@@ -42,6 +44,8 @@ export async function Example(settings: ITestingSettings) {
     //     console.error(e);
     // }
 
+    // PnPLogging(LogLevel.Error)
+
     try {
 
         // const recordingPath = join("C:/github/@pnp-fork", ".test-recording");
@@ -55,24 +59,50 @@ export async function Example(settings: ITestingSettings) {
 
         const [batchedSP, execute] = await sp.batched();
 
+        batchedSP.using(Caching());
+
+        batchedSP.web().then(console.log);
+
+        batchedSP.web.update({
+            Title: "dev web",
+        });
+
+        batchedSP.web.lists().then(console.log);
+
+        await execute();
+
+        
+        const [batchedSP2, execute2] = await sp.batched();
+
+        batchedSP2.using(Caching());
+
+        batchedSP2.web().then(console.log);
+
+        batchedSP2.web.lists().then(console.log);
+
+        batchedSP2.web.update({
+            Title: "dev web 2",
+        });
+
+        await execute2();
+
+
         // const list = batchedSP.web.lists.getByTitle("Generic");
 
         // for (let i = 0; i < 3; i++) {
 
         // const items = list.items;
 
-        const y = batchedSP.web.lists.getByTitle("Generic").items.add({
-            
-            Title: getRandomString(5),
+        // batchedSP.web.lists.getByTitle("Generic").items.getById(23).update({
 
-        }).then(async r => {
+        //     Title: getRandomString(5),
 
-            const y = await r.item.update({
-                Title: "maybe",
-            });
+        // }).then(async r => {
 
-            console.log(y);
-        });
+        //     const y = await r.item();
+
+        //     console.log(y);
+        // });
 
         // items.add({
         //     Title: getRandomString(5),
@@ -84,13 +114,6 @@ export async function Example(settings: ITestingSettings) {
 
         // });
         // }
-
-        await execute();
-
-        
-
-
-
 
 
     } catch (e) {

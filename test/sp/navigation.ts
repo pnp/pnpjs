@@ -1,91 +1,82 @@
 import { expect } from "chai";
-import { getSP } from "../main.js";
 import "@pnp/sp/navigation";
 import "@pnp/sp/webs";
-import { SPFI } from "@pnp/sp";
 import { INavigationNodes } from "@pnp/sp/navigation";
 import { getRandomString } from "@pnp/core";
 
 describe("Navigation Service", function () {
 
-    let _spfi: SPFI = null;
-
     before(function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-
-        _spfi = getSP();
     });
 
     it("getMenuState1", function () {
 
-        return expect(_spfi.navigation.getMenuState()).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.navigation.getMenuState()).to.eventually.be.fulfilled;
     });
 
     it("getMenuState2", async function () {
 
-        const state = await _spfi.navigation.getMenuState(null, 3);
+        const state = await this.pnp.sp.navigation.getMenuState(null, 3);
 
         // ensure we find a node with a non -1 key
         const node = state.Nodes[state.Nodes.reverse().findIndex(n => parseInt(n.Key, 10) > 0)];
 
-        const state2 = await _spfi.navigation.getMenuState(node.Key);
+        const state2 = await this.pnp.sp.navigation.getMenuState(node.Key);
 
         return expect(state2).to.have.property("StartingNodeKey", node.Key);
     });
 
     it("getMenuState3", async function () {
 
-        return expect(_spfi.navigation.getMenuState(null, 3, "CurrentNavSiteMapProviderNoEncode")).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.navigation.getMenuState(null, 3, "CurrentNavSiteMapProviderNoEncode")).to.eventually.be.fulfilled;
     });
 
 
     it("getMenuNodeKey - Sucess 1", async function () {
 
-        const state = await _spfi.navigation.getMenuState(null, 3);
+        const state = await this.pnp.sp.navigation.getMenuState(null, 3);
 
-        const r = await _spfi.navigation.getMenuNodeKey(state.Nodes[1].SimpleUrl);
+        const r = await this.pnp.sp.navigation.getMenuNodeKey(state.Nodes[1].SimpleUrl);
 
         expect(r.toLowerCase()).to.eq(state.Nodes[1].Key.toLowerCase());
     });
 
     it("getMenuNodeKey - Sucess 2", async function () {
 
-        const state = await _spfi.navigation.getMenuState(null, 3, "CurrentNavSiteMapProviderNoEncode");
+        const state = await this.pnp.sp.navigation.getMenuState(null, 3, "CurrentNavSiteMapProviderNoEncode");
 
-        const r = await _spfi.navigation.getMenuNodeKey(state.Nodes[0].SimpleUrl, "CurrentNavSiteMapProviderNoEncode");
+        const r = await this.pnp.sp.navigation.getMenuNodeKey(state.Nodes[0].SimpleUrl, "CurrentNavSiteMapProviderNoEncode");
 
         expect(r.toLowerCase()).to.eq(state.Nodes[0].Key.toLowerCase());
     });
 
     it("getMenuNodeKey - Fail", function () {
 
-        return expect(_spfi.navigation.getMenuNodeKey("/some/page/not/there.aspx")).to.eventually.be.rejected;
+        return expect(this.pnp.sp.navigation.getMenuNodeKey("/some/page/not/there.aspx")).to.eventually.be.rejected;
     });
 });
 
 // TODO: Fix const declaration of navs in declare.
 describe("navigation", function () {
 
-    let _spfi: SPFI = null;
     let url = "";
 
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        _spfi = getSP();
-
         const navs: INavigationNodes[] = [
-            _spfi.web.navigation.topNavigationBar,
-            _spfi.web.navigation.quicklaunch,
+            this.pnp.sp.web.navigation.topNavigationBar,
+            this.pnp.sp.web.navigation.quicklaunch,
         ];
 
-        const webData = await _spfi.web.select("ServerRelativeUrl")();
+        const webData = await this.pnp.sp.web.select("ServerRelativeUrl")();
         url = webData.ServerRelativeUrl;
 
         // ensure we have at least one node in each nav

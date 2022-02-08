@@ -38,7 +38,9 @@ export function extendable() {
 
                     const extensions = factoryExtensions.get(Reflect.get(proto, ObjExtensionsSym));
 
-                    r = extend(r, extensions);
+                    if (extensions) {
+                        r = extend(r, extensions);
+                    }
                 }
 
                 const proxied = new Proxy(r, {
@@ -99,20 +101,23 @@ export function extendFactory<T extends (...args: any[]) => any>(factory: T, ext
     // factoryExtensions
     const proto = Reflect.getPrototypeOf(factory);
 
-    if (!Reflect.has(proto, ObjExtensionsSym)) {
+    if (proto) {
+        if (!Reflect.has(proto, ObjExtensionsSym)) {
 
-        Reflect.defineProperty(proto, ObjExtensionsSym, {
-            value: getGUID(),
-        });
+            Reflect.defineProperty(proto, ObjExtensionsSym, {
+                value: getGUID(),
+            });
+        }
+
+        const key = proto[ObjExtensionsSym];
+
+        if (!factoryExtensions.has(key)) {
+            factoryExtensions.set(key, []);
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        extendCol(factoryExtensions.get(key)!, extensions);
     }
-
-    const key = proto[ObjExtensionsSym];
-
-    if (!factoryExtensions.has(key)) {
-        factoryExtensions.set(key, []);
-    }
-
-    extendCol(factoryExtensions.get(key), extensions);
 }
 
 function extendCol(a: ExtensionType[], e: ExtensionType | ExtensionType[]) {

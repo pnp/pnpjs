@@ -10,7 +10,7 @@ Allows you to inject an existing bearer token into the request. This behavior wi
 
 ```TypeScript
 import { BearerToken } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(BearerToken("HereIsMyBearerTokenStringFromSomeSource"));
@@ -31,7 +31,7 @@ This behavior, for use in web browsers, provides basic fetch support through the
 
 ```TypeScript
 import { BrowserFetch } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(BrowserFetch());
@@ -41,7 +41,7 @@ const webInfo = await sp.webs();
 
 ```TypeScript
 import { BrowserFetch } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(BrowserFetch({ replace: false }));
@@ -55,7 +55,7 @@ This behavior makes fetch requests but will attempt to retry the request on cert
 
 ```TypeScript
 import { BrowserFetchWithRetry } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(BrowserFetchWithRetry());
@@ -67,7 +67,7 @@ You can also control how the behavior works through its props. The `replace` val
 
 ```TypeScript
 import { BrowserFetchWithRetry } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(BrowserFetchWithRetry({
@@ -89,7 +89,7 @@ This behavior allows you to cache the results of get requests in either session 
 
 ```TypeScript
 import { Caching } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(Caching());
@@ -110,7 +110,7 @@ The expire date factory has the form `(url: string) => Date` and should return t
 ```TypeScript
 import { getHashCode, PnPClientStorage, dateAdd, TimelinePipe } from "@pnp/core";
 import { Caching } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(Caching({
@@ -133,7 +133,7 @@ As with any behavior you have the option to only apply caching to certain reques
 ```TypeScript
 import { getHashCode, dateAdd } from "@pnp/core";
 import { Caching } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
@@ -156,7 +156,7 @@ Adds any specified headers to a given request. Can be used multiple times with a
 
 ```TypeScript
 import { InjectHeaders } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(InjectHeaders({
@@ -179,7 +179,7 @@ Performs error handling and parsing of JSON responses. This is the one you'll us
 
 ```TypeScript
 import { DefaultParse } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(DefaultParse());
@@ -193,7 +193,7 @@ Checks for errors and parses the results as text with no further manipulation.
 
 ```TypeScript
 import { TextParse } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(TextParse());
@@ -205,7 +205,7 @@ Checks for errors and parses the results a Blob with no further manipulation.
 
 ```TypeScript
 import { BlobParse } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(BlobParse());
@@ -217,7 +217,7 @@ Checks for errors and parses the results as JSON with no further manipulation. M
 
 ```TypeScript
 import { JSONParse } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(JSONParse());
@@ -229,7 +229,7 @@ Checks for errors and parses the results a Buffer with no further manipulation.
 
 ```TypeScript
 import { BufferParse } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(BufferParse());
@@ -241,7 +241,7 @@ Checks for errors and parses the headers of the Response as the result. This is 
 
 ```TypeScript
 import { HeaderParse } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(HeaderParse());
@@ -255,7 +255,7 @@ These two behaviors are special and should always be included when composing you
 
 ```TypeScript
 import { ResolveOnData, RejectOnError } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const sp = spfi().using(ResolveOnData(), RejectOnError());
@@ -269,7 +269,7 @@ The Timeout behavior allows you to include a timeout in requests. You can specif
 
 ```TypeScript
 import { Timeout } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 // requests should timeout in 5 seconds
@@ -278,7 +278,7 @@ const sp = spfi().using(Timeout(5000));
 
 ```TypeScript
 import { Timeout } from "@pnp/queryable";
-import { spfi } from "@pnp/sp";
+
 import "@pnp/sp/webs";
 
 const controller = new AbortController();

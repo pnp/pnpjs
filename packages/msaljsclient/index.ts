@@ -7,7 +7,7 @@ export function MSAL(config: Configuration, authParams: AuthenticationParameters
 
     return (instance: Queryable) => {
 
-        instance.on.auth(async (url: URL, init: RequestInit) => {
+        instance.on.auth.replace(async (url: URL, init: RequestInit) => {
 
             let accessToken: string;
 
@@ -30,8 +30,7 @@ export function MSAL(config: Configuration, authParams: AuthenticationParameters
                 }
             }
 
-            // eslint-disable-next-line @typescript-eslint/dot-notation
-            init.headers["Authorization"] = `Bearer ${accessToken}`;
+            init.headers = { ...init.headers, Authorization: `Bearer ${accessToken}` };
 
             return [url, init];
         });

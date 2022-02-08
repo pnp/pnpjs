@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { getSP } from "../main.js";
 import "@pnp/sp/folders";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -10,27 +9,25 @@ import { getRandomString } from "@pnp/core";
 import "@pnp/sp/fields/list";
 import "@pnp/sp/column-defaults";
 import "@pnp/sp/batching";
-import { SPFI } from "@pnp/sp";
+
 import { IList } from "@pnp/sp/lists";
 
 describe("DefaultColumnValues", function () {
 
-    let _spfi: SPFI = null;
     const listName = "DefaultColumnValuesTests";
     let list: IList = null;
 
     before(async function () {
 
-        if (!this.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        _spfi = getSP();
-        const ler = await _spfi.web.lists.ensure(listName, "", 101);
+        const ler = await this.pnp.sp.web.lists.ensure(listName, "", 101);
         list = ler.list;
 
         if (ler.created) {
-            const [batchSP, execute] = _spfi.batched();
+            const [batchSP, execute] = this.pnp.sp.batched();
             const fields = batchSP.web.lists.getByTitle(listName).fields;
             fields.addText("TextField");
             fields.addNumber("NumberField");

@@ -1,7 +1,7 @@
 import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe, isFunc } from "@pnp/core";
 import { InjectHeaders, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "./operations.js";
-import { ISPQueryable, SPQueryable, _SPQueryable } from "./spqueryable.js";
+import { ISPQueryable, _SPQueryable } from "./spqueryable.js";
 import { spfi, SPFI } from "./fi.js";
 import { Web, IWeb, _Web } from "./webs/types.js";
 
@@ -79,11 +79,6 @@ const RegistrationCompleteSym = Symbol.for("batch_registration");
 const RequestCompleteSym = Symbol.for("batch_request");
 
 /**
- * Tracks on a batched instance the original set of observers which are returned once the batch is complete
- */
-const ObserverTrackerSym = Symbol.for("batch_original_observers");
-
-/**
  * Special batch parsing behavior used to convert the batch response text into a set of Response objects for each request
  * @returns A parser behavior
  */
@@ -107,6 +102,23 @@ class BatchQueryable extends _SPQueryable {
         // this will copy over the current observables from the base associated with this batch
         // this will replace any other parsing present
         this.using(CopyFrom(base, "replace"), BatchParse());
+
+        this.on.dispose(() => {
+
+            // there is a code path where you may invoke a batch, say on items.add, whose return
+            // is an object like { data: any, item: IItem }. The expectation from v1 on is `item` in that object
+            // is immediately usable to make additional queries. Without this step when that IItem instance is
+            // created using "this.getById" within IITems.add all of the current observers of "this" are
+            // linked to the IItem instance created (expected), BUT they will be the set of observers setup
+            // to handle the batch, meaning invoking `item` will result in a half batched call that
+            // doesn't really work. To deliver the expected functionality we "reset" the
+            // observers using the original instance, mimicing the behavior had
+            // the IItem been created from that base without a batch involved. We use CopyFrom to ensure
+            // that we maintain the references to the InternalResolve and InternalReject events through
+            // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
+            // which ignores symbol properties.
+            base.using(CopyFrom(this, "replace", (k) => /(auth|send|init)/i.test(k)));
+        });
     }
 }
 
@@ -248,9 +260,7 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
                 reject(e);
             }
 
-        }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => {
-            requests.length = 0;
-        }));
+        }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => void (0)));
     };
 
     const register = (instance: ISPQueryable) => {
@@ -260,9 +270,6 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
             if (isFunc(this[RegistrationCompleteSym])) {
                 throw Error("This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse.");
             }
-
-            // we need to track the observers from the original instance and put them back later (see comment below)
-            this[ObserverTrackerSym] = SPQueryable(this);
 
             // we need to ensure we wait to start execute until all our batch children hit the .send method to be fully registered
             registrationPromises.push(new Promise((resolve) => {
@@ -276,19 +283,15 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
         instance.on.auth.clear();
 
         // we replace the send function with our batching logic
-        instance.on.send.replace(async function (this: Queryable, url: URL, init: RequestInit) {
+        instance.on.send.replace(async function (this: ISPQueryable, url: URL, init: RequestInit) {
 
-            let requestTuple: RequestRecord;
-
-            // this is the promise that user code will see
+            // this is the promise that Queryable will see returned from .emit.send
             const promise = new Promise<Response>((resolve, reject) => {
-                requestTuple = [this, url.toString(), init, resolve, reject];
+                // add the request information into the batch
+                requests.push([this, url.toString(), init, resolve, reject]);
             });
 
             this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
-
-            // add the request information into the batch
-            requests.push(requestTuple);
 
             // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
             completePromises.push(new Promise((resolve) => {
@@ -298,7 +301,27 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
             // indicate that registration of this request is complete
             this[RegistrationCompleteSym]();
 
-            return promise.then((r) => {
+            return promise;
+        });
+
+        instance.on.dispose(function (this: ISPQueryable) {
+
+            if (isFunc(this[RegistrationCompleteSym])) {
+
+                // if this request is in a batch and caching is in play we need to resolve the registration promises to unblock processing of the batch
+                // because the request will never reach the "send" moment as the result is returned from "pre"
+                this[RegistrationCompleteSym]();
+
+                // remove the symbol props we added for good hygene
+                delete this[RegistrationCompleteSym];
+            }
+
+            if (isFunc(this[RequestCompleteSym])) {
+
+                // let things know we are done with this request
+                this[RequestCompleteSym]();
+                delete this[RequestCompleteSym];
+
                 // there is a code path where you may invoke a batch, say on items.add, whose return
                 // is an object like { data: any, item: IItem }. The expectation from v1 on is `item` in that object
                 // is immediately usable to make additional queries. Without this step when that IItem instance is
@@ -311,30 +334,7 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
                 // that we maintain the references to the InternalResolve and InternalReject events through
                 // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
                 // which ignores symbol properties.
-                this.using(CopyFrom(this[ObserverTrackerSym], "replace"));
-                return r;
-            });
-        });
-
-        instance.on.dispose(function () {
-
-            if (isFunc(this[RequestCompleteSym])) {
-
-                // let things know we are done with this request
-                this[RequestCompleteSym]();
-                delete this[RequestCompleteSym];
-            }
-
-            if (isFunc(this[RegistrationCompleteSym])) {
-
-                // remove the symbol props we added for good hygene
-                delete this[RegistrationCompleteSym];
-            }
-
-            if (this[ObserverTrackerSym]) {
-
-                // remove the symbol props we added for good hygene
-                delete this[ObserverTrackerSym];
+                this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
             }
         });
 

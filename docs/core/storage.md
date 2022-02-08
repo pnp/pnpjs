@@ -1,6 +1,6 @@
 # @pnp/core : storage
 
-This module provides a thin wrapper over the browser storage options, local and session. If neither option is available it shims storage with a non-persistent in memory polyfill. Optionally through configuration you can activate expiration. Sample usage is shown below.
+This module provides a thin wrapper over the browser local and session storage. If neither option is available it shims storage with a non-persistent in memory polyfill. Optionally through configuration you can activate expiration. Sample usage is shown below.
 
 ## PnPClientStorage
 
@@ -72,4 +72,19 @@ storage.local.deleteExpired();
 storage.local.deleteExpired().then(_ => {
     // init my application
 });
+```
+
+In previous versions we included code to automatically remove expired items. Due to a lack of necessity we removed that, but you can recreate the concept as shown below:
+
+```TypeScript
+function expirer(timeout = 3000) {
+
+    // session storage
+    storage.session.deleteExpired();
+
+    // local storage
+    storage.local.deleteExpired();
+
+    setTimeout(() => expirer(timeout), timeout);
+}
 ```

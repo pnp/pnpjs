@@ -5,8 +5,8 @@ PnPjs is a collection of fluent libraries for consuming SharePoint, Graph, and O
 These articles provide general guidance for working with the libraries. If you are migrating from V2 please review the [transition guide](transition-guide.md).
 
 * **[Getting Started](getting-started.md)**
-* [Authentication](./authentication/index.md)
-* [Get Started Contributing](./contributing/index.md)
+* [Authentication](concepts/authentication.md)
+* [Get Started Contributing](contributing/index.md)
 
 ![Fluent API in action](img/PnPJS_FluentAPI.gif)
 
@@ -16,7 +16,7 @@ _Animation of the library in use, note intellisense help in building your querie
 
 Patterns and Practices client side libraries (PnPjs) are comprised of the packages listed below. All of the packages are published as a set and depend on their peers within the @pnp scope.
 
-The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%2Fcommon.svg)](https://badge.fury.io/js/%40pnp%2Fcommon).
+The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%2Fcore.svg)](https://badge.fury.io/js/%40pnp%2Fcore).
 
 |     ||  |
 | ---| -------------|-------------|
@@ -31,7 +31,7 @@ The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%
 
 ## Authentication
 
-We have a new section dedicated to helping you [figure out the best way to handle authentication](./authentication/index.md) in your application, check it out!
+We have a new section dedicated to helping you [figure out the best way to handle authentication](concepts/authentication.md) in your application, check it out!
 
 ## Issues, Questions, Ideas
 

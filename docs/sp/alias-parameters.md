@@ -23,7 +23,7 @@ const sp = spfi("{tenant url}").using(SPFx(this.content));
 const query = sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/").files.select("Title").top(3);
 
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files
-console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files?$select=Title&$top=3
+console.log(query.toRequestUrl()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files?$select=Title&$top=3
 
 const r = await query();
 console.log(r);

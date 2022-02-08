@@ -142,7 +142,7 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
      */
     public orderBy(orderBy: string, ascending = true): this {
         const o = "$orderby";
-        const query = this.query.has(o) ? this.query.get(o).split(",") : [];
+        const query = this.query.get(o)?.split(",") || [];
         query.push(`${encodeURIComponent(orderBy)} ${ascending ? "asc" : "desc"}`);
         this.query.set(o, query.join(","));
         return this;

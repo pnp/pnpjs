@@ -14,7 +14,7 @@ function getAllPackageFolderNames() {
 }
 
 const basePath = "./build/testing/test/";
-let paths = [`${basePath}main.js`];
+let paths = [];
 
 // handle package specific config
 if (yargs.packages || yargs.p) {

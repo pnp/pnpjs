@@ -2151,7 +2151,7 @@ const addInWenUrl = &quot;{The add-in web url, likely from the query string}&quo
 const hostWebUrl = &quot;{The host web url, likely from the query string}&quot;;
 
 // make requests into the host web via the SP.RequestExecutor
-const w = await sp.crossDomainWeb(addInWenUrl, hostWebUrl).get();
+const w = await sp.crossDomainWeb(addInWenUrl, hostWebUrl)();
 console.log(JSON.stringify(w, null, 4));
 </code></pre>
 <h2 id="library-topics">Library Topics<a class="headerlink" href="#library-topics" title="Permanent link">&para;</a></h2>

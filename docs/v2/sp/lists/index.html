@@ -2800,7 +2800,7 @@ console.log(r.Title);
 const listAddResult = await sp.web.lists.add(&quot;My Doc Library&quot;, &quot;This is a description of doc lib.&quot;, 101, true, { OnQuickLaunch: true });
 
 // get the Id of the newly added document library
-const r = await listAddResult.list.select(&quot;Id&quot;).get();
+const r = await listAddResult.list.select(&quot;Id&quot;)();
 
 // log id to console
 console.log(r.Id);

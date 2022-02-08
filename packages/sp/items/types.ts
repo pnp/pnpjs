@@ -293,10 +293,10 @@ export class PagedItemCollection<T> {
     /**
      * Gets the next set of results, or resolves to null if no results are available
      */
-    public getNext(): Promise<PagedItemCollection<T>> {
+    public async getNext(): Promise<PagedItemCollection<T> | null> {
 
         if (this.hasNext) {
-            const items = <IItems>Items([this.parent, this.nextUrl], null);
+            const items = <IItems>Items([this.parent, this.nextUrl], "");
             return items.getPaged<T>();
         }
 

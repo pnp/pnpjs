@@ -2,7 +2,7 @@
 
 This library is geared towards folks working with TypeScript but will work equally well for JavaScript projects. To get started you need to install the libraries you need via npm. Many of the packages have a peer dependency to other packages with the @pnp namespace meaning you may need to install more than one package. All packages are released together eliminating version confusion - all packages will depend on packages with the same version number.
 
-If you need to support older browsers please revert to version 2 of the library and see related documentation on [polyfills](v2/concepts/polyfill.md) for required functionality.
+If you need to support older browsers please revert to version 2 of the library and see related documentation on [polyfills](./v2/concepts/polyfill/index.html) for required functionality.
 
 ## Install
 
@@ -25,7 +25,7 @@ import { getRandomString } from "@pnp/core";
 
 ## Getting Started with SharePoint Framework
 
-The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises you will need to use [version 2](./v2/SPFx-on-premises) of the library. If you are targeting SharePoint online you will need to take the additional steps outlined below based on the version of the SharePoint Framework you are targeting.
+The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises you will need to use [version 2](./v2/SPFx-on-premises/index.html) of the library. If you are targeting SharePoint online you will need to take the additional steps outlined below based on the version of the SharePoint Framework you are targeting.
 
 //TODO:: Add additonal SPFx configuration steps based on SPFx Version
 
@@ -132,7 +132,7 @@ npm i @pnp/sp @pnp/nodejs
 Once these are installed you need to import them into your project, to communicate with SharePoint from node we'll need the following imports:
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+
 import { SPDefault } from "@pnp/nodejs";
 import "@pnp/sp/webs";
 import { readFileSync } from 'fs';
@@ -162,7 +162,7 @@ function() {
     }));
 
     // make a call to SharePoint and log it in the console
-    const w = await sp.web.select("Title", "Description").get();
+    const w = await sp.web.select("Title", "Description")();
     console.log(JSON.stringify(w, null, 4));
 }();
 ```
@@ -239,4 +239,4 @@ const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
 
 ## Next Steps
 
-Be sure to [review the article describing all of the available settings](./concepts/configuration.md) across the libraries.
+For more complicated authentication scnearios please [review the article describing all of the available authentication methods](./authentication/index.md).

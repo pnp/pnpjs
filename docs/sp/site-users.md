@@ -111,7 +111,7 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-let userProps = await sp.web.currentUser.get();
+let userProps = await sp.web.currentUser();
 userProps.Title = "New title";
 await sp.web.currentUser.update(userProps);
 ```
