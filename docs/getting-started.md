@@ -121,7 +121,7 @@ export class SampleService {
 
 ### Using @pnp/sp `spfi` factory interface
 
-> Please see the [main article on how we support node versions](./nodejs-support.md) that require commonjs modules.
+> Version 3 of this library only supports ESModules. If for some reason you still require commonjs modules please check out Version 2.
 
 The first step is to install the packages that will be needed. You can read more about what each package does starting on the [packages](packages.md) page.
 
@@ -198,7 +198,7 @@ function() {
 
 ## Single Page Application Context
 
-In some cases you may be working in a client-side application that doesn't have context to the SharePoint site. In that case you will need to utilize the MSAL Client, you can get the details on creating that connection in this [article](./authentication/msaljsclient.md).
+In some cases you may be working in a client-side application that doesn't have context to the SharePoint site. In that case you will need to utilize the MSAL Client, you can get the details on creating that connection in this [article](./concepts/authentication.md#MSAL-in-Browser).
 
 ## Selective Imports
 
@@ -239,4 +239,4 @@ const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
 
 ## Next Steps
 
-For more complicated authentication scnearios please [review the article describing all of the available authentication methods](./authentication/index.md).
+For more complicated authentication scnearios please [review the article describing all of the available authentication methods](./concepts/authentication.md).

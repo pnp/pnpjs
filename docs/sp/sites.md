@@ -139,7 +139,6 @@ const result = await sp.site.createCommunicationSiteFromProps({
 });
 ```
 
-
 ## Create a modern team site
 
 **Note:** Works only in SharePoint online. It wont work with App only tokens
@@ -226,6 +225,6 @@ import { sp } from "@pnp/sp";
 
 // Specify which site to verify
 const siteUrl = "https://tenant.sharepoint.com/sites/subsite";
-const exists = sp.site.exists(siteUrl);
+const exists = await sp.site.exists(siteUrl);
 console.log(exists);
 ```

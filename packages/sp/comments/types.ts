@@ -6,7 +6,7 @@ import {
 } from "../spqueryable.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { body } from "@pnp/queryable";
-import { spPost } from "../operations.js";
+import { spDelete, spPost } from "../operations.js";
 
 @defaultPath("comments")
 export class _Comments extends _SPCollection<ICommentInfo[]> {
@@ -73,7 +73,8 @@ export class _Comment extends _SPInstance<ICommentInfo> {
      * Deletes this comment
      */
     public delete(): Promise<void> {
-        return spPost(Comment(this, "DeleteComment"));
+        // return spPost(Comment(this, "DeleteComment"));
+        return spDelete(this);
     }
 }
 export interface IComment extends _Comment { }
