@@ -6,9 +6,9 @@ The 'clientside-pages' module allows you to create, edit, and delete modern Shar
 
 | Scenario    | Import Statement                                                                                                                                                                                                |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Selective 1 | import { sp } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages"; |
-| Selective 2 | import { sp } from "@pnp/sp";<br />import "@pnp/sp/clientside-pages";                                                                                                                                           |
-| Preset: All | import { sp, ClientsidePageFromFile, ClientsideText, ClientsideWebpartPropertyTypes, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presets/all";                                     |
+| Selective 1 | import { spfi } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages"; |
+| Selective 2 | import { spfi } from "@pnp/sp";<br />import "@pnp/sp/clientside-pages";                                                                                                                                           |
+| Preset: All | import { spfi, ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presets/all";                                     |
 
 ## Create a new Page
 
@@ -17,10 +17,12 @@ You can create a new client-side page in several ways, all are equivalent.
 ### Create using IWeb.addClientsidePage
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFI } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { PromotedState } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // Create a page providing a file name
 const page = await sp.web.addClientsidePage("mypage1");
@@ -46,10 +48,12 @@ await page3.save();
 ### Create using CreateClientsidePage method
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { Web } from "@pnp/sp/webs";
 import { CreateClientsidePage, PromotedState } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 const page1 = await CreateClientsidePage(sp.web, "mypage2", "My Page Title");
 
@@ -84,10 +88,12 @@ There are a few ways to load pages, each of which results in an IClientsidePage 
 This method takes a _server relative_ path to the page to load.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { Web } from "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // use from the sp.web fluent chain
 const page = await sp.web.loadClientsidePage("/sites/dev/sitepages/mypage3.aspx");
@@ -101,10 +107,12 @@ const page2 = await Web("https://{absolute web url}").loadClientsidePage("/sites
 This method takes an IFile instance and loads an IClientsidePage instance.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import { ClientsidePageFromFile } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/webs";
 import "@pnp/sp/files/web";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 const page = await ClientsidePageFromFile(sp.web.getFileByServerRelativePath("/sites/dev/sitepages/mypage3.aspx"));
 ```
@@ -114,8 +122,13 @@ const page = await ClientsidePageFromFile(sp.web.getFileByServerRelativePath("/s
 Client-side pages are made up of sections, columns, and controls. Sections contain columns which contain controls. There are methods to operate on these within the page, in addition to the standard array methods available in JavaScript. These samples use a variable `page` that is understood to be an IClientsidePage instance which is either created or loaded as outlined in previous sections.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // add two columns with factor 6 - this is a two column layout as the total factor in a section should add up to 12
 const section1 = page.addSection();
@@ -135,8 +148,13 @@ await page.save();
 ### Manipulate Sections and Columns
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // drop all the columns in this section
 // this will also DELETE all controls contained in the columns
@@ -155,8 +173,13 @@ await page.save();
 The vertical section, if on the page, is stored within the sections array. However, you access it slightly differently to make things easier.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // add or get a vertical section (handles case where section already exists)
 const vertSection = page.addVerticalSection();
@@ -178,8 +201,13 @@ if (page.hasVerticalSection) {
 ### Reorder Sections
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // swap the order of two sections
 // this will preserve the controls within the columns
@@ -194,8 +222,13 @@ await page.save();
 The sections and columns are arrays, so normal array operations work as expected
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // swap the order of two columns
 // this will preserve the controls within the columns
@@ -212,10 +245,13 @@ Once you have your sections and columns defined you will want to add/edit contro
 ### Add Text Content
 
 ```TypeScript
-import { ClientsideText } from "@pnp/sp/clientside-pages";
+import { spfi, SPFx } from "@pnp/sp";
+import { ClientsideText, IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 page.addSection().addControl(new ClientsideText("@pnp/sp is a great library!"));
 
@@ -227,10 +263,12 @@ await page.save();
 Adding controls involves loading the available client-side part definitions from the server or creating a text part.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
+import { spfi, SPFx } from "@pnp/sp";
 import { ClientsideWebpart } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // this will be a ClientsidePageComponent array
 // this can be cached on the client in production scenarios
@@ -266,9 +304,9 @@ await page.save();
 There are many ways that client side web parts are implemented and we can't provide handling within the library for all possibilities. This example shows how to handle a property set within the serverProcessedContent, in this case a List part's display title.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
-import "@pnp/sp/webs";
+import { spfi, SPFx } from "@pnp/sp";
 import { ClientsideWebpart } from "@pnp/sp/clientside-pages";
+import "@pnp/sp/webs";
 
 // we create a class to wrap our functionality in a reusable way
 class ListWebpart extends ClientsideWebpart {
@@ -286,6 +324,8 @@ class ListWebpart extends ClientsideWebpart {
     this.json.webPartData.serverProcessedContent.searchablePlainTexts.listTitle = value;
   }
 }
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // now we load our page
 const page = await sp.web.loadClientsidePage("/sites/dev/SitePages/List-Web-Part.aspx");
@@ -309,8 +349,13 @@ There are other operation you can perform on a page in addition to manipulating 
 You can get and set the page layout. Changing the layout after creating the page may have side effects and should be done cautiously.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.pageLayout;
@@ -323,8 +368,13 @@ await page.save();
 ### bannerImageUrl
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.bannerImageUrl;
@@ -343,8 +393,13 @@ Allows you to set the thumbnail used for the page independently of the banner.
 > If you set the bannerImageUrl property and not thumbnailUrl the thumbnail will be reset to match the banner, mimicking the UI functionality.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.thumbnailUrl;
@@ -357,8 +412,13 @@ await page.save();
 ### topicHeader
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.topicHeader;
@@ -375,8 +435,13 @@ await page.save();
 ### title
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.title;
@@ -391,8 +456,13 @@ await page.save();
 > Descriptions are limited to 255 chars
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.description;
@@ -407,8 +477,13 @@ await page.save();
 Sets the layout type of the page. The valid values are: "FullWidthImage", "NoImage", "ColorBlock", "CutInShape"
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.layoutType;
@@ -423,8 +498,13 @@ await page.save();
 Sets the header text alignment to one of "Left" or "Center"
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.headerTextAlignment;
@@ -439,8 +519,13 @@ await page.save();
 Sets if the topic header is displayed on a page.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.showTopicHeader;
@@ -459,8 +544,12 @@ await page.save();
 Sets if the publish date is displayed on a page.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the current value
 const value = page.showPublishDate;
@@ -477,14 +566,21 @@ await page.save();
 ### Get / Set author details
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+import "@pnp/sp/clientside-pages";
+import "@pnp/sp/site-users";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // get the author details (string | null)
 const value = page.authorByLine;
 
 // set the author by user id
-const user = await web.currentUser.select("Id", "LoginName")();
+const user = await sp.web.currentUser.select("Id", "LoginName")();
 const userId = user.Id;
 const userLogin = user.LoginName;
 
@@ -502,8 +598,13 @@ await page.save();
 Loads the page from the server. This will overwrite any local unsaved changes.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 await page.load();
 ```
@@ -513,8 +614,13 @@ await page.load();
 Saves any changes to the page, optionally keeping them in draft state.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // changes are published
 await page.save();
@@ -528,8 +634,13 @@ await page.save(false);
 Discards any current checkout of the page by the current user.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 await page.discardPageCheckout();
 ```
@@ -539,8 +650,13 @@ await page.discardPageCheckout();
 Promotes the page as a news article.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 await page.promoteToNews();
 ```
@@ -552,11 +668,15 @@ Used to control the availability of comments on a page.
 [![Known Issue Banner](https://img.shields.io/badge/Known%20Issue-important.svg)](https://github.com/pnp/pnpjs/issues/1383)
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
 // you need to import the comments sub-module or use the all preset
 import "@pnp/sp/comments/clientside-page";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // turn on comments
 await page.enableComments();
@@ -570,10 +690,13 @@ await page.disableComments();
 Finds a control within the page by id.
 
 ```TypeScript
-import { ClientsideText } from "@pnp/sp/clientside-pages";
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage, ClientsideText } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
 
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 const control = page.findControlById("06d4cdf6-bce6-4200-8b93-667a1b0a6c9d");
 
@@ -586,8 +709,13 @@ const control = page.findControlById<ClientsideText>("06d4cdf6-bce6-4200-8b93-66
 Finds a control within the page using the supplied delegate. Can also be used to iterate through all controls in the page.
 
 ```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // find the first control whose order is 9
 const control = page.findControl((c) => c.order === 9);
@@ -630,11 +758,14 @@ const info = await page.getLikedByInformation();
 Creates a copy of the page, including all controls.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/webs";
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instance
-const page: IClientsidePage;
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // creates a published copy of the page
 const pageCopy = await page.copy(sp.web, "newpagename", "New Page Title");
@@ -653,13 +784,16 @@ pageCopy2.save();
 Copies the contents of a page to another existing page instance.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/webs";
 
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
 // our page instances, loaded in any of the ways shown above
-const source: IClientsidePage;
-const target: IClientsidePage;
-const target2: IClientsidePage;
+const source: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
+const target: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/target.aspx");
+const target2: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/target2.aspx");
 
 // creates a published copy of the page
 await source.copyTo(target);
@@ -680,8 +814,12 @@ Sets the banner image url and optionally additional properties. Allows you to se
 > Banner images need to exist within the same site collection as the page where you want to use them.
 
 ```TypeScript
-// our page instance
-const page: IClientsidePage;
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 page.setBannerImage("/server/relative/path/to/image.png");
 
@@ -690,10 +828,10 @@ await page.save();
 
 // set additional props
 page.setBannerImage("/server/relative/path/to/image.png", {
-    altText: "Image description",
-    imageSourceType: 2,
-    translateX: 30,
-    translateY: 1234,
+  altText: "Image description",
+  imageSourceType: 2,
+  translateX: 30,
+  translateY: 1234,
 });
 
 // save the changes
@@ -703,28 +841,55 @@ await page.save();
 This sample shows the full process of adding a page, image file, and setting the banner image in nodejs. The same code would work in a browser with an update on how you get the `file` - likely from a file input or similar.
 
 ```TypeScript
-import { SPFetchClient } from "@pnp/nodejs";
 import { join } from "path";
-import { readFileSync } from "fs";
-import { sp } from "@pnp/sp";
+import { createReadStream } from "fs";
+import { spfi, SPFI, SPFx } from "@pnp/sp";
+import { SPDefault } from "@pnp/nodejs";
+import { LogLevel  } from "@pnp/logging";
+
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import "@pnp/sp/clientside-pages";
 
-// configure your node options
-sp.setup({
-  sp: {
-    fetchClientFactory: () => {
-      return new SPFetchClient("{Site Url}", "{Client Id}", "{Client Secret}");
+const buffer = readFileSync("c:/temp/key.pem");
+
+const config:any = {
+  auth: {
+    authority: "https://login.microsoftonline.com/{my tenant}/",
+    clientId: "{application (client) id}",
+    clientCertificate: {
+      thumbprint: "{certificate thumbprint, displayed in AAD}",
+      privateKey: buffer.toString(),
     },
   },
-});
+  system: {
+    loggerOptions: {
+      loggerCallback(loglevel: any, message: any, containsPii: any) {
+          console.log(message);
+      },
+      piiLoggingEnabled: false,
+      logLevel: LogLevel.Verbose
+    }
+  }
+};
+
+// configure your node options
+const sp = spfi('{site url}').using(SPDefault({
+  baseUrl: '{site url}',
+  msal: {
+    config: config,
+    scopes: [ 'https://{my tenant}.sharepoint.com/.default' ]
+  }
+}));
+
 
 // add the banner image
 const dirname = join("C:/path/to/file", "img-file.jpg");
-const file: Uint8Array = new Uint8Array(readFileSync(dirname));
-const far = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents").files.add("banner.jpg", file, true);
+
+const chunkedFile = createReadStream(dirname);
+
+const far = await sp.web.getFolderByServerRelativePath("/sites/dev/Shared Documents").files.addChunked( "banner.jpg", chunkedFile );
 
 // add the page
 const page = await sp.web.addClientsidePage("MyPage", "Page Title");
@@ -741,8 +906,12 @@ await page.save();
 Allows you to set the banner image from a source outside the current site collection. The image file will be copied to the SiteAssets library and referenced from there.
 
 ```TypeScript
-// our page instance
-const page: IClientsidePage;
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // you must await this method
 await page.setBannerImageFromExternalUrl("https://absolute.url/to/my/image.jpg");
@@ -754,15 +923,19 @@ await page.save();
 You can optionally supply additional props for the banner image, these match the properties when calling [setBannerImage](#setbannerimage)
 
 ```TypeScript
-// our page instance
-const page: IClientsidePage;
+import { spfi, SPFx } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.content));
+
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
 // you must await this method
 await page.setBannerImageFromExternalUrl("https://absolute.url/to/my/image.jpg", {
-    altText: "Image description",
-    imageSourceType: 2,
-    translateX: 30,
-    translateY: 1234,
+  altText: "Image description",
+  imageSourceType: 2,
+  translateX: 30,
+  translateY: 1234,
 });
 
 // save the changes

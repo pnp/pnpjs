@@ -12,7 +12,7 @@ You can learn more about Microsoft Graph users by reading the [Official Microsof
 |--|--|
 |Selective 1|import { graphfi } from "@pnp/graph";<br />import {IPhoto, Photo} from "@pnp/graph/photos";|
 |Selective 2|import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/photos";|
-|Preset: All|import { graph, IPhoto, Photo } from "@pnp/sp/presets/all";|
+|Preset: All|import { graphfi, IPhoto, Photo } from "@pnp/sp/presets/all";|
 
 ## Current User Photo
 
