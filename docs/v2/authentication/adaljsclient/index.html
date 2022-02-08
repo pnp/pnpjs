@@ -2314,7 +2314,7 @@ public onInit(): Promise&lt;void&gt; {
 
 public render(): void {
 
-  sp.web.get().then(t =&gt; {
+  sp.web().then(t =&gt; {
     this.domElement.innerHTML = JSON.stringify(t);
   }).catch(e =&gt; {
     this.domElement.innerHTML = JSON.stringify(e);
@@ -2385,7 +2385,7 @@ graph.setup({
 try {
 
     // call the graph API
-    const groups = await graph.groups.get();
+    const groups = await graph.groups();
 
     console.log(JSON.stringify(groups, null, 4));
 

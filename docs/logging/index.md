@@ -235,3 +235,28 @@ class MyListener implements ILogListener {
 
 Logger.subscribe(new MyListener());
 ```
+
+## Logging Behavior
+
+To allow seamless logging with v3 we have introduced the `PnPLogging` behavior. It takes a single augument representing the log level of _that behavior_, allowing you to be very selective in what logging you want to get. As well the log level applied here ignores any global level set with `activeLogLevel` on Logger.
+
+```TypeScript
+import { LogLevel, PnPLogging, Logger, ConsoleListener } from "@pnp/logging";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+// subscribe a listener
+Logger.subscribe(new ConsoleListener());
+
+// at the root we only want to log errors, which will be sent to all subscribed loggers on Logger
+const sp = spfi().using(SPFx(this.context), PnPLogging(LogLevel.Error));
+
+
+const list = sp.web.lists.getByTitle("My List");
+// use verbose logging with this particular list because you are trying to debug something
+list.using(PnPLogging(LogLevel.Verbose));
+
+const listData = await list();
+```
+

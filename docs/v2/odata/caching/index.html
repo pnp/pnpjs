@@ -2230,10 +2230,10 @@
 <p>You can use the method without any additional configuration. We have made some default choices for you and will discuss ways to override them later. The code below will get items from a list, first checking the cache for the value. You can also use it with OData operators such as top and orderBy. The usingCaching() method should always be the last method in the chain before the get() (OR if you are using <a href="../odata-batch/">batching</a> these methods can be transposed, more details below).</p>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
 
-const r = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.usingCaching().get();
+const r = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.usingCaching()();
 console.log(r);
 
-const r2 = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.top(5).orderBy(&quot;Modified&quot;).usingCaching().get();
+const r2 = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.top(5).orderBy(&quot;Modified&quot;).usingCaching()();
 console.log(r2);
 </code></pre>
 <h2 id="globally-configure-cache-settings">Globally Configure Cache Settings<a class="headerlink" href="#globally-configure-cache-settings" title="Permanent link">&para;</a></h2>
@@ -2246,7 +2246,7 @@ sp.setup({
     globalCacheDisable: false // or true to disable caching in case of debugging/testing
 });
 
-const r = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.top(5).orderBy(&quot;Modified&quot;).usingCaching().get();
+const r = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.top(5).orderBy(&quot;Modified&quot;).usingCaching()();
 console.log(r);
 </code></pre>
 <h2 id="per-call-configuration">Per Call Configuration<a class="headerlink" href="#per-call-configuration" title="Permanent link">&para;</a></h2>
@@ -2264,7 +2264,7 @@ const r = await sp.web.lists.getByTitle(&quot;Tasks&quot;).items.top(5).orderBy(
     expiration: dateAdd(new Date(), &quot;minute&quot;, 20),
     key: &quot;My Key&quot;,
     storeName: &quot;local&quot;
-}).get();
+})();
 console.log(r);
 </code></pre>
 <h2 id="using-batching-with-caching">Using <a href="../odata-batch/">Batching</a> with Caching<a class="headerlink" href="#using-batching-with-caching" title="Permanent link">&para;</a></h2>
@@ -2273,11 +2273,11 @@ console.log(r);
 
 let batch = sp.createBatch();
 
-sp.web.lists.inBatch(batch).usingCaching().get().then(r =&gt; {
+sp.web.lists.inBatch(batch).usingCaching()().then(r =&gt; {
     console.log(r)
 });
 
-sp.web.lists.getByTitle(&quot;Tasks&quot;).items.usingCaching().inBatch(batch).get().then(r =&gt; {
+sp.web.lists.getByTitle(&quot;Tasks&quot;).items.usingCaching().inBatch(batch)().then(r =&gt; {
     console.log(r)
 });
 
@@ -2318,12 +2318,12 @@ async function staleWhileRevalidate&lt;T&gt;(key: string, p: Promise&lt;T&gt;): 
 <p>Don't call usingCaching just apply the helper method</p>
 </blockquote>
 <pre><code class="language-TypeScript">// this one will wait for the request to finish
-const r1 = await staleWhileRevalidate(&quot;test1&quot;, sp.web.select(&quot;Title&quot;, &quot;Description&quot;).get());
+const r1 = await staleWhileRevalidate(&quot;test1&quot;, sp.web.select(&quot;Title&quot;, &quot;Description&quot;)());
 
 console.log(JSON.stringify(r1, null, 2));
 
 // this one will return the result from cache and then update the cache in the background
-const r2 = await staleWhileRevalidate(&quot;test1&quot;, sp.web.select(&quot;Title&quot;, &quot;Description&quot;).get());
+const r2 = await staleWhileRevalidate(&quot;test1&quot;, sp.web.select(&quot;Title&quot;, &quot;Description&quot;)());
 
 console.log(JSON.stringify(r2, null, 2));
 </code></pre>
@@ -2336,7 +2336,7 @@ console.log(JSON.stringify(r2, null, 2));
 
 function getWebData(): Promise&lt;WebData&gt; {
 
-    return staleWhileRevalidate(&quot;test1&quot;, sp.web.select(&quot;Title&quot;, &quot;Description&quot;).get());
+    return staleWhileRevalidate(&quot;test1&quot;, sp.web.select(&quot;Title&quot;, &quot;Description&quot;)());
 }
 
 

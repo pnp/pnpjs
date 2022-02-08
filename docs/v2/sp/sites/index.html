@@ -2313,7 +2313,7 @@ const w = await sp.site.openWebById(&quot;111ca453-90f5-482e-a381-cee1ff383c9e&q
 console.log(w.data);
 
 // we can chain
-const w2 = await w.web.select(&quot;Title&quot;).get();
+const w2 = await w.web.select(&quot;Title&quot;)();
 </code></pre>
 <h2 id="get-site-collection-url-from-page">Get site collection url from page<a class="headerlink" href="#get-site-collection-url-from-page" title="Permanent link">&para;</a></h2>
 <p>Using the library, you can get the site collection url by providing a page url</p>

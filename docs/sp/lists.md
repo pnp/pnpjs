@@ -74,7 +74,7 @@ You can also provide other (optional) parameters like description, template and 
 const listAddResult = await sp.web.lists.add("My Doc Library", "This is a description of doc lib.", 101, true, { OnQuickLaunch: true });
 
 // get the Id of the newly added document library
-const r = await listAddResult.list.select("Id").get();
+const r = await listAddResult.list.select("Id")();
 
 // log id to console
 console.log(r.Id);

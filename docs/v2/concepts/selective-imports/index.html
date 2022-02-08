@@ -2176,7 +2176,7 @@
 // meaning treeshaking couldn't reduce the size
 import { sp } from &quot;@pnp/sp&quot;;
 
-const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1).get();
+const itemData = await sp.web.lists.getById('00000000-0000-0000-0000-000000000000').items.getById(1)();
 </code></pre>
 <h2 id="new-way">New Way<a class="headerlink" href="#new-way" title="Permanent link">&para;</a></h2>
 <pre><code class="language-TypeScript">// the sp var now has almost nothing attached at import time and relies on

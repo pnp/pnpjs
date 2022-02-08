@@ -1598,7 +1598,7 @@
                 <h1 id="pnpgraphpeople">@pnp/graph/people<a class="headerlink" href="#pnpgraphpeople" title="Permanent link">&para;</a></h1>
 <p>The ability to retrieve a list of person objects ordered by their relevance to the user, which is determined by the user's communication and collaboration patterns, and business relationships.</p>
 <h2 id="get-all-of-the-people">Get all of the people<a class="headerlink" href="#get-all-of-the-people" title="Permanent link">&para;</a></h2>
-<p>Using the people.get() you can retrieve a list of person objects ordered by their relevance to the user.</p>
+<p>Using the people() you can retrieve a list of person objects ordered by their relevance to the user.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">people</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">people</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>

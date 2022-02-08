@@ -2259,10 +2259,10 @@ const catalog = await AppCatalog(web)();
 <h2 id="list-available-apps">List Available Apps<a class="headerlink" href="#list-available-apps" title="Permanent link">&para;</a></h2>
 <p>The AppCatalog is itself a queryable collection so you can query this object directly to get a list of available apps. Also, the odata operators work on the catalog to sort, filter, and select.</p>
 <pre><code class="language-TypeScript">// get available apps
-await catalog.get();
+await catalog();
 
 // get available apps selecting two fields
-await catalog.select(&quot;Title&quot;, &quot;Deployed&quot;).get();
+await catalog.select(&quot;Title&quot;, &quot;Deployed&quot;)();
 </code></pre>
 <h2 id="add-an-app">Add an App<a class="headerlink" href="#add-an-app" title="Permanent link">&para;</a></h2>
 <p>This action must be performed in the context of the tenant app catalog</p>
@@ -2277,11 +2277,11 @@ const r = await catalog.add(&quot;myapp.app&quot;, blob);
 console.log(JSON.stringify(r.data, null, 4));
 
 // all file operations are available
-const nameData = await r.file.select(&quot;Name&quot;).get();
+const nameData = await r.file.select(&quot;Name&quot;)();
 </code></pre>
 <h2 id="get-an-app">Get an App<a class="headerlink" href="#get-an-app" title="Permanent link">&para;</a></h2>
 <p>You can get the details of a single app by GUID id. This is also the branch point to perform specific app actions</p>
-<pre><code class="language-TypeScript">const app = await catalog.getAppById(&quot;5137dff1-0b79-4ebc-8af4-ca01f7bd393c&quot;).get();
+<pre><code class="language-TypeScript">const app = await catalog.getAppById(&quot;5137dff1-0b79-4ebc-8af4-ca01f7bd393c&quot;)();
 </code></pre>
 <h2 id="perform-app-actions">Perform app actions<a class="headerlink" href="#perform-app-actions" title="Permanent link">&para;</a></h2>
 <p>Remember: retract, deploy, and remove only work in the context of the tenant app catalog web. All of these methods return void and you can monitor success by wrapping the call in a try/catch block.</p>

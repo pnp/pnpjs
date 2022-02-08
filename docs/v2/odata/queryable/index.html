@@ -2314,7 +2314,7 @@ const headers: ConfigOptions = {
 const list = sp.web.lists.getByTitle(&quot;List1&quot;).configure({ headers });
 
 // this will use the values set in configure
-list.items.get().then(items =&gt; console.log(JSON.stringify(items, null, 2));
+list.items().then(items =&gt; console.log(JSON.stringify(items, null, 2));
 </code></pre>
 <p>For reference the ConfigOptions interface is shown below:</p>
 <pre><code class="language-TypeScript">export interface ConfigOptions {
@@ -2330,7 +2330,7 @@ list.items.get().then(items =&gt; console.log(JSON.stringify(items, null, 2));
 <p>Enables caching for this request. See <a href="../caching/">caching</a> for more details.</p>
 <pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;
 
-sp.web.usingCaching().get().then(...);
+sp.web.usingCaching()().then(...);
 </code></pre>
 <h3 id="inbatch">inBatch<a class="headerlink" href="#inbatch" title="Permanent link">&para;</a></h3>
 <p>Adds this query to the supplied batch</p>

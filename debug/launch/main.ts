@@ -1,6 +1,6 @@
 import findup from "findup-sync";
-import { ConsoleListener, Logger } from "@pnp/logging";
-import { ITestingSettings } from "../../test/settings.js";
+import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
+import { ITestingSettings } from "../../test/load-settings.js";
 
 // importing the example debug scenario and running it
 // adding your debugging to other files and importing them will keep them out of git
@@ -8,7 +8,7 @@ import { ITestingSettings } from "../../test/settings.js";
 // add your debugging imports here and prior to submitting a PR git checkout debug/debug.ts
 // will allow you to keep all your debugging files locally
 // comment out the example
-import { Example } from "./v3-patrick.js";
+import { Example } from "./sp.js";
 // import { Example } from "./graph.js";
 
 // setup the connection to SharePoint using the settings file, you can
@@ -18,6 +18,8 @@ import { Example } from "./v3-patrick.js";
 // you can comment it out and put the values here directly, or better yet
 // create a settings file using settings.example.js as a template
 import(findup("settings.js")).then((settings: { settings: ITestingSettings }) => {
+
+    Logger.activeLogLevel = LogLevel.Info;
 
     // // setup console logger
     Logger.subscribe(ConsoleListener("Debug", {

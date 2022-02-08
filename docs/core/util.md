@@ -114,7 +114,7 @@ if (isFunc(testFunction)){
 
 ## isUrlAbsolute
 
-Determines if a supplied url is absolute and returns true; otherwise returns false.
+Determines if a supplied url is absolute, returning true; otherwise returns false.
 
 ```TypeScript
 import { isUrlAbsolute } from "@pnp/core";
@@ -178,7 +178,7 @@ const hash = getHashCode(x);
 
 ## delay
 
-Provides am awaitable delay you can wait specified in milliseconds.
+Provides an awaitable delay specified in milliseconds.
 
 ```TypeScript
 import { delay } from "@pnp/core";

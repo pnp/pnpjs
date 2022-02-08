@@ -1,0 +1,31 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": ".",
+        "outDir": "../build/packages"
+    },
+    "include": [],
+    "references": [
+        {
+            "path": "./core/tsconfig.json"
+        },
+        {
+            "path": "./graph/tsconfig.json"
+        },
+        {
+            "path": "./logging/tsconfig.json"
+        },
+        {
+            "path": "./msaljsclient/tsconfig.json"
+        },
+        {
+            "path": "./nodejs/tsconfig.json"
+        },
+        {
+            "path": "./queryable/tsconfig.json"
+        },
+        {
+            "path": "./sp/tsconfig.json"
+        }
+    ]
+}

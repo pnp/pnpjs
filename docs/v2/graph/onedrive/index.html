@@ -2347,23 +2347,23 @@ you can manage drives and drive items in Onedrive.</p>
 </tbody>
 </table>
 <h2 id="get-the-default-drive">Get the default drive<a class="headerlink" href="#get-the-default-drive" title="Permanent link">&para;</a></h2>
-<p>Using the drive.get() you can get the default drive from Onedrive</p>
+<p>Using the drive() you can get the default drive from Onedrive</p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives.get();
+const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives();
 
-const drives = await graph.me.drives.get();
+const drives = await graph.me.drives();
 
 </code></pre>
 <h2 id="get-all-of-the-drives">Get all of the drives<a class="headerlink" href="#get-all-of-the-drives" title="Permanent link">&para;</a></h2>
-<p>Using the drives.get() you can get the users available drives from Onedrive</p>
+<p>Using the drives() you can get the users available drives from Onedrive</p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives.get();
+const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives();
 
-const drives = await graph.me.drives.get();
+const drives = await graph.me.drives();
 
 </code></pre>
 <h2 id="get-drive-by-id">Get drive by Id<a class="headerlink" href="#get-drive-by-id" title="Permanent link">&para;</a></h2>
@@ -2377,57 +2377,57 @@ const drive = await graph.me.drives.getById('driveId');
 
 </code></pre>
 <h2 id="get-the-associated-list-of-a-drive">Get the associated list of a drive<a class="headerlink" href="#get-the-associated-list-of-a-drive" title="Permanent link">&para;</a></h2>
-<p>Using the list.get() you get the associated list</p>
+<p>Using the list() you get the associated list</p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const list = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').list.get();
+const list = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').list();
 
-const list = await graph.me.drives.getById('driveId').list.get();
+const list = await graph.me.drives.getById('driveId').list();
 
 </code></pre>
 <h2 id="get-the-recent-files">Get the recent files<a class="headerlink" href="#get-the-recent-files" title="Permanent link">&para;</a></h2>
-<p>Using the recent.get() you get the recent files</p>
+<p>Using the recent() you get the recent files</p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const files = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').recent.get();
+const files = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').recent();
 
-const files = await graph.me.drives.getById('driveId').recent.get();
+const files = await graph.me.drives.getById('driveId').recent();
 
 </code></pre>
 <h2 id="get-the-files-shared-with-me">Get the files shared with me<a class="headerlink" href="#get-the-files-shared-with-me" title="Permanent link">&para;</a></h2>
-<p>Using the sharedWithMe.get() you get the files shared with the user</p>
+<p>Using the sharedWithMe() you get the files shared with the user</p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const shared = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').sharedWithMe.get();
+const shared = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').sharedWithMe();
 
-const shared = await graph.me.drives.getById('driveId').sharedWithMe.get();
+const shared = await graph.me.drives.getById('driveId').sharedWithMe();
 
 </code></pre>
 <h2 id="get-the-root-folder">Get the Root folder<a class="headerlink" href="#get-the-root-folder" title="Permanent link">&para;</a></h2>
-<p>Using the root.get() you get the root folder</p>
+<p>Using the root() you get the root folder</p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const root = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.get();
+const root = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root();
 
-const root = await graph.me.drives.getById('driveId').root.get();
+const root = await graph.me.drives.getById('driveId').root();
 
 </code></pre>
 <h2 id="get-the-children">Get the Children<a class="headerlink" href="#get-the-children" title="Permanent link">&para;</a></h2>
-<p>Using the children.get() you get the children</p>
+<p>Using the children() you get the children</p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const rootChildren = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.get();
+const rootChildren = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children();
 
-const rootChildren = await graph.me.drives.getById('driveId').root.children.get();
+const rootChildren = await graph.me.drives.getById('driveId').root.children();
 
-const itemChildren = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').children.get();
+const itemChildren = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').children();
 
-const itemChildren = await graph.me.drives.getById('driveId').root.items.getById('itemId').children.get();
+const itemChildren = await graph.me.drives.getById('driveId').root.items.getById('itemId').children();
 
 </code></pre>
 <h2 id="add-folder-or-item">Add folder or item<a class="headerlink" href="#add-folder-or-item" title="Permanent link">&para;</a></h2>
@@ -2442,13 +2442,13 @@ const addFolder = await graph.me.drives.getById('driveId').root.children.add('Ne
 
 </code></pre>
 <h2 id="search-items">Search items<a class="headerlink" href="#search-items" title="Permanent link">&para;</a></h2>
-<p>Using the search.get() you can search for items, and optionally select properties</p>
+<p>Using the search() you can search for items, and optionally select properties</p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const search = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')root.search('queryText').get();
+const search = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')root.search('queryText')();
 
-const search = await graph.me.drives.getById('driveId')root.search('queryText').get();
+const search = await graph.me.drives.getById('driveId')root.search('queryText')();
 
 </code></pre>
 <h2 id="get-specific-item-in-drive">Get specific item in drive<a class="headerlink" href="#get-specific-item-in-drive" title="Permanent link">&para;</a></h2>
@@ -2462,13 +2462,13 @@ const item = await graph.me.drives.getById('driveId').items.getById('itemId');
 
 </code></pre>
 <h2 id="get-thumbnails">Get thumbnails<a class="headerlink" href="#get-thumbnails" title="Permanent link">&para;</a></h2>
-<p>Using the thumbnails.get() you get the thumbnails</p>
+<p>Using the thumbnails() you get the thumbnails</p>
 <pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const thumbs = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').thumbnails.get();
+const thumbs = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').thumbnails();
 
-const thumbs = await graph.me.drives.getById('driveId').items.getById('itemId').thumbnails.get();
+const thumbs = await graph.me.drives.getById('driveId').items.getById('itemId').thumbnails();
 
 </code></pre>
 <h2 id="delete-drive-item">Delete drive item<a class="headerlink" href="#delete-drive-item" title="Permanent link">&para;</a></h2>

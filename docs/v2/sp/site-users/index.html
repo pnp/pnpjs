@@ -2407,7 +2407,7 @@ const user = await sp.web.siteUsers.getByLoginName(&quot;userLoginName&quot;);
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/site-users/web&quot;;
 
-let userProps = await sp.web.currentUser.get();
+let userProps = await sp.web.currentUser();
 userProps.Title = &quot;New title&quot;;
 await sp.web.currentUser.update(userProps);
 </code></pre>

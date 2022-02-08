@@ -2182,7 +2182,7 @@ const query = sp.web.getFolderByServerRelativeUrl(&quot;/sites/dev/Shared Docume
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files
 console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl('/sites/dev/Shared Documents/')/files?$select=Title&amp;$top=3
 
-const r = await query.get();
+const r = await query();
 console.log(r);;
 </code></pre>
 <h3 id="example-with-aliasing">Example with aliasing<a class="headerlink" href="#example-with-aliasing" title="Permanent link">&para;</a></h3>
@@ -2194,7 +2194,7 @@ const query = sp.web.getFolderByServerRelativeUrl(&quot;!@p1::/sites/dev/Shared 
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files
 console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&amp;$select=Title&amp;$top=3
 
-const r = await query.get();
+const r = await query();
 console.log(r);
 </code></pre>
 <h3 id="example-with-aliasing-and-batching">Example with aliasing and batching<a class="headerlink" href="#example-with-aliasing-and-batching" title="Permanent link">&para;</a></h3>
@@ -2208,7 +2208,7 @@ const query = sp.web.getFolderByServerRelativeUrl(&quot;!@p1::/sites/dev/Shared 
 console.log(query.toUrl()); // _api/web/getFolderByServerRelativeUrl('!@p1::/sites/dev/Shared Documents/')/files
 console.log(query.toUrlAndQuery()); // _api/web/getFolderByServerRelativeUrl(@p1)/files?@p1='/sites/dev/Shared Documents/'&amp;$select=Title&amp;$top=3
 
-query.inBatch(batch).get().then(r =&gt; {
+query.inBatch(batch)().then(r =&gt; {
 
     console.log(r);
 });
