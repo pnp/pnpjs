@@ -14,7 +14,7 @@ More information can be found in the official Graph documentation:
 |Scenario|Import Statement|
 |--|--|
 |Selective 1|import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/contacts";|
-|Preset: All|import { graph } from "@pnp/graph/presets/all";|
+|Preset: All|import { graphfi } from "@pnp/graph/presets/all";|
 
 ## Set up notes
 

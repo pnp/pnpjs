@@ -12,7 +12,7 @@ You can learn more about Microsoft Graph users by reading the [Official Microsof
 |--|--|
 |Selective 1|import { graphfi } from "@pnp/graph";<br />import {IUser, IUsers, User, Users, IPeople, People} from "@pnp/graph/users";|
 |Selective 2|import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/users";|
-|Preset: All|import { graph,IUser, IUsers, User, Users, IPeople, People } from "@pnp/graph/presets/all";|
+|Preset: All|import { graphfi ,IUser, IUsers, User, Users, IPeople, People } from "@pnp/graph/presets/all";|
 
 ## Current User
 
