@@ -1,16 +1,12 @@
 # 2021 Year End Report
 
-//TODO: Patrick to write -- copied from 2020 version
+//TODO: Patrick to review/update stats
 
-Welcome to our first year in review report for PnPjs. This year has marked usage milestones, seen more contributors than ever, and expanded the core maintainers team. But none of this would be possible without everyones support and participation - so we start by saying Thank You! We deeply appreciate everyone that has used, helped us grow, and improved the library over the last year.
+Welcome to our second year in review report for PnPjs. 2021 found us planning, building, testing, and documenting a whole new version of PnPjs. The goal is to deliver a much improved and flexible experience and none of that would have been possible without the support and participation of everyone in the PnP community - so we start by saying Thank You! We deeply appreciate everyone that has used, helped us grow, and improved the library over the last year.
 
-This year we introduced MSAL clients for node and browser, improved our testing/local development plumbing, and updated the libraries to work with the node 15 module resolution rules.
+Because of the huge useage we've seen with the library and issues we found implementing some of the much requested enhancements, we felt we really needed to start from the ground up and rearcitecture the library completely. This new design, built on the concept of a "Timeline", enabled us to build a significantly lighter weight solution that is more flexible than ever. And bonus, we were able to keep the overall development experience largly unchanged, so that makes transitioning all that much easier. In addition we took extra effort to validate our development efforts by making sure all our tests passed so that we could better ensure quality of the library. Check out our [Transition Guide](./transition-guide.md) for all the details.
 
-We fixed 43 reported bugs, answered 131 questions, and made 55 suggested enhancements to the library - all driven by feedback from users and the community.
-
-Planned for release in January 2021 we also undertook the work to enable isolated runtimes, a long requested feature. This allows you to operate on multiple independently configured "roots" such as "sp" or "graph" from the same application. Previously the library was configured globally, so this opens new possibilities for both client and server side scenarios.
-
-Finally we made many tooling and project improvements such as moving to GitHub actions, updating the tests to use MSAL, and exploring ways to enhance the developer experience.
+In other news, we fixed 47 reported bugs, answered 89 questions, and made 51 suggested enhancements to version 2 of the library - all driven by feedback from users and the community.
 
 ## Usage
 
@@ -24,9 +20,9 @@ These tenants generated 6.1 billion requests to the service in January growing t
 
 ## Releases
 
-We continued our monthly release cadence as it represents a good pace for addressing issues while not expecting folks to update too often and keeping each update to a reasonable size. All changes can be tracked in our [change log](https://github.com/pnp/pnpjs/blob/version-2/CHANGELOG.md), updated with each release. You can check our scheduled releases through [project milestones](https://github.com/pnp/pnpjs/milestones), understanding there are occasionally delays. Monthly releases allows us to ensure bugs do not linger and we continually improve and expand the capabilities of the libraries.
+We continued our monthly release cadence as it represents a good pace for addressing issues while not expecting folks to update too often and keeping each update to a reasonable size. All changes can be tracked in our [change log](https://github.com/pnp/pnpjs/blob/main/CHANGELOG.md), updated with each release. You can check our scheduled releases through [project milestones](https://github.com/pnp/pnpjs/milestones), understanding there are occasionally delays. Monthly releases allows us to ensure bugs do not linger and we continually improve and expand the capabilities of the libraries.
 
-### NPM Package download statistics (@pnp/sp):
+### NPM Package download statistics (@pnp/sp)
 
 | Month    | Count   | *   | Month       | Count  |
 | -------- | ------- | --- | ----------- | ------ |
@@ -41,21 +37,11 @@ We continued our monthly release cadence as it represents a good pace for addres
 
 With 2020 our total all time downloads of @pnp/sp is now at: 949,638
 
-> Stats from https://npm-stat.com/
+> Stats from <https://npm-stat.com/>
 
 ## Future Plans
 
-Looking to the future we will continue to actively grow and improve v2 of the library, guided by feedback and reported issues. Additionally, we are beginning to discuss v3 and doing initial planning and prototyping. The v3 work will continue through 2021 with no currently set release date, though we will keep everyone up to date.
-
-Additionally in 2021 there will be a general focus on improving not just the code but our tooling, build pipeline, and library contributor experience. We will also look at automatic canary releases with each merge, and other improvements.
-
-## New Lead Maintainer
-
-With the close of 2020 we are very excited to announce a new lead maintainer for PnPjs, [Julie Turner](https://github.com/juliemturner)! Julie brings deep expertise with SharePoint Framework, TypeScript, and SharePoint development to the team, coupled with dedication and care in the work.
-
-Over the last year she has gotten more involved with handling releases, responding to issues, and helping to keep the code updated and clean.
-
-We are very lucky to have her working on the project and look forward to seeing her lead the growth and direction for years to come.
+Looking to the future we will continue to actively grow and improve v3 of the library, guided by feedback and reported issues. Additionally, we are looking to expand our contributions documentation to make it easier for community members to contibute their ideas and updates to the library.
 
 ## Contributors
 
