@@ -24,7 +24,7 @@ npm run serve
 
 Runs the tests and coverage for the library.
 
-> Starting with 2.3.0 ONLY MSAL auth is supported for running the tests. [More details on setting up MSAL for node.](https://pnp.github.io/pnpjs/authentication/server-nodejs/#msal)
+[More details on setting up MSAL for node.](https://pnp.github.io/pnpjs/authentication/server-nodejs/#msal)
 
 ### Options
 
