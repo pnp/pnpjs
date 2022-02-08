@@ -14,7 +14,7 @@ You can learn more about Microsoft Graph Groups by reading the [Official Microso
 |--|--|
 |Selective 1|import { graphfi } from "@pnp/graph";<br />import {Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups} from "@pnp/graph/groups";|
 |Selective 2|import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/groups";|
-|Preset: All|import { graph, Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups } from "@pnp/graph/presets/all";|
+|Preset: All|import { graphfi, Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups } from "@pnp/graph/presets/all";|
 
 ## Add a Group
 
