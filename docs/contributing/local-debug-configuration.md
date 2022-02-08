@@ -5,7 +5,7 @@ This article covers the local setup required to debug the library and run tests.
 ## Create settings.js
 
 Both local debugging and tests make use of a settings.js file located in the root of the project. Ensure you create a settings.js files by copying settings.example.js and renaming it to settings.js.
-For more information the settings file please see [`Settings`](../concepts/settings.md)
+For more information the settings file please see [`Settings`](./settings.md)
 
 ### Minimal Configuration
 

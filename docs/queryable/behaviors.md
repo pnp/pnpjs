@@ -2,7 +2,7 @@
 
 The article describes the behaviors exported by the `@pnp/queryable` library. Please also see available behaviors in [@pnp/core](../core/behaviors.md), [@pnp/nodejs](../nodejs/behaviors.md), [@pnp/sp](../sp/behaviors.md), and [@pnp/graph](../graph/behaviors.md).
 
-Generally you won't need to use these behaviors individually when using the defaults supplied by the library, but when appropriate you can create your own [composed behaviors](../concepts/compose-behaviors.md) using these as building blocks.
+Generally you won't need to use these behaviors individually when using the defaults supplied by the library, but when appropriate you can create your own [composed behaviors](../core/behavior-recipes.md) using these as building blocks.
 
 ## Bearer Token
 
@@ -79,10 +79,6 @@ const sp = spfi().using(BrowserFetchWithRetry({
 const webInfo = await sp.webs();
 ```
 
-## Caching Pessimistic
-
-// TODO:: Julie to write
-
 ## Caching
 
 This behavior allows you to cache the results of get requests in either session or local storage. If neither is available (such as in Nodejs) the library will shim using an in memory map. It is a good idea to include caching in your projects to improve performance. By default items in the cache will expire after 5 minutes.
@@ -100,6 +96,8 @@ const webInfo = await sp.webs();
 // caching will retriece this value from the cache saving a network requests the second time it is loaded (either in the same page, a reload of the page, etc.)
 const webInfo2 = await sp.webs();
 ```
+
+### Custom Key Function
 
 You can also supply custom functionality to control how keys are generated and calculate the expirations.
 
@@ -149,6 +147,28 @@ const itemsInfo = await cachingList.items();
 // caching will retriece this value from the cache saving a network requests the second time it is loaded (either in the same page, a reload of the page, etc.)
 const itemsInfo2 = await cachingList.items();
 ```
+
+## Caching Pessimistic Refresh
+
+This behavior is slightly different than our default Caching behavior in that it will always return the cached value if there is one, but also asyncronously update the cached value in the background. Like the default CAchine behavior it allows you to cache the results of get requests in either session or local storage. If neither is available (such as in Nodejs) the library will shim using an in memory map.
+
+If you do not provide an expiration function then the cache will be updated asyncronously on every call, if you do provide an expiration then the cached value will only be updated, although still asyncronously, only when the cache has expired.
+
+```TypeScript
+import { CachingPessimisticRefresh } from "@pnp/queryable";
+
+import "@pnp/sp/webs";
+
+const sp = spfi().using(CachingPessimisticRefresh());
+
+// caching will save the data into session storage on the first request - the key is based on the full url including query strings
+const webInfo = await sp.webs();
+
+// caching will retriece this value from the cache saving a network requests the second time it is loaded (either in the same page, a reload of the page, etc.)
+const webInfo2 = await sp.webs();
+```
+
+Again as with the default Caching behavior you can provide custom functions for key generation and expiration. Please see the [Custom Key Function documentation above](#Custom-Key-Function) for more details.
 
 ## InjectHeaders
 
@@ -296,7 +316,3 @@ const webInfo = await sp.webs();
 // be a good citizen and cancel unneeded timers
 clearTimeout(timer);
 ```
-
-
-
-

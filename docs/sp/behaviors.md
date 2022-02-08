@@ -72,7 +72,7 @@ A composed behavior suitable for use within a SPA or other scenario outside of S
 
 The baseUrl prop can be used to configure a fallback when making urls absolute.
 
-> If you are building a SPA you likely need to handle authentication. For this we support the [msal library](../authentication/client-spa.md) which you can use directly or as a pattern to roll your own MSAL implementation behavior.
+> If you are building a SPA you likely need to handle authentication. For this we support the [msal library](../concepts/authentication.md#MSAL-in-Browser) which you can use directly or as a pattern to roll your own MSAL implementation behavior.
 
 ```TypeScript
 import { spfi, SPBrowser } from "@pnp/sp";

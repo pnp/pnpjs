@@ -4,7 +4,7 @@ One of the more challenging tasks on the client side is working with SharePoint 
 
 ## Reading Files
 
-Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your [own parser](../queryable/parsers.md).
+Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your [own parser](../queryable/behaviors.md#parsers).
 
 ```typescript
 import { spfi, SPFx } from "@pnp/sp";

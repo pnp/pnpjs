@@ -20,7 +20,7 @@ The biggest change in version 3 of the library is the movement away from the glo
 
 Becuase of this change, any architecture that relies on the `sp` or `graph` objects being configured during initialization and then reused throught the solution will need to be rethought. Either by creating a new `spfi`/`graphfi` object wherever it's required or by creating a [service arcitecture](./getting-started/#establish-context-within-an-spfx-service) that can return a previously configured instance or utilize an instance and return the results. Essentially the `sp` and `graph` objects have been deprecated and will need to be replaced.
 
-For more information on getting started with these new setup methods please see the [Getting Started](./getting-started.md) docs or for a deeper look into the Queryable interface see [Queryable](./queryable/index.md).
+For more information on getting started with these new setup methods please see the [Getting Started](./getting-started.md) docs or for a deeper look into the Queryable interface see [Queryable](./queryable/queryable.md).
 
 ## AssignFrom and CopyFrom
 
@@ -65,5 +65,3 @@ const spWebE = Web([spWebA, "{Other Web URL}"]).using(SPDefault(this.context));
 ## Dropping -Commonjs Packages
 
 Starting with v3 we are dropping the commonjs versions of all packages. Previously we released these as we worked to transition to esm and the current node didn't yet support esm. With esm now a supported module type, and having done the work to ensure they work in node we feel it is a good time to drop the -commonjs variants.
-
-

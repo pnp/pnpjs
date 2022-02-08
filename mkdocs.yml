@@ -13,7 +13,7 @@ nav:
   - Packages:
     - Packages: 'packages.md'
     - core:
-      - core: 'core/index.md'
+      - core: '/packages.md#core'
       - behaviors: 'core/behaviors.md'
       - observers: 'core/observers.md'
       - moments: 'core/moments.md'
@@ -21,7 +21,7 @@ nav:
       - storage: 'core/storage.md'
       - util: 'core/util.md'
     - graph: 
-      - graph: 'graph/index.md'
+      - graph: '/packages.md#graph'
       - groups: 'graph/groups.md'
       - groups: 'graph/groups.md'
       - insights: 'graph/insights.md'
@@ -37,23 +37,18 @@ nav:
       - subscriptions: 'graph/subscriptions.md'
       - teams: 'graph/teams.md'
       - users: 'graph/users.md'
-    - logging: 'logging/index.md'
+    - logging: '/packages.md#logging'
     - nodejs:
-      - nodejs: 'nodejs/index.md'
-      - SPFetchClient: 'nodejs/sp-fetch-client.md'     
-      - BearerTokenFetchClient: 'nodejs/bearer-token-fetch-client.md'       
-      - ProviderHostedRequestContext: 'nodejs/provider-hosted-app.md'
-      - 'sp Extensions': 'nodejs\sp-extensions.md'
-      - proxy: 'nodejs\proxy.md'
+      - nodejs: '/packages.md#nodejs'
+      - behaviors: 'nodejs/behaviors.md'
+      - 'sp Extensions': 'nodejs/sp-extensions.md'
     - queryable:
-      - queryable: 'queryable/index.md'
-      - caching: 'queryable/caching.md'
-      - core: 'queryable/core.md'
-      - 'Extending an OData library': 'queryable/extensions.md'
-      - Parsers: 'queryable/parsers.md'
+      - Queryable: '/packages.md#queryable'
+      - Behaviors: 'queryable/behaviors.md'
+      - Extensions: 'queryable/extensions.md'
       - Queryable: 'queryable/queryable.md'
     - sp:
-      - sp: 'sp/index.md'
+      - sp: '/packages.md#sp'
       - 'Alias Parameters': 'sp/alias-parameters.md'
       - 'ALM api': 'sp/alm.md'
       - Attachments: 'sp/attachments.md'
@@ -97,7 +92,6 @@ nav:
     - 'Custom Call/Path': 'concepts/invokable.md'
     - 'Behaviors': 'core/behaviors.md'
     - 'Behavior Recipes': 'core/behavior-recipes.md'
-    - 'Queryable': 'queryable/index.md'
     - 'Timeline/Moments': 'core/timeline.md'
     - 'Client-Side Pages': 'concepts/adv-clientside-pages.md'
   - Contributing:
@@ -145,8 +139,6 @@ plugins:
   #       theme: 'default'
   - redirects:
       redirect_maps:
-          'adaljsclient/index.md': 'authentication/index.md'
-          'adaljsclient/adalclient.md': 'authentication/adaljsclient.md'
           'getting-started-dev.md': 'contributing/index.md'
           'debugging.md': 'contributing/debugging.md'
           'debug-tests.md': 'contributing/debug-tests.md'
