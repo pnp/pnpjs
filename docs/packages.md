@@ -26,7 +26,7 @@ A light-weight, subscribable logging framework.
 
 Provides an msal wrapper suitable for use with PnPjs's request structure.
 
-`npm install @pnp/logging --save`
+`npm install @pnp/msaljsclient --save`
 
 ## Nodejs
 
@@ -42,6 +42,6 @@ Extending Timeline this package provides the base functionality to create web re
 
 ## SP
 
-This package provides a fluent SDK for calling the Microsoft Graph.
+This package provides a fluent SDK for calling SharePoint.
 
 `npm install @pnp/sp --save`
