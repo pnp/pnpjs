@@ -13,7 +13,7 @@ nav:
   - Packages:
     - Packages: 'packages.md'
     - core:
-      - core: '/packages.md#core'
+      - core: '/packages/#core'
       - behaviors: 'core/behaviors.md'
       - observers: 'core/observers.md'
       - moments: 'core/moments.md'
@@ -21,7 +21,7 @@ nav:
       - storage: 'core/storage.md'
       - util: 'core/util.md'
     - graph: 
-      - graph: '/packages.md#graph'
+      - graph: '/packages/#graph'
       - groups: 'graph/groups.md'
       - groups: 'graph/groups.md'
       - insights: 'graph/insights.md'
@@ -37,18 +37,19 @@ nav:
       - subscriptions: 'graph/subscriptions.md'
       - teams: 'graph/teams.md'
       - users: 'graph/users.md'
-    - logging: '/packages.md#logging'
+    - logging: 
+      - logging: 'logging/index.md'
     - nodejs:
-      - nodejs: '/packages.md#nodejs'
+      - nodejs: '/packages/#nodejs'
       - behaviors: 'nodejs/behaviors.md'
       - 'sp Extensions': 'nodejs/sp-extensions.md'
     - queryable:
-      - Queryable: '/packages.md#queryable'
+      - Queryable: '/packages/#queryable'
       - Behaviors: 'queryable/behaviors.md'
       - Extensions: 'queryable/extensions.md'
       - Queryable: 'queryable/queryable.md'
     - sp:
-      - sp: '/packages.md#sp'
+      - sp: '/packages/#sp'
       - 'Alias Parameters': 'sp/alias-parameters.md'
       - 'ALM api': 'sp/alm.md'
       - Attachments: 'sp/attachments.md'
