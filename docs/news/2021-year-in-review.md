@@ -1,22 +1,16 @@
 # 2021 Year End Report
 
-//TODO: Patrick to review/update stats
-
 Welcome to our second year in review report for PnPjs. 2021 found us planning, building, testing, and documenting a whole new version of PnPjs. The goal is to deliver a much improved and flexible experience and none of that would have been possible without the support and participation of everyone in the PnP community - so we start by saying Thank You! We deeply appreciate everyone that has used, helped us grow, and improved the library over the last year.
 
-Because of the huge useage we've seen with the library and issues we found implementing some of the much requested enhancements, we felt we really needed to start from the ground up and rearcitecture the library completely. This new design, built on the concept of a "Timeline", enabled us to build a significantly lighter weight solution that is more flexible than ever. And bonus, we were able to keep the overall development experience largly unchanged, so that makes transitioning all that much easier. In addition we took extra effort to validate our development efforts by making sure all our tests passed so that we could better ensure quality of the library. Check out our [Transition Guide](./transition-guide.md) for all the details.
+Because of the huge useage we've seen with the library and issues we found implementing some of the much requested enhancements, we felt we really needed to start from the ground up and rearchitect the library completely. This new design, built on the concept of a "Timeline", enabled us to build a significantly lighter weight solution that is more extensible than ever. And bonus, we were able to keep the overall development experience largly unchanged, so that makes transitioning all that much easier. In addition we took extra effort to validate our development efforts by making sure all our tests passed so that we could better ensure quality of the library. Check out our [Transition Guide](./transition-guide.md) and [ChangeLog](https://github.com/pnp/pnpjs/blob/version-3/CHANGELOG.md) for all the details.
 
 In other news, we fixed 47 reported bugs, answered 89 questions, and made 51 suggested enhancements to version 2 of the library - all driven by feedback from users and the community.
 
 ## Usage
 
-In 2020 we tracked steady month/month growth in raw usage measured by requests as well as in the number of tenants deploying the library. Starting the year we were used in 14605 tenants and by December that number grew to 21,227.
+In 2021 we transitioned from rapid growth to slower growth but maintaining a request/month rate over 11 billion, approaching 13 billion by the end of the year. These requests came from more than 25 thousand tenants including some of the largest M365 customers. Due to some data cleanup we don't have the full year's information, but the below graph shows the final 7 months of the year.
 
-These tenants generated 6.1 billion requests to the service in January growing to 9.2 billion by December, peaking at 10.1 billion requests in November.
-
-![Graph showing requests and tenants/month for @pnp/sp](../img/usage-2020-eoy.png)
-
-> 1) There was a data glitch in October so the numbers do not fully represent usage. 2) These numbers only include public cloud SPO usage, true usage is higher than we can track due to on-premesis and gov/sovereign clouds
+![Graph showing requests and tenants/month for @pnp/sp](../img/usage-2021-eoy.png)
 
 ## Releases
 
@@ -26,16 +20,20 @@ We continued our monthly release cadence as it represents a good pace for addres
 
 | Month    | Count   | *   | Month       | Count  |
 | -------- | ------- | --- | ----------- | ------ |
-| January  | 100,686 | *   | July        | 36,805 |
-| February | 34,437  | *   | August      | 38,897 |
-| March    | 34,574  | *   | September   | 45,968 |
-| April    | 32,436  | *   | October     | 46,655 |
-| May      | 34,482  | *   | November    | 45,511 |
-| June     | 34,408  | *   | December    | 58,977 |
+| January  | 49,446  | *   | July        | 73,491 |
+| February | 56,054  | *   | August      | 74,236 |
+| March    | 66,113  | *   | September   | 69,179 |
+| April    | 58,526  | *   | October     | 77,645 |
+| May      | 62,747  | *   | November    | 74,966 |
+| June     | 69,349  | *   | December    | 61,995 |
 |          |         |     |             |        |
-|          |         |     | Grand Total | 543,836|
+|          |         |     | Grand Total | 793,747|
 
-With 2020 our total all time downloads of @pnp/sp is now at: 949,638
+For comparison our total downloads in 2020 was 543,836.
+
+With 2021 our total all time downloads of @pnp/sp is now at: 1,743,385
+
+In 2020 the all time total was 949,638.
 
 > Stats from <https://npm-stat.com/>
 
