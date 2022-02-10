@@ -51,8 +51,6 @@ describe("Teams", function () {
 
     after(async function () {
 
-        // TODO: better making
-
         // Added delays to try and deal with async nature of adding a team. At this time it seems to be enough.
         if (teamID !== "" && operationID !== "") {
 

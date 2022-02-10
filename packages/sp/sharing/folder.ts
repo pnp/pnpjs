@@ -27,12 +27,7 @@ _Folder.prototype.shareWith = async function (
     shareEverything = false,
     emailData?: ISharingEmailData): Promise<ISharingResult> {
 
-    // TODO:: all these used to work with batching and now?
-    // const dependency = this.addBatchDependency();
-
     const shareable = await this.getShareable();
-
-    // dependency();
 
     return shareable.shareWith(loginNames, role, requireSignin, shareEverything, emailData);
 };

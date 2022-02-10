@@ -282,52 +282,6 @@ describe("List", function () {
         return expect(list.reserveListItemId()).to.eventually.be.fulfilled;
     });
 
-    // TODO: Remove these from the library if they are no longer supported
-    // Removing unit tests for failing and undocumented APIs that seem to no longer be supported.
-
-    // it("addValidateUpdateItemUsingPath", async function () {
-    //     const listTitle = "pnp-testing-addValidateUpdateItemUsingPath";
-    //     const listAddRes = await this.pnp.sp.web.lists.ensure(listTitle);
-
-    //     const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
-
-    //     const title = "PnPTest_ListAddValidateUpdateItemUsingPath";
-    //     const formValues: IListItemFormUpdateValue[] = [
-    //         {
-    //             FieldName: "Title",
-    //             FieldValue: title,
-    //         },
-    //     ];
-
-    //     const folderName = `PnPTestAddFolder2-${getRandomString(4)}`;
-    //     await listAddRes.list.rootFolder.folders.add(folderName);
-
-    //     return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
-    //         combine(testList.ParentWebUrl, "Lists", listTitle, folderName))).to.eventually.be.fulfilled;
-    // });
-
-    // it("addValidateUpdateItemUsingPath Folder", async function () {
-
-    //     const listTitle = "pnp-testing-addValidateUpdateItemUsingPath2";
-    //     const listAddRes = await this.pnp.sp.web.lists.ensure(listTitle, "", 101);
-
-    //     const testList = await listAddRes.list.select("ParentWebUrl")<{ ParentWebUrl: string }>();
-
-    //     const title = "PnPTest_ListAddValidateUpdateItemUsingPath";
-    //     const formValues: IListItemFormUpdateValue[] = [
-    //         {
-    //             FieldName: "Title",
-    //             FieldValue: title,
-    //         },
-    //     ];
-
-    //     return expect(listAddRes.list.addValidateUpdateItemUsingPath(formValues,
-    //         `${testList.ParentWebUrl}/${listTitle}`, true, "", {
-    //             leafName: "MyFolder",
-    //             objectType: 1,
-    //         })).to.eventually.be.fulfilled;
-    // });
-
     it("contentTypes", function () {
         return expect(list.contentTypes()).to.eventually.be.fulfilled;
     });
