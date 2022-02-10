@@ -39,7 +39,7 @@ declare module "../webs/types" {
 }
 
 /**
- * Shares this web with the supplied users
+ * Shares this web with the supplied users (not supported for batching)
  * @param loginNames The resolved login names to share
  * @param role The role to share this web
  * @param emailData Optional email data
@@ -50,10 +50,7 @@ _Web.prototype.shareWith = async function (
     role: SharingRole = SharingRole.View,
     emailData?: ISharingEmailData): Promise<ISharingResult> {
 
-    // TODO::
-    // const dependency = this.addBatchDependency();
     const url = await this.select("Url")();
-    // dependency();
 
     return this.shareObject(combine(url.Url, "/_layouts/15/aclinv.aspx?forSharing=1&mbypass=1"), loginNames, role, emailData);
 };

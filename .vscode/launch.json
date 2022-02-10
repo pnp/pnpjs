@@ -37,7 +37,8 @@
       "args": [
         "--verbose",
         "--logging",
-        "--skip-web"
+        "--site",
+        "https://318studios.sharepoint.com/sites/dev/fe004ce2-5c79-47fa-9d1d-9435ddbcd647"
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
