@@ -98,6 +98,8 @@ const fieldSchema = `<Field ID="{03b09ff4-d99d-45ed-841d-3855f77a2483}" StaticNa
 // create the new field in the web
 const field: IFieldAddResult = await sp.web.fields.createFieldAsXml(fieldSchema);
 // create the new field in the list 'My List'
+// NOTE: name of fields in lists only depend on DisplayName, so the internal name of this field will be "My_x0020_New_x0020_Field"
+//       https://github.com/pnp/pnpjs/issues/265
 const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(fieldSchema);
 
 // we can use this 'field' variable to run more queries on the list:
