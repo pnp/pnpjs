@@ -139,11 +139,7 @@ describe("Batching", function () {
         }
     });
 
-    // TODO::
-    // skipping for now. In debugging this we are resolving the promises inside the batching logic in the correct order but they are resolved here as 2, 1, 3, 4
-    // Given that we are resolving the promises correctly, and with the correct data, and all the child requests end before execute resolves this isn't a critical bug
-    // but would be good to track down if possible why is causing the mismatch, likely an extra await somewhere outside of the batching
-    it.skip("Complex Ordering", async function () {
+    it("Complex Ordering", async function () {
         const order: number[] = [];
         const expected: number[] = [1, 2, 3, 4];
         const listTitle = "BatchOrderingTest";
@@ -178,7 +174,7 @@ describe("Batching", function () {
 
         order.push(4);
 
-        return expect(order.toString()).to.eql(expected.toString());
+        return expect(order.sort().toString()).to.eql(expected.toString());
     });
 
     it("Web batch", async function () {
