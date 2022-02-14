@@ -1043,7 +1043,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1055,7 +1055,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1067,7 +1067,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1079,7 +1079,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1091,7 +1091,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1103,7 +1103,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1115,7 +1115,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1747,7 +1747,7 @@
                   <a href="http://github.com/pnp/pnpjs/tree/dev/packages/common/docs/adalclient.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="pnpcommonadalclient">@pnp/common/adalclient<a class="headerlink" href="#pnpcommonadalclient" title="Permanent link">&para;</a></h1>
+                <h1 id="pnpcommonadalclient">@pnp/core/adalclient<a class="headerlink" href="#pnpcommonadalclient" title="Permanent link">&para;</a></h1>
 <p><em>Added in 1.0.4</em></p>
 <p>This module contains the AdalClient class which can be used to authenticate to any AzureAD secured resource. It is designed to work seamlessly with
 SharePoint Framework's permissions.</p>
@@ -1756,7 +1756,7 @@ SharePoint Framework's permissions.</p>
 <h4 id="calling-the-graph-api">Calling the graph api<a class="headerlink" href="#calling-the-graph-api" title="Permanent link">&para;</a></h4>
 <p>By providing the context in the onInit we can create the adal client from known information.  </p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="c1">// ...</span>
 
@@ -1793,7 +1793,7 @@ SharePoint Framework's permissions.</p>
 <h4 id="calling-the-sharepoint-api">Calling the SharePoint API<a class="headerlink" href="#calling-the-sharepoint-api" title="Permanent link">&para;</a></h4>
 <p>This example shows how to use the ADALClient with the @pnp/sp library to call </p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="c1">// ...</span>
 
@@ -1825,8 +1825,8 @@ SharePoint Framework's permissions.</p>
 
 <h4 id="calling-the-any-api">Calling the any API<a class="headerlink" href="#calling-the-any-api" title="Permanent link">&para;</a></h4>
 <p>You can also use the AdalClient to execute AAD authenticated requests to any API which is properly configured to accept the incoming tokens. This approach will only work within SharePoint Framework &gt;= 1.6. Here we call the SharePoint REST API without the sp library as an example.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span><span class="p">,</span> <span class="nx">FetchOptions</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">ODataDefaultParser</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span><span class="p">,</span> <span class="nx">FetchOptions</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ODataDefaultParser</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/queryable&quot;</span><span class="p">;</span>
 
 <span class="c1">// ...</span>
 
@@ -1866,7 +1866,7 @@ SharePoint Framework's permissions.</p>
 <p>This example shows setting up and using the AdalClient to make queries using information you have setup. You can <a href="https://docs.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/guidance/connect-to-api-secured-with-aad">review this article</a> for more information on setting up and securing any application using AzureAD.</p>
 <h3 id="setup-and-use-with-microsoft-graph">Setup and Use with Microsoft Graph<a class="headerlink" href="#setup-and-use-with-microsoft-graph" title="Permanent link">&para;</a></h3>
 <p>This sample uses a custom AzureAd app you have created and granted the appropriate permissions.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">AdalClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="c1">// configure the graph client</span>

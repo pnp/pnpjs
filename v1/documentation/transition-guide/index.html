@@ -1105,7 +1105,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1117,7 +1117,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1129,7 +1129,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1141,7 +1141,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1153,7 +1153,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1165,7 +1165,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1177,7 +1177,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1807,7 +1807,7 @@ dependencies between the packages to do this. With each release we will release 
 you are working with compatible versions. One thing to keep in mind with peer dependencies is that they are not automatically installed. The advantage is you
 will only have one copy of each library in your project.</p>
 <p>Installing peer dependencies is easy, you can specify each of the packages in a single line, here we are installing everything required to use the @pnp/sp package.</p>
-<div class="codehilite"><pre><span></span>npm i @pnp/logging @pnp/common @pnp/odata @pnp/sp
+<div class="codehilite"><pre><span></span>npm i @pnp/logging @pnp/core @pnp/queryable @pnp/sp
 </pre></div>
 
 
@@ -1833,7 +1833,7 @@ the same set of imports, but one is done via sp-pnp-js and the other using the @
   <span class="nx">FunctionListener</span>
 <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">;</span>
 
-<span class="kr">import</span> <span class="o">*</span> <span class="kr">as</span> <span class="nx">Util</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="o">*</span> <span class="kr">as</span> <span class="nx">Util</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="kr">import</span> <span class="p">{</span>
   <span class="nx">sp</span><span class="p">,</span>

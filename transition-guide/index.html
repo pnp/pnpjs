@@ -15,7 +15,7 @@
     
     
       
-        <title>Transition Guide - PnP/PnPjs</title>
+        <title>V2->V3 Transition - PnP/PnPjs</title>
       
     
     
@@ -91,7 +91,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Transition Guide
+              V2->V3 Transition
             
           </span>
         </div>
@@ -210,53 +210,6 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../news/2020-year-in-review/" class="md-nav__link">
-      2020 Year In Review
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-  
-
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
-    
-    <label class="md-nav__link" for="nav-4">
-      General
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="General" data-md-level="1">
-      <label class="md-nav__title" for="nav-4">
-        <span class="md-nav__icon md-icon"></span>
-        General
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../getting-started/" class="md-nav__link">
-      Getting Started
-    </a>
-  </li>
-
-        
-          
-          
-          
-
   
 
 
@@ -268,12 +221,12 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Transition Guide
+        V2->V3 Transition
         <span class="md-nav__icon md-icon"></span>
       </label>
     
     <a href="./" class="md-nav__link md-nav__link--active">
-      Transition Guide
+      V2->V3 Transition
     </a>
     
       
@@ -290,70 +243,50 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installing-pnp-libraries" class="md-nav__link">
-    Installing @pnp libraries
+  <a href="#benefits-and-advancements-in-v3" class="md-nav__link">
+    Benefits and Advancements in V3
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#selective-imports" class="md-nav__link">
-    Selective Imports
-  </a>
-  
-    <nav class="md-nav" aria-label="Selective Imports">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#selectively-import-web-lists-functionality" class="md-nav__link">
-    Selectively Import Web lists functionality
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#presets" class="md-nav__link">
-    Presets
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#invokable-objects" class="md-nav__link">
-    Invokable Objects
+  <a href="#global-vs-instance-architecture" class="md-nav__link">
+    Global vs Instance Architecture
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#factory-functions-interfaces" class="md-nav__link">
-    Factory Functions &amp; Interfaces
+  <a href="#assignfrom-and-copyfrom" class="md-nav__link">
+    AssignFrom and CopyFrom
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#extension-methods" class="md-nav__link">
-    Extension Methods
+  <a href="#dropping-get" class="md-nav__link">
+    Dropping ".get()"
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cdn-publishing" class="md-nav__link">
-    CDN publishing
+  <a href="#batching" class="md-nav__link">
+    Batching
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#drop-client-svc-and-sp-taxonomy-libraries" class="md-nav__link">
-    Drop client-svc and sp-taxonomy libraries
+  <a href="#web-spfi" class="md-nav__link">
+    Web -&gt; SPFI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dropping-commonjs-packages" class="md-nav__link">
+    Dropping -Commonjs Packages
   </a>
   
 </li>
@@ -364,6 +297,27 @@
     
   </li>
 
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Library Usage Tips
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Library Usage Tips" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        Library Usage Tips
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
         
           
           
@@ -371,8 +325,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../npm-scripts/" class="md-nav__link">
-      Npm Scripts
+    <a href="../concepts/batching/" class="md-nav__link">
+      Batching
     </a>
   </li>
 
@@ -383,8 +337,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../SPFx-on-premises/" class="md-nav__link">
-      SPFx On-Premises
+    <a href="../core/behaviors/" class="md-nav__link">
+      Using Behaviors
     </a>
   </li>
 
@@ -395,8 +349,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../nodejs-support/" class="md-nav__link">
-      Working in Nodejs
+    <a href="../concepts/typings/" class="md-nav__link">
+      Typings
     </a>
   </li>
 
@@ -416,267 +370,11 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
     
     <label class="md-nav__link" for="nav-5">
-      Library Concepts
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Library Concepts" data-md-level="1">
-      <label class="md-nav__title" for="nav-5">
-        <span class="md-nav__icon md-icon"></span>
-        Library Concepts
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../concepts/configuration/" class="md-nav__link">
-      Configuration
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../concepts/selective-imports/" class="md-nav__link">
-      Selective Imports
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../concepts/custom-bundle/" class="md-nav__link">
-      Custom Bundle
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../concepts/ie11-mode/" class="md-nav__link">
-      IE11 Mode
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../concepts/invokable/" class="md-nav__link">
-      Invokables
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../concepts/polyfill/" class="md-nav__link">
-      Polyfills
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../concepts/settings/" class="md-nav__link">
-      Settings
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../concepts/error-handling/" class="md-nav__link">
-      Error Handling
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-9" type="checkbox" id="nav-5-9">
-    
-    <label class="md-nav__link" for="nav-5-9">
-      Authentication
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Authentication" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-9">
-        <span class="md-nav__icon md-icon"></span>
-        Authentication
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../authentication/" class="md-nav__link">
-      Getting Started
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../authentication/client-spfx/" class="md-nav__link">
-      SPFx Auth
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../authentication/msaljsclient/" class="md-nav__link">
-      MSAL Client
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../authentication/adaljsclient/" class="md-nav__link">
-      ADAL Client
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../authentication/client-spa/" class="md-nav__link">
-      SPA Auth
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../authentication/server-nodejs/" class="md-nav__link">
-      NodeJS Auth
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../authentication/sp-app-registration/" class="md-nav__link">
-      SP App Reg
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../authentication/bearertokenclient/" class="md-nav__link">
-      Bearer Token Client
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../authentication/lambdaclient/" class="md-nav__link">
-      Lambda Token Client
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
-    
-    <label class="md-nav__link" for="nav-6">
       Packages
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="Packages" data-md-level="1">
-      <label class="md-nav__title" for="nav-6">
+      <label class="md-nav__title" for="nav-5">
         <span class="md-nav__icon md-icon"></span>
         Packages
       </label>
@@ -702,16 +400,16 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-2" type="checkbox" id="nav-6-2">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-2" type="checkbox" id="nav-5-2">
     
-    <label class="md-nav__link" for="nav-6-2">
-      common
+    <label class="md-nav__link" for="nav-5-2">
+      core
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="common" data-md-level="2">
-      <label class="md-nav__title" for="nav-6-2">
+    <nav class="md-nav" aria-label="core" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-2">
         <span class="md-nav__icon md-icon"></span>
-        common
+        core
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -722,8 +420,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../common/" class="md-nav__link">
-      common
+    <a href="/packages/#core" class="md-nav__link">
+      core
     </a>
   </li>
 
@@ -734,8 +432,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../common/collections/" class="md-nav__link">
-      collections
+    <a href="../core/behaviors/" class="md-nav__link">
+      behaviors
     </a>
   </li>
 
@@ -746,8 +444,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../common/custom-httpclientimpl/" class="md-nav__link">
-      Custom HttpClientImpl
+    <a href="../core/observers/" class="md-nav__link">
+      observers
     </a>
   </li>
 
@@ -758,8 +456,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../common/libconfig/" class="md-nav__link">
-      libconfig
+    <a href="../core/moments/" class="md-nav__link">
+      moments
     </a>
   </li>
 
@@ -770,8 +468,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../common/netutil/" class="md-nav__link">
-      netutil
+    <a href="../core/timeline/" class="md-nav__link">
+      timeline
     </a>
   </li>
 
@@ -782,7 +480,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../common/storage/" class="md-nav__link">
+    <a href="../core/storage/" class="md-nav__link">
       storage
     </a>
   </li>
@@ -794,7 +492,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../common/util/" class="md-nav__link">
+    <a href="../core/util/" class="md-nav__link">
       util
     </a>
   </li>
@@ -812,76 +510,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-3" type="checkbox" id="nav-6-3">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-3" type="checkbox" id="nav-5-3">
     
-    <label class="md-nav__link" for="nav-6-3">
-      config-store
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="config-store" data-md-level="2">
-      <label class="md-nav__title" for="nav-6-3">
-        <span class="md-nav__icon md-icon"></span>
-        config-store
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../config-store/" class="md-nav__link">
-      config-store
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../config-store/configuration/" class="md-nav__link">
-      configuration
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../config-store/providers/" class="md-nav__link">
-      providers
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-4" type="checkbox" id="nav-6-4">
-    
-    <label class="md-nav__link" for="nav-6-4">
+    <label class="md-nav__link" for="nav-5-3">
       graph
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="graph" data-md-level="2">
-      <label class="md-nav__title" for="nav-6-4">
+      <label class="md-nav__title" for="nav-5-3">
         <span class="md-nav__icon md-icon"></span>
         graph
       </label>
@@ -894,8 +530,20 @@
 
 
   <li class="md-nav__item">
-    <a href="../graph/" class="md-nav__link">
+    <a href="/packages/#graph" class="md-nav__link">
       graph
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../graph/groups/" class="md-nav__link">
+      groups
     </a>
   </li>
 
@@ -932,18 +580,6 @@
   <li class="md-nav__item">
     <a href="../graph/contacts/" class="md-nav__link">
       contacts
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../graph/cloud-communications/" class="md-nav__link">
-      cloud communications
     </a>
   </li>
 
@@ -1090,30 +726,18 @@
           
 
 
-  <li class="md-nav__item">
-    <a href="../logging/" class="md-nav__link">
-      logging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-6" type="checkbox" id="nav-6-6">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-4" type="checkbox" id="nav-5-4">
     
-    <label class="md-nav__link" for="nav-6-6">
-      nodejs
+    <label class="md-nav__link" for="nav-5-4">
+      logging
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="nodejs" data-md-level="2">
-      <label class="md-nav__title" for="nav-6-6">
+    <nav class="md-nav" aria-label="logging" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-4">
         <span class="md-nav__icon md-icon"></span>
-        nodejs
+        logging
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -1124,80 +748,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../nodejs/" class="md-nav__link">
-      nodejs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../nodejs/sp-fetch-client/" class="md-nav__link">
-      SPFetchClient
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../nodejs/adal-fetch-client/" class="md-nav__link">
-      AdalFetchClient
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../nodejs/bearer-token-fetch-client/" class="md-nav__link">
-      BearerTokenFetchClient
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../nodejs/provider-hosted-app/" class="md-nav__link">
-      ProviderHostedRequestContext
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../nodejs/sp-extensions/" class="md-nav__link">
-      sp Extensions
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../nodejs/proxy/" class="md-nav__link">
-      proxy
+    <a href="../logging/" class="md-nav__link">
+      logging
     </a>
   </li>
 
@@ -1214,16 +766,16 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-7" type="checkbox" id="nav-6-7">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-5" type="checkbox" id="nav-5-5">
     
-    <label class="md-nav__link" for="nav-6-7">
-      odata
+    <label class="md-nav__link" for="nav-5-5">
+      nodejs
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="odata" data-md-level="2">
-      <label class="md-nav__title" for="nav-6-7">
+    <nav class="md-nav" aria-label="nodejs" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-5">
         <span class="md-nav__icon md-icon"></span>
-        odata
+        nodejs
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -1234,8 +786,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../odata/" class="md-nav__link">
-      odata
+    <a href="/packages/#nodejs" class="md-nav__link">
+      nodejs
     </a>
   </li>
 
@@ -1246,8 +798,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../odata/caching/" class="md-nav__link">
-      caching
+    <a href="../nodejs/behaviors/" class="md-nav__link">
+      behaviors
     </a>
   </li>
 
@@ -1258,8 +810,46 @@
 
 
   <li class="md-nav__item">
-    <a href="../odata/core/" class="md-nav__link">
-      core
+    <a href="../nodejs/sp-extensions/" class="md-nav__link">
+      sp Extensions
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-6" type="checkbox" id="nav-5-6">
+    
+    <label class="md-nav__link" for="nav-5-6">
+      queryable
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="queryable" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-6">
+        <span class="md-nav__icon md-icon"></span>
+        queryable
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="/packages/#queryable" class="md-nav__link">
+      Queryable
     </a>
   </li>
 
@@ -1270,8 +860,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../odata/odata-batch/" class="md-nav__link">
-      OData Batching
+    <a href="../queryable/behaviors/" class="md-nav__link">
+      Behaviors
     </a>
   </li>
 
@@ -1282,8 +872,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../odata/extensions/" class="md-nav__link">
-      Extending an OData library
+    <a href="../queryable/extensions/" class="md-nav__link">
+      Extensions
     </a>
   </li>
 
@@ -1294,43 +884,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../odata/debug/" class="md-nav__link">
-      Debugging Proxy Objects
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../odata/parsers/" class="md-nav__link">
-      Parsers
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../odata/pipeline/" class="md-nav__link">
-      Pipeline
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../odata/queryable/" class="md-nav__link">
+    <a href="../queryable/queryable/" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1348,52 +902,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-8" type="checkbox" id="nav-6-8">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-7" type="checkbox" id="nav-5-7">
     
-    <label class="md-nav__link" for="nav-6-8">
-      pnpjs
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="pnpjs" data-md-level="2">
-      <label class="md-nav__title" for="nav-6-8">
-        <span class="md-nav__icon md-icon"></span>
-        pnpjs
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../pnpjs/" class="md-nav__link">
-      pnpjs
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-9" type="checkbox" id="nav-6-9">
-    
-    <label class="md-nav__link" for="nav-6-9">
+    <label class="md-nav__link" for="nav-5-7">
       sp
       <span class="md-nav__icon md-icon"></span>
     </label>
     <nav class="md-nav" aria-label="sp" data-md-level="2">
-      <label class="md-nav__title" for="nav-6-9">
+      <label class="md-nav__title" for="nav-5-7">
         <span class="md-nav__icon md-icon"></span>
         sp
       </label>
@@ -1406,7 +922,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../sp/" class="md-nav__link">
+    <a href="/packages/#sp" class="md-nav__link">
       sp
     </a>
   </li>
@@ -1873,23 +1389,28 @@
   </li>
 
         
-          
-          
-          
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
 
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-10" type="checkbox" id="nav-6-10">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
     
-    <label class="md-nav__link" for="nav-6-10">
-      sp-addinhelpers
+    <label class="md-nav__link" for="nav-6">
+      Advanced
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="sp-addinhelpers" data-md-level="2">
-      <label class="md-nav__title" for="nav-6-10">
+    <nav class="md-nav" aria-label="Advanced" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
         <span class="md-nav__icon md-icon"></span>
-        sp-addinhelpers
+        Advanced
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -1900,8 +1421,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../sp-addinhelpers/" class="md-nav__link">
-      sp-addinhelpers
+    <a href="../concepts/custom-bundle/" class="md-nav__link">
+      Custom Bundle
     </a>
   </li>
 
@@ -1912,8 +1433,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../sp-addinhelpers/sp-request-executor-client/" class="md-nav__link">
-      SPRequestExecutorClient
+    <a href="../concepts/invokable/" class="md-nav__link">
+      Custom Call/Path
     </a>
   </li>
 
@@ -1924,14 +1445,45 @@
 
 
   <li class="md-nav__item">
-    <a href="../sp-addinhelpers/sp-rest-addin/" class="md-nav__link">
-      SPRestAddIn
+    <a href="../core/behaviors/" class="md-nav__link">
+      Behaviors
     </a>
   </li>
 
         
-      </ul>
-    </nav>
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../core/behavior-recipes/" class="md-nav__link">
+      Behavior Recipes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../core/timeline/" class="md-nav__link">
+      Timeline/Moments
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../concepts/adv-clientside-pages/" class="md-nav__link">
+      Client-Side Pages
+    </a>
   </li>
 
         
@@ -1979,8 +1531,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../contributing/setup-dev-machine/" class="md-nav__link">
-      Setup Dev Machine
+    <a href="../contributing/settings/" class="md-nav__link">
+      Settings
     </a>
   </li>
 
@@ -1991,8 +1543,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../contributing/local-debug-configuration/" class="md-nav__link">
-      Local Debug Configuration
+    <a href="../core/timeline/" class="md-nav__link">
+      Understanding Library Internals
     </a>
   </li>
 
@@ -2003,20 +1555,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../contributing/debugging/" class="md-nav__link">
-      Debugging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../contributing/extending-the-library/" class="md-nav__link">
-      Extending the library
+    <a href="../contributing/npm-scripts/" class="md-nav__link">
+      Npm Scripts
     </a>
   </li>
 
@@ -2028,7 +1568,7 @@
 
   <li class="md-nav__item">
     <a href="../contributing/debug-tests/" class="md-nav__link">
-      Writing Tests
+      Testing
     </a>
   </li>
 
@@ -2040,19 +1580,7 @@
 
   <li class="md-nav__item">
     <a href="../contributing/documentation/" class="md-nav__link">
-      Update Documentation
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../contributing/pull-requests/" class="md-nav__link">
-      Submit a Pull Request
+      Documentation
     </a>
   </li>
 
@@ -2072,13 +1600,13 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
     
     <label class="md-nav__link" for="nav-8">
-      Version 1 Docs
+      Legacy Docs
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="Version 1 Docs" data-md-level="1">
+    <nav class="md-nav" aria-label="Legacy Docs" data-md-level="1">
       <label class="md-nav__title" for="nav-8">
         <span class="md-nav__icon md-icon"></span>
-        Version 1 Docs
+        Legacy Docs
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -2090,7 +1618,19 @@
 
   <li class="md-nav__item">
     <a href="../v1/" class="md-nav__link">
-      Home
+      V1
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../v2/" class="md-nav__link">
+      V2
     </a>
   </li>
 
@@ -2124,70 +1664,50 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installing-pnp-libraries" class="md-nav__link">
-    Installing @pnp libraries
+  <a href="#benefits-and-advancements-in-v3" class="md-nav__link">
+    Benefits and Advancements in V3
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#selective-imports" class="md-nav__link">
-    Selective Imports
-  </a>
-  
-    <nav class="md-nav" aria-label="Selective Imports">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#selectively-import-web-lists-functionality" class="md-nav__link">
-    Selectively Import Web lists functionality
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#presets" class="md-nav__link">
-    Presets
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#invokable-objects" class="md-nav__link">
-    Invokable Objects
+  <a href="#global-vs-instance-architecture" class="md-nav__link">
+    Global vs Instance Architecture
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#factory-functions-interfaces" class="md-nav__link">
-    Factory Functions &amp; Interfaces
+  <a href="#assignfrom-and-copyfrom" class="md-nav__link">
+    AssignFrom and CopyFrom
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#extension-methods" class="md-nav__link">
-    Extension Methods
+  <a href="#dropping-get" class="md-nav__link">
+    Dropping ".get()"
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cdn-publishing" class="md-nav__link">
-    CDN publishing
+  <a href="#batching" class="md-nav__link">
+    Batching
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#drop-client-svc-and-sp-taxonomy-libraries" class="md-nav__link">
-    Drop client-svc and sp-taxonomy libraries
+  <a href="#web-spfi" class="md-nav__link">
+    Web -&gt; SPFI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dropping-commonjs-packages" class="md-nav__link">
+    Dropping -Commonjs Packages
   </a>
   
 </li>
@@ -2204,96 +1724,51 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/pnp/pnpjs/tree/version-2/docs/transition-guide.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/pnp/pnpjs/tree/version-3/docs/transition-guide.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
                 <h1 id="transition-guide">Transition Guide<a class="headerlink" href="#transition-guide" title="Permanent link">&para;</a></h1>
-<p>We have worked to make moving from @pnp library 1.<em> to 2.</em> as painless as possible, however there are some changes to how things work. The below guide we have provided an overview of what it takes to transition between the libraries. If we missed something, please let us know in the issues list so we can update the guide. Thanks!</p>
-<h2 id="installing-pnp-libraries">Installing @pnp libraries<a class="headerlink" href="#installing-pnp-libraries" title="Permanent link">&para;</a></h2>
-<p>In version 1.* the libraries were setup as peer dependencies of each other requiring you to install each of them separately. We continue to believe this correctly describes the relationship, but recognize that basically nothing in the world accounts for peer dependencies. So we have updated the libraries to be dependencies. This makes it easier to install into your projects as you only need to install a single library:</p>
-<p><code>npm i --save @pnp/sp</code></p>
-<h2 id="selective-imports">Selective Imports<a class="headerlink" href="#selective-imports" title="Permanent link">&para;</a></h2>
-<p>Another big change in v2 is the ability to selectively import the pieces you need from the libraries. This allows you to have smaller bundles and works well with tree-shaking. It does require you to have more import statements, which can potentially be a bit confusing at first. The selective imports apply to the sp and graph libraries.</p>
-<p>To help explain let's take the example of the Web object. In v1 Web includes a reference to pretty much everything else in the entire sp library. Meaning that if you use web (and you pretty much have to) you hold a ref to all the other pieces (like Fields, Lists, ContentTypes) even if you aren't using them. Because of that tree shaking can't do anything to reduce the bundle size because it "thinks" you are using them simply because they have been imported. To solve this in v2 the Web object no longer contains references to anything, it is a bare object with a few methods. If you look at the source you will see that, for example, there is no longer a "lists" property. These properties and methods are now added through selectively importing the functionality you need:</p>
-<h3 id="selectively-import-web-lists-functionality">Selectively Import Web lists functionality<a class="headerlink" href="#selectively-import-web-lists-functionality" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
-<span class="c1">// this imports the functionality for lists associated only with web</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists/web&quot;</span><span class="p">;</span>
+<p>It is our hope that the transition from version 2.* to 3.* will be as painless as possible, however given the transition we have made from a global sp object to an instance based object some architectural and inital setup changes will need to be addressed. In the following sections we endevor to provide an overview of what changes will be required. If we missed something, please let us know in the issues list so we can update the guide. Thanks!</p>
+<p>For a full, detailed list of what's been added, updated, and removed please see our <a href="https://github.com/pnp/pnpjs/blob/main/CHANGELOG.md">CHANGELOG</a></p>
+<h2 id="benefits-and-advancements-in-v3">Benefits and Advancements in V3<a class="headerlink" href="#benefits-and-advancements-in-v3" title="Permanent link">&para;</a></h2>
+<p>For version 2 the core themes were selective imports, a model based on factory functions &amp; interfaces, and improving the docs. This foundation gave us the opportunity to re-write the entire request pipeline internals with minimal external library changes - showing a bit of long-term planning 🙂. With version 3 your required updates are likely to only affect the initial configuration of the library, a huge accomplishment when updating the entire internals.</p>
+<p>Our request pipeline remained largely unchanged since it was first written ~5 years ago, hard to change something so central to the library. The advantage of this update it is now easy for developers to inject their own logic into the requst process. As always, this work was based on feedback over the years and understanding how we can be a better library. The new observer design allows you to customize every aspect of the request, in a much clearer way than was previously possible. In addition this work greatly reduced internal boilerplate code and optimized for library size. We reduced the size of sp &amp; graph libraries by almost 2/3. As well we embraced a fully async design built around the new <a href="../core/timeline/">Timeline</a>. Check out the new model around authoring <a href="../core/observers/">observers</a> and understand how they relate to <a href="../core/moments/">moments</a>. We feel this new architecture will allow far greater flexibility for consumers of the library to customize the behavior to exactly meet their needs.</p>
+<p>We also used this as an opportunity to remove duplicate methods, clean up and improve our typings &amp; method signatures, and drop legacy methods. Be sure to review the <a href="https://github.com/pnp/pnpjs/blob/version-3/CHANGELOG.md">changelog</a>. As always we do our best to minimize breaking changes but major versions are breaking versions.</p>
+<p>We thank you for using the library your continued feedback drives these improvements, and look forward to seeing what you build!</p>
+<h2 id="global-vs-instance-architecture">Global vs Instance Architecture<a class="headerlink" href="#global-vs-instance-architecture" title="Permanent link">&para;</a></h2>
+<p>The biggest change in version 3 of the library is the movement away from the globally defined sp and graph objects. Starting in version 2.1.0 we added the concept of <code>Isolated Runtime</code> which allowed you to create a seperate instance of the global object that would have a seperate configuration. We found that the implementation was finicky and prone to issue and so have rebuilt the internals of the library from the ground up to better address this need. In doing so the decision was made not to offer a global object at all.</p>
+<p>Becuase of this change, any architecture that relies on the <code>sp</code> or <code>graph</code> objects being configured during initialization and then reused throught the solution will need to be rethought. Either by creating a new <code>spfi</code>/<code>graphfi</code> object wherever it's required or by creating a <a href="./getting-started/#establish-context-within-an-spfx-service">service arcitecture</a> that can return a previously configured instance or utilize an instance and return the results. Essentially the <code>sp</code> and <code>graph</code> objects have been deprecated and will need to be replaced.</p>
+<p>For more information on getting started with these new setup methods please see the <a href="../getting-started/">Getting Started</a> docs or for a deeper look into the Queryable interface see <a href="../queryable/queryable/">Queryable</a>.</p>
+<h2 id="assignfrom-and-copyfrom">AssignFrom and CopyFrom<a class="headerlink" href="#assignfrom-and-copyfrom" title="Permanent link">&para;</a></h2>
+<p>With the new Querable instance architecture we have provided a way to branch from one instance to another. To do this we provide two methods AssignFrom and CopyFrom. These methods can be helpful when you want to establish a new instance that you might apply other behaviors to but want to reuse the configuration from a source. To learn more about them check out the <a href="../core/behaviors/">Core/Bahaviors</a> documentation.</p>
+<h2 id="dropping-get">Dropping ".get()"<a class="headerlink" href="#dropping-get" title="Permanent link">&para;</a></h2>
+<p>If you are still using the <code>queryableInstance.get()</code> method of queryable you must replace it with a direct invoke call <code>queryableInstance()</code>.</p>
+<h2 id="batching">Batching<a class="headerlink" href="#batching" title="Permanent link">&para;</a></h2>
+<p>Another benefit of the new updated internals in a significantly streamlined and simplified process for batching requests. Essentially the interface for both SP and Graph function the same.</p>
+<p>A new module called "batching" will need to be imported which then provides the batched interface which will return a tuple with a new Querable instance and an execute function. To see more details check out the <a href="../concepts/batching/">Batching</a></p>
+<h2 id="web-spfi">Web -&gt; SPFI<a class="headerlink" href="#web-spfi" title="Permanent link">&para;</a></h2>
+<p>In V2, to connect to a different web you would use the function</p>
+<pre><code class="language-ts">const web = Web({Other Web URL});
+</code></pre>
+<p>In V3 you would create a new instance of queryable connecting to the web of your choice. Th`is new method provides you significantly more flexibility by not only allowing you to easily connect to other webs in the same tenant but also to webs in other tenants.</p>
+<pre><code class="language-ts">const spWebA = spfi().using(SPDefault(this.context));
 
-<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
-<span class="c1">// this imports all the functionality for lists</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/lists&quot;</span><span class="p">;</span>
+// Create a new instance of Queryable
+const spWebB = spfi(&quot;{Other Web URL}&quot;).using(SPDefault(this.context));
 
-<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">();</span>
-</code></pre></div>
-<p>Each of the docs pages shows the selective import paths for each sub-module (lists, items, etc.).</p>
-<h3 id="presets">Presets<a class="headerlink" href="#presets" title="Permanent link">&para;</a></h3>
-<p>In addition to the ability to selectively import functionality you can import presets. This allows you to import an entire set of functionality in a single line. At launch the sp library will support two presets "all" and "core" with the graph library supporting "all". <strong>Using the "all" preset will match the functionality of v1.</strong> This can save you time in transitioning your projects so you can update to selective imports later. For new projects we recommend using the selective imports from day 1.</p>
-<p>To update your V1 projects to V2 you can replace all instances of "@pnp/sp" with "@pnp/sp/presets/all" and things should work as before (though some class names or other things may have changed, please review the change log and the rest of this guide).</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// V1 way of doing things:</span>
-<span class="kr">import</span> <span class="p">{</span>
-    <span class="nx">sp</span><span class="p">,</span>
-    <span class="nx">ClientSideWebpart</span><span class="p">,</span>
-    <span class="nx">ClientSideWebpartPropertyTypes</span><span class="p">,</span>
-<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+// Copy/Assign a new instance of Queryable using the existing
+const spWebC = spfi(&quot;{Other Web URL}&quot;).using(AssignFrom(sp.web));
 
-<span class="c1">// V2 way with selective imports</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientSideWebpart</span><span class="p">,</span> <span class="nx">ClientSideWebpartPropertyTypes</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/clientside-pages&quot;</span><span class="p">;</span>
+// Create a new instance of Queryable using other credentials?
+const spWebD = spfi(&quot;{Other Web URL}&quot;).using(SPDefault(this.context));
 
-<span class="c1">// V2 way with preset &quot;all&quot;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span><span class="p">,</span> <span class="nx">ClientSideWebpart</span><span class="p">,</span> <span class="nx">ClientSideWebpartPropertyTypes</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/presets/all&quot;</span><span class="p">;</span>
-</code></pre></div>
-<h2 id="invokable-objects">Invokable Objects<a class="headerlink" href="#invokable-objects" title="Permanent link">&para;</a></h2>
-<p>Another new feature is the addition of invokable objects. Previously where you used "get()" to invoke a request you can now leave it off. We have left the .get method in place so everyone's code wasn't broken immediately upon transitioning.</p>
-<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
-
-<span class="c1">// old way (still works)</span>
-<span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
-
-<span class="c1">// invokable</span>
-<span class="kr">const</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">();</span>
-</code></pre></div>
-<p>The benefit is that objects can now support default actions that are not "get" but might be "post". And you save typing a few extra characters. This still work the same as with select or any of the other odata methods:</p>
-<div class="highlight"><pre><span></span><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
-
-<span class="c1">// invokable</span>
-<span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Url&quot;</span><span class="p">)();</span>
-</code></pre></div>
-<h2 id="factory-functions-interfaces">Factory Functions &amp; Interfaces<a class="headerlink" href="#factory-functions-interfaces" title="Permanent link">&para;</a></h2>
-<p>Another change in the library is in the structure of exports. We are no longer exporting the objects themselves, rather we are only exposing factory functions and interfaces. This allows us to decouple what developers use from our internal implementation. For folks using the fluent chain starting with sp you shouldn't need to update your code. If you are using any of the v1 classes directly you should just need to remove the "new" keyword and update the import path. The factory functions signature matches the constructor signature of the v1 objects.</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// v1</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-
-<span class="kr">const</span> <span class="nx">web</span>: <span class="kt">Web</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;some absolute url&quot;</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">web</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
-
-<span class="c1">// v2</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">Web</span><span class="p">,</span> <span class="nx">IWeb</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp/webs&quot;</span><span class="p">;</span>
-
-<span class="kr">const</span> <span class="nx">web</span>: <span class="kt">IWeb</span> <span class="o">=</span> <span class="nx">Web</span><span class="p">(</span><span class="s2">&quot;some absolute url&quot;</span><span class="p">);</span>
-
-<span class="kr">const</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">web</span><span class="p">();</span>
-</code></pre></div>
-<h2 id="extension-methods">Extension Methods<a class="headerlink" href="#extension-methods" title="Permanent link">&para;</a></h2>
-<p>Another new capability in v2 is the ability to extend objects and factories. This allows you to easily add methods or properties on a per-object basis. Please see the <a href="../odata/extensions/">full article on extension methods</a> describing this great new capability.</p>
-<h2 id="cdn-publishing">CDN publishing<a class="headerlink" href="#cdn-publishing" title="Permanent link">&para;</a></h2>
-<p>Starting with v2 we will no longer create bundles for each of the packages. Historically these are not commonly used, don't work perfectly for everyone (there are a lot of ways to bundle things), and another piece we need to maintain. Instead we encourage folks to create their <a href="../concepts/custom-bundle/">own bundles</a>, optimized for their particular scenario. This will result in smaller overall bundle size and allow folks to bundle things to match their scenario. Please <a href="../concepts/custom-bundle/">review the article on creating your custom bundles</a> to see how to tailor bundles to your needs.</p>
-<p>The PnPjs bundle will remain, though it is designed only for backwards compatibility and we strongly recommend creating your own bundles, or directly importing the libraries into your projects using selective imports.</p>
-<h2 id="drop-client-svc-and-sp-taxonomy-libraries">Drop client-svc and sp-taxonomy libraries<a class="headerlink" href="#drop-client-svc-and-sp-taxonomy-libraries" title="Permanent link">&para;</a></h2>
-<p>These libraries were created to allow folks to access and manage SharePoint taxonomy and manage metadata. Given that there is upcoming support for taxonomy via a supported REST API we will drop these two libraries. If working with taxonomy remains a core requirement of your application and we do not yet have support for the new apis, please remain on v1 for the time being.</p>
-<blockquote>
-<p>As of 2.0.6 we support reading the modern taxonomy API. <a href="../sp/taxonomy/">Docs here</a></p>
-</blockquote>
+// as well you can use the tuple pattern and the Web contructor, which will copy all the observers from the object but set the url to the one provided
+const spWebE = Web([spWebA, &quot;{Other Web URL}&quot;]).using(SPDefault(this.context));
+</code></pre>
+<h2 id="dropping-commonjs-packages">Dropping -Commonjs Packages<a class="headerlink" href="#dropping-commonjs-packages" title="Permanent link">&para;</a></h2>
+<p>Starting with v3 we are dropping the commonjs versions of all packages. Previously we released these as we worked to transition to esm and the current node didn't yet support esm. With esm now a supported module type, and having done the work to ensure they work in node we feel it is a good time to drop the -commonjs variants.</p>
                 
               
               
@@ -2327,13 +1802,13 @@
           </a>
         
         
-          <a href="../npm-scripts/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../concepts/batching/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Npm Scripts
+                Batching
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">

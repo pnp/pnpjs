@@ -1087,7 +1087,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1099,7 +1099,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1111,7 +1111,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1123,7 +1123,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1135,7 +1135,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1147,7 +1147,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1159,7 +1159,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1839,7 +1839,7 @@
 <p>The ability to manage contacts and folders in Outlook is a capability introduced in version 1.2.2 of @pnp/graph. Through the methods described
 you can add and edit both contacts and folders in a users Outlook.</p>
 <h2 id="get-all-of-the-contacts">Get all of the Contacts<a class="headerlink" href="#get-all-of-the-contacts" title="Permanent link">&para;</a></h2>
-<p>Using the contacts.get() you can get the users contacts from Outlook</p>
+<p>Using the contacts() you can get the users contacts from Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">contacts</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1889,7 +1889,7 @@ you can add and edit both contacts and folders in a users Outlook.</p>
 
 
 <h2 id="get-all-of-the-contact-folders">Get all of the Contact Folders<a class="headerlink" href="#get-all-of-the-contact-folders" title="Permanent link">&para;</a></h2>
-<p>Using the contactFolders.get() you can get the users Contact Folders from Outlook</p>
+<p>Using the contactFolders() you can get the users Contact Folders from Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">contactFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1939,7 +1939,7 @@ you can add and edit both contacts and folders in a users Outlook.</p>
 
 
 <h2 id="get-all-of-the-contacts-from-the-contact-folder">Get all of the Contacts from the Contact Folder<a class="headerlink" href="#get-all-of-the-contacts-from-the-contact-folder" title="Permanent link">&para;</a></h2>
-<p>Using the contacts.get() in the Contact Folder gets the users Contact from the folder.</p>
+<p>Using the contacts() in the Contact Folder gets the users Contact from the folder.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">contactsInContactFolder</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;folderId&#39;</span><span class="p">).</span><span class="nx">contacts</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1949,7 +1949,7 @@ you can add and edit both contacts and folders in a users Outlook.</p>
 
 
 <h2 id="get-child-folders-of-the-contact-folder">Get Child Folders of the Contact Folder<a class="headerlink" href="#get-child-folders-of-the-contact-folder" title="Permanent link">&para;</a></h2>
-<p>Using the childFolders.get() you can get the Child Folders of the current Contact Folder from Outlook</p>
+<p>Using the childFolders() you can get the Child Folders of the current Contact Folder from Outlook</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">childFolders</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">contactFolders</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;&lt;id&gt;&#39;</span><span class="p">).</span><span class="nx">childFolders</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>

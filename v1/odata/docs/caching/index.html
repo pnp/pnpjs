@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://pnp.github.io/pnpjs/odata/docs/caching/">
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/queryable/docs/caching/">
       
       
       
@@ -1746,12 +1746,12 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="http://github.com/pnp/pnpjs/tree/dev/packages/odata/docs/caching.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="http://github.com/pnp/pnpjs/tree/dev/packages/queryable/docs/caching.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="pnpodatacaching">@pnp/odata/caching<a class="headerlink" href="#pnpodatacaching" title="Permanent link">&para;</a></h1>
+                <h1 id="pnpodatacaching">@pnp/queryable/caching<a class="headerlink" href="#pnpodatacaching" title="Permanent link">&para;</a></h1>
 <p>Often times data doesn't change that quickly, especially in the case of rolling up corporate news or upcoming events. These types of things can be cached for minutes if not hours. To help make caching easy you just need to insert the usingCaching method in your chain. This only applies to get requests. The usingCaching method can be used with the inBatch method as well to cache the results of batched requests.</p>
-<p>The below examples uses the @pnp/sp library as the example - but this works equally well for any library making use of the @pnp/odata base classes, such as @pnp/graph.</p>
+<p>The below examples uses the @pnp/sp library as the example - but this works equally well for any library making use of the @pnp/queryable base classes, such as @pnp/graph.</p>
 <h2 id="basic-example">Basic example<a class="headerlink" href="#basic-example" title="Permanent link">&para;</a></h2>
 <p>You can use the method without any additional configuration. We have made some default choices for you and will discuss ways to override them later. The below code will get the items from the list, first checking the cache for the value. You can also use it with OData operators such as top and orderBy. The usingCaching() should always be the last method in the chain before the get() (OR if you are using [[batching]] these methods can be transposed, more details below).</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
@@ -1793,7 +1793,7 @@
 
 
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">dateAdd</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">dateAdd</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;Tasks&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">top</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="nx">orderBy</span><span class="p">(</span><span class="s2">&quot;Modified&quot;</span><span class="p">).</span><span class="nx">usingCaching</span><span class="p">({</span>
     <span class="nx">expiration</span>: <span class="kt">dateAdd</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s2">&quot;minute&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
@@ -1982,7 +1982,7 @@
       
     
     
-    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/odata/docs/caching/" alt="spacer" />
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/queryable/docs/caching/" alt="spacer" />
 
   </body>
 </html>

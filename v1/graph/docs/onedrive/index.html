@@ -1087,7 +1087,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1099,7 +1099,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1111,7 +1111,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1123,7 +1123,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1135,7 +1135,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1147,7 +1147,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1159,7 +1159,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1839,7 +1839,7 @@
 <p>The ability to manage drives and drive items in Onedrive is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
 you can manage drives and drive items in Onedrive.</p>
 <h2 id="get-the-default-drive">Get the default drive<a class="headerlink" href="#get-the-default-drive" title="Permanent link">&para;</a></h2>
-<p>Using the drive.get() you can get the default drive from Onedrive</p>
+<p>Using the drive() you can get the default drive from Onedrive</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">drives</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1849,7 +1849,7 @@ you can manage drives and drive items in Onedrive.</p>
 
 
 <h2 id="get-all-of-the-drives">Get all of the drives<a class="headerlink" href="#get-all-of-the-drives" title="Permanent link">&para;</a></h2>
-<p>Using the drives.get() you can get the users available drives from Onedrive</p>
+<p>Using the drives() you can get the users available drives from Onedrive</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">drives</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1869,7 +1869,7 @@ you can manage drives and drive items in Onedrive.</p>
 
 
 <h2 id="get-the-associated-list-of-a-drive">Get the associated list of a drive<a class="headerlink" href="#get-the-associated-list-of-a-drive" title="Permanent link">&para;</a></h2>
-<p>Using the list.get() you get the associated list</p>
+<p>Using the list() you get the associated list</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">list</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1879,7 +1879,7 @@ you can manage drives and drive items in Onedrive.</p>
 
 
 <h2 id="get-the-recent-files">Get the recent files<a class="headerlink" href="#get-the-recent-files" title="Permanent link">&para;</a></h2>
-<p>Using the recent.get() you get the recent files</p>
+<p>Using the recent() you get the recent files</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">files</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">recent</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1889,7 +1889,7 @@ you can manage drives and drive items in Onedrive.</p>
 
 
 <h2 id="get-the-files-shared-with-me">Get the files shared with me<a class="headerlink" href="#get-the-files-shared-with-me" title="Permanent link">&para;</a></h2>
-<p>Using the sharedWithMe.get() you get the files shared with the user</p>
+<p>Using the sharedWithMe() you get the files shared with the user</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">shared</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">sharedWithMe</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1899,7 +1899,7 @@ you can manage drives and drive items in Onedrive.</p>
 
 
 <h2 id="get-the-root-folder">Get the Root folder<a class="headerlink" href="#get-the-root-folder" title="Permanent link">&para;</a></h2>
-<p>Using the root.get() you get the root folder</p>
+<p>Using the root() you get the root folder</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">root</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1909,7 +1909,7 @@ you can manage drives and drive items in Onedrive.</p>
 
 
 <h2 id="get-the-children">Get the Children<a class="headerlink" href="#get-the-children" title="Permanent link">&para;</a></h2>
-<p>Using the children.get() you get the children</p>
+<p>Using the children() you get the children</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">rootChildren</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">root</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1934,7 +1934,7 @@ you can manage drives and drive items in Onedrive.</p>
 
 
 <h2 id="search-items">Search items<a class="headerlink" href="#search-items" title="Permanent link">&para;</a></h2>
-<p>Using the search.get() you can search for items, and optionally select properties</p>
+<p>Using the search() you can search for items, and optionally select properties</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">search</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">)</span><span class="nx">root</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="s1">&#39;queryText&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
@@ -1954,7 +1954,7 @@ you can manage drives and drive items in Onedrive.</p>
 
 
 <h2 id="get-thumbnails">Get thumbnails<a class="headerlink" href="#get-thumbnails" title="Permanent link">&para;</a></h2>
-<p>Using the thumbnails.get() you get the thumbnails</p>
+<p>Using the thumbnails() you get the thumbnails</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">thumbs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">users</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user@tenant.onmicrosoft.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;driveId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">thumbnails</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>

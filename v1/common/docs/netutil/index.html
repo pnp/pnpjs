@@ -1036,7 +1036,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1048,7 +1048,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1060,7 +1060,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1072,7 +1072,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1084,7 +1084,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1096,7 +1096,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1108,7 +1108,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1733,7 +1733,7 @@
                   <a href="http://github.com/pnp/pnpjs/tree/dev/packages/common/docs/netutil.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="pnpcommonnetutil">@pnp/common/netutil<a class="headerlink" href="#pnpcommonnetutil" title="Permanent link">&para;</a></h1>
+                <h1 id="pnpcommonnetutil">@pnp/core/netutil<a class="headerlink" href="#pnpcommonnetutil" title="Permanent link">&para;</a></h1>
 <p>This module contains a set of classes and interfaces used to characterize shared http interactions and configuration of the libraries. Some of the interfaces
 are described below (many have no use outside the library) as well as several classes.</p>
 <h2 id="interfaces">Interfaces<a class="headerlink" href="#interfaces" title="Permanent link">&para;</a></h2>
@@ -1749,7 +1749,7 @@ underlying HttpClientImpl fetch method.</p>
 <p>This module export two classes of note, FetchClient and BearerTokenFetchClient. Both implement HttpClientImpl.</p>
 <h3 id="fetchclient">FetchClient<a class="headerlink" href="#fetchclient" title="Permanent link">&para;</a></h3>
 <p>Basic implementation that calls the global (window) fetch method with no additional processing.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">FetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">FetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FetchClient</span><span class="p">();</span>
 
@@ -1760,7 +1760,7 @@ underlying HttpClientImpl fetch method.</p>
 <h3 id="bearertokenfetchclient">BearerTokenFetchClient<a class="headerlink" href="#bearertokenfetchclient" title="Permanent link">&para;</a></h3>
 <p>A simple implementation that takes a provided authentication token and adds the Authentication Bearer header to the request. No other processing is done and 
 the token is treated as a static string.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">BearerTokenFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">BearerTokenFetchClient</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BearerTokenFetchClient</span><span class="p">(</span><span class="s2">&quot;{authentication token}&quot;</span><span class="p">);</span>
 

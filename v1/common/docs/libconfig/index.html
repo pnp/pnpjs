@@ -1016,7 +1016,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1028,7 +1028,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1040,7 +1040,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1052,7 +1052,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1064,7 +1064,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1076,7 +1076,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1088,7 +1088,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1693,7 +1693,7 @@
                   <a href="http://github.com/pnp/pnpjs/tree/dev/packages/common/docs/libconfig.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="pnpcommonlibconfig">@pnp/common/libconfig<a class="headerlink" href="#pnpcommonlibconfig" title="Permanent link">&para;</a></h1>
+                <h1 id="pnpcommonlibconfig">@pnp/core/libconfig<a class="headerlink" href="#pnpcommonlibconfig" title="Permanent link">&para;</a></h1>
 <p>Contains the shared classes and interfaces used to configure the libraries. These bases classes are expanded on in dependent libraries with the core
 configuration defined here. This module exposes an instance of the RuntimeConfigImpl class: RuntimeConfig. This configuration object can be referenced and
 contains the global configuration shared across the libraries. You can also extend the configuration for use within your own applications.</p>
@@ -1742,7 +1742,7 @@ used to track the configuration values. The keys will match the values in the in
 existing values will be overwritten based on the keys. Last value in wins. For a more detailed scenario of using the RuntimeConfig instance in your own application please 
 see the section below "Using RuntimeConfig within your application". Note there are no methods to remove/clear the global config as it should be considered fairly static
 as frequent updates may have unpredictable side effects as it is a global shared object. Generally it should be set at the start of your application.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">RuntimeConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">RuntimeConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="c1">// add your custom keys to the global configuration</span>
 <span class="c1">// note you can use object hashes as values</span>
@@ -1762,7 +1762,7 @@ as frequent updates may have unpredictable side effects as it is a global shared
 <h2 id="using-runtimeconfig-within-your-application">Using RuntimeConfig within your Application<a class="headerlink" href="#using-runtimeconfig-within-your-application" title="Permanent link">&para;</a></h2>
 <p>If you have a set of properties you will access very frequently it may be desirable to implement your own configuration object and expose those values as properties. To
 do so you will need to create an interface for your configuration (optional) and a wrapper class for RuntimeConfig to expose your properties</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">LibraryConfiguration</span><span class="p">,</span> <span class="nx">RuntimeConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">LibraryConfiguration</span><span class="p">,</span> <span class="nx">RuntimeConfig</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="c1">// first we create our own interface by extending LibraryConfiguration. This allows your class to accept all the values with correct type checking. Note, because</span>
 <span class="c1">// TypeScript allows you to extend from multiple interfaces you can build a complex configuration definition from many sub definitions.</span>

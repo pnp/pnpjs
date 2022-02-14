@@ -945,7 +945,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -957,7 +957,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -969,7 +969,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -981,7 +981,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -993,7 +993,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1005,7 +1005,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1017,7 +1017,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1759,7 +1759,7 @@
                 <h1 id="pnpgraphsites">@pnp/graph/sites<a class="headerlink" href="#pnpgraphsites" title="Permanent link">&para;</a></h1>
 <p>The ability to manage sites, lists and listitems in SharePoint is a capability introduced in version 1.3.0 of @pnp/graph.</p>
 <h2 id="get-the-root-site">Get the Root Site<a class="headerlink" href="#get-the-root-site" title="Permanent link">&para;</a></h2>
-<p>Using the sites.root().get() you can get the tenant root site</p>
+<p>Using the sites.root()() you can get the tenant root site</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">tenantRootSite</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">root</span><span class="p">.</span><span class="nx">get</span><span class="p">()</span>
@@ -1767,7 +1767,7 @@
 
 
 <h2 id="get-the-root-site-by-id">Get the Root Site by Id<a class="headerlink" href="#get-the-root-site-by-id" title="Permanent link">&para;</a></h2>
-<p>Using the sites.getById().get() you can get the root site as well</p>
+<p>Using the sites.getById()() you can get the root site as well</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">tenantRootSite</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">()</span>
@@ -1775,7 +1775,7 @@
 
 
 <h2 id="access-a-site-by-server-relative-url">Access a Site by server-relative URL<a class="headerlink" href="#access-a-site-by-server-relative-url" title="Permanent link">&para;</a></h2>
-<p>Using the sites.getById().get() you can get a specific site. With the combination of the base URL and a relative URL.
+<p>Using the sites.getById()() you can get a specific site. With the combination of the base URL and a relative URL.
 We are using an internal method for combining the URL in the right combination, with <code>:</code> ex: <code>contoso.sharepoint.com:/sites/site1:</code></p>
 <p>Here are a few url combinations that works:</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
@@ -1792,7 +1792,7 @@ We are using an internal method for combining the URL in the right combination, 
 
 
 <h2 id="get-the-sub-sites-in-a-site">Get the Sub Sites in a Site<a class="headerlink" href="#get-the-sub-sites-in-a-site" title="Permanent link">&para;</a></h2>
-<p>Using the sites().get() you can get the sub sites of a site. As this is returned as Sites, you could use getById() for a specific site and use the operations.</p>
+<p>Using the sites()() you can get the sub sites of a site. As this is returned as Sites, you could use getById() for a specific site and use the operations.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">subsites</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">sites</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1801,7 +1801,7 @@ We are using an internal method for combining the URL in the right combination, 
 
 <hr />
 <h2 id="get-content-types">Get Content Types<a class="headerlink" href="#get-content-types" title="Permanent link">&para;</a></h2>
-<p>Using the contentTypes().get() you can get the Content Types from a Site or from a List</p>
+<p>Using the contentTypes()() you can get the Content Types from a Site or from a List</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">contentTypesFromSite</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">contentTypes</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1847,7 +1847,7 @@ We are using an internal method for combining the URL in the right combination, 
 
 <hr />
 <h2 id="get-the-default-drive">Get the default drive<a class="headerlink" href="#get-the-default-drive" title="Permanent link">&para;</a></h2>
-<p>Using the drive.get() you can get the default drive from a Site or a List</p>
+<p>Using the drive() you can get the default drive from a Site or a List</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">drive</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">drive</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1857,7 +1857,7 @@ We are using an internal method for combining the URL in the right combination, 
 
 
 <h2 id="get-all-of-the-drives">Get all of the drives<a class="headerlink" href="#get-all-of-the-drives" title="Permanent link">&para;</a></h2>
-<p>Using the drives.get() you can get the drives from the Site</p>
+<p>Using the drives() you can get the drives from the Site</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">drives</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">drives</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1915,7 +1915,7 @@ We are using an internal method for combining the URL in the right combination, 
 
 <hr />
 <h2 id="get-items">Get Items<a class="headerlink" href="#get-items" title="Permanent link">&para;</a></h2>
-<p>Using the items.get() you can get the Items from a List</p>
+<p>Using the items() you can get the Items from a List</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">itemsFromList</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;listId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1923,7 +1923,7 @@ We are using an internal method for combining the URL in the right combination, 
 
 
 <h2 id="get-specific-item">Get Specific Item<a class="headerlink" href="#get-specific-item" title="Permanent link">&para;</a></h2>
-<p>Using the getById().get() you can get a specific Item from a List</p>
+<p>Using the getById()() you can get a specific Item from a List</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">itemFromList</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;listId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>
@@ -1963,7 +1963,7 @@ We are using an internal method for combining the URL in the right combination, 
 
 
 <h2 id="get-fields-from-item">Get Fields from Item<a class="headerlink" href="#get-fields-from-item" title="Permanent link">&para;</a></h2>
-<p>Using the fields.get() you can the Fields in an Item</p>
+<p>Using the fields() you can the Fields in an Item</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">fieldsFromItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;listId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">fields</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1971,7 +1971,7 @@ We are using an internal method for combining the URL in the right combination, 
 
 
 <h2 id="get-versions-from-item">Get Versions from Item<a class="headerlink" href="#get-versions-from-item" title="Permanent link">&para;</a></h2>
-<p>Using the versions.get() you can the Versions of an Item</p>
+<p>Using the versions() you can the Versions of an Item</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">versionsFromItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;listId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">versions</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1979,7 +1979,7 @@ We are using an internal method for combining the URL in the right combination, 
 
 
 <h2 id="get-version-from-item">Get Version from Item<a class="headerlink" href="#get-version-from-item" title="Permanent link">&para;</a></h2>
-<p>Using the versions.getById().get() you can the Versions of an Item</p>
+<p>Using the versions.getById()() you can the Versions of an Item</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">versionFromItem</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">sites</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;contoso.sharepoint.com&#39;</span><span class="p">).</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;listId&#39;</span><span class="p">).</span><span class="nx">items</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;itemId&#39;</span><span class="p">).</span><span class="nx">versions</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;versionId&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">();</span>

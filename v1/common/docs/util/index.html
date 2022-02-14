@@ -1066,7 +1066,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1078,7 +1078,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1090,7 +1090,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1102,7 +1102,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1114,7 +1114,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1126,7 +1126,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1138,7 +1138,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1793,11 +1793,11 @@
                   <a href="http://github.com/pnp/pnpjs/tree/dev/packages/common/docs/util.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="pnpcommonutil">@pnp/common/util<a class="headerlink" href="#pnpcommonutil" title="Permanent link">&para;</a></h1>
+                <h1 id="pnpcommonutil">@pnp/core/util<a class="headerlink" href="#pnpcommonutil" title="Permanent link">&para;</a></h1>
 <p>This module contains utility methods that you can import individually from the common library.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span>
     <span class="nx">getRandomString</span><span class="p">,</span>
-<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="c1">// use from individual;y imported method</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
@@ -1806,7 +1806,7 @@
 
 <h2 id="getctxcallback">getCtxCallback<a class="headerlink" href="#getctxcallback" title="Permanent link">&para;</a></h2>
 <p>Gets a callback function which will maintain context across async calls.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getCtxCallback</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getCtxCallback</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">contextThis</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nx">myProp</span>: <span class="kt">6</span><span class="p">,</span>
@@ -1840,7 +1840,7 @@
 <p>Manipulates a date, please see the <a href="https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object">Stackoverflow discussion</a> from where this method was taken.</p>
 <h2 id="combine">combine<a class="headerlink" href="#combine" title="Permanent link">&para;</a></h2>
 <p>Combines any number of paths, normalizing the slashes as required</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">combine</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">combine</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="c1">// &quot;https://microsoft.com/something/more&quot;</span>
 <span class="kr">const</span> <span class="nx">paths</span> <span class="o">=</span> <span class="nx">combine</span><span class="p">(</span><span class="s2">&quot;https://microsoft.com&quot;</span><span class="p">,</span> <span class="s2">&quot;something&quot;</span><span class="p">,</span> <span class="s2">&quot;more&quot;</span><span class="p">);</span>
@@ -1852,7 +1852,7 @@
 
 <h2 id="getrandomstring">getRandomString<a class="headerlink" href="#getrandomstring" title="Permanent link">&para;</a></h2>
 <p>Gets a random string consisting of the number of characters requested.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">randomString</span> <span class="o">=</span> <span class="nx">getRandomString</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 </pre></div>
@@ -1869,7 +1869,7 @@
 <h2 id="extend">extend<a class="headerlink" href="#extend" title="Permanent link">&para;</a></h2>
 <p>Merges a source object's own enumerable properties into a single target object. Similar to Object.assign, but allows control of overwriting of existing
 properties.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">extend</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">extend</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="kd">let</span> <span class="nx">obj1</span> <span class="o">=</span> <span class="p">{</span>
     <span class="nx">prop</span>: <span class="kt">1</span><span class="p">,</span>

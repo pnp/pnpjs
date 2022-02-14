@@ -1009,7 +1009,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1021,7 +1021,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1033,7 +1033,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1045,7 +1045,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1057,7 +1057,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1069,7 +1069,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1081,7 +1081,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1679,12 +1679,12 @@
                   <a href="http://github.com/pnp/pnpjs/tree/dev/packages/common/docs/storage.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="pnpcommonstorage">@pnp/common/storage<a class="headerlink" href="#pnpcommonstorage" title="Permanent link">&para;</a></h1>
+                <h1 id="pnpcommonstorage">@pnp/core/storage<a class="headerlink" href="#pnpcommonstorage" title="Permanent link">&para;</a></h1>
 <p>This module provides a thin wrapper over the browser storage options, local and session. If neither option is available it shims storage with
 a non-persistent in memory polyfill. Optionally through configuration you can activate expiration. Sample usage is shown below.</p>
 <h2 id="pnpclientstorage">PnPClientStorage<a class="headerlink" href="#pnpclientstorage" title="Permanent link">&para;</a></h2>
 <p>The main export of this module, contains properties representing local and session storage.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">storage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PnPClientStorage</span><span class="p">();</span>
 <span class="kr">const</span> <span class="nx">myvalue</span> <span class="o">=</span> <span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;mykey&quot;</span><span class="p">);</span>
@@ -1694,7 +1694,7 @@ a non-persistent in memory polyfill. Optionally through configuration you can ac
 <h2 id="pnpclientstoragewrapper">PnPClientStorageWrapper<a class="headerlink" href="#pnpclientstoragewrapper" title="Permanent link">&para;</a></h2>
 <p>Each of the storage locations (session and local) are wrapped with this helper class. You can use it directly, but generally it would be used
 from an instance of PnPClientStorage as shown below. These examples all use local storage, the operations are identical for session storage.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">storage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PnPClientStorage</span><span class="p">();</span>
 
@@ -1731,7 +1731,7 @@ from an instance of PnPClientStorage as shown below. These examples all use loca
 
 <h3 id="cache-expiration">Cache Expiration<a class="headerlink" href="#cache-expiration" title="Permanent link">&para;</a></h3>
 <p>The ability remove of expired items based on a configured timeout can help if the cache is filling up. This can be accomplished in two ways. The first is to explicitly call the new deleteExpired method on the cache you wish to clear. A suggested usage is to add this into your page init code as clearing expired items once per page load is likely sufficient.</p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">PnPClientStorage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">storage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PnPClientStorage</span><span class="p">();</span>
 
@@ -1749,7 +1749,7 @@ from an instance of PnPClientStorage as shown below. These examples all use loca
 
 
 <p>The second method is to enable automated cache expiration through global config. Setting the enableCacheExpiration property to true will enable the timer. Optionally you can set the interval at which the cache is checked via the cacheExpirationIntervalMilliseconds property, by default 750 milliseconds is used. We enforce a minimum of 300 milliseconds as this functionality is enabled via setTimeout and there is little value in having an excessive number of cache checks. This method is more appropriate for a single page application where the page is infrequently reloaded and many cached operations are performed. There is no advantage to enabling cache expiration unless you are experiencing cache storage space pressure in a long running page - and you may see a performance hit due to the use of setTimeout. </p>
-<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/common&quot;</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">setup</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
 
 <span class="nx">setup</span><span class="p">({</span>
     <span class="nx">enableCacheExpiration</span>: <span class="kt">true</span><span class="p">,</span>

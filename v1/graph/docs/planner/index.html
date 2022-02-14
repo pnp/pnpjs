@@ -1101,7 +1101,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1113,7 +1113,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1125,7 +1125,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1137,7 +1137,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1149,7 +1149,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1161,7 +1161,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1173,7 +1173,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1884,7 +1884,7 @@ Planner.plans is not an available endpoint, you need to get a specific Plan.</p>
 
 
 <h2 id="get-tasks-in-plan">Get Tasks in Plan<a class="headerlink" href="#get-tasks-in-plan" title="Permanent link">&para;</a></h2>
-<p>Using the tasks.get() you can get the Tasks in a Plan.</p>
+<p>Using the tasks() you can get the Tasks in a Plan.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">planTasks</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">).</span><span class="nx">tasks</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1892,7 +1892,7 @@ Planner.plans is not an available endpoint, you need to get a specific Plan.</p>
 
 
 <h2 id="get-buckets-in-plan">Get Buckets in Plan<a class="headerlink" href="#get-buckets-in-plan" title="Permanent link">&para;</a></h2>
-<p>Using the buckets.get() you can get the Buckets in a Plan.</p>
+<p>Using the buckets() you can get the Buckets in a Plan.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">planBuckets</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">).</span><span class="nx">buckets</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1900,7 +1900,7 @@ Planner.plans is not an available endpoint, you need to get a specific Plan.</p>
 
 
 <h2 id="get-details-in-plan">Get Details in Plan<a class="headerlink" href="#get-details-in-plan" title="Permanent link">&para;</a></h2>
-<p>Using the details.get() you can get the details in a Plan.</p>
+<p>Using the details() you can get the details in a Plan.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">planDetails</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">plans</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;planId&#39;</span><span class="p">).</span><span class="nx">details</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1941,7 +1941,7 @@ Planner.tasks is not an available endpoint, you need to get a specific Task.</p>
 
 
 <h2 id="get-details-in-task">Get Details in Task<a class="headerlink" href="#get-details-in-task" title="Permanent link">&para;</a></h2>
-<p>Using the details.get() you can get the details in a Task.</p>
+<p>Using the details() you can get the details in a Task.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">taskDetails</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">tasks</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;taskId&#39;</span><span class="p">).</span><span class="nx">details</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
@@ -1998,7 +1998,7 @@ planner.buckets is not an available endpoint, you need to get a specific Bucket.
 
 
 <h2 id="get-bucket-tasks">Get Bucket Tasks<a class="headerlink" href="#get-bucket-tasks" title="Permanent link">&para;</a></h2>
-<p>Using the tasks.get() you can get Tasks in a Bucket.</p>
+<p>Using the tasks() you can get Tasks in a Bucket.</p>
 <div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">graph</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/graph&quot;</span><span class="p">;</span>
 
 <span class="kr">const</span> <span class="nx">bucketTasks</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">graph</span><span class="p">.</span><span class="nx">planner</span><span class="p">.</span><span class="nx">buckets</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;bucketId&#39;</span><span class="p">).</span><span class="nx">tasks</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>

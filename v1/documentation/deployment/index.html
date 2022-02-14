@@ -1055,7 +1055,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/" title="odata" class="md-nav__link">
+    <a href="../../queryable/docs/" title="odata" class="md-nav__link">
       odata
     </a>
   </li>
@@ -1067,7 +1067,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/caching/" title="caching" class="md-nav__link">
+    <a href="../../queryable/docs/caching/" title="caching" class="md-nav__link">
       caching
     </a>
   </li>
@@ -1079,7 +1079,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/core/" title="core" class="md-nav__link">
+    <a href="../../queryable/docs/core/" title="core" class="md-nav__link">
       core
     </a>
   </li>
@@ -1091,7 +1091,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+    <a href="../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
       OData Batching
     </a>
   </li>
@@ -1103,7 +1103,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/parsers/" title="Parsers" class="md-nav__link">
+    <a href="../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
       Parsers
     </a>
   </li>
@@ -1115,7 +1115,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/pipeline/" title="Pipeline" class="md-nav__link">
+    <a href="../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
       Pipeline
     </a>
   </li>
@@ -1127,7 +1127,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../odata/docs/queryable/" title="Queryable" class="md-nav__link">
+    <a href="../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
       Queryable
     </a>
   </li>
@@ -1821,13 +1821,13 @@
 <p>Note this approach requires using version 1.1.5 (specifically beta 1.1.5-2) or later of the libraries as we had make a few updates to how things are packaged to make this a little easier.</p>
 </blockquote>
 <h4 id="install_1">Install<a class="headerlink" href="#install_1" title="Permanent link">&para;</a></h4>
-<p><code>npm install @pnp/logging @pnp/common @pnp/odata @pnp/sp --save</code></p>
+<p><code>npm install @pnp/logging @pnp/core @pnp/queryable @pnp/sp --save</code></p>
 <h4 id="in-code_1">In Code<a class="headerlink" href="#in-code_1" title="Permanent link">&para;</a></h4>
 <div class="codehilite"><pre><span></span><span class="c1">// blind require statements</span>
 <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;tslib&quot;</span><span class="p">);</span>
 <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;@pnp/logging&quot;</span><span class="p">);</span>
-<span class="nx">require</span><span class="p">(</span><span class="s2">&quot;@pnp/common&quot;</span><span class="p">);</span>
-<span class="nx">require</span><span class="p">(</span><span class="s2">&quot;@pnp/odata&quot;</span><span class="p">);</span>
+<span class="nx">require</span><span class="p">(</span><span class="s2">&quot;@pnp/core&quot;</span><span class="p">);</span>
+<span class="nx">require</span><span class="p">(</span><span class="s2">&quot;@pnp/queryable&quot;</span><span class="p">);</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
 
 <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">lists</span><span class="p">.</span><span class="nx">getByTitle</span><span class="p">(</span><span class="s2">&quot;BigList&quot;</span><span class="p">).</span><span class="nx">get</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1844,22 +1844,22 @@
     <span class="nt">&quot;globalName&quot;</span><span class="p">:</span> <span class="s2">&quot;pnp.sp&quot;</span><span class="p">,</span>
     <span class="nt">&quot;globalDependencies&quot;</span><span class="p">:</span> <span class="p">[</span>
       <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;@pnp/common&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;@pnp/odata&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;@pnp/core&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;@pnp/queryable&quot;</span><span class="p">,</span>
       <span class="s2">&quot;tslib&quot;</span>
     <span class="p">]</span>
   <span class="p">},</span>
-  <span class="nt">&quot;@pnp/odata&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;https://unpkg.com/@pnp/odata@1.1.5-2/dist/odata.es5.umd.min.js&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;@pnp/queryable&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;https://unpkg.com/@pnp/queryable@1.1.5-2/dist/odata.es5.umd.min.js&quot;</span><span class="p">,</span>
     <span class="nt">&quot;globalName&quot;</span><span class="p">:</span> <span class="s2">&quot;pnp.odata&quot;</span><span class="p">,</span>
     <span class="nt">&quot;globalDependencies&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;@pnp/common&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;@pnp/core&quot;</span><span class="p">,</span>
       <span class="s2">&quot;@pnp/logging&quot;</span><span class="p">,</span>
       <span class="s2">&quot;tslib&quot;</span>
     <span class="p">]</span>
   <span class="p">},</span>
-  <span class="nt">&quot;@pnp/common&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;https://unpkg.com/@pnp/common@1.1.5-2/dist/common.es5.umd.bundle.min.js&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;@pnp/core&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;https://unpkg.com/@pnp/core@1.1.5-2/dist/common.es5.umd.bundle.min.js&quot;</span><span class="p">,</span>
     <span class="nt">&quot;globalName&quot;</span><span class="p">:</span> <span class="s2">&quot;pnp.common&quot;</span>     
   <span class="p">},</span>
   <span class="nt">&quot;@pnp/logging&quot;</span><span class="p">:</span> <span class="p">{</span>
