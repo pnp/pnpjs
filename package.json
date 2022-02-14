@@ -13,7 +13,7 @@
         "@types/core-js": "2.5.5",
         "@types/findup-sync": "4.0.2",
         "@types/gulp": "4.0.9",
-        "@types/jsonwebtoken": "8.5.6",
+        "@types/jsonwebtoken": "8.5.8",
         "@types/mocha": "9.0.0",
         "@types/node": "14.17.3",
         "@types/webpack": "5.28.0",
