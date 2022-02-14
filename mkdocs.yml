@@ -6,10 +6,19 @@ nav:
   - Home: 'index.md'
   - 'Getting Started': 'getting-started.md'
   - 'V2->V3 Transition': 'transition-guide.md'
+  - 'Year in Review':
+    - 2021: 'news/2021-year-in-review.md'
+    - 2020: 'news/2020-year-in-review.md'
   - 'Library Usage Tips':
-    - 'Batching': 'concepts/batching.md'   
-    - 'Using Behaviors': 'core/behaviors.md'
+    - 'Authentication': 'concepts/authentication.md'
+    - 'Batching': 'concepts/batching.md'
+    - 'Batching & Caching': 'concepts/batching-caching.md'
+    - 'Custom Bundling': 'concepts/custom-bundle.md'
+    - 'Error-Handling': 'concepts/error-handling.md'
+    - 'Project Presets': 'concepts/project-preset.md'
+    - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Typings': 'concepts/typings.md'
+    - 'Using Behaviors': 'core/behaviors.md'
   - Packages:
     - Packages: 'packages.md'
     - core:
@@ -22,6 +31,7 @@ nav:
       - util: 'core/util.md'
     - graph: 
       - graph: '/packages/#graph'
+      - Behaviors: 'graph/behaviors.md'
       - groups: 'graph/groups.md'
       - groups: 'graph/groups.md'
       - insights: 'graph/insights.md'
@@ -39,6 +49,8 @@ nav:
       - users: 'graph/users.md'
     - logging: 
       - logging: 'logging/index.md'
+    - msaljsclient:
+      - msaljsclient: 'msaljsclient/index.md'
     - nodejs:
       - nodejs: '/packages/#nodejs'
       - behaviors: 'nodejs/behaviors.md'
@@ -50,6 +62,7 @@ nav:
       - Queryable: 'queryable/queryable.md'
     - sp:
       - sp: '/packages/#sp'
+      - Behaviors: 'sp/behaviors.md'
       - 'Alias Parameters': 'sp/alias-parameters.md'
       - 'ALM api': 'sp/alm.md'
       - Attachments: 'sp/attachments.md'
@@ -97,11 +110,16 @@ nav:
     - 'Client-Side Pages': 'concepts/adv-clientside-pages.md'
   - Contributing:
     - 'Contributing': 'contributing/index.md'
+    - 'Set Up Dev Machine': 'contributing\setup-dev-machine.md'
     - 'Settings': 'contributing/settings.md'
     - 'Understanding Library Internals': 'core/timeline.md'
+    - 'Expanding the Library': 'contributing\extending-the-library.md'
     - 'Npm Scripts': 'contributing/npm-scripts.md'
-    - 'Testing': 'contributing/debug-tests.md'
+    - 'Local Debug Config': 'contributing/local-debug-configuration.md'
+    - 'Debugging': 'contributing/debugging.md'
+    - 'Tests': 'contributing/debug-tests.md'
     - 'Documentation': 'contributing/documentation.md'
+    - 'Pull Requests': 'contributing/pull-requests.md'
   - Legacy Docs:
     - V1: 'v1/index.html'
     - V2: 'v2/index.html'
