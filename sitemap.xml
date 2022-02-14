@@ -12,15 +12,47 @@
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://pnp.github.io/pnpjs/news/2021-year-in-review/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/news/2020-year-in-review/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/concepts/authentication/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://pnp.github.io/pnpjs/concepts/batching/</loc>
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://pnp.github.io/pnpjs/core/behaviors/</loc>
+     <loc>https://pnp.github.io/pnpjs/concepts/batching-caching/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/concepts/custom-bundle/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/concepts/error-handling/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/concepts/project-preset/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/concepts/selective-imports/</loc>
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pnp.github.io/pnpjs/concepts/typings/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/core/behaviors/</loc>
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -49,6 +81,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pnp.github.io/pnpjs/core/util/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/graph/behaviors/</loc>
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -116,6 +152,10 @@
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://pnp.github.io/pnpjs/msaljsclient/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://pnp.github.io/pnpjs/nodejs/behaviors/</loc>
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
@@ -133,6 +173,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pnp.github.io/pnpjs/queryable/queryable/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/sp/behaviors/</loc>
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -316,6 +360,10 @@
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://pnp.github.io/pnpjs/contributing/setup-dev-machine/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://pnp.github.io/pnpjs/contributing/settings/</loc>
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
@@ -324,7 +372,19 @@
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
+     <loc>https://pnp.github.io/pnpjs/contributing/extending-the-library/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
      <loc>https://pnp.github.io/pnpjs/contributing/npm-scripts/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/contributing/local-debug-configuration/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/contributing/debugging/</loc>
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -333,6 +393,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://pnp.github.io/pnpjs/contributing/documentation/</loc>
+     <lastmod>2022-02-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://pnp.github.io/pnpjs/contributing/pull-requests/</loc>
      <lastmod>2022-02-14</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
