@@ -17,7 +17,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // still works as expected, no aliasing
 const query = sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/").files.select("Title").top(3);
@@ -37,7 +37,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // same query with aliasing
 const query = sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
@@ -57,7 +57,7 @@ Aliasing is supported with batching as well:
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // same query with aliasing and batching
 const [batchedWeb, execute] = await sp.web.batched();

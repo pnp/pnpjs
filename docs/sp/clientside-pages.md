@@ -22,7 +22,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 import { PromotedState } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Create a page providing a file name
 const page = await sp.web.addClientsidePage("mypage1");
@@ -53,7 +53,7 @@ import "@pnp/sp/webs";
 import { Web } from "@pnp/sp/webs";
 import { CreateClientsidePage, PromotedState } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const page1 = await CreateClientsidePage(sp.web, "mypage2", "My Page Title");
 
@@ -93,7 +93,7 @@ import "@pnp/sp/webs";
 import { Web } from "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // use from the sp.web fluent chain
 const page = await sp.web.loadClientsidePage("/sites/dev/sitepages/mypage3.aspx");
@@ -112,7 +112,7 @@ import { ClientsidePageFromFile } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/webs";
 import "@pnp/sp/files/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const page = await ClientsidePageFromFile(sp.web.getFileByServerRelativePath("/sites/dev/sitepages/mypage3.aspx"));
 ```
@@ -125,7 +125,7 @@ Client-side pages are made up of sections, columns, and controls. Sections conta
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -151,7 +151,7 @@ await page.save();
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -176,7 +176,7 @@ The vertical section, if on the page, is stored within the sections array. Howev
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -204,7 +204,7 @@ if (page.hasVerticalSection) {
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -225,7 +225,7 @@ The sections and columns are arrays, so normal array operations work as expected
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -248,7 +248,7 @@ Once you have your sections and columns defined you will want to add/edit contro
 import { spfi, SPFx } from "@pnp/sp";
 import { ClientsideText, IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -268,7 +268,7 @@ import "@pnp/sp/clientside-pages/web";
 import { spfi, SPFx } from "@pnp/sp";
 import { ClientsideWebpart } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // this will be a ClientsidePageComponent array
 // this can be cached on the client in production scenarios
@@ -325,7 +325,7 @@ class ListWebpart extends ClientsideWebpart {
   }
 }
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // now we load our page
 const page = await sp.web.loadClientsidePage("/sites/dev/SitePages/List-Web-Part.aspx");
@@ -352,7 +352,7 @@ You can get and set the page layout. Changing the layout after creating the page
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -371,7 +371,7 @@ await page.save();
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -396,7 +396,7 @@ Allows you to set the thumbnail used for the page independently of the banner.
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -415,7 +415,7 @@ await page.save();
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -438,7 +438,7 @@ await page.save();
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -459,7 +459,7 @@ await page.save();
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -480,7 +480,7 @@ Sets the layout type of the page. The valid values are: "FullWidthImage", "NoIma
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -501,7 +501,7 @@ Sets the header text alignment to one of "Left" or "Center"
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -522,7 +522,7 @@ Sets if the topic header is displayed on a page.
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -546,7 +546,7 @@ Sets if the publish date is displayed on a page.
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -571,7 +571,7 @@ import { IClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/clientside-pages";
 import "@pnp/sp/site-users";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -601,7 +601,7 @@ Loads the page from the server. This will overwrite any local unsaved changes.
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -617,7 +617,7 @@ Saves any changes to the page, optionally keeping them in draft state.
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -637,7 +637,7 @@ Discards any current checkout of the page by the current user.
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -653,7 +653,7 @@ Promotes the page as a news article.
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -673,7 +673,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/comments/clientside-page";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -693,7 +693,7 @@ Finds a control within the page by id.
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage, ClientsideText } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -712,7 +712,7 @@ Finds a control within the page using the supplied delegate. Can also be used to
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -762,7 +762,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -788,7 +788,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instances, loaded in any of the ways shown above
 const source: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -817,7 +817,7 @@ Sets the banner image url and optionally additional properties. Allows you to se
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
@@ -909,7 +909,7 @@ Allows you to set the banner image from a source outside the current site collec
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
@@ -926,7 +926,7 @@ You can optionally supply additional props for the banner image, these match the
 import { spfi, SPFx } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 

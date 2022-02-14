@@ -18,7 +18,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -44,7 +44,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -63,7 +63,7 @@ import "@pnp/sp/items";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item = await sp.web.lists.getByTitle("MyList").items.getById(2);
 
@@ -87,7 +87,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -115,7 +115,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -132,7 +132,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -151,7 +151,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -170,7 +170,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const [batchedSP, execute] = sp.batched();
 

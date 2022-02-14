@@ -25,7 +25,7 @@ import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const page = await CreateClientsidePage(sp.web, "mypage", "My Page Title", "Article");
 // optionally publish the page first
@@ -42,7 +42,7 @@ import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const page = await CreateClientsidePage(sp.web, "mypage", "My Page Title", "Article");
 // optionally publish the page first
@@ -69,7 +69,7 @@ import { IClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -89,7 +89,7 @@ import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const page = await CreateClientsidePage(sp.web, "mypage", "My Page Title", "Article");
 // optionally publish the page first
@@ -111,7 +111,7 @@ import "@pnp/sp/files/web";
 import "@pnp/sp/items";
 import "@pnp/sp/comments/item";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item = await sp.web.getFileByServerRelativePath("/sites/dev/SitePages/Test_8q5L.aspx").getItem();
 
@@ -135,7 +135,7 @@ You can also get the comments merged with instances of the Comment class to imme
 import { spfi, SPFx } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const comments: IComments = await item.comments();
 
@@ -152,7 +152,7 @@ const comments = await item.comments.expand("replies", "likedBy", "replies/liked
 import { spfi, SPFx } from "@pnp/sp";
 import { ICommentInfo } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // you can add a comment as a string
 const comment = await item.comments.add("string comment");
@@ -169,7 +169,7 @@ const comment = await page.addComment(commentInfo);
 import { spfi, SPFx } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const comments: IComments = await item.comments();
 
@@ -183,7 +183,7 @@ comments[0].delete()
 import { spfi, SPFx } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const comments: IComments = await item.comments();
 
@@ -197,7 +197,7 @@ comments[0].like();
 import { spfi, SPFx } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const comments: IComments = await item.comments();
 
@@ -210,7 +210,7 @@ comments[0].unlike()
 import { spfi, SPFx } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const comments: IComments = await item.comments();
 
@@ -223,7 +223,7 @@ const comment = await comments[0].comments.add({ text: "#PnPjs is pretty ok!" })
 import { spfi, SPFx } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const comments: IComments = await item.comments();
 
@@ -239,7 +239,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/comments/item";
 import { ILikeData, ILikedByInformation } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item = await sp.web.getFileByServerRelativePath("/sites/dev/SitePages/Home.aspx").getItem();
 
@@ -267,7 +267,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 

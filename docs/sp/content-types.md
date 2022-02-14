@@ -8,21 +8,27 @@ Content Types are used to define sets of columns in SharePoint.
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs";<br />import { ContentTypes, IContentTypes } from "@pnp/sp/content-types";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/content-types";|
-|Preset: All|import { sp, ContentTypes, IContentTypes } from "@pnp/sp/presets/all";|
+|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs";<br />import { ContentTypes, IContentTypes } from "@pnp/sp/content-types";|
+|Selective 2|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import "@pnp/sp/content-types";|
+|Preset: All|import { spfi, SPFx, ContentTypes, IContentTypes } from "@pnp/sp/presets/all";|
 
 ### Add an existing Content Type to a collection
 
 The following example shows how to add the built in Picture Content Type to the Documents library.
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 sp.web.lists.getByTitle("Documents").contentTypes.addAvailableContentType("0x010102");
 ```
 
 ### Get a Content Type by Id
 
 ```TypeScript
+import { IContentType } from "@pnp/sp/content-types";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 const d: IContentType = await sp.web.contentTypes.getById("0x01")();
 
 // log content type name to console
@@ -34,12 +40,16 @@ console.log(d.name);
 To add a new Content Type to a collection, parameters id and name are required. For more information on creating content type IDs reference the [Microsoft Documentation](https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/aa543822(v=office.14)). While this documentation references SharePoint 2010 the structure of the IDs has not changed.
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 sp.web.contentTypes.add("0x01008D19F38845B0884EBEBE239FDF359184", "My Content Type");
 ```
 
 It is also possible to provide a description and group parameter. For other settings, we can use the parameter named 'additionalSettings' which is a TypedHash, meaning you can send whatever properties you'd like in the body (provided that the property is supported by the SharePoint API).
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 //Adding a content type with id, name, description, group and setting it to read only mode (using additionalsettings)
 sp.web.contentTypes.add("0x01008D19F38845B0884EBEBE239FDF359184", "My Content Type", "This is my content type.", "_PnP Content Types", { ReadOnly: true });
 ```
@@ -48,9 +58,9 @@ sp.web.contentTypes.add("0x01008D19F38845B0884EBEBE239FDF359184", "My Content Ty
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { ContentType, IContentType } from "@pnp/sp/content-types";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/content-types";|
-|Preset: All|import { sp, ContentType, IContentType } from "@pnp/sp/presets/all";|
+|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import { ContentType, IContentType } from "@pnp/sp/content-types";|
+|Selective 2|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/content-types";|
+|Preset: All|import { spfi, SPFx, ContentType, IContentType } from "@pnp/sp/presets/all";|
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
@@ -59,6 +69,8 @@ sp.web.contentTypes.add("0x01008D19F38845B0884EBEBE239FDF359184", "My Content Ty
 Use this method to get a collection containing all the field links (SP.FieldLink) for a Content Type.
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 // get field links from built in Content Type Document (Id: "0x0101")
 const d = await sp.web.contentTypes.getById("0x0101").fieldLinks();
 
@@ -71,6 +83,8 @@ console.log(d);
 To get a collection with all fields on the Content Type, simply use this method.
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 // get fields from built in Content Type Document (Id: "0x0101")
 const d = await sp.web.contentTypes.getById("0x0101").fields();
 
@@ -81,6 +95,8 @@ console.log(d);
 ### Get parent Content Type
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 // get parent Content Type from built in Content Type Document (Id: "0x0101")
 const d = await sp.web.contentTypes.getById("0x0101").parent();
 
@@ -91,6 +107,8 @@ console.log(d.Name)
 ### Get Content Type Workflow associations
 
 ```TypeScript
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 // get workflow associations from built in Content Type Document (Id: "0x0101")
 const d = await sp.web.contentTypes.getById("0x0101").workflowAssociations();
 
