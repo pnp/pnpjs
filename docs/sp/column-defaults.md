@@ -20,7 +20,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const defaults = await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_GHk5").getDefaultColumnValues();
 
@@ -56,7 +56,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_GHk5").setDefaultColumnValues([{
   name: "TextField",
@@ -78,7 +78,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const defaults = await sp.web.lists.getByTitle("DefaultColumnValues").getDefaultColumnValues();
 
@@ -114,7 +114,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([{
   name: "TextField",
@@ -133,7 +133,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_GHk5").clearDefaultColumnValues();
 ```
@@ -148,7 +148,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([]);
 ```
@@ -224,7 +224,7 @@ import "@pnp/sp/folders";
 import "@pnp/sp/column-defaults";
 import "@pnp/sp/taxonomy";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get the term's info we want to use as the default
 const term = await sp.termStore.sets.getById("ea6fc521-d293-4f3d-9e84-f3a5bc0936ce").getTermById("775c9cf6-c3cd-4db9-8cfa-fc0aeefad93a")();

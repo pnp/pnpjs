@@ -24,7 +24,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/fields";
 
 // set up sp root object
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 // get the field by Id for web
 const field: IField = sp.web.fields.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
 // get the field by Id for list 'My List'
@@ -48,7 +48,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists"
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 // get the field with the title 'Author' for web
 const field: IField = sp.web.fields.getByTitle("Author");
 // get the field with the title 'Title' for list 'My List'
@@ -72,7 +72,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists"
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 // get the field with the internal name 'ModifiedBy' for web
 const field: IField = sp.web.fields.getByInternalNameOrTitle("ModifiedBy");
 // get the field with the internal name 'ModifiedBy' for list 'My List'
@@ -97,7 +97,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // define the schema for your new field, in this case a date field with a default date of today.
 const fieldSchema = `<Field ID="{03b09ff4-d99d-45ed-841d-3855f77a2483}" StaticName="MyField" Name="MyField" DisplayName="My New Field" FriendlyDisplayFormat="Disabled" Format="DateOnly" Type="DateTime" Group="My Group"><Default>[today]</Default></Field>`;
@@ -125,7 +125,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new field called 'My Field' in web.
 const field: IFieldAddResult = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
@@ -150,7 +150,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new field called 'My Field' in web.
 const field: IFieldAddResult = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
@@ -172,7 +172,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new text field called 'My Field' in web.
 const field: IFieldAddResult = await sp.web.fields.addText("My Field", { MaxLength: 255, Group: "My Group" });
@@ -197,7 +197,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new calculated field called 'My Field' in web
 const field = await sp.web.fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: "MyGroup" });
@@ -222,7 +222,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new date/time field called 'My Field' in web
 const field = await sp.web.fields.addDateTime("My Field", { DisplayFormat: DateTimeFieldFormatType.DateOnly, DateTimeCalendarType: CalendarType.Gregorian, FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled,  Group: "My Group" });
@@ -246,7 +246,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new currency field called 'My Field' in web
 const field = await sp.web.fields.addCurrency("My Field", { MinimumValue: 0, MaximumValue: 100, CurrencyLocaleId: 1033, Group: "My Group" });
@@ -271,7 +271,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new multi-line text field called 'My Field' in web
 const field = await sp.web.fields.addMultilineText("My Field", { NumberOfLines: 6, RichText: true, RestrictedMode: false, AppendOnly: false, AllowHyperlink: true, Group: "My Group" });
@@ -295,7 +295,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 //Create a new multi-line text field called 'My Field' in web
 const field = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(
@@ -319,7 +319,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new number field called 'My Field' in web
 const field = await sp.web.fields.addNumber("My Field", { MinimumValue: 1, MaximumValue: 100, Group: "My Group" });
@@ -344,7 +344,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new url field called 'My Field' in web
 const field = await sp.web.fields.addUrl("My Field", { DisplayFormat: UrlFieldFormatType.Hyperlink, Group: "My Group" });
@@ -369,7 +369,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new user field called 'My Field' in web
 const field = await sp.web.fields.addUser("My Field", { { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
@@ -395,7 +395,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const list = await sp.web.lists.getByTitle("My Lookup List")();
 // create a new lookup field called 'My Field' based on an existing list 'My Lookup List' showing 'Title' field in web.
@@ -427,7 +427,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const choices = [`ChoiceA`, `ChoiceB`, `ChoiceC`];
 // create a new choice field called 'My Field' in web
@@ -453,7 +453,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const choices = [`ChoiceA`, `ChoiceB`, `ChoiceC`];
 // create a new multi-choice field called 'My Field' in web
@@ -478,7 +478,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new boolean field called 'My Field' in web
 const field = await sp.web.fields.addBoolean("My Field", { Group: "My Group" });
@@ -502,7 +502,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const field = await sp.web.fields.addLookup("My Field", { LookupListId: list.Id, LookupFieldName: "Title" });
 // create a new dependent lookup field called 'My Dep Field' showing 'Description' based on an existing 'My Field' lookup field in web.
@@ -528,7 +528,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a new location field called 'My Field' in web
 const field = await sp.web.fields.addLocation("My Field", { Group: "My Group" });
@@ -551,7 +551,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 await sp.web.fields.addBoolean("Temp Field", { Group: "My Group" });
 await sp.web.fields.addBoolean("Temp Field 2", { Group: "My Group" });
@@ -578,7 +578,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // update the field called 'My Field' with a description in web, returns FieldUpdateResult
 const fieldUpdate = await sp.web.fields.getByTitle("My Field").update({ Description: "My Description" });
@@ -600,7 +600,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // show field called 'My Field' in display form throughout web
 await sp.web.fields.getByTitle("My Field").setShowInDisplayForm(true);
@@ -618,7 +618,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // show field called 'My Field' in edit form throughout web
 await sp.web.fields.getByTitle("My Field").setShowInEditForm(true);
@@ -636,7 +636,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // show field called 'My Field' in new form throughout web
 await sp.web.fields.getByTitle("My Field").setShowInNewForm(true);
