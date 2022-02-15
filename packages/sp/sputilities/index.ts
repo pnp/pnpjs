@@ -18,6 +18,6 @@ Reflect.defineProperty(SPFI.prototype, "utility", {
     configurable: true,
     enumerable: true,
     get: function (this: SPFI) {
-        this.create(<any>Utilities, "");
+        return this.create(<any>Utilities, "");
     },
 });
