@@ -219,7 +219,7 @@ export class _Folder extends _SharePointQueryableInstance<IFolderInfo> {
 
         const uri = new URL(urlInfo.ParentWeb.Url);
 
-        await spPost(Folder(uri.origin, "/_api/SP.MoveCopyUtil.CopyFolder()").configureFrom(this),
+        await spPost(Folder(urlInfo.ParentWeb.Url, "/_api/SP.MoveCopyUtil.CopyFolder()").configureFrom(this),
             body({
                 destUrl: isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl),
                 srcUrl: combine(uri.origin, urlInfo.Folder.ServerRelativeUrl),
