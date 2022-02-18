@@ -1,6 +1,6 @@
 # @pnp/core : timeline
 
-Timeline provides base functionality for ochestrating async operations. A timeline defines a set of [moments](./moments.md) to which observers can be registered. [Observers](./observers.md) are functions that can act independetly or together during a moment in the timeline. The model is event like but each moment's implementation can be unique in how it interacts with the registered observers. Keep reading under [Define Moments](#define-moments) to understand more about what a moment is and how to create one.
+Timeline provides base functionality for ochestrating async operations. A timeline defines a set of [moments](./moments.md) to which observers can be registered. [Observers](./observers.md) are functions that can act independently or together during a moment in the timeline. The model is event-like but each moment's implementation can be unique in how it interacts with the registered observers. Keep reading under [Define Moments](#define-moments) to understand more about what a moment is and how to create one.
 
 ![Timeline Architecture](../img/TimelineArchitecture.jpg)
 
