@@ -24,7 +24,7 @@ export class _Communications extends _GraphQueryableCollection<IUserPresence[]> 
     public async getPresencesByUserId(ids: string[]): Promise<IUserPresence[]> {
 
         const postBody = { ids };
-        //return graphPost(<any>Search(this, "query"), body(request));
+        // return graphPost(<any>Search(this, "query"), body(request));
         return graphPost(Communications(this, "getPresencesByUserId"), body(postBody));
     }
 }

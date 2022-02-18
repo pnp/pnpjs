@@ -1,4 +1,4 @@
-import { AssignFrom, isArray } from "@pnp/core";
+import { isArray } from "@pnp/core";
 import { IInvokable, InjectHeaders, Queryable, queryableFactory } from "@pnp/queryable";
 
 export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];

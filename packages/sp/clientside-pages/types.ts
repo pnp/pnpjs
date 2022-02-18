@@ -304,7 +304,7 @@ export class _ClientsidePage extends _SPQueryable {
 
         const previewPartialUrl = "_layouts/15/getpreview.ashx";
 
-        //If new banner image, and banner image url is not in getpreview.ashx format
+        // If new banner image, and banner image url is not in getpreview.ashx format
         if (this._bannerImageDirty && !this.bannerImageUrl.includes(previewPartialUrl)) {
 
             const serverRelativePath = this.bannerImageUrl;
@@ -365,7 +365,7 @@ export class _ClientsidePage extends _SPQueryable {
             LayoutWebpartsContent: this.getLayoutWebpartsContent(),
             Title: this.title,
             TopicHeader: this.topicHeader,
-            BannerImageUrl: this.bannerImageUrl
+            BannerImageUrl: this.bannerImageUrl,
         };
 
         if (this._bannerImageDirty || this._bannerImageThumbnailUrlDirty) {
@@ -815,7 +815,6 @@ export class _ClientsidePage extends _SPQueryable {
                 } else {
                     column.controls.forEach(control => {
                         control.data.emphasis = this.getEmphasisObj(section.emphasis);
-                        //canvasData.push(control.data);
                         canvasData.push(this.specialSaveHandling(control).data);
                     });
                 }
