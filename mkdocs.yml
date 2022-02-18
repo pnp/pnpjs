@@ -36,6 +36,7 @@ nav:
       - groups: 'graph/groups.md'
       - insights: 'graph/insights.md'
       - contacts: 'graph/contacts.md'
+      - 'cloud communications': 'graph/cloud-communications.md'
       - calendars: 'graph/calendars.md'
       - 'directory objects': 'graph/directoryobjects.md'
       - invitations: 'graph/invitations.md'
@@ -70,7 +71,6 @@ nav:
       - 'Column Defaults': 'sp/column-defaults.md'
       - 'Comments and Likes': 'sp/comments-likes.md'
       - 'Content Types': 'sp/content-types.md'
-      - 'Entity Merging': 'sp/entity-merging.md'
       - Features: 'sp/features.md'
       - Fields: 'sp/fields.md'
       - Files: 'sp/files.md'
@@ -100,7 +100,6 @@ nav:
       - 'User custom actions': 'sp/user-custom-actions.md'      
       - Views: 'sp/views.md'
       - Webs: 'sp/webs.md'
-      - 'Custom Request Client': 'sp/custom-irequestclient.md'
   - Advanced:
     - 'Custom Bundle': 'concepts/custom-bundle.md'
     - 'Custom Call/Path': 'concepts/invokable.md'

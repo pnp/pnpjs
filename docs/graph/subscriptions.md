@@ -1,6 +1,6 @@
 # @pnp/graph/subscriptions
 
-The ability to manage subscriptions is a capability introduced in version 1.2.9 of @pnp/graphfi(). A subscription allows a client app to receive notifications about changes to data in Microsoft graphfi(). Currently, subscriptions are enabled for the following resources:
+The ability to manage subscriptions is a capability introduced in version 1.2.9 of @pnp/graph. A subscription allows a client app to receive notifications about changes to data in Microsoft graph. Currently, subscriptions are enabled for the following resources:
 
 * Mail, events, and contacts from Outlook.
 * Conversations from Office Groups.
@@ -13,10 +13,12 @@ The ability to manage subscriptions is a capability introduced in version 1.2.9 
 Using the subscriptions(). If successful this method returns a 200 OK response code and a list of subscription objects in the response body.
 
 ```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/subscriptions"
+import { graphfi, SPFx } from "@pnp/graph";
+import "@pnp/graph/subscriptions";
 
-const subscriptions = await graphfi().subscriptions();
+const graph = graphfi().using(SPFx(this.context));
+
+const subscriptions = await graph.subscriptions();
 
 ```
 
@@ -25,10 +27,12 @@ const subscriptions = await graphfi().subscriptions();
 Using the subscriptions.add(). Creating a subscription requires read scope to the resource. For example, to get notifications messages, your app needs the Mail.Read permission. To learn more about the scopes visit [this](https://docs.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0) url.
 
 ```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/subscriptions"
+import { graphfi, SPFx } from "@pnp/graph";
+import "@pnp/graph/subscriptions";
 
-const addedSubscription = await graphfi().subscriptions.add("created,updated", "https://webhook.azurewebsites.net/api/send/myNotifyClient", "me/mailFolders('Inbox')/messages", "2019-11-20T18:23:45.9356913Z");
+const graph = graphfi().using(SPFx(this.context));
+
+const addedSubscription = await graph.subscriptions.add("created,updated", "https://webhook.azurewebsites.net/api/send/myNotifyClient", "me/mailFolders('Inbox')/messages", "2019-11-20T18:23:45.9356913Z");
 
 ```
 
@@ -37,10 +41,12 @@ const addedSubscription = await graphfi().subscriptions.add("created,updated", "
 Using the subscriptions.getById() you can get one of the subscriptions
 
 ```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/subscriptions"
+import { graphfi, SPFx } from "@pnp/graph";
+import "@pnp/graph/subscriptions";
 
-const subscription = await graphfi().subscriptions.getById('subscriptionId')();
+const graph = graphfi().using(SPFx(this.context));
+
+const subscription = await graph.subscriptions.getById('subscriptionId')();
 
 ```
 
@@ -49,10 +55,12 @@ const subscription = await graphfi().subscriptions.getById('subscriptionId')();
 Using the subscriptions.getById().delete() you can remove one of the Subscriptions
 
 ```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/subscriptions"
+import { graphfi, SPFx } from "@pnp/graph";
+import "@pnp/graph/subscriptions";
 
-const delSubscription = await graphfi().subscriptions.getById('subscriptionId').delete();
+const graph = graphfi().using(SPFx(this.context));
+
+const delSubscription = await graph.subscriptions.getById('subscriptionId').delete();
 
 ```
 
@@ -61,9 +69,11 @@ const delSubscription = await graphfi().subscriptions.getById('subscriptionId').
 Using the subscriptions.getById().update() you can update one of the Subscriptions
 
 ```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/subscriptions"
+import { graphfi, SPFx } from "@pnp/graph";
+import "@pnp/graph/subscriptions";
 
-const updSubscription = await graphfi().subscriptions.getById('subscriptionId').update({changeType: "created,updated,deleted" });
+const graph = graphfi().using(SPFx(this.context));
+
+const updSubscription = await graph.subscriptions.getById('subscriptionId').update({changeType: "created,updated,deleted" });
 
 ```

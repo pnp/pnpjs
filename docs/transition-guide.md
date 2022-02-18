@@ -40,13 +40,13 @@ A new module called "batching" will need to be imported which then provides the 
 
 In V2, to connect to a different web you would use the function
 
-```ts
+```TypeScript
 const web = Web({Other Web URL});
 ```
 
 In V3 you would create a new instance of queryable connecting to the web of your choice. This new method provides you significantly more flexibility by not only allowing you to easily connect to other webs in the same tenant but also to webs in other tenants.
 
-```ts
+```TypeScript
 const spWebA = spfi().using(SPDefault(this.context));
 
 // Create a new instance of Queryable

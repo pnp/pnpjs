@@ -7,7 +7,7 @@ The related items API allows you to add related items to items within a task or 
 Instead of copying this block of code into each sample, understand that each sample is meant to run with this supporting code to work.
 
 ```TypeScript
-import { sp, extractWebUrl } from "@pnp/sp";
+import { spfi, SPFx, extractWebUrl } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/related-items/web";
 import "@pnp/sp/lists/web";
@@ -15,6 +15,8 @@ import "@pnp/sp/items/list";
 import "@pnp/sp/files/list";
 import { IList } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/core";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // setup some lists (or just use existing ones this is just to show the complete process)
 // we need two lists to use for creating related items, they need to use template 107 (task list)

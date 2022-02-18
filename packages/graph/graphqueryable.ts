@@ -1,5 +1,5 @@
-import { isArray } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
+import { AssignFrom, isArray } from "@pnp/core";
+import { IInvokable, InjectHeaders, Queryable, queryableFactory } from "@pnp/queryable";
 
 export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];
 
@@ -179,9 +179,10 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     /**
      * 	Retrieves the total count of matching resources
      */
-    public get count(): this {
-        this.query.set("$count", "true");
-        return this;
+    public get count(): IGraphQueryableSearchableCollection {
+        const q = GraphQueryableSearchableCollection(this).using(InjectHeaders({ "ConsistencyLevel": "eventual" }));
+        q.query.set("$count", "true");
+        return q;
     }
 }
 
@@ -227,14 +228,15 @@ export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, 
 }
 export const GraphQueryableCollection = graphInvokableFactory<IGraphQueryableCollection>(_GraphQueryableCollection);
 
-export class _GraphQueryableSearchableCollection extends _GraphQueryableCollection {
+export class _GraphQueryableSearchableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> {
 
     /**
      * 	To request second and subsequent pages of Graph data
      */
-    public search(query: string): this {
-        this.query.set("$search", query);
-        return this;
+    public search(query: string): IGraphQueryableSearchableCollection {
+        const q = GraphQueryableSearchableCollection(this).using(InjectHeaders({ "ConsistencyLevel": "eventual" }));
+        q.query.set("$search", query);
+        return q;
     }
 }
 

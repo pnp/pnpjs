@@ -4,12 +4,6 @@ The column defaults sub-module allows you to manage the default column values on
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
-| Scenario    | Import Statement                                                                                                                            |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Selective 1 | import { spfi } from "@pnp/sp";<br />import { IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues } from "@pnp/sp/column-defaults"; |
-| Selective 2 | import { spfi } from "@pnp/sp";<br />import "@pnp/sp/column-defaults";                                                                        |
-| Preset: All | import { spfi, IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues } from "@pnp/sp/presents/all";                                   |
-
 ## Get Folder Defaults
 
 You can get the default values for a specific folder as shown below:
@@ -157,7 +151,7 @@ await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([]);
 
 The following is an example of the structure for setting the default column value when using the setDefaultColumnValues that covers the various field types.
 
-```TS
+```TypeScript
 [{
     // Text/Boolean/CurrencyDateTime/Choice/User
     name: "TextField":

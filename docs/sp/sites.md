@@ -7,9 +7,11 @@ Site collection are one of the fundamental entry points while working with Share
 Using the library, you can get the context information of the current site collection
 
 ```Typescript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sites";
 import { IContextInfo } from "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const oContext: IContextInfo = await sp.site.getContextInfo();
 console.log(oContext.FormDigestValue);
@@ -22,9 +24,11 @@ Using the library, you can get a list of the document libraries present in the a
 **Note:** Works only in SharePoint online
 
 ```Typescript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sites";
 import { IDocumentLibraryInformation } from "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const docLibs: IDocumentLibraryInformation[] = await sp.site.getDocumentLibraries("https://tenant.sharepoint.com/sites/test/subsite");
 
@@ -39,8 +43,10 @@ docLibs.forEach((docLib: IDocumentLibraryInformation) => {
 Because this method is a POST request you can chain off it directly. You will get back the full web properties in the data property of the return object. You can also chain directly off the returned Web instance on the web property.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const w = await sp.site.openWebById("111ca453-90f5-482e-a381-cee1ff383c9e");
 
@@ -56,8 +62,10 @@ const w2 = await w.web.select("Title")();
 Using the library, you can get the site collection url by providing a page url
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const d: string = await sp.site.getWebUrlFromPageUrl("https://tenant.sharepoint.com/sites/test/Pages/test.aspx");
 
@@ -69,8 +77,10 @@ console.log(d); //https://tenant.sharepoint.com/sites/test
 There are two methods to access the root web. The first, using the rootWeb property, is best for directly accessing information about that web. If you want to chain multiple operations off of the web, better to use the getRootWeb method that will ensure the web instance is created using its own Url vs. "_api/sites/rootweb" which does not work for all operations.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // use for rootweb information access
 const rootwebData = await sp.site.rootWeb();
@@ -105,8 +115,10 @@ Creates a modern communication site.
 
 ```TypeScript
 
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result = await sp.site.createCommunicationSite(
             "Title",
@@ -126,9 +138,11 @@ const result = await sp.site.createCommunicationSite(
 You may need to supply additional parameters such as WebTemplate, to do so please use the `createCommunicationSiteFromProps` method.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // in this case you supply a single struct deinfing the creation props
 const result = await sp.site.createCommunicationSiteFromProps({
@@ -163,8 +177,10 @@ Creates a modern team site backed by O365 group.
 
 ```TypeScript
 
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result = await sp.site.createModernTeamSite(
         "displayName",
@@ -186,9 +202,11 @@ console.log(d);
 You may need to supply additional parameters, to do so please use the `createModernTeamSiteFromProps` method.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // in this case you supply a single struct deinfing the creation props
 const result = await sp.site.createModernTeamSiteFromProps({
@@ -203,9 +221,11 @@ const result = await sp.site.createModernTeamSiteFromProps({
 Using the library, you can delete a specific site collection
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sites";
 import { Site } from "@pnp/sp/sites";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Delete the current site
 await sp.site.delete();
@@ -221,7 +241,9 @@ await site2.delete();
 Using the library, you can check if a specific site collection exist or not on your tenant
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Specify which site to verify
 const siteUrl = "https://tenant.sharepoint.com/sites/subsite";

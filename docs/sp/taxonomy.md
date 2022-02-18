@@ -2,9 +2,9 @@
 
 Provides access to the v2.1 api term store
 
-### Docs updated with v2.0.9 release as the underlying API changed.
+### Docs updated with v2.0.9 release as the underlying API changed
 
-> NOTE: This API may change so please be aware updates to the taxonomy module will not trigger a major version bump in PnPjs even if they are breaking. Once things stabalize this note will be removed.
+> NOTE: This API may change so please be aware updates to the taxonomy module will not trigger a major version bump in PnPjs even if they are breaking. Once things stabilize this note will be removed.
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
@@ -13,9 +13,11 @@ Provides access to the v2.1 api term store
 Access term store data from the root sp object as shown below.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermStoreInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get term store data
 const info: ITermStoreInfo = await sp.termStore();
@@ -28,9 +30,11 @@ Access term group information
 ### List
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermGroupInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get term groups
 const info: ITermGroupInfo[] = await sp.termStore.groups();
@@ -39,9 +43,11 @@ const info: ITermGroupInfo[] = await sp.termStore.groups();
 ### Get By Id
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermGroupInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get term groups data
 const info: ITermGroupInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72")();
@@ -54,36 +60,45 @@ Access term set information
 ### List
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermSetInfo } from "@pnp/sp/taxonomy";
 
-// get get set info
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+// get set info
 const info: ITermSetInfo[] = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets();
 ```
 
 ### Get By Id
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermSetInfo } from "@pnp/sp/taxonomy";
 
-// get term set data
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+// get term set data by group id then by term set id
 const info: ITermSetInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72")();
+
+// get term set data by term set id
+const infoByTermSetId: ITermSetInfo = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72")();
 ```
 
 ### getAllChildrenAsOrderedTree
 
-
-
 This method will get all of a set's child terms in an ordered array. It is a costly method in terms of requests so we suggest you cache the results as taxonomy trees seldom change.
 
+> Starting with version 2.6.0 you can now include an optional param to retrieve all of the term's properties and localProperties in the tree. Default is false.
+
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermInfo } from "@pnp/sp/taxonomy";
 import { dateAdd, PnPClientStorage } from "@pnp/core";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // here we get all the children of a given set
 const childTree = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getAllChildrenAsOrderedTree();
@@ -96,6 +111,10 @@ const store = new PnPClientStorage();
 const cachedTree = await store.local.getOrPut("myKey", () => {
     return sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getAllChildrenAsOrderedTree();
 }, dateAdd(new Date(), "minute", 30));
+
+// you can also get all the properties and localProperties
+const set = sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72");
+const childTree = await set.getAllChildrenAsOrderedTree({ retrieveProperties: true });
 ```
 
 ## Terms
@@ -105,9 +124,11 @@ Access term set information
 ### List
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // list all the terms that are direct children of this set
 const infos: ITermInfo[] = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").children();
@@ -115,25 +136,30 @@ const infos: ITermInfo[] = await sp.termStore.groups.getById("338666a8-1111-2222
 
 ### List (terms)
 
-
-
 You can use the terms property to get a flat list of all terms in the set. These terms do not contain parent/child relationship information.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermInfo } from "@pnp/sp/taxonomy";
 
-// list all the terms that are direct children of this set
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+// list all the terms available in this term set by group id then by term set id
 const infos: ITermInfo[] = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").terms();
+
+// list all the terms available in this term set by term set id
+const infosByTermSetId: ITermInfo[] = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").terms();
 ```
 
 ### Get By Id
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get term set data
 const info: ITermInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72")();
@@ -146,8 +172,10 @@ _Behavior Change in 2.1.0_
 The server API changed again, resulting in the removal of the "parent" property from ITerm as it is not longer supported as a path property. You now must use "expand" to load a term's parent information. The side affect of this is that the parent is no longer chainable, meaning you need to load a new term instance to work with the parent term. An approach for this is shown below.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get a ref to the set
 const set = sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72");

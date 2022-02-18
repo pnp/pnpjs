@@ -9,6 +9,10 @@ This methods allows you to send an email based on the supplied arguments. The me
 ### EmailProperties
 
 ```TypeScript
+export interface TypedHash<T> {
+    [key: string]: T;
+}
+
 export interface EmailProperties {
 
     To: string[];
@@ -26,9 +30,11 @@ export interface EmailProperties {
 You must define the To, Subject, and Body values - the remaining are optional.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sputilities";
 import { IEmailProperties } from "@pnp/sp/sputilities";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const emailProps: IEmailProperties = {
     To: ["user@site.com"],
@@ -50,8 +56,10 @@ console.log("Email Sent!");
 This method returns the current user's email addresses known to SharePoint.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sputilities";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 let addressString: string = await sp.utility.getCurrentUserEmailAddresses();
 
@@ -71,8 +79,10 @@ await sp.utility.sendEmail({
 Gets information about a principal that matches the specified Search criteria
 
 ```TypeScript
-import { sp, IPrincipalInfo, PrincipalType, PrincipalSource } from "@pnp/sp";
+import { spfi, SPFx, IPrincipalInfo, PrincipalType, PrincipalSource } from "@pnp/sp";
 import "@pnp/sp/sputilities";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 let principal : IPrincipalInfo = await sp.utility.resolvePrincipal("user@site.com", PrincipalType.User, PrincipalSource.All, true, false, true);
 
@@ -84,8 +94,10 @@ console.log(principal);
 Gets information about the principals that match the specified Search criteria.
 
 ```TypeScript
-import { sp, IPrincipalInfo, PrincipalType, PrincipalSource } from "@pnp/sp";
+import { spfi, SPFx, IPrincipalInfo, PrincipalType, PrincipalSource } from "@pnp/sp";
 import "@pnp/sp/sputilities";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 let principals : IPrincipalInfo[] = await sp.utility.searchPrincipals("john", PrincipalType.User, PrincipalSource.All,"", 10);
 
@@ -97,8 +109,10 @@ console.log(principals);
 Gets the external (outside the firewall) URL to a document or resource in a site.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sputilities";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 let url : string = await sp.utility.createEmailBodyForInvitation("https://contoso.sharepoint.com/sites/dev/SitePages/DevHome.aspx");
 console.log(url);
@@ -109,8 +123,10 @@ console.log(url);
 Resolves the principals contained within the supplied groups
 
 ```TypeScript
-import { sp, IPrincipalInfo } from "@pnp/sp";
+import { spfi, SPFx, IPrincipalInfo } from "@pnp/sp";
 import "@pnp/sp/sputilities";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 let principals : IPrincipalInfo[] = await sp.utility.expandGroupsToPrincipals(["Dev Owners", "Dev Members"]);
 console.log(principals);
@@ -123,9 +139,11 @@ console.log(principals);
 ## createWikiPage
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sputilities";
 import { ICreateWikiPageResult } from "@pnp/sp/sputilities";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 let newPage : ICreateWikiPageResult = await sp.utility.createWikiPage({
     ServerRelativeUrl: "/sites/dev/SitePages/mynewpage.aspx",
