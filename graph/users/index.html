@@ -648,6 +648,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -871,6 +883,13 @@
         <li class="md-nav__item">
   <a href="#user-photo-operations" class="md-nav__link">
     User Photo Operations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-presence-operation" class="md-nav__link">
+    User Presence Operation
   </a>
   
 </li>
@@ -1234,18 +1253,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1584,18 +1591,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2016,6 +2011,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#user-presence-operation" class="md-nav__link">
+    User Presence Operation
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2038,94 +2040,92 @@
 <p>You can learn more about Microsoft Graph users by reading the <a href="https://docs.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0">Official Microsoft Graph Documentation</a>.</p>
 <h2 id="iusers-iuser-ipeople">IUsers, IUser, IPeople<a class="headerlink" href="#iusers-iuser-ipeople" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { graphfi } from "@pnp/graph";<br />import {IUser, IUsers, User, Users, IPeople, People} from "@pnp/graph/users";</td>
-</tr>
-<tr>
-<td>Selective 2</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/users";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { graphfi ,IUser, IUsers, User, Users, IPeople, People } from "@pnp/graph/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="current-user">Current User<a class="headerlink" href="#current-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const currentUser = await graphfi().me();
+const graph = graphfi().using(SPFx(this.context));
+
+const currentUser = await graph.me();
 </code></pre>
 <h2 id="get-all-users-in-the-organization">Get All Users in the Organization<a class="headerlink" href="#get-all-users-in-the-organization" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const allUsers = await graphfi().users();
+const graph = graphfi().using(SPFx(this.context));
+
+const allUsers = await graph.users();
 </code></pre>
 <h2 id="get-a-user-by-email-address-or-user-id">Get a User by email address (or user id)<a class="headerlink" href="#get-a-user-by-email-address-or-user-id" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const matchingUser = await graphfi().users.getById('jane@contoso.com')();
+const graph = graphfi().using(SPFx(this.context));
+
+const matchingUser = await graph.users.getById('jane@contoso.com')();
 </code></pre>
 <h2 id="update-current-user">Update Current User<a class="headerlink" href="#update-current-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-await graphfi().me.update({
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.me.update({
     displayName: 'John Doe'
 });
 </code></pre>
 <h2 id="people">People<a class="headerlink" href="#people" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const people = await graphfi().me.people();
+const graph = graphfi().using(SPFx(this.context));
+
+const people = await graph.me.people();
 
 // get the top 3 people
-const people = await graphfi().me.people.top(3)();
+const people = await graph.me.people.top(3)();
 </code></pre>
 <h2 id="people_1">People<a class="headerlink" href="#people_1" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const people = await graphfi().me.people();
+const graph = graphfi().using(SPFx(this.context));
+
+const people = await graph.me.people();
 
 // get the top 3 people
-const people = await graphfi().me.people.top(3)();
+const people = await graph.me.people.top(3)();
 </code></pre>
 <h2 id="manager">Manager<a class="headerlink" href="#manager" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const manager = await graphfi().me.manager();
+const graph = graphfi().using(SPFx(this.context));
+
+const manager = await graph.me.manager();
 </code></pre>
 <h2 id="direct-reports">Direct Reports<a class="headerlink" href="#direct-reports" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const reports = await graphfi().me.directReports();
+const graph = graphfi().using(SPFx(this.context));
+
+const reports = await graph.me.directReports();
 </code></pre>
 <h2 id="photo">Photo<a class="headerlink" href="#photo" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/photos&quot;;
 
-const currentUser = await graphfi().me.photo();
-const specificUser = await graphfi().users.getById('jane@contoso.com').photo();
+const graph = graphfi().using(SPFx(this.context));
+
+const currentUser = await graph.me.photo();
+const specificUser = await graph.users.getById('jane@contoso.com').photo();
 </code></pre>
 <h2 id="user-photo-operations">User Photo Operations<a class="headerlink" href="#user-photo-operations" title="Permanent link">&para;</a></h2>
 <p>See <a href="../photos/">Photos</a></p>
+<h2 id="user-presence-operation">User Presence Operation<a class="headerlink" href="#user-presence-operation" title="Permanent link">&para;</a></h2>
+<p>See <a href="../cloud-communications/">Cloud Communications</a></p>
                 
               
               

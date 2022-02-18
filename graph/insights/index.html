@@ -755,6 +755,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1233,18 +1245,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1583,18 +1583,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2035,113 +2023,113 @@
 <p>This module helps you get Insights in form of <strong><em>Trending</em></strong>, <strong><em>Used</em></strong> and <strong><em>Shared</em></strong>. The results are based on relationships calculated using advanced analytics and machine learning techniques.</p>
 <h2 id="iinsights">IInsights<a class="headerlink" href="#iinsights" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/insights";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import "@pnp/graph/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h3 id="get-all-trending-documents">Get all Trending documents<a class="headerlink" href="#get-all-trending-documents" title="Permanent link">&para;</a></h3>
 <p>Returns documents from OneDrive and SharePoint sites trending around a user.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/insights&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const trending = await graphfi().me.insights.trending()
+const graph = graphfi().using(SPFx(this.context));
 
-const trending = await graphfi().users.getById(&quot;userId&quot;).insights.trending()
+const trending = await graph.me.insights.trending()
+
+const trending = await graph.users.getById(&quot;userId&quot;).insights.trending()
 </code></pre>
 <h3 id="get-a-trending-document-by-id">Get a Trending document by Id<a class="headerlink" href="#get-a-trending-document-by-id" title="Permanent link">&para;</a></h3>
 <p>Using the getById method to get a trending document by Id.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/insights&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const trendingDoc = await graphfi().me.insights.trending.getById('Id')()
+const graph = graphfi().using(SPFx(this.context));
 
-const trendingDoc = await graphfi().users.getById(&quot;userId&quot;).insights.trending.getById('Id')()
+const trendingDoc = await graph.me.insights.trending.getById('Id')()
+
+const trendingDoc = await graph.users.getById(&quot;userId&quot;).insights.trending.getById('Id')()
 </code></pre>
 <h3 id="get-the-resource-from-trending-document">Get the resource from Trending document<a class="headerlink" href="#get-the-resource-from-trending-document" title="Permanent link">&para;</a></h3>
 <p>Using the resources method to get the resource from a trending document.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/insights&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const resource = await graphfi().me.insights.trending.getById('Id').resource()
+const graph = graphfi().using(SPFx(this.context));
 
-const resource = await graphfi().users.getById(&quot;userId&quot;).insights.trending.getById('Id').resource()
+const resource = await graph.me.insights.trending.getById('Id').resource()
+
+const resource = await graph.users.getById(&quot;userId&quot;).insights.trending.getById('Id').resource()
 </code></pre>
 <h3 id="get-all-used-documents">Get all Used documents<a class="headerlink" href="#get-all-used-documents" title="Permanent link">&para;</a></h3>
 <p>Returns documents viewed and modified by a user. Includes documents the user used in OneDrive for Business, SharePoint, opened as email attachments, and as link attachments from sources like Box, DropBox and Google Drive.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/insights&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const used = await graphfi().me.insights.used()
+const graph = graphfi().using(SPFx(this.context));
 
-const used = await graphfi().users.getById(&quot;userId&quot;).insights.used()
+const used = await graph.me.insights.used()
+
+const used = await graph.users.getById(&quot;userId&quot;).insights.used()
 </code></pre>
 <h3 id="get-a-used-document-by-id">Get a Used document by Id<a class="headerlink" href="#get-a-used-document-by-id" title="Permanent link">&para;</a></h3>
 <p>Using the getById method to get a used document by Id.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/insights&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const usedDoc = await graphfi().me.insights.used.getById('Id')()
+const graph = graphfi().using(SPFx(this.context));
 
-const usedDoc = await graphfi().users.getById(&quot;userId&quot;).insights.used.getById('Id')()
+const usedDoc = await graph.me.insights.used.getById('Id')()
+
+const usedDoc = await graph.users.getById(&quot;userId&quot;).insights.used.getById('Id')()
 </code></pre>
 <h3 id="get-the-resource-from-used-document">Get the resource from Used document<a class="headerlink" href="#get-the-resource-from-used-document" title="Permanent link">&para;</a></h3>
 <p>Using the resources method to get the resource from a used document.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/insights&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const resource = await graphfi().me.insights.used.getById('Id').resource()
+const graph = graphfi().using(SPFx(this.context));
 
-const resource = await graphfi().users.getById(&quot;userId&quot;).insights.used.getById('Id').resource()
+const resource = await graph.me.insights.used.getById('Id').resource()
+
+const resource = await graph.users.getById(&quot;userId&quot;).insights.used.getById('Id').resource()
 </code></pre>
 <h3 id="get-all-shared-documents">Get all Shared documents<a class="headerlink" href="#get-all-shared-documents" title="Permanent link">&para;</a></h3>
 <p>Returns documents shared with a user. Documents can be shared as email attachments or as OneDrive for Business links sent in emails.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/insights&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const shared = await graphfi().me.insights.shared()
+const graph = graphfi().using(SPFx(this.context));
 
-const shared = await graphfi().users.getById(&quot;userId&quot;).insights.shared()
+const shared = await graph.me.insights.shared()
+
+const shared = await graph.users.getById(&quot;userId&quot;).insights.shared()
 </code></pre>
 <h3 id="get-a-shared-document-by-id">Get a Shared document by Id<a class="headerlink" href="#get-a-shared-document-by-id" title="Permanent link">&para;</a></h3>
 <p>Using the getById method to get a shared document by Id.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/insights&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const sharedDoc = await graphfi().me.insights.shared.getById('Id')()
+const graph = graphfi().using(SPFx(this.context));
 
-const sharedDoc = await graphfi().users.getById(&quot;userId&quot;).insights.shared.getById('Id')()
+const sharedDoc = await graph.me.insights.shared.getById('Id')()
+
+const sharedDoc = await graph.users.getById(&quot;userId&quot;).insights.shared.getById('Id')()
 </code></pre>
 <h3 id="get-the-resource-from-a-shared-document">Get the resource from a Shared document<a class="headerlink" href="#get-the-resource-from-a-shared-document" title="Permanent link">&para;</a></h3>
 <p>Using the resources method to get the resource from a shared document.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/insights&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const resource = await graphfi().me.insights.shared.getById('Id').resource()
+const graph = graphfi().using(SPFx(this.context));
 
-const resource = await graphfi().users.getById(&quot;userId&quot;).insights.shared.getById('Id').resource()
+const resource = await graph.me.insights.shared.getById('Id').resource()
+
+const resource = await graph.users.getById(&quot;userId&quot;).insights.shared.getById('Id').resource()
 </code></pre>
                 
               

@@ -646,6 +646,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1116,18 +1128,6 @@
   <li class="md-nav__item">
     <a href="../content-types/" class="md-nav__link">
       Content Types
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../entity-merging/" class="md-nav__link">
-      Entity Merging
     </a>
   </li>
 
@@ -1719,18 +1719,6 @@
   </li>
 
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
-    </a>
-  </li>
-
-        
       </ul>
     </nav>
   </li>
@@ -2300,40 +2288,6 @@
 <h2 id="ifolders">IFolders<a class="headerlink" href="#ifolders" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
 <p>Represents a collection of folders. SharePoint webs, lists, and list items have a collection of folders under their properties.</p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";</td>
-</tr>
-<tr>
-<td>Selective 2</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";</td>
-</tr>
-<tr>
-<td>Selective 3</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";</td>
-</tr>
-<tr>
-<td>Selective 4</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";</td>
-</tr>
-<tr>
-<td>Selective 5</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { spfi, SPFx, IFolders, Folders } from "@pnp/sp/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h3 id="get-folders-collection-for-various-sharepoint-objects">Get folders collection for various SharePoint objects<a class="headerlink" href="#get-folders-collection-for-various-sharepoint-objects" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;
@@ -2376,40 +2330,6 @@ const folder = await sp.web.folders.getByUrl(&quot;folder name&quot;)();
 <h2 id="ifolder">IFolder<a class="headerlink" href="#ifolder" title="Permanent link">&para;</a></h2>
 <p>Represents an instance of a SharePoint folder.</p>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";</td>
-</tr>
-<tr>
-<td>Selective 2</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";</td>
-</tr>
-<tr>
-<td>Selective 3</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";</td>
-</tr>
-<tr>
-<td>Selective 4</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";</td>
-</tr>
-<tr>
-<td>Selective 5</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { spfi, SPFx, IFolders, Folders } from "@pnp/sp/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h3 id="get-a-folder-object-associated-with-different-sharepoint-artifacts-web-list-list-item">Get a folder object associated with different SharePoint artifacts (web, list, list item)<a class="headerlink" href="#get-a-folder-object-associated-with-different-sharepoint-artifacts-web-list-list-item" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;

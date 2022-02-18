@@ -724,6 +724,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1202,18 +1214,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1552,18 +1552,6 @@
   <li class="md-nav__item">
     <a href="../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -1978,26 +1966,26 @@
 <p>For a full, detailed list of what's been added, updated, and removed please see our <a href="https://github.com/pnp/pnpjs/blob/main/CHANGELOG.md">CHANGELOG</a></p>
 <h2 id="benefits-and-advancements-in-v3">Benefits and Advancements in V3<a class="headerlink" href="#benefits-and-advancements-in-v3" title="Permanent link">&para;</a></h2>
 <p>For version 2 the core themes were selective imports, a model based on factory functions &amp; interfaces, and improving the docs. This foundation gave us the opportunity to re-write the entire request pipeline internals with minimal external library changes - showing a bit of long-term planning 🙂. With version 3 your required updates are likely to only affect the initial configuration of the library, a huge accomplishment when updating the entire internals.</p>
-<p>Our request pipeline remained largely unchanged since it was first written ~5 years ago, hard to change something so central to the library. The advantage of this update it is now easy for developers to inject their own logic into the requst process. As always, this work was based on feedback over the years and understanding how we can be a better library. The new observer design allows you to customize every aspect of the request, in a much clearer way than was previously possible. In addition this work greatly reduced internal boilerplate code and optimized for library size. We reduced the size of sp &amp; graph libraries by almost 2/3. As well we embraced a fully async design built around the new <a href="../core/timeline/">Timeline</a>. Check out the new model around authoring <a href="../core/observers/">observers</a> and understand how they relate to <a href="../core/moments/">moments</a>. We feel this new architecture will allow far greater flexibility for consumers of the library to customize the behavior to exactly meet their needs.</p>
+<p>Our request pipeline remained largely unchanged since it was first written ~5 years ago, hard to change something so central to the library. The advantage of this update it is now easy for developers to inject their own logic into the request process. As always, this work was based on feedback over the years and understanding how we can be a better library. The new observer design allows you to customize every aspect of the request, in a much clearer way than was previously possible. In addition this work greatly reduced internal boilerplate code and optimized for library size. We reduced the size of sp &amp; graph libraries by almost 2/3. As well we embraced a fully async design built around the new <a href="../core/timeline/">Timeline</a>. Check out the new model around authoring <a href="../core/observers/">observers</a> and understand how they relate to <a href="../core/moments/">moments</a>. We feel this new architecture will allow far greater flexibility for consumers of the library to customize the behavior to exactly meet their needs.</p>
 <p>We also used this as an opportunity to remove duplicate methods, clean up and improve our typings &amp; method signatures, and drop legacy methods. Be sure to review the <a href="https://github.com/pnp/pnpjs/blob/version-3/CHANGELOG.md">changelog</a>. As always we do our best to minimize breaking changes but major versions are breaking versions.</p>
-<p>We thank you for using the library your continued feedback drives these improvements, and look forward to seeing what you build!</p>
+<p>We thank you for using the library. Your continued feedback drives these improvements, and we look forward to seeing what you build!</p>
 <h2 id="global-vs-instance-architecture">Global vs Instance Architecture<a class="headerlink" href="#global-vs-instance-architecture" title="Permanent link">&para;</a></h2>
-<p>The biggest change in version 3 of the library is the movement away from the globally defined sp and graph objects. Starting in version 2.1.0 we added the concept of <code>Isolated Runtime</code> which allowed you to create a seperate instance of the global object that would have a seperate configuration. We found that the implementation was finicky and prone to issue and so have rebuilt the internals of the library from the ground up to better address this need. In doing so the decision was made not to offer a global object at all.</p>
-<p>Becuase of this change, any architecture that relies on the <code>sp</code> or <code>graph</code> objects being configured during initialization and then reused throught the solution will need to be rethought. Either by creating a new <code>spfi</code>/<code>graphfi</code> object wherever it's required or by creating a <a href="./getting-started/#establish-context-within-an-spfx-service">service arcitecture</a> that can return a previously configured instance or utilize an instance and return the results. Essentially the <code>sp</code> and <code>graph</code> objects have been deprecated and will need to be replaced.</p>
-<p>For more information on getting started with these new setup methods please see the <a href="../getting-started/">Getting Started</a> docs or for a deeper look into the Queryable interface see <a href="../queryable/queryable/">Queryable</a>.</p>
+<p>The biggest change in version 3 of the library is the movement away from the globally defined sp and graph objects. Starting in version 2.1.0 we added the concept of <code>Isolated Runtime</code> which allowed you to create a separate instance of the global object that would have a separate configuration. We found that the implementation was finicky and prone to issues, so we have rebuilt the internals of the library from the ground up to better address this need. In doing so, we decided not to offer a global object at all.</p>
+<p>Because of this change, any architecture that relies on the <code>sp</code> or <code>graph</code> objects being configured during initialization and then reused throughout the solution will need to be rethought, either by creating a new <code>spfi</code>/<code>graphfi</code> object wherever it's required or by creating a <a href="./getting-started/#establish-context-within-an-spfx-service">service architecture</a> that can return a previously configured instance or utilize an instance and return the results. Essentially the <code>sp</code> and <code>graph</code> objects have been deprecated and will need to be replaced.</p>
+<p>For more information on getting started with these new setup methods please see the <a href="../getting-started/">Getting Started</a> docs for a deeper look into the Queryable interface see <a href="../queryable/queryable/">Queryable</a>.</p>
 <h2 id="assignfrom-and-copyfrom">AssignFrom and CopyFrom<a class="headerlink" href="#assignfrom-and-copyfrom" title="Permanent link">&para;</a></h2>
-<p>With the new Querable instance architecture we have provided a way to branch from one instance to another. To do this we provide two methods AssignFrom and CopyFrom. These methods can be helpful when you want to establish a new instance that you might apply other behaviors to but want to reuse the configuration from a source. To learn more about them check out the <a href="../core/behaviors/">Core/Bahaviors</a> documentation.</p>
+<p>With the new Querable instance architecture we have provided a way to branch from one instance to another. To do this we provide two methods: AssignFrom and CopyFrom. These methods can be helpful when you want to establish a new instance to which you might apply other behaviors but want to reuse the configuration from a source. To learn more about them check out the <a href="../core/behaviors/">Core/Behaviors</a> documentation.</p>
 <h2 id="dropping-get">Dropping ".get()"<a class="headerlink" href="#dropping-get" title="Permanent link">&para;</a></h2>
 <p>If you are still using the <code>queryableInstance.get()</code> method of queryable you must replace it with a direct invoke call <code>queryableInstance()</code>.</p>
 <h2 id="batching">Batching<a class="headerlink" href="#batching" title="Permanent link">&para;</a></h2>
-<p>Another benefit of the new updated internals in a significantly streamlined and simplified process for batching requests. Essentially the interface for both SP and Graph function the same.</p>
-<p>A new module called "batching" will need to be imported which then provides the batched interface which will return a tuple with a new Querable instance and an execute function. To see more details check out the <a href="../concepts/batching/">Batching</a></p>
+<p>Another benefit of the new updated internals is a significantly streamlined and simplified process for batching requests. Essentially, the interface for SP and Graph now function the same.</p>
+<p>A new module called "batching" will need to be imported which then provides the batched interface which will return a tuple with a new Querable instance and an execute function. To see more details check out <a href="../concepts/batching/">Batching</a>.</p>
 <h2 id="web-spfi">Web -&gt; SPFI<a class="headerlink" href="#web-spfi" title="Permanent link">&para;</a></h2>
 <p>In V2, to connect to a different web you would use the function</p>
-<pre><code class="language-ts">const web = Web({Other Web URL});
+<pre><code class="language-TypeScript">const web = Web({Other Web URL});
 </code></pre>
-<p>In V3 you would create a new instance of queryable connecting to the web of your choice. Th`is new method provides you significantly more flexibility by not only allowing you to easily connect to other webs in the same tenant but also to webs in other tenants.</p>
-<pre><code class="language-ts">const spWebA = spfi().using(SPDefault(this.context));
+<p>In V3 you would create a new instance of queryable connecting to the web of your choice. This new method provides you significantly more flexibility by not only allowing you to easily connect to other webs in the same tenant but also to webs in other tenants.</p>
+<pre><code class="language-TypeScript">const spWebA = spfi().using(SPDefault(this.context));
 
 // Create a new instance of Queryable
 const spWebB = spfi(&quot;{Other Web URL}&quot;).using(SPDefault(this.context));

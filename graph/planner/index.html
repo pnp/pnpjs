@@ -648,6 +648,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1283,18 +1295,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1633,18 +1633,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2132,165 +2120,181 @@
                 
                 
                 <h1 id="pnpgraphplanner">@pnp/graph/planner<a class="headerlink" href="#pnpgraphplanner" title="Permanent link">&para;</a></h1>
-<p>The ability to manage plans and tasks in Planner is a capability introduced in version 1.2.4 of @pnp/graphfi(). Through the methods described
+<p>The ability to manage plans and tasks in Planner is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
 you can add, update and delete items in Planner.</p>
 <h2 id="iinvitations">IInvitations<a class="headerlink" href="#iinvitations" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/planner";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import "@pnp/graph/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="get-plans-by-id">Get Plans by Id<a class="headerlink" href="#get-plans-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the planner.plans.getById() you can get a specific Plan.
 Planner.plans is not an available endpoint, you need to get a specific Plan.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const plan = await graphfi().planner.plans.getById('planId')();
+const graph = graphfi().using(SPFx(this.context));
+
+const plan = await graph.planner.plans.getById('planId')();
 
 </code></pre>
 <h2 id="add-new-plan">Add new Plan<a class="headerlink" href="#add-new-plan" title="Permanent link">&para;</a></h2>
 <p>Using the planner.plans.add() you can create a new Plan.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const newPlan = await graphfi().planner.plans.add('groupObjectId', 'title');
+const graph = graphfi().using(SPFx(this.context));
+
+const newPlan = await graph.planner.plans.add('groupObjectId', 'title');
 
 </code></pre>
 <h2 id="get-tasks-in-plan">Get Tasks in Plan<a class="headerlink" href="#get-tasks-in-plan" title="Permanent link">&para;</a></h2>
 <p>Using the tasks() you can get the Tasks in a Plan.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const planTasks = await graphfi().planner.plans.getById('planId').tasks();
+const graph = graphfi().using(SPFx(this.context));
+
+const planTasks = await graph.planner.plans.getById('planId').tasks();
 
 </code></pre>
 <h2 id="get-buckets-in-plan">Get Buckets in Plan<a class="headerlink" href="#get-buckets-in-plan" title="Permanent link">&para;</a></h2>
 <p>Using the buckets() you can get the Buckets in a Plan.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const planBuckets = await graphfi().planner.plans.getById('planId').buckets();
+const graph = graphfi().using(SPFx(this.context));
+
+const planBuckets = await graph.planner.plans.getById('planId').buckets();
 
 </code></pre>
 <h2 id="get-details-in-plan">Get Details in Plan<a class="headerlink" href="#get-details-in-plan" title="Permanent link">&para;</a></h2>
 <p>Using the details() you can get the details in a Plan.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const planDetails = await graphfi().planner.plans.getById('planId').details();
+const graph = graphfi().using(SPFx(this.context));
+
+const planDetails = await graph.planner.plans.getById('planId').details();
 
 </code></pre>
 <h2 id="delete-plan">Delete Plan<a class="headerlink" href="#delete-plan" title="Permanent link">&para;</a></h2>
 <p>Using the delete() you can get delete a Plan.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const delPlan = await graphfi().planner.plans.getById('planId').delete('planEtag');
+const graph = graphfi().using(SPFx(this.context));
+
+const delPlan = await graph.planner.plans.getById('planId').delete('planEtag');
 
 </code></pre>
 <h2 id="update-plan">Update Plan<a class="headerlink" href="#update-plan" title="Permanent link">&para;</a></h2>
 <p>Using the update() you can get update a Plan.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const updPlan = await graphfi().planner.plans.getById('planId').update({title: 'New Title', eTag: 'planEtag'});
+const graph = graphfi().using(SPFx(this.context));
+
+const updPlan = await graph.planner.plans.getById('planId').update({title: 'New Title', eTag: 'planEtag'});
 
 </code></pre>
 <h2 id="get-task-by-id">Get Task by Id<a class="headerlink" href="#get-task-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the planner.tasks.getById() you can get a specific Task.
 Planner.tasks is not an available endpoint, you need to get a specific Task.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const task = await graphfi().planner.tasks.getById('taskId')();
+const graph = graphfi().using(SPFx(this.context));
+
+const task = await graph.planner.tasks.getById('taskId')();
 
 </code></pre>
 <h2 id="add-new-task">Add new Task<a class="headerlink" href="#add-new-task" title="Permanent link">&para;</a></h2>
 <p>Using the planner.tasks.add() you can create a new Task.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const newTask = await graphfi().planner.tasks.add('planId', 'title');
+const graph = graphfi().using(SPFx(this.context));
+
+const newTask = await graph.planner.tasks.add('planId', 'title');
 
 </code></pre>
 <h2 id="get-details-in-task">Get Details in Task<a class="headerlink" href="#get-details-in-task" title="Permanent link">&para;</a></h2>
 <p>Using the details() you can get the details in a Task.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const taskDetails = await graphfi().planner.tasks.getById('taskId').details();
+const graph = graphfi().using(SPFx(this.context));
+
+const taskDetails = await graph.planner.tasks.getById('taskId').details();
 
 </code></pre>
 <h2 id="delete-task">Delete Task<a class="headerlink" href="#delete-task" title="Permanent link">&para;</a></h2>
 <p>Using the delete() you can get delete a Task.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const delTask = await graphfi().planner.tasks.getById('taskId').delete('taskEtag');
+const graph = graphfi().using(SPFx(this.context));
+
+const delTask = await graph.planner.tasks.getById('taskId').delete('taskEtag');
 
 </code></pre>
 <h2 id="update-task">Update Task<a class="headerlink" href="#update-task" title="Permanent link">&para;</a></h2>
 <p>Using the update() you can get update a Task.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const updTask = await graphfi().planner.tasks.getById('taskId').update({properties, eTag:'taskEtag'});
+const graph = graphfi().using(SPFx(this.context));
+
+const updTask = await graph.planner.tasks.getById('taskId').update({properties, eTag:'taskEtag'});
 
 </code></pre>
 <h2 id="get-buckets-by-id">Get Buckets by Id<a class="headerlink" href="#get-buckets-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the planner.buckets.getById() you can get a specific Bucket.
 planner.buckets is not an available endpoint, you need to get a specific Bucket.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const bucket = await graphfi().planner.buckets.getById('bucketId')();
+const graph = graphfi().using(SPFx(this.context));
+
+const bucket = await graph.planner.buckets.getById('bucketId')();
 
 </code></pre>
 <h2 id="add-new-bucket">Add new Bucket<a class="headerlink" href="#add-new-bucket" title="Permanent link">&para;</a></h2>
 <p>Using the planner.buckets.add() you can create a new Bucket.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const newBucket = await graphfi().planner.buckets.add('name', 'planId');
+const graph = graphfi().using(SPFx(this.context));
+
+const newBucket = await graph.planner.buckets.add('name', 'planId');
 
 </code></pre>
 <h2 id="update-bucket">Update Bucket<a class="headerlink" href="#update-bucket" title="Permanent link">&para;</a></h2>
 <p>Using the update() you can get update a Bucket.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const updBucket = await graphfi().planner.buckets.getById('bucketId').update({name: &quot;Name&quot;, eTag:'bucketEtag'});
+const graph = graphfi().using(SPFx(this.context));
+
+const updBucket = await graph.planner.buckets.getById('bucketId').update({name: &quot;Name&quot;, eTag:'bucketEtag'});
 
 </code></pre>
 <h2 id="delete-bucket">Delete Bucket<a class="headerlink" href="#delete-bucket" title="Permanent link">&para;</a></h2>
 <p>Using the delete() you can get delete a Bucket.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const delBucket = await graphfi().planner.buckets.getById('bucketId').delete(eTag:'bucketEtag');
+const graph = graphfi().using(SPFx(this.context));
+
+const delBucket = await graph.planner.buckets.getById('bucketId').delete(eTag:'bucketEtag');
 
 </code></pre>
 <h2 id="get-bucket-tasks">Get Bucket Tasks<a class="headerlink" href="#get-bucket-tasks" title="Permanent link">&para;</a></h2>
 <p>Using the tasks() you can get Tasks in a Bucket.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/planner&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/planner&quot;;
 
-const bucketTasks = await graphfi().planner.buckets.getById('bucketId').tasks();
+const graph = graphfi().using(SPFx(this.context));
+
+const bucketTasks = await graph.planner.buckets.getById('bucketId').tasks();
 
 </code></pre>
                 

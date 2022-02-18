@@ -644,6 +644,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1122,18 +1134,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1472,18 +1472,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2006,7 +1994,7 @@
 <p>This article is targeted at people wishing to extend PnPjs itself, usually by adding a method or property.</p>
 </blockquote>
 <p>At the most basic level PnPjs is a set of libraries used to build and execute a web request and handle the response from that request. Conceptually each object in the fluent chain serves as input when creating the next object in the chain. This is how configuration, url, query, and other values are passed along. To get a sense for what this looks like see the code below. This is taken from inside the <a href="https://github.com/pnp/pnpjs/blob/version-2/packages/sp/webs/types.ts#L77">webs submodule</a> and shows how the "webs" property is added to the web class.</p>
-<pre><code class="language-ts">// TypeScript property, returning an interface
+<pre><code class="language-TypeScript">// TypeScript property, returning an interface
 public get webs(): IWebs {
     // using the Webs factory function and providing &quot;this&quot; as the first parameter
     return Webs(this);
@@ -2014,19 +2002,19 @@ public get webs(): IWebs {
 </code></pre>
 <h2 id="understanding-factory-functions">Understanding Factory Functions<a class="headerlink" href="#understanding-factory-functions" title="Permanent link">&para;</a></h2>
 <p>PnPjs v3 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions in sp and graph have a similar form.</p>
-<pre><code class="language-ts">// create a constant which is a function of type ISPInvokableFactory having the name Webs
+<pre><code class="language-TypeScript">// create a constant which is a function of type ISPInvokableFactory having the name Webs
 // this is bound by the generic type param to return an IWebs instance
 // and it will use the _Webs concrete class to form the internal type of the invocable
 export const Webs = spInvokableFactory&lt;IWebs&gt;(_Webs);
 </code></pre>
 <p>The ISPInvokableFactory type looks like:</p>
-<pre><code class="language-ts">export type ISPInvokableFactory&lt;R = any&gt; = (baseUrl: string | ISharePointQueryable, path?: string) =&gt; R;
+<pre><code class="language-TypeScript">export type ISPInvokableFactory&lt;R = any&gt; = (baseUrl: string | ISharePointQueryable, path?: string) =&gt; R;
 </code></pre>
 <p>And the matching graph type:</p>
-<pre><code class="language-ts">&lt;R&gt;(f: any): (baseUrl: string | IGraphQueryable, path?: string) =&gt; R
+<pre><code class="language-TypeScript">&lt;R&gt;(f: any): (baseUrl: string | IGraphQueryable, path?: string) =&gt; R
 </code></pre>
 <p>The general idea of a factory function is that it takes two parameters. The first is either a string or Queryable derivative which forms base for the new object. The second is the next part of the url. In some cases (like the webs property example above) you will note there is no second parameter. Some classes are decorated with defaultPath, which automatically fills the second param. Don't worry too much right now about the deep internals of the library, let's instead focus on some concrete examples.</p>
-<pre><code class="language-ts">import { Web } from &quot;@pnp/sp/webs&quot;;
+<pre><code class="language-TypeScript">import { Web } from &quot;@pnp/sp/webs&quot;;
 
 // create a web from an absolute url
 const web = Web(&quot;https://tenant.sharepoint.com&quot;);
@@ -2042,7 +2030,7 @@ const currentUserInfo = cu();
 <p>Now hey you might say - you can't create a request to current user using the Web factory. Well you can, since everything is just based on urls under the covers the actual factory names don't mean anything other than they have the appropriate properties and method hung off them. This is brought up as you will see in many cases objects being used to create queries <em>within</em> methods and properties that don't match their "type". It is an important concept when working with the library to always remember we are just building strings.</p>
 <h2 id="class-structure">Class structure<a class="headerlink" href="#class-structure" title="Permanent link">&para;</a></h2>
 <p>Internally to the library we have a bit of complexity to make the whole invocable proxy architecture work and provide the typings folks expect. Here is an example implementation with extra comments explaining what is happening. You don't need to understand the entire stack to <a href="#add-a-property">add a property</a> or <a href="#add-a-method">method</a></p>
-<pre><code class="language-ts">/*
+<pre><code class="language-TypeScript">/*
 The concrete class implementation. This is never exported or shown directly
 to consumers of the library. It is wrapped by the Proxy we do expose.
 
@@ -2088,7 +2076,7 @@ export const HubSite = spInvokableFactory&lt;IHubSite&gt;(_HubSite);
 </code></pre>
 <h2 id="add-a-property">Add a Property<a class="headerlink" href="#add-a-property" title="Permanent link">&para;</a></h2>
 <p>In most cases you won't need to create the class, interface, or factory - you just want to add a property or method. An example of this is sp.web.lists. web is a property of sp and lists is a property of web. You can have a look at those classes as examples. Let's have a look at the fields on the _View class.</p>
-<pre><code class="language-ts">export class _View extends _SharePointQueryableInstance&lt;IViewInfo&gt; {
+<pre><code class="language-TypeScript">export class _View extends _SharePointQueryableInstance&lt;IViewInfo&gt; {
 
     // ... other code removed
 
@@ -2109,7 +2097,7 @@ export const HubSite = spInvokableFactory&lt;IHubSite&gt;(_HubSite);
 </blockquote>
 <h2 id="add-a-method">Add a Method<a class="headerlink" href="#add-a-method" title="Permanent link">&para;</a></h2>
 <p>Adding a method is just like adding a property with the key difference that a method usually <em>does</em> something like make a web request or act like a property but take parameters. Let's look at the _Items getById method:</p>
-<pre><code class="language-ts">@defaultPath(&quot;items&quot;)
+<pre><code class="language-TypeScript">@defaultPath(&quot;items&quot;)
 export class _Items extends _SharePointQueryableCollection {
 
     /**
@@ -2131,7 +2119,7 @@ export class _Items extends _SharePointQueryableCollection {
 </code></pre>
 <h3 id="web-request-method">Web Request Method<a class="headerlink" href="#web-request-method" title="Permanent link">&para;</a></h3>
 <p>A second example is a method that performs a request. Here we use the _Item recycle method as an example:</p>
-<pre><code class="language-ts">/**
+<pre><code class="language-TypeScript">/**
  * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
  */
 // we use the tag decorator to add telemetry
@@ -2140,12 +2128,12 @@ export class _Items extends _SharePointQueryableCollection {
 public recycle(): Promise&lt;string&gt; {
     // we use the spPost method to post the request created by cloning our current instance IItem using
     // the Item factory and adding the path &quot;recycle&quot; to the end. Url will look like .../items/getById(2)/recycle
-    return spPost&lt;string&gt;(this.clone(Item, &quot;recycle&quot;));
+    return spPost&lt;string&gt;(Item(this, &quot;recycle&quot;));
 }
 </code></pre>
 <h2 id="augment-using-selective-imports">Augment Using Selective Imports<a class="headerlink" href="#augment-using-selective-imports" title="Permanent link">&para;</a></h2>
 <p>To understand is how to extend functionality within the selective imports structures look at <a href="https://github.com/pnp/pnpjs/blob/main/packages/sp/items/list.ts">list.ts</a> file in the items submodule. Here you can see the code below, with extra comments to explain what is happening. Again, you will see this pattern repeated throughout the library so there are many examples available.</p>
-<pre><code class="language-ts">// import the addProp helper
+<pre><code class="language-TypeScript">// import the addProp helper
 import { addProp } from &quot;@pnp/queryable&quot;;
 // import the _List concrete class from the types module (not the index!)
 import { _List } from &quot;../lists/types&quot;;

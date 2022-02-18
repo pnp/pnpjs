@@ -646,6 +646,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1116,18 +1128,6 @@
   <li class="md-nav__item">
     <a href="../content-types/" class="md-nav__link">
       Content Types
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../entity-merging/" class="md-nav__link">
-      Entity Merging
     </a>
   </li>
 
@@ -1686,18 +1686,6 @@
   </li>
 
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
-    </a>
-  </li>
-
-        
       </ul>
     </nav>
   </li>
@@ -2233,67 +2221,69 @@
 <p>The profile services allows you to work with the SharePoint User Profile Store.</p>
 <h2 id="profiles">Profiles<a class="headerlink" href="#profiles" title="Permanent link">&para;</a></h2>
 <p>Profiles is accessed directly from the root sp object.</p>
-<pre><code class="language-typescript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-typescript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/profiles&quot;;
 </code></pre>
 <h2 id="get-edit-profile-link-for-the-current-user">Get edit profile link for the current user<a class="headerlink" href="#get-edit-profile-link-for-the-current-user" title="Permanent link">&para;</a></h2>
 <pre><code class="language-typescript">editProfileLink(): Promise&lt;string&gt;
 </code></pre>
-<pre><code class="language-typescript">const editProfileLink = await sp.profiles.editProfileLink();
-console.log(&quot;My edit profile link =&quot; + editProfileLink);
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const editProfileLink = await sp.profiles.editProfileLink();
 </code></pre>
 <h2 id="is-my-people-list-public">Is My People List Public<a class="headerlink" href="#is-my-people-list-public" title="Permanent link">&para;</a></h2>
 <p>Provides a boolean that indicates if the current users "People I'm Following" list is public or not</p>
 <pre><code class="language-typescript">isMyPeopleListPublic(): Promise&lt;boolean&gt;
 </code></pre>
-<pre><code class="language-typescript">const isPublic = await sp.profiles.isMyPeopleListPublic();
-console.log(&quot;Is my Following list Public =&quot; + isPubic);
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const isPublic = await sp.profiles.isMyPeopleListPublic();
 </code></pre>
 <h2 id="find-out-if-the-current-user-is-followed-by-another-user">Find out if the current user is followed by another user<a class="headerlink" href="#find-out-if-the-current-user-is-followed-by-another-user" title="Permanent link">&para;</a></h2>
 <p>Provides a boolean that indicates if the current users is followed by a specific user.</p>
 <pre><code class="language-typescript">amIFollowedBy(loginName: string): Promise&lt;boolean&gt;
 </code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 const isFollowedBy = await sp.profiles.amIFollowedBy(loginName);
-console.log(&quot;Is &quot; + loginName + &quot; following me? &quot; + isFollowedBy);
 </code></pre>
 <h2 id="find-out-if-i-am-following-a-specific-user">Find out if I am following a specific user<a class="headerlink" href="#find-out-if-i-am-following-a-specific-user" title="Permanent link">&para;</a></h2>
 <p>Provides a boolean that indicates if the current users is followed by a specific user.</p>
 <pre><code class="language-typescript">amIFollowing(loginName: string): Promise&lt;boolean&gt;
 </code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 const following = await sp.profiles.amIFollowing(loginName);
-console.log(&quot;Am I following &quot; + loginName + &quot;? &quot; + following);
 </code></pre>
 <h2 id="get-the-tags-i-follow">Get the tags I follow<a class="headerlink" href="#get-the-tags-i-follow" title="Permanent link">&para;</a></h2>
 <p>Gets the tags the current user is following. Accepts max count, default is 20.</p>
 <pre><code class="language-typescript">getFollowedTags(maxCount = 20): Promise&lt;string[]&gt;
 </code></pre>
-<pre><code class="language-typescript">const tags = await sp.profiles.getFollowedTags();
-console.log(tags);
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const tags = await sp.profiles.getFollowedTags();
 </code></pre>
 <h2 id="get-followers-for-a-specific-user">Get followers for a specific user<a class="headerlink" href="#get-followers-for-a-specific-user" title="Permanent link">&para;</a></h2>
 <p>Gets the people who are following the specified user.</p>
 <pre><code class="language-typescript">getFollowersFor(loginName: string): Promise&lt;any[]&gt;
 </code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 const followers = await sp.profiles.getFollowersFor(loginName);
 followers.forEach((value) =&gt; {
-  console.log(value);
+  ...
 });
 </code></pre>
 <h2 id="get-followers-for-the-current">Get followers for the current<a class="headerlink" href="#get-followers-for-the-current" title="Permanent link">&para;</a></h2>
 <p>Gets the people who are following the current user.</p>
 <pre><code class="language-typescript">myFollowers(): ISharePointQueryableCollection
 </code></pre>
-<pre><code class="language-typescript">const folowers = await sp.profiles.myFollowers();
-console.log(folowers);
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const folowers = await sp.profiles.myFollowers();
 </code></pre>
 <h2 id="get-the-properties-for-the-current-user">Get the properties for the current user<a class="headerlink" href="#get-the-properties-for-the-current-user" title="Permanent link">&para;</a></h2>
 <p>Gets user properties for the current user.</p>
 <pre><code class="language-typescript">myProperties(): _SharePointQueryableInstance
 </code></pre>
-<pre><code class="language-typescript">const profile = await sp.profiles.myProperties();
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const profile = await sp.profiles.myProperties();
 console.log(profile.DisplayName);
 console.log(profile.Email);
 console.log(profile.Title);
@@ -2311,16 +2301,18 @@ console.log(&quot;Account Name: &quot; + profile.userProperties.AccountName);
 <h2 id="gets-people-specified-user-is-following">Gets people specified user is following<a class="headerlink" href="#gets-people-specified-user-is-following" title="Permanent link">&para;</a></h2>
 <pre><code class="language-typescript">getPeopleFollowedBy(loginName: string): Promise&lt;any[]&gt;
 </code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 const folowers = await sp.profiles.getFollowersFor(loginName);
 followers.forEach((value) =&gt; {
-  console.log(value);
+  ...
 });
 </code></pre>
 <h2 id="gets-properties-for-a-specified-user">Gets properties for a specified user<a class="headerlink" href="#gets-properties-for-a-specified-user" title="Permanent link">&para;</a></h2>
 <pre><code class="language-typescript">getPropertiesFor(loginName: string): Promise&lt;any&gt;
 </code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 const profile = await sp.profiles.getPropertiesFor(loginName);
 console.log(profile.DisplayName);
 console.log(profile.Email);
@@ -2341,24 +2333,26 @@ console.log(&quot;Account Name: &quot; + profile.userProperties.AccountName);
 <p>Gets the 20 most popular hash tags over the past week, sorted so that the most popular tag appears first</p>
 <pre><code class="language-typescript">trendingTags(): Promise&lt;IHashTagCollection&gt;
 </code></pre>
-<pre><code class="language-typescript">const tags = await sp.profiles.trendingTags();
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const tags = await sp.profiles.trendingTags();
 tags.Items.forEach((tag) =&gt; {
-  console.log(tag);
+  ...
 });
 </code></pre>
 <h2 id="gets-specified-user-profile-property-for-the-specified-user">Gets specified user profile property for the specified user<a class="headerlink" href="#gets-specified-user-profile-property-for-the-specified-user" title="Permanent link">&para;</a></h2>
 <pre><code class="language-typescript">getUserProfilePropertyFor(loginName: string, propertyName: string): Promise&lt;string&gt;
 </code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 const propertyName = &quot;AccountName&quot;;
 const property = await sp.profiles.getUserProfilePropertyFor(loginName, propertyName);
-console.log(property);
 </code></pre>
 <h2 id="hide-specific-user-from-list-of-suggested-people">Hide specific user from list of suggested people<a class="headerlink" href="#hide-specific-user-from-list-of-suggested-people" title="Permanent link">&para;</a></h2>
 <p>Removes the specified user from the user's list of suggested people to follow.</p>
 <pre><code class="language-typescript">hideSuggestion(loginName: string): Promise&lt;void&gt;
 </code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 await sp.profiles.hideSuggestion(loginName);
 </code></pre>
 <h2 id="is-one-user-following-another">Is one user following another<a class="headerlink" href="#is-one-user-following-another" title="Permanent link">&para;</a></h2>
@@ -2367,22 +2361,24 @@ First parameter is the account name of the user who might be following the follo
 Second parameter is the account name of the user who might be followed by the follower.</p>
 <pre><code class="language-typescript">isFollowing(follower: string, followee: string): Promise&lt;boolean&gt;
 </code></pre>
-<pre><code class="language-typescript">const follower = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const follower = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 const followee = &quot;i:0#.f|membership|testuser2@mytenant.onmicrosoft.com&quot;;
 const isFollowing = await sp.profiles.isFollowing(follower, followee);
-console.log(isFollowing);
 </code></pre>
 <h2 id="set-user-profile-picture">Set User Profile Picture<a class="headerlink" href="#set-user-profile-picture" title="Permanent link">&para;</a></h2>
 <p>Uploads and sets the user profile picture (Users can upload a picture to their own profile only). Not supported for batching.
 Accepts the profilePicSource Blob data representing the user's picture in BMP, JPEG, or PNG format of up to 4.76MB.</p>
 <pre><code class="language-typescript">setMyProfilePic(profilePicSource: Blob): Promise&lt;void&gt;
 </code></pre>
-<pre><code class="language-typescript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-typescript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists/web&quot;;
 import &quot;@pnp/sp/profiles&quot;;
 import &quot;@pnp/sp/folders&quot;;
 import &quot;@pnp/sp/files&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // get the blob object through a request or from a file input
 const blob = await sp.web.lists.getByTitle(&quot;Documents&quot;).rootFolder.files.getByName(&quot;profile.jpg&quot;).getBlob();
@@ -2395,7 +2391,8 @@ propertyName Property name
 propertyValue Property value</p>
 <pre><code class="language-typescript">setSingleValueProfileProperty(accountName: string, propertyName: string, propertyValue: string): Promise&lt;void&gt;
 </code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 await sp.profiles.setSingleValueProfileProperty(loginName, &quot;CellPhone&quot;, &quot;(123) 555-1212&quot;);
 </code></pre>
 <h2 id="sets-a-mult-value-user-profile-property">Sets a mult-value User Profile property<a class="headerlink" href="#sets-a-mult-value-user-profile-property" title="Permanent link">&para;</a></h2>
@@ -2404,7 +2401,8 @@ propertyName Property name
 propertyValues Property values</p>
 <pre><code class="language-typescript">setMultiValuedProfileProperty(accountName: string, propertyName: string, propertyValues: string[]): Promise&lt;void&gt;
 </code></pre>
-<pre><code class="language-typescript">const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const loginName = &quot;i:0#.f|membership|testuser@mytenant.onmicrosoft.com&quot;;
 const propertyName = &quot;SPS-Skills&quot;;
 const propertyValues = [&quot;SharePoint&quot;, &quot;Office 365&quot;, &quot;Architecture&quot;, &quot;Azure&quot;];
 await sp.profiles.setMultiValuedProfileProperty(loginName, propertyName, propertyValues);
@@ -2421,55 +2419,58 @@ console.log(profile.userProperties[propertyName]);
 Emails The email addresses of the users to provision sites for</p>
 <pre><code class="language-typescript">createPersonalSiteEnqueueBulk(...emails: string[]): Promise&lt;void&gt;
 </code></pre>
-<pre><code class="language-typescript">let userEmails: string[] = [&quot;testuser1@mytenant.onmicrosoft.com&quot;, &quot;testuser2@mytenant.onmicrosoft.com&quot;];
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+let userEmails: string[] = [&quot;testuser1@mytenant.onmicrosoft.com&quot;, &quot;testuser2@mytenant.onmicrosoft.com&quot;];
 await sp.profiles.createPersonalSiteEnqueueBulk(userEmails);
 </code></pre>
 <h2 id="get-the-user-profile-of-the-owner-for-the-current-site">Get the user profile of the owner for the current site<a class="headerlink" href="#get-the-user-profile-of-the-owner-for-the-current-site" title="Permanent link">&para;</a></h2>
 <pre><code class="language-typescript">ownerUserProfile(): Promise&lt;IUserProfile&gt;
 </code></pre>
-<pre><code class="language-typescript">const profile = await sp.profiles.ownerUserProfile();
-console.log(profile);
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const profile = await sp.profiles.ownerUserProfile();
 </code></pre>
 <h2 id="get-the-user-profile-of-the-current-user">Get the user profile of the current user<a class="headerlink" href="#get-the-user-profile-of-the-current-user" title="Permanent link">&para;</a></h2>
 <pre><code class="language-typescript">userProfile(): Promise&lt;any&gt;
 </code></pre>
-<pre><code class="language-typescript">const profile = await sp.profiles.userProfile();
-console.log(profile);
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const profile = await sp.profiles.userProfile();
 </code></pre>
 <h2 id="create-personal-site-for-current-user">Create personal site for current user<a class="headerlink" href="#create-personal-site-for-current-user" title="Permanent link">&para;</a></h2>
 <pre><code class="language-typescript">createPersonalSite(interactiveRequest = false): Promise&lt;void&gt;
 </code></pre>
-<pre><code class="language-typescript">await sp.profiles.createPersonalSite();
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+await sp.profiles.createPersonalSite();
 </code></pre>
 <h2 id="make-all-profile-data-public-or-private">Make all profile data public or private<a class="headerlink" href="#make-all-profile-data-public-or-private" title="Permanent link">&para;</a></h2>
 <p>Set the privacy settings for all social data.</p>
 <pre><code class="language-typescript">shareAllSocialData(share: boolean): Promise&lt;void&gt;
 </code></pre>
-<pre><code class="language-typescript">await sp.profiles.shareAllSocialData(true);
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+await sp.profiles.shareAllSocialData(true);
 </code></pre>
 <h2 id="resolve-a-user-or-group">Resolve a user or group<a class="headerlink" href="#resolve-a-user-or-group" title="Permanent link">&para;</a></h2>
 <p>Resolves user or group using specified query parameters</p>
 <pre><code class="language-typescript">clientPeoplePickerResolveUser(queryParams: IClientPeoplePickerQueryParameters): Promise&lt;IPeoplePickerEntity&gt;
 </code></pre>
-<pre><code class="language-typescript">const result = await sp.profiles.clientPeoplePickerSearchUser({
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const result = await sp.profiles.clientPeoplePickerSearchUser({
   AllowEmailAddresses: true,
   AllowMultipleEntities: false,
   MaximumEntitySuggestions: 25,
   QueryString: 'John'
 });
-console.log(result);
 </code></pre>
 <h2 id="search-a-user-or-group">Search a user or group<a class="headerlink" href="#search-a-user-or-group" title="Permanent link">&para;</a></h2>
 <p>Searches for users or groups using specified query parameters</p>
 <pre><code class="language-typescript">clientPeoplePickerSearchUser(queryParams: IClientPeoplePickerQueryParameters): Promise&lt;IPeoplePickerEntity[]&gt;
 </code></pre>
-<pre><code class="language-typescript">const result = await sp.profiles.clientPeoplePickerSearchUser({
+<pre><code class="language-typescript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+const result = await sp.profiles.clientPeoplePickerSearchUser({
   AllowEmailAddresses: true,
   AllowMultipleEntities: false,
   MaximumEntitySuggestions: 25,
   QueryString: 'John'
 });
-console.log(result);
 </code></pre>
                 
               

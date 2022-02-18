@@ -646,6 +646,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1213,18 +1225,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../features/" class="md-nav__link">
       Features
     </a>
@@ -1563,18 +1563,6 @@
   <li class="md-nav__item">
     <a href="../webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -1994,28 +1982,6 @@
                 <h1 id="pnpspcolumn-defaults">@pnp/sp/column-defaults<a class="headerlink" href="#pnpspcolumn-defaults" title="Permanent link">&para;</a></h1>
 <p>The column defaults sub-module allows you to manage the default column values on a library or library folder.</p>
 <p><a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a></p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { spfi } from "@pnp/sp";<br />import { IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues } from "@pnp/sp/column-defaults";</td>
-</tr>
-<tr>
-<td>Selective 2</td>
-<td>import { spfi } from "@pnp/sp";<br />import "@pnp/sp/column-defaults";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { spfi, IFieldDefault, IFieldDefaultProps, AllowedDefaultColumnValues } from "@pnp/sp/presents/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="get-folder-defaults">Get Folder Defaults<a class="headerlink" href="#get-folder-defaults" title="Permanent link">&para;</a></h2>
 <p>You can get the default values for a specific folder as shown below:</p>
 <pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
@@ -2137,7 +2103,7 @@ await sp.web.lists.getByTitle(&quot;DefaultColumnValues&quot;).setDefaultColumnV
 </code></pre>
 <h2 id="pattern-for-setting-defaults-on-various-column-types">Pattern for setting defaults on various column types<a class="headerlink" href="#pattern-for-setting-defaults-on-various-column-types" title="Permanent link">&para;</a></h2>
 <p>The following is an example of the structure for setting the default column value when using the setDefaultColumnValues that covers the various field types.</p>
-<pre><code class="language-TS">[{
+<pre><code class="language-TypeScript">[{
     // Text/Boolean/CurrencyDateTime/Choice/User
     name: &quot;TextField&quot;:
     path: &quot;/sites/dev/DefaultColumnValues&quot;,

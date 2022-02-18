@@ -798,6 +798,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1276,18 +1288,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1626,18 +1626,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2126,216 +2114,228 @@ you can add and edit both contacts and folders in a users Outlook.</p>
 </ul>
 <h2 id="icontact-icontacts-icontactfolder-icontactfolders">IContact, IContacts, IContactFolder, IContactFolders<a class="headerlink" href="#icontact-icontacts-icontactfolder-icontactfolders" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/contacts";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { graphfi } from "@pnp/graph/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="set-up-notes">Set up notes<a class="headerlink" href="#set-up-notes" title="Permanent link">&para;</a></h2>
 <p>To make user calls you can use getById where the id is the users email address.
 Contact ID, Folder ID, and Parent Folder ID use the following format "AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwBGAAAAAAC75QV12PBiRIjb8MNVIrJrBwBgs0NT6NreR57m1u_D8SpPAAAAAAEOAABgs0NT6NreR57m1u_D8SpPAAFCCnApAAA="</p>
 <h2 id="get-all-of-the-contacts">Get all of the Contacts<a class="headerlink" href="#get-all-of-the-contacts" title="Permanent link">&para;</a></h2>
 <p>Gets a list of all the contacts for the user.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;
 import &quot;@pnp/graph/contacts&quot;
 
-const contacts = await graphfi().users.getById('user@tenant.onmicrosoft.com').contacts();
+const graph = graphfi().using(SPFx(this.context));
 
-const contacts2 = await graphfi().me.contacts();
+const contacts = await graph.users.getById('user@tenant.onmicrosoft.com').contacts();
+
+const contacts2 = await graph.me.contacts();
 
 </code></pre>
 <h2 id="get-contact-by-id">Get Contact by Id<a class="headerlink" href="#get-contact-by-id" title="Permanent link">&para;</a></h2>
 <p>Gets a specific contact by ID for the user.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const contactID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwBGAAAAAAC75QV12PBiRIjb8MNVIrJrBwBgs0NT6NreR57m1u_D8SpPAAAAAAEOAABgs0NT6NreR57m1u_D8SpPAAFCCnApAAA=&quot;;
 
-const contact = await graphfi().users.getById('user@tenant.onmicrosoft.com').contacts.getById(contactID)();
+const contact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.getById(contactID)();
 
-const contact2 = await graphfi().me.contacts.getById(contactID)();
+const contact2 = await graph.me.contacts.getById(contactID)();
 
 </code></pre>
 <h2 id="add-a-new-contact">Add a new Contact<a class="headerlink" href="#add-a-new-contact" title="Permanent link">&para;</a></h2>
 <p>Adds a new contact for the user.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import { EmailAddress } from &quot;@microsoft/microsoft-graph-types&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
 
-const addedContact = await graphfi().users.getById('user@tenant.onmicrosoft.com').contacts.add('Pavel', 'Bansky', [&lt;EmailAddress&gt;{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
+const graph = graphfi().using(SPFx(this.context));
 
-const addedContact2 = await graphfi().me.contacts.add('Pavel', 'Bansky', [&lt;EmailAddress&gt;{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
+const addedContact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.add('Pavel', 'Bansky', [&lt;EmailAddress&gt;{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
+
+const addedContact2 = await graph.me.contacts.add('Pavel', 'Bansky', [&lt;EmailAddress&gt;{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
 
 </code></pre>
 <h2 id="update-a-contact">Update a Contact<a class="headerlink" href="#update-a-contact" title="Permanent link">&para;</a></h2>
 <p>Updates a specific contact by ID for teh designated user</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const contactID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwBGAAAAAAC75QV12PBiRIjb8MNVIrJrBwBgs0NT6NreR57m1u_D8SpPAAAAAAEOAABgs0NT6NreR57m1u_D8SpPAAFCCnApAAA=&quot;;
 
-const updContact = await graphfi().users.getById('user@tenant.onmicrosoft.com').contacts.getById(contactID).update({birthday: &quot;1986-05-30&quot; });
+const updContact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.getById(contactID).update({birthday: &quot;1986-05-30&quot; });
 
-const updContact2 = await graphfi().me.contacts.getById(contactID).update({birthday: &quot;1986-05-30&quot; });
+const updContact2 = await graph.me.contacts.getById(contactID).update({birthday: &quot;1986-05-30&quot; });
 
 </code></pre>
 <h2 id="delete-a-contact">Delete a Contact<a class="headerlink" href="#delete-a-contact" title="Permanent link">&para;</a></h2>
 <p>Delete a contact from the list of contacts for a user.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const contactID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwBGAAAAAAC75QV12PBiRIjb8MNVIrJrBwBgs0NT6NreR57m1u_D8SpPAAAAAAEOAABgs0NT6NreR57m1u_D8SpPAAFCCnApAAA=&quot;;
 
-const delContact = await graphfi().users.getById('user@tenant.onmicrosoft.com').contacts.getById(contactID).delete();
+const delContact = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.getById(contactID).delete();
 
-const delContact2 = await graphfi().me.contacts.getById(contactID).delete();
+const delContact2 = await graph.me.contacts.getById(contactID).delete();
 
 </code></pre>
 <h2 id="get-all-of-the-contact-folders">Get all of the Contact Folders<a class="headerlink" href="#get-all-of-the-contact-folders" title="Permanent link">&para;</a></h2>
 <p>Get all the folders for the designated user's contacts</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
 
-const contactFolders = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders();
+const graph = graphfi().using(SPFx(this.context));
 
-const contactFolders2 = await graphfi().me.contactFolders();
+const contactFolders = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders();
+
+const contactFolders2 = await graph.me.contactFolders();
 
 </code></pre>
 <h2 id="get-contact-folder-by-id">Get Contact Folder by Id<a class="headerlink" href="#get-contact-folder-by-id" title="Permanent link">&para;</a></h2>
 <p>Get a contact folder by ID for the specified user</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const folderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=&quot;;
 
-const contactFolder = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID)();
+const contactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID)();
 
-const contactFolder2 = await graphfi().me.contactFolders.getById(folderID)();
+const contactFolder2 = await graph.me.contactFolders.getById(folderID)();
 
 </code></pre>
 <h2 id="add-a-new-contact-folder">Add a new Contact Folder<a class="headerlink" href="#add-a-new-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Add a new folder in the users contacts</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const parentFolderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAAAAAEOAAA=&quot;;
 
-const addedContactFolder = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders.add(&quot;New Folder&quot;, parentFolderID);
+const addedContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.add(&quot;New Folder&quot;, parentFolderID);
 
-const addedContactFolder2 = await graphfi().me.contactFolders.add(&quot;New Folder&quot;, parentFolderID);
+const addedContactFolder2 = await graph.me.contactFolders.add(&quot;New Folder&quot;, parentFolderID);
 
 </code></pre>
 <h2 id="update-a-contact-folder">Update a Contact Folder<a class="headerlink" href="#update-a-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Update an existing folder in the users contacts</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const folderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=&quot;;
 
-const updContactFolder = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).update({displayName: &quot;Updated Folder&quot; });
+const updContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).update({displayName: &quot;Updated Folder&quot; });
 
-const updContactFolder2 = await graphfi().me.contactFolders.getById(folderID).update({displayName: &quot;Updated Folder&quot; });
+const updContactFolder2 = await graph.me.contactFolders.getById(folderID).update({displayName: &quot;Updated Folder&quot; });
 
 </code></pre>
 <h2 id="delete-a-contact-folder">Delete a Contact Folder<a class="headerlink" href="#delete-a-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Delete a folder from the users contacts list. Deleting a folder deletes the contacts in that folder.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const folderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=&quot;;
 
-const delContactFolder = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).delete();
+const delContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).delete();
 
-const delContactFolder2 = await graphfi().me.contactFolders.getById(folderID).delete();
+const delContactFolder2 = await graph.me.contactFolders.getById(folderID).delete();
 
 </code></pre>
 <h2 id="get-all-of-the-contacts-from-the-contact-folder">Get all of the Contacts from the Contact Folder<a class="headerlink" href="#get-all-of-the-contacts-from-the-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Get all the contacts in a folder</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const folderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=&quot;;
 
-const contactsInContactFolder = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).contacts();
+const contactsInContactFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).contacts();
 
-const contactsInContactFolder2 = await graphfi().me.contactFolders.getById(folderID).contacts();
+const contactsInContactFolder2 = await graph.me.contactFolders.getById(folderID).contacts();
 
 </code></pre>
 <h2 id="get-child-folders-of-the-contact-folder">Get Child Folders of the Contact Folder<a class="headerlink" href="#get-child-folders-of-the-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Get child folders from contact folder</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const folderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=&quot;;
 
-const childFolders = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders();
+const childFolders = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders();
 
-const childFolders2 = await graphfi().me.contactFolders.getById(folderID).childFolders();
+const childFolders2 = await graph.me.contactFolders.getById(folderID).childFolders();
 
 </code></pre>
 <h2 id="add-a-new-child-folder">Add a new Child Folder<a class="headerlink" href="#add-a-new-child-folder" title="Permanent link">&para;</a></h2>
 <p>Add a new child folder to a contact folder</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const folderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=&quot;;
 
-const addedChildFolder = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders.add(&quot;Sub Folder&quot;, folderID);
+const addedChildFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders.add(&quot;Sub Folder&quot;, folderID);
 
-const addedChildFolder2 = await graphfi().me.contactFolders.getById(folderID).childFolders.add(&quot;Sub Folder&quot;, folderID);
+const addedChildFolder2 = await graph.me.contactFolders.getById(folderID).childFolders.add(&quot;Sub Folder&quot;, folderID);
 </code></pre>
 <h2 id="get-child-folder-by-id">Get Child Folder by Id<a class="headerlink" href="#get-child-folder-by-id" title="Permanent link">&para;</a></h2>
 <p>Get child folder by ID from user contacts</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const folderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=&quot;;
 const subFolderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqIZAAA=&quot;;
 
-const childFolder = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders.getById(subFolderID)();
+const childFolder = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders.getById(subFolderID)();
 
-const childFolder2 = await graphfi().me.contactFolders.getById(folderID).childFolders.getById(subFolderID)();
+const childFolder2 = await graph.me.contactFolders.getById(folderID).childFolders.getById(subFolderID)();
 </code></pre>
 <h2 id="add-contact-in-child-folder-of-contact-folder">Add Contact in Child Folder of Contact Folder<a class="headerlink" href="#add-contact-in-child-folder-of-contact-folder" title="Permanent link">&para;</a></h2>
 <p>Add a new contact to a child folder</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import { EmailAddress } from &quot;./@microsoft/microsoft-graph-types&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/contacts&quot;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/contacts&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const folderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqH9AAA=&quot;;
 const subFolderID = &quot;AAMkADY1OTQ5MTM0LTU2OTktNDI0Yy1iODFjLWNiY2RmMzNjODUxYwAuAAAAAAC75QV12PBiRIjb8MNVIrJrAQBgs0NT6NreR57m1u_D8SpPAAFCCqIZAAA=&quot;;
 
-const addedContact = await graphfi().users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders.getById(subFolderID).contacts.add('Pavel', 'Bansky', [&lt;EmailAddress&gt;{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
+const addedContact = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.getById(folderID).childFolders.getById(subFolderID).contacts.add('Pavel', 'Bansky', [&lt;EmailAddress&gt;{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
 
-const addedContact2 = await graphfi().me.contactFolders.getById(folderID).childFolders.getById(subFolderID).contacts.add('Pavel', 'Bansky', [&lt;EmailAddress&gt;{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
+const addedContact2 = await graph.me.contactFolders.getById(folderID).childFolders.getById(subFolderID).contacts.add('Pavel', 'Bansky', [&lt;EmailAddress&gt;{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
 
 </code></pre>
                 
@@ -2371,13 +2371,13 @@ const addedContact2 = await graphfi().me.contactFolders.getById(folderID).childF
           </a>
         
         
-          <a href="../calendars/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../cloud-communications/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                calendars
+                cloud communications
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">

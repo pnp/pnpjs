@@ -646,6 +646,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1232,18 +1244,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../features/" class="md-nav__link">
       Features
     </a>
@@ -1582,18 +1582,6 @@
   <li class="md-nav__item">
     <a href="../webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2033,28 +2021,6 @@
 <p>Content Types are used to define sets of columns in SharePoint.</p>
 <h2 id="icontenttypes">IContentTypes<a class="headerlink" href="#icontenttypes" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs";<br />import { ContentTypes, IContentTypes } from "@pnp/sp/content-types";</td>
-</tr>
-<tr>
-<td>Selective 2</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import "@pnp/sp/content-types";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { spfi, SPFx, ContentTypes, IContentTypes } from "@pnp/sp/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h3 id="add-an-existing-content-type-to-a-collection">Add an existing Content Type to a collection<a class="headerlink" href="#add-an-existing-content-type-to-a-collection" title="Permanent link">&para;</a></h3>
 <p>The following example shows how to add the built in Picture Content Type to the Documents library.</p>
 <pre><code class="language-TypeScript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
@@ -2084,32 +2050,14 @@ sp.web.contentTypes.add(&quot;0x01008D19F38845B0884EBEBE239FDF359184&quot;, &quo
 sp.web.contentTypes.add(&quot;0x01008D19F38845B0884EBEBE239FDF359184&quot;, &quot;My Content Type&quot;, &quot;This is my content type.&quot;, &quot;_PnP Content Types&quot;, { ReadOnly: true });
 </code></pre>
 <h2 id="icontenttype">IContentType<a class="headerlink" href="#icontenttype" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import { ContentType, IContentType } from "@pnp/sp/content-types";</td>
-</tr>
-<tr>
-<td>Selective 2</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/content-types";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { spfi, SPFx, ContentType, IContentType } from "@pnp/sp/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
 <h3 id="get-the-field-links">Get the field links<a class="headerlink" href="#get-the-field-links" title="Permanent link">&para;</a></h3>
 <p>Use this method to get a collection containing all the field links (SP.FieldLink) for a Content Type.</p>
-<pre><code class="language-TypeScript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import { ContentType, IContentType } from &quot;@pnp/sp/content-types&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // get field links from built in Content Type Document (Id: &quot;0x0101&quot;)
 const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).fieldLinks();
@@ -2119,7 +2067,11 @@ console.log(d);
 </code></pre>
 <h3 id="get-content-type-fields">Get Content Type fields<a class="headerlink" href="#get-content-type-fields" title="Permanent link">&para;</a></h3>
 <p>To get a collection with all fields on the Content Type, simply use this method.</p>
-<pre><code class="language-TypeScript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import { ContentType, IContentType } from &quot;@pnp/sp/content-types&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // get fields from built in Content Type Document (Id: &quot;0x0101&quot;)
 const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).fields();
@@ -2128,7 +2080,11 @@ const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).fields();
 console.log(d);
 </code></pre>
 <h3 id="get-parent-content-type">Get parent Content Type<a class="headerlink" href="#get-parent-content-type" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import { ContentType, IContentType } from &quot;@pnp/sp/content-types&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // get parent Content Type from built in Content Type Document (Id: &quot;0x0101&quot;)
 const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).parent();
@@ -2137,7 +2093,11 @@ const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).parent();
 console.log(d.Name)
 </code></pre>
 <h3 id="get-content-type-workflow-associations">Get Content Type Workflow associations<a class="headerlink" href="#get-content-type-workflow-associations" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import { ContentType, IContentType } from &quot;@pnp/sp/content-types&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // get workflow associations from built in Content Type Document (Id: &quot;0x0101&quot;)
 const d = await sp.web.contentTypes.getById(&quot;0x0101&quot;).workflowAssociations();
@@ -2178,13 +2138,13 @@ console.log(d);
           </a>
         
         
-          <a href="../entity-merging/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../features/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Entity Merging
+                Features
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">

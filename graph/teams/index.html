@@ -648,6 +648,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -857,6 +869,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#get-primary-channel" class="md-nav__link">
+    Get primary channel
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-channel-by-id" class="md-nav__link">
     Get channel by Id
   </a>
@@ -908,6 +927,13 @@
         <li class="md-nav__item">
   <a href="#add-a-new-tab" class="md-nav__link">
     Add a new Tab
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#team-membership" class="md-nav__link">
+    Team Membership
   </a>
   
 </li>
@@ -1283,18 +1309,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1633,18 +1647,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2059,6 +2061,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#get-primary-channel" class="md-nav__link">
+    Get primary channel
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-channel-by-id" class="md-nav__link">
     Get channel by Id
   </a>
@@ -2114,6 +2123,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#team-membership" class="md-nav__link">
+    Team Membership
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2132,35 +2148,41 @@
                 
                 
                 <h1 id="pnpgraphteams">@pnp/graph/teams<a class="headerlink" href="#pnpgraphteams" title="Permanent link">&para;</a></h1>
-<p>The ability to manage Team is a capability introduced in the 1.2.7 of @pnp/graphfi(). Through the methods described
+<p>The ability to manage Team is a capability introduced in the 1.2.7 of @pnp/graph. Through the methods described
 you can add, update and delete items in Teams.</p>
 <h2 id="teams-the-user-is-a-member-of">Teams the user is a member of<a class="headerlink" href="#teams-the-user-is-a-member-of" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const joinedTeams = await graphfi().users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').joinedTeams();
+const graph = graphfi().using(SPFx(this.context));
 
-const myJoinedTeams = await graphfi().me.joinedTeams();
+const joinedTeams = await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').joinedTeams();
+
+const myJoinedTeams = await graph.me.joinedTeams();
 
 </code></pre>
 <h2 id="get-teams-by-id">Get Teams by Id<a class="headerlink" href="#get-teams-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the teams.getById() you can get a specific Team.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const team = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528')();
+const graph = graphfi().using(SPFx(this.context));
+
+const team = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528')();
 </code></pre>
 <h2 id="create-new-teamgroup-method-1">Create new Team/Group - Method #1<a class="headerlink" href="#create-new-teamgroup-method-1" title="Permanent link">&para;</a></h2>
 <p>The first way to create a new Team and corresponding Group is to first create the group and then create the team.
 Follow the example in Groups to create the group and get the GroupID. Then make a call to create the team from the group.</p>
 <h2 id="create-a-team-via-a-specific-group">Create a Team via a specific group<a class="headerlink" href="#create-a-team-via-a-specific-group" title="Permanent link">&para;</a></h2>
 <p>Here we get the group via id and use <code>createTeam</code></p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
-import &quot;@pnp/graph/groups&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
+import &quot;@pnp/graph/groups&quot;;
 
-const createdTeam = await graphfi().groups.getById('679c8ff4-f07d-40de-b02b-60ec332472dd').createTeam({
+const graph = graphfi().using(SPFx(this.context));
+
+const createdTeam = await graph.groups.getById('679c8ff4-f07d-40de-b02b-60ec332472dd').createTeam({
 &quot;memberSettings&quot;: {
     &quot;allowCreateUpdateChannels&quot;: true
 },
@@ -2175,115 +2197,157 @@ const createdTeam = await graphfi().groups.getById('679c8ff4-f07d-40de-b02b-60ec
 </code></pre>
 <h2 id="create-new-teamgroup-method-2">Create new Team/Group - Method #2<a class="headerlink" href="#create-new-teamgroup-method-2" title="Permanent link">&para;</a></h2>
 <p>The second way to create a new Team and corresponding Group is to do so in one call. This can be done by using the createTeam method.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const team = {
-        &quot;template@odata.bind&quot;: &quot;https://graphfi().microsoft.com/v1.0/teamsTemplates('standard')&quot;,
+        &quot;template@odata.bind&quot;: &quot;https://graph.microsoft.com/v1.0/teamsTemplates('standard')&quot;,
         &quot;displayName&quot;: &quot;PnPJS Test Team&quot;,
         &quot;description&quot;: &quot;PnPJS Test Team’s Description&quot;,
         &quot;members&quot;: [
             {
-                &quot;@odata.type&quot;: &quot;#microsoft.graphfi().aadUserConversationMember&quot;,
+                &quot;@odata.type&quot;: &quot;#microsoft.graph.aadUserConversationMember&quot;,
                 &quot;roles&quot;: [&quot;owner&quot;],
-                &quot;user@odata.bind&quot;: &quot;https://graphfi().microsoft.com/v1.0/users('{owners user id}')&quot;,
+                &quot;user@odata.bind&quot;: &quot;https://graph.microsoft.com/v1.0/users('{owners user id}')&quot;,
             },
         ],
     };
 
-const createdTeam: ITeamCreateResultAsync = await graphfi().teams.create(team);
+const createdTeam: ITeamCreateResultAsync = await graph.teams.create(team);
 //To check the status of the team creation, call getOperationById for the newly created team.
-const createdTeamStatus = await graphfi().teams.getById(createdTeam.teamId).getOperationById(createdTeam.operationId);
+const createdTeamStatus = await graph.teams.getById(createdTeam.teamId).getOperationById(createdTeam.operationId);
 </code></pre>
 <h2 id="clone-a-team">Clone a Team<a class="headerlink" href="#clone-a-team" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const clonedTeam = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
+const graph = graphfi().using(SPFx(this.context));
+
+const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
 'Cloned','description','apps,tabs,settings,channels,members','public');
 
 </code></pre>
 <h2 id="get-teams-async-operation">Get Teams Async Operation<a class="headerlink" href="#get-teams-async-operation" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const clonedTeam = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
+const graph = graphfi().using(SPFx(this.context));
+
+const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
 'Cloned','description','apps,tabs,settings,channels,members','public');
-const clonedTeamStatus = await graphfi().teams.getById(clonedTeam.teamId).getOperationById(clonedTeam.operationId);
+const clonedTeamStatus = await graph.teams.getById(clonedTeam.teamId).getOperationById(clonedTeam.operationId);
 </code></pre>
 <h2 id="archive-a-team">Archive a Team<a class="headerlink" href="#archive-a-team" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const archived = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').archive();
+const graph = graphfi().using(SPFx(this.context));
+
+const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').archive();
 </code></pre>
 <h2 id="unarchive-a-team">Unarchive a Team<a class="headerlink" href="#unarchive-a-team" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const archived = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').unarchive();
+const graph = graphfi().using(SPFx(this.context));
+
+const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').unarchive();
 </code></pre>
 <h2 id="get-all-channels-of-a-team">Get all channels of a Team<a class="headerlink" href="#get-all-channels-of-a-team" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const channels = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels();
+const graph = graphfi().using(SPFx(this.context));
+
+const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels();
+</code></pre>
+<h2 id="get-primary-channel">Get primary channel<a class="headerlink" href="#get-primary-channel" title="Permanent link">&para;</a></h2>
+<p>Using the teams.getById() you can get a specific Team.</p>
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
+const channel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').primaryChannel();
 </code></pre>
 <h2 id="get-channel-by-id">Get channel by Id<a class="headerlink" href="#get-channel-by-id" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const channel = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype')();
+const graph = graphfi().using(SPFx(this.context));
+
+const channel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype')();
 
 </code></pre>
 <h2 id="create-a-new-channel">Create a new Channel<a class="headerlink" href="#create-a-new-channel" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 
-const newChannel = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.create('New Channel', 'Description');
+const graph = graphfi().using(SPFx(this.context));
+
+const newChannel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.create('New Channel', 'Description');
 
 </code></pre>
 <h2 id="get-installed-apps">Get installed Apps<a class="headerlink" href="#get-installed-apps" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const installedApps = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps();
+const graph = graphfi().using(SPFx(this.context));
+
+const installedApps = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps();
 
 </code></pre>
 <h2 id="add-an-app">Add an App<a class="headerlink" href="#add-an-app" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const addedApp = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.add('https://graphfi().microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a');
+const graph = graphfi().using(SPFx(this.context));
+
+const addedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.add('https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a');
 
 </code></pre>
 <h2 id="remove-an-app">Remove an App<a class="headerlink" href="#remove-an-app" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const removedApp = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.remove();
+const graph = graphfi().using(SPFx(this.context));
+
+const removedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.remove();
 
 </code></pre>
 <h2 id="get-tabs-from-a-channel">Get Tabs from a Channel<a class="headerlink" href="#get-tabs-from-a-channel" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const tabs = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
+const graph = graphfi().using(SPFx(this.context));
+
+const tabs = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
 channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs();
 
 </code></pre>
 <h2 id="get-tab-by-id">Get Tab by Id<a class="headerlink" href="#get-tab-by-id" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const tab = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
+const graph = graphfi().using(SPFx(this.context));
+
+const tab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
 channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getById('Id')();
 
 </code></pre>
 <h2 id="add-a-new-tab">Add a new Tab<a class="headerlink" href="#add-a-new-tab" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/teams&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/teams&quot;;
 
-const newTab = await graphfi().teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
-channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.add('Tab','https://graphfi().microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a',&lt;TabsConfiguration&gt;{});
+const graph = graphfi().using(SPFx(this.context));
+
+const newTab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
+channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.add('Tab','https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a',&lt;TabsConfiguration&gt;{});
 
 </code></pre>
+<h2 id="team-membership">Team Membership<a class="headerlink" href="#team-membership" title="Permanent link">&para;</a></h2>
+<p>Get the members and/or owners of a group.</p>
+<p>See <a href="../groups/">Groups</a></p>
                 
               
               

@@ -2112,7 +2112,7 @@
                 
                 
                 <h1 id="workaround-for-on-premises-spfx-typescript-version-sharepoint-2016-or-2019">Workaround for on-premises SPFx TypeScript Version (SharePoint 2016 or 2019)<a class="headerlink" href="#workaround-for-on-premises-spfx-typescript-version-sharepoint-2016-or-2019" title="Permanent link">&para;</a></h1>
-<p><em>Note this article applies to version 1.4.1 SharePoint Framework projects targeting on-premises only.</em></p>
+<p><em>Note this article applies to version 1.4.1 SharePoint Framework projects targeting on-premises only. Also we have had <a href='https://github.com/pnp/pnpjs/issues/1965'>reports</a> that after version 2.0.9 of hte library this workaround no longer works.</em></p>
 <p>When using the Yeoman generator to create a SharePoint Framework 1.4.1 project targeting on-premises it installs TypeScript version 2.2.2 (SP2016) or 2.4.2/2.4.1 (SP2019). Unfortunately this library relies on 3.6.4 or later due to extensive use of default values for generic type parameters in the libraries. To work around this limitation you can follow the steps in this article.</p>
 <pre><code class="language-bash">npm i
 npm i -g rimraf # used to remove the node_modules folder (much better/faster)

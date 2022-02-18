@@ -648,6 +648,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1206,18 +1218,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1556,18 +1556,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -1985,86 +1973,80 @@
 </ul>
 <h2 id="idirectoryobject-idirectoryobjects">IDirectoryObject, IDirectoryObjects<a class="headerlink" href="#idirectoryobject-idirectoryobjects" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/directory-objects";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { graph } from "@pnp/sp/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="the-groups-and-directory-roles-for-the-user">The groups and directory roles for the user<a class="headerlink" href="#the-groups-and-directory-roles-for-the-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 
-const memberOf = await graphfi().users.getById('user@tenant.onmicrosoft.com').memberOf();
+const graph = graphfi().using(SPFx(this.context));
 
-const memberOf2 = await graphfi().me.memberOf();
+const memberOf = await graph.users.getById('user@tenant.onmicrosoft.com').memberOf();
+
+const memberOf2 = await graph.me.memberOf();
 
 </code></pre>
 <h2 id="return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups">Return all the groups the user, group or directoryObject is a member of. Add true parameter to return only security enabled groups<a class="headerlink" href="#return-all-the-groups-the-user-group-or-directoryobject-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/users&quot;
-import &quot;@pnp/graph/groups&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
+import &quot;@pnp/graph/groups&quot;;
 
-const memberGroups = await graphfi().users.getById('user@tenant.onmicrosoft.com').getMemberGroups();
+const graph = graphfi().using(SPFx(this.context));
 
-const memberGroups2 = await graphfi().me.getMemberGroups();
+const memberGroups = await graph.users.getById('user@tenant.onmicrosoft.com').getMemberGroups();
+
+const memberGroups2 = await graph.me.getMemberGroups();
 
 // Returns only security enabled groups
-const memberGroups3 = await graphfi().me.getMemberGroups(true);
+const memberGroups3 = await graph.me.getMemberGroups(true);
 
-const memberGroups4 = await graphfi().groups.getById('user@tenant.onmicrosoft.com').getMemberGroups();
+const memberGroups4 = await graph.groups.getById('user@tenant.onmicrosoft.com').getMemberGroups();
 
 </code></pre>
 <h2 id="returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups">Returns all the groups, administrative units and directory roles that a user, group, or directory object is a member of. Add true parameter to return only security enabled groups<a class="headerlink" href="#returns-all-the-groups-administrative-units-and-directory-roles-that-a-user-group-or-directory-object-is-a-member-of-add-true-parameter-to-return-only-security-enabled-groups" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/groups&quot;;
 
-const memberObjects = await graphfi().users.getById('user@tenant.onmicrosoft.com').getMemberObjects();
+const graph = graphfi().using(SPFx(this.context));
 
-const memberObjects2 = await graphfi().me.getMemberObjects();
+const memberObjects = await graph.users.getById('user@tenant.onmicrosoft.com').getMemberObjects();
+
+const memberObjects2 = await graph.me.getMemberObjects();
 
 // Returns only security enabled groups
-const memberObjects3 = await graphfi().me.getMemberObjects(true);
+const memberObjects3 = await graph.me.getMemberObjects(true);
 
-const memberObjects4 = await graphfi().groups.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').getMemberObjects();
+const memberObjects4 = await graph.groups.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').getMemberObjects();
 </code></pre>
 <h2 id="check-for-membership-in-a-specified-list-of-groups">Check for membership in a specified list of groups<a class="headerlink" href="#check-for-membership-in-a-specified-list-of-groups" title="Permanent link">&para;</a></h2>
 <p>And returns from that list those groups of which the specified user, group, or directory object is a member</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/groups&quot;;
 
-const checkedMembers = await graphfi().users.getById('user@tenant.onmicrosoft.com').checkMemberGroups([&quot;c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741&quot;,&quot;2001bb09-1d46-40a6-8176-7bb867fb75aa&quot;]);
+const graph = graphfi().using(SPFx(this.context));
 
-const checkedMembers2 = await graphfi().me.checkMemberGroups([&quot;c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741&quot;,&quot;2001bb09-1d46-40a6-8176-7bb867fb75aa&quot;]);
+const checkedMembers = await graph.users.getById('user@tenant.onmicrosoft.com').checkMemberGroups([&quot;c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741&quot;,&quot;2001bb09-1d46-40a6-8176-7bb867fb75aa&quot;]);
 
-const checkedMembers3 = await graphfi().groups.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').checkMemberGroups([&quot;c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741&quot;,&quot;2001bb09-1d46-40a6-8176-7bb867fb75aa&quot;]);
+const checkedMembers2 = await graph.me.checkMemberGroups([&quot;c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741&quot;,&quot;2001bb09-1d46-40a6-8176-7bb867fb75aa&quot;]);
+
+const checkedMembers3 = await graph.groups.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').checkMemberGroups([&quot;c2fb52d1-5c60-42b1-8c7e-26ce8dc1e741&quot;,&quot;2001bb09-1d46-40a6-8176-7bb867fb75aa&quot;]);
 </code></pre>
 <h2 id="get-directoryobject-by-id">Get directoryObject by Id<a class="headerlink" href="#get-directoryobject-by-id" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/directory-objects&quot;;
 
-const dirObject = await graphfi().directoryObjects.getById('99dc1039-eb80-43b1-a09e-250d50a80b26');
+const graph = graphfi().using(SPFx(this.context));
+
+const dirObject = await graph.directoryObjects.getById('99dc1039-eb80-43b1-a09e-250d50a80b26');
 
 </code></pre>
 <h2 id="delete-directoryobject">Delete directoryObject<a class="headerlink" href="#delete-directoryobject" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/directory-objects&quot;;
 
-const deleted = await graphfi().directoryObjects.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').delete()
+const graph = graphfi().using(SPFx(this.context));
+
+const deleted = await graph.directoryObjects.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').delete()
 
 </code></pre>
                 

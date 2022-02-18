@@ -725,6 +725,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1203,18 +1215,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1553,18 +1553,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -1976,7 +1964,7 @@
                 <h1 id="batching">Batching<a class="headerlink" href="#batching" title="Permanent link">&para;</a></h1>
 <p>Where possible batching can significantly increase application performance by combining multiple requests to the server into one. This is especially useful when first establishing state, but applies for any scenario where you need to make multiple requests before loading or based on a user action. Batching is supported within the sp and graph libraries as shown below.</p>
 <h2 id="sp-example">SP Example<a class="headerlink" href="#sp-example" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists&quot;;
 import &quot;@pnp/sp/batching&quot;;
@@ -2003,7 +1991,7 @@ for(let i = 0; i &lt; res.length; i++) {
 }
 </code></pre>
 <h3 id="using-a-batched-web">Using a batched web<a class="headerlink" href="#using-a-batched-web" title="Permanent link">&para;</a></h3>
-<pre><code class="language-ts">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists&quot;;
 import &quot;@pnp/sp/batching&quot;;
@@ -2033,7 +2021,7 @@ for(let i = 0; i &lt; res.length; i++) {
 <p>Batches must be for the same web, you cannot combine requests from multiple webs into a batch.</p>
 </blockquote>
 <h2 id="graph-example">Graph Example<a class="headerlink" href="#graph-example" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
 import { GraphDefault } from &quot;@pnp/nodejs&quot;;
 import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/groups&quot;;
@@ -2114,7 +2102,7 @@ await execute();
 <h2 id="dont-reuse-objects-in-batching">Don't reuse objects in Batching<a class="headerlink" href="#dont-reuse-objects-in-batching" title="Permanent link">&para;</a></h2>
 <p>It shouldn't come up often, but you can not make multiple requests using the same instance of a queryable in a batch. Let's consider the <strong>incorrect</strong> example below:</p>
 <blockquote>
-<p>The error message will be "This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse."</p>
+<p>The error message will be "This instance is already part of a batch. Please review the docs at <a href="https://pnp.github.io/pnpjs/concepts/batching#reuse">https://pnp.github.io/pnpjs/concepts/batching#reuse</a>."</p>
 </blockquote>
 <pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
 import { createBatch } from &quot;@pnp/graph/batching&quot;;
@@ -2171,7 +2159,7 @@ await execute();
 <p>In addition you cannot continue using a batch after execute. Once execute has resolved the batch is done. You should create a new batch using one of the described methods to conduct another batched call.</p>
 </blockquote>
 <h2 id="case-where-batch-result-returns-an-object-that-can-be-invoked">Case where batch result returns an object that can be invoked<a class="headerlink" href="#case-where-batch-result-returns-an-object-that-can-be-invoked" title="Permanent link">&para;</a></h2>
-<p>In the following example, the results of adding items to the list is an object with a type of <strong>IItemAddResult</strong> which is <code>{data: any, item: IItem}</code>. Since version v1 the expectation is that the <code>item</code> object is immediately usable to make additional queries. When this object is the result of a batched call, this was not the case so we have added additional code to reset the observers using the original base from witch the batch was created, mimicing the behavior had the <strong>IItem</strong> been created from that base withyout a batch involved. We use <a href="../../core/behaviors/#CopyFrom">CopyFrom</a> to ensure that we maintain the references to the InternalResolve and InternalReject events through the end of this timelines lifecycle. </p>
+<p>In the following example, the results of adding items to the list is an object with a type of <strong>IItemAddResult</strong> which is <code>{data: any, item: IItem}</code>. Since version v1 the expectation is that the <code>item</code> object is immediately usable to make additional queries. When this object is the result of a batched call, this was not the case so we have added additional code to reset the observers using the original base from witch the batch was created, mimicing the behavior had the <strong>IItem</strong> been created from that base withyout a batch involved. We use <a href="../../core/behaviors/#CopyFrom">CopyFrom</a> to ensure that we maintain the references to the InternalResolve and InternalReject events through the end of this timelines lifecycle.</p>
 <pre><code class="language-TypeScript">import { createBatch } from &quot;@pnp/sp/batching&quot;;
 import { SPDefault } from &quot;@pnp/nodejs&quot;;
 import { IList } from &quot;@pnp/sp/lists&quot;;

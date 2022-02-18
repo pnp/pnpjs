@@ -646,6 +646,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1126,18 +1138,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../features/" class="md-nav__link">
       Features
     </a>
@@ -1600,18 +1600,6 @@
   </li>
 
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
-    </a>
-  </li>
-
-        
       </ul>
     </nav>
   </li>
@@ -2060,20 +2048,6 @@
                 <h1 id="pnpsp-navigation">@pnp/sp - navigation<a class="headerlink" href="#pnpsp-navigation" title="Permanent link">&para;</a></h1>
 <p><a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
 <h2 id="navigation-service">Navigation Service<a class="headerlink" href="#navigation-service" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/navigation";</td>
-</tr>
-</tbody>
-</table>
 <h3 id="getmenustate">getMenuState<a class="headerlink" href="#getmenustate" title="Permanent link">&para;</a></h3>
 <p>The MenuState service operation returns a Menu-State (dump) of a SiteMapProvider on a site. It will return an exception if the SiteMapProvider cannot be found on the site, the SiteMapProvider does not implement the IEditableSiteMapProvider interface or the SiteMapNode key cannot be found within the provider hierarchy.</p>
 <p>The IEditableSiteMapProvider also supports Custom Properties which is an optional feature. What will be return in the custom properties is up to the IEditableSiteMapProvider implementation and can differ for for each SiteMapProvider implementation. The custom properties can be requested by providing a comma separated string of property names like: property1,property2,property3\,containingcomma</p>
@@ -2083,8 +2057,10 @@
 <li>property2</li>
 <li>property3,containingcomma</li>
 </ul>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/navigation&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // Will return a menu state of the default SiteMapProvider 'SPSiteMapProvider' where the dump starts a the RootNode (within the site) with a depth of 10 levels.
 const state = await sp.navigation.getMenuState();
@@ -2097,48 +2073,45 @@ const state3 = await sp.navigation.getMenuState(null, 5, &quot;CurrentNavSiteMap
 </code></pre>
 <h3 id="getmenunodekey">getMenuNodeKey<a class="headerlink" href="#getmenunodekey" title="Permanent link">&para;</a></h3>
 <p>Tries to get a SiteMapNode.Key for a given URL within a site collection. If the SiteMapNode cannot be found an Exception is returned. The method is using SiteMapProvider.FindSiteMapNodeFromKey(string rawUrl) to lookup the SiteMapNode. Depending on the actual implementation of FindSiteMapNodeFromKey the matching can differ for different SiteMapProviders.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/navigation&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 const key = await sp.navigation.getMenuNodeKey(&quot;/sites/dev/Lists/SPPnPJSExampleList/AllItems.aspx&quot;);
 </code></pre>
 <h2 id="web-navigation">Web Navigation<a class="headerlink" href="#web-navigation" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/navigation";</td>
-</tr>
-</tbody>
-</table>
 <p>The navigation object contains two properties "quicklaunch" and "topnavigationbar". Both have the same set of methods so our examples below show use of only quicklaunch but apply equally to topnavigationbar.</p>
 <h3 id="get-navigation">Get navigation<a class="headerlink" href="#get-navigation" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/navigation&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 const top = await sp.web.navigation.topNavigationBar();
 const quick = await sp.web.navigation.quicklaunch();
 </code></pre>
-<p>For the following examples we will refer to a variable named "nav" that is understood to be one of topNavigationBar or quicklaunch.</p>
-<h3 id="getbyid">getById<a class="headerlink" href="#getbyid" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<p>For the following examples we will refer to a variable named "nav" that is understood to be one of topNavigationBar or quicklaunch:</p>
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/navigation&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
+// note we are just getting a ref to the nav object, not executing a request
+const nav = sp.web.navigation.topNavigationBar;
+// -- OR -- 
+// note we are just getting a ref to the nav object, not executing a request
+const nav = sp.web.navigation.quicklaunch;
+</code></pre>
+<h3 id="getbyid">getById<a class="headerlink" href="#getbyid" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import &quot;@pnp/sp/navigation&quot;;
 
 const node = await nav.getById(3)();
 </code></pre>
 <h3 id="add">add<a class="headerlink" href="#add" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<pre><code class="language-TypeScript">import &quot;@pnp/sp/navigation&quot;;
 
 const result = await nav.add(&quot;Node Title&quot;, &quot;/sites/dev/pages/mypage.aspx&quot;, true);
 
@@ -2149,9 +2122,7 @@ const nodeData = result.node();
 </code></pre>
 <h3 id="moveafter">moveAfter<a class="headerlink" href="#moveafter" title="Permanent link">&para;</a></h3>
 <p>Places a navigation node after another node in the tree</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<pre><code class="language-TypeScript">import &quot;@pnp/sp/navigation&quot;;
 
 const node1result = await nav.add(`Testing - ${getRandomString(4)} (1)`, url, true);
 const node2result = await nav.add(`Testing - ${getRandomString(4)} (2)`, url, true);
@@ -2162,9 +2133,7 @@ await nav.moveAfter(node1.Id, node2.Id);
 </code></pre>
 <h3 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h3>
 <p>Deletes a given node</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<pre><code class="language-TypeScript">import &quot;@pnp/sp/navigation&quot;;
 
 const node1result = await nav.add(`Testing - ${getRandomString(4)}`, url, true);
 let nodes = await nav();
@@ -2180,9 +2149,7 @@ index = nodes.findIndex(n =&gt; n.Id === node1result.data.Id)
 // index = -1
 </code></pre>
 <h3 id="update">Update<a class="headerlink" href="#update" title="Permanent link">&para;</a></h3>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<pre><code class="language-TypeScript">import &quot;@pnp/sp/navigation&quot;;
 
 
 await nav.getById(4).update({
@@ -2191,9 +2158,7 @@ await nav.getById(4).update({
 </code></pre>
 <h3 id="children">Children<a class="headerlink" href="#children" title="Permanent link">&para;</a></h3>
 <p>The children property of a Navigation Node represents a collection with all the same properties and methods available on topNavigationBar or quicklaunch.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
-import &quot;@pnp/sp/webs&quot;;
-import &quot;@pnp/sp/navigation&quot;;
+<pre><code class="language-TypeScript">import &quot;@pnp/sp/navigation&quot;;
 
 const childrenData = await nav.getById(1).children();
 

@@ -646,6 +646,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -758,6 +770,20 @@
         <li class="md-nav__item">
   <a href="#get-calendar-view" class="md-nav__link">
     Get Calendar View
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#find-rooms" class="md-nav__link">
+    Find Rooms
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-event-instances" class="md-nav__link">
+    Get Event Instances
   </a>
   
 </li>
@@ -1241,18 +1267,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1591,18 +1605,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2030,6 +2032,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#find-rooms" class="md-nav__link">
+    Find Rooms
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-event-instances" class="md-nav__link">
+    Get Event Instances
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2055,97 +2071,91 @@
 </ul>
 <h2 id="icalendar-icalendars">ICalendar, ICalendars<a class="headerlink" href="#icalendar-icalendars" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/calendars";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { graphfi } from "@pnp/graph/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="get-all-calendars-for-a-user">Get All Calendars For a User<a class="headerlink" href="#get-all-calendars-for-a-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
-const calendars = await graphfi().users.getById('user@tenant.onmicrosoft.com').calendars();
+const graph = graphfi().using(SPFx(this.context));
 
-const myCalendars = await graphfi().me.calendars();
+const calendars = await graph.users.getById('user@tenant.onmicrosoft.com').calendars();
+
+const myCalendars = await graph.me.calendars();
 
 </code></pre>
 <h2 id="get-a-specific-calendar-for-a-user">Get a Specific Calendar For a User<a class="headerlink" href="#get-a-specific-calendar-for-a-user" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
+
+const graph = graphfi().using(SPFx(this.context));
 
 const CALENDAR_ID = 'AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA-xUBMMopY1NkrWA0qGcXHsHAG4I-wMXjoRMkgRnRetM5oIAAAIBBgAAAG4I-wMXjoRMkgRnRetM5oIAAAIsYgAAAA==';
 
-const calendar = await graphfi().users.getById('user@tenant.onmicrosoft.com').calendars.getById(CALENDAR_ID)();
+const calendar = await graph.users.getById('user@tenant.onmicrosoft.com').calendars.getById(CALENDAR_ID)();
 
-const myCalendar = await graphfi().me.calendars.getById(CALENDAR_ID)();
+const myCalendar = await graph.me.calendars.getById(CALENDAR_ID)();
 </code></pre>
 <h2 id="get-a-users-default-calendar">Get a User's Default Calendar<a class="headerlink" href="#get-a-users-default-calendar" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
-const calendar = await graphfi().users.getById('user@tenant.onmicrosoft.com').calendar();
+const graph = graphfi().using(SPFx(this.context));
 
-const myCalendar = await graphfi().me.calendar();
+const calendar = await graph.users.getById('user@tenant.onmicrosoft.com').calendar();
+
+const myCalendar = await graph.me.calendar();
 </code></pre>
 <h2 id="get-events-for-a-users-default-calendar">Get Events For a User's Default Calendar<a class="headerlink" href="#get-events-for-a-users-default-calendar" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
+const graph = graphfi().using(SPFx(this.context));
+
 // You can get the default calendar events
-const events = await graphfi().users.getById('user@tenant.onmicrosoft.com').calendar.events();
+const events = await graph.users.getById('user@tenant.onmicrosoft.com').calendar.events();
 // or get all events for the user
-const events = await graphfi().users.getById('user@tenant.onmicrosoft.com').events();
+const events = await graph.users.getById('user@tenant.onmicrosoft.com').events();
 
 // You can get my default calendar events
-const events = await graphfi().me.calendar.events();
+const events = await graph.me.calendar.events();
 // or get all events for me
-const events = await graphfi().me.events();
+const events = await graph.me.events();
 </code></pre>
 <h2 id="get-events-by-id">Get Events By ID<a class="headerlink" href="#get-events-by-id" title="Permanent link">&para;</a></h2>
 <p>You can use .events.getByID to search through all the events in all calendars or narrow the request to a specific calendar.</p>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
+
+const graph = graphfi().using(SPFx(this.context));
 
 const CalendarID = 'AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA==';
 
 const EventID = 'AQMkAGZjNmY0MDN3LRI3YTYtNDQAFWQtOWNhZC04MmY3MGYxODkeOWUARgAAA-xUBMMopY1NkrWA0qGcXHsHAG4I-wMXjoRMkgRnRetM5oIAAAIBBgAAAG4I-wMXjoRMkgRnRetM5oIAAAIsYgAAAA==';
 
 // Get events by ID
-const event = await graphfi().users.getById('user@tenant.onmicrosoft.com').events.getByID(EventID);
+const event = await graph.users.getById('user@tenant.onmicrosoft.com').events.getByID(EventID);
 
-const events = await graphfi().me.events.getByID(EventID);
+const events = await graph.me.events.getByID(EventID);
 
 // Get an event by ID from a specific calendar
-const event = await graphfi().users.getById('user@tenant.onmicrosoft.com').calendars.getByID(CalendarID).events.getByID(EventID);
+const event = await graph.users.getById('user@tenant.onmicrosoft.com').calendars.getByID(CalendarID).events.getByID(EventID);
 
-const events = await graphfi().me.calendars.getByID(CalendarID).events.getByID(EventID);
+const events = await graph.me.calendars.getByID(CalendarID).events.getByID(EventID);
 
 </code></pre>
 <h2 id="create-events">Create Events<a class="headerlink" href="#create-events" title="Permanent link">&para;</a></h2>
 <p>This will work on any <code>IEvents</code> objects (e.g. anything accessed using an <code>events</code> key).</p>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
-await graphfi().users.getById('user@tenant.onmicrosoft.com').calendar.events.add(
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.users.getById('user@tenant.onmicrosoft.com').calendar.events.add(
 {
   &quot;subject&quot;: &quot;Let's go for lunch&quot;,
   &quot;body&quot;: {
@@ -2176,61 +2186,101 @@ await graphfi().users.getById('user@tenant.onmicrosoft.com').calendar.events.add
 </code></pre>
 <h2 id="update-events">Update Events<a class="headerlink" href="#update-events" title="Permanent link">&para;</a></h2>
 <p>This will work on any <code>IEvents</code> objects (e.g. anything accessed using an <code>events</code> key).</p>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
+const graph = graphfi().using(SPFx(this.context));
+
 const EVENT_ID = 'BBMkAGZjNmY6MDM3LWI3YTYtNERhZC05Y2FkLTgyZjcwZjE4OTI5ZQBGAAAAAAD8VQTDKKWNTY61gNKhnFzLBwBuCP8DF46ETJIEZ0XrTOaCAAAAAAENAABuCP8DF46ETJFEZ0EnTOaCAAFvdoJvAAA=';
 
-await graphfi().users.getById('user@tenant.onmicrosoft.com').calendar.events.getById(EVENT_ID).update({
+await graph.users.getById('user@tenant.onmicrosoft.com').calendar.events.getById(EVENT_ID).update({
     reminderMinutesBeforeStart: 99,
 });
 </code></pre>
 <h2 id="delete-event">Delete Event<a class="headerlink" href="#delete-event" title="Permanent link">&para;</a></h2>
 <p>This will work on any <code>IEvents</code> objects (e.g. anything accessed using an <code>events</code> key).</p>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
+
+const graph = graphfi().using(SPFx(this.context));
 
 const EVENT_ID = 'BBMkAGZjNmY6MDM3LWI3YTYtNERhZC05Y2FkLTgyZjcwZjE4OTI5ZQBGAAAAAAD8VQTDKKWNTY61gNKhnFzLBwBuCP8DF46ETJIEZ0XrTOaCAAAAAAENAABuCP8DF46ETJFEZ0EnTOaCAAFvdoJvAAA=';
 
-await graphfi().users.getById('user@tenant.onmicrosoft.com').events.getById(EVENT_ID).delete();
+await graph.users.getById('user@tenant.onmicrosoft.com').events.getById(EVENT_ID).delete();
 
-await graphfi().me.events.getById(EVENT_ID).delete();
+await graph.me.events.getById(EVENT_ID).delete();
 </code></pre>
 <h2 id="get-calendar-for-a-group">Get Calendar for a Group<a class="headerlink" href="#get-calendar-for-a-group" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/groups';
 
-const calendar = await graphfi().groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').calendar();
+const graph = graph.using(SPFx(this.context));
+
+const calendar = await graph.groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').calendar();
 </code></pre>
 <h2 id="get-events-for-a-group">Get Events for a Group<a class="headerlink" href="#get-events-for-a-group" title="Permanent link">&para;</a></h2>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/groups';
 
+const graph = graphfi().using(SPFx(this.context));
+
 // You can do one of
-const events = await graphfi().groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').calendar.events();
+const events = await graph.groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').calendar.events();
 // or
-const events = await graphfi().groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').events();
+const events = await graph.groups.getById('21aaf779-f6d8-40bd-88c2-4a03f456ee82').events();
 </code></pre>
 <h2 id="get-calendar-view">Get Calendar View<a class="headerlink" href="#get-calendar-view" title="Permanent link">&para;</a></h2>
 <p>Gets the events in a calendar during a specified date range.</p>
-<pre><code class="language-ts">import { graphfi } from '@pnp/graph';
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import '@pnp/graph/calendars';
 import '@pnp/graph/users';
 
+const graph = graphfi().using(SPFx(this.context));
+
 // basic request, note need to invoke the returned queryable
-const view = await graphfi().users.getById('user@tenant.onmicrosoft.com').calendarView(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;)();
+const view = await graph.users.getById('user@tenant.onmicrosoft.com').calendarView(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;)();
 
 // you can use select, top, etc to filter your returned results
-const view2 = await graphfi().users.getById('user@tenant.onmicrosoft.com').calendarView(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;).select(&quot;subject&quot;).top(3)();
+const view2 = await graph.users.getById('user@tenant.onmicrosoft.com').calendarView(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;).select(&quot;subject&quot;).top(3)();
 
 // you can specify times along with the dates
-const view3 = await graphfi().users.getById('user@tenant.onmicrosoft.com').calendarView(&quot;2020-01-01T19:00:00-08:00&quot;, &quot;2020-03-01T19:00:00-08:00&quot;)();
+const view3 = await graph.users.getById('user@tenant.onmicrosoft.com').calendarView(&quot;2020-01-01T19:00:00-08:00&quot;, &quot;2020-03-01T19:00:00-08:00&quot;)();
 
-const view4 = await graphfi().me.calendarView(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;)();
+const view4 = await graph.me.calendarView(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;)();
+</code></pre>
+<h2 id="find-rooms">Find Rooms<a class="headerlink" href="#find-rooms" title="Permanent link">&para;</a></h2>
+<p>Gets the <code>emailAddress</code> objects that represent all the meeting rooms in the user's tenant or in a specific room list.</p>
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import '@pnp/graph/calendars';
+import '@pnp/graph/users';
+
+const graph = graphfi().using(SPFx(this.context));
+// basic request, note need to invoke the returned queryable
+const rooms1 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms()();
+// you can pass a room list to filter results
+const rooms2 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms('roomlist@tenant.onmicrosoft.com')();
+// you can use select, top, etc to filter your returned results
+const rooms3 = await graph.users.getById('user@tenant.onmicrosoft.com').findRooms().select('name').top(10)();
+</code></pre>
+<h2 id="get-event-instances">Get Event Instances<a class="headerlink" href="#get-event-instances" title="Permanent link">&para;</a></h2>
+<p>Get the instances (occurrences) of an event for a specified time range.</p>
+<p>If the event is a <code>seriesMaster</code> type, this returns the occurrences and exceptions of the event in the specified time range.</p>
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import '@pnp/graph/calendars';
+import '@pnp/graph/users';
+
+const graph = graphfi().using(SPFx(this.context));
+const event = graph.me.events.getById('');
+// basic request, note need to invoke the returned queryable
+const instances = await event.instances(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;)();
+// you can use select, top, etc to filter your returned results
+const instances2 = await event.instances(&quot;2020-01-01&quot;, &quot;2020-03-01&quot;).select(&quot;subject&quot;).top(3)();
+// you can specify times along with the dates
+const instance3 = await event.instances(&quot;2020-01-01T19:00:00-08:00&quot;, &quot;2020-03-01T19:00:00-08:00&quot;)(); 
 </code></pre>
                 
               
@@ -2250,7 +2300,7 @@ const view4 = await graphfi().me.calendarView(&quot;2020-01-01&quot;, &quot;2020
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../contacts/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../cloud-communications/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -2259,7 +2309,7 @@ const view4 = await graphfi().me.calendarView(&quot;2020-01-01&quot;, &quot;2020
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                contacts
+                cloud communications
               </div>
             </div>
           </a>

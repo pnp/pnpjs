@@ -648,6 +648,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1192,18 +1204,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1542,18 +1542,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -1954,67 +1942,53 @@
 <p>You can learn more about Microsoft Graph users by reading the <a href="https://docs.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0">Official Microsoft Graph Documentation</a>.</p>
 <h2 id="iphoto">IPhoto<a class="headerlink" href="#iphoto" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { graphfi } from "@pnp/graph";<br />import {IPhoto, Photo} from "@pnp/graph/photos";</td>
-</tr>
-<tr>
-<td>Selective 2</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/photos";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { graphfi, IPhoto, Photo } from "@pnp/sp/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="current-user-photo">Current User Photo<a class="headerlink" href="#current-user-photo" title="Permanent link">&para;</a></h2>
 <p>This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/photos&quot;;
 
-const photoValue = await graphfi().me.photo.getBlob();
+const graph = graphfi().using(SPFx(this.context));
+
+const photoValue = await graph.me.photo.getBlob();
 const url = window.URL || window.webkitURL;
 const blobUrl = url.createObjectURL(photoValue);
 document.getElementById(&quot;photoElement&quot;).setAttribute(&quot;src&quot;, blobUrl);
 </code></pre>
 <h2 id="current-group-photo">Current Group Photo<a class="headerlink" href="#current-group-photo" title="Permanent link">&para;</a></h2>
 <p>This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 import &quot;@pnp/graph/photos&quot;;
 
-const photoValue = await graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).photo.getBlob();
+const graph = graphfi().using(SPFx(this.context));
+
+const photoValue = await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).photo.getBlob();
 const url = window.URL || window.webkitURL;
 const blobUrl = url.createObjectURL(photoValue);
 document.getElementById(&quot;photoElement&quot;).setAttribute(&quot;src&quot;, blobUrl);
 </code></pre>
 <h2 id="set-user-photo">Set User Photo<a class="headerlink" href="#set-user-photo" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/photos&quot;;
 
+const graph = graphfi().using(SPFx(this.context));
+
 const input = &lt;HTMLInputElement&gt;document.getElementById(&quot;thefileinput&quot;);
 const file = input.files[0];
-await graphfi().me.photo.setContent(file);
+await graph.me.photo.setContent(file);
 </code></pre>
 <h2 id="set-group-photo">Set Group Photo<a class="headerlink" href="#set-group-photo" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/photos&quot;;
 
+const graph = graphfi().using(SPFx(this.context));
+
 const input = &lt;HTMLInputElement&gt;document.getElementById(&quot;thefileinput&quot;);
 const file = input.files[0];
-await graphfi().me.photo.setContent(file);
+await graph.me.photo.setContent(file);
 </code></pre>
                 
               

@@ -648,6 +648,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1171,18 +1183,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1521,18 +1521,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -1911,31 +1899,15 @@
 <p>The ability invite an external user via the invitation manager</p>
 <h2 id="iinvitations">IInvitations<a class="headerlink" href="#iinvitations" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/invitations";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import "@pnp/graph/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="create-invitation">Create Invitation<a class="headerlink" href="#create-invitation" title="Permanent link">&para;</a></h2>
 <p>Using the invitations.create() you can create an Invitation.
 We need the email address of the user being invited and the URL user should be redirected to once the invitation is redeemed (redirect URL).</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/invitations&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/invitations&quot;;
 
-const invitationResult = await graphfi().invitations.create('external.user@email-address.com', 'https://tenant.sharepoint.com/sites/redirecturi');
+const graph = graphfi().using(SPFx(this.context));
+
+const invitationResult = await graph.invitations.create('external.user@email-address.com', 'https://tenant.sharepoint.com/sites/redirecturi');
 
 </code></pre>
                 

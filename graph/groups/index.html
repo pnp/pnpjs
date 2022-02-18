@@ -706,6 +706,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-membership" class="md-nav__link">
+    Group Membership
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-the-team-site-for-a-group" class="md-nav__link">
     Get the Team Site for a Group
   </a>
@@ -833,6 +840,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-membership" class="md-nav__link">
+    Group Membership
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-the-team-site-for-a-group" class="md-nav__link">
     Get the Team Site for a Group
   </a>
@@ -866,6 +880,18 @@
   <li class="md-nav__item">
     <a href="../contacts/" class="md-nav__link">
       contacts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
     </a>
   </li>
 
@@ -1354,18 +1380,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1704,18 +1718,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2137,6 +2139,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#group-membership" class="md-nav__link">
+    Group Membership
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get-the-team-site-for-a-group" class="md-nav__link">
     Get the Team Site for a Group
   </a>
@@ -2166,104 +2175,112 @@
 <p>You can learn more about Microsoft Graph Groups by reading the <a href="https://docs.microsoft.com/en-us/graph/api/resources/groups-overview">Official Microsoft Graph Documentation</a>.</p>
 <h2 id="igroup-igroups">IGroup, IGroups<a class="headerlink" href="#igroup-igroups" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { graphfi } from "@pnp/graph";<br />import {Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups} from "@pnp/graph/groups";</td>
-</tr>
-<tr>
-<td>Selective 2</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/groups";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { graphfi, Group, GroupType, Groups, IGroup, IGroupAddResult, IGroups } from "@pnp/graph/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="add-a-group">Add a Group<a class="headerlink" href="#add-a-group" title="Permanent link">&para;</a></h2>
 <p>Add a new group.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 import { GroupType } from '@pnp/graph/groups';
 
-const groupAddResult = await graphfi().groups.add(&quot;GroupName&quot;, &quot;Mail_NickName&quot;, GroupType.Office365);
+const graph = graphfi().using(SPFx(this.context));
+
+const groupAddResult = await graph.groups.add(&quot;GroupName&quot;, &quot;Mail_NickName&quot;, GroupType.Office365);
 const group = await groupAddResult.group();
 </code></pre>
 <h2 id="delete-a-group">Delete a Group<a class="headerlink" href="#delete-a-group" title="Permanent link">&para;</a></h2>
 <p>Deletes an existing group.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 
-await graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).delete();
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).delete();
 </code></pre>
 <h2 id="update-group-properties">Update Group Properties<a class="headerlink" href="#update-group-properties" title="Permanent link">&para;</a></h2>
 <p>Updates an existing group.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 
-await graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).update({ displayName: newName, propertyName: updatedValue});
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).update({ displayName: newName, propertyName: updatedValue});
 </code></pre>
 <h2 id="add-favorite">Add favorite<a class="headerlink" href="#add-favorite" title="Permanent link">&para;</a></h2>
 <p>Add the group to the list of the current user's favorite groups. Supported for Office 365 groups only.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 
-await graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).addFavorite();
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).addFavorite();
 </code></pre>
 <h2 id="remove-favorite">Remove favorite<a class="headerlink" href="#remove-favorite" title="Permanent link">&para;</a></h2>
 <p>Remove the group from the list of the current user's favorite groups. Supported for Office 365 Groups only.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 
-await graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).removeFavorite();
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).removeFavorite();
 </code></pre>
 <h2 id="reset-unseen-count">Reset Unseen Count<a class="headerlink" href="#reset-unseen-count" title="Permanent link">&para;</a></h2>
 <p>Reset the unseenCount of all the posts that the current user has not seen since their last visit. Supported for Office 365 groups only.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 
-await graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).resetUnseenCount();
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).resetUnseenCount();
 </code></pre>
 <h2 id="subscribe-by-mail">Subscribe By Mail<a class="headerlink" href="#subscribe-by-mail" title="Permanent link">&para;</a></h2>
 <p>Calling this method will enable the current user to receive email notifications for this group, about new posts, events, and files in that group. Supported for Office 365 groups only.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 
-await graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).subscribeByMail();
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).subscribeByMail();
 </code></pre>
 <h2 id="unsubscribe-by-mail">Unsubscribe By Mail<a class="headerlink" href="#unsubscribe-by-mail" title="Permanent link">&para;</a></h2>
 <p>Calling this method will prevent the current user from receiving email notifications for this group about new posts, events, and files in that group. Supported for Office 365 groups only.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 
-await graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).unsubscribeByMail();
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).unsubscribeByMail();
 </code></pre>
 <h2 id="get-calendar-view">Get Calendar View<a class="headerlink" href="#get-calendar-view" title="Permanent link">&para;</a></h2>
 <p>Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
 
 const startDate = new Date(&quot;2020-04-01&quot;);
 const endDate = new Date(&quot;2020-03-01&quot;);
 
-const events = graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).getCalendarView(startDate, endDate);
+const events = graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).getCalendarView(startDate, endDate);
 </code></pre>
 <h2 id="group-photo-operations">Group Photo Operations<a class="headerlink" href="#group-photo-operations" title="Permanent link">&para;</a></h2>
 <p>See <a href="../photos/">Photos</a></p>
+<h2 id="group-membership">Group Membership<a class="headerlink" href="#group-membership" title="Permanent link">&para;</a></h2>
+<p>Get the members and/or owners of a group.</p>
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/groups&quot;;
+import &quot;@pnp/graph/members&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
+const members = await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).members();
+const owners = await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).owners();
+</code></pre>
 <h2 id="get-the-team-site-for-a-group">Get the Team Site for a Group<a class="headerlink" href="#get-the-team-site-for-a-group" title="Permanent link">&para;</a></h2>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/groups&quot;;
 import &quot;@pnp/graph/sites/group&quot;;
 
-const teamSite = await graphfi().groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).sites.root();
+const graph = graphfi().using(SPFx(this.context));
+
+const teamSite = await graph.groups.getById(&quot;7d2b9355-0891-47d3-84c8-bf2cd9c62177&quot;).sites.root();
 const url = teamSite.webUrl
 </code></pre>
                 

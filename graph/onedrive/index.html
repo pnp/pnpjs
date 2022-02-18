@@ -648,6 +648,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -778,8 +790,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#add-folder-or-item" class="md-nav__link">
-    Add folder or item
+  <a href="#add-item" class="md-nav__link">
+    Add Item
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-folder" class="md-nav__link">
+    Add folder
   </a>
   
 </li>
@@ -1269,18 +1288,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1619,18 +1626,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -2038,8 +2033,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#add-folder-or-item" class="md-nav__link">
-    Add folder or item
+  <a href="#add-item" class="md-nav__link">
+    Add Item
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-folder" class="md-nav__link">
+    Add folder
   </a>
   
 </li>
@@ -2104,182 +2106,219 @@
                 
                 
                 <h1 id="pnpgraphonedrive">@pnp/graph/onedrive<a class="headerlink" href="#pnpgraphonedrive" title="Permanent link">&para;</a></h1>
-<p>The ability to manage drives and drive items in Onedrive is a capability introduced in version 1.2.4 of @pnp/graphfi(). Through the methods described
+<p>The ability to manage drives and drive items in Onedrive is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
 you can manage drives and drive items in Onedrive.</p>
 <h2 id="iinvitations">IInvitations<a class="headerlink" href="#iinvitations" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective</td>
-<td>import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/onedrive";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import "@pnp/graph/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h2 id="get-the-default-drive">Get the default drive<a class="headerlink" href="#get-the-default-drive" title="Permanent link">&para;</a></h2>
 <p>Using the drive you can get the default drive from Onedrive</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const drives = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives();
+const graph = graphfi().using(SPFx(this.context));
 
-const drives = await graphfi().me.drive();
+const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives();
+
+const drives = await graph.me.drive();
 
 </code></pre>
 <h2 id="get-all-of-the-drives">Get all of the drives<a class="headerlink" href="#get-all-of-the-drives" title="Permanent link">&para;</a></h2>
 <p>Using the drives() you can get the users available drives from Onedrive</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const drives = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives();
+const graph = graphfi().using(SPFx(this.context));
 
-const drives = await graphfi().me.drives();
+const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives();
+
+const drives = await graph.me.drives();
 
 </code></pre>
 <h2 id="get-drive-by-id">Get drive by Id<a class="headerlink" href="#get-drive-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the drives.getById() you can get one of the available drives in Outlook</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const drive = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId');
+const graph = graphfi().using(SPFx(this.context));
 
-const drive = await graphfi().me.drives.getById('driveId');
+const drive = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId');
+
+const drive = await graph.me.drives.getById('driveId');
 
 </code></pre>
 <h2 id="get-the-associated-list-of-a-drive">Get the associated list of a drive<a class="headerlink" href="#get-the-associated-list-of-a-drive" title="Permanent link">&para;</a></h2>
 <p>Using the list() you get the associated list</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const list = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').list();
+const graph = graphfi().using(SPFx(this.context));
 
-const list = await graphfi().me.drives.getById('driveId').list();
+const list = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').list();
+
+const list = await graph.me.drives.getById('driveId').list();
 
 </code></pre>
 <h2 id="get-the-recent-files">Get the recent files<a class="headerlink" href="#get-the-recent-files" title="Permanent link">&para;</a></h2>
 <p>Using the recent() you get the recent files</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const files = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').recent();
+const graph = graphfi().using(SPFx(this.context));
 
-const files = await graphfi().me.drives.getById('driveId').recent();
+const files = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').recent();
+
+const files = await graph.me.drives.getById('driveId').recent();
 
 </code></pre>
 <h2 id="get-the-files-shared-with-me">Get the files shared with me<a class="headerlink" href="#get-the-files-shared-with-me" title="Permanent link">&para;</a></h2>
 <p>Using the sharedWithMe() you get the files shared with the user</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const shared = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').sharedWithMe();
+const graph = graphfi().using(SPFx(this.context));
 
-const shared = await graphfi().me.drives.getById('driveId').sharedWithMe();
+const shared = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').sharedWithMe();
+
+const shared = await graph.me.drives.getById('driveId').sharedWithMe();
 
 </code></pre>
 <h2 id="get-the-root-folder">Get the Root folder<a class="headerlink" href="#get-the-root-folder" title="Permanent link">&para;</a></h2>
 <p>Using the root() you get the root folder</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const root = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root();
+const graph = graphfi().using(SPFx(this.context));
 
-const root = await graphfi().me.drives.getById('driveId').root();
+const root = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root();
+
+const root = await graph.me.drives.getById('driveId').root();
 
 </code></pre>
 <h2 id="get-the-children">Get the Children<a class="headerlink" href="#get-the-children" title="Permanent link">&para;</a></h2>
 <p>Using the children() you get the children</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const rootChildren = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children();
+const graph = graphfi().using(SPFx(this.context));
 
-const rootChildren = await graphfi().me.drives.getById('driveId').root.children();
+const rootChildren = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children();
 
-const itemChildren = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').children();
+const rootChildren = await graph.me.drives.getById('driveId').root.children();
 
-const itemChildren = await graphfi().me.drives.getById('driveId').root.items.getById('itemId').children();
+const itemChildren = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').children();
+
+const itemChildren = await graph.me.drives.getById('driveId').root.items.getById('itemId').children();
 
 </code></pre>
-<h2 id="add-folder-or-item">Add folder or item<a class="headerlink" href="#add-folder-or-item" title="Permanent link">&para;</a></h2>
-<p>Using the add you can add a folder or an item</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<h2 id="add-item">Add Item<a class="headerlink" href="#add-item" title="Permanent link">&para;</a></h2>
+<p>Using the add you can add an item</p>
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
+import &quot;@pnp/graph/users&quot;;
+
+const graph = graphfi().using(SPFx(this.context));
+
+const add1 = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.add(&quot;test.txt&quot;, &quot;My File Content String&quot;);
+const add2 = await graph.me.drives.getById('driveId').root.children.add(&quot;filename.txt&quot;, &quot;My File Content String&quot;);
+</code></pre>
+<h2 id="add-folder">Add folder<a class="headerlink" href="#add-folder" title="Permanent link">&para;</a></h2>
+<p>Using addFolder you can add a folder</p>
+<pre><code class="language-TypeScript">import { graph } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/onedrive&quot;;
+import &quot;@pnp/graph/users&quot;
 import { DriveItem as IDriveItem } from &quot;@microsoft/microsoft-graph-types&quot;;
 
-const addFolder = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.add('New Folder', &lt;IDriveItem&gt;{folder: {}});
+const graph = graphfi().using(SPFx(this.context));
 
-const addFolder = await graphfi().me.drives.getById('driveId').root.children.add('New Folder', &lt;IDriveItem&gt;{folder: {}});
+const addFolder1 = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.children.addFolder('New Folder');
+const addFolder2 = await graph.me.drives.getById('driveId').root.children.addFolder('New Folder');
 
 </code></pre>
 <h2 id="search-items">Search items<a class="headerlink" href="#search-items" title="Permanent link">&para;</a></h2>
 <p>Using the search() you can search for items, and optionally select properties</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const search = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')root.search('queryText')();
+const graph = graphfi().using(SPFx(this.context));
 
-const search = await graphfi().me.drives.getById('driveId')root.search('queryText')();
+const search = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')root.search('queryText')();
+
+const search = await graph.me.drives.getById('driveId')root.search('queryText')();
 
 </code></pre>
 <h2 id="get-specific-item-in-drive">Get specific item in drive<a class="headerlink" href="#get-specific-item-in-drive" title="Permanent link">&para;</a></h2>
 <p>Using the items.getById() you can get a specific item from the current drive</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const item = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId');
+const graph = graphfi().using(SPFx(this.context));
 
-const item = await graphfi().me.drives.getById('driveId').items.getById('itemId');
+const item = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId');
+
+const item = await graph.me.drives.getById('driveId').items.getById('itemId');
 
 </code></pre>
 <h2 id="get-thumbnails">Get thumbnails<a class="headerlink" href="#get-thumbnails" title="Permanent link">&para;</a></h2>
 <p>Using the thumbnails() you get the thumbnails</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const thumbs = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').thumbnails();
+const graph = graphfi().using(SPFx(this.context));
 
-const thumbs = await graphfi().me.drives.getById('driveId').items.getById('itemId').thumbnails();
+const thumbs = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').thumbnails();
+
+const thumbs = await graph.me.drives.getById('driveId').items.getById('itemId').thumbnails();
 
 </code></pre>
 <h2 id="delete-drive-item">Delete drive item<a class="headerlink" href="#delete-drive-item" title="Permanent link">&para;</a></h2>
 <p>Using the delete() you delete the current item</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const thumbs = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').delete();
+const graph = graphfi().using(SPFx(this.context));
 
-const thumbs = await graphfi().me.drives.getById('driveId').items.getById('itemId').delete();
+const thumbs = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').delete();
+
+const thumbs = await graph.me.drives.getById('driveId').items.getById('itemId').delete();
 
 </code></pre>
 <h2 id="update-drive-item">Update drive item<a class="headerlink" href="#update-drive-item" title="Permanent link">&para;</a></h2>
 <p>Using the update() you update the current item</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-const update = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').update({name: &quot;New Name&quot;});
+const graph = graphfi().using(SPFx(this.context));
 
-const update = await graphfi().me.drives.getById('driveId').items.getById('itemId').update({name: &quot;New Name&quot;});
+const update = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').update({name: &quot;New Name&quot;});
+
+const update = await graph.me.drives.getById('driveId').items.getById('itemId').update({name: &quot;New Name&quot;});
 
 </code></pre>
 <h2 id="move-drive-item">Move drive item<a class="headerlink" href="#move-drive-item" title="Permanent link">&para;</a></h2>
 <p>Using the move() you move the current item, and optionally update it</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/users&quot;;
 import &quot;@pnp/graph/onedrive&quot;;
 
-// Requires a parentReference to the new folder location
-const move = await graphfi().users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').move({ parentReference: { id: 'itemId'}}, {name: &quot;New Name&quot;});
+const graph = graphfi().using(SPFx(this.context));
 
-const move = await graphfi().me.drives.getById('driveId').items.getById('itemId').move({ parentReference: { id: 'itemId'}}, {name: &quot;New Name&quot;});
+// Requires a parentReference to the new folder location
+const move = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId').move({ parentReference: { id: 'itemId'}}, {name: &quot;New Name&quot;});
+
+const move = await graph.me.drives.getById('driveId').items.getById('itemId').move({ parentReference: { id: 'itemId'}}, {name: &quot;New Name&quot;});
 
 </code></pre>
                 

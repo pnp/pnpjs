@@ -646,6 +646,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1126,18 +1138,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../features/" class="md-nav__link">
       Features
     </a>
@@ -1553,18 +1553,6 @@
   </li>
 
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
-    </a>
-  </li>
-
-        
       </ul>
     </nav>
   </li>
@@ -1967,28 +1955,12 @@
 <p>Using search you can access content throughout your organization in a secure and consistent manner. The library provides support for searching and suggest - as well as some interfaces and helper classes to make building your queries and processing responses easier.</p>
 <h2 id="search">Search<a class="headerlink" href="#search" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { sp } from "@pnp/sp";<br />import "@pnp/sp/search";<br />import { ISearchQuery, SearchResults } from "@pnp/sp/search";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { sp, ISearchQuery, SearchResults } from "@pnp/sp/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <p>Search is accessed directly from the root sp object and can take either a string representing the query text, a plain object matching the ISearchQuery interface, or a SearchQueryBuilder instance.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/search&quot;;
 import { ISearchQuery, SearchResults, SearchQueryBuilder } from &quot;@pnp/sp/search&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // text search using SharePoint default values for other parameters
 const results: SearchResults = await sp.search(&quot;test&quot;);
@@ -2019,9 +1991,11 @@ console.log(results3.PrimarySearchResults);
 </code></pre>
 <h2 id="search-result-caching">Search Result Caching<a class="headerlink" href="#search-result-caching" title="Permanent link">&para;</a></h2>
 <p>You can use the searchWithCaching method to enable cache support for your search results this option works with any of the options for providing a query, just replace "search" with "searchWithCaching" in your method chain and gain all the benefits of caching. The second parameter is optional and allows you to specify the cache options</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/search&quot;;
 import { ISearchQuery, SearchResults, SearchQueryBuilder } from &quot;@pnp/sp/search&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 sp.searchWithCaching({
     Querytext: &quot;test&quot;,
@@ -2044,9 +2018,11 @@ console.log(results2.TotalRows);
 </code></pre>
 <h2 id="paging-with-searchresultsgetpage">Paging with SearchResults.getPage<a class="headerlink" href="#paging-with-searchresultsgetpage" title="Permanent link">&para;</a></h2>
 <p>Paging is controlled by a start row and page size parameter. You can specify both arguments in your initial query however you can use the getPage method to jump to any page. The second parameter page size is optional and will use the previous RowLimit or default to 10.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/search&quot;;
 import { SearchResults, SearchQueryBuilder } from &quot;@pnp/sp/search&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // this will hold our current results
 let currentResults: SearchResults = null;
@@ -2079,9 +2055,11 @@ async function prev() {
 </code></pre>
 <h2 id="searchquerybuilder">SearchQueryBuilder<a class="headerlink" href="#searchquerybuilder" title="Permanent link">&para;</a></h2>
 <p>The SearchQueryBuilder allows you to build your queries in a fluent manner. It also accepts constructor arguments for query text and a base query plain object, should you have a shared configuration for queries in an application you can define them once. The methods and properties match those on the SearchQuery interface. Boolean properties add the flag to the query while methods require that you supply one or more arguments. Also arguments supplied later in the chain will overwrite previous values.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/search&quot;;
 import { SearchQueryBuilder, SearchResults, ISearchQuery } from &quot;@pnp/sp/search&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // basic usage
 let q = SearchQueryBuilder().text(&quot;test&quot;).rowLimit(4).enablePhonetic;
@@ -2108,9 +2086,11 @@ const results3 = sp.search(q4);
 </code></pre>
 <h2 id="search-suggest">Search Suggest<a class="headerlink" href="#search-suggest" title="Permanent link">&para;</a></h2>
 <p>Search suggest works in much the same way as search, except against the suggest end point. It takes a string or a plain object that matches ISuggestQuery.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/search&quot;;
 import { ISuggestQuery, ISuggestResult } from &quot;@pnp/sp/search&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 const results = await sp.searchSuggest(&quot;test&quot;);
 
@@ -2121,9 +2101,11 @@ const results2 = await sp.searchSuggest({
 </code></pre>
 <h2 id="search-factory">Search Factory<a class="headerlink" href="#search-factory" title="Permanent link">&para;</a></h2>
 <p>You can also configure a search or suggest query against any valid SP url using the factory methods.</p>
-<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/search&quot;;
 import { Search, Suggest } from &quot;@pnp/sp/search&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // set the url for search
 const searcher = Search(&quot;https://mytenant.sharepoint.com/sites/dev&quot;);

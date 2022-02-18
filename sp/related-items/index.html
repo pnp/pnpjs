@@ -646,6 +646,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1126,18 +1138,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../features/" class="md-nav__link">
       Features
     </a>
@@ -1560,18 +1560,6 @@
   </li>
 
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
-    </a>
-  </li>
-
-        
       </ul>
     </nav>
   </li>
@@ -1981,7 +1969,7 @@
 <p>The related items API allows you to add related items to items within a task or workflow list. Related items need to be in the same site collection.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
 <p>Instead of copying this block of code into each sample, understand that each sample is meant to run with this supporting code to work.</p>
-<pre><code class="language-TypeScript">import { sp, extractWebUrl } from &quot;@pnp/sp&quot;;
+<pre><code class="language-TypeScript">import { spfi, SPFx, extractWebUrl } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/related-items/web&quot;;
 import &quot;@pnp/sp/lists/web&quot;;
@@ -1989,6 +1977,8 @@ import &quot;@pnp/sp/items/list&quot;;
 import &quot;@pnp/sp/files/list&quot;;
 import { IList } from &quot;@pnp/sp/lists&quot;;
 import { getRandomString } from &quot;@pnp/core&quot;;
+
+const sp = spfi(&quot;{tenant url}&quot;).using(SPFx(this.context));
 
 // setup some lists (or just use existing ones this is just to show the complete process)
 // we need two lists to use for creating related items, they need to use template 107 (task list)

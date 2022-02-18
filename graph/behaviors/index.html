@@ -721,6 +721,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1199,18 +1211,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1549,18 +1549,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -1972,7 +1960,7 @@ import &quot;@pnp/graph/users&quot;;
 
 const graph = graphfi().using(DefaultInit());
 
-await graphfi().users();
+await graph.users();
 </code></pre>
 <h2 id="defaultheaders">DefaultHeaders<a class="headerlink" href="#defaultheaders" title="Permanent link">&para;</a></h2>
 <p>The <code>DefaultHeaders</code> behavior uses InjectHeaders to set the Content-Type header.</p>
@@ -1981,7 +1969,7 @@ import &quot;@pnp/graph/users&quot;;
 
 const graph = graphfi().using(DefaultHeaders());
 
-await graphfi().users();
+await graph.users();
 </code></pre>
 <blockquote>
 <p>DefaultInit and DefaultHeaders are separated to make it easier to create your own default headers or init behavior. You should include both if composing your own default behavior.</p>
@@ -2006,7 +1994,7 @@ import &quot;@pnp/graph/users&quot;;
 // will point to v1 by default
 const graph = graphfi().using();
 
-const user = graphfi().users.getById(&quot;{id}&quot;);
+const user = graph.users.getById(&quot;{id}&quot;);
 
 // this only applies to the &quot;user&quot; instance now
 const userInfoFromBeta = user.using(Endpoint(&quot;beta&quot;))();
@@ -2027,7 +2015,7 @@ import &quot;@pnp/graph/users&quot;;
 
 const graph = graphfi().using(GraphBrowser());
 
-await graphfi().users();
+await graph.users();
 </code></pre>
 <p>You can also set a baseUrl. This is equivelent to calling graphfi with an absolute url.</p>
 <pre><code class="language-TypeScript">import { graphfi, GraphBrowser } from &quot;@pnp/graph&quot;;
@@ -2038,7 +2026,7 @@ const graph = graphfi().using(GraphBrowser({ baseUrl: &quot;https://graphfi().mi
 // this is the same as the above, and maybe a litter easier to read, and is more efficient
 // const graph = graphfi(&quot;https://graphfi().microsoft.com/v1.0&quot;).using(GraphBrowser());
 
-await graphfi().users();
+await graph.users();
 </code></pre>
 <h2 id="spfx">SPFx<a class="headerlink" href="#spfx" title="Permanent link">&para;</a></h2>
 <p>This behavior is designed to work closely with SPFx. The only parameter is the current SPFx Context. <code>SPFx</code> is a composed behavior including DefaultHeaders, DefaultInit, BrowserFetchWithRetry, and DefaultParse. It also replaces any authentication present with a method to get a token from the SPFx aadTokenProviderFactory.</p>
@@ -2048,7 +2036,7 @@ import &quot;@pnp/graph/users&quot;;
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
 const graph = graphfi().using(SPFx(this.context));
 
-await graphfi().users();
+await graph.users();
 </code></pre>
 <p>If you want to use a different form of authentication you can apply that behavior after <code>SPFx</code> to override it. In this case we are using the <a href="../msaljsclient">client MSAL authentication</a>.</p>
 <pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
@@ -2058,7 +2046,7 @@ import &quot;@pnp/graph/users&quot;;
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
 const graph = graphfi().using(SPFx(this.context), MSAL({ /* proper MSAL settings */}));
 
-await graphfi().users();
+await graph.users();
 </code></pre>
 <h2 id="telemetry">Telemetry<a class="headerlink" href="#telemetry" title="Permanent link">&para;</a></h2>
 <p>This behavior helps provide usage statistics to us about the number of requests made to the service using this library, as well as the methods being called. We do not, and cannot, access any PII information or tie requests to specific users. The data aggregates at the tenant level. We use this information to better understand how the library is being used and look for opportunities to improve high-use code paths.</p>
@@ -2070,7 +2058,7 @@ import &quot;@pnp/graph/users&quot;;
 
 const graph = graphfi().using(Telemetry());
 
-await graphfi().users();
+await graph.users();
 </code></pre>
                 
               

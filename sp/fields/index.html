@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pnpsplists" class="md-skip">
+        <a href="#pnpspfields" class="md-skip">
           Skip to content
         </a>
       
@@ -646,6 +646,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../graph/cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../graph/calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1116,18 +1128,6 @@
   <li class="md-nav__item">
     <a href="../content-types/" class="md-nav__link">
       Content Types
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../entity-merging/" class="md-nav__link">
-      Entity Merging
     </a>
   </li>
 
@@ -1706,18 +1706,6 @@
   </li>
 
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
-    </a>
-  </li>
-
-        
       </ul>
     </nav>
   </li>
@@ -2269,36 +2257,14 @@
                   </a>
                 
                 
-                <h1 id="pnpsplists">@pnp/sp/lists<a class="headerlink" href="#pnpsplists" title="Permanent link">&para;</a></h1>
+                <h1 id="pnpspfields">@pnp/sp/fields<a class="headerlink" href="#pnpspfields" title="Permanent link">&para;</a></h1>
 <p>Fields in SharePoint can be applied to both webs and lists. When referencing a webs' fields you are effectively looking at site columns which are common fields that can be utilized in any list/library in the site. When referencing a lists' fields you are looking at the fields only associated to that particular list.</p>
 <h2 id="ifields">IFields<a class="headerlink" href="#ifields" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a></p>
-<table>
-<thead>
-<tr>
-<th>Scenario</th>
-<th>Import Statement</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Selective 1</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Fields, IFields } from "@pnp/sp/fields";</td>
-</tr>
-<tr>
-<td>Selective 2</td>
-<td>import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/fields";</td>
-</tr>
-<tr>
-<td>Preset: All</td>
-<td>import { sp, Fields, IFields } from "@pnp/sp/presets/all";</td>
-</tr>
-</tbody>
-</table>
 <h3 id="get-field-by-id">Get Field by Id<a class="headerlink" href="#get-field-by-id" title="Permanent link">&para;</a></h3>
 <p>Gets a field from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.</p>
 <pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
-import { IField } from &quot;@pnp/sp/fields/types&quot;;
+import { IField, IFieldInfo } from &quot;@pnp/sp/fields/types&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists/web&quot;;
 import &quot;@pnp/sp/fields&quot;;
@@ -2319,7 +2285,7 @@ console.log(r.Title);
 <h3 id="get-field-by-title">Get Field by Title<a class="headerlink" href="#get-field-by-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a field from the collection by title.</p>
 <pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
-import { IField } from &quot;@pnp/sp/fields/types&quot;;
+import { IField, IFieldInfo } from &quot;@pnp/sp/fields/types&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists&quot;
 import &quot;@pnp/sp/fields&quot;;
@@ -2339,7 +2305,7 @@ console.log(r.Id);
 <h3 id="get-field-by-internal-name-or-title">Get Field by Internal Name or Title<a class="headerlink" href="#get-field-by-internal-name-or-title" title="Permanent link">&para;</a></h3>
 <p>You can also get a field from the collection regardless of if the string is the fields internal name or title which can be different.</p>
 <pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
-import { IField } from &quot;@pnp/sp/fields/types&quot;;
+import { IField, IFieldInfo } from &quot;@pnp/sp/fields/types&quot;;
 import &quot;@pnp/sp/webs&quot;;
 import &quot;@pnp/sp/lists&quot;
 import &quot;@pnp/sp/fields&quot;;
@@ -2504,7 +2470,7 @@ const r = await field.field.select(&quot;Id&quot;)();
 console.log(r.Id);
 </code></pre>
 <h3 id="add-a-multi-line-text-field">Add a Multi-line Text Field<a class="headerlink" href="#add-a-multi-line-text-field" title="Permanent link">&para;</a></h3>
-<p>Use the addMultilineText method to create a new multi-line text field. </p>
+<p>Use the addMultilineText method to create a new multi-line text field.</p>
 <blockquote>
 <p>For Enhanced Rich Text mode, see the next section.</p>
 </blockquote>

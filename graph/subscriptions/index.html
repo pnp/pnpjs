@@ -648,6 +648,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../cloud-communications/" class="md-nav__link">
+      cloud communications
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../calendars/" class="md-nav__link">
       calendars
     </a>
@@ -1192,18 +1204,6 @@
 
 
   <li class="md-nav__item">
-    <a href="../../sp/entity-merging/" class="md-nav__link">
-      Entity Merging
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../../sp/features/" class="md-nav__link">
       Features
     </a>
@@ -1542,18 +1542,6 @@
   <li class="md-nav__item">
     <a href="../../sp/webs/" class="md-nav__link">
       Webs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
-      Custom Request Client
     </a>
   </li>
 
@@ -1950,7 +1938,7 @@
                 
                 
                 <h1 id="pnpgraphsubscriptions">@pnp/graph/subscriptions<a class="headerlink" href="#pnpgraphsubscriptions" title="Permanent link">&para;</a></h1>
-<p>The ability to manage subscriptions is a capability introduced in version 1.2.9 of @pnp/graphfi(). A subscription allows a client app to receive notifications about changes to data in Microsoft graphfi(). Currently, subscriptions are enabled for the following resources:</p>
+<p>The ability to manage subscriptions is a capability introduced in version 1.2.9 of @pnp/graph. A subscription allows a client app to receive notifications about changes to data in Microsoft graph. Currently, subscriptions are enabled for the following resources:</p>
 <ul>
 <li>Mail, events, and contacts from Outlook.</li>
 <li>Conversations from Office Groups.</li>
@@ -1960,42 +1948,52 @@
 </ul>
 <h2 id="get-all-of-the-subscriptions">Get all of the Subscriptions<a class="headerlink" href="#get-all-of-the-subscriptions" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions(). If successful this method returns a 200 OK response code and a list of subscription objects in the response body.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/subscriptions&quot;;
 
-const subscriptions = await graphfi().subscriptions();
+const graph = graphfi().using(SPFx(this.context));
+
+const subscriptions = await graph.subscriptions();
 
 </code></pre>
 <h2 id="create-a-new-subscription">Create a new Subscription<a class="headerlink" href="#create-a-new-subscription" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions.add(). Creating a subscription requires read scope to the resource. For example, to get notifications messages, your app needs the Mail.Read permission. To learn more about the scopes visit <a href="https://docs.microsoft.com/en-us/graph/api/subscription-post-subscriptions?view=graph-rest-1.0">this</a> url.</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/subscriptions&quot;;
 
-const addedSubscription = await graphfi().subscriptions.add(&quot;created,updated&quot;, &quot;https://webhook.azurewebsites.net/api/send/myNotifyClient&quot;, &quot;me/mailFolders('Inbox')/messages&quot;, &quot;2019-11-20T18:23:45.9356913Z&quot;);
+const graph = graphfi().using(SPFx(this.context));
+
+const addedSubscription = await graph.subscriptions.add(&quot;created,updated&quot;, &quot;https://webhook.azurewebsites.net/api/send/myNotifyClient&quot;, &quot;me/mailFolders('Inbox')/messages&quot;, &quot;2019-11-20T18:23:45.9356913Z&quot;);
 
 </code></pre>
 <h2 id="get-subscription-by-id">Get Subscription by Id<a class="headerlink" href="#get-subscription-by-id" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions.getById() you can get one of the subscriptions</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/subscriptions&quot;;
 
-const subscription = await graphfi().subscriptions.getById('subscriptionId')();
+const graph = graphfi().using(SPFx(this.context));
+
+const subscription = await graph.subscriptions.getById('subscriptionId')();
 
 </code></pre>
 <h2 id="delete-a-subscription">Delete a Subscription<a class="headerlink" href="#delete-a-subscription" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions.getById().delete() you can remove one of the Subscriptions</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/subscriptions&quot;;
 
-const delSubscription = await graphfi().subscriptions.getById('subscriptionId').delete();
+const graph = graphfi().using(SPFx(this.context));
+
+const delSubscription = await graph.subscriptions.getById('subscriptionId').delete();
 
 </code></pre>
 <h2 id="update-a-subscription">Update a Subscription<a class="headerlink" href="#update-a-subscription" title="Permanent link">&para;</a></h2>
 <p>Using the subscriptions.getById().update() you can update one of the Subscriptions</p>
-<pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
-import &quot;@pnp/graph/subscriptions&quot;
+<pre><code class="language-TypeScript">import { graphfi, SPFx } from &quot;@pnp/graph&quot;;
+import &quot;@pnp/graph/subscriptions&quot;;
 
-const updSubscription = await graphfi().subscriptions.getById('subscriptionId').update({changeType: &quot;created,updated,deleted&quot; });
+const graph = graphfi().using(SPFx(this.context));
+
+const updSubscription = await graph.subscriptions.getById('subscriptionId').update({changeType: &quot;created,updated,deleted&quot; });
 
 </code></pre>
                 
