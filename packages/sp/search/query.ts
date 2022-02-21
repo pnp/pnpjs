@@ -1,6 +1,6 @@
 import { _SPInstance, ISPQueryable } from "../spqueryable.js";
 import { hOP, isArray } from "@pnp/core";
-import { body } from "@pnp/queryable";
+import { body, InjectHeaders } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
 import { spPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
@@ -79,8 +79,6 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder 
     });
 }
 
-const queryRegex = /_api\/search\/postquery$/i;
-
 /**
  * Describes the search API
  *
@@ -95,18 +93,23 @@ export class _Search extends _SPInstance {
 
         const query = this.parseQuery(queryInit);
 
-        const postBody = body({
-            query,
-            HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
-            Properties: this.fixArrProp(query.Properties),
-            RefinementFilters: this.fixArrProp(query.RefinementFilters),
-            ReorderingRules: this.fixArrProp(query.ReorderingRules),
-            SelectProperties: this.fixArrProp(query.SelectProperties),
-            SortList: this.fixArrProp(query.SortList),
+        const postBody: RequestInit = body({
+            request:{
+                ...query,
+                HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
+                Properties: this.fixArrProp(query.Properties),
+                RefinementFilters: this.fixArrProp(query.RefinementFilters),
+                ReorderingRules: this.fixArrProp(query.ReorderingRules),
+                SelectProperties: this.fixArrProp(query.SelectProperties),
+                SortList: this.fixArrProp(query.SortList),
+            },
         });
 
         const data = await spPost(this, postBody);
-        return new SearchResults(data, this.toUrl(), query);
+
+        // Create search instance copy for SearchResult's getPage request.
+        const search = new _Search([this, this.parentUrl]);
+        return new SearchResults(data, search, query);
     }
 
     /**
@@ -148,18 +151,18 @@ export interface ISearch {
 }
 
 export const Search = (baseUrl: string | ISPQueryable): ISearch => (queryInit: SearchQueryInit) => {
-    return (new _Search(baseUrl)).run(queryInit);
+    // current search endpoint only accepts 'application/json;odata=verbose' content-type header.
+    return (new _Search(baseUrl)).using(InjectHeaders({"Content-Type" : "application/json;odata=verbose;charset=utf-8"})).run(queryInit);
 };
 
 export class SearchResults {
 
     constructor(rawResponse: any,
-        private _url: string,
+        private _search: _Search,
         private _query: ISearchQuery,
         private _raw: ISearchResponse = null,
         private _primary: ISearchResult[] = null) {
 
-        this._url = this._url.replace(queryRegex, "");
         this._raw = rawResponse.postquery ? rawResponse.postquery : rawResponse;
     }
 
@@ -218,7 +221,7 @@ export class SearchResults {
             return Promise.resolve(null);
         }
 
-        return Search(this._url)(query);
+        return this._search.run(query);
     }
 
     /**
