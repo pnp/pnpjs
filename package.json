@@ -17,7 +17,7 @@
         "@types/node": "16.11.7",
         "@types/webpack": "5.28.0",
         "@types/yargs": "17.0.8",
-        "@typescript-eslint/eslint-plugin": "4.32.0",
+        "@typescript-eslint/eslint-plugin": "4.33.0",
         "@typescript-eslint/parser": "4.32.0",
         "chai": "4.3.6",
         "chai-as-promised": "7.1.1",
