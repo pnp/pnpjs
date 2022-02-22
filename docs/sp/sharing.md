@@ -16,7 +16,9 @@ To import and attach the sharing methods to all four of the sharable types inclu
 import "@pnp/sp/sharing";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const user = await sp.web.siteUsers.getByEmail("user@site.com")();
 const r = await sp.web.shareWith(user.LoginName);
@@ -30,7 +32,9 @@ Import only the web's sharing methods into the library
 import "@pnp/sp/sharing/web";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const user = await sp.web.siteUsers.getByEmail("user@site.com")();
 const r = await sp.web.shareWith(user.LoginName);
@@ -43,11 +47,13 @@ const r = await sp.web.shareWith(user.LoginName);
 Creates a sharing link for the given resource with an optional expiration.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import { SharingLinkKind, IShareLinkResponse } from "@pnp/sp/sharing";
 import { dateAdd } from "@pnp/core";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/folder1").getShareLink(SharingLinkKind.AnonymousView);
 
@@ -66,12 +72,14 @@ console.log(JSON.stringify(result2, null, 2));
 Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the `loginnames` parameter or an array of `loginnames`. The folder method takes an optional parameter "shareEverything" which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/files/web";
 import { ISharingResult, SharingRole } from "@pnp/sp/sharing";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result = await sp.web.shareWith("i:0#.f|membership|user@site.com");
 
@@ -103,10 +111,12 @@ await sp.web.getFileByServerRelativeUrl("/sites/dev/Shared Documents/test.txt").
 Allows you to share any shareable object in a web by providing the appropriate parameters. These two methods differ in that shareObject will try and fix up your query based on the supplied parameters where shareObjectRaw will send your supplied json object directly to the server. The later method is provided for the greatest amount of flexibility.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import { ISharingResult, SharingRole } from "@pnp/sp/sharing";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Share an object in this web
 const result = await sp.web.shareObject("https://mysite.sharepoint.com/sites/dev/Docs/test.txt", "i:0#.f|membership|user@site.com", SharingRole.View);
@@ -131,10 +141,12 @@ await sp.web.shareObjectRaw({
 **Applies to: Web**
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import { ISharingResult } from "@pnp/sp/sharing";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result = await sp.web.unshareObject("https://mysite.sharepoint.com/sites/dev/Docs/test.txt");
 ```
@@ -146,11 +158,13 @@ const result = await sp.web.unshareObject("https://mysite.sharepoint.com/sites/d
 Checks Permissions on the list of Users and returns back role the users have on the Item.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing/folders";
 import "@pnp/sp/folders/web";
 import { SharingEntityPermission } from "@pnp/sp/sharing";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // check the sharing permissions for a folder
 const perms = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").checkSharingPermissions([{ alias: "i:0#.f|membership|user@site.com" }]);
@@ -163,11 +177,13 @@ const perms = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Docum
 Get Sharing Information.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import "@pnp/sp/folders";
 import { ISharingInformation } from "@pnp/sp/sharing";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Get the sharing information for a folder
 const info = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getSharingInformation();
@@ -180,11 +196,13 @@ const info = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Docume
 Gets the sharing settings
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import "@pnp/sp/folders";
 import { IObjectSharingSettings } from "@pnp/sp/sharing";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Gets the sharing object settings
 const settings: IObjectSharingSettings = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getObjectSharingSettings();
@@ -197,11 +215,13 @@ const settings: IObjectSharingSettings = await sp.web.getFolderByServerRelativeU
 Unshares a given resource
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import "@pnp/sp/folders";
 import { ISharingResult } from "@pnp/sp/sharing";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshare();
 ```
@@ -211,11 +231,13 @@ const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl("/sites
 **Applies to: Item, Folder, File**
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import "@pnp/sp/folders";
 import { ISharingResult, SharingLinkKind } from "@pnp/sp/sharing";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").deleteSharingLinkByKind(SharingLinkKind.AnonymousEdit);
 ```
@@ -225,11 +247,13 @@ const result: ISharingResult = await sp.web.getFolderByServerRelativeUrl("/sites
 **Applies to: Item, Folder, File**
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/sharing";
 import "@pnp/sp/folders";
 import { SharingLinkKind } from "@pnp/sp/sharing";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").unshareLink(SharingLinkKind.AnonymousEdit);
 

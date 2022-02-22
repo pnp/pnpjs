@@ -9,12 +9,13 @@ Permissions in SharePoint are assigned to the set of securable objects which inc
 This gets a collection of all the role assignments on a given securable. The property returns a RoleAssignments collection which supports the OData collection operators.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/web";
 import "@pnp/sp/security";
-import { Logger } from "@pnp/logging";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const roles = await sp.web.roleAssignments();
-Logger.writeJSON(roles);
 ```
 
 ## First Unique Ancestor Securable Object
@@ -22,12 +23,13 @@ Logger.writeJSON(roles);
 This method can be used to find the securable parent up the hierarchy that has unique permissions. If everything inherits permissions this will be the Site. If a sub web has unique permissions it will be the web, and so on.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/web";
 import "@pnp/sp/security";
-import { Logger } from "@pnp/logging";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const obj = await sp.web.firstUniqueAncestorSecurableObject();
-Logger.writeJSON(obj);
 ```
 
 ## User Effective Permissions
@@ -35,15 +37,15 @@ Logger.writeJSON(obj);
 This method returns the BasePermissions for a given user or the current user. This value contains the High and Low values for a user on the securable you have queried.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/web";
 import "@pnp/sp/security";
-import { Logger } from "@pnp/logging";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const perms = await sp.web.getUserEffectivePermissions("i:0#.f|membership|user@site.com");
-Logger.writeJSON(perms);
 
 const perms2 = await sp.web.getCurrentUserEffectivePermissions();
-Logger.writeJSON(perms2);
 ```
 
 ## User Has Permissions
@@ -51,14 +53,15 @@ Logger.writeJSON(perms2);
 Because the High and Low values in the BasePermission don't obviously mean anything you can use these methods along with the PermissionKind enumeration to check actual rights on the securable.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/web";
 import { PermissionKind } from "@pnp/sp/security";
 
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 const perms = await sp.web.userHasPermissions("i:0#.f|membership|user@site.com", PermissionKind.ApproveItems);
-console.log(perms);
 
 const perms2 = await sp.web.currentUserHasPermissions(PermissionKind.ApproveItems);
-console.log(perms2);
 ```
 
 ## Has Permissions
@@ -66,8 +69,11 @@ console.log(perms2);
 If you need to check multiple permissions it can be more efficient to get the BasePermissions once and then use the hasPermissions method to check them as shown below.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/web";
 import { PermissionKind } from "@pnp/sp/security";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const perms = await sp.web.getCurrentUserEffectivePermissions();
 if (sp.web.hasPermissions(perms, PermissionKind.AddListItems) && sp.web.hasPermissions(perms, PermissionKind.DeleteVersions)) {

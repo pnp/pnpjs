@@ -3,7 +3,7 @@ import { Event as IEventType, Calendar as ICalendarType } from "@microsoft/micro
 import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById } from "../decorators.js";
 import { graphPost } from "../operations.js";
-import { calendarView } from "./funcs.js";
+import { calendarView, instances } from "./funcs.js";
 
 /**
  * Calendar
@@ -16,7 +16,7 @@ export class _Calendar extends _GraphQueryableInstance<ICalendarType> {
 
     public calendarView = calendarView;
 }
-export interface ICalendar extends _Calendar {}
+export interface ICalendar extends _Calendar { }
 export const Calendar = graphInvokableFactory<ICalendar>(_Calendar);
 
 /**
@@ -33,7 +33,9 @@ export const Calendars = graphInvokableFactory<ICalendars>(_Calendars);
  */
 @deleteable()
 @updateable()
-export class _Event extends _GraphQueryableInstance<IEventType> { }
+export class _Event extends _GraphQueryableInstance<IEventType> {
+    public instances = instances;
+}
 export interface IEvent extends _Event, IDeleteable, IUpdateable { }
 export const Event = graphInvokableFactory<IEvent>(_Event);
 

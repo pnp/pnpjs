@@ -6,11 +6,6 @@ _These APIs are currently in BETA and are subject to change or may not work on a
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { spfi } from "@pnp/sp";<br />import "@pnp/sp/comments";|
-|Preset: All|import { spfi } from "@pnp/sp/presets/all";|
-
 ## ClientsidePage Comments
 
 The IClientsidePage interface has three methods to provide easier access to the comments for a page, without requiring that you load the item separately.
