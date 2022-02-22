@@ -176,6 +176,16 @@ console.log(r.Title);
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
+<<<<<<< HEAD
+|Scenario|Import Statement|
+|--|--|
+|Selective 1|import { List, IList } from "@pnp/sp/lists";|
+|Selective 2|import "@pnp/sp/lists";|
+|Preset: All|import { sp, List, IList } from "@pnp/sp/presets/all";|
+|Preset: Core|import { sp, List, IList } from "@pnp/sp/presets/core";|
+
+=======
+>>>>>>> 52a91d788431066d44d536df1352b6ce855675e3
 ### Update a list
 
 Update an existing list with the provided properties. You can also provide an eTag value that will be used in the IF-Match header (default is "*")

@@ -35,9 +35,10 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
             DefaultInit(),
             BrowserFetchWithRetry(),
             DefaultParse(),
-            RequestDigest(() => {
+            RequestDigest((url) => {
 
-                if (context?.pageContext?.legacyPageContext?.formDigestValue) {
+                const sameWeb = (new RegExp(`^${combine(context.pageContext.web.absoluteUrl, "/_api")}`, "i")).test(url);
+                if (sameWeb && context?.pageContext?.legacyPageContext?.formDigestValue) {
 
                     return {
                         value: context.pageContext.legacyPageContext.formDigestValue,

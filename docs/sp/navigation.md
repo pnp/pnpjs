@@ -49,6 +49,13 @@ const key = await sp.navigation.getMenuNodeKey("/sites/dev/Lists/SPPnPJSExampleL
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
+<<<<<<< HEAD
+|Scenario|Import Statement|
+|--|--|
+|Selective 1|import "@pnp/sp/webs";<br />import "@pnp/sp/navigation";
+
+=======
+>>>>>>> 52a91d788431066d44d536df1352b6ce855675e3
 The navigation object contains two properties "quicklaunch" and "topnavigationbar". Both have the same set of methods so our examples below show use of only quicklaunch but apply equally to topnavigationbar.
 
 ### Get navigation
