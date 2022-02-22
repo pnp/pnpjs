@@ -4,20 +4,17 @@ The search module allows you to access the Microsoft Graph Search API. You can r
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-| Scenario    | Import Statement                                                  |
-| ----------- | ----------------------------------------------------------------- |
-| Selective   | import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/search"; |
-| Preset: All | import "@pnp/graph/presets/all";    |
-
-## Call graphfi().query
+## Call graph.query
 
 This example shows calling the search API via the `query` method of the root graph object.
 
 ```TypeScript
-import { graphfi } from "@pnp/graph";
+import { graphfi, SPFx } from "@pnp/graph";
 import "@pnp/graph/search";
 
-const results = await graphfi().query({
+const graph = graphfi().using(SPFx(this.context));
+
+const results = await graph.query({
     entityTypes: ["site"],
     query: {
         queryString: "test"

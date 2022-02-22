@@ -4,7 +4,7 @@
 
 At the most basic level PnPjs is a set of libraries used to build and execute a web request and handle the response from that request. Conceptually each object in the fluent chain serves as input when creating the next object in the chain. This is how configuration, url, query, and other values are passed along. To get a sense for what this looks like see the code below. This is taken from inside the [webs submodule](https://github.com/pnp/pnpjs/blob/version-2/packages/sp/webs/types.ts#L77) and shows how the "webs" property is added to the web class.
 
-```ts
+```TypeScript
 // TypeScript property, returning an interface
 public get webs(): IWebs {
     // using the Webs factory function and providing "this" as the first parameter
@@ -16,7 +16,7 @@ public get webs(): IWebs {
 
 PnPjs v3 is designed to only expose interfaces and factory functions. Let's look at the Webs factory function, used above as an example. All factory functions in sp and graph have a similar form.
 
-```ts
+```TypeScript
 // create a constant which is a function of type ISPInvokableFactory having the name Webs
 // this is bound by the generic type param to return an IWebs instance
 // and it will use the _Webs concrete class to form the internal type of the invocable
@@ -25,19 +25,19 @@ export const Webs = spInvokableFactory<IWebs>(_Webs);
 
 The ISPInvokableFactory type looks like:
 
-```ts
+```TypeScript
 export type ISPInvokableFactory<R = any> = (baseUrl: string | ISharePointQueryable, path?: string) => R;
 ```
 
 And the matching graph type:
 
-```ts
+```TypeScript
 <R>(f: any): (baseUrl: string | IGraphQueryable, path?: string) => R
 ```
 
 The general idea of a factory function is that it takes two parameters. The first is either a string or Queryable derivative which forms base for the new object. The second is the next part of the url. In some cases (like the webs property example above) you will note there is no second parameter. Some classes are decorated with defaultPath, which automatically fills the second param. Don't worry too much right now about the deep internals of the library, let's instead focus on some concrete examples.
 
-```ts
+```TypeScript
 import { Web } from "@pnp/sp/webs";
 
 // create a web from an absolute url
@@ -58,7 +58,7 @@ Now hey you might say - you can't create a request to current user using the Web
 
 Internally to the library we have a bit of complexity to make the whole invocable proxy architecture work and provide the typings folks expect. Here is an example implementation with extra comments explaining what is happening. You don't need to understand the entire stack to [add a property](#add-a-property) or [method](#add-a-method)
 
-```ts
+```TypeScript
 /*
 The concrete class implementation. This is never exported or shown directly
 to consumers of the library. It is wrapped by the Proxy we do expose.
@@ -108,7 +108,7 @@ export const HubSite = spInvokableFactory<IHubSite>(_HubSite);
 
 In most cases you won't need to create the class, interface, or factory - you just want to add a property or method. An example of this is sp.web.lists. web is a property of sp and lists is a property of web. You can have a look at those classes as examples. Let's have a look at the fields on the _View class.
 
-```ts
+```TypeScript
 export class _View extends _SharePointQueryableInstance<IViewInfo> {
 
     // ... other code removed
@@ -132,7 +132,7 @@ export class _View extends _SharePointQueryableInstance<IViewInfo> {
 
 Adding a method is just like adding a property with the key difference that a method usually _does_ something like make a web request or act like a property but take parameters. Let's look at the _Items getById method:
 
-```ts
+```TypeScript
 @defaultPath("items")
 export class _Items extends _SharePointQueryableCollection {
 
@@ -158,7 +158,7 @@ export class _Items extends _SharePointQueryableCollection {
 
 A second example is a method that performs a request. Here we use the _Item recycle method as an example:
 
-```ts
+```TypeScript
 /**
  * Moves the list item to the Recycle Bin and returns the identifier of the new Recycle Bin item.
  */
@@ -168,7 +168,7 @@ A second example is a method that performs a request. Here we use the _Item recy
 public recycle(): Promise<string> {
     // we use the spPost method to post the request created by cloning our current instance IItem using
     // the Item factory and adding the path "recycle" to the end. Url will look like .../items/getById(2)/recycle
-    return spPost<string>(this.clone(Item, "recycle"));
+    return spPost<string>(Item(this, "recycle"));
 }
 ```
 
@@ -176,7 +176,7 @@ public recycle(): Promise<string> {
 
 To understand is how to extend functionality within the selective imports structures look at [list.ts](https://github.com/pnp/pnpjs/blob/main/packages/sp/items/list.ts) file in the items submodule. Here you can see the code below, with extra comments to explain what is happening. Again, you will see this pattern repeated throughout the library so there are many examples available.
 
-```ts
+```TypeScript
 // import the addProp helper
 import { addProp } from "@pnp/queryable";
 // import the _List concrete class from the types module (not the index!)

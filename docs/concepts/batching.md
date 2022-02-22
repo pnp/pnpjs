@@ -4,7 +4,7 @@ Where possible batching can significantly increase application performance by co
 
 ## SP Example
 
-```ts
+```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -34,7 +34,7 @@ for(let i = 0; i < res.length; i++) {
 
 ### Using a batched web
 
-```ts
+```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -66,7 +66,7 @@ for(let i = 0; i < res.length; i++) {
 
 ## Graph Example
 
-```ts
+```TypeScript
 import { graphfi } from "@pnp/graph";
 import { GraphDefault } from "@pnp/nodejs";
 import "@pnp/graph/users";
@@ -158,7 +158,7 @@ await execute();
 
 It shouldn't come up often, but you can not make multiple requests using the same instance of a queryable in a batch. Let's consider the **incorrect** example below:
 
-> The error message will be "This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse."
+> The error message will be "This instance is already part of a batch. Please review the docs at <https://pnp.github.io/pnpjs/concepts/batching#reuse>."
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -220,7 +220,7 @@ await execute();
 
 ## Case where batch result returns an object that can be invoked
 
-In the following example, the results of adding items to the list is an object with a type of **IItemAddResult** which is `{data: any, item: IItem}`. Since version v1 the expectation is that the `item` object is immediately usable to make additional queries. When this object is the result of a batched call, this was not the case so we have added additional code to reset the observers using the original base from witch the batch was created, mimicing the behavior had the **IItem** been created from that base withyout a batch involved. We use [CopyFrom](../core/behaviors.md#CopyFrom) to ensure that we maintain the references to the InternalResolve and InternalReject events through the end of this timelines lifecycle. 
+In the following example, the results of adding items to the list is an object with a type of **IItemAddResult** which is `{data: any, item: IItem}`. Since version v1 the expectation is that the `item` object is immediately usable to make additional queries. When this object is the result of a batched call, this was not the case so we have added additional code to reset the observers using the original base from witch the batch was created, mimicing the behavior had the **IItem** been created from that base withyout a batch involved. We use [CopyFrom](../core/behaviors.md#CopyFrom) to ensure that we maintain the references to the InternalResolve and InternalReject events through the end of this timelines lifecycle.
 
 ```TypeScript
 import { createBatch } from "@pnp/sp/batching";

@@ -1,4 +1,4 @@
-# @pnp/sp/lists
+# @pnp/sp/fields
 
 Fields in SharePoint can be applied to both webs and lists. When referencing a webs' fields you are effectively looking at site columns which are common fields that can be utilized in any list/library in the site. When referencing a lists' fields you are looking at the fields only associated to that particular list.
 
@@ -6,19 +6,13 @@ Fields in SharePoint can be applied to both webs and lists. When referencing a w
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Fields, IFields } from "@pnp/sp/fields";|
-|Selective 2|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/fields";|
-|Preset: All|import { sp, Fields, IFields } from "@pnp/sp/presets/all";|
-
 ### Get Field by Id
 
 Gets a field from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.
 
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
-import { IField } from "@pnp/sp/fields/types";
+import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/fields";
@@ -43,7 +37,7 @@ You can also get a field from the collection by title.
 
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
-import { IField } from "@pnp/sp/fields/types";
+import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists"
 import "@pnp/sp/fields";
@@ -67,7 +61,7 @@ You can also get a field from the collection regardless of if the string is the 
 
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
-import { IField } from "@pnp/sp/fields/types";
+import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists"
 import "@pnp/sp/fields";
@@ -262,7 +256,7 @@ console.log(r.Id);
 
 ### Add a Multi-line Text Field
 
-Use the addMultilineText method to create a new multi-line text field. 
+Use the addMultilineText method to create a new multi-line text field.
 >For Enhanced Rich Text mode, see the next section.
 
 ```TypeScript

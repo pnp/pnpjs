@@ -12,7 +12,7 @@ import { Drive as IDriveType } from "@microsoft/microsoft-graph-types";
 import { combine } from "@pnp/core";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
 import { body, BlobParse } from "@pnp/queryable";
-import { graphPatch, graphPut } from "../operations.js";
+import { graphPatch, graphPost, graphPut } from "../operations.js";
 
 /**
  * Describes a Drive instance
@@ -133,7 +133,43 @@ export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
  *
  */
 @getById(DriveItem)
-export class _DriveItems extends _GraphQueryableCollection { }
+export class _DriveItems extends _GraphQueryableCollection {
+    public async add(filename: string, content: string): Promise<IDriveItemAddResult> {
+
+        // because the graph is not consistent in how it addresses
+        // resources through the path, we have to do some url manipulation
+        const parent = this.getParent(_DriveItems);
+        parent.concat(`:/${filename}:/content`);
+
+        const data = await graphPut(parent, { body: content });
+
+        return {
+            data,
+            driveItem: (<any>this).getById(data.id),
+        };
+    }
+
+    /**
+     * Adds a folder to this collection of drive items
+     * @param name Name of the new folder
+     * @returns result with folder data and chainable drive item object
+     */
+    public async addFolder(name: string): Promise<IDriveItemAddResult> {
+
+        const postBody = {
+            name,
+            folder: {},
+            "@microsoft.graph.conflictBehavior": "rename",
+        };
+
+        const data = await graphPost(this, body(postBody));
+
+        return {
+            data,
+            driveItem: (<any>this).getById(data.id),
+        };
+    }
+}
 export interface IDriveItems extends _DriveItems, IGetById<IDriveItem> { }
 export const DriveItems = graphInvokableFactory<IDriveItems>(_DriveItems);
 

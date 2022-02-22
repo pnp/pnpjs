@@ -2,11 +2,6 @@
 
 The ability to attach file to list items allows users to track documents outside of a document library. You can use the PnP JS Core library to work with attachments as outlined below.
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import "@pnp/sp/attachments";|
-|Preset: All|import { sp, IFeatures, Features } from "@pnp/sp/presets/all";|
-
 ## Get attachments
 
 ```TypeScript

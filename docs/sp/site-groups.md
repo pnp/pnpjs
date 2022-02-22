@@ -6,18 +6,14 @@ The site groups module provides methods to manage groups for a sharepoint site.
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
-|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
-|Preset: All|import {sp, SiteGroups } from "@pnp/sp/presets/all";|
-
 ### Get all site groups
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups/web";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // gets all site groups of the web
 const groups = await sp.web.siteGroups();
@@ -28,9 +24,11 @@ const groups = await sp.web.siteGroups();
 You can get the associated Owner, Member and Visitor groups of a web
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups/web";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Gets the associated visitors group of a web
 const visitorGroup = await sp.web.associatedVisitorGroup();
@@ -46,9 +44,11 @@ const ownerGroup = await sp.web.associatedOwnerGroup();
 ### Create the default associated groups for a web
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups/web";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Breaks permission inheritance and creates the default associated groups for the web
 
@@ -67,9 +67,11 @@ await sp.web.createDefaultAssociatedGroups("PnP Site", owner1, copyRoleAssignmen
 ### Create a new site group
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups/web";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Creates a new site group with the specified title
 await sp.web.siteGroups.add({"Title":"new group name"});
@@ -79,18 +81,23 @@ await sp.web.siteGroups.add({"Title":"new group name"});
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
+<<<<<<< HEAD
 |Scenario|Import Statement|
 |--|--|
 |Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
 |Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
 |Preset: All|import {sp, SiteGroups, SiteGroup } from "@pnp/sp/presets/all";|
 
+=======
+>>>>>>> 52a91d788431066d44d536df1352b6ce855675e3
 ### Getting and updating the groups of a sharepoint web
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get the group using a group id
 const groupID = 33;
@@ -113,9 +120,11 @@ await sp.web.siteGroups.removeByLoginName(groupName);
 ### Getting all users of a group
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get all users of group
 const groupID = 7;
@@ -127,9 +136,11 @@ const users = await sp.web.siteGroups.getById(groupID).users();
 Unfortunately for now setting the owner of a group as another or same SharePoint group is currently unsupported in REST. Setting the owner as a user is supported.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // Update the owner with a user id
 await sp.web.siteGroups.getById(7).setUserAsOwner(4);

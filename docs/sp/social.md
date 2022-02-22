@@ -2,11 +2,6 @@
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import "@pnp/sp/social";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
-
 The social API allows you to track followed sites, people, and docs. Note, many of these methods only work with the context of a logged in user, and not
 with app-only permissions.
 
@@ -15,8 +10,10 @@ with app-only permissions.
 Gets a URI to a site that lists the current user's followed sites.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const uri = await sp.social.getFollowedSitesUri();
 ```
@@ -26,8 +23,10 @@ const uri = await sp.social.getFollowedSitesUri();
 Gets a URI to a site that lists the current user's followed documents.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const uri = await sp.social.getFollowedDocumentsUri();
 ```
@@ -37,8 +36,10 @@ const uri = await sp.social.getFollowedDocumentsUri();
 Makes the current user start following a user, document, site, or tag
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import { SocialActorType } from "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // follow a site
 const r1 = await sp.social.follow({
@@ -74,8 +75,10 @@ const r4 = await sp.social.follow({
 Indicates whether the current user is following a specified user, document, site, or tag
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import { SocialActorType } from "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // pass the same social actor struct as shown in follow example for each type
 const r = await sp.social.isFollowed({
@@ -89,8 +92,10 @@ const r = await sp.social.isFollowed({
 Makes the current user stop following a user, document, site, or tag
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import { SocialActorType } from "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // pass the same social actor struct as shown in follow example for each type
 const r = await sp.social.stopFollowing({
@@ -106,8 +111,10 @@ const r = await sp.social.stopFollowing({
 Gets this user's social information
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const r = await sp.social.my();
 ```
@@ -117,8 +124,10 @@ const r = await sp.social.my();
 Gets users, documents, sites, and tags that the current user is following based on the supplied flags.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import { SocialActorType } from "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get all the followed documents
 const r1 = await sp.social.my.followed(SocialActorTypes.Document);
@@ -135,8 +144,10 @@ const r3 = await sp.social.my.followed(SocialActorTypes.Site | SocialActorTypes.
 Works as followed but returns on the count of actors specified by the query
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import { SocialActorType } from "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get the followed documents count
 const r = await sp.social.my.followedCount(SocialActorTypes.Document);
@@ -147,8 +158,10 @@ const r = await sp.social.my.followedCount(SocialActorTypes.Document);
 Gets the users who are following the current user.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get the followed documents count
 const r = await sp.social.my.followers();
@@ -159,8 +172,10 @@ const r = await sp.social.my.followers();
 Gets users who the current user might want to follow.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/social";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get the followed documents count
 const r = await sp.social.my.suggestions();

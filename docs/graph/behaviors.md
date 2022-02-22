@@ -12,7 +12,7 @@ import "@pnp/graph/users";
 
 const graph = graphfi().using(DefaultInit());
 
-await graphfi().users();
+await graph.users();
 ```
 
 ## DefaultHeaders
@@ -25,7 +25,7 @@ import "@pnp/graph/users";
 
 const graph = graphfi().using(DefaultHeaders());
 
-await graphfi().users();
+await graph.users();
 ```
 
 > DefaultInit and DefaultHeaders are separated to make it easier to create your own default headers or init behavior. You should include both if composing your own default behavior.
@@ -56,7 +56,7 @@ import "@pnp/graph/users";
 // will point to v1 by default
 const graph = graphfi().using();
 
-const user = graphfi().users.getById("{id}");
+const user = graph.users.getById("{id}");
 
 // this only applies to the "user" instance now
 const userInfoFromBeta = user.using(Endpoint("beta"))();
@@ -84,7 +84,7 @@ import "@pnp/graph/users";
 
 const graph = graphfi().using(GraphBrowser());
 
-await graphfi().users();
+await graph.users();
 ```
 
 You can also set a baseUrl. This is equivelent to calling graphfi with an absolute url.
@@ -98,7 +98,7 @@ const graph = graphfi().using(GraphBrowser({ baseUrl: "https://graph.microsoft.c
 // this is the same as the above, and maybe a litter easier to read, and is more efficient
 // const graph = graphfi("https://graph.microsoft.com/v1.0").using(GraphBrowser());
 
-await graphfi().users();
+await graph.users();
 ```
 
 ## SPFx
@@ -112,7 +112,7 @@ import "@pnp/graph/users";
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
 const graph = graphfi().using(SPFx(this.context));
 
-await graphfi().users();
+await graph.users();
 ```
 
 If you want to use a different form of authentication you can apply that behavior after `SPFx` to override it. In this case we are using the [client MSAL authentication](../msaljsclient).
@@ -125,7 +125,7 @@ import "@pnp/graph/users";
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
 const graph = graphfi().using(SPFx(this.context), MSAL({ /* proper MSAL settings */}));
 
-await graphfi().users();
+await graph.users();
 ```
 
 ## Telemetry
@@ -140,5 +140,5 @@ import "@pnp/graph/users";
 
 const graph = graphfi().using(Telemetry());
 
-await graphfi().users();
+await graph.users();
 ```

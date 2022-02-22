@@ -2,12 +2,6 @@
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import "@pnp/sp/items";<br />
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
-|Preset: Core|import { sp } from "@pnp/sp/presets/core";|
-
 ## GET
 
 Getting items from a list is one of the basic actions that most applications require. This is made easy through the library and the following examples demonstrate these actions.
@@ -15,10 +9,12 @@ Getting items from a list is one of the basic actions that most applications req
 ### Basic Get
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get all the items from a list
 const items: any[] = await sp.web.lists.getByTitle("My List").items();
@@ -38,19 +34,21 @@ console.log(items2);
 Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the getPaged method on the Items class to assist. Note that there isn't a way to move backwards in the collection, this is by design. The pattern you should use to support backwards navigation in the results is to cache the results into a local array and use the standard array operators to get previous pages. Alternatively you can append the results to the UI, but this can have performance impact for large result sets.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 // basic case to get paged items form a list
-let items = await sp.web.lists.getByTitle("BigList").items.getPaged();
+const items = await sp.web.lists.getByTitle("BigList").items.getPaged();
 
 // you can also provide a type for the returned values instead of any
-let items = await sp.web.lists.getByTitle("BigList").items.getPaged<{Title: string}[]>();
+const items = await sp.web.lists.getByTitle("BigList").items.getPaged<{Title: string}[]>();
 
 // the query also works with select to choose certain fields and top to set the page size
-let items = await sp.web.lists.getByTitle("BigList").items.select("Title", "Description").top(50).getPaged<{Title: string}[]>();
+const items = await sp.web.lists.getByTitle("BigList").items.select("Title", "Description").top(50).getPaged<{Title: string}[]>();
 
 // the results object will have two properties and one method:
 
@@ -79,20 +77,22 @@ if (items.hasNext) {
 The GetListItemChangesSinceToken method allows clients to track changes on a list. Changes, including deleted items, are returned along with a token that represents the moment in time when those changes were requested. By including this token when you call GetListItemChangesSinceToken, the server looks for only those changes that have occurred since the token was generated. Sending a GetListItemChangesSinceToken request without including a token returns the list schema, the full list contents and a token.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
 // Using RowLimit. Enables paging
-let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({RowLimit: '5'});
+const changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({RowLimit: '5'});
 
 // Use QueryOptions to make a XML-style query.
 // Because it's XML we need to escape special characters
 // Instead of & we use &amp; in the query
-let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({QueryOptions: '<Paging ListItemCollectionPositionNext="Paged=TRUE&amp;p_ID=5" />'});
+const changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({QueryOptions: '<Paging ListItemCollectionPositionNext="Paged=TRUE&amp;p_ID=5" />'});
 
 // Get everything. Using null with ChangeToken gets everything
-let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({ChangeToken: null});
+const changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({ChangeToken: null});
 
 ```
 
@@ -101,10 +101,12 @@ let changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceTo
 Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should be used.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // basic usage
 const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.getAll();
@@ -128,10 +130,12 @@ console.log(allItems.length);
 When working with lookup fields you need to use the expand operator along with select to get the related fields from the lookup column. This works for both the items collection and item instances.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const items = await sp.web.lists.getByTitle("LookupList").items.select("Title", "Lookup/Title", "Lookup/ID").expand("Lookup")();
 console.log(items);
@@ -145,9 +149,11 @@ console.log(item);
 To filter on a metadata field you must use the getItemsByCAMLQuery method as $filter does not support these fields.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const r = await sp.web.lists.getByTitle("TaxonomyList").getItemsByCAMLQuery({
     ViewXml: `<View><Query><Where><Eq><FieldRef Name="MetaData"/><Value Type="TaxonomyFieldType">Term 2</Value></Eq></Where></Query></View>`,
@@ -159,14 +165,16 @@ const r = await sp.web.lists.getByTitle("TaxonomyList").getItemsByCAMLQuery({
 The PublishingPageImage and some other publishing-related fields aren't stored in normal fields, rather in the MetaInfo field. To get these values you need to use the technique shown below, and originally outlined in [this thread](https://github.com/SharePoint/PnP-JS-Core/issues/178). Note that a lot of information can be stored in this field so will pull back potentially a significant amount of data, so limit the rows as possible to aid performance.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { Web } from "@pnp/sp/webs";
+
 try {
-  const w = Web("https://{publishing site url}");
-  const r = await w.lists.getByTitle("Pages").items
+  const sp = spfi("https://{publishing site url}").using(SPFx(this.context));
+
+  const r = await sp.web.lists.getByTitle("Pages").items
     .select("Title", "FileRef", "FieldValuesAsText/MetaInfo")
     .expand("FieldValuesAsText")
     ();
@@ -196,11 +204,13 @@ catch (e) {
 There are several ways to add items to a list. The simplest just uses the _add_ method of the items collection passing in the properties as a plain object.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { IItemAddResult } from "@pnp/sp/items";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // add an item to the list
 const iar: IItemAddResult = await sp.web.lists.getByTitle("My List").items.add({
@@ -216,10 +226,12 @@ console.log(iar);
 You can also set the content type id when you create an item as shown in the example below. For more information on content type IDs reference the [Microsoft Documentation](https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/aa543822(v=office.14)). While this documentation references SharePoint 2010 the structure of the IDs has not changed.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 await sp.web.lists.getById("4D5A36EA-6E84-4160-8458-65C436DB765C").items.add({
     Title: "Test 1",
@@ -234,11 +246,13 @@ There are two types of user fields, those that allow a single value and those th
 Next, you need to remember there are two types of user fields, those that take a single value and those that allow multiple - these are updated in different ways. For single value user fields you supply just the user's id. For multiple value fields, you need to supply an object with a "results" property and an array. Examples for both are shown below.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { getGUID } from "@pnp/core";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const i = await sp.web.lists.getByTitle("PeopleFields").items.add({
   Title: getGUID(),
@@ -254,7 +268,12 @@ console.log(i);
 If you want to update or add user field values when using **validateUpdateListItem** you need to use the form shown below. You can specify multiple values in the array.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result = await sp.web.lists.getByTitle("UserFieldList").items.getById(1).validateUpdateListItem([{
     FieldName: "UserField",
@@ -277,11 +296,13 @@ What is said for User Fields is, in general, relevant to Lookup Fields:
 - Numeric Ids for lookups' items should be passed as values
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { getGUID } from "@pnp/core";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 await sp.web.lists.getByTitle("LookupFields").items.add({
     Title: getGUID(),
@@ -295,16 +316,18 @@ await sp.web.lists.getByTitle("LookupFields").items.add({
 ### Add Multiple Items
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-let list = sp.web.lists.getByTitle("rapidadd");
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+const list = sp.web.lists.getByTitle("rapidadd");
 
 const entityTypeFullName = await list.getListItemEntityTypeFullName()
 
-let batch = sp.web.createBatch();
+const batch = sp.web.createBatch();
 
 list.items.inBatch(batch).add({ Title: "Batch 6" }, entityTypeFullName).then(b => {
   console.log(b);
@@ -323,12 +346,14 @@ console.log("Done");
 The update method is very similar to the add method in that it takes a plain object representing the fields to update. The property names are the internal names of the fields. If you aren't sure you can always do a get request for an item in the list and see the field names that come back - you would use these same names to update the item.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-let list = sp.web.lists.getByTitle("MyList");
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+const list = sp.web.lists.getByTitle("MyList");
 
 const i = await list.items.getById(1).update({
   Title: "My New Title",
@@ -341,10 +366,12 @@ console.log(i);
 ### Getting and updating a collection using filter
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // you are getting back a collection here
 const items: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'")();
@@ -364,16 +391,18 @@ if (items.length > 0) {
 This approach avoids multiple calls for the same list's entity type name.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-let list = sp.web.lists.getByTitle("rapidupdate");
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+const list = sp.web.lists.getByTitle("rapidupdate");
 
 const entityTypeFullName = await list.getListItemEntityTypeFullName()
 
-let batch = sp.web.createBatch();
+const batch = sp.web.createBatch();
 
 // note requirement of "*" eTag param - or use a specific eTag value as needed
 list.items.getById(1).inBatch(batch).update({ Title: "Batch 6" }, "*", entityTypeFullName).then(b => {
@@ -389,17 +418,52 @@ console.log("Done")
 
 ```
 
+### Update Multi-value Taxonomy field
+
+_Based on [this excellent article](https://www.aerieconsulting.com/blog/update-using-rest-to-update-a-multi-value-taxonomy-field-in-sharepoint) from Beau Cameron._
+
+As he says you must update a hidden field to get this to work via REST. My meta data field accepting multiple values is called "MultiMetaData".
+
+```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/fields";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+// first we need to get the hidden field's internal name.
+// The Title of that hidden field is, in my case and in the linked article just the visible field name with "_0" appended.
+const fields = await sp.web.lists.getByTitle("TestList").fields.filter("Title eq 'MultiMetaData_0'").select("Title", "InternalName")();
+// get an item to update, here we just create one for testing
+const newItem = await sp.web.lists.getByTitle("TestList").items.add({
+  Title: "Testing",
+});
+// now we have to create an update object
+// to do that for each field value you need to serialize each as -1;#{field label}|{field id} joined by ";#"
+// update with the values you want, this also works in the add call directly to avoid a second call
+const updateVal = {};
+Reflect.defineProperty(updateVal, fields[0].InternalName, {
+  value: "-1;#New Term|bb046161-49cc-41bd-a459-5667175920d4;#-1;#New 2|0069972e-67f1-4c5e-99b6-24ac5c90b7c9"
+});
+// execute the update call
+await newItem.item.update(updateVal);
+```
+
 ## Recycle
 
 To send an item to the recycle bin use recycle.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-let list = sp.web.lists.getByTitle("MyList");
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+const list = sp.web.lists.getByTitle("MyList");
 
 const recycleBinIdentifier = await list.items.getById(1).recycle();
 ```
@@ -409,29 +473,31 @@ const recycleBinIdentifier = await list.items.getById(1).recycle();
 Delete is as simple as calling the .delete method. It optionally takes an eTag if you need to manage concurrency.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-let list = sp.web.lists.getByTitle("MyList");
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+const list = sp.web.lists.getByTitle("MyList");
 
 await list.items.getById(1).delete();
 ```
 
 ## Delete With Params
 
-
-
 Deletes the item object with options.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-let list = sp.web.lists.getByTitle("MyList");
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+const list = sp.web.lists.getByTitle("MyList");
 
 await list.items.getById(1).deleteWithParams({
                 BypassSharedLock: true,
@@ -448,11 +514,13 @@ Field's `EntityPropertyName` value should be used.
 The easiest way to get know EntityPropertyName is to use the following snippet:
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/fields";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const response =
   await sp.web.lists
@@ -474,14 +542,14 @@ Lookup fields' names should be ended with additional `Id` suffix. E.g. for `Edit
 
 ### getParentInfos
 
-
-
 Gets information about an item, including details about the parent list, parent list root folder, and parent web.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/items";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const item: any = await sp.web.lists.getByTitle("My List").items.getById(1)();
 await item.getParentInfos();
