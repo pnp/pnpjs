@@ -81,6 +81,15 @@ await sp.web.siteGroups.add({"Title":"new group name"});
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
+<<<<<<< HEAD
+|Scenario|Import Statement|
+|--|--|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
+|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
+|Preset: All|import {sp, SiteGroups, SiteGroup } from "@pnp/sp/presets/all";|
+
+=======
+>>>>>>> 52a91d788431066d44d536df1352b6ce855675e3
 ### Getting and updating the groups of a sharepoint web
 
 ```TypeScript

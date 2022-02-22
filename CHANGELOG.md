@@ -5,9 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 3.0.0 - 2022-Feb-14
+## 3.0.2 - 2022-Feb-22
 
 ### Fixed
+
+- sp:
+  - Issue in SPFx behavior with improperly using current web's request digest for non-current web calls #2102
+
+- docs:
+  - Updates based on feedback
+  - Sample updates for v3
+
+## 3.0.1 - 2022-Feb-15
+
+### Fixed
+
+- sp:
+  - Fixed root property initializers #2082
+
+## 3.0.0 - 2022-Feb-14
 
 ### Added
 
@@ -15,7 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Introduced "Timeline" concept with Timline, moments, and observers
   - delay utility function
 
-- logging
+- logging:
   - new PnPLogging behavior to integrate with new model
 
 ### Changed
@@ -112,6 +128,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - removed regional settings.installedLanguages => use getInstalledLanguages
   - removed metadata method
 
-- sp-addinhelpers
+- sp-addinhelpers:
   - Dropped entire package, no longer needed
   

@@ -67,7 +67,7 @@ Finally, if you always want to make your requests to the beta end point (as an e
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 
-const beta = graphfi("https://graphfi().microsoft.com/beta");
+const beta = graphfi("https://graph.microsoft.com/beta");
 ```
 
 ## GraphBrowser
@@ -93,10 +93,10 @@ You can also set a baseUrl. This is equivelent to calling graphfi with an absolu
 import { graphfi, GraphBrowser } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(GraphBrowser({ baseUrl: "https://graphfi().microsoft.com/v1.0" }));
+const graph = graphfi().using(GraphBrowser({ baseUrl: "https://graph.microsoft.com/v1.0" }));
 
 // this is the same as the above, and maybe a litter easier to read, and is more efficient
-// const graph = graphfi("https://graphfi().microsoft.com/v1.0").using(GraphBrowser());
+// const graph = graphfi("https://graph.microsoft.com/v1.0").using(GraphBrowser());
 
 await graph.users();
 ```

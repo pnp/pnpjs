@@ -16,7 +16,7 @@ const cache = new Map<string, ResolvedValue>();
 
 export function createResolve(innerPath: string): ResolverFunc {
 
-    return async function (specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue> {
+    return async function (specifier: string, context: ResolveContext, defaultResolve: ResolverFunc): Promise<ResolvedValue> {
 
         if (specifier.startsWith("@pnp")) {
 
@@ -69,20 +69,20 @@ export function createResolve(innerPath: string): ResolverFunc {
             } else {
 
                 // any relative resolves will be our code (probably :))
-                specifier = defaultResolve(specifier, context, defaultResolve);
+                const localSpecifier = await Promise.resolve(defaultResolve(specifier, context, defaultResolve));
 
-                if ((<any>specifier).url.indexOf("node_modules") > -1 || (<any>specifier).url.indexOf("node:") > -1) {
+                if (localSpecifier.url.indexOf("node_modules") > -1 || localSpecifier.url.indexOf("node:") > -1) {
 
-                    return <any>specifier;
+                    return localSpecifier;
 
                 } else {
 
-                    if (/^[^(file:\/\/)]/.test((<any>specifier).url)) {
-                        (<any>specifier).url = "file://" + (<any>specifier).url;
+                    if (/^[^(file:\/\/)]/.test(localSpecifier.url)) {
+                        localSpecifier.url = "file://" + localSpecifier.url;
                     }
 
                     return {
-                        ...<any>specifier,
+                        ...localSpecifier,
                         format: "module",
                     };
                 }
@@ -105,5 +105,5 @@ export interface ResolveContext {
 }
 
 export interface ResolverFunc {
-    (specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue>;
+    (specifier: string, context: ResolveContext, defaultResolve: ResolverFunc): Promise<ResolvedValue> | ResolvedValue;
 }
