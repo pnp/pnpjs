@@ -8,7 +8,7 @@ Forms in SharePoint are the Display, New, and Edit forms associated with a list.
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />
+|Selective 1|import { Webs, IWebs } from "@pnp/sp/webs"; <br />
 import "@pnp/sp/forms";<br/>
 import "@pnp/sp/lists";
 

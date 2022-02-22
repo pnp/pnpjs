@@ -8,7 +8,7 @@ Webhooks on a SharePoint list are used to notify any change in the list, to othe
 
 | Scenario    | Import Statement                                                                                                                                                                                                           |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Selective   | import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import { Subscriptions, ISubscriptions} from "@pnp/sp/subscriptions";<br />import "@pnp/sp/subscriptions/list" |
+| Selective   | import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import { Subscriptions, ISubscriptions} from "@pnp/sp/subscriptions";<br />import "@pnp/sp/subscriptions/list" |
 | Preset: All | import {sp, Webs, IWebs, Lists, ILists, Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/presets/all";                                                                                            |
 
 ### Add a webhook
@@ -54,7 +54,7 @@ This interface provides the methods for managing a particular webhook.
 
 | Scenario    | Import Statement                                                                                                                                                                                                                                        |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Selective   | import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import { Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/subscriptions";<br />import "@pnp/sp/subscriptions/list" |
+| Selective   | import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import { Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/subscriptions";<br />import "@pnp/sp/subscriptions/list" |
 | Preset: All | import { sp, Webs, IWebs, Lists, ILists, Subscriptions, ISubscriptions, Subscription, ISubscription } from "@pnp/sp/presets/all";                                                                                                                       |
 
 ### Managing a webhook

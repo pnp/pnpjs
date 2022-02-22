@@ -4,7 +4,7 @@ The ability to attach file to list items allows users to track documents outside
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/attachments";|
+|Selective 1|import "@pnp/sp/attachments";|
 |Preset: All|import { sp, IFeatures, Features } from "@pnp/sp/presets/all";|
 
 ## Get attachments

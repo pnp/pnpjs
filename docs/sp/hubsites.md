@@ -8,7 +8,7 @@ This module helps you with working with hub sites in your tenant.
 
 | Scenario    | Import Statement                                                  |
 | ----------- | ----------------------------------------------------------------- |
-| Selective   | import { sp } from "@pnp/sp";<br />import "@pnp/sp/hubsites"; |
+| Selective   | import "@pnp/sp/hubsites"; |
 | Preset: All | import { sp, HubSites, IHubSites } from "@pnp/sp/presets/all";    |
 
 ### Get a Listing of All Hub sites

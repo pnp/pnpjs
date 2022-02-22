@@ -9,7 +9,7 @@ Check out [SharePoint site design and site script overview](https://docs.microso
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/site-designs";|
+|Selective 1|import "@pnp/sp/site-designs";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ## Create a new site design

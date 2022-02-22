@@ -8,8 +8,8 @@ Represents a custom action associated with a SharePoint list, web or site collec
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { IUserCustomActions, IUserCustomAction } from "@pnp/sp/user-custom-actions";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/user-custom-actions";|
+|Selective 1|import { IUserCustomActions, IUserCustomAction } from "@pnp/sp/user-custom-actions";|
+|Selective 2|import "@pnp/sp/user-custom-actions";|
 |Preset: All|import { sp, IUserCustomActions, IUserCustomAction } from "@pnp/sp/presents/all";|
 
 ### Get a collection of User Custom Actions from a web

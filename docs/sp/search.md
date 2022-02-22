@@ -8,7 +8,7 @@ Using search you can access content throughout your organization in a secure and
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/search";<br />import { ISearchQuery, SearchResults } from "@pnp/sp/search";|
+|Selective 1|import "@pnp/sp/search";<br />import { ISearchQuery, SearchResults } from "@pnp/sp/search";|
 |Preset: All|import { sp, ISearchQuery, SearchResults } from "@pnp/sp/presets/all";|
 
 Search is accessed directly from the root sp object and can take either a string representing the query text, a plain object matching the ISearchQuery interface, or a SearchQueryBuilder instance.

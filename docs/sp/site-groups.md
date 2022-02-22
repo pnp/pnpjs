@@ -8,8 +8,8 @@ The site groups module provides methods to manage groups for a sharepoint site.
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
+|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
 |Preset: All|import {sp, SiteGroups } from "@pnp/sp/presets/all";|
 
 ### Get all site groups
@@ -81,8 +81,8 @@ await sp.web.siteGroups.add({"Title":"new group name"});
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
+|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
 |Preset: All|import {sp, SiteGroups, SiteGroup } from "@pnp/sp/presets/all";|
 
 ### Getting and updating the groups of a sharepoint web

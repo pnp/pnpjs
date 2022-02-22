@@ -8,8 +8,8 @@ Lists in SharePoint are collections of information built in a structural way usi
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Lists, ILists } from "@pnp/sp/lists";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";|
+|Selective 1|import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Lists, ILists } from "@pnp/sp/lists";|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/lists";|
 |Preset: All|import { sp, Lists, ILists } from "@pnp/sp/presets/all";|
 |Preset: Core|import { sp, Lists, ILists } from "@pnp/sp/presets/core";|
 
@@ -155,8 +155,8 @@ console.log(r.Title);
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { List, IList } from "@pnp/sp/lists";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/lists";|
+|Selective 1|import { List, IList } from "@pnp/sp/lists";|
+|Selective 2|import "@pnp/sp/lists";|
 |Preset: All|import { sp, List, IList } from "@pnp/sp/presets/all";|
 |Preset: Core|import { sp, List, IList } from "@pnp/sp/presets/core";|
 

@@ -2,6 +2,7 @@ import { combine, dateAdd, isUrlAbsolute, TimelinePipe } from "@pnp/core";
 import { BrowserFetchWithRetry, DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "./defaults.js";
 import { RequestDigest } from "./request-digest.js";
+import { extractWebUrl } from "../utils/extract-web-url.js";
 
 interface ISPFXContext {
 
@@ -35,9 +36,10 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
             DefaultInit(),
             BrowserFetchWithRetry(),
             DefaultParse(),
-            RequestDigest(() => {
+            RequestDigest((url) => {
 
-                if (context?.pageContext?.legacyPageContext?.formDigestValue) {
+                const sameWeb = (new RegExp(`^${combine(context.pageContext.web.absoluteUrl, "/")}`, "i")).test(extractWebUrl(url));
+                if (sameWeb && context?.pageContext?.legacyPageContext?.formDigestValue) {
 
                     return {
                         value: context.pageContext.legacyPageContext.formDigestValue,

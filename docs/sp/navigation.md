@@ -6,7 +6,7 @@
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/navigation";
+|Selective 1|import "@pnp/sp/navigation";
 
 ### getMenuState
 
@@ -51,7 +51,7 @@ const key = await sp.navigation.getMenuNodeKey("/sites/dev/Lists/SPPnPJSExampleL
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/navigation";
+|Selective 1|import "@pnp/sp/webs";<br />import "@pnp/sp/navigation";
 
 The navigation object contains two properties "quicklaunch" and "topnavigationbar". Both have the same set of methods so our examples below show use of only quicklaunch but apply equally to topnavigationbar.
 

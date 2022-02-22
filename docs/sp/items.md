@@ -4,7 +4,7 @@
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import "@pnp/sp/items";<br />
+|Selective 1|import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import "@pnp/sp/items";<br />
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 |Preset: Core|import { sp } from "@pnp/sp/presets/core";|
 

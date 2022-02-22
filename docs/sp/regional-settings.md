@@ -8,9 +8,9 @@ The regional settings module helps with managing dates and times across various 
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import { IRegionalSettings, ITimeZone, ITimeZones, RegionalSettings, TimeZone, TimeZones, } from "@pnp/sp/regional-settings";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/regional-settings";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/regional-settings/web";|
+|Selective 1|import "@pnp/sp/webs";<br />import { IRegionalSettings, ITimeZone, ITimeZones, RegionalSettings, TimeZone, TimeZones, } from "@pnp/sp/regional-settings";|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/regional-settings";|
+|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/regional-settings/web";|
 |Preset: All|import { sp, Webs, IWebs } from "@pnp/sp/presets/all";|
 
 ```TypeScript

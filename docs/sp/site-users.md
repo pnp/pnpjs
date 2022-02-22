@@ -8,8 +8,8 @@ The site users module provides methods to manage users for a sharepoint site.
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
+|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
 |Preset: All|import {sp, SiteUsers } from "@pnp/sp/presets/all";|
 
 ### Get all site user
@@ -60,8 +60,8 @@ result = await sp.web.ensureUser(username);
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
+|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
 |Preset: All|import {sp, SiteUsers, SiteUser } from "@pnp/sp/presets/all";|
 
 ### Get user Groups

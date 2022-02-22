@@ -4,7 +4,7 @@
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/social";|
+|Selective 1|import "@pnp/sp/social";|
 |Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 The social API allows you to track followed sites, people, and docs. Note, many of these methods only work with the context of a logged in user, and not
