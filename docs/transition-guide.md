@@ -21,7 +21,7 @@ The biggest change in version 3 of the library is the movement away from the glo
 Because of this change, any architecture that relies on the `sp` or `graph` objects being configured during initialization and then reused throughout the solution will need to be rethought. Essentially you have three options:
 
 1. Create a new `spfi`/`graphfi` object wherever it's required.
-1. Create a [service architecture](./getting-started/#establish-context-within-an-spfx-service) that can return a previously configured instance or utilize an instance and return the results
+1. Create a [service architecture](../getting-started/#establish-context-within-an-spfx-service) that can return a previously configured instance or utilize an instance and return the results
 1. Utilize a [Project Preset file](./concepts/project-preset.md).
 
 In other words, the `sp` and `graph` objects have been deprecated and will need to be replaced.
