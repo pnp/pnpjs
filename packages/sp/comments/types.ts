@@ -73,7 +73,6 @@ export class _Comment extends _SPInstance<ICommentInfo> {
      * Deletes this comment
      */
     public delete(): Promise<void> {
-        // return spPost(Comment(this, "DeleteComment"));
         return spDelete(this);
     }
 }

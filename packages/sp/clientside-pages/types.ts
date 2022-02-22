@@ -302,7 +302,10 @@ export class _ClientsidePage extends _SPQueryable {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        if (this._bannerImageDirty) {
+        const previewPartialUrl = "_layouts/15/getpreview.ashx";
+
+        // If new banner image, and banner image url is not in getpreview.ashx format
+        if (this._bannerImageDirty && !this.bannerImageUrl.includes(previewPartialUrl)) {
 
             const serverRelativePath = this.bannerImageUrl;
 
@@ -321,7 +324,7 @@ export class _ClientsidePage extends _SPQueryable {
             // we know the .then calls above will run before execute resolves, ensuring the vars are set
             await execute();
 
-            const f = SPQueryable(webUrl, "_layouts/15/getpreview.ashx");
+            const f = SPQueryable(webUrl, previewPartialUrl);
             f.query.set("guidSite", `${imgInfo.SiteId}`);
             f.query.set("guidWeb", `${imgInfo.WebId}`);
             f.query.set("guidFile", `${imgInfo.UniqueId}`);
@@ -362,6 +365,7 @@ export class _ClientsidePage extends _SPQueryable {
             LayoutWebpartsContent: this.getLayoutWebpartsContent(),
             Title: this.title,
             TopicHeader: this.topicHeader,
+            BannerImageUrl: this.bannerImageUrl,
         };
 
         if (this._bannerImageDirty || this._bannerImageThumbnailUrlDirty) {
@@ -388,6 +392,9 @@ export class _ClientsidePage extends _SPQueryable {
 
         this._bannerImageDirty = false;
         this._bannerImageThumbnailUrlDirty = false;
+
+        // we need to ensure we reload from the latest data to ensure all urls are updated and current in the object (expecially for new pages)
+        await this.load();
 
         return r;
     }
@@ -666,6 +673,75 @@ export class _ClientsidePage extends _SPQueryable {
         return Object.assign(Item([this, odataUrlFrom(itemData)]), itemData);
     }
 
+    /**
+         * Recycle this page
+         */
+    public async recycle(): Promise<void> {
+        const item = await this.getItem();
+        await item.recycle();
+    }
+
+    /**
+     * Delete this page
+     */
+    public async delete(): Promise<void> {
+        const item = await this.getItem();
+        await item.delete();
+    }
+
+    // not yet active in service
+    // /**
+    //  * Schedules a page for publishing
+    //  *
+    //  * @param publishDate Date to publish the item
+    //  * @returns Publish work item details
+    //  */
+    // public async schedulePublish(publishDate: Date): Promise<string> {
+
+    //     let r: string;
+
+    //     // currently the server throws an exception, but then the page is published as expected
+    //     // so we just ignore that error for now, YMMV
+    //     try {
+    //         r = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/SchedulePublish`), body({
+    //             sitePage: { PublishStartDate: publishDate },
+    //         }));
+    //     } catch {
+    //         r = "";
+    //     }
+
+    //     return r;
+    // }
+
+    /**
+     * Saves a copy of this page as a template in this library's Templates folder
+     *
+     * @param publish If true the template is published, false the template is not published (default: true)
+     * @returns IClientsidePage instance representing the new template page
+     */
+    public async saveAsTemplate(publish = true): Promise<IClientsidePage> {
+        const data = await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/SavePageAsTemplate`));
+        const page = ClientsidePage(this, null, data);
+        page.title = this.title;
+        await page.save(publish);
+        return page;
+    }
+
+    /**
+     * Share this Page's Preview content by Email
+     *
+     * @param emails Set of emails to which the preview is shared
+     * @param message The message to include
+     * @returns void
+     */
+    public share(emails: string[], message: string): Promise<void> {
+        return spPost(ClientsidePage(this, "_api/SP.Publishing.RichSharing/SharePageByEmail"), body({
+            recipientEmails: emails,
+            message,
+            url: this.json.AbsoluteUrl,
+        }));
+    }
+
     protected getCanvasContent1(): string {
         return JSON.stringify(this.getControls());
     }
@@ -739,7 +815,7 @@ export class _ClientsidePage extends _SPQueryable {
                 } else {
                     column.controls.forEach(control => {
                         control.data.emphasis = this.getEmphasisObj(section.emphasis);
-                        canvasData.push(control.data);
+                        canvasData.push(this.specialSaveHandling(control).data);
                     });
                 }
             });
@@ -857,6 +933,30 @@ export class _ClientsidePage extends _SPQueryable {
         }
 
         return section;
+    }
+
+    /**
+     * Based on issue #1690 we need to take special case actions to ensure some things
+     * can be saved properly without breaking existing pages.
+     *
+     * @param control The control we are ensuring is "ready" to be saved
+     */
+    private specialSaveHandling(control: ColumnControl<any>): ColumnControl<any> {
+
+        // this is to handle the special case in issue #1690
+        // must ensure that searchablePlainTexts values have < replaced with &lt; in links web part
+        if ((<any>control).data.controlType === 3 && (<any>control).data.webPartId === "c70391ea-0b10-4ee9-b2b4-006d3fcad0cd") {
+            const texts = (<any>control).data?.webPartData?.serverProcessedContent?.searchablePlainTexts || null;
+            if (objectDefinedNotNull(texts)) {
+                const keys = Object.getOwnPropertyNames(texts);
+                for (let i = 0; i < keys.length; i++) {
+                    texts[keys[i]] = texts[keys[i]].replace(/</ig, "&lt;");
+                    (<any>control).data.webPartData.serverProcessedContent.searchablePlainTexts = texts;
+                }
+            }
+        }
+
+        return control;
     }
 }
 export interface IClientsidePage extends _ClientsidePage { }
@@ -1522,4 +1622,17 @@ export interface IBannerImageProps {
     imageSourceType?: number;
     translateX?: number;
     translateY?: number;
+}
+
+export interface IRepostPage {
+    Description?: string;
+    IsBannerImageUrlExternal?: boolean;
+    OriginalSourceListId?: string;
+    ShouldSaveAsDraft?: boolean;
+    OriginalSourceSiteId?: string;
+    BannerImageUrl?: string;
+    Title?: string;
+    OriginalSourceItemId?: string;
+    OriginalSourceUrl?: string;
+    OriginalSourceWebId?: string;
 }

@@ -20,7 +20,7 @@ export class _HubSites extends _SPCollection<IHubSiteInfo[]> {
 
     }
 }
-export interface IHubSites extends _HubSites {}
+export interface IHubSites extends _HubSites { }
 export const HubSites = spInvokableFactory<IHubSites>(_HubSites);
 
 export class _HubSite extends _SPInstance<IHubSiteInfo> {
@@ -33,7 +33,7 @@ export class _HubSite extends _SPInstance<IHubSiteInfo> {
         return Site([this, d.SiteUrl]);
     }
 }
-export interface IHubSite extends _HubSite {}
+export interface IHubSite extends _HubSite { }
 export const HubSite = spInvokableFactory<IHubSite>(_HubSite);
 
 export interface IHubSiteInfo {
@@ -67,5 +67,5 @@ export interface IHubSiteWebData {
     requiresJoinApproval: boolean;
     hideNameInNavigation: boolean;
     parentHubSiteId: string;
-    relatedHubSiteIds: string | null;
+    relatedHubSiteIds: string[] | null;
 }

@@ -4,12 +4,6 @@ The 'clientside-pages' module allows you to create, edit, and delete modern Shar
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
-| Scenario    | Import Statement                                                                                                                                                                                                |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Selective 1 | import { spfi } from "@pnp/sp";<br />import { ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/clientside-pages"; |
-| Selective 2 | import { spfi } from "@pnp/sp";<br />import "@pnp/sp/clientside-pages";                                                                                                                                           |
-| Preset: All | import { spfi, ClientsidePageFromFile, ClientsideText, CreateClientsidePage, ClientsideWebpart, IClientsidePage } from "@pnp/sp/presets/all";                                     |
-
 ## Create a new Page
 
 You can create a new client-side page in several ways, all are equivalent.
@@ -77,6 +71,23 @@ const page3 = await CreateClientsidePage(Web("https://{absolute web url}"), "myp
 
 // you must publish the new page
 await page3.save();
+```
+
+### Create using IWeb.addFullPageApp
+
+Using this method you can easily create a full page app page given the component id. Don't forget the page will not be published and you will need to call save.
+
+```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+
+const page = await sp.web.addFullPageApp("name333", "My Title", "2CE4E250-B997-11EB-A9D2-C9D2FF95D000");
+// ... other page actions
+// you must save the page to publish it
+await page.save();
 ```
 
 ## Load Pages
@@ -941,3 +952,76 @@ await page.setBannerImageFromExternalUrl("https://absolute.url/to/my/image.jpg",
 // save the changes
 await page.save();
 ```
+
+### recycle
+
+Allows you to recycle a page without first needing to use getItem
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+// you must await this method
+await page.recycle();
+```
+
+### delete
+
+Allows you to delete a page without first needing to use getItem
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+// you must await this method
+await page.delete();
+```
+
+### saveAsTemplate
+
+Save page as a template from which other pages can be created. If it doesn't exist a special folder "Templates" will be added to the doc lib
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+// you must await this method
+await page.saveAsTemplate();
+// save a template, but don't publish it allowing you to make changes before it is available to users
+// you 
+await page.saveAsTemplate(false);
+// ... changes to the page
+// you must publish the template so it is available
+await page.save();
+```
+
+### share
+
+Allows sharing a page with one or more email addresses, optionall including a message in the email
+
+```TypeScript
+// our page instance
+const page: IClientsidePage;
+// you must await this method
+await page.share(["email@place.com", "email2@otherplace.com"]);
+// optionally include a message
+await page.share(["email@place.com", "email2@otherplace.com"], "Please check out this cool page!");
+```
+
+## Add Repost Page
+
+You can use the `addRepostPage` method to add a report page. The method returns the absolute url of the created page. All properties are optional but it is recommended to include as much as possible to improve the quality of the repost card's display.
+
+```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/clientside-pages";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+const page = await sp.web.addRepostPage({
+    BannerImageUrl: "https://some.absolute/path/to/an/image.jpg",
+    IsBannerImageUrlExternal: true,
+    Description: "My Description",
+    Title: "This is my title!",
+    OriginalSourceUrl: "https://absolute/path/to/article",
+});
+```
+
+> To specify an existing item in another list all of the four properties OriginalSourceSiteId, OriginalSourceWebId, OriginalSourceListId, and OriginalSourceItemId are required.

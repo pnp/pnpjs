@@ -30,6 +30,10 @@ describe("Calendar", function () {
         startDate.setDate(startDate.getDate() + 5);
         const endDate: Date = startDate;
         endDate.setHours(startDate.getHours() + 1);
+        const endRange: Date = new Date();
+        endRange.setDate(endRange.getDate() + 100);
+        const startRangeString = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`;
+        const endRangeString = `${endRange.getFullYear()}-${endRange.getMonth() + 1}-${endRange.getDate()}`;
         const event = await this.pnp.graph.users.getById(testUserName).calendar.events.add(
             {
                 "end": {
@@ -44,6 +48,18 @@ describe("Calendar", function () {
                     "timeZone": "Pacific Standard Time",
                 },
                 "subject": "Let's go for lunch",
+                "recurrence": {
+                    "pattern": {
+                        "type": "weekly",
+                        "interval": 1,
+                        "daysOfWeek": ["monday"],
+                    },
+                    "range": {
+                        "type": "endDate",
+                        "startDate": startRangeString,
+                        "endDate": endRangeString,
+                    },
+                },
             });
         testEventID = event.data.id;
     });
@@ -196,6 +212,18 @@ describe("Calendar", function () {
         const view = await this.pnp.graph.users.getById(testUserName).calendarView(startDate.toISOString(), endDate.toISOString())();
         return expect(view.length).is.greaterThan(0);
     });
+
+    // TODO: The code executes but no results are returned which doesn't make sense, could be environmental need to review.
+    it.skip("Get Instances", async function () {
+        const startDate: Date = new Date();
+        startDate.setDate(startDate.getDate() + 6);
+        const endDate: Date = new Date();
+        endDate.setDate(endDate.getDate() + 24);
+        const event = this.pnp.graph.users.getById(testUserName).events.getById(testEventID);
+        const instances = await event.instances(startDate.toISOString(), endDate.toISOString())();
+        return expect(instances.length).is.greaterThan(0);
+    });
+
 
     // Remove the test data we created
     after(async function () {

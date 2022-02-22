@@ -31,6 +31,8 @@ export {
     ITermSortOrderInfo,
     ITerms,
     Terms,
+    IGetOrderedTreeProps,
+    ITaxonomyLocalProperty,
 } from "./types.js";
 
 declare module "../fi" {

@@ -11,9 +11,11 @@ Before you begin provisioning applications it is important to understand the rel
 There are several ways using @pnp/sp to get a reference to an app catalog. These methods are to provide you the greatest amount of flexibility in gaining access to the app catalog. Ultimately each method produces an AppCatalog instance differentiated only by the web to which it points.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // get the current context web's app catalog
 const catalog = await sp.web.getAppCatalog()();
@@ -24,9 +26,11 @@ console.log(apps);
 ```
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
+
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // you can get the tenant app catalog (or any app catalog) by using the getTenantAppCatalogWeb method
 const appCatWeb = await sp.getTenantAppCatalogWeb()();

@@ -8,15 +8,6 @@ Folders serve as a container for your files and list items.
 
 Represents a collection of folders. SharePoint webs, lists, and list items have a collection of folders under their properties.
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";|
-|Selective 2|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";|
-|Selective 3|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";|
-|Selective 4|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";|
-|Selective 5|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";|
-|Preset: All|import { spfi, SPFx, IFolders, Folders } from "@pnp/sp/presets/all";|
-
 ### Get folders collection for various SharePoint objects
 
 ```TypeScript
@@ -72,15 +63,6 @@ const folder = await sp.web.folders.getByUrl("folder name")();
 Represents an instance of a SharePoint folder.
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
-
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";|
-|Selective 2|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";|
-|Selective 3|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";|
-|Selective 4|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";|
-|Selective 5|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";|
-|Preset: All|import { spfi, SPFx, IFolders, Folders } from "@pnp/sp/presets/all";|
 
 ### Get a folder object associated with different SharePoint artifacts (web, list, list item)
 
@@ -200,8 +182,6 @@ await sp.web.rootFolder.folders.getByUrl("My Folder").delete();
 ```  
 
 ### delete with params
-
-
 
 Deletes a folder with options
 
@@ -403,8 +383,6 @@ await sp.web.lists.getByTitle("Documents").items.getById(item.ID).update({
 
 ### addSubFolderUsingPath
 
-
-
 You can use the addSubFolderUsingPath method to add a folder with some special chars supported
 
 ```TypeScript
@@ -435,8 +413,6 @@ const folder: IFolder = sp.web.getFolderById("2b281c7b-ece9-4b76-82f9-f5cf5e152b
 ```
 
 ### getParentInfos
-
-
 
 Gets information about folder, including details about the parent list, parent list root folder, and parent web.
 
