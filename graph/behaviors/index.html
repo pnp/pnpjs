@@ -2002,7 +2002,7 @@ const userInfoFromBeta = user.using(Endpoint(&quot;beta&quot;))();
 <p>Finally, if you always want to make your requests to the beta end point (as an example) it is more efficient to set it in the graphfi factory.</p>
 <pre><code class="language-TypeScript">import { graphfi } from &quot;@pnp/graph&quot;;
 
-const beta = graphfi(&quot;https://graphfi().microsoft.com/beta&quot;);
+const beta = graphfi(&quot;https://graph.microsoft.com/beta&quot;);
 </code></pre>
 <h2 id="graphbrowser">GraphBrowser<a class="headerlink" href="#graphbrowser" title="Permanent link">&para;</a></h2>
 <p>A composed behavior suitable for use within a SPA or other scenario outside of SPFx. It includes DefaultHeaders, DefaultInit, BrowserFetchWithRetry, and DefaultParse. As well it adds a pre observer to try and ensure the request url is absolute if one is supplied in props.</p>
@@ -2021,10 +2021,10 @@ await graph.users();
 <pre><code class="language-TypeScript">import { graphfi, GraphBrowser } from &quot;@pnp/graph&quot;;
 import &quot;@pnp/graph/users&quot;;
 
-const graph = graphfi().using(GraphBrowser({ baseUrl: &quot;https://graphfi().microsoft.com/v1.0&quot; }));
+const graph = graphfi().using(GraphBrowser({ baseUrl: &quot;https://graph.microsoft.com/v1.0&quot; }));
 
 // this is the same as the above, and maybe a litter easier to read, and is more efficient
-// const graph = graphfi(&quot;https://graphfi().microsoft.com/v1.0&quot;).using(GraphBrowser());
+// const graph = graphfi(&quot;https://graph.microsoft.com/v1.0&quot;).using(GraphBrowser());
 
 await graph.users();
 </code></pre>

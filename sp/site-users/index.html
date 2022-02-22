@@ -2103,6 +2103,28 @@ result = await sp.web.ensureUser(username);
 </code></pre>
 <h2 id="isiteuser">ISiteUser<a class="headerlink" href="#isiteuser" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+|Scenario|Import Statement|
+|--|--|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
+|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
+|Preset: All|import {sp, SiteUsers, SiteUser } from "@pnp/sp/presets/all";|</p>
+<p>=======</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>52a91d788431066d44d536df1352b6ce855675e3</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <h3 id="get-user-groups">Get user Groups<a class="headerlink" href="#get-user-groups" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;

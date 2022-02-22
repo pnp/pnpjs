@@ -2501,6 +2501,29 @@ console.log(r.Title);
 </code></pre>
 <h2 id="ilist">IList<a class="headerlink" href="#ilist" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+|Scenario|Import Statement|
+|--|--|
+|Selective 1|import { List, IList } from "@pnp/sp/lists";|
+|Selective 2|import "@pnp/sp/lists";|
+|Preset: All|import { sp, List, IList } from "@pnp/sp/presets/all";|
+|Preset: Core|import { sp, List, IList } from "@pnp/sp/presets/core";|</p>
+<p>=======</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>52a91d788431066d44d536df1352b6ce855675e3</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <h3 id="update-a-list">Update a list<a class="headerlink" href="#update-a-list" title="Permanent link">&para;</a></h3>
 <p>Update an existing list with the provided properties. You can also provide an eTag value that will be used in the IF-Match header (default is "*")</p>
 <pre><code class="language-TypeScript">import { IListUpdateResult } from &quot;@pnp/sp/lists&quot;;

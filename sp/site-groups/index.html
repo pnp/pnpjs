@@ -2081,6 +2081,28 @@ await sp.web.siteGroups.add({&quot;Title&quot;:&quot;new group name&quot;});
 </code></pre>
 <h2 id="isitegroup">ISiteGroup<a class="headerlink" href="#isitegroup" title="Permanent link">&para;</a></h2>
 <p><a href="../../concepts/invokable/"><img alt="Invokable Banner" src="https://img.shields.io/badge/Invokable-informational.svg" /></a> <a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a>  </p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+|Scenario|Import Statement|
+|--|--|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups";|
+|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-groups/web";|
+|Preset: All|import {sp, SiteGroups, SiteGroup } from "@pnp/sp/presets/all";|</p>
+<p>=======</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>52a91d788431066d44d536df1352b6ce855675e3</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <h3 id="getting-and-updating-the-groups-of-a-sharepoint-web">Getting and updating the groups of a sharepoint web<a class="headerlink" href="#getting-and-updating-the-groups-of-a-sharepoint-web" title="Permanent link">&para;</a></h3>
 <pre><code class="language-TypeScript">import { spfi, SPFx } from &quot;@pnp/sp&quot;;
 import &quot;@pnp/sp/webs&quot;;

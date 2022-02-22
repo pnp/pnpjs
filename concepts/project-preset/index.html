@@ -1898,13 +1898,65 @@
 <blockquote>
 <p>If you have multiple projects that share dependencies on PnPjs you can benefit from creating a <a href="../custom-bundle/">custom bundle</a> and using them across your projects.</p>
 </blockquote>
-<p>These steps reference an <a href="">SPFx</a> solution, but apply to any solution.</p>
+<p>These steps reference an <a href="https://docs.microsoft.com/sharepoint/dev/spfx/sharepoint-framework-overview">SPFx</a> solution, but apply to any solution.</p>
 <h2 id="install-the-library">Install the library<a class="headerlink" href="#install-the-library" title="Permanent link">&para;</a></h2>
 <p><code>npm install @pnp/sp --save</code></p>
 <h2 id="create-a-preset-file">Create a Preset File<a class="headerlink" href="#create-a-preset-file" title="Permanent link">&para;</a></h2>
 <p>Within the src directory create a new file named <code>pnpjs-presets.ts</code> and copy in the below content.</p>
-<pre><code class="language-TypeScript">
+<pre><code class="language-TypeScript">import { WebPartContext } from &quot;@microsoft/sp-webpart-base&quot;;
+
+// import pnp, pnp logging system, and any other selective imports needed
+import { spfi, SPFI, SPFx } from &quot;@pnp/sp&quot;;
+import { LogLevel, PnPLogging } from &quot;@pnp/logging&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists&quot;;
+import &quot;@pnp/sp/items&quot;;
+import &quot;@pnp/sp/batching&quot;;
+
+var _sp: SPFI = null;
+
+export const getSP = (context?: WebPartContext): SPFI =&gt; {
+  if (_sp === null &amp;&amp; context != null) {
+    //You must add the @pnp/logging package to include the PnPLogging behavior it is no longer a peer dependency
+    // The LogLevel set's at what level a message will be written to the console
+    _sp = spfi().using(SPFx(context)).using(PnPLogging(LogLevel.Warning));
+  }
+  return _sp;
+};
 </code></pre>
+<p>To initialize the configuration, from the <code>onInit</code> function (or whatever function runs first in your code) make a call to getSP passing in the SPFx context object (or whatever configuration you would require for your setup).</p>
+<pre><code class="language-TypeScript">protected async onInit(): Promise&lt;void&gt; {
+  this._environmentMessage = this._getEnvironmentMessage();
+
+  super.onInit();
+
+  //Initialize our _sp object that we can then use in other packages without having to pass around the context.
+  //  Check out pnpjsConfig.ts for an example of a project setup file.
+  getSP(this.context);
+}
+</code></pre>
+<p>Now you can consume your configured <code>_sp</code> object from anywhere else in your code by simply referencing the <code>pnpjs-presets.ts</code> file via an import statement and then getting a local instance of the <code>_sp</code> object using the <code>getSP()</code> method without passing any context.</p>
+<pre><code class="language-TypeScript">import { getSP } from './pnpjs-resets.ts';
+...
+export default class PnPjsExample extends React.Component&lt;IPnPjsExampleProps, IIPnPjsExampleState&gt; {
+
+  private _sp: SPFI;
+
+  constructor(props: IPnPjsExampleProps) {
+    super(props);
+    // set initial state
+    this.state = {
+      items: [],
+      errors: []
+    };
+    this._sp = getSP();
+  }
+
+  ...
+
+}
+</code></pre>
+<p>For a full sample, please see our <a href="https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-sample">PnPjs Version 3 Sample Project</a></p>
                 
               
               

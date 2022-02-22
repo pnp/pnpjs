@@ -2147,7 +2147,7 @@ const graph = graphfi().using(GraphBrowser(), MSAL(configuration, authParams));
 const meData = await graph.me();
 </code></pre>
 <h2 id="msal-nodejs">MSAL Nodejs<a class="headerlink" href="#msal-nodejs" title="Permanent link">&para;</a></h2>
-<p>For nodejs we support MSAL through the <a href="https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/README.md">msal-node</a> library. Again we provide a thing wrapper to allow it to work within our request flow.</p>
+<p>For nodejs we support MSAL through the <a href="https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/README.md">msal-node</a> library. Again we provide a thin wrapper to allow it to work within our request flow.</p>
 <h3 id="msal-sp-nodejs">MSAL + SP + Nodejs<a class="headerlink" href="#msal-sp-nodejs" title="Permanent link">&para;</a></h3>
 <p>The SPDefault exported by the nodejs library include MSAL and takes the parameters directly.</p>
 <pre><code class="language-TypeScript">import { SPDefault } from &quot;@pnp/nodejs&quot;;
