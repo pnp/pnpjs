@@ -18,7 +18,13 @@ We thank you for using the library. Your continued feedback drives these improve
 
 The biggest change in version 3 of the library is the movement away from the globally defined sp and graph objects. Starting in version 2.1.0 we added the concept of `Isolated Runtime` which allowed you to create a separate instance of the global object that would have a separate configuration. We found that the implementation was finicky and prone to issues, so we have rebuilt the internals of the library from the ground up to better address this need. In doing so, we decided not to offer a global object at all.
 
-Because of this change, any architecture that relies on the `sp` or `graph` objects being configured during initialization and then reused throughout the solution will need to be rethought, either by creating a new `spfi`/`graphfi` object wherever it's required or by creating a [service architecture](./getting-started/#establish-context-within-an-spfx-service) that can return a previously configured instance or utilize an instance and return the results. Essentially the `sp` and `graph` objects have been deprecated and will need to be replaced.
+Because of this change, any architecture that relies on the `sp` or `graph` objects being configured during initialization and then reused throughout the solution will need to be rethought. Essentially you have three options:
+
+1. Create a new `spfi`/`graphfi` object wherever it's required.
+1. Create a [service architecture](./getting-started/#establish-context-within-an-spfx-service) that can return a previously configured instance or utilize an instance and return the results
+1. Utilize a [Project Preset file](./concepts/project-preset.md).
+
+In other words, the `sp` and `graph` objects have been deprecated and will need to be replaced.
 
 For more information on getting started with these new setup methods please see the [Getting Started](./getting-started.md) docs for a deeper look into the Queryable interface see [Queryable](./queryable/queryable.md).
 
