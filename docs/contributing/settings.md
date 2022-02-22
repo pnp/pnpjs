@@ -12,6 +12,17 @@ MSAL configuration has two parts, these are the initialization which is passed d
 
 > If you are calling Microsoft Graph sovereign or gov clouds the scope may need to be updated.
 
+You will need to create testing certs for the sample settings file below. Using the following code you end up with three files, "cert.pem", "key.pem", and "keytmp.pem". The "cert.pem" file is uploaded to your AAD application registration. The "key.pem" is read as the private key for the configuration. Copy the contents of the "key.pem" file and paste it in the `privateKey` variable below. The `gitignore` file in this repository will ignore the settings.js file.
+
+>Replace `HereIsMySuperPass` with your own password
+
+```cmd
+mkdir \temp
+cd \temp
+openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365 -passout pass:HereIsMySuperPass -subj '/C=US/ST=Washington/L=Seattle'
+openssl rsa -in keytmp.pem -out key.pem -passin pass:HereIsMySuperPass
+```
+
 ```JavaScript
 const privateKey = `-----BEGIN RSA PRIVATE KEY-----
 your private key, read from a file or included here
@@ -29,7 +40,7 @@ var msalInit = {
     }
 }
 
-var settings = {
+export const settings = {
     testing: {
         enableWebTests: true,
         testUser: "i:0#.f|membership|user@consto.com",
@@ -50,7 +61,6 @@ var settings = {
     },
 }
 
-module.exports = settings;
 ```
 
 The settings object has a single sub-object `testing` which contains the configuration used for debugging and testing PnPjs. The parts of this object are described in detail below.
