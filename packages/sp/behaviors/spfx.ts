@@ -2,7 +2,6 @@ import { combine, dateAdd, isUrlAbsolute, TimelinePipe } from "@pnp/core";
 import { BrowserFetchWithRetry, DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "./defaults.js";
 import { RequestDigest } from "./request-digest.js";
-import { extractWebUrl } from "../utils/extract-web-url.js";
 
 interface ISPFXContext {
 
