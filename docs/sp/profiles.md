@@ -14,12 +14,12 @@ import "@pnp/sp/profiles";
 ## Get edit profile link for the current user
 
 ```typescript
-editProfileLink(): Promise<string>
+getEditProfileLink(): Promise<string>
 ```
 
 ```typescript
 const sp = spfi("{tenant url}").using(SPFx(this.context));
-const editProfileLink = await sp.profiles.editProfileLink();
+const editProfileLink = await sp.profiles.getEditProfileLink();
 ```
 
 ## Is My People List Public
@@ -27,12 +27,12 @@ const editProfileLink = await sp.profiles.editProfileLink();
 Provides a boolean that indicates if the current users "People I'm Following" list is public or not
 
 ```typescript
-isMyPeopleListPublic(): Promise<boolean>
+getIsMyPeopleListPublic(): Promise<boolean>
 ```
 
 ```typescript
 const sp = spfi("{tenant url}").using(SPFx(this.context));
-const isPublic = await sp.profiles.isMyPeopleListPublic();
+const isPublic = await sp.profiles.getIsMyPeopleListPublic();
 ```
 
 ## Find out if the current user is followed by another user
