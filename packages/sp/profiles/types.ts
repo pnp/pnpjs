@@ -33,14 +33,14 @@ export class _Profiles extends _SPInstance {
     /**
      * The url of the edit profile page for the current user
      */
-    public get editProfileLink(): Promise<string> {
+    public getEditProfileLink(): Promise<string> {
         return Profiles(this, "EditProfileLink")();
     }
 
     /**
      * A boolean value that indicates whether the current user's "People I'm Following" list is public
      */
-    public get isMyPeopleListPublic(): Promise<boolean> {
+    public getIsMyPeopleListPublic(): Promise<boolean> {
         return Profiles(this, "IsMyPeopleListPublic")();
     }
 
@@ -99,7 +99,7 @@ export class _Profiles extends _SPInstance {
      *
      */
     public get myProperties(): ISPInstance {
-        return <any>Profiles(this, "getmyproperties")();
+        return <any>Profiles(this, "getmyproperties");
     }
 
     /**

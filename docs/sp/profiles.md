@@ -14,12 +14,12 @@ import "@pnp/sp/profiles";
 ## Get edit profile link for the current user
 
 ```typescript
-editProfileLink(): Promise<string>
+getEditProfileLink(): Promise<string>
 ```
 
 ```typescript
 const sp = spfi("{tenant url}").using(SPFx(this.context));
-const editProfileLink = await sp.profiles.editProfileLink();
+const editProfileLink = await sp.profiles.getEditProfileLink();
 ```
 
 ## Is My People List Public
@@ -27,12 +27,12 @@ const editProfileLink = await sp.profiles.editProfileLink();
 Provides a boolean that indicates if the current users "People I'm Following" list is public or not
 
 ```typescript
-isMyPeopleListPublic(): Promise<boolean>
+getIsMyPeopleListPublic(): Promise<boolean>
 ```
 
 ```typescript
 const sp = spfi("{tenant url}").using(SPFx(this.context));
-const isPublic = await sp.profiles.isMyPeopleListPublic();
+const isPublic = await sp.profiles.getIsMyPeopleListPublic();
 ```
 
 ## Find out if the current user is followed by another user
@@ -98,7 +98,7 @@ followers.forEach((value) => {
 Gets the people who are following the current user.
 
 ```typescript
-myFollowers(): ISharePointQueryableCollection
+myFollowers(): ISPCollection
 ```
 
 ```typescript
@@ -111,7 +111,7 @@ const folowers = await sp.profiles.myFollowers();
 Gets user properties for the current user.
 
 ```typescript
-myProperties(): _SharePointQueryableInstance
+myProperties(): ISPInstance
 ```
 
 ```typescript
@@ -130,6 +130,14 @@ profile.UserProfileProperties.forEach((prop) => {
 });
 profile.userProperties = props;
 console.log("Account Name: " + profile.userProperties.AccountName);
+```
+
+```TypeScript
+// you can also select properties to return before
+const sp = spfi("{tenant url}").using(SPFx(this.context));
+const profile = await sp.profiles.myProperties.select("Title", "Email")();
+console.log(profile.Email);
+console.log(profile.Title);
 ```
 
 ## Gets people specified user is following
