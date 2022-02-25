@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "CommonJS",
+        "declaration": true,
+        "declarationMap": true,
+        "removeComments": false,
+        "allowJs": true,
+        "lib": [
+            "ES2015",
+            "ES2017.Object",
+        ],
+        "baseUrl": "./src",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "allowUnreachableCode": false,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node12",
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
+        "pretty": true,
+        "experimentalDecorators": true,
+        "noFallthroughCasesInSwitch": true,
+        "sourceMap": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "strictNullChecks": false,
+        "preserveConstEnums": true,
+        "importHelpers": true,
+        "resolveJsonModule": true
+    },
+    "include": [
+        "./src/**/*.ts",
+    ]
+}
