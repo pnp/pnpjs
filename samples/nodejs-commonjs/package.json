@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc -p tsconfig.json && node --experimental-specifier-resolution=node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@pnp/nodejs": "^3.0.2",
+    "@pnp/sp": "^3.0.2",
+    "@types/node": "^17.0.21"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.0-dev.20220223"
+  }
+}
