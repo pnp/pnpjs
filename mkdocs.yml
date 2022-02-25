@@ -7,8 +7,8 @@ nav:
   - 'Getting Started': 'getting-started.md'
   - 'V2->V3 Transition': 'transition-guide.md'
   - 'Year in Review':
-    - 2021: 'news/2021-year-in-review.md'
-    - 2020: 'news/2020-year-in-review.md'
+    - '2021': 'news/2021-year-in-review.md'
+    - '2020': 'news/2020-year-in-review.md'
   - 'Library Usage Tips':
     - 'Authentication': 'concepts/authentication.md'
     - 'Batching': 'concepts/batching.md'
@@ -109,10 +109,10 @@ nav:
     - 'Client-Side Pages': 'concepts/adv-clientside-pages.md'
   - Contributing:
     - 'Contributing': 'contributing/index.md'
-    - 'Set Up Dev Machine': 'contributing\setup-dev-machine.md'
+    - 'Set Up Dev Machine': 'contributing/setup-dev-machine.md'
     - 'Settings': 'contributing/settings.md'
     - 'Understanding Library Internals': 'core/timeline.md'
-    - 'Expanding the Library': 'contributing\extending-the-library.md'
+    - 'Expanding the Library': 'contributing/extending-the-library.md'
     - 'Npm Scripts': 'contributing/npm-scripts.md'
     - 'Local Debug Config': 'contributing/local-debug-configuration.md'
     - 'Debugging': 'contributing/debugging.md'
