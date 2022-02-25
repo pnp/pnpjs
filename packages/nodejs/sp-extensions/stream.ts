@@ -1,10 +1,9 @@
-import { getGUID, isFunc } from "@pnp/core/util";
 import { headers } from "@pnp/queryable";
 import { File, Files, IFile, IFileAddResult, IFileInfo, IFiles, IFileUploadProgressData } from "@pnp/sp/files";
 import { spPost } from "@pnp/sp/operations";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
-import { extendFactory } from "@pnp/core";
+import { extendFactory, getGUID, isFunc } from "@pnp/core";
 import { odataUrlFrom, escapeQueryStrValue } from "@pnp/sp";
 import { StreamParse } from "../behaviors/stream-parse.js";
 

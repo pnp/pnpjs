@@ -123,7 +123,7 @@ const meData = await graph.me();
 
 ## MSAL Nodejs
 
-For nodejs we support MSAL through the [msal-node](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/README.md) library. Again we provide a thing wrapper to allow it to work within our request flow.
+For nodejs we support MSAL through the [msal-node](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/README.md) library. Again we provide a thin wrapper to allow it to work within our request flow.
 
 ### MSAL + SP + Nodejs
 

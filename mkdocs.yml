@@ -135,26 +135,14 @@ theme:
 extra_css:
   - 'css/extra.css'
 
-# extra_javascript:
-#     - https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js
-
 markdown_extensions:
   - admonition
-  # - pymdownx.superfences
-      # custom_fences:
-      #   - name: mermaid
-      #     class: mermaid
-      #     format: !!python/name:pymdownx.superfences.fence_div_format
   - toc:
       permalink: true
 
 plugins:
   - search
   - markdownextradata
-  # - mermaid2:
-  #     arguments:
-  #       securityLevel: 'loose'
-  #       theme: 'default'
   - redirects:
       redirect_maps:
           'getting-started-dev.md': 'contributing/index.md'
