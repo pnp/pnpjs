@@ -186,6 +186,7 @@ console.log(r.Title);
 
 =======
 >>>>>>> 52a91d788431066d44d536df1352b6ce855675e3
+
 ### Update a list
 
 Update an existing list with the provided properties. You can also provide an eTag value that will be used in the IF-Match header (default is "*")
@@ -216,7 +217,7 @@ list.update(updateProperties).then(async (l: IListUpdateResult) => {
 From the change log, you can get a collection of changes that have occurred within the list based on the specified query.
 
 ```TypeScript
-import { sp, IChangeQuery } from "@pnp/sp";
+import { IChangeQuery } from "@pnp/sp";
 
 // build the changeQuery object, here we look att changes regarding Add, DeleteObject and Restore
 const changeQuery: IChangeQuery = {
@@ -226,6 +227,32 @@ const changeQuery: IChangeQuery = {
     DeleteObject: true,
     Rename: true,
     Restore: true,
+};
+
+// get list changes
+const r = await list.getChanges(changeQuery);
+
+// log changes to console
+console.log(r);
+```
+
+To get changes from a specific time range you can use the ChangeTokenStart or a combination of ChangeTokenStart and ChangeTokenEnd.
+
+```TypeScript
+import { IChangeQuery } from "@pnp/sp";
+
+//Resource is the list Id (as Guid)
+const resource = list.Id;
+const changeStart = new Date("2022-02-22").getTime();
+const changeTokenStart = `1;3;${resource};${changeStart};-1`;
+
+// build the changeQuery object, here we look at changes regarding Add and Update for Items.
+const changeQuery: IChangeQuery = {
+    Add: true,
+    Update: true,
+    Item: true,
+    ChangeTokenEnd: null,
+    ChangeTokenStart: { StringValue: changeTokenStart },
 };
 
 // get list changes
