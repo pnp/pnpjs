@@ -1,6 +1,6 @@
 import { _SPInstance, ISPQueryable } from "../spqueryable.js";
 import { hOP, isArray } from "@pnp/core";
-import { body, InjectHeaders } from "@pnp/queryable";
+import { body } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
 import { spPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
@@ -117,12 +117,12 @@ export class _Search extends _SPInstance {
      *
      * @param prop property to fix for container struct
      */
-    private fixArrProp(prop: any): { results: any[] } {
+    private fixArrProp(prop: any): any[] {
         if (typeof prop === "undefined") {
-            return ({ results: [] });
+            return [];
         }
 
-        return { results: isArray(prop) ? prop : [prop] };
+        return isArray(prop) ? prop : [prop];
     }
 
     /**
@@ -151,8 +151,7 @@ export interface ISearch {
 }
 
 export const Search = (baseUrl: string | ISPQueryable): ISearch => (queryInit: SearchQueryInit) => {
-    // current search endpoint only accepts 'application/json;odata=verbose' content-type header.
-    return (new _Search(baseUrl)).using(InjectHeaders({"Content-Type" : "application/json;odata=verbose;charset=utf-8"})).run(queryInit);
+    return (new _Search(baseUrl)).run(queryInit);
 };
 
 export class SearchResults {
