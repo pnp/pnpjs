@@ -1,6 +1,10 @@
 import { isArray } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
-import { _SPInstance, spInvokableFactory, _SPCollection } from "../spqueryable.js";
+import {
+    _SPInstance,
+    spInvokableFactory,
+    _SPCollection,
+} from "../spqueryable.js";
 
 /**
  * Describes a collection of Form objects
@@ -8,7 +12,6 @@ import { _SPInstance, spInvokableFactory, _SPCollection } from "../spqueryable.j
  */
 @defaultPath("_api/v2.1/termstore")
 export class _TermStore extends _SPInstance<ITermStoreInfo> {
-
     /**
      * Gets the term groups associated with this tenant
      */
@@ -23,13 +26,11 @@ export class _TermStore extends _SPInstance<ITermStoreInfo> {
         return TermSets(this);
     }
 }
-export interface ITermStore extends _TermStore { }
+export interface ITermStore extends _TermStore {}
 export const TermStore = spInvokableFactory<ITermStore>(_TermStore);
-
 
 @defaultPath("groups")
 export class _TermGroups extends _SPCollection<ITermGroupInfo[]> {
-
     /**
      * Gets a term group by id
      *
@@ -39,11 +40,10 @@ export class _TermGroups extends _SPCollection<ITermGroupInfo[]> {
         return TermGroup(this, id);
     }
 }
-export interface ITermGroups extends _TermGroups { }
+export interface ITermGroups extends _TermGroups {}
 export const TermGroups = spInvokableFactory<ITermGroups>(_TermGroups);
 
 export class _TermGroup extends _SPInstance<ITermGroupInfo> {
-
     /**
      * Gets the term sets associated with this tenant
      */
@@ -51,13 +51,11 @@ export class _TermGroup extends _SPInstance<ITermGroupInfo> {
         return TermSets(this, "sets");
     }
 }
-export interface ITermGroup extends _TermGroup { }
+export interface ITermGroup extends _TermGroup {}
 export const TermGroup = spInvokableFactory<ITermGroup>(_TermGroup);
-
 
 @defaultPath("sets")
 export class _TermSets extends _SPCollection<ITermSetInfo[]> {
-
     /**
      * Gets a term group by id
      *
@@ -67,11 +65,10 @@ export class _TermSets extends _SPCollection<ITermSetInfo[]> {
         return TermSet(this, id);
     }
 }
-export interface ITermSets extends _TermSets { }
+export interface ITermSets extends _TermSets {}
 export const TermSets = spInvokableFactory<ITermSets>(_TermSets);
 
 export class _TermSet extends _SPInstance<ITermSetInfo> {
-
     /**
      * Gets all the terms in this set
      */
@@ -101,18 +98,22 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
      *
      * @param props Optional set of properties controlling how the tree is retrieved.
      */
-    public async getAllChildrenAsOrderedTree(props: Partial<IGetOrderedTreeProps> = {}): Promise<IOrderedTermInfo[]> {
-
+    public async getAllChildrenAsOrderedTree(
+        props: Partial<IGetOrderedTreeProps> = {}
+    ): Promise<IOrderedTermInfo[]> {
         const selects = ["*", "customSortOrder"];
         if (props.retrieveProperties) {
             selects.push("properties", "localProperties");
         }
 
-        const setInfo = await this.select("*", "customSortOrder")();
+        const setInfo = await this.select(...selects)();
         const tree: IOrderedTermInfo[] = [];
 
-        const ensureOrder = (terms: IOrderedTermInfo[], sorts: ITermSortOrderInfo[], setSorts?: string[]): IOrderedTermInfo[] => {
-
+        const ensureOrder = (
+            terms: IOrderedTermInfo[],
+            sorts: ITermSortOrderInfo[],
+            setSorts?: string[]
+        ): IOrderedTermInfo[] => {
             // handle no custom sort information present
             if (!isArray(sorts) && !isArray(setSorts)) {
                 return terms;
@@ -122,7 +123,7 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
             if (sorts === null && setSorts.length > 0) {
                 ordering = [...setSorts];
             } else {
-                const index = sorts.findIndex(v => v.setId === setInfo.id);
+                const index = sorts.findIndex((v) => v.setId === setInfo.id);
                 if (index >= 0) {
                     ordering = [...sorts[index].order];
                 }
@@ -130,8 +131,8 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
 
             if (ordering !== null) {
                 const orderedChildren = [];
-                ordering.forEach(o => {
-                    const found = terms.find(ch => o === ch.id);
+                ordering.forEach((o) => {
+                    const found = terms.find((ch) => o === ch.id);
                     if (found) {
                         orderedChildren.push(found);
                     }
@@ -140,30 +141,42 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
                 // AND the ordering information hasn't been updated in the UI the new term will not have
                 // any associated ordering information. See #1547 which reported this. So here we
                 // append any terms remaining in "terms" not in "orderedChildren" to the end of "orderedChildren"
-                orderedChildren.push(...terms.filter(info => ordering.indexOf(info.id) < 0));
+                orderedChildren.push(
+                    ...terms.filter((info) => ordering.indexOf(info.id) < 0)
+                );
 
                 return orderedChildren;
             }
             return terms;
         };
 
-        const visitor = async (source: { children: IChildren }, parent: IOrderedTermInfo[]) => {
-
-            const children = await source.children.select("*", "customSortOrder")();
+        const visitor = async (
+            source: { children: IChildren },
+            parent: IOrderedTermInfo[]
+        ) => {
+            const children = await source.children.select(
+                "*",
+                "customSortOrder"
+            )();
 
             for (let i = 0; i < children.length; i++) {
-
                 const child = children[i];
 
                 const orderedTerm = {
                     children: <IOrderedTermInfo[]>[],
-                    defaultLabel: child.labels.find(l => l.isDefault).name,
+                    defaultLabel: child.labels.find((l) => l.isDefault).name,
                     ...child,
                 };
 
                 if (child.childrenCount > 0) {
-                    await visitor(this.getTermById(children[i].id), orderedTerm.children);
-                    orderedTerm.children = ensureOrder(orderedTerm.children, child.customSortOrder);
+                    await visitor(
+                        this.getTermById(children[i].id),
+                        orderedTerm.children
+                    );
+                    orderedTerm.children = ensureOrder(
+                        orderedTerm.children,
+                        child.customSortOrder
+                    );
                 }
 
                 parent.push(orderedTerm);
@@ -175,12 +188,12 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
         return ensureOrder(tree, null, setInfo.customSortOrder);
     }
 }
-export interface ITermSet extends _TermSet { }
+export interface ITermSet extends _TermSet {}
 export const TermSet = spInvokableFactory<ITermSet>(_TermSet);
 
 @defaultPath("children")
-export class _Children extends _SPCollection<ITermInfo[]> { }
-export interface IChildren extends _Children { }
+export class _Children extends _SPCollection<ITermInfo[]> {}
+export interface IChildren extends _Children {}
 export const Children = spInvokableFactory<IChildren>(_Children);
 
 @defaultPath("terms")
@@ -194,11 +207,10 @@ export class _Terms extends _SPCollection<ITermInfo[]> {
         return Term(this, id);
     }
 }
-export interface ITerms extends _Terms { }
+export interface ITerms extends _Terms {}
 export const Terms = spInvokableFactory<ITerms>(_Terms);
 
 export class _Term extends _SPInstance<ITermInfo> {
-
     public get children(): IChildren {
         return Children(this);
     }
@@ -211,9 +223,8 @@ export class _Term extends _SPInstance<ITermInfo> {
         return TermSet(this, "set");
     }
 }
-export interface ITerm extends _Term { }
+export interface ITerm extends _Term {}
 export const Term = spInvokableFactory<ITerm>(_Term);
-
 
 @defaultPath("relations")
 export class _Relations extends _SPCollection<IRelationInfo[]> {
@@ -226,11 +237,10 @@ export class _Relations extends _SPCollection<IRelationInfo[]> {
         return Relation(this, id);
     }
 }
-export interface IRelations extends _Relations { }
+export interface IRelations extends _Relations {}
 export const Relations = spInvokableFactory<IRelations>(_Relations);
 
 export class _Relation extends _SPInstance<IRelationInfo> {
-
     public get fromTerm(): ITerm {
         return Term(this, "fromTerm");
     }
@@ -243,7 +253,7 @@ export class _Relation extends _SPInstance<IRelationInfo> {
         return TermSet(this, "set");
     }
 }
-export interface IRelation extends _Relation { }
+export interface IRelation extends _Relation {}
 export const Relation = spInvokableFactory<IRelation>(_Relation);
 
 export interface ITermStoreInfo {
