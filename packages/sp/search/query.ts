@@ -79,8 +79,6 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder 
     });
 }
 
-const queryRegex = /_api\/search\/postquery$/i;
-
 /**
  * Describes the search API
  *
@@ -95,18 +93,23 @@ export class _Search extends _SPInstance {
 
         const query = this.parseQuery(queryInit);
 
-        const postBody = body({
-            query,
-            HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
-            Properties: this.fixArrProp(query.Properties),
-            RefinementFilters: this.fixArrProp(query.RefinementFilters),
-            ReorderingRules: this.fixArrProp(query.ReorderingRules),
-            SelectProperties: this.fixArrProp(query.SelectProperties),
-            SortList: this.fixArrProp(query.SortList),
+        const postBody: RequestInit = body({
+            request:{
+                ...query,
+                HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
+                Properties: this.fixArrProp(query.Properties),
+                RefinementFilters: this.fixArrProp(query.RefinementFilters),
+                ReorderingRules: this.fixArrProp(query.ReorderingRules),
+                SelectProperties: this.fixArrProp(query.SelectProperties),
+                SortList: this.fixArrProp(query.SortList),
+            },
         });
 
         const data = await spPost(this, postBody);
-        return new SearchResults(data, this.toUrl(), query);
+
+        // Create search instance copy for SearchResult's getPage request.
+        const search = new _Search([this, this.parentUrl]);
+        return new SearchResults(data, search, query);
     }
 
     /**
@@ -114,12 +117,12 @@ export class _Search extends _SPInstance {
      *
      * @param prop property to fix for container struct
      */
-    private fixArrProp(prop: any): { results: any[] } {
+    private fixArrProp(prop: any): any[] {
         if (typeof prop === "undefined") {
-            return ({ results: [] });
+            return [];
         }
 
-        return { results: isArray(prop) ? prop : [prop] };
+        return isArray(prop) ? prop : [prop];
     }
 
     /**
@@ -154,12 +157,11 @@ export const Search = (baseUrl: string | ISPQueryable): ISearch => (queryInit: S
 export class SearchResults {
 
     constructor(rawResponse: any,
-        private _url: string,
+        private _search: _Search,
         private _query: ISearchQuery,
         private _raw: ISearchResponse = null,
         private _primary: ISearchResult[] = null) {
 
-        this._url = this._url.replace(queryRegex, "");
         this._raw = rawResponse.postquery ? rawResponse.postquery : rawResponse;
     }
 
@@ -218,7 +220,7 @@ export class SearchResults {
             return Promise.resolve(null);
         }
 
-        return Search(this._url)(query);
+        return this._search.run(query);
     }
 
     /**

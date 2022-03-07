@@ -7,8 +7,8 @@ nav:
   - 'Getting Started': 'getting-started.md'
   - 'V2->V3 Transition': 'transition-guide.md'
   - 'Year in Review':
-    - 2021: 'news/2021-year-in-review.md'
-    - 2020: 'news/2020-year-in-review.md'
+    - '2021': 'news/2021-year-in-review.md'
+    - '2020': 'news/2020-year-in-review.md'
   - 'Library Usage Tips':
     - 'Authentication': 'concepts/authentication.md'
     - 'Batching': 'concepts/batching.md'
@@ -109,10 +109,10 @@ nav:
     - 'Client-Side Pages': 'concepts/adv-clientside-pages.md'
   - Contributing:
     - 'Contributing': 'contributing/index.md'
-    - 'Set Up Dev Machine': 'contributing\setup-dev-machine.md'
+    - 'Set Up Dev Machine': 'contributing/setup-dev-machine.md'
     - 'Settings': 'contributing/settings.md'
     - 'Understanding Library Internals': 'core/timeline.md'
-    - 'Expanding the Library': 'contributing\extending-the-library.md'
+    - 'Expanding the Library': 'contributing/extending-the-library.md'
     - 'Npm Scripts': 'contributing/npm-scripts.md'
     - 'Local Debug Config': 'contributing/local-debug-configuration.md'
     - 'Debugging': 'contributing/debugging.md'
@@ -135,26 +135,14 @@ theme:
 extra_css:
   - 'css/extra.css'
 
-# extra_javascript:
-#     - https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js
-
 markdown_extensions:
   - admonition
-  # - pymdownx.superfences
-      # custom_fences:
-      #   - name: mermaid
-      #     class: mermaid
-      #     format: !!python/name:pymdownx.superfences.fence_div_format
   - toc:
       permalink: true
 
 plugins:
   - search
   - markdownextradata
-  # - mermaid2:
-  #     arguments:
-  #       securityLevel: 'loose'
-  #       theme: 'default'
   - redirects:
       redirect_maps:
           'getting-started-dev.md': 'contributing/index.md'
