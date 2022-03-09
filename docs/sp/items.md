@@ -257,9 +257,7 @@ const sp = spfi("{tenant url}").using(SPFx(this.context));
 const i = await sp.web.lists.getByTitle("PeopleFields").items.add({
   Title: getGUID(),
   User1Id: 9, // allows a single user
-  User2Id: {
-    results: [16, 45] // allows multiple users
-  }
+  User2Id: [16, 45] // allows multiple users
 });
 
 console.log(i);
@@ -307,9 +305,7 @@ const sp = spfi("{tenant url}").using(SPFx(this.context));
 await sp.web.lists.getByTitle("LookupFields").items.add({
     Title: getGUID(),
     LookupFieldId: 2,       // allows a single lookup value
-    MultiLookupFieldId: {
-        results: [ 1, 56 ]  // allows multiple lookup value
-    }
+    MultiLookupFieldId: [1, 56]  // allows multiple lookup value
 });
 ```
 
