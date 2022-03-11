@@ -108,7 +108,7 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
             selects.push("properties", "localProperties");
         }
 
-        const setInfo = await this.select("*", "customSortOrder")();
+        const setInfo = await this.select(...selects)();
         const tree: IOrderedTermInfo[] = [];
 
         const ensureOrder = (terms: IOrderedTermInfo[], sorts: ITermSortOrderInfo[], setSorts?: string[]): IOrderedTermInfo[] => {
