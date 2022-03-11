@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.1.0 - 2022-March-11
+
+- sp:
+  - Update interface IFieldInfo to include "Choices"
+  - Fix getAllChildrenAsOrderedTree retrieve properties
+  - Fix naming of getEditProfileLink and getIsMyPeopleListPublic in Profiles
+
+- docs:
+  - Updates to transition guide, getting started, authentication, and fixes for graphUrls, etc
+
 ## 3.0.3 - 2022-March-3
 
 ### Fixed
@@ -92,7 +102,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Invokable Extensions is split, with core object extension functionality moved to core
   - ensureHeaders => headers = { ...headers, ...moreHeaders }
 
-- nodejs: 
+- nodejs:
   - AdalCertificateFetchClient, AdalFetchClient, MsalFetchClient, SPFetchClient, ProviderHostedRequestContext -> use MSAL behavior
   - BearerTokenFetchClient -> use @pnp/Queryable BearerToken behavior
   - SPFetchClient -> Use SPNodeFetch which includes SP retry logic
