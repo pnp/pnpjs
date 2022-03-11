@@ -149,7 +149,7 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
 
         const visitor = async (source: { children: IChildren }, parent: IOrderedTermInfo[]) => {
 
-            const children = await source.children.select("*", "customSortOrder")();
+            const children = await source.children.select(...selects)();
 
             for (let i = 0; i < children.length; i++) {
 
