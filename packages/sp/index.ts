@@ -5,8 +5,8 @@ export * from "./decorators.js";
 export * from "./operations.js";
 
 export {
-    SPFI as SPFI,
-    spfi as spfi,
+    SPFI,
+    spfi,
 } from "./fi.js";
 
 export * from "./types.js";

@@ -3,7 +3,7 @@ import { BrowserFetchWithRetry, DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "./defaults.js";
 import { RequestDigest } from "./request-digest.js";
 
-interface ISPFXContext {
+export interface ISPFXContext {
 
     aadTokenProviderFactory?: {
         getTokenProvider(): Promise<{

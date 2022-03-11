@@ -2,7 +2,7 @@ PnPjs is a fluent JavaScript API for consuming SharePoint and Microsoft Graph RE
 
 Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole *SharePoint Patterns and Practices (PnP) initiative*.
 
->If you are moving from v1 please review the [transition guide](https://pnp.github.io/pnpjs/transition-guide/)
+>If you are moving from v2 please review the [transition guide](https://pnp.github.io/pnpjs/transition-guide/)
 
 ## Getting Started
 
