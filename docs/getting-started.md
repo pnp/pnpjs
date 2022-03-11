@@ -168,6 +168,19 @@ export class SampleService {
 
 ## Getting started with NodeJS
 
+### Authentication
+
+To call the SharePoint APIs via MSAL you are required to use certificate authentication with your application. Fully covering certificates is outside the scope of these docs, but the following commands were used with openssl to create testing certs for the sample code below.
+
+```
+mkdir \temp
+cd \temp
+openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365 -passout pass:HereIsMySuperPass -subj '/C=US/ST=Washington/L=Seattle'
+openssl rsa -in keytmp.pem -out key.pem -passin pass:HereIsMySuperPass
+```
+
+> Using the above code you end up with three files, "cert.pem", "key.pem", and "keytmp.pem". The "cert.pem" file is uploaded to your AAD application registration. The "key.pem" is read as the private key for the configuration.
+
 ### Using @pnp/sp `spfi` factory interface in NodeJS
 
 > Version 3 of this library only supports ESModules. If for some reason you still require commonjs modules please check out [version 2](./v2/SPFx-on-premises/index.html).
@@ -194,10 +207,10 @@ function() {
     const config: Configuration = {
         auth: {
             authority: "https://login.microsoftonline.com/{tenant id or common}/",
-            clientId: "{application (client) id}",
+            clientId: "{application (client) i}",
             clientCertificate: {
-            thumbprint: "{certificate thumbprint, displayed in AAD}",
-            privateKey: buffer.toString(),
+              thumbprint: "{certificate thumbprint, displayed in AAD}",
+              privateKey: buffer.toString(),
             },
         },
     };
