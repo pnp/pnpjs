@@ -69,7 +69,7 @@ describe("Taxonomy", function () {
     /**
      * Term Sets
      */
-    describe("TermSets", function () {
+    describe.only("TermSets", function () {
         let termset: ITermSet = null;
 
         before(async function () {
@@ -116,6 +116,18 @@ describe("Taxonomy", function () {
             }
             const termById = await termset.getTermById(terms[0].id)();
             return expect(termById).has.property("id");
+        });
+        it("getAllChildrenAsOrderedTree", async function(){
+            const tree = await termset.getAllChildrenAsOrderedTree();
+            return expect(tree).to.be.an("Array");
+        });
+        it("getAllChildrenAsOrderedTree-retreiveProperties", async function () {
+            const tree = await termset.getAllChildrenAsOrderedTree({retrieveProperties: true});
+            if (tree.length < 1) {
+                return;
+            }
+            const term = tree[0];
+            return expect(term).has.property("localProperties");
         });
     });
 
@@ -220,5 +232,6 @@ describe("Taxonomy", function () {
             const set = await relation.set();
             return expect(set).has.property("id");
         });
+
     });
 });
