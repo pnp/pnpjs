@@ -69,7 +69,7 @@ describe("Taxonomy", function () {
     /**
      * Term Sets
      */
-    describe.only("TermSets", function () {
+    describe("TermSets", function () {
         let termset: ITermSet = null;
 
         before(async function () {
