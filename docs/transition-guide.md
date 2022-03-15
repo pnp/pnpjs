@@ -4,6 +4,8 @@ It is our hope that the transition from version 2.\* to 3.\* will be as painless
 
 For a full, detailed list of what's been added, updated, and removed please see our [CHANGELOG](https://github.com/pnp/pnpjs/blob/main/CHANGELOG.md)
 
+For a full sample project, utilizing SPFx 1.14 and V3 that showcases some of the more dramatic changes to the library check out this [sample](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-sample).
+
 ## Benefits and Advancements in V3
 
 For version 2 the core themes were selective imports, a model based on factory functions & interfaces, and improving the docs. This foundation gave us the opportunity to re-write the entire request pipeline internals with minimal external library changes - showing a bit of long-term planning 🙂. With version 3 your required updates are likely to only affect the initial configuration of the library, a huge accomplishment when updating the entire internals.
