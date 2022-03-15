@@ -6,7 +6,7 @@ This concept works well with [custom bundling](./custom-bundle.md) to create a s
 
 If you would prefer to not worry about selective imports please see the section on [presets](#presets).
 
-> A quick note on how TypeScript handles type only imports. If you have a line like `import { IWeb } from "@pnp/sp/webs"` everything will transpile correctly but you will get runtime errors because TS will see that line as a type only import and drop it. You need to include both `import { IWeb } from "@pnp/sp/webs"` and `import "@pnp/sp/webs"` to ensure the webs functionality is correctly included. You can see this in the 
+> A quick note on how TypeScript handles type only imports. If you have a line like `import { IWeb } from "@pnp/sp/webs"` everything will transpile correctly but you will get runtime errors because TS will see that line as a type only import and drop it. You need to include both `import { IWeb } from "@pnp/sp/webs"` and `import "@pnp/sp/webs"` to ensure the webs functionality is correctly included. You can see this in the last example below.
 
 ```TypeScript
 // the sp var now has almost nothing attached at import time and relies on
