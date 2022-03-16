@@ -24,7 +24,7 @@ npm run serve
 
 Runs the tests and coverage for the library.
 
-[More details on setting up MSAL for node.](https://pnp.github.io/pnpjs/authentication/server-nodejs/#msal)
+[More details on setting up MSAL for node.](https://pnp.github.io/pnpjs/getting-started/#getting-started-with-nodejs)
 
 ### Options
 
