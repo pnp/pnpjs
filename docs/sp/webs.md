@@ -14,7 +14,7 @@ Using the library you can add a web to another web's collection of subwebs. The 
 import { spfi, SPFx } from "@pnp/sp";
 import { IWebAddResult } from "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result = await sp.web.webs.add("title", "subweb1");
 
@@ -33,7 +33,7 @@ result.web.select("Title")().then((w: IWebInfo)  => {
 import { spfi, SPFx } from "@pnp/sp";
 import { IWebAddResult } from "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // create a German language wiki site with title, url, description, which does not inherit permissions
 sp.web.webs.add("wiki", "subweb2", "a wiki web", "WIKI#0", 1031, false).then((w: IWebAddResult) => {
@@ -56,7 +56,7 @@ There are several ways to access a web instance, each of these methods is equiva
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const r = await sp.web();
 ```
@@ -67,7 +67,7 @@ const r = await sp.web();
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const r = await sp.web();
 ```
@@ -82,7 +82,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // we have a ref to the IItems instance
 const items = await sp.web.lists.getByTitle("Generic").items;
@@ -105,7 +105,7 @@ Access the child [webs collection](#Webs%20Collection) of this web
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const web = sp.web;
 const webs = await web.webs();
@@ -117,7 +117,7 @@ const webs = await web.webs();
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // basic get of the webs properties
 const props = await sp.web();
@@ -137,7 +137,7 @@ Get the data and IWeb instance for the parent web for the given web instance
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const web = web.getParentWeb();
 ```
 
@@ -149,7 +149,7 @@ Returns a collection of objects that contain metadata about subsites of the curr
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const web = sp.web;
 const subWebs = web.getSubwebsFilteredForCurrentUser()();
@@ -168,7 +168,7 @@ Allows access to the web's all properties collection. This is readonly in REST.
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const web = sp.web;
 const props = await web.allProperties();
@@ -185,7 +185,7 @@ Gets a collection of WebInfos for this web's subwebs
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const web = sp.web;
 
 const infos = await web.webinfos();
@@ -213,7 +213,7 @@ Updates this web instance with the supplied properties
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const web = sp.web;
 // update the web's title and description
 const result = await web.update({
@@ -239,7 +239,7 @@ function updateWeb(props: IWebUpdateProps): Promise<void> {
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const web = sp.web;
 
 await web.delete();
@@ -254,7 +254,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { combine } from "@pnp/core";
 
-const sp = spfi("https://{tenant}.sharepoint.com/sites/dev/subweb").using(SPFx(this.content));
+const sp = spfi("https://{tenant}.sharepoint.com/sites/dev/subweb").using(SPFx(this.context));
 const web = sp.web;
 
 // the urls to the color and font need to both be from the catalog at the root
@@ -275,7 +275,7 @@ Applies the specified site definition or site template to the Web site that has 
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const web = sp.web;
 const templates = (await web.availableWebTemplates().select("Name")<{ Name: string }[]>()).filter(t => /ENTERWIKI#0/i.test(t.Name));
 
@@ -293,7 +293,7 @@ Returns the collection of changes from the change log that have occurred within 
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const web = sp.web;
 // get the web changes including add, update, and delete
 const changes = await web.getChanges({
@@ -321,7 +321,7 @@ const iconFileName = await web.mapToIcon("test.docx");
 const iconFullPath = `https://{tenant}.sharepoint.com/sites/dev/_layouts/images/${iconFileName}`;
 
 // OR dynamically
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const webData = await sp.web.select("Url")();
 const iconFullPath2 = combine(webData.Url, "_layouts", "images", iconFileName);
 
@@ -344,7 +344,7 @@ import { IStorageEntity } from "@pnp/sp/webs";
 // needs to be unique, GUIDs are great
 const key = "my-storage-key";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // read an existing entity
 const entity: IStorageEntity = await sp.web.getStorageEntity(key);
@@ -380,7 +380,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { IApp } from "@pnp/sp/appcatalog";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const appWeb = sp.web.appcatalog;
 const app: IApp = appWeb.getAppById("{your app id}");
@@ -396,7 +396,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 // simplest add a page example
 const page = await sp.web.addClientsidePage("mypage1");
@@ -414,7 +414,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/content-types/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const cts = await sp.web.contentTypes();
 
@@ -431,7 +431,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/features/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const features = await sp.web.features();
 ```
@@ -445,7 +445,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/fields/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const fields = await sp.web.fields();
 ```
 
@@ -459,7 +459,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/files/web";
 import { IFile } from "@pnp/sp/files/types";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const file: IFile = web.getFileByServerRelativePath("/sites/dev/library/my # file%.docx");
 ```
 
@@ -472,7 +472,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const folders = await sp.web.folders();
 
@@ -492,7 +492,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const folder = await sp.web.rootFolder();
 ```
@@ -507,7 +507,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import { IFolder } from "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const folder: IFolder = web.getFolderByServerRelativePath("/sites/dev/library/my # folder%/");
 ```
@@ -521,7 +521,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/hubsites/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 // get the data and force a refresh
 const data = await sp.web.hubSiteData(true);
 ```
@@ -535,7 +535,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/hubsites/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 await sp.web.syncHubSiteTheme();
 ```
 
@@ -549,7 +549,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { ILists } from "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const lists: ILists = sp.web.lists;
 
 // you can always order the lists and select properties
@@ -569,7 +569,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { IList } from "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const list: IList = sp.web.siteUserInfoList;
 
 const data = await list();
@@ -587,7 +587,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { IList } from "@pnp/sp/lists/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const list: IList = sp.web.defaultDocumentLibrary;
 ```
 
@@ -601,7 +601,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { IList } from "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const templates = await sp.web.customListTemplates();
 
 // odata operators chain off the collection as expected
@@ -617,7 +617,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { IList } from "@pnp/sp/lists/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const list: IList = sp.web.getList("/sites/dev/lists/test");
 
 const listData = await list();
@@ -643,7 +643,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { IList } from "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const templateCatalog: IList = await sp.web.getCatalog(111);
 
 const themeCatalog: IList = await sp.web.getCatalog(123);
@@ -659,7 +659,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/navigation/web";
 import { INavigation } from "@pnp/sp/navigation";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const nav: INavigation = sp.web.navigation;
 ```
 
@@ -669,7 +669,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/navigation/web";
 import { IRegionalSettings } from "@pnp/sp/navigation";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const settings: IRegionalSettings = sp.web.regionalSettings;
 
 const settingsData = await settings();
@@ -681,7 +681,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/related-items/web";
 import { IRelatedItemManager, IRelatedItem } from "@pnp/sp/related-items";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const manager: IRelatedItemManager = sp.web.relatedItems;
 
 const data: IRelatedItem[] = await manager.getRelatedItems("{list name}", 4);
@@ -704,7 +704,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 const groups = await sp.web.siteGroups();
 
 const groups2 = await sp.web.siteGroups.top(2)();
@@ -719,7 +719,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const group = await sp.web.associatedOwnerGroup();
 
@@ -735,7 +735,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const group = await sp.web.associatedMemberGroup();
 
@@ -751,7 +751,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const group = await sp.web.associatedVisitorGroup();
 
@@ -767,7 +767,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-groups/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 await sp.web.createDefaultAssociatedGroups("Contoso", "{first owner login}");
 
@@ -790,7 +790,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const users = await sp.web.siteUsers();
 
@@ -808,7 +808,7 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const user = await sp.web.currentUser();
 
@@ -826,7 +826,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 import { IWebEnsureUserResult } from "@pnp/sp/site-users/";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const result: IWebEnsureUserResult = await sp.web.ensureUser("i:0#.f|membership|user@domain.onmicrosoft.com");
 ```
@@ -841,7 +841,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 import { ISiteUser } from "@pnp/sp/site-users/";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const user: ISiteUser = sp.web.getUserById(23);
 
@@ -860,7 +860,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/user-custom-actions/web";
 import { IUserCustomActions } from "@pnp/sp/user-custom-actions";
 
-const sp = spfi("{tenant url}").using(SPFx(this.content));
+const sp = spfi("{tenant url}").using(SPFx(this.context));
 
 const actions: IUserCustomActions = sp.web.userCustomActions;
 
