@@ -22,7 +22,7 @@ nav:
   - Packages:
     - Packages: 'packages.md'
     - core:
-      - core: '/packages/#core'
+      - core: 'packages/#core'
       - behaviors: 'core/behaviors.md'
       - observers: 'core/observers.md'
       - moments: 'core/moments.md'
