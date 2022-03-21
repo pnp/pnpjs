@@ -31,6 +31,8 @@ const info3: Pick<IAttachmentInfo, "ServerRelativeUrl">[] = await item.attachmen
 
 You can add an attachment to a list item using the add method. This method takes either a string, Blob, or ArrayBuffer.
 
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
 import { IItem } from "@pnp/sp/items";
@@ -44,30 +46,6 @@ const sp = spfi("{tenant url}").using(SPFx(this.context));
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
 await item.attachmentFiles.add("file2.txt", "Here is my content");
-```
-
-## Add Multiple
-
-This method allows you to pass an array of AttachmentFileInfo plain objects that will be added one at a time as attachments. Essentially automating the promise chaining.
-
-```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
-import { IList } from "@pnp/sp/lists";
-import "@pnp/sp/webs";
-import "@pnp/sp/items";
-import "@pnp/sp/lists/web";
-import "@pnp/sp/attachments";
-
-const sp = spfi("{tenant url}").using(SPFx(this.context));
-
-const item = await sp.web.lists.getByTitle("MyList").items.getById(2);
-
-const [batchedSP, execute] = sp.batched();
-
-const file = item.attachmentFiles.add( "My file name 1.txt", "string, blob, or array" );
-item.attachmentFiles.add( "My file name 2", "string, blob, or array" );
-
-await execute();
 ```
 
 ## Read Attachment Content
@@ -101,6 +79,7 @@ const json = await item.attachmentFiles.getByName("file.json").getJSON();
 ## Update Attachment Content
 
 You can also update the content of an attachment. This API is limited compared to the full file API - so if you need to upload large files consider using a document library.
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
 
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";

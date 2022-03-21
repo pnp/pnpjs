@@ -87,6 +87,8 @@ console.log(r.Id);
 
 Ensures that the specified list exists in the collection (note: this method not supported for batching). Just like with the add-method (see examples above) you can provide only the title, or any or all of the optional parameters desc, template, enableContentTypes and additionalSettings.
 
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
