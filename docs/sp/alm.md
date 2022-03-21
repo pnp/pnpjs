@@ -78,6 +78,8 @@ await catalog.select("Title", "Deployed")();
 
 This action must be performed in the context of the tenant app catalog
 
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```TypeScript
 // this represents the file bytes of the app package file
 const blob = new Blob();

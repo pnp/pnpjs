@@ -71,6 +71,8 @@ console.log(JSON.stringify(result2, null, 2));
 
 Shares the given resource with the specified permissions (View or Edit) and optionally sends an email to the users. You can supply a single string for the `loginnames` parameter or an array of `loginnames`. The folder method takes an optional parameter "shareEverything" which determines if the shared permissions are pushed down to all items in the folder, even those with unique permissions.
 
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";

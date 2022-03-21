@@ -109,6 +109,8 @@ $(() => {
 
 If you are working in nodejs you can also add a file using a stream. This example makes a copy of a file using streams.
 
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```TypeScript
 // triggers auto-application of extensions, in this case to add getStream
 
@@ -157,6 +159,8 @@ await item.update({
 ## Update File Content
 
 You can of course use similar methods to update existing files as shown below. This overwrites the existing content in the file.
+
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
 
 ```typescript
 import { spfi, SPFx } from "@pnp/sp";
@@ -268,6 +272,8 @@ console.log("File unpublished!");
 ## Advanced Upload Options
 
 Both the addChunked and setContentChunked methods support options beyond just supplying the file content.
+
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
 
 ### progress function
 
