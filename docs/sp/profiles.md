@@ -246,6 +246,8 @@ const isFollowing = await sp.profiles.isFollowing(follower, followee);
 Uploads and sets the user profile picture (Users can upload a picture to their own profile only). Not supported for batching.
 Accepts the profilePicSource Blob data representing the user's picture in BMP, JPEG, or PNG format of up to 4.76MB.
 
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```typescript
 setMyProfilePic(profilePicSource: Blob): Promise<void>
 ```
