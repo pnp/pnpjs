@@ -40,7 +40,7 @@ declare module "../webs/types" {
 }
 
 addProp(_Web, "siteUsers", SiteUsers);
-addProp(_Web, "currentUser", SiteUser, "currentuser");
+addProp(_Web, "currentUser", SiteUser);
 
 _Web.prototype.ensureUser = async function (this: _Web, logonName: string): Promise<IWebEnsureUserResult> {
 

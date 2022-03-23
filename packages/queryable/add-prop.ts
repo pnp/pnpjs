@@ -12,7 +12,7 @@ export function addProp<T, U>(target: { prototype: any }, name: string, factory:
         configurable: true,
         enumerable: true,
         get: function (this: U): T {
-            return factory(this, path);
+            return factory(this, path || name);
         },
     });
 }

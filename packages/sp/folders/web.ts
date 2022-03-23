@@ -40,7 +40,7 @@ declare module "../webs/types" {
 }
 
 addProp(_Web, "folders", Folders);
-addProp(_Web, "rootFolder", Folder, "rootFolder");
+addProp(_Web, "rootFolder", Folder);
 
 _Web.prototype.getFolderByServerRelativePath = function (this: _Web, folderRelativeUrl: string): IFolder {
     return Folder(this, `getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(folderRelativeUrl)}')`);
