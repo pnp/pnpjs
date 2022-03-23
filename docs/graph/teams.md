@@ -215,7 +215,7 @@ import "@pnp/graph/teams";
 
 const graph = graphfi().using(SPFx(this.context));
 
-const removedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.remove();
+const removedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.delete();
 
 ```
 
