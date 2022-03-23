@@ -41,6 +41,18 @@ const graph = graphfi().using(SPFx(this.context));
 const matchingUser = await graph.users.getById('jane@contoso.com')();
 ```
 
+## User Properties
+
+```TypeScript
+import { graphfi, SPFx } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(SPFx(this.context));
+
+await graph.me.memberOf();
+await graph.me.transitiveMemberOf();
+```
+
 ## Update Current User
 
 ```TypeScript
