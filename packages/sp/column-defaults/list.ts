@@ -28,7 +28,7 @@ declare module "../lists/types" {
     }
 }
 
-addProp(_List, "rootFolder", Folder, "rootFolder");
+addProp(_List, "rootFolder", Folder);
 
 _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<IFieldDefault[]> {
 

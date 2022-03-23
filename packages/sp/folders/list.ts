@@ -14,4 +14,4 @@ declare module "../lists/types" {
     }
 }
 
-addProp(_List, "rootFolder", Folder, "rootFolder");
+addProp(_List, "rootFolder", Folder);

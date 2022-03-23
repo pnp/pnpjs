@@ -11,4 +11,4 @@ declare module "../users/types" {
     }
 }
 
-addProp(_User, "joinedTeams", Teams, "joinedTeams");
+addProp(_User, "joinedTeams", Teams);

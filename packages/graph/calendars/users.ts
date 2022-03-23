@@ -21,8 +21,8 @@ declare module "../users/types" {
     }
 }
 
-addProp(_User, "calendar", Calendar, "calendar");
-addProp(_User, "calendars", Calendars, "calendars");
+addProp(_User, "calendar", Calendar);
+addProp(_User, "calendars", Calendars);
 addProp(_User, "events", Events);
 
 _User.prototype.calendarView = calendarView;

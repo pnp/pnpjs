@@ -13,4 +13,4 @@ declare module "../items/types" {
     }
 }
 
-addProp(_Item, "folder", Folder, "folder");
+addProp(_Item, "folder", Folder);

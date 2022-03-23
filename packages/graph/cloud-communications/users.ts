@@ -12,4 +12,4 @@ declare module "../users/types" {
     }
 }
 
-addProp(_User, "presence", Presence, "presence");
+addProp(_User, "presence", Presence);

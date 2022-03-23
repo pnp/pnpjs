@@ -11,4 +11,4 @@ declare module "../users/types" {
     }
 }
 
-addProp(_User, "outlook", Outlook, "outlook");
+addProp(_User, "outlook", Outlook);

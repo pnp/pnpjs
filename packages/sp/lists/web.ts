@@ -54,8 +54,8 @@ declare module "../webs/types" {
 }
 
 addProp(_Web, "lists", Lists);
-addProp(_Web, "siteUserInfoList", List, "siteuserinfolist");
-addProp(_Web, "defaultDocumentLibrary", List, "DefaultDocumentLibrary");
+addProp(_Web, "siteUserInfoList", List);
+addProp(_Web, "defaultDocumentLibrary", List);
 addProp(_Web, "customListTemplates", SPCollection, "getcustomlisttemplates");
 
 _Web.prototype.getList = function (this: _Web, listRelativeUrl: string): IList {
