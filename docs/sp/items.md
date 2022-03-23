@@ -447,6 +447,19 @@ Reflect.defineProperty(updateVal, fields[0].InternalName, {
 await newItem.item.update(updateVal);
 ```
 
+### Update BCS Field
+
+Please see [the issue](https://github.com/pnp/pnpjs/issues/2143) for full details.
+
+You will need to use `validateUpdateListItem` to ensure hte BCS field is updated correctly.
+
+```TypeScript
+const update = await sp.web.lists.getByTitle("Price").items.getById(7).select('*,External').validateUpdateListItem([
+      {FieldName:"External",FieldValue:"Fauntleroy Circus"},
+      {FieldName:"Customers_ID", FieldValue:"__bk410024003500240054006500"}
+    ]); 
+```
+
 ## Recycle
 
 To send an item to the recycle bin use recycle.
