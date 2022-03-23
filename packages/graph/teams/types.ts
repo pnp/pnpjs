@@ -3,7 +3,12 @@ import { body, HeaderParse } from "@pnp/queryable";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
 import { graphPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
-import { Team as ITeamType, TeamsAsyncOperation as ITeamsAsyncOperation, TeamsTab as ITeamsTabType } from "@microsoft/microsoft-graph-types";
+import {
+    Team as ITeamType,
+    TeamsAsyncOperation as ITeamsAsyncOperation,
+    TeamsTab as ITeamsTabType,
+    TeamsAppInstallation as ITeamsAppInstallation,
+} from "@microsoft/microsoft-graph-types";
 
 /**
  * Represents a Microsoft Team
@@ -18,6 +23,10 @@ export class _Team extends _GraphQueryableInstance<ITeamType> {
 
     public get channels(): IChannels {
         return Channels(this);
+    }
+
+    public get installedApps(): IInstalledApps {
+        return InstalledApps(this);
     }
 
     /**
@@ -229,4 +238,48 @@ export interface ITeamCreateResultAsync {
 export interface ITeamCreateResult {
     data: any;
     team: ITeam;
+}
+
+/**
+ * InstalledApp
+ */
+@deleteable()
+export class _InstalledApp extends _GraphQueryableInstance<ITeamsAppInstallation> {
+    public upgrade(): Promise<void> {
+        return graphPost(InstalledApp(this, "upgrade"));
+    }
+}
+export interface IInstalledApp extends _InstalledApp, IDeleteable { }
+export const InstalledApp = graphInvokableFactory<IInstalledApp>(_InstalledApp);
+
+/**
+ * InstalledApps
+ */
+@defaultPath("installedApps")
+@getById(InstalledApp)
+export class _InstalledApps extends _GraphQueryableCollection<ITeamsAppInstallation[]> {
+
+    /**
+     * Adds an installed app to the collection
+     * @param teamsAppId The id of the app to add.
+     */
+    public async add(teamsAppId: string): Promise<IAppAddResult> {
+
+        const data = await graphPost(this, body({
+            "teamsApp@odata.bind": teamsAppId,
+        }));
+
+        return {
+            data,
+            app: (<any>this).getById(data.id),
+        };
+    }
+
+}
+export interface IInstalledApps extends _InstalledApps, IGetById<IInstalledApp> { }
+export const InstalledApps = graphInvokableFactory<IInstalledApps>(_InstalledApps);
+
+export interface IAppAddResult {
+    data: any;
+    app: IInstalledApp;
 }
