@@ -145,14 +145,16 @@ describe.skip("Planner", function () {
     });
 
     afterEach(async function () {
+        const promises = [Promise.resolve()];
         if (taskID !== "") {
-            await this.pnp.graph.planner.plans.getById(planID).tasks.getById(taskID).delete();
+            promises.push(this.pnp.graph.planner.plans.getById(planID).tasks.getById(taskID).delete());
         }
         if (planID !== "") {
-            await this.pnp.graph.planner.plans.getById(planID).delete();
+            promises.push(this.pnp.graph.planner.plans.getById(planID).delete());
         }
         if (groupID !== "") {
-            await this.pnp.graph.groups.getById(groupID).delete();
+            promises.push(this.pnp.graph.groups.getById(groupID).delete());
         }
+        return Promise.all(promises);
     });
 });

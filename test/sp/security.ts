@@ -40,8 +40,9 @@ describe("Security", function () {
     after(async function () {
         if (this.pnp.settings.enableWebTests) {
             // reset the list incase we use it again it will be ready
-            await list.resetRoleInheritance();
+            return list.resetRoleInheritance();
         }
+        return;
     });
 
     it("roleAssignments", function () {

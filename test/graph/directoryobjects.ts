@@ -105,9 +105,11 @@ describe("Directory Objects", function () {
 
     // Remove the test data we created
     after(async function () {
+        const promises = [Promise.resolve()];
         if (this.pnp.settings.enableWebTests && !stringIsNullOrEmpty(this.pnp.settings.testUser)) {
-            await this.pnp.graph.groups.getById(testChildGroupID).delete();
-            await this.pnp.graph.groups.getById(testParentGroupID).delete();
+            promises.push(this.pnp.graph.groups.getById(testChildGroupID).delete());
+            promises.push(this.pnp.graph.groups.getById(testParentGroupID).delete());
         }
+        return Promise.all(promises);
     });
 });
