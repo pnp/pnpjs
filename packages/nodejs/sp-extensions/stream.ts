@@ -1,10 +1,9 @@
 import { headers } from "@pnp/queryable";
-import { File, Files, IFile, IFileAddResult, IFileInfo, IFiles, IFileUploadProgressData } from "@pnp/sp/files";
-import { spPost } from "@pnp/sp/operations";
+import { File, Files, IFile, IFileAddResult, IFileInfo, IFiles, IFileUploadProgressData } from "@pnp/sp/files/index.js";
+import { spPost, odataUrlFrom, escapeQueryStrValue } from "@pnp/sp";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
 import { extendFactory, getGUID, isFunc } from "@pnp/core";
-import { odataUrlFrom, escapeQueryStrValue } from "@pnp/sp";
 import { StreamParse } from "../behaviors/stream-parse.js";
 
 export interface IResponseBodyStream {

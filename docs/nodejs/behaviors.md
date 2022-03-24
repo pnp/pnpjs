@@ -11,7 +11,7 @@ This behavior, for use in nodejs, provides basic fetch support through the `node
 ```TypeScript
 import { NodeFetch } from "@pnp/nodejs";
 
-import "@pnp/sp/webs";
+import "@pnp/sp/webs/index.js";
 
 const sp = spfi().using(NodeFetch());
 
@@ -21,7 +21,7 @@ await sp.webs();
 ```TypeScript
 import { NodeFetch } from "@pnp/nodejs";
 
-import "@pnp/sp/webs";
+import "@pnp/sp/webs/index.js";
 
 const sp = spfi().using(NodeFetch({ replace: false }));
 
@@ -35,7 +35,7 @@ This behavior makes fetch requests but will attempt to retry the request on cert
 ```TypeScript
 import { NodeFetchWithRetry } from "@pnp/nodejs";
 
-import "@pnp/sp/webs";
+import "@pnp/sp/webs/index.js";
 
 const sp = spfi().using(NodeFetchWithRetry());
 
@@ -47,7 +47,7 @@ You can also control how the behavior works through its props. The `replace` val
 ```TypeScript
 import { NodeFetchWithRetry } from "@pnp/nodejs";
 
-import "@pnp/sp/webs";
+import "@pnp/sp/webs/index.js";
 
 const sp = spfi().using(NodeFetchWithRetry({
     retries: 2,
@@ -77,7 +77,7 @@ You can use the baseUrl property to specify either v1.0 or beta - or one of the 
 ```TypeScript
 import { GraphDefault } from "@pnp/nodejs";
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/users";
+import "@pnp/graph/users/index.js";
 
 const graph = graphfi().using(GraphDefault({
     // use the German national graph endpoint
@@ -97,7 +97,7 @@ This behavior provides a thin wrapper around the `@azure/msal-node` library. The
 ```TypeScript
 import { MSAL } from "@pnp/nodejs";
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/users";
+import "@pnp/graph/users/index.js";
 
 const graph = graphfi().using(MSAL(config: { /* my msal config */ }, scopes: ["https://graph.microsoft.com/.default"]);
 
@@ -123,7 +123,7 @@ You can use the baseUrl property to specify the absolute site/web url to which q
 ```TypeScript
 import { SPDefault } from "@pnp/nodejs";
 
-import "@pnp/sp/webs";
+import "@pnp/sp/webs/index.js";
 
 const sp = spfi().using(SPDefault({
     msal: {
@@ -149,7 +149,7 @@ await sp.web();
 ```TypeScript
 import { StreamParse } from "@pnp/nodejs";
 
-import "@pnp/sp/webs";
+import "@pnp/sp/webs/index.js";
 
 const sp = spfi().using(StreamParse());
 
