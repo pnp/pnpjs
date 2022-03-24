@@ -13,7 +13,7 @@ import findupSync from "findup-sync";
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
-describe("AppCatalog", function () {
+describe.skip("AppCatalog", function () {
 
     let appCatalog: IAppCatalog;
     const dirname = path.join(projectRoot, "test/sp/assets", "helloworld.sppkg");
