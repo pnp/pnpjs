@@ -4,7 +4,8 @@ import "@pnp/graph/teams";
 import "@pnp/graph/groups";
 import getValidUser from "./utilities/getValidUser.js";
 
-describe("Teams", function () {
+// skipping because this is a very time intensive test for an API that is unlikely to change frequently
+describe.skip("Teams", function () {
 
     let testUserId = "";
     let teamBody = {};
@@ -49,28 +50,27 @@ describe("Teams", function () {
         return expect(teamID.length > 0).is.true && expect(operationID.length > 0).is.true;
     });
 
-    // TODO::
-    // after(async function () {
+    after(async function () {
 
-    //     // Added delays to try and deal with async nature of adding a team. At this time it seems to be enough.
-    //     if (teamID !== "" && operationID !== "") {
+        // Added delays to try and deal with async nature of adding a team. At this time it seems to be enough.
+        if (teamID !== "" && operationID !== "") {
 
-    //         try {
+            try {
 
-    //             await delay(6000);
+                await delay(6000);
 
-    //             let isPending = true;
-    //             while (isPending) {
-    //                 const status = await this.pnp.graph.teams.getById(teamID).getOperationById(operationID);
-    //                 isPending = (status.status === "inProgress");
-    //                 if (isPending) {
-    //                     await delay(3000);
-    //                 }
-    //             }
-    //             await this.pnp.graph.groups.getById(teamID).delete();
+                let isPending = true;
+                while (isPending) {
+                    const status = await this.pnp.graph.teams.getById(teamID).getOperationById(operationID);
+                    isPending = (status.status === "inProgress");
+                    if (isPending) {
+                        await delay(3000);
+                    }
+                }
+                await this.pnp.graph.groups.getById(teamID).delete();
 
-    //         // eslint-disable-next-line no-empty
-    //         } catch (e) { }
-    //     }
-    // });
+                // eslint-disable-next-line no-empty
+            } catch (e) { }
+        }
+    });
 });
