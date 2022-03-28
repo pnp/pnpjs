@@ -7,6 +7,11 @@ interface IDigestInfo {
     value: string;
 }
 
+function clearExpired(digest: IDigestInfo | null | undefined): IDigestInfo | null {
+    const now = new Date();
+    return !objectDefinedNotNull(digest) || (now > digest.expiration) ? null : digest;
+}
+
 // allows for the caching of digests across all calls which each have their own IDigestInfo wrapper.
 const digests = new Map<string, IDigestInfo>();
 
@@ -28,18 +33,11 @@ export function RequestDigest(hook?: (url: string, init: RequestInit) => IDigest
                 const webUrl = extractWebUrl(urlAsString);
 
                 // do we have one in the cache that is still valid
-                let digest: IDigestInfo = digests.get(webUrl);
-                if (digest !== undefined) {
-
-                    const now = new Date();
-                    if (now > digest.expiration) {
-                        digest = null;
-                    }
-                }
+                // from #2186 we need to always ensure the digest we get isn't expired
+                let digest: IDigestInfo = clearExpired(digests.get(webUrl));
 
                 if (!objectDefinedNotNull(digest) && typeof hook === "function") {
-                    // we assume anything we get from the hook is not already expired
-                    digest = hook(urlAsString, init);
+                    digest = clearExpired(hook(urlAsString, init));
                 }
 
                 if (!objectDefinedNotNull(digest)) {
