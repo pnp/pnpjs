@@ -1,5 +1,8 @@
 import { spfi, SPBrowser } from "@pnp/sp";
 import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
 // import { graph } from "@pnp/graph/presets/all";
 
@@ -29,11 +32,9 @@ document.onreadystatechange = async () => {
 
             const sp = spfi("https://318studios.sharepoint.com/sites/dev/").using(SPBrowser());
 
-            // const r = await sp.web.update({
-            //     Title: "New Title: " + getRandomString(4),
-            // });
-
-            const r = await sp.web();
+            const r = await sp.web.lists.getByTitle("Generic").items.add({
+                Title: "Added"
+            });
 
             html.push(`<textarea cols="200" rows="40">${JSON.stringify(r, null, 4)}</textarea>`);
 
