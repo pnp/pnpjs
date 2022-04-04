@@ -147,7 +147,7 @@ export class _ClientsidePage extends _SPQueryable {
     }
 
     public get title(): string {
-        return this._layoutPart.properties.title;
+        return this.json.Title;
     }
 
     public set title(value: string) {
