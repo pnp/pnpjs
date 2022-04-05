@@ -148,14 +148,12 @@ export class SampleService {
 
         //Option 1 - with AADTokenProvider
         this._sp = spfi().using(SPFx({
-            spfxContext: {
             aadTokenProviderFactory: tokenProviderFactory,
             pageContext: pageContext,
-            }
         }));
 
         //Option 2 - without AADTokenProvider
-        this._sp = spfi().using(SPFx(pageContext));
+        this._sp = spfi().using(SPFx({ pageContext }));
 
         });
     }
