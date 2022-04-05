@@ -47,8 +47,8 @@ export function RequestDigest(hook?: (url: string, init: RequestInit) => IDigest
                         cache: "no-cache",
                         credentials: "same-origin",
                         headers: {
-                            "Accept": "application/json",
-                            "Content-Type": "application/json;odata=verbose;charset=utf-8",
+                            "accept": "application/json",
+                            "content-type": "application/json;odata=verbose;charset=utf-8",
                         },
                         method: "POST",
                     }).then(r => r.json()).then(p => ({

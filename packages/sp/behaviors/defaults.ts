@@ -29,9 +29,8 @@ export function DefaultHeaders(): TimelinePipe<Queryable> {
 
         instance
             .using(InjectHeaders({
-                "Accept": "application/json",
-                "Content-Type": "application/json;charset=utf-8",
-                "User-Agent": "NONISV|SharePointPnP|PnPjs",
+                "accept": "application/json",
+                "content-type": "application/json;charset=utf-8",
             }));
 
         return instance;
