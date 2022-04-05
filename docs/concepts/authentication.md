@@ -48,7 +48,7 @@ import { SPFx, spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 
 // within a webpart, application customizer, or adaptive card extension where the context object is available
-const sp = spfi(...);
+const sp = spfi().using(SPFx(this.context));
 
 const webData = await sp.web();
 ```
