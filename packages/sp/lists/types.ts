@@ -244,7 +244,9 @@ export class _List extends _SPInstance<IListInfo> {
             query.forEach((v, k) => clone.query.set(k, v));
         }
 
-        return spPost(clone, body({ parameters, ...overrideParameters }));
+        const params = objectDefinedNotNull(overrideParameters) ? { parameters, overrideParameters } : { parameters };
+
+        return spPost(clone, body(params));
     }
 
     /**
