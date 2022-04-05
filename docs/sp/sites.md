@@ -57,9 +57,9 @@ console.log(w.data);
 const w2 = await w.web.select("Title")();
 ```
 
-## Get site collection url from page
+## Get absolute web url from page url
 
-Using the library, you can get the site collection url by providing a page url
+Using the library, you can get the absolute web url by providing a page url
 
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";

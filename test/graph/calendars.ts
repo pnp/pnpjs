@@ -229,7 +229,9 @@ describe("Calendar", function () {
     after(async function () {
 
         if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testEventID)) {
-            await this.pnp.graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
+            return await this.pnp.graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
         }
+
+        return;
     });
 });

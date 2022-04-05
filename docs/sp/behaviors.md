@@ -111,6 +111,16 @@ const sp = spfi().using(SPFx(this.context));
 await sp.web();
 ```
 
+Note that both the sp and graph libraries export an SPFx behavior. They are unique to their respective libraries and cannot be shared, i.e. you can't use the graph SPFx to setup sp and vice-versa.
+
+```TypeScript
+import { GraphFI, graphfi, SPFx as graphSPFx } from '@pnp/graph'
+import { SPFI, spfi, SPFx as spSPFx } from '@pnp/sp'
+
+const sp = spfi().using(spSPFx(this.context));
+const graph = graphfi().using(graphSPFx(this.context));
+```
+
 ## Telemetry
 
 This behavior helps provide usage statistics to us about the number of requests made to the service using this library, as well as the methods being called. We do not, and cannot, access any PII information or tie requests to specific users. The data aggregates at the tenant level. We use this information to better understand how the library is being used and look for opportunities to improve high-use code paths.

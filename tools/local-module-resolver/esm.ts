@@ -1,9 +1,9 @@
-import { join, resolve as presolve, dirname, isAbsolute } from "path";
+import { join, resolve, dirname, isAbsolute, basename } from "path";
 import { existsSync } from "fs";
 import findup from "findup-sync";
 
 // give ourselves a single reference to the projectRoot
-const projectRoot = presolve(dirname(findup("package.json")));
+const projectRoot = resolve(dirname(findup("package.json")));
 
 function log(_message: string) {
     // console.log(`PnP Node Local Module Loader: ${message}`);
@@ -32,7 +32,7 @@ export function createResolve(innerPath: string): ResolverFunc {
 
                 candidate = candidate + ".js"
 
-            } else {
+            } else if (basename(candidate).toLowerCase() !== "index.js") {
 
                 candidate = join(candidate, "index.js");
             }

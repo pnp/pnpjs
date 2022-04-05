@@ -13,7 +13,7 @@ import findupSync from "findup-sync";
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
-describe("AppCatalog", function () {
+describe.skip("AppCatalog", function () {
 
     let appCatalog: IAppCatalog;
     const dirname = path.join(projectRoot, "test/sp/assets", "helloworld.sppkg");
@@ -40,7 +40,7 @@ describe("AppCatalog", function () {
         const app = await appCatalog.add(appName, sppkgData);
 
         after(async function () {
-            await app.file.delete();
+            return app.file.delete();
         });
 
         return expect(app.data.Name).to.eq(appName);
@@ -59,7 +59,7 @@ describe("AppCatalog", function () {
         const web = await this.pnp.sp.getTenantAppCatalogWeb();
 
         after(async function () {
-            await web.removeStorageEntity(key);
+            return web.removeStorageEntity(key);
         });
 
         await web.setStorageEntity(key, value);
@@ -76,7 +76,7 @@ describe("AppCatalog", function () {
         const web = await this.pnp.sp.getTenantAppCatalogWeb();
 
         after(async function () {
-            await web.removeStorageEntity(key);
+            return web.removeStorageEntity(key);
         });
 
         await web.setStorageEntity(key, value);

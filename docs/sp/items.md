@@ -100,11 +100,14 @@ const changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSince
 
 Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should be used.
 
+> In v3 there is a separate import for get-all to include the functionality. This is to remove the code from bundles for folks who do not need it.
+
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import "@pnp/sp/items/get-all";
 
 const sp = spfi("{tenant url}").using(SPFx(this.context));
 
@@ -445,6 +448,19 @@ Reflect.defineProperty(updateVal, fields[0].InternalName, {
 });
 // execute the update call
 await newItem.item.update(updateVal);
+```
+
+### Update BCS Field
+
+Please see [the issue](https://github.com/pnp/pnpjs/issues/2143) for full details.
+
+You will need to use `validateUpdateListItem` to ensure hte BCS field is updated correctly.
+
+```TypeScript
+const update = await sp.web.lists.getByTitle("Price").items.getById(7).select('*,External').validateUpdateListItem([
+      {FieldName:"External",FieldValue:"Fauntleroy Circus"},
+      {FieldName:"Customers_ID", FieldValue:"__bk410024003500240054006500"}
+    ]); 
 ```
 
 ## Recycle

@@ -1,6 +1,5 @@
 import "./web.js";
 import "./list.js";
-import "./web.js";
 
 export {
     IFields,

@@ -15,5 +15,5 @@ declare module "../groups/types" {
     }
 }
 
-addProp(_Group, "calendar", Calendar, "calendar");
+addProp(_Group, "calendar", Calendar);
 addProp(_Group, "events", Events);

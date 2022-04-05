@@ -168,6 +168,8 @@ export class SampleService {
 
 ## Getting started with NodeJS
 
+> Due to the way in which Node resolves ESM modules when you use selective imports in node you must include the `index.js` part of the path. Meaning an import like `import "@pnp/sp/webs"` in examples must be `import "@pnp/sp/webs/index.js"`. Root level imports such as `import { spfi } from "@pnp/sp"` remain correct. The samples in this section demonstrate this for their selective imports.
+
 ### Authentication
 
 To call the SharePoint APIs via MSAL you are required to use certificate authentication with your application. Fully covering certificates is outside the scope of these docs, but the following commands were used with openssl to create testing certs for the sample code below.
@@ -183,7 +185,7 @@ openssl rsa -in keytmp.pem -out key.pem -passin pass:HereIsMySuperPass
 
 ### Using @pnp/sp `spfi` factory interface in NodeJS
 
-> Version 3 of this library only supports ESModules. If for some reason you still require commonjs modules please check out [version 2](./v2/SPFx-on-premises/index.html).
+> Version 3 of this library only supports ESModules. If you still require commonjs modules please check out [version 2](./v2/SPFx-on-premises/index.html).
 
 The first step is to install the packages that will be needed. You can read more about what each package does starting on the [packages](packages.md) page.
 
@@ -196,7 +198,7 @@ Once these are installed you need to import them into your project, to communica
 ```TypeScript
 
 import { SPDefault } from "@pnp/nodejs";
-import "@pnp/sp/webs";
+import "@pnp/sp/webs/index.js";
 import { readFileSync } from 'fs';
 import { Configuration } from "@azure/msal-node";
 
@@ -242,7 +244,7 @@ Now we need to import what we'll need to call graph
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import { GraphDefault } from "@pnp/nodejs";
-import "@pnp/graph/users";
+import "@pnp/graph/users/index.js";
 
 function() {
     const graph = graphfi().using(GraphDefault({
@@ -289,7 +291,7 @@ setTimeout(async () => {
 
     const { spfi } = await import("@pnp/sp");
     const { SPDefault } = await import("@pnp/nodejs");
-    await import("@pnp/sp/webs");
+    await import("@pnp/sp/webs/index.js");
 
     const sp = spfi().using(SPDefault({
         baseUrl: settings.testing.sp.url,

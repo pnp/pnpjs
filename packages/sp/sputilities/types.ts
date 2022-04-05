@@ -16,40 +16,7 @@ export class _Utilities extends _SPQueryable implements IUtilities {
         return spPost(this, body(props));
     }
 
-    public sendEmail(props: IEmailProperties): Promise<void> {
-
-        let properties: any = {
-            Body: props.Body,
-            From: props.From,
-            Subject: props.Subject,
-        };
-
-        if (props.To && props.To.length > 0) {
-
-            properties = { ...properties, To: { results: props.To } };
-        }
-
-        if (props.CC && props.CC.length > 0) {
-
-            properties = { ...properties, CC: { results: props.CC } };
-        }
-
-        if (props.BCC && props.BCC.length > 0) {
-
-            properties = { ...properties, BCC: { results: props.BCC } };
-        }
-
-        if (props.AdditionalHeaders) {
-
-            const headers = Reflect.ownKeys(props.AdditionalHeaders).map(k => ({
-                Key: k,
-                Value: Reflect.get(props.AdditionalHeaders, k),
-                ValueType: "Edm.String",
-            }));
-
-            properties = { ...properties, AdditionalHeaders: headers };
-        }
-
+    public sendEmail(properties: IEmailProperties): Promise<void> {
         return UtilitiesCloneFactory(this, "SendEmail").excute<void>({ properties });
     }
 

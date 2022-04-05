@@ -14,6 +14,13 @@ export class _User extends _DirectoryObject<IUserType> {
     }
 
     /**
+    * The groups and directory roles associated with the user
+    */
+    public get transitiveMemberOf(): IDirectoryObjects {
+        return DirectoryObjects(this, "transitiveMemberOf");
+    }
+
+    /**
      * Retrieve a collection of person objects ordered by their relevance to the user
      */
     public get people(): IPeople {

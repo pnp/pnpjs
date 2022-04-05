@@ -34,7 +34,8 @@ describe("Hubsites", function () {
     // unregister the test site, so that tests will run successfully next time as well
     after(async function () {
         if (this.pnp.settings.enableWebTests) {
-            await this.pnp.sp.site.unRegisterHubSite();
+            return this.pnp.sp.site.unRegisterHubSite();
         }
+        return;
     });
 });

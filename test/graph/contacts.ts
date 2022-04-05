@@ -226,14 +226,16 @@ describe("Contacts", function () {
 
     // Remove the test contact we created
     after(async function () {
+        const promises = [Promise.resolve()];
         if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testContactID)) {
-            await this.pnp.graph.users.getById(testUserName).contacts.getById(testContactID).delete();
+            promises.push(this.pnp.graph.users.getById(testUserName).contacts.getById(testContactID).delete());
         }
         if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testContact2ID)) {
-            await this.pnp.graph.users.getById(testUserName).contacts.getById(testContact2ID).delete();
+            promises.push(this.pnp.graph.users.getById(testUserName).contacts.getById(testContact2ID).delete());
         }
         if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testFolderID)) {
-            await this.pnp.graph.users.getById(testUserName).contactFolders.getById(testFolderID).delete();
+            promises.push(this.pnp.graph.users.getById(testUserName).contactFolders.getById(testFolderID).delete());
         }
+        return Promise.all(promises);
     });
 });

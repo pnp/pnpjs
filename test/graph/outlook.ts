@@ -23,11 +23,13 @@ describe("Outlook", function () {
 
     // Clean up testing categories
     after(async function () {
+        const promises = [Promise.resolve()];
         if (!stringIsNullOrEmpty(testUserName) && testCategoryList.length > 0) {
             for (let i = 0; i < testCategoryList.length; i++) {
-                await this.pnp.graph.users.getById(testUserName).outlook.masterCategories.getById(testCategoryList[i]).delete();
+                promises.push(this.pnp.graph.users.getById(testUserName).outlook.masterCategories.getById(testCategoryList[i]).delete());
             }
         }
+        return Promise.all(promises);
     });
 
     it("outlook", async function () {
