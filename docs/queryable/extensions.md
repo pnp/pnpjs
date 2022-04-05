@@ -104,12 +104,15 @@ You can register Extensions on an invocable factory or on a per-object basis, an
 The pattern you will likely find most useful is the ability to extend an invocable factory. This will apply your extensions to all instances created with that factory, meaning all IWebs or ILists will have the extension methods. The example below shows how to add a property to IWeb as well as a method to IList.
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { IWeb, Web } from "@pnp/sp/webs";
 import { ILists, Lists } from "@pnp/sp/lists";
 import { extendFactory } from "@pnp/queryable";
 import { sp } from "@pnp/sp";
+
+const sp = spfi().using(...);
 
 // sets up the types correctly when importing across your application
 declare module "@pnp/sp/webs/types" {
@@ -144,11 +147,11 @@ extendFactory(Lists, {
 });
 
 // regardless of how we access the web and lists collections our extensions remain with all new instance based on
-const web = Web("https://tenant.sharepoint.com/sites/dev/");
+const web = Web([sp.web, "https://tenant.sharepoint.com/sites/dev/"]);
 const lists1 = await web.orderedLists();
 console.log(JSON.stringify(lists1, null, 2));
 
-const lists2 = await Web("https://tenant.sharepoint.com/sites/dev/").orderedLists();
+const lists2 = await Web([sp.web, "https://tenant.sharepoint.com/sites/dev/"]).orderedLists();
 console.log(JSON.stringify(lists2, null, 2));
 
 const lists3 = await sp.web.orderedLists();

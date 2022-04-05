@@ -15,11 +15,11 @@ You can learn more about Microsoft Graph Groups by reading the [Official Microso
 Add a new group.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 import { GroupType } from '@pnp/graph/groups';
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const groupAddResult = await graph.groups.add("GroupName", "Mail_NickName", GroupType.Office365);
 const group = await groupAddResult.group();
@@ -30,10 +30,10 @@ const group = await groupAddResult.group();
 Deletes an existing group.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").delete();
 ```
@@ -43,10 +43,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").delete();
 Updates an existing group.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").update({ displayName: newName, propertyName: updatedValue});
 ```
@@ -56,10 +56,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").update({ disp
 Add the group to the list of the current user's favorite groups. Supported for Office 365 groups only.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").addFavorite();
 ```
@@ -69,10 +69,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").addFavorite()
 Remove the group from the list of the current user's favorite groups. Supported for Office 365 Groups only.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").removeFavorite();
 ```
@@ -82,10 +82,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").removeFavorit
 Reset the unseenCount of all the posts that the current user has not seen since their last visit. Supported for Office 365 groups only.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").resetUnseenCount();
 ```
@@ -95,10 +95,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").resetUnseenCo
 Calling this method will enable the current user to receive email notifications for this group, about new posts, events, and files in that group. Supported for Office 365 groups only.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").subscribeByMail();
 ```
@@ -108,10 +108,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").subscribeByMa
 Calling this method will prevent the current user from receiving email notifications for this group about new posts, events, and files in that group. Supported for Office 365 groups only.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").unsubscribeByMail();
 ```
@@ -121,10 +121,10 @@ await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").unsubscribeBy
 Get the occurrences, exceptions, and single instances of events in a calendar view defined by a time range, from the default calendar of a group.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const startDate = new Date("2020-04-01");
 const endDate = new Date("2020-03-01");
@@ -141,11 +141,11 @@ See [Photos](./photos.md)
 Get the members and/or owners of a group.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 import "@pnp/graph/members";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 const members = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").members();
 const owners = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").owners();
 ```
@@ -153,11 +153,11 @@ const owners = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177"
 ## Get the Team Site for a Group
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 import "@pnp/graph/sites/group";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const teamSite = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").sites.root();
 const url = teamSite.webUrl

@@ -102,11 +102,11 @@ await sp.web();
 This behavior is designed to work closely with SPFx. The only parameter is the current SPFx Context. `SPFx` is a composed behavior including DefaultHeaders, DefaultInit, BrowserFetchWithRetry, DefaultParse, and RequestDigest. A hook is supplied to RequestDigest that will attempt to use any existing legacyPageContext formDigestValue it can find, otherwise defaults to the base [RequestDigest](#requestdigest) behavior. It also sets a pre handler to ensure the url is absolute, using the SPFx context's pageContext.web.absoluteUrl as the base.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
-const sp = spfi().using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web();
 ```

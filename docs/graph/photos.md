@@ -13,11 +13,11 @@ You can learn more about Microsoft Graph users by reading the [Official Microsof
 This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/photos";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const photoValue = await graph.me.photo.getBlob();
 const url = window.URL || window.webkitURL;
@@ -30,11 +30,11 @@ document.getElementById("photoElement").setAttribute("src", blobUrl);
 This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/groups";
 import "@pnp/graph/photos";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const photoValue = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").photo.getBlob();
 const url = window.URL || window.webkitURL;
@@ -45,11 +45,11 @@ document.getElementById("photoElement").setAttribute("src", blobUrl);
 ## Set User Photo
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/photos";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const input = <HTMLInputElement>document.getElementById("thefileinput");
 const file = input.files[0];
@@ -59,11 +59,11 @@ await graph.me.photo.setContent(file);
 ## Set Group Photo
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/photos";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const input = <HTMLInputElement>document.getElementById("thefileinput");
 const file = input.files[0];

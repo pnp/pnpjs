@@ -7,10 +7,10 @@ The search module allows you to access the Microsoft Graph Sites API.
 ## Call graph.sites
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/sites";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const sitesInfo = await graph.sites();
 ```
@@ -18,10 +18,10 @@ const sitesInfo = await graph.sites();
 ## Call graph.sites.getById
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/sites";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const siteInfo = await graph.sites.getById("{site identifier}")();
 ```

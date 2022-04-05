@@ -15,11 +15,11 @@ More information can be found in the official Graph documentation:
 Gets a list of all the contacts for the user.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/cloud-communications";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const presenceMe = await graph.me.presence();
 
@@ -30,10 +30,10 @@ const presenceThem = await graph.users.getById("99999999-9999-9999-9999-99999999
 ## Get presence for multiple users
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/cloud-communications";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const presenceList = await graph.communications.getPresencesByUserId(["99999999-9999-9999-9999-999999999999"]);
 

@@ -106,11 +106,11 @@ await graph.users();
 This behavior is designed to work closely with SPFx. The only parameter is the current SPFx Context. `SPFx` is a composed behavior including DefaultHeaders, DefaultInit, BrowserFetchWithRetry, and DefaultParse. It also replaces any authentication present with a method to get a token from the SPFx aadTokenProviderFactory.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 await graph.users();
 ```
@@ -128,7 +128,7 @@ const graph = graphfi().using(graphSPFx(this.context));
 If you want to use a different form of authentication you can apply that behavior after `SPFx` to override it. In this case we are using the [client MSAL authentication](../msaljsclient).
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import { MSAL } from "@pnp/msaljsclient";
 import "@pnp/graph/users";
 

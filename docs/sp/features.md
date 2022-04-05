@@ -13,9 +13,9 @@ Represents a collection of features. SharePoint Sites and Webs will have a colle
 Gets the information about a feature for the given GUID
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
 const webFeatureId = "guid-of-web-feature";
@@ -30,9 +30,9 @@ const siteFeature = await sp.site.features.getById(siteFeatureId)();
 Adds (activates) a feature at the Site or Web level
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
 const webFeatureId = "guid-of-web-feature";
@@ -46,9 +46,9 @@ res = await sp.web.features.add(webFeatureId, true);
 Removes and deactivates the specified feature from the SharePoint Site or Web
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
 const webFeatureId = "guid-of-web-feature";
@@ -68,11 +68,11 @@ Represents an instance of a SharePoint feature.
 Deactivates the specified feature from the SharePoint Site or Web
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/features";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
 const webFeatureId = "guid-of-web-feature";

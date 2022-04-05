@@ -13,10 +13,10 @@ Using the planner.plans.getById() you can get a specific Plan.
 Planner.plans is not an available endpoint, you need to get a specific Plan.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const plan = await graph.planner.plans.getById('planId')();
 
@@ -27,10 +27,10 @@ const plan = await graph.planner.plans.getById('planId')();
 Using the planner.plans.add() you can create a new Plan.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const newPlan = await graph.planner.plans.add('groupObjectId', 'title');
 
@@ -41,10 +41,10 @@ const newPlan = await graph.planner.plans.add('groupObjectId', 'title');
 Using the tasks() you can get the Tasks in a Plan.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const planTasks = await graph.planner.plans.getById('planId').tasks();
 
@@ -55,10 +55,10 @@ const planTasks = await graph.planner.plans.getById('planId').tasks();
 Using the buckets() you can get the Buckets in a Plan.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const planBuckets = await graph.planner.plans.getById('planId').buckets();
 
@@ -69,10 +69,10 @@ const planBuckets = await graph.planner.plans.getById('planId').buckets();
 Using the details() you can get the details in a Plan.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const planDetails = await graph.planner.plans.getById('planId').details();
 
@@ -83,10 +83,10 @@ const planDetails = await graph.planner.plans.getById('planId').details();
 Using the delete() you can get delete a Plan.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const delPlan = await graph.planner.plans.getById('planId').delete('planEtag');
 
@@ -97,10 +97,10 @@ const delPlan = await graph.planner.plans.getById('planId').delete('planEtag');
 Using the update() you can get update a Plan.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const updPlan = await graph.planner.plans.getById('planId').update({title: 'New Title', eTag: 'planEtag'});
 
@@ -112,10 +112,10 @@ Using the planner.tasks.getById() you can get a specific Task.
 Planner.tasks is not an available endpoint, you need to get a specific Task.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const task = await graph.planner.tasks.getById('taskId')();
 
@@ -126,10 +126,10 @@ const task = await graph.planner.tasks.getById('taskId')();
 Using the planner.tasks.add() you can create a new Task.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const newTask = await graph.planner.tasks.add('planId', 'title');
 
@@ -140,10 +140,10 @@ const newTask = await graph.planner.tasks.add('planId', 'title');
 Using the details() you can get the details in a Task.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const taskDetails = await graph.planner.tasks.getById('taskId').details();
 
@@ -154,10 +154,10 @@ const taskDetails = await graph.planner.tasks.getById('taskId').details();
 Using the delete() you can get delete a Task.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const delTask = await graph.planner.tasks.getById('taskId').delete('taskEtag');
 
@@ -168,10 +168,10 @@ const delTask = await graph.planner.tasks.getById('taskId').delete('taskEtag');
 Using the update() you can get update a Task.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const updTask = await graph.planner.tasks.getById('taskId').update({properties, eTag:'taskEtag'});
 
@@ -183,10 +183,10 @@ Using the planner.buckets.getById() you can get a specific Bucket.
 planner.buckets is not an available endpoint, you need to get a specific Bucket.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const bucket = await graph.planner.buckets.getById('bucketId')();
 
@@ -197,10 +197,10 @@ const bucket = await graph.planner.buckets.getById('bucketId')();
 Using the planner.buckets.add() you can create a new Bucket.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const newBucket = await graph.planner.buckets.add('name', 'planId');
 
@@ -211,10 +211,10 @@ const newBucket = await graph.planner.buckets.add('name', 'planId');
 Using the update() you can get update a Bucket.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const updBucket = await graph.planner.buckets.getById('bucketId').update({name: "Name", eTag:'bucketEtag'});
 
@@ -225,10 +225,10 @@ const updBucket = await graph.planner.buckets.getById('bucketId').update({name: 
 Using the delete() you can get delete a Bucket.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const delBucket = await graph.planner.buckets.getById('bucketId').delete(eTag:'bucketEtag');
 
@@ -239,10 +239,10 @@ const delBucket = await graph.planner.buckets.getById('bucketId').delete(eTag:'b
 Using the tasks() you can get Tasks in a Bucket.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/planner";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const bucketTasks = await graph.planner.buckets.getById('bucketId').tasks();
 
