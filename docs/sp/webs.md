@@ -97,6 +97,44 @@ const webInfo = await web();
 const list = web.lists.getByTitle("DifferentList");
 ```
 
+**Access a web using the Web factory method**
+
+There are several ways to use the `Web` factory directly and have some special considerations unique to creating `IWeb` instances from `Web`. The easiest is to supply the absolute URL of the web you wish to target, as seen in the first example below. When supplying a path parameter to `Web` you need to include the `_api/web` part in the appropriate location as the library can't from strings determine how to append the path. Example 2 below shows a wrong usage of the Web factory as we cannot determine how the path part should be appended. Examples 3 and 4 show how to include the `_api/web` part for both subwebs or queries within the given web.
+
+> When in doubt, supply the absolute url to the web as the first parameter as shown in example 1 below
+
+```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+
+// creates a web:
+// - whose root is "https://tenant.sharepoint.com/sites/myweb"
+// - whose request path is "https://tenant.sharepoint.com/sites/myweb/_api/web"
+// - has no registered observers
+const web1 = Web("https://tenant.sharepoint.com/sites/myweb");
+
+// creates a web that will not work due to missing the _api/web portion
+// this is because we don't know that the extra path should come before/after the _api/web portion
+// - whose root is "https://tenant.sharepoint.com/sites/myweb/some sub path"
+// - whose request path is "https://tenant.sharepoint.com/sites/myweb/some sub path"
+// - has no registered observers
+const web2-WRONG = Web("https://tenant.sharepoint.com/sites/myweb", "some sub path");
+
+// creates a web:
+// - whose root is "https://tenant.sharepoint.com/sites/myweb/some sub path"
+// - whose request path is "https://tenant.sharepoint.com/sites/myweb/some sub web/_api/web"
+// including the _api/web ensures the path you are providing is correct and can be parsed by the library
+// - has no registered observers
+const web3 = Web("https://tenant.sharepoint.com/sites/myweb", "some sub web/_api/web");
+
+// creates a web that actually points to the lists endpoint:
+// - whose root is "https://tenant.sharepoint.com/sites/myweb/"
+// - whose request path is "https://tenant.sharepoint.com/sites/myweb/_api/web/lists"
+// including the _api/web ensures the path you are providing is correct and can be parsed by the library
+// - has no registered observers
+const web4 = Web("https://tenant.sharepoint.com/sites/myweb", "_api/web/lists");
+```
+
 ### webs
 
 Access the child [webs collection](#Webs%20Collection) of this web

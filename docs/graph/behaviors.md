@@ -115,6 +115,16 @@ const graph = graphfi().using(SPFx(this.context));
 await graph.users();
 ```
 
+Note that both the sp and graph libraries export an SPFx behavior. They are unique to their respective libraries and cannot be shared, i.e. you can't use the graph SPFx to setup sp and vice-versa.
+
+```TypeScript
+import { GraphFI, graphfi, SPFx as graphSPFx } from '@pnp/graph'
+import { SPFI, spfi, SPFx as spSPFx } from '@pnp/sp'
+
+const sp = spfi().using(spSPFx(this.context));
+const graph = graphfi().using(graphSPFx(this.context));
+```
+
 If you want to use a different form of authentication you can apply that behavior after `SPFx` to override it. In this case we are using the [client MSAL authentication](../msaljsclient).
 
 ```TypeScript

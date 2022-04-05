@@ -96,6 +96,7 @@ This behavior creates a ref to the supplied Timeline implementation's observers 
 
 ```TypeScript
 import { spfi, SPBrowser } from "@pnp/sp";
+import "@pnp/sp/webs";
 import { AssignFrom } from "@pnp/core";
 // some local project file
 import { MyCustomeBehavior } from "./behaviors.ts";
@@ -107,7 +108,7 @@ const target = spfi().using(MyCustomeBehavior());
 // target will now hold a reference to the observers contained in source
 // changes to the subscribed observers in source will apply to target
 // anything that was added by "MyCustomeBehavior" will no longer be present
-target.using(AssignFrom(source));
+target.using(AssignFrom(source.web));
 
 // you can always apply additional behaviors or register directly on the events
 // but once you modify target it will not longer ref source and changes to source will no longer apply
@@ -126,6 +127,7 @@ Similar to AssignFrom, this method creates a copy of all the observers on the so
 
 ```TypeScript
 import { spfi, SPBrowser } from "@pnp/sp";
+import "@pnp/sp/webs";
 import { CopyFrom } from "@pnp/core";
 // some local project file
 import { MyCustomeBehavior } from "./behaviors.ts";
@@ -136,11 +138,11 @@ const target = spfi().using(MyCustomeBehavior());
 
 // target will have the observers copied from source, but no reference to source. Changes to source's registered observers will not affect target.
 // any previously registered observers in target are maintained as the default behavior is to append
-target.using(CopyFrom(source));
+target.using(CopyFrom(source.web));
 
 // target will have the observers copied from source, but no reference to source. Changes to source's registered observers will not affect target.
 // any previously registered observers in target are removed
-target.using(CopyFrom(source, "replace"));
+target.using(CopyFrom(source.web, "replace"));
 
 // you can always apply additional behaviors or register directly on the events
 // with CopyFrom no reference to source is maintained
@@ -152,6 +154,7 @@ As well `CopyFrom` supports a filter parameter if you only want to copy the obse
 
 ```TypeScript
 import { spfi, SPBrowser } from "@pnp/sp";
+import "@pnp/sp/webs";
 import { CopyFrom } from "@pnp/core";
 // some local project file
 import { MyCustomeBehavior } from "./behaviors.ts";
@@ -162,11 +165,11 @@ const target = spfi().using(MyCustomeBehavior());
 
 // target will have the observers copied from source, but no reference to source. Changes to source's registered observers will not affect target.
 // any previously registered observers in target are maintained as the default behavior is to append
-target.using(CopyFrom(source));
+target.using(CopyFrom(source.web));
 
 // target will have the observers `auth` and `send` copied from source, but no reference to source. Changes to source's registered observers will not affect target.
 // any previously registered observers in target are removed
-target.using(CopyFrom(source, "replace", (k) => /(auth|send)/i.test(k)));
+target.using(CopyFrom(source.web, "replace", (k) => /(auth|send)/i.test(k)));
 
 // you can always apply additional behaviors or register directly on the events
 // with CopyFrom no reference to source is maintained
