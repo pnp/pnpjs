@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.2.0 - 2022-April-08
+
+### Fixed
+
+- node:
+  - Fix for CommonJS imports with ESM modules.
+
+- sp:
+  - Fix issue with sendEmail utility.
+  - Bug fixes for getAllChildrenAsOrderedTree in Taxonomy.
+  - Update for issues with stale requestdigest.
+  - Bug fix for client-side pages for home page so that title is read from the json blob.
+  - Remove user-agent header for throttling as no longer used.
+  - Bug fix for renderListDataAsStream method
+
+- graph:
+  - Added getById method to Sites.
+  - Added transitiveMemberOf method to User.
+  - Added installedApps method to a Team.
+
+- docs:
+  - Various documentation copy/paste and typo fixes.
+  - Updates for getting-started guidance for imports of both @pnp/sp and @pnp/graph in SPFx.
+  - Updates to remove documentation showing batching adding files; includes new tag on all areas of library that are not supported for batching.
+  - New documentation for Graph to get SharePoint sites.
+  - New doucmentation for updating a BCS field in SharePoint.
+  - Added Graph memberOf and transitiveMemberOf properties.
+  - Updated docs on the Web() method.
+
 ## 3.1.0 - 2022-March-11
 
 - sp:
@@ -17,14 +46,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## 3.0.3 - 2022-March-3
 
-### Fixed
-
 - sp:
   - Issues preventing search queries from running. #2124
 
 ## 3.0.2 - 2022-Feb-22
-
-### Fixed
 
 - sp:
   - Issue in SPFx behavior with improperly using current web's request digest for non-current web calls #2102
@@ -34,8 +59,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Sample updates for v3
 
 ## 3.0.1 - 2022-Feb-15
-
-### Fixed
 
 - sp:
   - Fixed root property initializers #2082

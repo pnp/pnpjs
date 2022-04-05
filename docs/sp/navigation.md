@@ -17,10 +17,10 @@ NOTE: the , separator can be escaped using the \ as escape character as done in 
 * property3,containingcomma
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/navigation";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // Will return a menu state of the default SiteMapProvider 'SPSiteMapProvider' where the dump starts a the RootNode (within the site) with a depth of 10 levels.
 const state = await sp.navigation.getMenuState();
@@ -37,10 +37,10 @@ const state3 = await sp.navigation.getMenuState(null, 5, "CurrentNavSiteMapProvi
 Tries to get a SiteMapNode.Key for a given URL within a site collection. If the SiteMapNode cannot be found an Exception is returned. The method is using SiteMapProvider.FindSiteMapNodeFromKey(string rawUrl) to lookup the SiteMapNode. Depending on the actual implementation of FindSiteMapNodeFromKey the matching can differ for different SiteMapProviders.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/navigation";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const key = await sp.navigation.getMenuNodeKey("/sites/dev/Lists/SPPnPJSExampleList/AllItems.aspx");
 ```
@@ -61,11 +61,11 @@ The navigation object contains two properties "quicklaunch" and "topnavigationba
 ### Get navigation
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/navigation";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const top = await sp.web.navigation.topNavigationBar();
 const quick = await sp.web.navigation.quicklaunch();
@@ -74,11 +74,11 @@ const quick = await sp.web.navigation.quicklaunch();
 For the following examples we will refer to a variable named "nav" that is understood to be one of topNavigationBar or quicklaunch:
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/navigation";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 // note we are just getting a ref to the nav object, not executing a request
 const nav = sp.web.navigation.topNavigationBar;
 // -- OR -- 

@@ -9,12 +9,12 @@ Views define the columns, ordering, and other details we see when we look at a l
 ### Get views in a list
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -31,12 +31,12 @@ const views3 = await list.views.top(3)();
 ### Add a View
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -63,12 +63,12 @@ await Promise.all([
 ### Get a View's Information
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -86,12 +86,12 @@ const result5 = await list.getView("{GUID view id}")();
 ### fields
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -101,12 +101,12 @@ const result = await list.views.getById("{GUID view id}").fields();
 ### update
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const list = sp.web.lists.getByTitle("My List");
 
@@ -118,12 +118,12 @@ const result = await list.views.getById("{GUID view id}").update({
 ### renderAsHtml
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const result = await sp.web.lists.getByTitle("My List").views.getById("{GUID view id}").renderAsHtml();
 ```
@@ -131,12 +131,12 @@ const result = await sp.web.lists.getByTitle("My List").views.getById("{GUID vie
 ### setViewXml
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const viewXml = "...";
 
@@ -146,12 +146,12 @@ await sp.web.lists.getByTitle("My List").views.getById("{GUID view id}").setView
 ### delete
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const viewXml = "...";
 
@@ -163,12 +163,12 @@ await sp.web.lists.getByTitle("My List").views.getById("{GUID view id}").delete(
 ### getSchemaXml
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const xml = await sp.web.lists.getByTitle("My List").defaultView.fields.getSchemaXml();
 ```
@@ -176,12 +176,12 @@ const xml = await sp.web.lists.getByTitle("My List").defaultView.fields.getSchem
 ### add
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.lists.getByTitle("My List").defaultView.fields.add("Created");
 ```
@@ -189,12 +189,12 @@ await sp.web.lists.getByTitle("My List").defaultView.fields.add("Created");
 ### move
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.lists.getByTitle("My List").defaultView.fields.move("Created", 0);
 ```
@@ -202,12 +202,12 @@ await sp.web.lists.getByTitle("My List").defaultView.fields.move("Created", 0);
 ### remove
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.lists.getByTitle("My List").defaultView.fields.remove("Created");
 ```
@@ -215,12 +215,12 @@ await sp.web.lists.getByTitle("My List").defaultView.fields.remove("Created");
 ### removeAll
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.lists.getByTitle("My List").defaultView.fields.removeAll();
 ```

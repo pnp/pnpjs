@@ -82,6 +82,8 @@ Because SharePoint Framework provides a local context to each component we need 
 
 Depending on how you architect your solution establishing context is done where you want to make calls to the API. The examples demonstrate doing so in the onInit method as a local variable but this could also be done to a private variable or passed into a service.
 
+>Note if you are going to use both the @pnp/sp and @pnp/graph packages in SPFx you will need to alias the SPFx behavior import, please see the [section](#using-both-pnpsp-and-pnpgraph-in-spfx) below for more details.
+
 ### Using @pnp/sp `spfi` factory interface in SPFx
 
 ```TypeScript
@@ -92,8 +94,8 @@ import { spfi, SPFx } from "@pnp/sp";
 protected async onInit(): Promise<void> {
 
     await super.onInit();
-    const sp = spfi().using(SPFx(this.context));
-
+    const sp = spfi().using(spSPFx(this.context));
+    
 }
 
 // ...
@@ -111,6 +113,27 @@ protected async onInit(): Promise<void> {
 
     await super.onInit();
     const graph = graphfi().using(SPFx(this.context));
+
+}
+
+// ...
+
+```
+
+### Using both @pnp/sp and @pnp/graph in SPFx
+
+```TypeScript
+
+import { spfi, SPFx as spSPFx } from "@pnp/sp";
+import { graphfi, SPFx as graphSPFx} from "@pnp/graph";
+
+// ...
+
+protected async onInit(): Promise<void> {
+
+    await super.onInit();
+    const sp = spfi().using(spSPFx(this.context));
+    const graph = graphfi().using(graphSPFx(this.context));
 
 }
 
@@ -154,8 +177,6 @@ export class SampleService {
 
         //Option 2 - without AADTokenProvider
         this._sp = spfi().using(SPFx({ pageContext }));
-
-        });
     }
 
     public getLists(): Promise<any[]> {
@@ -172,7 +193,7 @@ export class SampleService {
 
 To call the SharePoint APIs via MSAL you are required to use certificate authentication with your application. Fully covering certificates is outside the scope of these docs, but the following commands were used with openssl to create testing certs for the sample code below.
 
-```
+```cmd
 mkdir \temp
 cd \temp
 openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365 -passout pass:HereIsMySuperPass -subj '/C=US/ST=Washington/L=Seattle'
@@ -269,6 +290,7 @@ You must install TypeScript @next or you will get errors using node12 module res
 The tsconfig file for your project should have the `"module": "CommonJS"` and `"moduleResolution": "node12",` settings in addition to whatever else you need.
 
 _tsconfig.json_
+
 ```JSON
 {
     "compilerOptions": {
@@ -280,6 +302,7 @@ _tsconfig.json_
 You must then import the esm dependencies using the async import pattern. This works as expected with our selective imports, and vscode will pick up the intellisense as expected.
 
 _index.ts_
+
 ```TypeScript
 import { settings } from "./settings.js";
 
@@ -312,7 +335,6 @@ Finally, when launching node you need to include the `` flag with a setting of '
 
 > Read more in the releated [TypeScript Issue](https://github.com/microsoft/TypeScript/issues/43329), [TS pull request Adding the functionality](https://github.com/microsoft/TypeScript/pull/45884), and the [TS Docs](https://www.typescriptlang.org/tsconfig#moduleResolution).
 
-
 ## Single Page Application Context
 
 In some cases you may be working in a client-side application that doesn't have context to the SharePoint site. In that case you will need to utilize the MSAL Client, you can get the details on creating that connection in this [article](./concepts/authentication.md#MSAL-in-Browser).
@@ -341,7 +363,7 @@ import { AssignFrom } from "@pnp/core";
 import "@pnp/sp/webs";
 
 //Connection to the current context's Web
-const sp = spfi().using(SPFx(this.context));
+const sp = spfi(...);
 
 // Option 1: Create a new instance of Queryable
 const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));

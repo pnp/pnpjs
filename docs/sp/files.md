@@ -7,12 +7,12 @@ One of the more challenging tasks on the client side is working with SharePoint 
 Reading files from the client using REST is covered in the below examples. The important thing to remember is choosing which format you want the file in so you can appropriately process it. You can retrieve a file as Blob, Buffer, JSON, or Text. If you have a special requirement you could also write your [own parser](../queryable/behaviors.md#parsers).
 
 ```typescript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const blob: Blob = await sp.web.getFileByServerRelativePath("/sites/dev/documents/file.avi").getBlob();
 
@@ -31,11 +31,11 @@ const text2: string = await sp.web.getFolderByServerRelativePath("/sites/dev/doc
 This method supports opening files from sharing links or absolute urls. The file must reside in the site from which you are trying to open the file.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const url = "{absolute file url OR sharing url}";
 
@@ -142,12 +142,12 @@ const fr = await sp.web.lists.getByTitle("Documents").rootFolder.files.addChunke
 You can also update the file properties of a newly uploaded file using code similar to the below snippet:
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const file = await sp.web.getFolderByServerRelativePath("/sites/dev/Shared%20Documents/test/").files.addUsingPath("file.name", "content", {Overwrite: true});
 const item = await file.file.getItem();
 await item.update({
@@ -163,12 +163,12 @@ You can of course use similar methods to update existing files as shown below. T
 ![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
 
 ```typescript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 await sp.web.getFileByServerRelativePath("/sites/dev/documents/test.txt").setContent("New string content for the file.");
 
 await sp.web.getFileByServerRelativePath("/sites/dev/documents/test.mp4").setContentChunked(file);
@@ -183,12 +183,12 @@ The library provides helper methods for checking in, checking out, and approving
 Check in takes two optional arguments, comment and check in type.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { CheckinType } from "@pnp/sp/files";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // default options with empty comment and CheckinType.Major
 await sp.web.getFileByServerRelativePath("/sites/dev/shared documents/file.txt").checkin();
@@ -208,11 +208,11 @@ console.log("File checked in!");
 Check out takes no arguments.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 sp.web.getFileByServerRelativePath("/sites/dev/shared documents/file.txt").checkout();
 console.log("File checked out!");
@@ -223,11 +223,11 @@ console.log("File checked out!");
 You can also approve or deny files in libraries that use approval. Approve takes a single required argument of comment, the comment is optional for deny.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.getFileByServerRelativePath("/sites/dev/shared documents/file.txt").approve("Approval Comment");
 console.log("File approved!");
@@ -246,11 +246,11 @@ console.log("File denied!");
 You can both publish and unpublish a file using the library. Both methods take an optional comment argument.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // publish with no comment
 await sp.web.getFileByServerRelativePath("/sites/dev/shared documents/file.txt").publish();
@@ -309,7 +309,7 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import "@pnp/sp/security";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const item = await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.txt").getItem();
 console.log(item);
@@ -332,7 +332,7 @@ import "@pnp/sp/folders";
 import "@pnp/sp/items";
 import "@pnp/sp/security";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // also supports typing the objects so your type will be a union type
 const item = await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.txt").getItem<{ Id: number, Title: string }>("Id", "Title");
@@ -350,11 +350,11 @@ console.log(perms);
 It's possible to move a file to a new destination within a site collection  
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // destination is a server-relative url of a new file
 const destinationUrl = `/sites/dev/SiteAssets/new-file.docx`;
@@ -367,11 +367,11 @@ await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx"
 It's possible to copy a file to a new destination within a site collection  
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // destination is a server-relative url of a new file
 const destinationUrl = `/sites/dev/SiteAssets/new-file.docx`;
@@ -384,11 +384,11 @@ await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx"
 It's possible to copy a file to a new destination within the same or a different site collection  
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // destination is a server-relative url of a new file
 const destinationUrl = `/sites/dev2/SiteAssets/new-file.docx`;
@@ -401,12 +401,12 @@ await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx"
 You can get a file by Id from a web.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import { IFile } from "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const file: IFile = sp.web.getFileById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
 ```
@@ -416,11 +416,11 @@ const file: IFile = sp.web.getFileById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
 Deletes a file
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("filename.txt").delete();
 ```
 
@@ -429,11 +429,11 @@ await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getBy
 Deletes a file with options
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("filename.txt").deleteWithParams({
     BypassSharedLock: true,
 });
@@ -444,10 +444,10 @@ await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getBy
 Checks to see if a file exists
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const exists = await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("name.txt").exists();
 ```

@@ -11,11 +11,11 @@ You can learn more  by reading the [Official Microsoft Graph Documentation](http
 ## Get All Categories User
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/outlook";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 // Delegated permissions
 const categories = await graph.me.outlook.masterCategories();
@@ -26,11 +26,11 @@ const categories = await graph.users.getById('{user id}').outlook.masterCategori
 ## Add Category User
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/outlook";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 // Delegated permissions
 await graph.me.outlook.masterCategories.add({
@@ -49,12 +49,12 @@ await graph.users.getById('{user id}').outlook.masterCategories.add({
 ![Known Issue Banner](https://img.shields.io/badge/Known%20Issue-important.svg) Testing has shown that `displayName` cannot be updated.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/outlook";
 import { OutlookCategory } from "@microsoft/microsoft-graph-types";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const categoryUpdate: OutlookCategory = {
     color: "preset5"
@@ -69,11 +69,11 @@ const categories = await graph.users.getById('{user id}').outlook.masterCategori
 ## Delete Category
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/outlook";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 // Delegated permissions
 const categories = await graph.me.outlook.masterCategories.getById('{category id}').delete();

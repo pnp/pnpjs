@@ -5,7 +5,7 @@ The ability to attach file to list items allows users to track documents outside
 ## Get attachments
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IAttachmentInfo } from "@pnp/sp/attachments";
 import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
@@ -13,7 +13,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -34,14 +34,14 @@ You can add an attachment to a list item using the add method. This method takes
 ![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IItem } from "@pnp/sp/items";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -53,14 +53,14 @@ await item.attachmentFiles.add("file2.txt", "Here is my content");
 You can read the content of an attachment as a string, Blob, ArrayBuffer, or json using the methods supplied.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -82,14 +82,14 @@ You can also update the content of an attachment. This API is limited compared t
 ![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -99,14 +99,14 @@ await item.attachmentFiles.getByName("file2.txt").setContent("My new content!!!"
 ## Delete Attachment
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -118,14 +118,14 @@ await item.attachmentFiles.getByName("file2.txt").delete();
 Delete the attachment and send it to recycle bin
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IItem } from "@pnp/sp/items/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const item: IItem = sp.web.lists.getByTitle("MyList").items.getById(1);
 
@@ -137,14 +137,14 @@ await item.attachmentFiles.getByName("file2.txt").recycle();
 Delete multiple attachments and send them to recycle bin
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IList } from "@pnp/sp/lists/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items";
 import "@pnp/sp/attachments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const [batchedSP, execute] = sp.batched();
 

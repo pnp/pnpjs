@@ -9,11 +9,11 @@ The site users module provides methods to manage users for a sharepoint site.
 ### Get all site user
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const users = await sp.web.siteUsers();
 ```
@@ -21,11 +21,11 @@ const users = await sp.web.siteUsers();
 ### Get Current user
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 let user = await sp.web.currentUser();
 ```
@@ -33,11 +33,11 @@ let user = await sp.web.currentUser();
 ### Get user by id
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const id = 6;
 user = await sp.web.getUserById(id);
@@ -46,11 +46,11 @@ user = await sp.web.getUserById(id);
 ### Ensure user
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const username = "usernames@microsoft.com";
 result = await sp.web.ensureUser(username);
@@ -69,14 +69,15 @@ result = await sp.web.ensureUser(username);
 
 =======
 >>>>>>> 52a91d788431066d44d536df1352b6ce855675e3
+
 ### Get user Groups
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 let groups = await sp.web.currentUser.groups();
 ```
@@ -84,11 +85,11 @@ let groups = await sp.web.currentUser.groups();
 ### Add user to Site collection
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const user = await sp.web.ensureUser("userLoginname")
 const users = await sp.web.siteUsers;
@@ -99,11 +100,11 @@ await users.add(user.data.LoginName);
 ### Get user
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // get user object by id
 const user = await sp.web.siteUsers.getById(6);
@@ -118,11 +119,11 @@ const user = await sp.web.siteUsers.getByLoginName("userLoginName");
 ### Update user
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 let userProps = await sp.web.currentUser();
 userProps.Title = "New title";
@@ -132,11 +133,11 @@ await sp.web.currentUser.update(userProps);
 ### Remove user
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // remove user by id
 await sp.web.siteUsers.removeById(6);

@@ -11,11 +11,11 @@ Lists in SharePoint are collections of information built in a structural way usi
 Gets a list from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // get the list by Id
 const list = sp.web.lists.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
@@ -32,11 +32,11 @@ console.log(r.Title);
 You can also get a list from the collection by title.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // get the default document library 'Documents'
 const list = sp.web.lists.getByTitle("Documents");
@@ -53,11 +53,11 @@ console.log(r.Id);
 You can add a list to the web's list collection using the .add-method. To invoke this method in its most simple form, you can provide only a title as a parameter. This will result in a standard out of the box list with all default settings, and the title you provide.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new list, passing only the title
 const listAddResult = await sp.web.lists.add("My new list");
@@ -90,11 +90,11 @@ Ensures that the specified list exists in the collection (note: this method not 
 ![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 // ensure that a list exists. If it doesn't it will be created with the provided title (the rest of the settings will be default):
 const listEnsureResult = await sp.web.lists.ensure("My List");
 
@@ -115,11 +115,11 @@ console.log(r.Id);
 If the list already exists, the other settings you provide will be used to update the existing list.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 // add a new list to the lists collection of the web
 sp.web.lists.add("My List 2").then(async () => {
 
@@ -139,11 +139,11 @@ console.log(r.Description);
 Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 // get Site Assets library
 const siteAssetsList = await sp.web.lists.ensureSiteAssetsLibrary();
 
@@ -159,11 +159,11 @@ console.log(r.Title);
 Gets a list that is the default location for wiki pages.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 // get Site Pages library
 const siteAssetsList = await sp.web.lists.ensureSitePagesLibrary();
 
@@ -401,11 +401,11 @@ console.log(entityTypeFullName);
 ### Add a list item using path (folder), validation and set field values
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const list = await sp.webs.lists.getByTitle("MyList").select("Title", "ParentWebUrl")();
 const formValues: IListItemFormUpdateValue[] = [
@@ -426,11 +426,11 @@ list.addValidateUpdateItemUsingPath(formValues,`${list.ParentWebUrl}/Lists/${lis
 Get all content types for a list
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 import "@pnp/sp/content-types/list";
 
 const list = sp.web.lists.getByTitle("Documents");
@@ -450,11 +450,11 @@ const r = await list.contentTypes();
 Get all the fields for a list
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 import "@pnp/sp/fields/list";
 
 const list = sp.web.lists.getByTitle("Documents");
@@ -464,11 +464,11 @@ const r = await list.fields();
 Add a field to the site, then add the site field to a list
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const fld = await sp.site.rootWeb.fields.addText("MyField");
 await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.data.SchemaXml);
 ```
@@ -478,12 +478,12 @@ await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.data.SchemaX
 Get the root folder of a list.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/folders/list";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const list = sp.web.lists.getByTitle("Documents");
 const r = await list.rootFolder();
@@ -512,12 +512,12 @@ const r = await list.items();
 Get the default view of the list
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/views/list";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const list = sp.web.lists.getByTitle("Documents");
 const views = await list.views();
 const defaultView = await list.defaultView();
@@ -544,12 +544,12 @@ For more information on how to call security methods for lists, please refer to 
 Get all subscriptions on the list
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/subscriptions/list";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const list = sp.web.lists.getByTitle("Documents");
 const subscriptions = await list.subscriptions();
 ```
@@ -559,12 +559,12 @@ const subscriptions = await list.subscriptions();
 Get a collection of the list's user custom actions.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/user-custom-actions/web"
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const list = sp.web.lists.getByTitle("Documents");
 const r = await list.userCustomActions();
 ```
@@ -574,11 +574,11 @@ const r = await list.userCustomActions();
 Gets information about an list, including details about the parent list root folder, and parent web.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const list = sp.web.lists.getByTitle("Documents");
 await list.getParentInfos();
