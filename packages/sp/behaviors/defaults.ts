@@ -29,8 +29,8 @@ export function DefaultHeaders(): TimelinePipe<Queryable> {
 
         instance
             .using(InjectHeaders({
-                "accept": "application/json",
-                "content-type": "application/json;charset=utf-8",
+                "Accept": "application/json",
+                "Content-Type": "application/json;charset=utf-8",
             }));
 
         return instance;
