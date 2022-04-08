@@ -46,8 +46,9 @@ describe("Sharing", function () {
 
     after(async function () {
         if (this.pnp.settings.enableWebTests && !stringIsNullOrEmpty(this.pnp.settings.testUser)) {
-            await this.pnp.sp.web.lists.getByTitle(testSharingLib).delete();
+            return this.pnp.sp.web.lists.getByTitle(testSharingLib).delete();
         }
+        return;
     });
 
     describe("Folder", function () {

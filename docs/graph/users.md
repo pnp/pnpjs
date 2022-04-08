@@ -11,10 +11,10 @@ You can learn more about Microsoft Graph users by reading the [Official Microsof
 ## Current User
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const currentUser = await graph.me();
 ```
@@ -22,10 +22,10 @@ const currentUser = await graph.me();
 ## Get All Users in the Organization
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const allUsers = await graph.users();
 ```
@@ -33,21 +33,33 @@ const allUsers = await graph.users();
 ## Get a User by email address (or user id)
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const matchingUser = await graph.users.getById('jane@contoso.com')();
+```
+
+## User Properties
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi(...);
+
+await graph.me.memberOf();
+await graph.me.transitiveMemberOf();
 ```
 
 ## Update Current User
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 await graph.me.update({
     displayName: 'John Doe'
@@ -57,10 +69,10 @@ await graph.me.update({
 ## People
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const people = await graph.me.people();
 
@@ -71,10 +83,10 @@ const people = await graph.me.people.top(3)();
 ## People
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const people = await graph.me.people();
 
@@ -85,10 +97,10 @@ const people = await graph.me.people.top(3)();
 ## Manager
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const manager = await graph.me.manager();
 ```
@@ -96,10 +108,10 @@ const manager = await graph.me.manager();
 ## Direct Reports
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const reports = await graph.me.directReports();
 ```
@@ -107,11 +119,11 @@ const reports = await graph.me.directReports();
 ## Photo
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/photos";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const currentUser = await graph.me.photo();
 const specificUser = await graph.users.getById('jane@contoso.com').photo();

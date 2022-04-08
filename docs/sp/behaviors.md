@@ -102,13 +102,23 @@ await sp.web();
 This behavior is designed to work closely with SPFx. The only parameter is the current SPFx Context. `SPFx` is a composed behavior including DefaultHeaders, DefaultInit, BrowserFetchWithRetry, DefaultParse, and RequestDigest. A hook is supplied to RequestDigest that will attempt to use any existing legacyPageContext formDigestValue it can find, otherwise defaults to the base [RequestDigest](#requestdigest) behavior. It also sets a pre handler to ensure the url is absolute, using the SPFx context's pageContext.web.absoluteUrl as the base.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
-const sp = spfi().using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web();
+```
+
+Note that both the sp and graph libraries export an SPFx behavior. They are unique to their respective libraries and cannot be shared, i.e. you can't use the graph SPFx to setup sp and vice-versa.
+
+```TypeScript
+import { GraphFI, graphfi, SPFx as graphSPFx } from '@pnp/graph'
+import { SPFI, spfi, SPFx as spSPFx } from '@pnp/sp'
+
+const sp = spfi().using(spSPFx(this.context));
+const graph = graphfi().using(graphSPFx(this.context));
 ```
 
 ## Telemetry

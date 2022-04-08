@@ -11,11 +11,11 @@ This module helps you get Insights in form of ***Trending***, ***Used*** and ***
 Returns documents from OneDrive and SharePoint sites trending around a user.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const trending = await graph.me.insights.trending()
 
@@ -27,11 +27,11 @@ const trending = await graph.users.getById("userId").insights.trending()
 Using the getById method to get a trending document by Id.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const trendingDoc = await graph.me.insights.trending.getById('Id')()
 
@@ -43,11 +43,11 @@ const trendingDoc = await graph.users.getById("userId").insights.trending.getByI
 Using the resources method to get the resource from a trending document.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const resource = await graph.me.insights.trending.getById('Id').resource()
 
@@ -59,11 +59,11 @@ const resource = await graph.users.getById("userId").insights.trending.getById('
 Returns documents viewed and modified by a user. Includes documents the user used in OneDrive for Business, SharePoint, opened as email attachments, and as link attachments from sources like Box, DropBox and Google Drive.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const used = await graph.me.insights.used()
 
@@ -75,11 +75,11 @@ const used = await graph.users.getById("userId").insights.used()
 Using the getById method to get a used document by Id.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const usedDoc = await graph.me.insights.used.getById('Id')()
 
@@ -91,11 +91,11 @@ const usedDoc = await graph.users.getById("userId").insights.used.getById('Id')(
 Using the resources method to get the resource from a used document.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const resource = await graph.me.insights.used.getById('Id').resource()
 
@@ -107,11 +107,11 @@ const resource = await graph.users.getById("userId").insights.used.getById('Id')
 Returns documents shared with a user. Documents can be shared as email attachments or as OneDrive for Business links sent in emails.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const shared = await graph.me.insights.shared()
 
@@ -123,11 +123,11 @@ const shared = await graph.users.getById("userId").insights.shared()
 Using the getById method to get a shared document by Id.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const sharedDoc = await graph.me.insights.shared.getById('Id')()
 
@@ -139,11 +139,11 @@ const sharedDoc = await graph.users.getById("userId").insights.shared.getById('I
 Using the resources method to get the resource from a shared document.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const resource = await graph.me.insights.shared.getById('Id').resource()
 

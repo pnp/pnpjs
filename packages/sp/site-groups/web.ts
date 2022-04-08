@@ -50,9 +50,9 @@ declare module "../webs/types" {
 }
 
 addProp(_Web, "siteGroups", SiteGroups);
-addProp(_Web, "associatedOwnerGroup", SiteGroup, "associatedownergroup");
-addProp(_Web, "associatedMemberGroup", SiteGroup, "associatedmembergroup");
-addProp(_Web, "associatedVisitorGroup", SiteGroup, "associatedvisitorgroup");
+addProp(_Web, "associatedOwnerGroup", SiteGroup);
+addProp(_Web, "associatedMemberGroup", SiteGroup);
+addProp(_Web, "associatedVisitorGroup", SiteGroup);
 
 _Web.prototype.createDefaultAssociatedGroups = async function (
     this: _Web,

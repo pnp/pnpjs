@@ -1,6 +1,6 @@
-import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "@pnp/graph/graphqueryable";
+import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { OutlookUser as IOutlookType, OutlookCategory as IOutlookCategoryType } from "@microsoft/microsoft-graph-types";
-import { defaultPath, deleteable, getById, IDeleteable, IGetById, IUpdateable, updateable } from "@pnp/graph/decorators";
+import { defaultPath, deleteable, getById, IDeleteable, IGetById, IUpdateable, updateable } from "../decorators.js";
 import { graphPost } from "@pnp/graph";
 import { body } from "@pnp/queryable";
 

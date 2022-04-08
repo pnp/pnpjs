@@ -13,11 +13,11 @@ Example: "!@p1::\sites\dev" or "!@p2::\text.txt"
 ### Example without aliasing
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // still works as expected, no aliasing
 const query = sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/").files.select("Title").top(3);
@@ -32,12 +32,12 @@ console.log(r);
 ### Example with aliasing
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // same query with aliasing
 const query = sp.web.getFolderByServerRelativeUrl("!@p1::/sites/dev/Shared Documents/").files.select("Title").top(3);
@@ -54,10 +54,10 @@ console.log(r);
 Aliasing is supported with batching as well:
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // same query with aliasing and batching
 const [batchedWeb, execute] = await sp.web.batched();

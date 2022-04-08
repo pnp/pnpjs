@@ -11,11 +11,11 @@ Before you begin provisioning applications it is important to understand the rel
 There are several ways using @pnp/sp to get a reference to an app catalog. These methods are to provide you the greatest amount of flexibility in gaining access to the app catalog. Ultimately each method produces an AppCatalog instance differentiated only by the web to which it points.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // get the current context web's app catalog
 const catalog = await sp.web.getAppCatalog()();
@@ -26,11 +26,11 @@ console.log(apps);
 ```
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // you can get the tenant app catalog (or any app catalog) by using the getTenantAppCatalogWeb method
 const appCatWeb = await sp.getTenantAppCatalogWeb()();
@@ -53,10 +53,12 @@ const catalog: IAppCatalog = await AppCatalog("https://mytenant.sharepoint.com/s
 
 ```TypeScript
 // and finally you can combine use of the Web and AppCatalog classes to create an AppCatalog instance from an existing Web
+import { spfi } from "@pnp/sp";
 import { Web } from '@pnp/sp/webs';
 import { AppCatalog } from '@pnp/sp/appcatalog';
 
-const web = Web("https://mytenant.sharepoint.com/sites/apps");
+const sp = spfi().using(...);
+const web = Web([sp.web, "https://mytenant.sharepoint.com/sites/apps"]);
 const catalog = await AppCatalog(web)();
 ```
 
@@ -77,6 +79,8 @@ await catalog.select("Title", "Deployed")();
 ## Add an App
 
 This action must be performed in the context of the tenant app catalog
+
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
 
 ```TypeScript
 // this represents the file bytes of the app package file

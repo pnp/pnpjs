@@ -5,12 +5,12 @@ Where possible batching can significantly increase application performance by co
 ## SP Example
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/batching";
 
-const sp = spfi().using(SPFx(this.context));
+const sp = spfi(...);
 
 const [batchedSP, execute] = sp.batched();
 
@@ -35,12 +35,12 @@ for(let i = 0; i < res.length; i++) {
 ### Using a batched web
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/batching";
 
-const sp = spfi().using(SPFx(this.context));
+const sp = spfi(...);
 
 const [batchedWeb, execute] = sp.web.batched();
 

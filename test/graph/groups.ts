@@ -123,7 +123,8 @@ describe("Groups", function () {
 
     afterEach(async function () {
         if (groupID !== "") {
-            await this.pnp.graph.groups.getById(groupID).delete();
+            return this.pnp.graph.groups.getById(groupID).delete();
         }
+        return;
     });
 });

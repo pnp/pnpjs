@@ -82,6 +82,8 @@ Because SharePoint Framework provides a local context to each component we need 
 
 Depending on how you architect your solution establishing context is done where you want to make calls to the API. The examples demonstrate doing so in the onInit method as a local variable but this could also be done to a private variable or passed into a service.
 
+>Note if you are going to use both the @pnp/sp and @pnp/graph packages in SPFx you will need to alias the SPFx behavior import, please see the [section](#using-both-pnpsp-and-pnpgraph-in-spfx) below for more details.
+
 ### Using @pnp/sp `spfi` factory interface in SPFx
 
 ```TypeScript
@@ -92,8 +94,8 @@ import { spfi, SPFx } from "@pnp/sp";
 protected async onInit(): Promise<void> {
 
     await super.onInit();
-    const sp = spfi().using(SPFx(this.context));
-
+    const sp = spfi().using(spSPFx(this.context));
+    
 }
 
 // ...
@@ -111,6 +113,27 @@ protected async onInit(): Promise<void> {
 
     await super.onInit();
     const graph = graphfi().using(SPFx(this.context));
+
+}
+
+// ...
+
+```
+
+### Using both @pnp/sp and @pnp/graph in SPFx
+
+```TypeScript
+
+import { spfi, SPFx as spSPFx } from "@pnp/sp";
+import { graphfi, SPFx as graphSPFx} from "@pnp/graph";
+
+// ...
+
+protected async onInit(): Promise<void> {
+
+    await super.onInit();
+    const sp = spfi().using(spSPFx(this.context));
+    const graph = graphfi().using(graphSPFx(this.context));
 
 }
 
@@ -148,16 +171,12 @@ export class SampleService {
 
         //Option 1 - with AADTokenProvider
         this._sp = spfi().using(SPFx({
-            spfxContext: {
             aadTokenProviderFactory: tokenProviderFactory,
             pageContext: pageContext,
-            }
         }));
 
         //Option 2 - without AADTokenProvider
-        this._sp = spfi().using(SPFx(pageContext));
-
-        });
+        this._sp = spfi().using(SPFx({ pageContext }));
     }
 
     public getLists(): Promise<any[]> {
@@ -168,11 +187,13 @@ export class SampleService {
 
 ## Getting started with NodeJS
 
+> Due to the way in which Node resolves ESM modules when you use selective imports in node you must include the `index.js` part of the path. Meaning an import like `import "@pnp/sp/webs"` in examples must be `import "@pnp/sp/webs/index.js"`. Root level imports such as `import { spfi } from "@pnp/sp"` remain correct. The samples in this section demonstrate this for their selective imports.
+
 ### Authentication
 
 To call the SharePoint APIs via MSAL you are required to use certificate authentication with your application. Fully covering certificates is outside the scope of these docs, but the following commands were used with openssl to create testing certs for the sample code below.
 
-```
+```cmd
 mkdir \temp
 cd \temp
 openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365 -passout pass:HereIsMySuperPass -subj '/C=US/ST=Washington/L=Seattle'
@@ -183,7 +204,7 @@ openssl rsa -in keytmp.pem -out key.pem -passin pass:HereIsMySuperPass
 
 ### Using @pnp/sp `spfi` factory interface in NodeJS
 
-> Version 3 of this library only supports ESModules. If for some reason you still require commonjs modules please check out [version 2](./v2/SPFx-on-premises/index.html).
+> Version 3 of this library only supports ESModules. If you still require commonjs modules please check out [version 2](./v2/SPFx-on-premises/index.html).
 
 The first step is to install the packages that will be needed. You can read more about what each package does starting on the [packages](packages.md) page.
 
@@ -196,7 +217,7 @@ Once these are installed you need to import them into your project, to communica
 ```TypeScript
 
 import { SPDefault } from "@pnp/nodejs";
-import "@pnp/sp/webs";
+import "@pnp/sp/webs/index.js";
 import { readFileSync } from 'fs';
 import { Configuration } from "@azure/msal-node";
 
@@ -242,7 +263,7 @@ Now we need to import what we'll need to call graph
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import { GraphDefault } from "@pnp/nodejs";
-import "@pnp/graph/users";
+import "@pnp/graph/users/index.js";
 
 function() {
     const graph = graphfi().using(GraphDefault({
@@ -269,6 +290,7 @@ You must install TypeScript @next or you will get errors using node12 module res
 The tsconfig file for your project should have the `"module": "CommonJS"` and `"moduleResolution": "node12",` settings in addition to whatever else you need.
 
 _tsconfig.json_
+
 ```JSON
 {
     "compilerOptions": {
@@ -280,6 +302,7 @@ _tsconfig.json_
 You must then import the esm dependencies using the async import pattern. This works as expected with our selective imports, and vscode will pick up the intellisense as expected.
 
 _index.ts_
+
 ```TypeScript
 import { settings } from "./settings.js";
 
@@ -289,7 +312,7 @@ setTimeout(async () => {
 
     const { spfi } = await import("@pnp/sp");
     const { SPDefault } = await import("@pnp/nodejs");
-    await import("@pnp/sp/webs");
+    await import("@pnp/sp/webs/index.js");
 
     const sp = spfi().using(SPDefault({
         baseUrl: settings.testing.sp.url,
@@ -311,7 +334,6 @@ Finally, when launching node you need to include the `` flag with a setting of '
 `node --experimental-specifier-resolution=node dist/index.js`
 
 > Read more in the releated [TypeScript Issue](https://github.com/microsoft/TypeScript/issues/43329), [TS pull request Adding the functionality](https://github.com/microsoft/TypeScript/pull/45884), and the [TS Docs](https://www.typescriptlang.org/tsconfig#moduleResolution).
-
 
 ## Single Page Application Context
 
@@ -341,7 +363,7 @@ import { AssignFrom } from "@pnp/core";
 import "@pnp/sp/webs";
 
 //Connection to the current context's Web
-const sp = spfi().using(SPFx(this.context));
+const sp = spfi(...);
 
 // Option 1: Create a new instance of Queryable
 const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));

@@ -23,7 +23,7 @@ import "@pnp/sp/security";
 ## Securable Methods
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/security/list";
@@ -31,7 +31,7 @@ import "@pnp/sp/site-users/web";
 import { IList } from "@pnp/sp/lists";
 import { PermissionKind } from "@pnp/sp/security";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // ensure we have a list
 const ler = await sp.web.lists.ensure("SecurityTestingList");
@@ -70,11 +70,11 @@ await list.resetRoleInheritance();
 ## Web Specific methods
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/security/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // role definitions (see section below)
 const defs = await sp.web.roleDefinitions();
@@ -85,7 +85,7 @@ const defs = await sp.web.roleDefinitions();
 Allows you to list and manipulate the set of role assignments for the given securable. Again we show usage using list, but the examples apply to web and item as well.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/security/web";
@@ -93,7 +93,7 @@ import "@pnp/sp/site-users/web";
 import { IList } from "@pnp/sp/lists";
 import { PermissionKind } from "@pnp/sp/security";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // ensure we have a list
 const ler = await sp.web.lists.ensure("SecurityTestingList");
@@ -137,11 +137,11 @@ await list.roleAssignments.getById(ra.Id).delete();
 ## Role Definitions
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/security/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // read role definitions
 const defs = await sp.web.roleDefinitions();

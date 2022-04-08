@@ -7,11 +7,11 @@ You can set, read, and remove tenant properties using the methods shown below:
 This method MUST be called in the context of the app catalog web or you will get an access denied message.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const w = await sp.getTenantAppCatalogWeb();
 
@@ -31,7 +31,7 @@ import { spfi, SPFx, IStorageEntity } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const prop: IStorageEntity = await sp.web.getStorageEntity("Test1");
 
@@ -43,11 +43,11 @@ console.log(prop.Value);
 This method MUST be called in the context of the app catalog web or you will get an access denied message.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const w = await sp.getTenantAppCatalogWeb();
 

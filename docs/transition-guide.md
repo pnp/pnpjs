@@ -69,10 +69,12 @@ const spWebC = spfi("{Other Web URL}").using(AssignFrom(sp.web));
 // Create a new instance of Queryable using other credentials?
 const spWebD = spfi("{Other Web URL}").using(SPFx(this.context));
 
-// as well you can use the tuple pattern and the Web contructor, which will copy all the observers from the object but set the url to the one provided
-const spWebE = Web([spWebA, "{Other Web URL}"]).using(SPFx(this.context));
+// as well you can use the tuple pattern and the Web constructor, which will copy all the observers from the object but set the url to the one provided
+const spWebE = Web([spWebA.web, "{Absolute URL of Other Web}"]);
 ```
+
+Please see the documentation for more information on the updated [Web constructor](./sp/webs.md).
 
 ## Dropping -Commonjs Packages
 
-Starting with v3 we are dropping the commonjs versions of all packages. Previously we released these as we worked to transition to esm and the current node didn't yet support esm. With esm now a supported module type, and having done the work to ensure they work in node we feel it is a good time to drop the -commonjs variants.
+Starting with v3 we are dropping the commonjs versions of all packages. Previously we released these as we worked to transition to esm and the current node didn't yet support esm. With esm now a supported module type, and having done the work to ensure they work in node we feel it is a good time to drop the -commonjs variants. Please see documentation on [Getting started with NodeJS Project using TypeScript producing CommonJS modules](getting-started.md#node-project-using-typescript-producing-commonjs-modules)
