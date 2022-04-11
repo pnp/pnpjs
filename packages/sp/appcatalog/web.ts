@@ -1,4 +1,4 @@
-import { addProp } from "@pnp/queryable";
+import { SPInit } from "../spqueryable.js";
 import { _Web } from "../webs/types.js";
 import { AppCatalog, IAppCatalog } from "./types.js";
 
@@ -14,4 +14,10 @@ declare module "../webs/types" {
     }
 }
 
-addProp(_Web, "appcatalog", AppCatalog);
+Reflect.defineProperty(_Web.prototype, "appcatalog", {
+    configurable: true,
+    enumerable: true,
+    get: function (this: SPInit) {
+        return AppCatalog(this);
+    },
+});
