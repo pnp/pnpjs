@@ -105,7 +105,7 @@ There are several ways to use the `Web` factory directly and have some special c
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
+import { Web } from "@pnp/sp/webs";
 
 // creates a web:
 // - whose root is "https://tenant.sharepoint.com/sites/myweb"
@@ -133,6 +133,27 @@ const web3 = Web("https://tenant.sharepoint.com/sites/myweb", "some sub web/_api
 // including the _api/web ensures the path you are providing is correct and can be parsed by the library
 // - has no registered observers
 const web4 = Web("https://tenant.sharepoint.com/sites/myweb", "_api/web/lists");
+```
+
+The above examples show you how to use the constructor to create the base url for the `Web` although none of them are usable as is until you add observers. You can do so by either adding them explicitly with a using...
+
+```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { Web } from "@pnp/sp/webs";
+
+const web1 = Web("https://tenant.sharepoint.com/sites/myweb").using(SPFx(this.context));
+```
+
+or by copying them from another SPQueryable instance...
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import { Web } from "@pnp/sp/webs";
+import "@pnp/sp/webs";
+
+const sp = spfi(...);
+//sp.web is of type SPQueryable; using tuple pattern pass SPQueryable and the web's url
+const web = Web([sp.web, "https://tenant.sharepoint.com/sites/otherweb"]);
 ```
 
 ### webs
