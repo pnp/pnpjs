@@ -380,6 +380,9 @@ const spWebB = spfi({Other Web URL}).using(AssignFrom(sp.web));
 
 // Option 3: Create a new instance of Queryable using other credentials?
 const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
+
+// Option 4: Create new Web instance by using copying SPQuerable and new pointing to new web url
+const web = Web([sp.web, {Other Web URL}]);
 ```
 
 ## Next Steps
