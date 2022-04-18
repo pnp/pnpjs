@@ -52,57 +52,30 @@ Likewise you can add files using one of two methods, addUsingPath or addChunked.
 
 The addUsingPath method, supports the percent or pound characters in file names.
 
-```typescript
-declare var require: (s: string) => any;
-
-import { ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-
-import { Web } from "@pnp/sp/webs";
+```TypeScript
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
-import { auth } from "./auth";
-let $ = require("jquery"); // <-- used here for illustration
 
-let siteUrl = "https://mytenant.sharepoint.com/sites/dev";
+const sp = spfi(...);
 
-// comment this out for non-node execution
-// auth(siteUrl);
+//Sample uses pure JavaScript to access the input tag of type="file" ->https://www.w3schools.com/tags/att_input_type_file.asp 
+let input = <HTMLInputElement>document.getElementById("thefileinput");
+const fileNamePath = encodeURI(file.name);
+let result: IFileAddResult;
+// you can adjust this number to control what size files are uploaded in chunks
+if (file.size <= 10485760) {
+    // small upload
+    result = await sp.web.getFolderByServerRelativePath("Shared Documents").files.addUsingPath(fileNamePath, file, { Overwrite: true });
+} else {
+    // large upload
+    result = await sp.web.getFolderByServerRelativePath("Shared Documents").files.addChunked(fileNamePath, file, data => {
+    console.log(`progress`);
+    }, true);
+}
 
-Logger.subscribe(new ConsoleListener());
-Logger.activeLogLevel = LogLevel.Verbose;
-
-let web = Web(siteUrl);
-
-
-$(() => {
-    $("#testingdiv").append("<button id='thebuttontodoit'>Do It</button>");
-
-    $("#thebuttontodoit").on('click', async (e) => {
-
-        e.preventDefault();
-
-        let input = <HTMLInputElement>document.getElementById("thefileinput");
-        let file = input.files[0];
-
-        // you can adjust this number to control what size files are uploaded in chunks
-        if (file.size <= 10485760) {
-
-            // small upload
-            await web.getFolderByServerRelativePath("Shared Documents").files.addUsingPath(file.name, file, {Overwrite: true});
-            Logger.write("done");
-        } else {
-
-            // large upload
-            await web.getFolderByServerRelativePath("Shared Documents").files.addChunked("filename%#%.txt", file, data => {
-
-                Logger.log({ data: data, level: LogLevel.Verbose, message: "progress" });
-
-            }, true);
-            Logger.write("done!")
-        }
-    });
-});
+console.log(`Result of file upload: ${JSON.stringify(result)}`);
 ```
 
 ### Adding a file using Nodejs Streams
@@ -113,26 +86,19 @@ If you are working in nodejs you can also add a file using a stream. This exampl
 
 ```TypeScript
 // triggers auto-application of extensions, in this case to add getStream
-
+import { spfi } from "@pnp/sp";
 import "@pnp/nodejs";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import "@pnp/sp/files";
+import "@pnp/sp/folders/list";
+import "@pnp/sp/files/folder";
 import { createReadStream } from 'fs';
-import { SPDefault } from "@pnp/nodejs";
-import { ThrowErrors } from "@pnp/queryable";
 
 // get a stream of an existing file
 const stream = createReadStream("c:/temp/file.txt");
 
-// now add the stream as a new file, remember to set the content-length header
-const sp = spfi("{tenant url}").using(SPDefault({
-    baseUrl: 'https://{tenant}.sharepoint.com/sites/dev',
-    msal: {
-        config: config,
-        scopes: [ 'https://{tenant}.sharepoint.com/.default' ]
-    }
-})).using(ThrowErrors());
+// now add the stream as a new file
+const sp = spfi(...);
 
 const fr = await sp.web.lists.getByTitle("Documents").rootFolder.files.addChunked( "new.txt", stream, undefined, true );
 ```

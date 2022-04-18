@@ -189,6 +189,13 @@ export class SampleService {
 
 > Due to the way in which Node resolves ESM modules when you use selective imports in node you must include the `index.js` part of the path. Meaning an import like `import "@pnp/sp/webs"` in examples must be `import "@pnp/sp/webs/index.js"`. Root level imports such as `import { spfi } from "@pnp/sp"` remain correct. The samples in this section demonstrate this for their selective imports.
 
+### Importing NodeJS support
+
+> Note that the NodeJS integration relies on code in the module `@pnp/nodejs`. It is therefore required that you import this near the beginning of your program, using simply
+> ```js
+> import "@pnp/nodejs";
+> ```
+
 ### Authentication
 
 To call the SharePoint APIs via MSAL you are required to use certificate authentication with your application. Fully covering certificates is outside the scope of these docs, but the following commands were used with openssl to create testing certs for the sample code below.
@@ -373,6 +380,9 @@ const spWebB = spfi({Other Web URL}).using(AssignFrom(sp.web));
 
 // Option 3: Create a new instance of Queryable using other credentials?
 const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
+
+// Option 4: Create new Web instance by using copying SPQuerable and new pointing to new web url
+const web = Web([sp.web, {Other Web URL}]);
 ```
 
 ## Next Steps
