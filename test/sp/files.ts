@@ -274,4 +274,11 @@ describe("File", function () {
         const item = await files.getByUrl(name).getItem();
         return expect(item()).to.eventually.be.fulfilled;
     });
+
+    it("getLockedByUser", async function () {
+      const name = `Testing getLockedByUser - ${getRandomString(4)}.txt`;
+      await files.addUsingPath(name, "Some test text content.");
+      const lockedByUser = await files.getByUrl(name).getLockedByUser();
+      return expect(lockedByUser).to.be.false;
+    });
 });
