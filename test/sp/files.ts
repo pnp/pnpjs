@@ -276,9 +276,9 @@ describe("File", function () {
     });
 
     it("getLockedByUser", async function () {
-      const name = `Testing getLockedByUser - ${getRandomString(4)}.txt`;
-      await files.addUsingPath(name, "Some test text content.");
-      const lockedByUser = await files.getByUrl(name).getLockedByUser();
-      return expect(lockedByUser).to.be.null;
+        const name = `Testing getLockedByUser - ${getRandomString(4)}.txt`;
+        await files.addUsingPath(name, "Some test text content.");
+        const lockedByUser = await files.getByUrl(name).getLockedByUser();
+        return expect(lockedByUser).to.be.null;
     });
 });
