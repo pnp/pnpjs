@@ -25,6 +25,39 @@ const sp = spfi(...);
 const info: ITermStoreInfo = await sp.termStore();
 ```
 
+### searchTerm
+
+_Added in 3.3.0_
+
+Search for terms starting with provided label under entire termStore or a termSet or a parent term.
+
+The following properties are valid for the supplied query: `label: string`, `setId?: string`, `parentTermId?: string`, `languageTag?: string`, `stringMatchOption?: "ExactMatch" | "StartsWith"`.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+// minimally requires the label
+const results1 = await sp.termStore.searchTerm({
+  label: "test",
+});
+
+// other properties can be included as needed
+const results2 = await sp.termStore.searchTerm({
+  label: "test",
+  setId: "{guid}",
+});
+
+// other properties can be included as needed
+const results3 = await sp.termStore.searchTerm({
+  label: "test",
+  setId: "{guid}",
+  stringMatchOption: "ExactMatch",
+});
+```
+
 ## Term Groups
 
 Access term group information

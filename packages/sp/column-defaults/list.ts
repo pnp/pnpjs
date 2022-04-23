@@ -35,12 +35,13 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
     const pathPart: { ServerRelativePath: IResourcePath } = await this.rootFolder.select("ServerRelativePath")();
     const webUrl: { ParentWeb: { Url: string } } = await this.select("ParentWeb/Url").expand("ParentWeb")();
     const path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms/client_LocationBasedDefaults.html");
-    const baseFilePath = combine(webUrl.ParentWeb.Url, "_api/web", `getFileByServerRelativePath(decodedUrl='${escapeQueryStrValue(path)}')`);
+    const baseFilePath = combine(webUrl.ParentWeb.Url, `_api/web/getFileByServerRelativePath(decodedUrl='${escapeQueryStrValue(path)}')`);
 
     let xml = "";
 
     try {
 
+        // we are reading the contents of the file
         xml = await <any>Folder([this, baseFilePath], "$value").using(TextParse())();
 
     } catch (e) {

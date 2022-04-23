@@ -46,6 +46,28 @@ const file = sp.web.getFileByUrl(url);
 const fileContent = await file.getText();
 ```
 
+### fileFromServerRelativePath
+
+_Added in 3.3.0_
+
+Utility method allowing you to get an IFile reference using any SPQueryable as a base and the server relative path to the file. Helpful when you do not have convenient access to an IWeb to use `getFileByServerRelativePath`.
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { fileFromServerRelativePath } from "@pnp/sp/files";
+
+const sp = spfi(...);
+
+const url = "/sites/dev/documents/file.txt";
+
+// file is an IFile and supports all the file operations
+const file = fileFromServerRelativePath(sp.web, url);
+
+// for example
+const fileContent = await file.getText();
+```
+
 ## Adding Files
 
 Likewise you can add files using one of two methods, addUsingPath or addChunked. AddChunked is appropriate for larger files, generally larger than 10 MB but this may differ based on your bandwidth/latency so you can adjust the code to use the chunked method. The below example shows getting the file object from an input and uploading it to SharePoint, choosing the upload method based on file size.
