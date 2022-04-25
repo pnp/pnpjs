@@ -42,7 +42,7 @@ export class _Folders extends _SPCollection<IFolderInfo[]> {
 
         return {
             data,
-            folder: folderFromServerRelativePath(this, data.ServerRelativePath.DecodedUrl),
+            folder: folderFromServerRelativePath(this, data.ServerRelativeUrl),
         };
     }
 }
@@ -251,7 +251,7 @@ export const Folder = spInvokableFactory<IFolder>(_Folder);
  */
 export function folderFromServerRelativePath(base: ISPQueryable, serverRelativePath: string): IFolder {
 
-    return Folder([base, extractWebUrl(base.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='!@folder::${escapeQueryStrValue(serverRelativePath)}')`);
+    return Folder([base, extractWebUrl(base.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativePath)}')`);
 }
 
 /**
