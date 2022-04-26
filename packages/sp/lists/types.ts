@@ -110,7 +110,7 @@ export class _Lists extends _SPCollection<IListInfo[]> {
      */
     public async ensureSiteAssetsLibrary(): Promise<IList> {
         const json = await spPost(Lists(this, "ensuresiteassetslibrary"));
-        return List(odataUrlFrom(json));
+        return List([this, odataUrlFrom(json)]);
     }
 
     /**
@@ -118,7 +118,7 @@ export class _Lists extends _SPCollection<IListInfo[]> {
      */
     public async ensureSitePagesLibrary(): Promise<IList> {
         const json = await spPost(Lists(this, "ensuresitepageslibrary"));
-        return List(odataUrlFrom(json));
+        return List([this, odataUrlFrom(json)]);
     }
 }
 export interface ILists extends _Lists { }

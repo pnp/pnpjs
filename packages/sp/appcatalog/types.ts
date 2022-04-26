@@ -85,7 +85,7 @@ export class _AppCatalog extends _SPCollection {
 
         return {
             data: r,
-            file: File(odataUrlFrom(r)),
+            file: File([this, odataUrlFrom(r)]),
         };
     }
 }

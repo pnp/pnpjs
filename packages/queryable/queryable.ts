@@ -115,6 +115,10 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
     protected execute(userInit: RequestInit): Promise<void> {
 
+        if (Reflect.ownKeys(this.observers).length < 1) {
+            throw Error("No observers registered for this request. (https://pnp.github.io/pnpjs/queryable/queryable#No-observers-registered-for-this-request)");
+        }
+
         setTimeout(async () => {
 
             const requestId = getGUID();
