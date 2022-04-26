@@ -68,6 +68,12 @@ The Queryable lifecycle is:
 
 As well `log` and `error` can emit at any point during the lifecycle.
 
+## No observers registered for this request
+
+If you see an error thrown with the message `No observers registered for this request.` it means at the time of execution the given object has no actions to take. Because all the request logic is defined within observers, an absence of observers is _likely_ an error condition. If the object was created by a method within the library please report an issue as it is likely a bug. If you created the object through direct use of one of the factory functions, please be sure you have registered observers with `using` or `on` as appropriate. [More information on observers is available in this article](../core/observers.md).
+
+If you for some reason want to execute a queryable with no registred observers, you can simply register a noop observer to any of the moments.
+
 ## Queryable Observers
 
 This section outlines how to write observers for the Queryable lifecycle, and the expectations of each moment's observer behaviors.

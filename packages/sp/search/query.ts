@@ -1,6 +1,6 @@
 import { _SPInstance, ISPQueryable } from "../spqueryable.js";
 import { hOP, isArray } from "@pnp/core";
-import { body } from "@pnp/queryable";
+import { body, cacheAlways } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
 import { spPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
@@ -93,8 +93,8 @@ export class _Search extends _SPInstance {
 
         const query = this.parseQuery(queryInit);
 
-        const postBody: RequestInit = body({
-            request:{
+        const postBody: RequestInit = cacheAlways(body({
+            request: {
                 ...query,
                 HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
                 Properties: this.fixArrProp(query.Properties),
@@ -103,7 +103,7 @@ export class _Search extends _SPInstance {
                 SelectProperties: this.fixArrProp(query.SelectProperties),
                 SortList: this.fixArrProp(query.SortList),
             },
-        });
+        }));
 
         const data = await spPost(this, postBody);
 
@@ -118,11 +118,7 @@ export class _Search extends _SPInstance {
      * @param prop property to fix for container struct
      */
     private fixArrProp(prop: any): any[] {
-        if (typeof prop === "undefined") {
-            return [];
-        }
-
-        return isArray(prop) ? prop : [prop];
+        return typeof prop === "undefined" ? [] : isArray(prop) ? prop : [prop];
     }
 
     /**

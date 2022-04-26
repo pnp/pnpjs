@@ -55,14 +55,17 @@ export function BrowserFetchWithRetry(props?: BrowserFetchWithRetryProps): Timel
 
             let response: Response;
             let wait = interval;
-            let count = 1;
+            let count = 0;
+            let lastErr: Error;
 
             const retry = async (): Promise<Response> => {
 
                 // if we've tried too many times, throw
                 if (count >= retries) {
-                    throw new HttpRequestError(`Retry count exceeded (${retries}) for this request. ${response.status}: ${response.statusText};`, response);
+                    throw lastErr || new HttpRequestError(`Retry count exceeded (${retries}) for this request. ${response.status}: ${response.statusText};`, response);
                 }
+
+                count++;
 
                 if (typeof response === "undefined" || response?.status === 429 || response?.status === 503 || response?.status === 504) {
                     // this is our first try and response isn't defined yet
@@ -83,7 +86,6 @@ export function BrowserFetchWithRetry(props?: BrowserFetchWithRetryProps): Timel
                         }
 
                         this.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, 0);
-                        count++;
 
                         await delay(wait);
                     }
@@ -100,7 +102,10 @@ export function BrowserFetchWithRetry(props?: BrowserFetchWithRetryProps): Timel
                         return response.ok ? response : retry();
 
                     } catch (err) {
-
+                        // if there is no network the response is undefined and err is all we have
+                        // so we grab the err and save it to throw if we exceed the number of retries
+                        // #2226 first reported this
+                        lastErr = err;
                         return retry();
                     }
 

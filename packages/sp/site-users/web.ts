@@ -47,7 +47,7 @@ _Web.prototype.ensureUser = async function (this: _Web, logonName: string): Prom
     const data = await spPost(Web(this, "ensureuser"), body({ logonName }));
     return {
         data,
-        user: SiteUser(odataUrlFrom(data)),
+        user: SiteUser([this, odataUrlFrom(data)]),
     };
 };
 

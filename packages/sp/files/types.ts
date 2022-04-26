@@ -482,7 +482,7 @@ export const File = spInvokableFactory<IFile>(_File);
  */
 export function fileFromServerRelativePath(base: ISPQueryable, serverRelativePath: string): IFile {
 
-    return File([base, extractWebUrl(base.toUrl())], `_api/web/getFileByServerRelativePath(decodedUrl='!@file::${escapeQueryStrValue(serverRelativePath)}')`);
+    return File([base, extractWebUrl(base.toUrl())], `_api/web/getFileByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativePath)}')`);
 }
 
 /**
