@@ -51,7 +51,8 @@
         "serve": "tsc -p ./debug/serve/tsconfig.json && node ./build/server/debug/serve/plumbing/run.js",
         "start": "npm run serve",
         "test": "tsc -p ./test/tsconfig.json && mocha --verbose --logging",
-        "test-build": "tsc -p ./test/tsconfig.json"
+        "test-build": "tsc -p ./test/tsconfig.json",
+        "postinstall": "node tools/postinstall/script.cjs"
     },
     "repository": {
         "type": "git",
