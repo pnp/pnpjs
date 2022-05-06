@@ -15,7 +15,7 @@ export function updateV3NightlyVersion(_version: string, config: PublishSchema):
         const publishRoot = resolve(packageRoot);
         const packageFolders = getSubDirNames(publishRoot).filter(name => name !== "documentation");
         const date = new Date();
-        const versionStr = `-v3nightly.${date.getFullYear()}${date.getMonth().toString().padStart(2, "0")}${date.getDate().toString().padStart(2, "0")}`;
+        const versionStr = `-v3nightly.${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, "0")}${date.getDate().toString().padStart(2, "0")}`;
 
         for (let i = 0; i < packageFolders.length; i++) {
 
