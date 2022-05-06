@@ -8,6 +8,7 @@ import {
     ISPInstance,
     IDeleteableWithETag,
     deleteableWithETag,
+    ISPQueryable,
 } from "../spqueryable.js";
 import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
@@ -39,7 +40,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
     /**
      * Adds a file using the pound percent safe methods
      *
-     * @param url Excoded url of the file
+     * @param url Encoded url of the file
      * @param content The file content
      * @param parameters Additional parameters to control method behavior
      */
@@ -65,7 +66,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
 
         return {
             data: resp,
-            file: File([this, odataUrlFrom(resp)]),
+            file: fileFromServerRelativePath(this, resp.ServerRelativeUrl),
         };
     }
 
@@ -82,7 +83,9 @@ export class _Files extends _SPCollection<IFileInfo[]> {
     public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
 
         const response: IFileInfo = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
-        const file = File([this, odataUrlFrom(response)]);
+
+        const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
+
         return await file.setContentChunked(content, progress, chunkSize);
     }
 
@@ -94,10 +97,10 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @returns The template file that was added and the raw response.
      */
     public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult> {
-        const response = await spPost(Files(this, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`));
+        const response: IFileInfo = await spPost(Files(this, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`));
         return {
             data: response,
-            file: File([this, odataUrlFrom(response)]),
+            file: fileFromServerRelativePath(this, response.ServerRelativeUrl),
         };
     }
 }
@@ -459,16 +462,28 @@ export class _File extends _SPInstance<IFileInfo> {
      * @returns The newly uploaded file.
      */
     protected async finishUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<IFileAddResult> {
-        const response = await spPost(File(this, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`), { body: fragment });
+        const response: IFileInfo = await spPost(File(this, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`), { body: fragment });
         return {
             data: response,
-            file: File([this, odataUrlFrom(response)]),
+            file: fileFromServerRelativePath(this, response.ServerRelativeUrl),
         };
     }
 }
 
 export interface IFile extends _File, IDeleteableWithETag { }
 export const File = spInvokableFactory<IFile>(_File);
+
+/**
+ * Creates an IFile instance given a base object and a server relative path
+ *
+ * @param base Valid SPQueryable from which the observers will be used and the web url extracted
+ * @param serverRelativePath The server relative url to the file (ex: '/sites/dev/documents/file.txt')
+ * @returns IFile instance referencing the file described by the supplied parameters
+ */
+export function fileFromServerRelativePath(base: ISPQueryable, serverRelativePath: string): IFile {
+
+    return File([base, extractWebUrl(base.toUrl())], `_api/web/getFileByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativePath)}')`);
+}
 
 /**
  * Describes a collection of Version objects

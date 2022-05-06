@@ -18,4 +18,5 @@ export {
     Versions,
     IAddUsingPathProps,
     IFileInfo,
+    fileFromServerRelativePath,
 } from "./types.js";

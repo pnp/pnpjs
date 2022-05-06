@@ -100,7 +100,7 @@ export interface IView extends _View, IDeleteable { }
 export const View = spInvokableFactory<IView>(_View);
 
 @defaultPath("viewfields")
-export class _ViewFields extends _SPCollection<{ SchemaXml: string }> {
+export class _ViewFields extends _SPCollection<{ Items: string[]; SchemaXml: string }> {
 
     /**
      * Gets a value that specifies the XML schema that represents the collection.

@@ -45,20 +45,17 @@ console.log(results3.PrimarySearchResults);
 
 ## Search Result Caching
 
-You can use the searchWithCaching method to enable cache support for your search results this option works with any of the options for providing a query, just replace "search" with "searchWithCaching" in your method chain and gain all the benefits of caching. The second parameter is optional and allows you to specify the cache options
+Starting with v3 you can use any of the caching behaviors with search and the results will be cached. Please see here [for more details on caching options](https://pnp.github.io/pnpjs/queryable/behaviors/#caching).
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/search";
 import { ISearchQuery, SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+import { Caching } from "@pnp/queryable";
 
-const sp = spfi(...);
+const sp = spfi(...).using(Caching());
 
-sp.searchWithCaching({
-    Querytext: "test",
-    RowLimit: 10,
-    EnableInterleaving: true,
-} as ISearchQuery).then((r: SearchResults) => {
+sp.search({/* ... query */}).then((r: SearchResults) => {
 
     console.log(r.ElapsedTime);
     console.log(r.RowCount);
@@ -69,7 +66,7 @@ sp.searchWithCaching({
 const builder = SearchQueryBuilder("test").rowLimit(3);
 
 // supply a search query builder and caching options
-const results2 = await sp.searchWithCaching(builder, { key: "mykey", expiration: dateAdd(new Date(), "month", 1) });
+const results2 = await sp.search(builder);
 
 console.log(results2.TotalRows);
 ```

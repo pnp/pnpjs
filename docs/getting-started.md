@@ -94,7 +94,7 @@ import { spfi, SPFx } from "@pnp/sp";
 protected async onInit(): Promise<void> {
 
     await super.onInit();
-    const sp = spfi().using(spSPFx(this.context));
+    const sp = spfi().using(SPFx(this.context));
     
 }
 
@@ -188,6 +188,13 @@ export class SampleService {
 ## Getting started with NodeJS
 
 > Due to the way in which Node resolves ESM modules when you use selective imports in node you must include the `index.js` part of the path. Meaning an import like `import "@pnp/sp/webs"` in examples must be `import "@pnp/sp/webs/index.js"`. Root level imports such as `import { spfi } from "@pnp/sp"` remain correct. The samples in this section demonstrate this for their selective imports.
+
+### Importing NodeJS support
+
+> Note that the NodeJS integration relies on code in the module `@pnp/nodejs`. It is therefore required that you import this near the beginning of your program, using simply
+> ```js
+> import "@pnp/nodejs";
+> ```
 
 ### Authentication
 

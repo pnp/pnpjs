@@ -64,5 +64,5 @@ _Web.prototype.getList = function (this: _Web, listRelativeUrl: string): IList {
 
 _Web.prototype.getCatalog = async function (this: _Web, type: number): Promise<IList> {
     const data = await Web(this, `getcatalog(${type})`).select("Id")();
-    return List(odataUrlFrom(data));
+    return List([this, odataUrlFrom(data)]);
 };
