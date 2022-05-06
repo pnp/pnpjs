@@ -111,7 +111,7 @@ You can also serve files locally to debug as a user in the browser by serving co
 
 This will serve a package with ./debug/serve/main.ts as the entry.
 
-`gulp serve`
+`npm run serve`
 
 ### Add reference to library
 

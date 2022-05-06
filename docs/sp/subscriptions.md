@@ -51,14 +51,10 @@ This interface provides the methods for managing a particular webhook.
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-<<<<<<< HEAD
 | Scenario    | Import Statement                                                                                                                                                                                                                                        |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Selective   | import "@pnp/sp/webs";<br />import "@pnp/sp/lists";<br />import { Subscriptions, ISubscriptions, Subscription, ISubscription} from "@pnp/sp/subscriptions";<br />import "@pnp/sp/subscriptions/list" |
 | Preset: All | import { sp, Webs, IWebs, Lists, ILists, Subscriptions, ISubscriptions, Subscription, ISubscription } from "@pnp/sp/presets/all";                                                                                                                       |
-
-=======
->>>>>>> 52a91d788431066d44d536df1352b6ce855675e3
 
 ### Managing a webhook
 
