@@ -40,7 +40,7 @@ import "@pnp/sp/site-users/web";
 const sp = spfi(...);
 
 const id = 6;
-user = await sp.web.getUserById(id);
+user = await sp.web.getUserById(id)();
 ```
 
 ### Ensure user
@@ -103,13 +103,13 @@ import "@pnp/sp/site-users/web";
 const sp = spfi(...);
 
 // get user object by id
-const user = await sp.web.siteUsers.getById(6);
+const user = await sp.web.siteUsers.getById(6)();
 
 //get user object by Email
-const user = await sp.web.siteUsers.getByEmail("user@mail.com");
+const user = await sp.web.siteUsers.getByEmail("user@mail.com")();
 
 //get user object by LoginName
-const user = await sp.web.siteUsers.getByLoginName("userLoginName");
+const user = await sp.web.siteUsers.getByLoginName("userLoginName")();
 ```
 
 ### Update user
