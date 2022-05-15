@@ -319,25 +319,27 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import "@pnp/sp/batching";
 
 const sp = spfi(...);
 
-const list = sp.web.lists.getByTitle("rapidadd");
+const [batchedSP, execute] = sp.batched();
 
-const entityTypeFullName = await list.getListItemEntityTypeFullName()
+const list = batchedSP.web.lists.getByTitle("rapidadd");
 
-const batch = sp.web.createBatch();
+let res = [];
 
-list.items.inBatch(batch).add({ Title: "Batch 6" }, entityTypeFullName).then(b => {
-  console.log(b);
-});
+list.items.add({ Title: "Batch 6" }, entityTypeFullName).then(r => res.push(r));
 
-list.items.inBatch(batch).add({ Title: "Batch 7" }, entityTypeFullName).then(b => {
-  console.log(b);
-});
+list.items.add({ Title: "Batch 7" }, entityTypeFullName).then(r => res.push(r));
 
-await batch.execute();
-console.log("Done");
+// Executes the batched calls
+await execute();
+
+// Results for all batched calls are available
+for(let i = 0; i < res.length; i++) {
+    ///Do something with the results
+}
 ```
 
 ## Update
