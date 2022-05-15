@@ -8,7 +8,7 @@ import {
     TeamsAsyncOperation as ITeamsAsyncOperation,
     TeamsTab as ITeamsTabType,
     TeamsAppInstallation as ITeamsAppInstallation,
-    ChatMessage as IChatMessage
+    ChatMessage as IChatMessage,
 } from "@microsoft/microsoft-graph-types";
 
 /**
