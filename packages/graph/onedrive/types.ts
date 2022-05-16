@@ -49,11 +49,8 @@ export const Drive = graphInvokableFactory<IDrive>(_Drive);
  *
  */
 @defaultPath("drives")
-export class _Drives extends _GraphQueryableCollection<IDriveType[]> {
-    public getById(id: string): IDrive {
-        return Drive(this.getUrlBase(), `drives/${id}`);
-    }
-}
+@getById(Drive)
+export class _Drives extends _GraphQueryableCollection<IDriveType[]> { }
 export interface IDrives extends _Drives, IGetById<IDrive> { }
 export const Drives = graphInvokableFactory<IDrives>(_Drives);
 
