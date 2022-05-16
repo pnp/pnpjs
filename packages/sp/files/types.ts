@@ -18,6 +18,7 @@ import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath } from "../utils/to-resource-path.js";
 import { PrincipalType } from "../types.js";
+import { ISiteUserProps } from "../site-users/types.js";
 
 /**
  * Describes a collection of File objects
@@ -136,7 +137,7 @@ export class _File extends _SPInstance<IFileInfo> {
      * Gets the current locked by user
      *
      */
-    public async getLockedByUser(): Promise<ILockedByUser | null> {
+    public async getLockedByUser(): Promise<ISiteUserProps | null> {
         const u = await spGet(File(this, "lockedByUser"));
         if (u["odata.null"] === true) {
             return null;
@@ -697,22 +698,3 @@ export interface IFileDeleteParams {
      */
     ETagMatch: string;
 }
-
-export interface ILockedByUser {
-    Id: number;
-    IsHiddenInUI: boolean;
-    LoginName: string;
-    Title: string;
-    PrincipalType: PrincipalType;
-    Email: string;
-    Expiration: string;
-    IsEmailAuthenticationGuestUser: boolean;
-    IsShareByEmailGuestUser: boolean;
-    IsSiteAdmin: boolean;
-    UserId: {
-        NameId: string;
-        NameIdIssuer: string;
-    };
-    UserPrincipalName: string;
-}
-
