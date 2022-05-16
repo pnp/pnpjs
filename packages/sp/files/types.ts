@@ -17,7 +17,6 @@ import { spPost, spGet } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath } from "../utils/to-resource-path.js";
-import { PrincipalType } from "../types.js";
 import { ISiteUserProps } from "../site-users/types.js";
 
 /**
