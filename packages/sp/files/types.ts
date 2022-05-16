@@ -13,10 +13,11 @@ import {
 import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { spPost, spGet } from "../operations.js";
 import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath } from "../utils/to-resource-path.js";
+import { PrincipalType } from "../types.js";
 
 /**
  * Describes a collection of File objects
@@ -131,6 +132,18 @@ export class _File extends _SPInstance<IFileInfo> {
         return Versions(this);
     }
 
+    /**
+     * Gets the current locked by user
+     *
+     */
+    public async getLockedByUser(): Promise<ILockedByUser | null> {
+        const u = await spGet(File(this, "lockedByUser"));
+        if (u["odata.null"] === true) {
+            return null;
+        } else {
+            return u;
+        }
+    }
     /**
      * Approves the file submitted for content approval with the specified comment.
      * Only documents in lists that are enabled for content approval can be approved.
@@ -684,3 +697,22 @@ export interface IFileDeleteParams {
      */
     ETagMatch: string;
 }
+
+export interface ILockedByUser {
+    Id: number;
+    IsHiddenInUI: boolean;
+    LoginName: string;
+    Title: string;
+    PrincipalType: PrincipalType;
+    Email: string;
+    Expiration: string;
+    IsEmailAuthenticationGuestUser: boolean;
+    IsShareByEmailGuestUser: boolean;
+    IsSiteAdmin: boolean;
+    UserId: {
+        NameId: string;
+        NameIdIssuer: string;
+    };
+    UserPrincipalName: string;
+}
+
