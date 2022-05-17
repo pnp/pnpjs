@@ -82,7 +82,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
 
         const aliasedParams = new Map<string, string>(this.query);
 
-        let url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
+        let url = this.toUrl().replace(/'!(@.*?)::(.*?)(?<!')'(?!')/ig, (match, labelName, value) => {
             this.log(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, 0);
             aliasedParams.set(labelName, `'${value}'`);
             return labelName;

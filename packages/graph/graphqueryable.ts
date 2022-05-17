@@ -98,22 +98,6 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
 
         return new factory(base, path);
     }
-
-    /**
-     * Gets the current base url of this object (https://graph.microsoft.com/v1.0 or https://graph.microsoft.com/beta)
-     */
-    protected getUrlBase(): string {
-        const url = this.toUrl();
-        let index = url.indexOf("v1.0/");
-        if (index > -1) {
-            return url.substring(0, index + 5);
-        }
-        index = url.indexOf("beta/");
-        if (index > -1) {
-            return url.substring(0, index + 5);
-        }
-        return url;
-    }
 }
 
 export interface IGraphQueryable<GetType = any> extends _GraphQueryable<GetType> { }

@@ -183,6 +183,24 @@ const newChannel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82265
 
 ```
 
+## Add chat message to Channel
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+import { ChatMessage } from "@microsoft/microsoft-graph-types";
+
+const graph = graphfi(...);
+
+const message = {
+      "body": {
+        "content": "Hello World"
+      }
+    }
+const chatMessage: ChatMessage = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').messages(message);
+
+```
+
 ## Get installed Apps
 
 ```TypeScript

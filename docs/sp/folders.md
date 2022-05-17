@@ -29,6 +29,25 @@ const listFolders = await sp.web.lists.getByTitle("My List").rootFolder.folders(
 const itemFolders = await sp.web.lists.getByTitle("My List").items.getById(1).folder.folders();
 ```
 
+### folderFromServerRelativePath
+
+_Added in 3.3.0_
+
+Utility method allowing you to get an IFolder reference using any SPQueryable as a base and the server relative path to the folder. Helpful when you do not have convenient access to an IWeb to use `getFolderByServerRelativePath`.
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { folderFromServerRelativePath } from "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+const url = "/sites/dev/documents/folder4";
+
+// file is an IFile and supports all the file operations
+const folder = folderFromServerRelativePath(sp.web, url);
+```
+
 ### add
 
 Adds a new folder to collection of folders

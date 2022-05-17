@@ -40,7 +40,7 @@ import "@pnp/sp/site-users/web";
 const sp = spfi(...);
 
 const id = 6;
-user = await sp.web.getUserById(id);
+user = await sp.web.getUserById(id)();
 ```
 
 ### Ensure user
@@ -60,15 +60,11 @@ result = await sp.web.ensureUser(username);
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-<<<<<<< HEAD
 |Scenario|Import Statement|
 |--|--|
 |Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
 |Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
 |Preset: All|import {sp, SiteUsers, SiteUser } from "@pnp/sp/presets/all";|
-
-=======
->>>>>>> 52a91d788431066d44d536df1352b6ce855675e3
 
 ### Get user Groups
 
@@ -107,13 +103,13 @@ import "@pnp/sp/site-users/web";
 const sp = spfi(...);
 
 // get user object by id
-const user = await sp.web.siteUsers.getById(6);
+const user = await sp.web.siteUsers.getById(6)();
 
 //get user object by Email
-const user = await sp.web.siteUsers.getByEmail("user@mail.com");
+const user = await sp.web.siteUsers.getByEmail("user@mail.com")();
 
 //get user object by LoginName
-const user = await sp.web.siteUsers.getByLoginName("userLoginName");
+const user = await sp.web.siteUsers.getByLoginName("userLoginName")();
 ```
 
 ### Update user

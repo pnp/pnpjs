@@ -1,6 +1,7 @@
 import { isArray } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
 import { _SPInstance, spInvokableFactory, _SPCollection } from "../spqueryable.js";
+import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 
 /**
  * Describes a collection of Form objects
@@ -22,10 +23,25 @@ export class _TermStore extends _SPInstance<ITermStoreInfo> {
     public get sets(): ITermSets {
         return TermSets(this);
     }
+
+    /**
+     * Allows you to locate terms within the termStore
+     *
+     * @param params Search parameters used to locate the terms, label is required
+     * @returns Array of terms including set information for each term
+     */
+    public async searchTerm(params: ISearchTermParams): Promise<Required<Pick<ITermInfo, SearchTermPickedProps>>[]> {
+
+        const query = Reflect.ownKeys(params).reduce((c, prop: string) => {
+            c.push(`${prop}='${escapeQueryStrValue(params[prop])}'`);
+            return c;
+        }, []).join(",");
+
+        return TermStore(this, `searchTerm(${query})`).expand("set")();
+    }
 }
 export interface ITermStore extends _TermStore { }
 export const TermStore = spInvokableFactory<ITermStore>(_TermStore);
-
 
 @defaultPath("groups")
 export class _TermGroups extends _SPCollection<ITermGroupInfo[]> {
@@ -162,8 +178,8 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
                 };
 
                 if (child.childrenCount > 0) {
-                    await visitor(this.getTermById(children[i].id), orderedTerm.children);
-                    orderedTerm.children = ensureOrder(orderedTerm.children, child.customSortOrder);
+                    await visitor(this.getTermById(children[i].id), <any>orderedTerm.children);
+                    orderedTerm.children = ensureOrder(<any>orderedTerm.children, child.customSortOrder);
                 }
 
                 parent.push(orderedTerm);
@@ -284,16 +300,44 @@ export interface ITermInfo {
     id: string;
     labels: { name: string; isDefault: boolean; languageTag: string }[];
     createdDateTime: string;
-    customSortOrder: ITermSortOrderInfo[];
+    customSortOrder?: ITermSortOrderInfo[];
     lastModifiedDateTime: string;
     descriptions: { description: string; languageTag: string }[];
     properties?: ITaxonomyProperty[];
     localProperties?: ITaxonomyLocalProperty[];
     isDeprecated: boolean;
     isAvailableForTagging: { setId: string; isAvailable: boolean }[];
-    topicRequested: boolean;
+    topicRequested?: boolean;
     parent?: ITermInfo;
+    set?: ITermSetInfo;
+    relations?: IRelationInfo[];
+    children?: ITermInfo[];
 }
+
+export interface ISearchTermParams {
+    /**
+     * The term label to search for.
+     */
+    label: string;
+    /**
+     * The setId to scope down the search under a termSet.
+     */
+    setId?: string;
+    /**
+     * The parentTermId to scope down the search under a termSet, under a parent term.
+     */
+    parentTermId?: string;
+    /**
+     * The languageTag to scope down the search to a specific language.
+     */
+    languageTag?: string;
+    /**
+     * Indicates what type of string matching should be performed when searching.
+     */
+    stringMatchOption?: "ExactMatch" | "StartsWith";
+}
+
+type SearchTermPickedProps = "childrenCount" | "createdDateTime" | "descriptions" | "id" | "isAvailableForTagging" | "isDeprecated" | "labels" | "lastModifiedDateTime" | "set";
 
 export interface ITermSortOrderInfo {
     setId: string;
@@ -301,7 +345,7 @@ export interface ITermSortOrderInfo {
 }
 
 export interface IOrderedTermInfo extends ITermInfo {
-    children: IOrderedTermInfo[];
+    children: ITermInfo[];
     defaultLabel: string;
 }
 

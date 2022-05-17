@@ -8,6 +8,7 @@ import {
     SPInstance,
     ISPInstance,
     IDeleteableWithETag,
+    ISPQueryable,
 } from "../spqueryable.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { IItem, Item } from "../items/types.js";
@@ -37,11 +38,11 @@ export class _Folders extends _SPCollection<IFolderInfo[]> {
      */
     public async addUsingPath(serverRelativeUrl: string, overwrite = false): Promise<IFolderAddResult> {
 
-        const data = await spPost(Folders(this, `addUsingPath(DecodedUrl='${escapeQueryStrValue(serverRelativeUrl)}',overwrite=${overwrite})`));
+        const data: IFolderInfo = await spPost(Folders(this, `addUsingPath(DecodedUrl='${escapeQueryStrValue(serverRelativeUrl)}',overwrite=${overwrite})`));
 
         return {
             data,
-            folder: Folder([this, extractWebUrl(this.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(data.ServerRelativeUrl)}')`),
+            folder: folderFromServerRelativePath(this, data.ServerRelativeUrl),
         };
     }
 }
@@ -240,6 +241,18 @@ export class _Folder extends _SPInstance<IFolderInfo> {
 }
 export interface IFolder extends _Folder, IDeleteableWithETag { }
 export const Folder = spInvokableFactory<IFolder>(_Folder);
+
+/**
+ * Creates an IFolder instance given a base object and a server relative path
+ *
+ * @param base Valid SPQueryable from which the observers will be used and the web url extracted
+ * @param serverRelativePath The server relative url to the folder (ex: '/sites/dev/documents/folder3')
+ * @returns IFolder instance referencing the folder described by the supplied parameters
+ */
+export function folderFromServerRelativePath(base: ISPQueryable, serverRelativePath: string): IFolder {
+
+    return Folder([base, extractWebUrl(base.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativePath)}')`);
+}
 
 /**
  * Describes result of adding a folder

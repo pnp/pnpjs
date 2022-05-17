@@ -10,10 +10,12 @@ import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { File, IFile } from "../files/types.js";
 import { combine } from "@pnp/core";
+import { defaultPath } from "../decorators.js";
 
+@defaultPath("_api/web/tenantappcatalog/AvailableApps")
 export class _AppCatalog extends _SPCollection {
 
-    constructor(base: string | ISPQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
+    constructor(base: string | ISPQueryable, path?: string) {
         super(base, null);
         this._url = combine(extractWebUrl(this._url), path);
     }
@@ -83,7 +85,7 @@ export class _AppCatalog extends _SPCollection {
 
         return {
             data: r,
-            file: File(odataUrlFrom(r)),
+            file: File([this, odataUrlFrom(r)]),
         };
     }
 }

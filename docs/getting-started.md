@@ -94,7 +94,7 @@ import { spfi, SPFx } from "@pnp/sp";
 protected async onInit(): Promise<void> {
 
     await super.onInit();
-    const sp = spfi().using(spSPFx(this.context));
+    const sp = spfi().using(SPFx(this.context));
     
 }
 

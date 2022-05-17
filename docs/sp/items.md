@@ -246,7 +246,7 @@ await sp.web.lists.getById("4D5A36EA-6E84-4160-8458-65C436DB765C").items.add({
 
 There are two types of user fields, those that allow a single value and those that allow multiple. For both types, you first need to determine the Id field name, which you can do by doing a GET REST request on an existing item. Typically the value will be the user field internal name with "Id" appended. So in our example, we have two fields User1 and User2 so the Id fields are User1Id and User2Id.
 
-Next, you need to remember there are two types of user fields, those that take a single value and those that allow multiple - these are updated in different ways. For single value user fields you supply just the user's id. For multiple value fields, you need to supply an object with a "results" property and an array. Examples for both are shown below.
+Next, you need to remember there are two types of user fields, those that take a single value and those that allow multiple - these are updated in different ways. For single value user fields you supply just the user's id. For multiple value fields, you need to supply an array. Examples for both are shown below.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -319,25 +319,27 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import "@pnp/sp/batching";
 
 const sp = spfi(...);
 
-const list = sp.web.lists.getByTitle("rapidadd");
+const [batchedSP, execute] = sp.batched();
 
-const entityTypeFullName = await list.getListItemEntityTypeFullName()
+const list = batchedSP.web.lists.getByTitle("rapidadd");
 
-const batch = sp.web.createBatch();
+let res = [];
 
-list.items.inBatch(batch).add({ Title: "Batch 6" }, entityTypeFullName).then(b => {
-  console.log(b);
-});
+list.items.add({ Title: "Batch 6" }, entityTypeFullName).then(r => res.push(r));
 
-list.items.inBatch(batch).add({ Title: "Batch 7" }, entityTypeFullName).then(b => {
-  console.log(b);
-});
+list.items.add({ Title: "Batch 7" }, entityTypeFullName).then(r => res.push(r));
 
-await batch.execute();
-console.log("Done");
+// Executes the batched calls
+await execute();
+
+// Results for all batched calls are available
+for(let i = 0; i < res.length; i++) {
+    ///Do something with the results
+}
 ```
 
 ## Update

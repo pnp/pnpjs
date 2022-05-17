@@ -27,29 +27,28 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
 
         instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
-            // only cache get requested data
-            if (!/get/i.test(init.method)) {
-                return [url, init, result];
-            }
+            // only cache get requested data or where the CacheAlways header is present (allows caching of POST requests)
+            if (/get/i.test(init.method) || init?.headers["X-PnP-CacheAlways"]) {
 
-            const key = keyFactory(url.toString());
+                const key = keyFactory(url.toString());
 
-            const cached = s.get(key);
+                const cached = s.get(key);
 
-            // we need to ensure that result stays "undefined" unless we mean to set null as the result
-            if (cached === null) {
+                // we need to ensure that result stays "undefined" unless we mean to set null as the result
+                if (cached === null) {
 
-                // if we don't have a cached result we need to get it after the request is sent and parsed
-                this.on.post(async function (url: URL, result: any) {
+                    // if we don't have a cached result we need to get it after the request is sent and parsed
+                    this.on.post(async function (url: URL, result: any) {
 
-                    s.put(key, result, expireFunc(url.toString()));
+                        s.put(key, result, expireFunc(url.toString()));
 
-                    return [url, result];
-                });
+                        return [url, result];
+                    });
 
-            } else {
+                } else {
 
-                result = cached;
+                    result = cached;
+                }
             }
 
             return [url, init, result];
