@@ -27,7 +27,7 @@ export async function packager(version: string, config: PackageSchema): Promise<
 
     } catch (e) {
 
-        log(`${colors.bgRed(" ")} ${colors.bold(colors.red(`Packaging error`))}.`);
+        log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Packaging error"))}.`);
         log(`${colors.bgRed(" ")} ${colors.bold(colors.red("Error:"))} ${colors.bold(colors.white(typeof e === "string" ? e : JSON.stringify(e)))}`);
         throw e;
     }
