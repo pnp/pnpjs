@@ -4,6 +4,9 @@
     "description": "pnp - provides a fluent interface to query the Microsoft Graph",
     "main": "./index.js",
     "typings": "./index",
+    "scripts": {
+        "postinstall": "node ./post-install.cjs"
+    },
     "dependencies": {
         "@microsoft/microsoft-graph-types": "2.16.0",
         "tslib": "2.3.1",
