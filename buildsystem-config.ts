@@ -40,6 +40,7 @@ export default <ConfigCollection>[
                 tasks: [
                     Tasks.Package.createCopyTargetFiles(),
                     Tasks.Package.copyStaticAssets,
+                    Tasks.Package.createCopyPackageScripts(),
                     Tasks.Package.createWritePackageFiles((p) => {
                         return Object.assign({}, p, {
                             funding: {

@@ -329,9 +329,9 @@ const list = batchedSP.web.lists.getByTitle("rapidadd");
 
 let res = [];
 
-list.items.add({ Title: "Batch 6" }, entityTypeFullName).then(r => res.push(r));
+list.items.add({ Title: "Batch 6" }).then(r => res.push(r));
 
-list.items.add({ Title: "Batch 7" }, entityTypeFullName).then(r => res.push(r));
+list.items.add({ Title: "Batch 7" }).then(r => res.push(r));
 
 // Executes the batched calls
 await execute();
@@ -399,24 +399,22 @@ import "@pnp/sp/items";
 
 const sp = spfi(...);
 
-const list = sp.web.lists.getByTitle("rapidupdate");
+const [batchedSP, execute] = sp.batched();
 
-const entityTypeFullName = await list.getListItemEntityTypeFullName()
+const list = batchedSP.web.lists.getByTitle("rapidupdate");
 
-const batch = sp.web.createBatch();
-
-// note requirement of "*" eTag param - or use a specific eTag value as needed
-list.items.getById(1).inBatch(batch).update({ Title: "Batch 6" }, "*", entityTypeFullName).then(b => {
+list.items.getById(1).update({ Title: "Batch 6" }).then(b => {
   console.log(b);
 });
 
-list.items.getById(2).inBatch(batch).update({ Title: "Batch 7" }, "*", entityTypeFullName).then(b => {
+list.items.getById(2).update({ Title: "Batch 7" }).then(b => {
   console.log(b);
 });
 
-await batch.execute();
-console.log("Done")
+// Executes the batched calls
+await execute();
 
+console.log("Done");
 ```
 
 ### Update Multi-value Taxonomy field
