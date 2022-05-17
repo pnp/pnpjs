@@ -4,13 +4,6 @@ import { resolve, dirname } from "path";
 import { PackageTargetMap, PackageFunction } from "../../config.js";
 import getSubDirNames from "../../lib/getSubDirs.js";
 import { obj, TransformFunction } from "through2";
-import importJSON from "../../lib/importJSON.js";
-
-interface TSConfig {
-    compilerOptions: {
-        outDir: string;
-    };
-}
 
 /**
  * Copies any *.cjs files from the individual package folders to the respective dist package folders
