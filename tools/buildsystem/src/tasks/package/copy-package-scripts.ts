@@ -13,10 +13,10 @@ export function createCopyPackageScripts(targetOverride = "", subDir = "", trans
     return async (target: PackageTargetMap, _version: string) => {
 
         const usedTarget = targetOverride === "" ? target.target : targetOverride;
-        const sourceRoot = resolve(dirname(usedTarget));
-        const packageSourceDir = resolve(sourceRoot, "packages");
+        // will be ./packages
+        const packagesRoot = resolve(dirname(usedTarget));
 
-        const dirs = getSubDirNames(packageSourceDir);
+        const dirs = getSubDirNames(packagesRoot);
 
         dirs.forEach(async dir => {
 
@@ -24,7 +24,7 @@ export function createCopyPackageScripts(targetOverride = "", subDir = "", trans
 
                 pump([
                     gulp.src(["./**/*.cjs"], {
-                        cwd: resolve(packageSourceDir, dir),
+                        cwd: resolve(packagesRoot, dir),
                     }),
                     ...transforms.map(t => obj(t)),
                     gulp.dest(resolve(target.outDir, dir, subDir), {
