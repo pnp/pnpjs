@@ -342,9 +342,10 @@ for(let i = 0; i < res.length; i++) {
 }
 ```
 
-## Update
+## Update Items
 
 The update method is very similar to the add method in that it takes a plain object representing the fields to update. The property names are the internal names of the fields. If you aren't sure you can always do a get request for an item in the list and see the field names that come back - you would use these same names to update the item.
+>Note: For updating certain types of fields, see the [Add](#add-items) examples above. The payload will be the same you will just need to replace the .add method with .getById({itemId}).update.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
