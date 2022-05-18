@@ -175,3 +175,22 @@ await sp.web.roleDefinitions.getById(5).delete();
 // update
 const res = sp.web.roleDefinitions.getById(5).update({ Name: "New Name" });
 ```
+
+## Get List Items with Unique Permissions
+
+In order to get a list of items that have unique permissions you have to specifically select the '' field and then filter on the client.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/security/items";
+
+const sp = spfi(...);
+
+const listItems = await sp.web.lists.getByTitle("pnplist").items.select("Id, HasUniqueRoleAssignments")();
+
+//Loop over list items filtering for HasUniqueRoleAssignments value
+
+```

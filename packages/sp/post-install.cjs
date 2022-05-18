@@ -1,7 +1,8 @@
-const fs = require("fs");
-const projectRoot = process.env.INIT_CWD;
-const packageLoc = `${projectRoot}\\package.json`;
-const packageFile = fs.readFileSync(packageLoc, "utf8");
+const { readFileSync } = require("fs");
+const { join } = require("path");
+const projectRoot = process.cwd();
+const packageLoc = join(projectRoot, "package.json");
+const packageFile = readFileSync(packageLoc, "utf8");
 const packageJSON = JSON.parse(packageFile);
 if (packageJSON.dependencies != null) {
     const spfxVersion = packageJSON.dependencies["@microsoft/sp-core-library"];
