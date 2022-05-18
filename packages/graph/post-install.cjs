@@ -1,6 +1,7 @@
 const { readFileSync } = require("fs");
 const { join } = require("path");
-const projectRoot = process.env.INIT_CWD;
+const { cwd } = require("process");
+const projectRoot = cwd();
 const packageLoc = join(projectRoot, "package.json");
 const packageFile = readFileSync(packageLoc, "utf8");
 const packageJSON = JSON.parse(packageFile);
