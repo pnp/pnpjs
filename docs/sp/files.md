@@ -439,3 +439,17 @@ import "@pnp/sp/files";
 const sp = spfi(...);
 const exists = await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("name.txt").exists();
 ```
+
+### lockedByUser
+
+Gets the user who currently has this file locked for shared use
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+const sp = spfi(...);
+const user = await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("name.txt").getLockedByUser();
+```
+

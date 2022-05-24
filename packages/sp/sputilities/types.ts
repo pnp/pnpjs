@@ -17,6 +17,17 @@ export class _Utilities extends _SPQueryable implements IUtilities {
     }
 
     public sendEmail(properties: IEmailProperties): Promise<void> {
+
+        if (properties.AdditionalHeaders) {
+
+            // we have to remap the additional headers into this format #2253
+            properties.AdditionalHeaders = <any>Reflect.ownKeys(properties.AdditionalHeaders).map(key => ({
+                Key: key,
+                Value: Reflect.get(properties.AdditionalHeaders, key),
+                ValueType: "Edm.String",
+            }));
+        }
+
         return UtilitiesCloneFactory(this, "SendEmail").excute<void>({ properties });
     }
 

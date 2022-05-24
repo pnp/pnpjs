@@ -149,7 +149,7 @@ export function getById<R>(factory: (...args: any[]) => R) {
 
         return class extends target {
             public getById(this: IGraphQueryable, id: string): R {
-                return factory(this, id);
+                return factory(this, encodeURIComponent(id));
             }
         };
     };
