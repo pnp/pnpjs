@@ -71,6 +71,23 @@ We support MSAL for both browser and nodejs by providing a thin wrapper around t
 
 `npm install @pnp/msaljsclient --save`
 
+At this time we're using version 1.x of the `msal` library which uses Implicit Flow. For more informaiton on the msal library please see the [AzureAD/microsoft-authentication-library-for-js](https://github.com/AzureAD/microsoft-authentication-library-for-js#readme).
+
+Each of the following samples reference a MSAL configuration that utilizes an Azure AD App Registration, these are samples that show the typings for those objects:
+
+```TypeScript
+import { Configuration, AuthenticationParameters } from "msal";
+
+const configuration: Configuration = {
+  authority: "https://login.microsoftonline.com/{tenant Id}/",
+  clientId: "{AAD Application Id/Client Id}",
+}
+
+const authParams: AuthenticationParameters = {
+  scopes: ["https://graph.microsoft.com/.default"] 
+}
+```
+
 ### MSAL + SPFx
 
 ```TypeScript

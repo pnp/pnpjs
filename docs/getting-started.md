@@ -18,7 +18,7 @@ First you will need to install those libraries you want to use in your applicati
 
 Next we can import and use the functionality within our application. Below is a very simple example, please see the individual package documentation for more details and examples.
 
-```TypeScript
+```ts
 import { getRandomString } from "@pnp/core";
 
 (function() {
@@ -32,6 +32,11 @@ import { getRandomString } from "@pnp/core";
 ## Getting Started with SharePoint Framework
 
 The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises you will need to use [version 2](./v2/SPFx-on-premises/index.html) of the library. If you are targeting SharePoint online you will need to take the additional steps outlined below based on the version of the SharePoint Framework you are targeting.
+
+We've created a Getting Started [sample](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-sample) project, utilizing SPFx 1.14 and V3, that showcases some of the more dramatic changes to the library. In addition, there is a companion video series on YouTube if you prefer to see things done through that medium here's a link to each video (only 2 have been released so far) in the 5 part series:
+
+1. [Getting started with PnPjs 3.0 JavaScript library](https://youtu.be/Fxh6ha6UWmM)
+1. [Getting started with using PnPjs in SPFx web parts](https://youtu.be/aay20XD57bU)
 
 The SharePoint Framework supports different versions of TypeScript natively and as of 1.14 release still doesn't natively support TypeScript 4.x. Sadly, this means that to use Version 3 of PnPjs you will need to take a few additional configuration steps to get them to work together.
 
@@ -192,6 +197,7 @@ export class SampleService {
 ### Importing NodeJS support
 
 > Note that the NodeJS integration relies on code in the module `@pnp/nodejs`. It is therefore required that you import this near the beginning of your program, using simply
+>
 > ```js
 > import "@pnp/nodejs";
 > ```
