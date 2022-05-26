@@ -658,6 +658,25 @@ const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepa
 await page.discardPageCheckout();
 ```
 
+### schedulePublish
+
+Schedules the page for publishing.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import { IClientsidePage } from "@pnp/sp/clientside-pages";
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
+
+// date and time to publish the page in UTC.
+const publishDate = new Date("1/1/1901");
+
+const scheduleVersion: string = await page.schedulePublish(publishDate);
+```
+
 ### promoteToNews
 
 Promotes the page as a news article.

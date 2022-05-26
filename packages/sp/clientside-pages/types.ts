@@ -689,29 +689,17 @@ export class _ClientsidePage extends _SPQueryable {
         await item.delete();
     }
 
-    // not yet active in service
-    // /**
-    //  * Schedules a page for publishing
-    //  *
-    //  * @param publishDate Date to publish the item
-    //  * @returns Publish work item details
-    //  */
-    // public async schedulePublish(publishDate: Date): Promise<string> {
-
-    //     let r: string;
-
-    //     // currently the server throws an exception, but then the page is published as expected
-    //     // so we just ignore that error for now, YMMV
-    //     try {
-    //         r = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/SchedulePublish`), body({
-    //             sitePage: { PublishStartDate: publishDate },
-    //         }));
-    //     } catch {
-    //         r = "";
-    //     }
-
-    //     return r;
-    // }
+    /**
+     * Schedules a page for publishing
+     *
+     * @param publishDate Date to publish the item
+     * @returns Version which was scheduled to be published
+     */
+    public async schedulePublish(publishDate: Date): Promise<string> {
+        return spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/SchedulePublish`), body({
+            sitePage: { PublishStartDate: publishDate },
+        }));
+    }
 
     /**
      * Saves a copy of this page as a template in this library's Templates folder
