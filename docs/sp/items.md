@@ -397,6 +397,7 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import "@pnp/sp/batching"
 
 const sp = spfi(...);
 
