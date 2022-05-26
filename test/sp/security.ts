@@ -27,8 +27,9 @@ describe("Security", function () {
         parentWeb = await this.pnp.sp.web.getParentWeb();
 
         // Create the test role definition.
-        const roleDef = await parentWeb.roleDefinitions.getByName(testRoleDefName);
-        if (roleDef === undefined) {
+        try {
+            await parentWeb.roleDefinitions.getByName(testRoleDefName)();
+        } catch (err) {
             try {
                 await parentWeb.roleDefinitions.add(testRoleDefName, "", 1000, { Low: 1, High: 0 });
             } catch (err) {
