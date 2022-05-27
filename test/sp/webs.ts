@@ -137,7 +137,7 @@ describe("Web", function () {
     });
 
     // skipping this test as the code hasn't changed in years and it takes longer than any other test
-    it.skip(".applyTheme", function () {
+    it.skip("applyTheme", function () {
 
         const index = this.pnp.settings.sp.testWebUrl.indexOf("/sites/");
         const colorUrl = "/" + combine(this.pnp.settings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/palette011.spcolor");
