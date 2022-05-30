@@ -69,7 +69,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
         const createData = await spPost<{ Id: string }>(Fields(this, null), body({
             Title: title,
             FieldTypeKind: fieldTypeKind,
-            Required: properties.Required || false,
+            Required: properties?.Required || false,
         }));
 
         const field = this.getById(createData.Id);
