@@ -226,16 +226,29 @@ describe("Contacts", function () {
 
     // Remove the test contact we created
     after(async function () {
-        const promises = [Promise.resolve()];
+
         if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testContactID)) {
-            promises.push(this.pnp.graph.users.getById(testUserName).contacts.getById(testContactID).delete());
+            try {
+                await this.pnp.graph.users.getById(testUserName).contacts.getById(testContactID).delete();
+            } catch (err) {
+                console.error(`Cannot clean up test contact: ${testContactID}`);
+            }
         }
         if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testContact2ID)) {
-            promises.push(this.pnp.graph.users.getById(testUserName).contacts.getById(testContact2ID).delete());
+            try {
+                await this.pnp.graph.users.getById(testUserName).contacts.getById(testContact2ID).delete();
+            } catch (err) {
+                console.error(`Cannot clean up test contact: ${testContact2ID}`);
+            }
         }
         if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testFolderID)) {
-            promises.push(this.pnp.graph.users.getById(testUserName).contactFolders.getById(testFolderID).delete());
+            try {
+                await this.pnp.graph.users.getById(testUserName).contactFolders.getById(testFolderID).delete();
+            } catch (err) {
+                console.error(`Cannot clean up test contact folder: ${testFolderID}`);
+            }
         }
-        return Promise.all(promises);
+
+        return;
     });
 });

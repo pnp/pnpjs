@@ -46,7 +46,7 @@ _Item.prototype.like = async function (this: _Item) {
     const baseUrl = extractWebUrl(this.toUrl());
     const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)";
     const likeUrl = combine(baseUrl, reputationUrl) + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=true`;
-    return spPost(SPQueryable(likeUrl));
+    return spPost(SPQueryable([this, likeUrl]));
 };
 
 _Item.prototype.unlike = async function (this: _Item) {
@@ -54,7 +54,7 @@ _Item.prototype.unlike = async function (this: _Item) {
     const baseUrl = extractWebUrl(this.toUrl());
     const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetLike(listID=@a1,itemID=@a2,like=@a3)";
     const likeUrl = combine(baseUrl, reputationUrl) + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=false`;
-    return spPost(SPQueryable(likeUrl));
+    return spPost(SPQueryable([this, likeUrl]));
 };
 
 _Item.prototype.getLikedByInformation = function (this: _Item): Promise<ILikedByInformation> {
