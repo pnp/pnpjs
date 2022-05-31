@@ -215,7 +215,6 @@ describe("Calendar", function () {
 
     it("Get Instances", async function () {
         const startDate: Date = new Date();
-        // startDate.setDate(startDate.getDate() + 6);
         const endDate: Date = new Date();
         endDate.setDate(endDate.getDate() + 24);
         const event = this.pnp.graph.users.getById(testUserName).events.getById(testEventID);
