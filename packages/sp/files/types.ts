@@ -211,7 +211,7 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
+        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=${Boolean(shouldOverWrite)})`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
                 options: {
