@@ -41,7 +41,7 @@ export class _Items extends _SPCollection {
      */
     public getItemByStringId(stringId: string): IItem {
         // creates an item with the parent list path and append out method call
-        return Item(this.parentUrl, `getItemByStringId('${stringId}')`);
+        return Item([this, this.parentUrl], `getItemByStringId('${stringId}')`);
     }
 
     /**

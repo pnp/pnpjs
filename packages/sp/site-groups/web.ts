@@ -3,6 +3,7 @@ import { escapeQueryStrValue } from "../index.js";
 import { spPost } from "../operations.js";
 import { Web, _Web } from "../webs/types.js";
 import { ISiteGroups, SiteGroups, ISiteGroup, SiteGroup } from "./types.js";
+import "../security/web.js";
 
 declare module "../webs/types" {
 
