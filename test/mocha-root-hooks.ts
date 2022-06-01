@@ -9,6 +9,7 @@ import { cleanUpAllSubsites } from "./clean-subsite.js";
 import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import "mocha";
+import "@pnp/sp/webs";
 
 declare module "mocha" {
     interface Context {
