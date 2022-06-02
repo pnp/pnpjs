@@ -170,31 +170,33 @@ describe("Behaviors", function () {
         await query();
     });
 
-    it("Timeout", async function () {
+    it.skip("Timeout", async function () {
 
-        // must patch in node < 15
-        const controller = new AbortController();
+        // // TODO:: this is changing
 
-        const query = new Queryable("https://bing.com");
-        query.using(Timeout(controller.signal));
-        query.using(ResolveOnData(), RejectOnError());
+        // // must patch in node < 15
+        // const controller = new AbortController();
 
-        query.on.send.replace(async (url, init) => <any>nodeFetch(url.toString(), <any>init));
+        // const query = new Queryable("https://bing.com");
+        // query.using(Timeout(controller.signal));
+        // query.using(ResolveOnData(), RejectOnError());
 
-        try {
+        // query.on.send.replace(async (url, init) => <any>nodeFetch(url.toString(), <any>init));
 
-            controller.abort();
-            await query();
+        // try {
 
-            expect.fail("Timeout should cause error and we end up in catch before this line.");
+        //     controller.abort();
+        //     await query();
 
-        } catch (e) {
+        //     expect.fail("Timeout should cause error and we end up in catch before this line.");
 
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            expect(e).to.not.be.null;
+        // } catch (e) {
 
-            // we expect this to be the error from the abort signal
-            expect(e).property("name").to.eq("AbortError");
-        }
+        //     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        //     expect(e).to.not.be.null;
+
+        //     // we expect this to be the error from the abort signal
+        //     expect(e).property("name").to.eq("AbortError");
+        // }
     });
 });

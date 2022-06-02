@@ -1,4 +1,4 @@
-import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryablePreObserver = (this: IQueryableInternal, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
@@ -12,6 +12,8 @@ export type QueryableParseObserver = (this: IQueryableInternal, url: URL, respon
 export type QueryablePostObserver = (this: IQueryableInternal, url: URL, result: any | undefined) => Promise<[URL, any]>;
 
 export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: T) => void;
+
+type QueryablePromiseCreationObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
 
 const DefaultMoments = {
     pre: asyncReduce<QueryablePreObserver>(),
@@ -32,10 +34,14 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
     protected _url: string;
     protected InternalResolveEvent = Symbol.for("Queryable_Resolve");
     protected InternalRejectEvent = Symbol.for("Queryable_Reject");
+    protected InternalPromiseCreationEvent = Symbol.for("Queryable_Promise");
 
     constructor(init: QueryableInit, path?: string) {
 
         super(DefaultMoments);
+
+        // add a moment with specific implementaion for promise creation
+        this.moments[this.InternalPromiseCreationEvent] = reduce<QueryablePromiseCreationObserver>();
 
         let url = "";
         let observers: ObserverCollection | undefined = undefined;
@@ -183,12 +189,17 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         }, 0);
 
-        return new Promise((resolve, reject) => {
+        // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
+        // cancelable to work as envisioned, but may have other users. Meant for internal to the library use only.
+        const [promise] = this.emit[this.InternalPromiseCreationEvent](new Promise((resolve, reject) => {
+
             // we overwrite any pre-existing internal events as a
-            // given queryable can only process a single request at a time
+            // given queryable only processes a single request at a time
             this.on[this.InternalResolveEvent].replace(resolve);
             this.on[this.InternalRejectEvent].replace(reject);
-        });
+        }));
+
+        return promise;
     }
 }
 

@@ -55,14 +55,16 @@ export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePi
 
             let response: Response;
             let wait = interval;
-            let count = 1;
+            let count = 0;
 
             const retry = async (): Promise<Response> => {
 
                 // if we've tried too many times, throw
                 if (count >= retries) {
-                    throw new HttpRequestError(`Retry count exceeded (${retries}) for this request. ${response.status}: ${response.statusText};`, response);
+                    throw new HttpRequestError(`Retry count exceeded (${retries}) for this request. ${response?.status || -1}: ${response?.statusText || "Response is undefined"};`, response || null);
                 }
+
+                count++;
 
                 if (typeof response === "undefined" || response?.status === 429 || response?.status === 503 || response?.status === 504) {
                     // this is our first try and response isn't defined yet
@@ -83,8 +85,6 @@ export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePi
                         }
 
                         this.log(`Attempt #${count} to retry request which failed with ${response.status}: ${response.statusText}`, LogLevel.Verbose);
-                        count++;
-
                         await delay(wait);
                     }
 
@@ -101,6 +101,10 @@ export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePi
 
                         if (err && err.code && ["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(err.code.toUpperCase()) < 0) {
                             // this is some non-transient node error, no retry
+                            throw err;
+                        }
+
+                        if (err.name === "AbortError") {
                             throw err;
                         }
 

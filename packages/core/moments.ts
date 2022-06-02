@@ -19,6 +19,31 @@ export function broadcast<T extends ObserverAction>(): (observers: T[], ...args:
 }
 
 /**
+ * Defines a moment that executes each observer synchronously, passing the returned arguments as the arguments to the next observer.
+ * This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state
+ *
+ * @returns The final set of arguments
+ */
+export function reduce<T extends ObserverFunction<[...Parameters<T>]>>(): (observers: T[], ...args: [...Parameters<T>]) => [...Parameters<T>] {
+
+    return function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): [...Parameters<T>] {
+
+        // get our initial values
+        let r = args;
+
+        const obs = [...observers];
+
+        // process each handler which updates our "state" in order
+        // returning the new "state" as a tuple [...Parameters<T>]
+        for (let i = 0; i < obs.length; i++) {
+            r = Reflect.apply(obs[i], this, r);
+        }
+
+        return r;
+    };
+}
+
+/**
  * Defines a moment that executes each observer asynchronously, awaiting the result and passes the returned arguments as the arguments to the next observer.
  * This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state
  *
