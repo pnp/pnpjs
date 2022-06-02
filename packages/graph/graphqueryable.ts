@@ -1,5 +1,6 @@
 import { isArray } from "@pnp/core";
-import { IInvokable, InjectHeaders, JSONParse, Queryable, queryableFactory } from "@pnp/queryable";
+import { IInvokable, JSONParse, Queryable, queryableFactory } from "@pnp/queryable";
+import { ConsistencyLevel } from "./behaviors/consistency-level.js";
 import { AsPaged, IPagedResult } from "./behaviors/paged.js";
 
 export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];
@@ -154,6 +155,17 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     }
 
     /**
+     * Skips a set number of items in the return set
+     *
+     * @param num Number of items to skip
+     */
+    public search(query: string): this {
+        this.using(ConsistencyLevel());
+        this.query.set("$search", query);
+        return this;
+    }
+
+    /**
      * 	To request second and subsequent pages of Graph data
      */
     public skipToken(token: string): this {
@@ -165,7 +177,7 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
      * 	Retrieves the total count of matching resources
      */
     public async count(): Promise<number> {
-        const q = GraphQueryableCollection(this).using(InjectHeaders({ "ConsistencyLevel": "eventual" }), JSONParse());
+        const q = GraphQueryableCollection(this).using(ConsistencyLevel(), JSONParse());
         q.query.set("$count", "true");
         const r = await q.top(1)();
         return parseFloat(r["@odata.count"]);
@@ -182,24 +194,6 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
 }
 export interface IGraphQueryableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> { }
 export const GraphQueryableCollection = graphInvokableFactory<IGraphQueryableCollection>(_GraphQueryableCollection);
-
-export class _GraphQueryableSearchableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> {
-
-    /**
-     * 	To request second and subsequent pages of Graph data
-     */
-    public search(query: string): IGraphQueryableSearchableCollection {
-        const q = GraphQueryableSearchableCollection(this).using(InjectHeaders({ "ConsistencyLevel": "eventual" }));
-        q.query.set("$search", query);
-        return q;
-    }
-}
-
-export interface IGraphQueryableSearchableCollection<GetType = any> extends IInvokable, IGraphQueryable<GetType> {
-    search(query: string): this;
-}
-export const GraphQueryableSearchableCollection = graphInvokableFactory<IGraphQueryableSearchableCollection>(_GraphQueryableSearchableCollection);
-
 
 /**
  * Represents an instance that can be selected
