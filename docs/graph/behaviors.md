@@ -99,7 +99,6 @@ while (groups.hasNext) {
 console.log(`All groups: ${JSON.stringify(allGroups)}`);
 ```
 
-
 ## Endpoint
 
 This behavior is used to change the endpoint to which requests are made, either "beta" or "v1.0". This allows you to easily switch back and forth between the endpoints as needed.
@@ -219,6 +218,32 @@ import { graphfi, Telemetry } from "@pnp/graph";
 import "@pnp/graph/users";
 
 const graph = graphfi().using(Telemetry());
+
+await graph.users();
+```
+
+## ConsistencyLevel
+
+Using this behavior you can set the consistency level of your requests. You likely won't need to use this directly as we include it where needed.
+
+Basic usage:
+
+```TypeScript
+import { graphfi, ConsistencyLevel } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(ConsistencyLevel());
+
+await graph.users();
+```
+
+If in the future there is another value other than "eventual" you can supply it to the behavior. For now only "eventual" is a valid value, which is the default, so you do not need to pass it as a param.
+
+```TypeScript
+import { graphfi, ConsistencyLevel } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(ConsistencyLevel("{level value}"));
 
 await graph.users();
 ```
