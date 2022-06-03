@@ -17,7 +17,7 @@ export async function Example(settings: ITestingSettings) {
 
   const w: CancelablePromise = <any>ww();
 
-  w.cancel();
+  setTimeout(() => w.cancel(), 400);
 
   const y = await w;
 

@@ -4,7 +4,7 @@ import { Queryable } from "../queryable.js";
 /**
  * Behavior that will cause a timeout in the request after the specified milliseconds
  *
- * @param timeout Either the number of milliseconds to set a timeout, or a caller supplied AbortSignal reference
+ * @param timeout Number of milliseconds to set the timeout
  */
 export function Timeout(timeout: number): TimelinePipe<Queryable> {
 

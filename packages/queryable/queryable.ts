@@ -30,18 +30,25 @@ export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 @invokable()
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
+    // tracks any query paramters which will be appended to the request url
     private _query: Map<string, string>;
+
+    // tracks the current url for a given Queryable
     protected _url: string;
+
+    // these keys represent internal events for Queryable, users are not expected to
+    // subscribe directly to these, rather they enable functionality within Queryable
+    // they are Symbols such that there are NOT cloned between queryables as we only grab string keys (by design)
     protected InternalResolveEvent = Symbol.for("Queryable_Resolve");
     protected InternalRejectEvent = Symbol.for("Queryable_Reject");
-    protected InternalPromiseCreationEvent = Symbol.for("Queryable_Promise");
+    protected InternalPromiseEvent = Symbol.for("Queryable_Promise");
 
     constructor(init: QueryableInit, path?: string) {
 
         super(DefaultMoments);
 
-        // add a moment with specific implementaion for promise creation
-        this.moments[this.InternalPromiseCreationEvent] = reduce<QueryablePromiseCreationObserver>();
+        // add an intneral moment with specific implementaion for promise creation
+        this.moments[this.InternalPromiseEvent] = reduce<QueryablePromiseCreationObserver>();
 
         let url = "";
         let observers: ObserverCollection | undefined = undefined;
@@ -189,15 +196,18 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         }, 0);
 
-        // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
-        // cancelable to work as envisioned, but may have other users. Meant for internal to the library use only.
-        const [promise] = this.emit[this.InternalPromiseCreationEvent](new Promise((resolve, reject) => {
+        // this is the promise that the calling code will recieve and await
+        let promise = new Promise<void>((resolve, reject) => {
 
             // we overwrite any pre-existing internal events as a
             // given queryable only processes a single request at a time
             this.on[this.InternalResolveEvent].replace(resolve);
             this.on[this.InternalRejectEvent].replace(reject);
-        }));
+        });
+
+        // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
+        // cancelable to work as envisioned, but may have other users. Meant for internal user in the library accessed via behaviors.
+        [promise] = this.emit[this.InternalPromiseEvent](promise);
 
         return promise;
     }
