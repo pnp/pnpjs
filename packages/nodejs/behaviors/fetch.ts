@@ -56,12 +56,13 @@ export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePi
             let response: Response;
             let wait = interval;
             let count = 0;
+            let lastErr: Error;
 
             const retry = async (): Promise<Response> => {
 
                 // if we've tried too many times, throw
                 if (count >= retries) {
-                    throw new HttpRequestError(`Retry count exceeded (${retries}) for this request. ${response?.status || -1}: ${response?.statusText || "Response is undefined"};`, response || null);
+                    throw lastErr || new HttpRequestError(`Retry count exceeded (${retries}) for this request. ${response?.status}: ${response?.statusText};`, response || null);
                 }
 
                 count++;
@@ -104,10 +105,12 @@ export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePi
                             throw err;
                         }
 
-                        if (err.name === "AbortError") {
+                        if (/AbortError/.test(err.name)) {
+                            // don't retry aborted requests
                             throw err;
                         }
 
+                        lastErr = err;
                         return retry();
                     }
 
