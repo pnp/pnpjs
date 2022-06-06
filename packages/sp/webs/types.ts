@@ -10,7 +10,7 @@ import {
     IDeleteable,
     deleteable,
     SPInit,
-    ISPQueryable
+    ISPQueryable,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";

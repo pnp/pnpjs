@@ -1,8 +1,7 @@
 import {
     _SPCollection,
     spInvokableFactory,
-    _SPInstance,
-    SPQueryable
+    SPQueryable,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spGet, spPost } from "../operations.js";
@@ -71,7 +70,7 @@ export interface IRecycleBinItem {
     LeafName: string;
     LeafNamePath: {
         DecodedUrl: string;
-    }
+    };
     Size: number;
     Title: string;
 }

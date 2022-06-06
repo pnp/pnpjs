@@ -6,7 +6,7 @@ import { RecycleBin } from "./types.js";
 export {
     IRecycleBin,
     IRecycleBinItem,
-    RecycleBin
+    RecycleBin,
 } from "./types.js";
 
 addProp(_Web, "recycleBin", RecycleBin);
