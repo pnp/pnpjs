@@ -14,11 +14,14 @@ export {
     BookingService,
     BookingStaffMembers,
     BookingStaffMember,
+    BookingCustomQuestions,
+    BookingCustomQuestion,
     IBookingBusinessAddResult,
     IBookingAppointmentAddResult,
     IBookingCustomerAddResult,
     IBookingServiceAddResult,
     IBookingStaffMemberAddResult,
+    IBookingCustomQuestionAddResult,
 } from "./types.js";
 
 declare module "../fi" {
