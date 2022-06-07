@@ -76,7 +76,7 @@ export interface IGroup extends _Group, IDeleteable, IUpdateable { }
 export const Group = graphInvokableFactory<IGroup>(_Group);
 
 /**
- * Describes a collection of Field objects
+ * Describes a collection of Group objects
  *
  */
 @defaultPath("groups")
