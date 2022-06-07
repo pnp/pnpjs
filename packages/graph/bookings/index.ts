@@ -22,6 +22,20 @@ export {
     IBookingServiceAddResult,
     IBookingStaffMemberAddResult,
     IBookingCustomQuestionAddResult,
+    IBookingCurrencies,
+    IBookingCurrency,
+    IBookingBusinesses,
+    IBookingBusiness,
+    IBookingAppointments,
+    IBookingAppointment,
+    IBookingCustomers,
+    IBookingCustomer,
+    IBookingServices,
+    IBookingService,
+    IBookingStaffMembers,
+    IBookingStaffMember,
+    IBookingCustomQuestions,
+    IBookingCustomQuestion,
 } from "./types.js";
 
 declare module "../fi" {
