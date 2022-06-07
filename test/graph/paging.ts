@@ -64,6 +64,6 @@ describe("Groups", function () {
             allGroups.push(...groups.value);
         }
 
-        expect(allGroups.length).to.eq(count);
+        expect(allGroups.length).to.be.gt((count - 10)).and.lt((count + 10));
     });
 });
