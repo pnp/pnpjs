@@ -160,7 +160,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      */
     public addNumber(title: string, properties?: IFieldCreationProperties & AddNumberProps): Promise<IFieldAddResult> {
 
-        return this.add(title, 9, { ...properties });
+        return this.add(title, 9, properties);
     }
 
     /**
