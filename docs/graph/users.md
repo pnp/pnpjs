@@ -19,7 +19,9 @@ const graph = graphfi(...);
 const currentUser = await graph.me();
 ```
 
-## Get All Users in the Organization
+## Get Users in the Organization
+
+> If you want to get all users you will need to [use paging](./behaviors.md#paged)
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
