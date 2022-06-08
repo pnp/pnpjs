@@ -2,20 +2,57 @@ import {
     _SPCollection,
     spInvokableFactory,
     SPQueryable,
+    _SPInstance,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spGet, spPost } from "../operations.js";
+import { spPost } from "../operations.js";
 
-@defaultPath("RecycleBin")
-export class _RecycleBin extends _SPCollection<IRecycleBinItem[]> {
+/**
+ * Describes a recycle bin item
+ *
+ */
+export class _RecycleBinItem extends _SPInstance<IRecycleBinItemObject> {
+    /**
+     * Delete's the Recycle Bin item
+     *
+     */
+    public delete(): Promise<void> {
+        return spPost(SPQueryable(this, "DeleteObject"));
+    }
 
     /**
-     * Returns a Recycle Bin item
+     * Moves Recycle Bin item to the Second-stage Recycle Bin
      *
-     * @param id The guid of an item in the Recycle Bin collection
      */
-    public getById(id: string): Promise<IRecycleBinItem> {
-        return spGet(SPQueryable(this, id));
+    public moveToSecondStage(): Promise<void> {
+        return spPost(SPQueryable(this, "MoveToSecondStage"));
+    }
+
+    /**
+     * Restore the the Recycle Bin item
+     *
+     */
+    public restore(): Promise<void> {
+        return spPost(SPQueryable(this, "Restore"));
+    }
+}
+export interface IRecycleBinItem extends _RecycleBinItem { }
+export const RecycleBinItem = spInvokableFactory<IRecycleBinItem>(_RecycleBinItem);
+
+/**
+ * Describes a collection of recycle bin items
+ *
+ */
+@defaultPath("RecycleBin")
+export class _RecycleBin extends _SPCollection<IRecycleBinItemObject[]> {
+
+    /**
+    * Gets a Recycle Bin Item by id
+    *
+    * @param id The string id of the recycle bin item
+    */
+    public getById(id: string): IRecycleBinItem {
+        return RecycleBinItem(this).concat(`(${id})`);
     }
 
     /**
@@ -53,7 +90,7 @@ export class _RecycleBin extends _SPCollection<IRecycleBinItem[]> {
 export interface IRecycleBin extends _RecycleBin { }
 export const RecycleBin = spInvokableFactory<IRecycleBin>(_RecycleBin);
 
-export interface IRecycleBinItem {
+export interface IRecycleBinItemObject {
     AuthorEmail: string;
     AuthorName: string;
     DeletedByEmail: string;
