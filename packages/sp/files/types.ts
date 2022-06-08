@@ -1,4 +1,4 @@
-import { body, TextParse, BlobParse, BufferParse, JSONParse } from "@pnp/queryable";
+import { body, TextParse, BlobParse, BufferParse, JSONParse, cancelableScope, CancelAction } from "@pnp/queryable";
 import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
 import {
     _SPCollection,
@@ -81,9 +81,10 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      * @returns The new File and the raw response.
      */
+    @cancelableScope()
     public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
 
-        const response: IFileInfo = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
+        const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
 
@@ -395,6 +396,7 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param progress A callback function which can be used to track the progress of the upload
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      */
+    @cancelableScope()
     public async setContentChunked(file: Blob, progress?: (data: IFileUploadProgressData) => void, chunkSize = 10485760): Promise<IFileAddResult> {
 
         if (!isFunc(progress)) {
@@ -405,18 +407,26 @@ export class _File extends _SPInstance<IFileInfo> {
         const totalBlocks = parseInt((fileSize / chunkSize).toString(), 10) + ((fileSize % chunkSize === 0) ? 1 : 0);
         const uploadId = getGUID();
 
+        const fileRef = File(this).using(CancelAction(async () => {
+
+            console.log("here");
+
+            // don't await, just fire and forget
+            await fileRef.cancelUpload(uploadId);
+        }));
+
         // report that we are starting
         progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks });
-        let currentPointer = await File(this).startUpload(uploadId, file.slice(0, chunkSize));
+        let currentPointer = await fileRef.startUpload(uploadId, file.slice(0, chunkSize));
 
         // skip the first and last blocks
         for (let i = 2; i < totalBlocks; i++) {
             progress({ uploadId, blockNumber: i, chunkSize, currentPointer, fileSize, stage: "continue", totalBlocks });
-            currentPointer = await File(this).continueUpload(uploadId, currentPointer, file.slice(currentPointer, currentPointer + chunkSize));
+            currentPointer = await fileRef.continueUpload(uploadId, currentPointer, file.slice(currentPointer, currentPointer + chunkSize));
         }
 
         progress({ uploadId, blockNumber: totalBlocks, chunkSize, currentPointer, fileSize, stage: "finishing", totalBlocks });
-        return File(this).finishUpload(uploadId, currentPointer, file.slice(currentPointer));
+        return fileRef.finishUpload(uploadId, currentPointer, file.slice(currentPointer));
     }
 
     /**

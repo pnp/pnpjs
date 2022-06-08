@@ -132,7 +132,7 @@ describe("Behaviors", function () {
 
         query.on.parse.replace(async function (this: Queryable, url, response, result) {
 
-            this.emit[this.InternalResolveEvent](null);
+            this.emit[this.InternalResolve](null);
 
             return [url, response, result];
         });
@@ -162,7 +162,7 @@ describe("Behaviors", function () {
 
         query.on.parse.replace(async function (this: Queryable, url, response, result) {
 
-            this.emit[this.InternalResolveEvent](null);
+            this.emit[this.InternalResolve](null);
 
             return [url, response, result];
         });
@@ -170,33 +170,31 @@ describe("Behaviors", function () {
         await query();
     });
 
-    it.skip("Timeout", async function () {
+    it("Timeout", async function () {
 
-        // // TODO:: this is changing
+        // must patch in node < 15
+        const controller = new AbortController();
 
-        // // must patch in node < 15
-        // const controller = new AbortController();
+        const query = new Queryable("https://bing.com");
+        query.using(Timeout(100));
+        query.using(ResolveOnData(), RejectOnError());
 
-        // const query = new Queryable("https://bing.com");
-        // query.using(Timeout(controller.signal));
-        // query.using(ResolveOnData(), RejectOnError());
+        query.on.send.replace(async (url, init) => <any>nodeFetch(url.toString(), <any>init));
 
-        // query.on.send.replace(async (url, init) => <any>nodeFetch(url.toString(), <any>init));
+        try {
 
-        // try {
+            controller.abort();
+            await query();
 
-        //     controller.abort();
-        //     await query();
+            expect.fail("Timeout should cause error and we end up in catch before this line.");
 
-        //     expect.fail("Timeout should cause error and we end up in catch before this line.");
+        } catch (e) {
 
-        // } catch (e) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            expect(e).to.not.be.null;
 
-        //     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        //     expect(e).to.not.be.null;
-
-        //     // we expect this to be the error from the abort signal
-        //     expect(e).property("name").to.eq("AbortError");
-        // }
+            // we expect this to be the error from the abort signal
+            expect(e).property("name").to.eq("AbortError");
+        }
     });
 });

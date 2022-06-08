@@ -14,7 +14,7 @@ export function Timeout(timeout: number): TimelinePipe<Queryable> {
 
             const controller = new AbortController();
             init.signal = controller.signal;
-            setTimeout(controller.abort, timeout);
+            setTimeout(() => controller.abort(), timeout);
 
             return [url, init, result];
         });

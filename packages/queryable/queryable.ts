@@ -39,16 +39,16 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
     // these keys represent internal events for Queryable, users are not expected to
     // subscribe directly to these, rather they enable functionality within Queryable
     // they are Symbols such that there are NOT cloned between queryables as we only grab string keys (by design)
-    protected InternalResolveEvent = Symbol.for("Queryable_Resolve");
-    protected InternalRejectEvent = Symbol.for("Queryable_Reject");
-    protected InternalPromiseEvent = Symbol.for("Queryable_Promise");
+    protected InternalResolve = Symbol.for("Queryable_Resolve");
+    protected InternalReject = Symbol.for("Queryable_Reject");
+    protected InternalPromise = Symbol.for("Queryable_Promise");
 
     constructor(init: QueryableInit, path?: string) {
 
         super(DefaultMoments);
 
         // add an intneral moment with specific implementaion for promise creation
-        this.moments[this.InternalPromiseEvent] = reduce<QueryablePromiseCreationObserver>();
+        this.moments[this.InternalPromise] = reduce<QueryablePromiseCreationObserver>();
 
         let url = "";
         let observers: ObserverCollection | undefined = undefined;
@@ -128,10 +128,12 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
     protected execute(userInit: RequestInit): Promise<void> {
 
+        // if there are NO observers registered this is likely either a bug in the library or a user error, direct to docs
         if (Reflect.ownKeys(this.observers).length < 1) {
             throw Error("No observers registered for this request. (https://pnp.github.io/pnpjs/queryable/queryable#No-observers-registered-for-this-request)");
         }
 
+        // schedule the execution after we return the promise below in the next event loop
         setTimeout(async () => {
 
             const requestId = getGUID();
@@ -201,13 +203,13 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
             // we overwrite any pre-existing internal events as a
             // given queryable only processes a single request at a time
-            this.on[this.InternalResolveEvent].replace(resolve);
-            this.on[this.InternalRejectEvent].replace(reject);
+            this.on[this.InternalResolve].replace(resolve);
+            this.on[this.InternalReject].replace(reject);
         });
 
         // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
-        // cancelable to work as envisioned, but may have other users. Meant for internal user in the library accessed via behaviors.
-        [promise] = this.emit[this.InternalPromiseEvent](promise);
+        // cancelable to work as envisioned, but may have other users. Meant for internal use in the library accessed via behaviors.
+        [promise] = this.emit[this.InternalPromise](promise);
 
         return promise;
     }
