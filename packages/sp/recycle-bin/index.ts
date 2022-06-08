@@ -5,7 +5,7 @@ import { RecycleBin, IRecycleBin } from "./types.js";
 
 export {
     IRecycleBin,
-    IRecycleBinItem,
+    IRecycleBinItemObject as IRecycleBinItem,
     RecycleBin,
 } from "./types.js";
 
