@@ -236,7 +236,7 @@ export abstract class Timeline<T extends Moments> {
 
         // execute the timeline and get a ref to the promise
         // this gives the implementation of execute the ability to mutate the promise object, which
-        // enables us to add the cancel behavior, and opens up another piece of flexibility in the framework
+        // enabled us to add the cancel behavior, and opens up another piece of flexibility in the framework
         const p = this.execute(init);
 
         // attach our dispose logic

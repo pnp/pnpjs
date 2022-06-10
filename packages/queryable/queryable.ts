@@ -13,7 +13,7 @@ export type QueryablePostObserver = (this: IQueryableInternal, url: URL, result:
 
 export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: T) => void;
 
-type QueryablePromiseCreationObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
+type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
 
 const DefaultMoments = {
     pre: asyncReduce<QueryablePreObserver>(),
@@ -48,7 +48,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
         super(DefaultMoments);
 
         // add an intneral moment with specific implementaion for promise creation
-        this.moments[this.InternalPromise] = reduce<QueryablePromiseCreationObserver>();
+        this.moments[this.InternalPromise] = reduce<QueryablePromiseObserver>();
 
         let url = "";
         let observers: ObserverCollection | undefined = undefined;

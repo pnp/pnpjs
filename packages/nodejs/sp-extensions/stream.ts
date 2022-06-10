@@ -1,4 +1,4 @@
-import { asCancelableScope, headers } from "@pnp/queryable";
+import { asCancelableScope, CancelAction, headers } from "@pnp/queryable";
 import { File, Files, IFile, IFileAddResult, IFiles, IFileUploadProgressData } from "@pnp/sp/files/index.js";
 import { spPost, escapeQueryStrValue } from "@pnp/sp";
 import { ReadStream } from "fs";
@@ -34,6 +34,10 @@ extendFactory(File, {
         let blockNumber = -1;
         let promise = Promise.resolve(0);
 
+        const fileRef = File(this).using(CancelAction(async () => {
+            return File(this).cancelUpload(uploadId);
+        }));
+
         return new Promise((resolve) => {
 
             stream.on("data", (chunk) => {
@@ -45,7 +49,7 @@ extendFactory(File, {
                     promise = promise.then(() => {
                         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                         progress!({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: 0, fileSize: -1, stage: "starting", totalBlocks: -1 });
-                        return File(this).startUpload(uploadId, <any>chunk);
+                        return fileRef.startUpload(uploadId, <any>chunk);
                     });
 
                 } else {
@@ -53,7 +57,7 @@ extendFactory(File, {
                     promise = promise.then((pointer) => {
                         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                         progress!({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: pointer, fileSize: -1, stage: "continue", totalBlocks: -1 });
-                        return File(this).continueUpload(uploadId, pointer, <any>chunk);
+                        return fileRef.continueUpload(uploadId, pointer, <any>chunk);
                     });
 
                 }
@@ -62,7 +66,7 @@ extendFactory(File, {
             stream.on("end", async () => {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 progress!({ uploadId, blockNumber, chunkSize: -1, currentPointer: -1, fileSize: -1, stage: "finishing", totalBlocks: -1 });
-                promise.then((pointer) => resolve(File(this).finishUpload(uploadId, pointer, Buffer.from([]))));
+                promise.then((pointer) => resolve(fileRef.finishUpload(uploadId, pointer, Buffer.from([]))));
             });
         });
     }),
@@ -92,6 +96,10 @@ extendFactory(Files, {
         const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
+
+        // file.using(CancelAction(async () => {
+        //     return File(file).delete();
+        // }));
 
         if ("function" === typeof (content as ReadStream).read) {
             return file.setStreamContentChunked(content as ReadStream, progress);

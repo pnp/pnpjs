@@ -4,27 +4,17 @@ import { spSetup } from "./setup.js";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
-import { Cancelable, CancelablePromise } from "@pnp/queryable";
 
 declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
 
-  const sp = spSetup(settings).using(Cancelable());
+  const sp = spSetup(settings);
 
-  const ww = sp.web;
-  ww.on.dispose(() => {
-    console.log("dispose");
-  })
-
-  const w: CancelablePromise = <any>ww();
-
-  setTimeout(() => w.cancel(), 400);
-
-  const y = await w;
+  const w = await sp.web();
 
   Logger.log({
-    data: y,
+    data: w,
     level: LogLevel.Info,
     message: "List of Web Data",
   });

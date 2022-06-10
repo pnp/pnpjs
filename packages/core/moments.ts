@@ -19,6 +19,32 @@ export function broadcast<T extends ObserverAction>(): (observers: T[], ...args:
 }
 
 /**
+ * Defines a moment that executes each observer asynchronously in parallel awaiting all promises to resolve or reject before continuing
+ *
+ * @returns The final set of arguments
+ */
+export function asyncBroadcast<T extends ObserverFunction<void>>(): (observers: T[], ...args: [...Parameters<T>]) => Promise<any[]> {
+
+    return async function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Promise<any[]> {
+
+        // get our initial values
+        const r = args;
+
+        const obs = [...observers];
+
+        const promises = [];
+
+        // process each handler which updates our "state" in order
+        for (let i = 0; i < obs.length; i++) {
+            promises.push(Reflect.apply(obs[i], this, r));
+        }
+
+        return Promise.all(promises);
+    };
+}
+
+
+/**
  * Defines a moment that executes each observer synchronously, passing the returned arguments as the arguments to the next observer.
  * This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state
  *

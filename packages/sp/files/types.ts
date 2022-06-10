@@ -81,12 +81,16 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      * @returns The new File and the raw response.
      */
-    @cancelableScope()
+    @cancelableScope
     public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
 
         const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
+
+        // file.using(CancelAction(() => {
+        //     return File(file).delete();
+        // }));
 
         return await file.setContentChunked(content, progress, chunkSize);
     }
@@ -396,7 +400,7 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param progress A callback function which can be used to track the progress of the upload
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      */
-    @cancelableScope()
+    @cancelableScope
     public async setContentChunked(file: Blob, progress?: (data: IFileUploadProgressData) => void, chunkSize = 10485760): Promise<IFileAddResult> {
 
         if (!isFunc(progress)) {
@@ -407,12 +411,8 @@ export class _File extends _SPInstance<IFileInfo> {
         const totalBlocks = parseInt((fileSize / chunkSize).toString(), 10) + ((fileSize % chunkSize === 0) ? 1 : 0);
         const uploadId = getGUID();
 
-        const fileRef = File(this).using(CancelAction(async () => {
-
-            console.log("here");
-
-            // don't await, just fire and forget
-            await fileRef.cancelUpload(uploadId);
+        const fileRef = File(this).using(CancelAction(() => {
+            return File(fileRef).cancelUpload(uploadId);
         }));
 
         // report that we are starting
