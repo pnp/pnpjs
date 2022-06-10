@@ -1,4 +1,4 @@
-import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryablePreObserver = (this: IQueryableInternal, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
@@ -12,6 +12,8 @@ export type QueryableParseObserver = (this: IQueryableInternal, url: URL, respon
 export type QueryablePostObserver = (this: IQueryableInternal, url: URL, result: any | undefined) => Promise<[URL, any]>;
 
 export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: T) => void;
+
+type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
 
 const DefaultMoments = {
     pre: asyncReduce<QueryablePreObserver>(),
@@ -28,14 +30,25 @@ export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 @invokable()
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
+    // tracks any query paramters which will be appended to the request url
     private _query: Map<string, string>;
+
+    // tracks the current url for a given Queryable
     protected _url: string;
-    protected InternalResolveEvent = Symbol.for("Queryable_Resolve");
-    protected InternalRejectEvent = Symbol.for("Queryable_Reject");
+
+    // these keys represent internal events for Queryable, users are not expected to
+    // subscribe directly to these, rather they enable functionality within Queryable
+    // they are Symbols such that there are NOT cloned between queryables as we only grab string keys (by design)
+    protected InternalResolve = Symbol.for("Queryable_Resolve");
+    protected InternalReject = Symbol.for("Queryable_Reject");
+    protected InternalPromise = Symbol.for("Queryable_Promise");
 
     constructor(init: QueryableInit, path?: string) {
 
         super(DefaultMoments);
+
+        // add an intneral moment with specific implementaion for promise creation
+        this.moments[this.InternalPromise] = reduce<QueryablePromiseObserver>();
 
         let url = "";
         let observers: ObserverCollection | undefined = undefined;
@@ -115,10 +128,12 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
     protected execute(userInit: RequestInit): Promise<void> {
 
+        // if there are NO observers registered this is likely either a bug in the library or a user error, direct to docs
         if (Reflect.ownKeys(this.observers).length < 1) {
             throw Error("No observers registered for this request. (https://pnp.github.io/pnpjs/queryable/queryable#No-observers-registered-for-this-request)");
         }
 
+        // schedule the execution after we return the promise below in the next event loop
         setTimeout(async () => {
 
             const requestId = getGUID();
@@ -183,12 +198,20 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         }, 0);
 
-        return new Promise((resolve, reject) => {
+        // this is the promise that the calling code will recieve and await
+        let promise = new Promise<void>((resolve, reject) => {
+
             // we overwrite any pre-existing internal events as a
-            // given queryable can only process a single request at a time
-            this.on[this.InternalResolveEvent].replace(resolve);
-            this.on[this.InternalRejectEvent].replace(reject);
+            // given queryable only processes a single request at a time
+            this.on[this.InternalResolve].replace(resolve);
+            this.on[this.InternalReject].replace(reject);
         });
+
+        // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
+        // cancelable to work as envisioned, but may have other users. Meant for internal use in the library accessed via behaviors.
+        [promise] = this.emit[this.InternalPromise](promise);
+
+        return promise;
     }
 }
 
