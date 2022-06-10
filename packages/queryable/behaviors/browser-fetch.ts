@@ -102,6 +102,12 @@ export function BrowserFetchWithRetry(props?: BrowserFetchWithRetryProps): Timel
                         return response.ok ? response : retry();
 
                     } catch (err) {
+
+                        if (/AbortError/.test(err.name)) {
+                            // don't retry aborted requests
+                            throw err;
+                        }
+
                         // if there is no network the response is undefined and err is all we have
                         // so we grab the err and save it to throw if we exceed the number of retries
                         // #2226 first reported this
