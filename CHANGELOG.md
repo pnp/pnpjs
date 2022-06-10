@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Various test fixes
 - sp:
   - Fields add() properties can be undefined bug
+  - Fix issue with RequestDigest expiring when spfi is reinitialized.
 
 ### Added
 
