@@ -79,13 +79,15 @@ Each of the following samples reference a MSAL configuration that utilizes an Az
 import { Configuration, AuthenticationParameters } from "msal";
 
 const configuration: Configuration = {
-  authority: "https://login.microsoftonline.com/{tenant Id}/",
-  clientId: "{AAD Application Id/Client Id}",
-}
+  auth: {
+    authority: "https://login.microsoftonline.com/{tenant Id}/",
+    clientId: "{AAD Application Id/Client Id}"
+  }
+};
 
 const authParams: AuthenticationParameters = {
   scopes: ["https://graph.microsoft.com/.default"] 
-}
+};
 ```
 
 ### MSAL + SPFx

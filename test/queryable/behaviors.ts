@@ -132,7 +132,7 @@ describe("Behaviors", function () {
 
         query.on.parse.replace(async function (this: Queryable, url, response, result) {
 
-            this.emit[this.InternalResolveEvent](null);
+            this.emit[this.InternalResolve](null);
 
             return [url, response, result];
         });
@@ -162,7 +162,7 @@ describe("Behaviors", function () {
 
         query.on.parse.replace(async function (this: Queryable, url, response, result) {
 
-            this.emit[this.InternalResolveEvent](null);
+            this.emit[this.InternalResolve](null);
 
             return [url, response, result];
         });
@@ -176,7 +176,7 @@ describe("Behaviors", function () {
         const controller = new AbortController();
 
         const query = new Queryable("https://bing.com");
-        query.using(Timeout(controller.signal));
+        query.using(Timeout(100));
         query.using(ResolveOnData(), RejectOnError());
 
         query.on.send.replace(async (url, init) => <any>nodeFetch(url.toString(), <any>init));

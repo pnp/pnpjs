@@ -23,13 +23,18 @@ describe("Outlook", function () {
 
     // Clean up testing categories
     after(async function () {
-        const promises = [Promise.resolve()];
         if (!stringIsNullOrEmpty(testUserName) && testCategoryList.length > 0) {
             for (let i = 0; i < testCategoryList.length; i++) {
-                promises.push(this.pnp.graph.users.getById(testUserName).outlook.masterCategories.getById(testCategoryList[i]).delete());
+                const testCategoryListId = testCategoryList[i];
+                try {
+                    await this.pnp.graph.users.getById(testUserName).outlook.masterCategories.getById(testCategoryListId).delete();
+                } catch (err) {
+                    // Do nothing, can't clean up
+                    console.error(`Cannot clean up test category: ${testCategoryListId}`);
+                }
             }
         }
-        return Promise.all(promises);
+        return;
     });
 
     it("outlook", async function () {

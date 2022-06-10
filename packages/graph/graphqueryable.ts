@@ -1,5 +1,7 @@
 import { isArray } from "@pnp/core";
-import { IInvokable, InjectHeaders, Queryable, queryableFactory } from "@pnp/queryable";
+import { IInvokable, JSONParse, Queryable, queryableFactory } from "@pnp/queryable";
+import { ConsistencyLevel } from "./behaviors/consistency-level.js";
+import { AsPaged, IPagedResult } from "./behaviors/paged.js";
 
 export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];
 
@@ -153,6 +155,17 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     }
 
     /**
+     * Skips a set number of items in the return set
+     *
+     * @param num Number of items to skip
+     */
+    public search(query: string): this {
+        this.using(ConsistencyLevel());
+        this.query.set("$search", query);
+        return this;
+    }
+
+    /**
      * 	To request second and subsequent pages of Graph data
      */
     public skipToken(token: string): this {
@@ -163,72 +176,24 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     /**
      * 	Retrieves the total count of matching resources
      */
-    public get count(): IGraphQueryableSearchableCollection {
-        const q = GraphQueryableSearchableCollection(this).using(InjectHeaders({ "ConsistencyLevel": "eventual" }));
+    public async count(): Promise<number> {
+        const q = GraphQueryableCollection(this).using(ConsistencyLevel(), JSONParse());
         q.query.set("$count", "true");
-        return q;
+        const r = await q.top(1)();
+        return parseFloat(r["@odata.count"]);
+    }
+
+    /**
+     * Allows reading through a collection as pages of information whose size is determined by top or the api method's default
+     *
+     * @returns an object containing results, the ability to determine if there are more results, and request the next page of results
+     */
+    public paged(): Promise<IPagedResult> {
+        return AsPaged(this)();
     }
 }
-
-export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, IGraphQueryable<GetType> {
-
-    /**
-     * 	Retrieves the total count of matching resources
-     */
-    count: this;
-
-    /**
-     *
-     * @param filter The string representing the filter query
-     */
-    filter(filter: string): this;
-
-    /**
-     * Orders based on the supplied fields
-     *
-     * @param orderby The name of the field on which to sort
-     * @param ascending If false DESC is appended, otherwise ASC (default)
-     */
-    orderBy(orderBy: string, ascending?: boolean): this;
-
-    /**
-     * Limits the query to only return the specified number of items
-     *
-     * @param top The query row limit
-     */
-    top(top: number): this;
-
-    /**
-     * Skips a set number of items in the return set
-     *
-     * @param num Number of items to skip
-     */
-    skip(num: number): this;
-
-    /**
-     * 	To request second and subsequent pages of Graph data
-     */
-    skipToken(token: string): this;
-}
+export interface IGraphQueryableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> { }
 export const GraphQueryableCollection = graphInvokableFactory<IGraphQueryableCollection>(_GraphQueryableCollection);
-
-export class _GraphQueryableSearchableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> {
-
-    /**
-     * 	To request second and subsequent pages of Graph data
-     */
-    public search(query: string): IGraphQueryableSearchableCollection {
-        const q = GraphQueryableSearchableCollection(this).using(InjectHeaders({ "ConsistencyLevel": "eventual" }));
-        q.query.set("$search", query);
-        return q;
-    }
-}
-
-export interface IGraphQueryableSearchableCollection<GetType = any> extends IInvokable, IGraphQueryable<GetType> {
-    search(query: string): this;
-}
-export const GraphQueryableSearchableCollection = graphInvokableFactory<IGraphQueryableSearchableCollection>(_GraphQueryableSearchableCollection);
-
 
 /**
  * Represents an instance that can be selected

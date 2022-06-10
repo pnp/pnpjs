@@ -213,10 +213,8 @@ describe("Calendar", function () {
         return expect(view.length).is.greaterThan(0);
     });
 
-    // TODO: The code executes but no results are returned which doesn't make sense, could be environmental need to review.
-    it.skip("Get Instances", async function () {
+    it("Get Instances", async function () {
         const startDate: Date = new Date();
-        startDate.setDate(startDate.getDate() + 6);
         const endDate: Date = new Date();
         endDate.setDate(endDate.getDate() + 24);
         const event = this.pnp.graph.users.getById(testUserName).events.getById(testEventID);
@@ -229,9 +227,8 @@ describe("Calendar", function () {
     after(async function () {
 
         if (!stringIsNullOrEmpty(testUserName) && !stringIsNullOrEmpty(testEventID)) {
-            return await this.pnp.graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
+            await this.pnp.graph.users.getById(testUserName).calendar.events.getById(testEventID).delete();
         }
-
         return;
     });
 });

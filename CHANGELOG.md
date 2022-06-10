@@ -5,51 +5,75 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.4.0 - 2022-June-10
+
+### Fixed
+
+- docs:
+  - Various documentation updates
+- general:
+  - Major package version updates
+  - Various test fixes
+- sp:
+  - Fields add() properties can be undefined bug
+  - Fix issue with RequestDigest expiring when spfi is reinitialized.
+
+### Added
+
+- queryable:
+  - Support for cancelling requests (beta - see docs for known issues)
+- sp:
+  - Added support for Recycle Bin/Second-Stage Recycle Bin
+  - Added schedulePublished method for client-side pages
+- graph:
+  - Added support for paging
+  - Added support for Bookings
+
 ## 3.3.2 - 2022-May-18
 
 ### Fixed
 
-  - package:
-    - post-install.cjs fixes
-  -docs:
-    - Various documentation updates
+- package:
+  - post-install.cjs fixes
+-docs:
+  - Various documentation updates
 
 ## 3.3.1 - 2022-May-17
 
 ### Fixed
 
-  - package:
-    - post-install.cjs fixes
+- package:
+  - post-install.cjs fixes
 
 ## 3.3.0 - 2022-May-16
 
 ### Fixed
 
-  - docs:
-    - Various documentation updates
-    - Fix for batch example in add multiple items to SharePoint list
-    - Fix for documentation on getting site users
+- docs:
+  - Various documentation updates
+  - Fix for batch example in add multiple items to SharePoint list
+  - Fix for documentation on getting site users
 
-  - graph:
-    - Fixed bug in OneDrive package with Drive/getById
-    - encodes the id provided to getById in graph lib to resolve issue with non-guid ids
-    - fixes the addtional headers functionality in sendEmail in sp
+- graph:
+  - Fixed bug in OneDrive package with Drive/getById
+  - encodes the id provided to getById in graph lib to resolve issue with non-guid ids
+  - fixes the addtional headers functionality in sendEmail in sp
 
-  - sp:
-    - Addresses issue where created object in library was not getting observer refs supplied for files.addUsingPath
-    - Fixed issue with search not caching results when using caching behavior
-    - Added support for "X-PnP-CacheAlways" header to allow non-get requests to be cached correctly
-    - Added Items property to IViewFilesInfo
-    - Fixed issue where some objects created from urls were not getting observer refs
-    - Added an exception if a queryable it executed with no registered observers and a docs entry to explain it
+- sp:
+  - Addresses issue where created object in library was not getting observer refs supplied for files.addUsingPath
+  - Fixed issue with search not caching results when using caching behavior
+  - Added support for "X-PnP-CacheAlways" header to allow non-get requests to be cached correctly
+  - Added Items property to IViewFilesInfo
+  - Fixed issue where some objects created from urls were not getting observer refs
+  - Added an exception if a queryable it executed with no registered observers and a docs entry to explain it
 
 ### Added
 
-  - sp:
-    - Added getLockedByUser method on files
+- sp:
+  - Added getLockedByUser method on files
 
-  - graph:
-    - Add chat message to Team channel
+- graph:
+  - Add chat message to Team channel
 
 ## 3.2.0 - 2022-April-08
 

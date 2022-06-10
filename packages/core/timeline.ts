@@ -229,19 +229,18 @@ export abstract class Timeline<T extends Moments> {
      * @param init A value passed into the execute logic from the initiator of the timeline
      * @returns The result of this.execute
      */
-    protected async start(init?: any): Promise<any> {
+    protected start(init?: any): Promise<any> {
 
-        try {
+        // initialize our timeline
+        this.emit.init();
 
-            // initialize our timeline
-            this.emit.init();
+        // execute the timeline and get a ref to the promise
+        // this gives the implementation of execute the ability to mutate the promise object, which
+        // enabled us to add the cancel behavior, and opens up another piece of flexibility in the framework
+        const p = this.execute(init);
 
-            // execute the timeline
-            // (this await is required to ensure dispose is called AFTER execute completes)
-            // we do not catch here so that any promise rejects in execute bubble up to the caller
-            return await this.execute(init);
-
-        } finally {
+        // attach our dispose logic
+        p.finally(() => {
 
             try {
 
@@ -257,7 +256,9 @@ export abstract class Timeline<T extends Moments> {
 
                 this.error(e2);
             }
-        }
+        });
+
+        return p;
     }
 
     /**

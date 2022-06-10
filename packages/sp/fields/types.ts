@@ -64,12 +64,12 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public async add(title: string, fieldTypeKind: number, properties: IFieldCreationProperties): Promise<IFieldAddResult> {
+    public async add(title: string, fieldTypeKind: number, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
 
         const createData = await spPost<{ Id: string }>(Fields(this, null), body({
             Title: title,
             FieldTypeKind: fieldTypeKind,
-            Required: properties.Required || false,
+            Required: properties?.Required || false,
         }));
 
         const field = this.getById(createData.Id);
@@ -92,7 +92,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public async addField(title: string, fieldTypeKind: number, properties: IAddFieldProperties): Promise<IFieldAddResult> {
+    public async addField(title: string, fieldTypeKind: number, properties?: IAddFieldProperties): Promise<IFieldAddResult> {
 
         const data = await spPost<{ Id: string }>(Fields(this, "AddField"), body({
             parameters: {
@@ -160,7 +160,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      */
     public addNumber(title: string, properties?: IFieldCreationProperties & AddNumberProps): Promise<IFieldAddResult> {
 
-        return this.add(title, 9, { ...properties });
+        return this.add(title, 9, properties);
     }
 
     /**

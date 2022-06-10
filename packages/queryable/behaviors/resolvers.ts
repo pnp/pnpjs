@@ -7,7 +7,7 @@ export function ResolveOnData(): TimelinePipe {
 
         instance.on.data(function (this: Queryable, data) {
 
-            this.emit[this.InternalResolveEvent](data);
+            this.emit[this.InternalResolve](data);
         });
 
         return instance;
@@ -20,7 +20,7 @@ export function RejectOnError(): TimelinePipe {
 
         instance.on.error(function (this: Queryable, err) {
 
-            this.emit[this.InternalRejectEvent](err);
+            this.emit[this.InternalReject](err);
         });
 
         return instance;

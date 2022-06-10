@@ -19,6 +19,7 @@ nav:
     - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Typings': 'concepts/typings.md'
     - 'Using Behaviors': 'core/behaviors.md'
+    - 'Nightly Builds': 'concepts/nightly-builds.md'
   - Packages:
     - Packages: 'packages.md'
     - core:
@@ -32,6 +33,7 @@ nav:
     - graph: 
       - graph: 'packages/#graph'
       - Behaviors: 'graph/behaviors.md'
+      - bookings: 'graph/bookings.md'
       - groups: 'graph/groups.md'
       - groups: 'graph/groups.md'
       - insights: 'graph/insights.md'
@@ -83,6 +85,7 @@ nav:
       - 'Navigation': 'sp/navigation.md'
       - Permissions: 'sp/permissions.md'
       - Profiles: 'sp/profiles.md'
+      - 'Recycle Bin': 'sp/recycle-bin.md'
       - 'Regional Settings': 'sp/regional-settings.md'
       - 'Related Items': 'sp/related-items.md'
       - Search: 'sp/search.md'
