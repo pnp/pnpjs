@@ -40,9 +40,12 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
                 const sameWeb = (new RegExp(`^${combine(context.pageContext.web.absoluteUrl, "/_api")}`, "i")).test(url);
                 if (sameWeb && context?.pageContext?.legacyPageContext?.formDigestValue) {
 
+                    // account for page lifetime in timeout #2304 & others
+                    const expiration = (context.pageContext.legacyPageContext?.formDigestTimeoutSeconds || 1600) - (performance.now() / 1000) - 15;
+
                     return {
                         value: context.pageContext.legacyPageContext.formDigestValue,
-                        expiration: dateAdd(new Date(), "second", context.pageContext.legacyPageContext?.formDigestTimeoutSeconds || 1600),
+                        expiration: dateAdd(new Date(), "second", expiration),
                     };
                 }
             }));
