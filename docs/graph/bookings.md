@@ -21,7 +21,7 @@ const graph = graphfi(...);
 // Get all the currencies
 const currencies = await graph.bookingCurrencies();
 // get the details of the first currency
-const currency = await graph.bookingCurrencies.getById(currencies[0].id);
+const currency = await graph.bookingCurrencies.getById(currencies[0].id)();
 ```
 
 ## Work with Booking Businesses
@@ -37,7 +37,7 @@ const graph = graphfi(...);
 // Get all the businesses
 const businesses = await graph.bookingBusinesses();
 // get the details of the first business
-const business = graph.bookingBusinesses.getById(businesses[0].id);
+const business = graph.bookingBusinesses.getById(businesses[0].id)();
 const businessDetails = await business();
 // get the business calendar
 const calView = await business.calendarView("2022-06-01", "2022-08-01")();
@@ -58,7 +58,7 @@ import { BookingService } from "@microsoft/microsoft-graph-types";
 
 const graph = graphfi(...);
 
-const business = graph.bookingBusinesses.getById({Booking Business Id});
+const business = graph.bookingBusinesses.getById({Booking Business Id})();
 // get the business services
 const services = await business.services();
 // add a service
@@ -84,7 +84,7 @@ import { BookingCustomer } from "@microsoft/microsoft-graph-types";
 
 const graph = graphfi(...);
 
-const business = graph.bookingBusinesses.getById({Booking Business Id});
+const business = graph.bookingBusinesses.getById({Booking Business Id})();
 // get the business customers
 const customers = await business.customers();
 // add a customer
@@ -110,7 +110,7 @@ import { BookingStaffMember } from "@microsoft/microsoft-graph-types";
 
 const graph = graphfi(...);
 
-const business = graph.bookingBusinesses.getById({Booking Business Id});
+const business = graph.bookingBusinesses.getById({Booking Business Id})();
 // get the business staff members
 const staffmembers = await business.staffMembers();
 // add a staff member
@@ -136,7 +136,7 @@ import { BookingAppointment } from "@microsoft/microsoft-graph-types";
 
 const graph = graphfi(...);
 
-const business = graph.bookingBusinesses.getById({Booking Business Id});
+const business = graph.bookingBusinesses.getById({Booking Business Id})();
 // get the business appointments
 const appointments = await business.appointments();
 // add a appointment
@@ -164,7 +164,7 @@ import { BookingCustomQuestion } from "@microsoft/microsoft-graph-types";
 
 const graph = graphfi(...);
 
-const business = graph.bookingBusinesses.getById({Booking Business Id});
+const business = graph.bookingBusinesses.getById({Booking Business Id})();
 // get the business custom questions
 const customQuestions = await business.customQuestions();
 // add a custom question
