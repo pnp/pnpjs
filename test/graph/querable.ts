@@ -1,15 +1,22 @@
 import { expect } from "chai";
 import "@pnp/graph/sites/group";
-import { Group } from "@microsoft/microsoft-graph-types";
+import "@pnp/graph/users";
+import "@pnp/graph/onedrive";
+import { Drive, Group } from "@microsoft/microsoft-graph-types";
 import { hOP } from "@pnp/core";
+import getValidUser from "./utilities/getValidUser.js";
 
 describe.only("Queryable", function () {
+    let testUserName = "";
 
-    before(function () {
+    before(async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
+
+        const userInfo = await getValidUser.call(this);
+        testUserName = userInfo.userPrincipalName;
     });
 
     it("$orderBy", async function () {
@@ -27,6 +34,28 @@ describe.only("Queryable", function () {
         let sortTrue = true;
         for (let i = 0; i < groups.length; i++) {
             if (groups[i].displayName !== groupsResort[i].displayName) {
+                sortTrue = false;
+                break;
+            }
+        }
+        return expect(sortTrue).to.be.true;
+    });
+
+    it("$orderBy-two", async function () {
+        const drives = await this.pnp.graph.users.getById(testUserName).drives.orderBy("lastModifiedBy/user/displayName")();
+        const drivesClone: Drive[] = JSON.parse(JSON.stringify(drives));
+        const drivesResort: Drive[] = drivesClone.sort((a, b) => {
+            if (a.lastModifiedBy.user.displayName.toUpperCase() < b.lastModifiedBy.user.displayName.toUpperCase()) {
+                return -1;
+            }
+            if (a.lastModifiedBy.user.displayName.toUpperCase() > b.lastModifiedBy.user.displayName.toUpperCase()) {
+                return 1;
+            }
+            return 0;
+        });
+        let sortTrue = true;
+        for (let i = 0; i < drives.length; i++) {
+            if (drives[i].name !== drivesResort[i].name) {
                 sortTrue = false;
                 break;
             }
