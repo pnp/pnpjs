@@ -47,7 +47,7 @@ await sp.web.recycleBin.deleteAllSecondStageItems();
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
+import "@pnp/sp/sites";
 import "@pnp/sp/recycle-bin";
 
 const sp = spfi(...);
