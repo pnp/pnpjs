@@ -3,7 +3,7 @@ import "@pnp/graph/sites/group";
 import "@pnp/graph/users";
 import "@pnp/graph/onedrive";
 import { Drive, Group } from "@microsoft/microsoft-graph-types";
-import { hOP } from "@pnp/core";
+import { hOP, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
 
 describe.only("Queryable", function () {
@@ -11,7 +11,7 @@ describe.only("Queryable", function () {
 
     before(async function () {
 
-        if (!this.pnp.settings.enableWebTests) {
+        if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
         }
 
