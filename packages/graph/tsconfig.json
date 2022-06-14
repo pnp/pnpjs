@@ -11,9 +11,6 @@
             "path": "../core/tsconfig.json"
         },
         {
-            "path": "../logging/tsconfig.json"
-        },
-        {
             "path": "../queryable/tsconfig.json"
         }
     ]
