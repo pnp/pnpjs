@@ -731,3 +731,75 @@ export enum SPOrgAssetType {
     // The flag for OfficeFontLibrary is 0100.
     OfficeFontLibrary = 0x04,
 }
+
+export enum SPOTenantCdnPolicyType {
+    IncludeFileExtensions,
+    ExcludeRestrictedSiteClassifications,
+    ExcludeIfNoScriptDisabled,
+    ExcludeRestrictedSiteClassificationsFileExtensions
+}
+
+export interface IThemeProperties {
+    Name: string;
+    Palette: Record<string, string>;
+    IsInverted: boolean;
+}
+
+export interface IGetExternalUsersResults {
+    UserCollectionPosition: number;
+    TotalUserCount: number;
+    ExternalUserCollection: any[];
+}
+
+export enum SortOrder {
+    Ascending,
+    Descending,
+}
+
+export interface IRemoveExternalUsersResults {
+    RemoveFailed: string[];
+    RemoveSucceeded: string[];
+}
+
+export enum ImportProfilePropertiesUserIdTypes {
+    Email,
+    CloudId,
+    PrincipalName,
+}
+
+export interface IImportProfilePropertiesJobInfo {
+    JobId: string;
+    State: ImportProfilePropertiesJobState;
+    SourceUri: string;
+    ImportProfilePropertiesJobError: any;
+    ErrorMessage: string;
+    LogFolderUri: string;
+}
+
+export enum ImportProfilePropertiesJobState {
+    Unknown = 0,
+    Submitted = 1,
+    Processing = 2,
+    Queued = 3,
+    Succeeded = 4,
+    Error = 5,
+}
+
+export interface ISPOUserSessionRevocationResult {
+    State: SPOUserSessionRevocationState;
+}
+
+export enum SPOUserSessionRevocationState {
+    FeatureDisabled = 0,
+    UserNotFound = 1,
+    Failure = 2,
+    NonInstantaneousSuccess = 3,
+    InstantaneousSuccess = 4,
+}
+
+export interface IGroupCreationParams {
+    Description: string;
+    Owners: string[];
+    CreationOptions: string[];
+    Classification: string;
+}

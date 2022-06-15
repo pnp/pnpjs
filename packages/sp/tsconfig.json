@@ -3,9 +3,7 @@
     "include": [
         "./**/*.ts",
         "../core/**/*.ts",
-        "../logging/**/*.ts",
-        "../queryable/**/*.ts",
-        "./presets/**/*.ts"
+        "../queryable/**/*.ts"
     ],
     "references": [
         {
