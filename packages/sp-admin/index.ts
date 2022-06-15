@@ -2,11 +2,6 @@ import { SPFI, _SPQueryable, spInvokableFactory } from "@pnp/sp";
 import { IOffice365Tenant, Office365Tenant } from "./Office365Tenant.js";
 
 export * from "./types.js";
-
-// do we just auto attach to the sp stuff here?
-// yes so pattern is:
-// import "@pnp/sp-admin";
-
 export * from "./Office365Tenant.js";
 
 

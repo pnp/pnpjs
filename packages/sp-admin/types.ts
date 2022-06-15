@@ -748,7 +748,19 @@ export interface IThemeProperties {
 export interface IGetExternalUsersResults {
     UserCollectionPosition: number;
     TotalUserCount: number;
-    ExternalUserCollection: any[];
+    ExternalUserCollection: IExternalUser[];
+}
+
+export interface IExternalUser {
+    AcceptedAs: string;
+    DisplayName: string;
+    InvitedAs: string;
+    InvitedBy: string | null;
+    IsCrossTenant: boolean;
+    LoginName: string;
+    UniqueId: string;
+    UserId: number;
+    WhenCreated: string;
 }
 
 export enum SortOrder {

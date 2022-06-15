@@ -16,7 +16,7 @@ import {
 } from "./types.js";
 
 @defaultPath("_api/Microsoft.Online.SharePoint.TenantManagement.Office365Tenant")
-export class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
+class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
 
     /**
     * Choose which fields to return
@@ -389,8 +389,8 @@ export class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
      *GetExternalUsersResults.UserCollectionPosition value returned from the previous call.  If GetExternalUsersResults.ExternalUserCollection.Count is less than pageSize,
      *all available users have been returned (it is the last page of results.)
      */
-    public getExternalUsers(position: number, pageSize: number, filter: string = null, sortOrder = SortOrder.Ascending): Promise<IGetExternalUsersResults> {
-        return spPost(Office365Tenant(this, "GetExternalUsers"), body({
+    public getExternalUsers(position = 0, pageSize = 50, filter: string = null, sortOrder = SortOrder.Ascending): Promise<IGetExternalUsersResults> {
+        return spPost(Office365Tenant(this, "GetExternalUsers").select(<any>"ExternalUserCollection").expand("ExternalUserCollection"), body({
             position,
             pageSize,
             filter,
@@ -413,8 +413,8 @@ export class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
      *all available users have been returned (it is the last page of results.)
      */
     // eslint-disable-next-line max-len
-    public getExternalUsersWithSortBy(position: number, pageSize: number, filter: string = null, sortPropertyName = "OtherMail", sortOrder = SortOrder.Ascending): Promise<IGetExternalUsersResults> {
-        return spPost(Office365Tenant(this, "GetExternalUsersWithSortBy"), body({
+    public getExternalUsersWithSortBy(position = 0, pageSize = 50, filter: string = null, sortPropertyName = "OtherMail", sortOrder = SortOrder.Ascending): Promise<IGetExternalUsersResults> {
+        return spPost(Office365Tenant(this, "GetExternalUsersWithSortBy").select(<any>"ExternalUserCollection").expand("ExternalUserCollection"), body({
             position,
             pageSize,
             filter,
@@ -437,8 +437,8 @@ export class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
      * value returned from the previous call.  If GetExternalUsersResults.ExternalUserCollection.Count is less than pageSize,
      * all available users have been returned (it is the last page of results.)
      */
-    public getExternalUsersForSite(siteUrl: string, position: number, pageSize: number, filter: string = null, sortOrder = SortOrder.Ascending): Promise<IGetExternalUsersResults> {
-        return spPost(Office365Tenant(this, "GetExternalUsersForSite"), body({
+    public getExternalUsersForSite(siteUrl: string, position = 0, pageSize = 50, filter: string = null, sortOrder = SortOrder.Ascending): Promise<IGetExternalUsersResults> {
+        return spPost(Office365Tenant(this, "GetExternalUsersForSite").select(<any>"ExternalUserCollection").expand("ExternalUserCollection"), body({
             siteUrl,
             position,
             pageSize,
