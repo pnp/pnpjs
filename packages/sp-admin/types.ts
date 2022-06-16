@@ -70,7 +70,7 @@ export interface IOffice365TenantInfo {
      */
     ShowEveryoneExceptExternalUsersClaim: boolean;
     /**
-     *  Gets a Boolean value that specifies whether EveryoneExceptExternalUsers is allowed in people picker dialogs for private group site
+     * Gets a Boolean value that specifies whether EveryoneExceptExternalUsers is allowed in people picker dialogs for private group site
      */
     AllowEveryoneExceptExternalUsersClaimInPrivateSite: boolean;
     /**
@@ -396,7 +396,7 @@ export interface IOffice365TenantInfo {
      */
     EnableAzureADB2BIntegration: boolean;
     /**
-     *  Gets a value to specify whether Add To OneDrive is disabled
+     * Gets a value to specify whether Add To OneDrive is disabled
      */
     DisableAddToOneDrive: boolean;
     /**
@@ -814,4 +814,724 @@ export interface IGroupCreationParams {
     Owners: string[];
     CreationOptions: string[];
     Classification: string;
+}
+
+export interface ITenantSitePropertiesInfo {
+    /**
+     * The Url of the site
+     */
+    Url: string;
+    /**
+     * The status of the site
+     */
+    Status: string;
+    /**
+     * The TimeZone ID
+     */
+    TimeZoneId: number;
+    /**
+     * The last time content was modified on the site
+     */
+    LastContentModifiedDate: string;
+    /**
+     * A description of the lock issue
+     */
+    LockIssue: string;
+    /**
+     * The average usuage of resources by user code
+     */
+    AverageResourceUsage: number;
+    /**
+     * The current usuage of resources by user code
+     */
+    CurrentResourceUsage: number;
+    /**
+     * The current usage of storage for the site
+     */
+    StorageUsage: number;
+    /**
+     * The number of SPWebs in the site
+     */
+    WebsCount: number;
+    /**
+     * The compatibility leve of this site
+     */
+    CompatibilityLevel: number;
+    /**
+     * The email address of the site owner
+     */
+    OwnerEmail: string;
+    /**
+     * The HubSiteId of the HubSite this site is associated with
+     */
+    HubSiteId: string;
+    /**
+     * Whether or not this site is a HubSite
+     */
+    IsHubSite: boolean;
+    /**
+     * The GroupId of the group this site is associated with
+     */
+    RelatedGroupId: string;
+    /**
+     * The GroupId of the site
+     */
+    GroupId: string;
+    /**
+     * Site's description
+     */
+    Description: string;
+    /**
+     * Gets if the site is connected to a team in Microsoft Teams
+     */
+    IsTeamsConnected: boolean;
+    /**
+     * Gets if the site is connected to a team channel in Microsoft Teams
+     */
+    IsTeamsChannelConnected: boolean;
+    /**
+     * When the site is connected to a team channel in Microsoft Teams, gets the type of channel the site is connected to
+     */
+    TeamsChannelType: TeamsChannelTypeValue;
+    /**
+     * The Storage Quota
+     */
+    StorageMaximumLevel: number;
+    /**
+     * The warning level for storage usage
+     */
+    StorageWarningLevel: number;
+    /**
+     * The storage quota type for the site
+     */
+    StorageQuotaType: string;
+    /**
+     * Title Translations for the site
+     */
+    TitleTranslations: string[];
+    /**
+     * The maximum amount of machine resources that can be used by user code
+     */
+    UserCodeMaximumLevel: number;
+    /**
+     * The amount of machine resources used by user code which triggers warning
+     */
+    UserCodeWarningLevel: number;
+    /**
+     * The site's title
+     */
+    Title: string;
+    /**
+     * Flag that indicates a site has Holds
+     */
+    HasHolds: boolean;
+    /**
+     * The decoded login name of the site owner
+     */
+    Owner: string;
+    /**
+     * The encoded login name of the site owner Example: i:0#.f|membership|admin@thing.domain.net
+     */
+    OwnerLoginName: string;
+    /**
+     * The login name of the group owner
+     */
+    GroupOwnerLoginName: string;
+    /**
+     * Whether group owner is site admin
+     */
+    IsGroupOwnerSiteAdmin: boolean;
+    /**
+     * Whether update secondary admin during setting primary admin
+     */
+    SetOwnerWithoutUpdatingSecondaryAdmin: boolean;
+    /**
+     * The site owner name
+     */
+    OwnerName: string;
+    /**
+     * The site's web template name
+     */
+    Template: string;
+    /**
+     * The Locale ID of the site
+     */
+    Lcid: number;
+    /**
+     * Flag that indicates is a site supports self-service upgrade
+     */
+    AllowSelfServiceUpgrade: boolean;
+    /**
+     * A string representing the lock state of the site
+     */
+    LockState: string;
+    /**
+     * Determines whether the site has AddAndCustomizePages denied
+     */
+    DenyAddAndCustomizePages: DenyAddAndCustomizePagesStatus;
+    /**
+     * Determines whether the site is resticted to a specific geo location
+     */
+    RestrictedToRegion: RestrictedToRegion;
+    /**
+     * Determines whether PWA is enabled for the site
+     */
+    PWAEnabled: PWAEnabledStatus;
+    /**
+     *
+     */
+    SharingCapability: SharingCapabilities;
+    /**
+     *
+     */
+    SiteDefinedSharingCapability: SharingCapabilities;
+    /**
+     * Indicates whether company wide sharing links are disabled in all the webs of this site
+     */
+    DisableCompanyWideSharingLinks: CompanyWideSharingLinksPolicy;
+    /**
+     * Flag that controls allowing members to search guest users in the directory
+     */
+    ShowPeoplePickerSuggestionsForGuestUsers: boolean;
+    /**
+     * Indicates what this site's domain restriction mode is
+     */
+    SharingDomainRestrictionMode: SharingDomainRestrictionModes;
+    /**
+     * A list of allowed domain names for this site
+     */
+    SharingAllowedDomainList: string;
+    /**
+     * A list of blocked domain names for this site
+     */
+    SharingBlockedDomainList: string;
+    /**
+     * Flag that controls access from devices that aren't compliant or joined to a domain to have limited access (web-only, without the Download, Print, and Sync commands)
+     */
+    ConditionalAccessPolicy: SPOConditionalAccessPolicyType;
+    /**
+     * Indicates whether end users can download non-viewable files (e.g. zip)
+     */
+    AllowDownloadingNonWebViewableFiles: boolean;
+    /**
+     * Specifies what files can be viewed when ConditionalAccessPolicy is set to AllowLimitedAccess
+     */
+    LimitedAccessFileType: SPOLimitedAccessFileType;
+    /**
+     * Indicates whether WAC files should be open in Edit mode.
+     */
+    AllowEditing: boolean;
+    /**
+     * The Guid of an Information Protection label
+     */
+    SensitivityLabel: string;
+    /**
+     * The Guid of an Information Protection label (2)
+     */
+    SensitivityLabel2: string;
+    /**
+     * Indicates whether app views are disabled in all the webs of this site
+     */
+    DisableAppViews: AppViewsPolicy;
+    /**
+     * Indicates whether flows are disabled in all the webs of this site
+     */
+    DisableFlows: FlowsPolicy;
+    /**
+     * Gets the authentication context strength for this site for (deprecated, use AuthenticationContextName)
+     */
+    AuthContextStrength: string;
+    /**
+     * Gets the authentication context for this site for all the webs
+     */
+    AuthenticationContextName: string;
+    /**
+     * Whether comments on site pages are disabled or not
+     */
+    CommentsOnSitePagesDisabled: boolean;
+    /**
+     * Whether social bar on site pages is enabled or not
+     */
+    SocialBarOnSitePagesDisabled: boolean;
+    /**
+     * The default link type for this site
+     */
+    DefaultSharingLinkType: SharingLinkType;
+    /**
+     * The default link permission for this site
+     */
+    DefaultLinkPermission: SharingPermissionType;
+    /**
+     *
+     */
+    BlockDownloadLinksFileType: BlockDownloadLinksFileTypes;
+    /**
+     *
+     */
+    OverrideBlockUserInfoVisibility: SiteUserInfoVisibilityPolicyValue;
+    /**
+     * The default link to existing access for this site
+     */
+    DefaultLinkToExistingAccess: boolean;
+    /**
+     * This is to reset default link to existing access for this site. After resetting, the value will be default (false) or respect the higher level value
+     */
+    DefaultLinkToExistingAccessReset: boolean;
+    /**
+     *
+     */
+    AnonymousLinkExpirationInDays: number;
+    /**
+     *
+     */
+    OverrideTenantAnonymousLinkExpirationPolicy: boolean;
+    /**
+     *
+     */
+    ExternalUserExpirationInDays: number;
+    /**
+     *
+     */
+    OverrideTenantExternalUserExpirationPolicy: boolean;
+    /**
+     *
+     */
+    SharingLockDownEnabled: boolean;
+    /**
+     *
+     */
+    SharingLockDownCanBeCleared: boolean;
+    /**
+     * The collaboration type for fluid
+     */
+    LoopSharingCapability: SharingCapabilities;
+    /**
+     * Boolean whether collaboration type for fluid can superseed that on partition level
+     */
+    LoopOverrideSharingCapability: boolean;
+    /**
+     * Default share link scope for fluid
+     */
+    LoopDefaultSharingLinkScope: boolean;
+    /**
+     * Default share link role for fluid
+     */
+    LoopDefaultSharingLinkRole: number;
+    /**
+     * Gets request files link enabled
+     */
+    RequestFilesLinkEnabled: boolean;
+    /**
+     * Gets request files link expiration days
+     */
+    RequestFilesLinkExpirationInDays: number;
+    /**
+     * Gets the IB segment GUIDs
+     */
+    IBSegments: string[];
+    /**
+     * IBMode
+     */
+    IBMode: string;
+    /**
+     * Gets the media transcription policy
+     */
+    MediaTranscription: MediaTranscriptionPolicyType;
+    /**
+     * Gets the Block download policy flag
+     */
+    BlockDownloadPolicy: boolean;
+    /**
+     * Gets the Block download policy enforced Microsoft365 group GUIDs
+     */
+    BlockDownloadMicrosoft365GroupIds: string[];
+    /**
+     * Gets the Microsoft365 group GUIDs that are excluded from Block download policy
+     */
+    ExcludedBlockDownloadGroupIds: string[];
+    /**
+     * Gets the Read only access policy flag
+     */
+    ReadOnlyAccessPolicy: boolean;
+    /**
+     * Gets the Read only access for unmanaged devices policy flag
+     */
+    ReadOnlyForUnmanagedDevices: boolean;
+}
+
+export enum SpoSiteLockState {
+    Unlock,
+    NoAdditions,
+    ReadOnly,
+    NoAccess,
+}
+
+export enum TeamsChannelTypeValue {
+    None = 0,
+    PrivateChannel = 1,
+    SharedChannel = 2,
+    StandardChannel = 3,
+}
+
+export enum DenyAddAndCustomizePagesStatus {
+    Unknown,
+    Disabled,
+    Enabled,
+}
+
+export enum RestrictedToRegion {
+    NoRestriction,
+    BlockMoveOnly,
+    BlockFull,
+    Unknown,
+}
+
+export enum PWAEnabledStatus {
+    Unknown,
+    Disabled,
+    Enabled
+}
+
+export enum CompanyWideSharingLinksPolicy {
+    Unknown = 0,
+    Disabled = 1,
+    NotDisabled = 2,
+}
+
+export enum AppViewsPolicy {
+    Unknown = 0,
+    Disabled = 1,
+    NotDisabled = 2,
+}
+
+export enum FlowsPolicy {
+    Unknown = 0,
+    Disabled = 1,
+    NotDisabled = 2,
+}
+
+export enum SharingPermissionType {
+    None,
+    View,
+    Edit,
+}
+
+export enum SiteUserInfoVisibilityPolicyValue {
+    OrganizationDefault = 0,
+    ApplyToNoUsers = 1,
+    ApplyToGuestAndExternalUsers = 2,
+    ApplyToInternalUsers = 3,
+    ApplyToAllUsers = 4,
+}
+
+export interface ITenantInfo {
+    /**
+    * Storage quota that is available for all sites in the tenant
+    */
+    StorageQuota: number;
+    /**
+    * Storage quota that is allocated for all sites in the tenant
+    */
+    StorageQuotaAllocated: number;
+    /**
+    * The resource quota for the tenant
+    */
+    ResourceQuota: number;
+    /**
+    * The resource quota allocated to all sites in the tenant
+    */
+    ResourceQuotaAllocated: number;
+    /**
+    * Determines which compatibility range is available for new
+    * site collections.
+    */
+    CompatibilityRange: string;
+    /**
+    * When a site in the tenancy is locked it is redirected to this Url.
+    */
+    NoAccessRedirectUrl: string;
+    /**
+    * The tenant's root site url
+    */
+    RootSiteUrl: string;
+    /**
+    * Get status of feature sync client restriction allowed
+    */
+    IsUnmanagedSyncClientRestrictionFlightEnabled: boolean;
+    /**
+    * Get/Set sync client restrictions
+    */
+    IsUnmanagedSyncClientForTenantRestricted: boolean;
+    /**
+    * Get/Set sync client trusted domain guids
+    */
+    AllowedDomainListForSyncClient: string[];
+    /**
+    * Get/Set whether Mac clients should be blocked from sync
+    */
+    BlockMacSync: boolean;
+    /**
+    * Get/Set whether to hide the sync button on OneDrive for Business sites
+    */
+    HideSyncButtonOnODB: boolean;
+    /**
+    * Get/Set whether the sync button should use the Next-Generation Sync Client on OneDrive for Business sites
+    */
+    ShowNGSCDialogForSyncOnODB: boolean;
+    /**
+    * Get/Set whether Nucleus Sync should be disabled for Lists
+    */
+    DisableListSync: boolean;
+    /**
+    * Get/Set whether Groove clients should be blocked
+    */
+    OptOutOfGrooveBlock: boolean;
+    /**
+    * Get/Set whether Groove clients should be soft blocked
+    */
+    OptOutOfGrooveSoftBlock: boolean;
+    /**
+    * Get/Set excluded file extensions for sync client
+    */
+    ExcludedFileExtensionsForSyncClient: string[];
+    /**
+    * Gets or sets a value to specify whether Public CDN feature is enabled or disabled for the tenant.
+    */
+    PublicCdnEnabled: boolean;
+    /**
+    * Gets or sets a value to specify what file types can be exposed through Public CDN.
+    */
+    PublicCdnAllowedFileTypes: string;
+    /**
+    * Gets a list of the Public CDN origins.
+    */
+    PublicCdnOrigins: string[];
+    /**
+    * Get/Set whether Open In Desktop should be enabled
+    */
+    ShowOpenInDesktopOptionForSyncedFiles: boolean;
+    /**
+     *
+     */
+    IsMnAFlightEnabled: boolean;
+    /**
+     *
+     */
+    PermissiveBrowserFileHandlingOverride: boolean;
+    /**
+     *
+     */
+    DisallowInfectedFileDownload: boolean;
+    /**
+    * Disable sync client report problem dialog
+    */
+    DisableReportProblemDialog: boolean;
+    /**
+     *
+     */
+    SpecialCharactersStateInFileFolderNames: SpecialCharactersState;
+    /**
+    * Whether comments on site pages are disabled or not.
+    */
+    CommentsOnSitePagesDisabled: boolean;
+    /**
+    * Whether comments on files are disabled or not.
+    */
+    CommentsOnFilesDisabled: boolean;
+    /**
+    * Whether comments on list items are disabled or not.
+    */
+    CommentsOnListItemsDisabled: boolean;
+    /**
+    * Whether viewers commenting on media items is disabled or not.
+    */
+    ViewersCanCommentOnMediaDisabled: boolean;
+    /**
+    * Whether social bar on site pages is enabled or not.
+    */
+    SocialBarOnSitePagesDisabled: boolean;
+    /**
+    * Gets or sets the MarkNewFilesSensitiveByDefault property
+    */
+    MarkNewFilesSensitiveByDefault: SensitiveByDefaultState;
+    /**
+    * Gets or sets the BlockSendLabelMismatchEmail property
+    */
+    BlockSendLabelMismatchEmail: boolean;
+    /**
+    * Gets or sets the LabelMismatchEmailHelpLink property
+    */
+    LabelMismatchEmailHelpLink: string;
+    /**
+     *
+     */
+    EnabledFlightAllowAADB2BSkipCheckingOTP: boolean;
+    /**
+    * Determines whether Hashed Proof Token IP Binding is enabled.
+    */
+    ReduceTempTokenLifetimeEnabled: boolean;
+    /**
+    * Determines the grace period for Hashed Proof Tokens from an IP address that doesn't match the
+    * IP address in the token, when the IP policy is not enabled and IP Binding is enabled.
+    */
+    ReduceTempTokenLifetimeValue: number;
+
+
+    /**
+     * rest of props from selecting *
+     */
+    AIBuilderDefaultPowerAppsEnvironment: string;
+    AIBuilderEnabled: boolean;
+    AIBuilderSiteListFileName: string;
+    AllowAnonymousMeetingParticipantsToAccessWhiteboards: number;
+    AllowCommentsTextOnEmailEnabled: boolean;
+    AllowDownloadingNonWebViewableFiles: boolean;
+    AllowEditing: boolean;
+    AllowEveryoneExceptExternalUsersClaimInPrivateSite: boolean;
+    AllowGuestUserShareToUsersNotInSiteCollection: boolean;
+    AllowLimitedAccessOnUnmanagedDevices: boolean;
+    AllowOverrideForBlockUserInfoVisibility: boolean;
+    AllowSelectSGsInODBListInTenant: boolean | null;
+    AnyoneLinkTrackUsers: boolean;
+    ApplyAppEnforcedRestrictionsToAdHocRecipients: boolean;
+    AuthContextResilienceMode: number;
+    BccExternalSharingInvitations: boolean;
+    BccExternalSharingInvitationsList: string[];
+    BlockAccessOnUnmanagedDevices: boolean;
+    BlockDownloadLinksFileType: number;
+    BlockDownloadOfAllFilesForGuests: boolean;
+    BlockDownloadOfAllFilesOnUnmanagedDevices: boolean;
+    BlockDownloadOfViewableFilesForGuests: boolean;
+    BlockDownloadOfViewableFilesOnUnmanagedDevices: boolean;
+    BlockUserInfoVisibility: string;
+    BlockUserInfoVisibilityInOneDrive: number;
+    BlockUserInfoVisibilityInSharePoint: number;
+    ConditionalAccessPolicy: number;
+    ConditionalAccessPolicyErrorHelpLink: string;
+    ContentTypeSyncSiteTemplatesList: string[];
+    CoreLoopDefaultSharingLinkRole: number;
+    CoreLoopDefaultSharingLinkScope: number;
+    CoreLoopSharingCapability: number;
+    CoreRequestFilesLinkEnabled: boolean;
+    CoreRequestFilesLinkExpirationInDays: number;
+    CoreSharingCapability: number;
+    CustomizedExternalSharingServiceUrl: string;
+    DefaultContentCenterSite: string;
+    DefaultLinkPermission: number;
+    DefaultODBMode: string;
+    DefaultSharingLinkType: number;
+    DisableAddToOneDrive: boolean;
+    DisableBackToClassic: boolean;
+    DisableCustomAppAuthentication: boolean;
+    DisabledModernListTemplateIds: string[];
+    DisabledWebPartIds: string[];
+    DisableOutlookPSTVersionTrimming: boolean;
+    DisablePersonalListCreation: boolean;
+    DisableSpacesActivation: boolean;
+    DisplayNamesOfFileViewers: boolean;
+    DisplayNamesOfFileViewersInSpo: boolean;
+    DisplayStartASiteOption: boolean;
+    EmailAttestationEnabled: boolean;
+    EmailAttestationReAuthDays: number;
+    EmailAttestationRequired: boolean;
+    EnableAIPIntegration: boolean;
+    EnableAutoNewsDigest: boolean;
+    EnableAzureADB2BIntegration: boolean;
+    EnableGuestSignInAcceleration: boolean;
+    EnableMinimumVersionRequirement: boolean;
+    EnableMipSiteLabel: boolean;
+    EnablePromotedFileHandlers: boolean;
+    ExternalServicesEnabled: boolean;
+    ExternalUserExpirationRequired: boolean;
+    ExternalUserExpireInDays: number;
+    FileAnonymousLinkType: number;
+    FilePickerExternalImageSearchEnabled: boolean;
+    FolderAnonymousLinkType: number;
+    GuestSharingGroupAllowListInTenant: string;
+    GuestSharingGroupAllowListInTenantByPrincipalIdentity: any;
+    HasAdminCompletedCUConfiguration: boolean;
+    HasIntelligentContentServicesCapability: boolean;
+    HasTopicExperiencesCapability: boolean;
+    HideSyncButtonOnDocLib: boolean;
+    IBImplicitGroupBased: boolean;
+    ImageTaggingOption: number;
+    IncludeAtAGlanceInShareEmails: boolean;
+    InformationBarriersSuspension: boolean;
+    IPAddressAllowList: string;
+    IPAddressEnforcement: boolean;
+    IPAddressWACTokenLifetime: number;
+    IsAppBarTemporarilyDisabled: boolean;
+    IsCollabMeetingNotesFluidEnabled: boolean;
+    IsFluidEnabled: boolean;
+    IsHubSitesMultiGeoFlightEnabled: boolean;
+    IsLoopEnabled: boolean;
+    IsMultiGeo: boolean;
+    IsMultipleHomeSitesFlightEnabled: boolean;
+    IsWBFluidEnabled: boolean;
+    LegacyAuthProtocolsEnabled: boolean;
+    LimitedAccessFileType: number;
+    MachineLearningCaptureEnabled: boolean;
+    MediaTranscription: number;
+    MobileFriendlyUrlEnabledInTenant: boolean;
+    NotificationsInOneDriveForBusinessEnabled: boolean;
+    NotificationsInSharePointEnabled: boolean;
+    NotifyOwnersWhenInvitationsAccepted: boolean;
+    NotifyOwnersWhenItemsReshared: boolean;
+    ODBAccessRequests: number;
+    ODBMembersCanShare: number;
+    ODBSharingCapability: number;
+    OfficeClientADALDisabled: boolean;
+    OneDriveForGuestsEnabled: boolean;
+    OneDriveLoopDefaultSharingLinkRole: number;
+    OneDriveLoopDefaultSharingLinkScope: number;
+    OneDriveLoopSharingCapability: number;
+    OneDriveRequestFilesLinkEnabled: boolean;
+    OneDriveRequestFilesLinkExpirationInDays: number;
+    OneDriveStorageQuota: string;
+    OrgNewsSiteUrl: string;
+    OrphanedPersonalSitesRetentionPeriod: number;
+    OwnerAnonymousNotification: boolean;
+    PreventExternalUsersFromResharing: boolean;
+    ProvisionSharedWithEveryoneFolder: boolean;
+    RequireAcceptingAccountMatchInvitedAccount: boolean;
+    RequireAnonymousLinksExpireInDays: number;
+    RestrictedOneDriveLicense: boolean;
+    SearchResolveExactEmailOrUPN: boolean;
+    SharingAllowedDomainList: string[];
+    SharingBlockedDomainList: string[];
+    SharingCapability: number;
+    SharingDomainRestrictionMode: number;
+    ShowAllUsersClaim: boolean;
+    ShowEveryoneClaim: boolean;
+    ShowEveryoneExceptExternalUsersClaim: boolean;
+    ShowPeoplePickerGroupSuggestionsForIB: boolean;
+    ShowPeoplePickerSuggestionsForGuestUsers: boolean;
+    SignInAccelerationDomain: string;
+    StartASiteFormUrl: string;
+    StopNew2010Workflows: boolean;
+    StopNew2013Workflows: boolean;
+    StreamLaunchConfig: number;
+    StreamLaunchConfigLastUpdated: string;
+    StreamLaunchConfigUpdateCount: number;
+    SyncAadB2BManagementPolicy: boolean;
+    SyncPrivacyProfileProperties: boolean;
+    UseFindPeopleInPeoplePicker: boolean;
+    UsePersistentCookiesForExplorerView: boolean;
+    UserVoiceForFeedbackEnabled: boolean;
+    ViewInFileExplorerEnabled: boolean;
+    WhoCanShareAllowListInTenant: string;
+    WhoCanShareAllowListInTenantByPrincipalIdentity: any;
+    Workflow2010Disabled: boolean;
+    Workflows2013State: number;
+}
+
+export enum SpecialCharactersState {
+    NoPreference,
+    Allowed,
+    Disallowed,
+}
+
+export enum SensitiveByDefaultState {
+    AllowExternalSharing,
+    BlockExternalSharing,
 }

@@ -25,7 +25,7 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
     * @description we limit the selects here because there are so many values possible and it improves discoverability.
     * Unfortunately this doesn't work as a general solution due to expands
     */
-    public select(...selects: (keyof IOffice365TenantInfo)[]): this {
+    public select(...selects: ("*" | keyof IOffice365TenantInfo)[]): this {
         return super.select(...selects);
     }
 
