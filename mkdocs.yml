@@ -15,7 +15,7 @@ nav:
     - 'Batching & Caching': 'concepts/batching-caching.md'
     - 'Custom Bundling': 'concepts/custom-bundle.md'
     - 'Error-Handling': 'concepts/error-handling.md'
-    - 'Project Presets': 'concepts/project-preset.md'
+    - 'Project Config/Services Setup': 'concepts/project-preset.md'
     - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Typings': 'concepts/typings.md'
     - 'Using Behaviors': 'core/behaviors.md'

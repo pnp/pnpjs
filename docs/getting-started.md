@@ -146,49 +146,9 @@ protected async onInit(): Promise<void> {
 
 ```
 
-### Establish context within an SPFx service
+## Project Config/Services Setup
 
-Because you do not have full access to the context object within a service you need to setup things a little differently. If you do not need AAD tokens you can leave that part out and specify just the pageContext (Option 2).
-
-```TypeScript
-import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
-import { PageContext } from "@microsoft/sp-page-context";
-import { AadTokenProviderFactory } from "@microsoft/sp-http";
-import { spfi, SPFx } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/lists/web";
-
-export interface ISampleService {
-    getLists(): Promise<any[]>;
-}
-
-export class SampleService {
-
-    public static readonly serviceKey: ServiceKey<ISampleService> = ServiceKey.create<ISampleService>('SPFx:SampleService', SampleService);
-    private _sp: SPFI;
-
-    constructor(serviceScope: ServiceScope) {
-
-        serviceScope.whenFinished(() => {
-
-        const pageContext = serviceScope.consume(PageContext.serviceKey);
-        const tokenProviderFactory = serviceScope.consume(AadTokenProviderFactory.serviceKey);
-
-        //Option 1 - with AADTokenProvider
-        this._sp = spfi().using(SPFx({
-            aadTokenProviderFactory: tokenProviderFactory,
-            pageContext: pageContext,
-        }));
-
-        //Option 2 - without AADTokenProvider
-        this._sp = spfi().using(SPFx({ pageContext }));
-    }
-
-    public getLists(): Promise<any[]> {
-        return this._sp.web.lists();
-    }
-}
-```
+Please see the [documentation](./concepts/project-preset.md) on setting up a config file or a services for more information about establishing and instance of the spfi or graphfi interfaces that can be reused. It is a common mistake with users of V3 that they try and create the interface in event handlers which causes issues.
 
 ## Getting started with NodeJS
 
