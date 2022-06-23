@@ -1535,3 +1535,145 @@ export enum SensitiveByDefaultState {
     AllowExternalSharing,
     BlockExternalSharing,
 }
+
+export interface ISitePropertiesEnumerableFilter {
+    Filter: string;
+    StartIndex: string;
+    IncludeDetail: boolean;
+    Template: string;
+    IncludePersonalSite: PersonalSiteFilter;
+    GroupIdDefined: number;
+}
+
+export enum PersonalSiteFilter {
+    UseServerDefault = 0, // default value for enum variables
+    Include = 1,
+    Exclude = 2,
+}
+
+/**
+ * Basically useless from REST
+ */
+export interface ISPOOperation {
+    HasTimedout: boolean;
+    PollingInterval: number;
+    IsComplete: boolean;
+}
+
+export interface ISiteCreationProps {
+    Url: string;
+    Owner: string;
+    Title?: string;
+    Template?: string;
+    Lcid?: number;
+    CompatibilityLevel?: number;
+    StorageMaximumLevel?: number;
+    StorageWarningLevel?: number;
+    UserCodeMaximumLevel?: number;
+    UserCodeWarningLevel?: number;
+    TimeZoneId?: number;
+}
+
+export interface ISPOWebTemplatesInfo {
+    Items: {
+        CompatibilityLevel: number;
+        Description: string;
+        DisplayCategory: string | null;
+        Id: number;
+        Lcid: string;
+        Name: string;
+        Title: string;
+    }[];
+}
+
+export interface IUpdateGroupSiteProperties {
+    storageMaximumLevel: number;
+    storageWarningLevel: number;
+}
+
+export interface ISPOSiteCreationSource {
+    DisplayName: string;
+    Id: string;
+    Name: string;
+}
+
+export interface IPortalHealthStatus {
+    Status: ResultStatus;
+    Details: {
+        PortalHealthErrorCode: any;
+        Status: ResultStatus;
+        ErrorReason: string;
+        HelpLink: string;
+    }[];
+}
+
+export enum ResultStatus {
+    Success = 0,
+    Warning = 1,
+    Error = 2,
+}
+
+export interface IPowerAppsEnvironment {
+    DisplayName: string;
+    Name: string;
+    IsDefault: boolean;
+    AllocatedAICredits: number;
+    PurchasedAICredits: number;
+}
+
+export interface ISiteUserGroupsData {
+    siteId: string;
+    owners: IUserInfo[];
+    members: IUserInfo[];
+    visitors: IUserInfo[];
+}
+
+export interface IUserInfo {
+    Email: string;
+    DisplayName?: string;
+    UserPrincipalName: string;
+}
+
+export interface ISiteAdministratorsFieldsData {
+    siteId: string;
+    siteAdministrators: string[];
+}
+
+export interface ISiteAdminsInfo {
+    email: string;
+    name: string;
+    userPrincipalName: string;
+    loginName: string;
+}
+
+export interface ISPHubSiteCreationInfo {
+    Title: string;
+    SiteId: string;
+    TenantInstanceId: string;
+    SiteUrl: string;
+    LogoUrl: string;
+    Description: string;
+    Targets: string;
+    SiteDesignId: string;
+    RequiresJoinApproval: boolean;
+    HideNameInNavigation: boolean;
+    ParentHubSiteId: string;
+    EnablePermissionsSync: boolean;
+    EnforcedECTs: string;
+    PermissionsSyncTag: number;
+    EnforcedECTsVersion: number;
+}
+
+export enum SPOHubSiteUserRights {
+    None = 0,
+    Join = 1,
+}
+
+export interface IHomeSitesDetails {
+    SiteId: string;
+    WebId: string;
+    Audiences: string[];
+    Url: string;
+    Title: string;
+    MatchingAudiences: string[];
+}

@@ -7,7 +7,7 @@
         "coverage": true,
         ".nyc_output": true,
         "build": true,
-        "dist": true,
+        "dist": false,
         "site": true,
         "buildsystem-config.js": true
     },
