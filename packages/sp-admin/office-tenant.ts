@@ -29,7 +29,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         return super.select(...selects);
     }
 
-    // TODO::test
     /**
      *Sets the configuration values for Idle session sign out for unmanaged devices
      *
@@ -46,7 +45,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Gets the configuration values, as a string, for Idle session sign out for unmanaged devices
      *The return string is a comma delineated list of the three policy settings.  The policy settings consist of
@@ -60,7 +58,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         return spPost(Office365Tenant(this, "GetIdleSessionSignOutForUnmanagedDevices"));
     }
 
-    // TODO::test
     /**
      *Adds a SharePoint document library to the list of Organization Assets libraries
      *
@@ -81,7 +78,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     public removeFromOrgAssetsAndCdn(remove: boolean, cdnType: SPOTenantCdnType, libUrl: IResourcePath): Promise<void> {
         return spPost(Office365Tenant(this, "RemoveFromOrgAssetsAndCdn"), body({
             remove,
@@ -90,7 +86,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Removes an entry from the list of Organization Assets libraries
      */
@@ -101,7 +96,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Sets a SharePoint library thumbnail in Organization Assets libraries
      *
@@ -117,7 +111,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      * Gets the minor version that should be used to generate the next iteration of the custom font catalog for the
      * font org asset library specified by libUrl
@@ -128,7 +121,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Uploads fonts and font catalogs to a font asset library
      */
@@ -139,7 +131,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Removes old Custom Fonts files
      */
@@ -150,7 +141,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Increments the minor version for libUrl
      */
@@ -160,7 +150,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Gets a list of tenant CDN origins
      *
@@ -172,7 +161,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Adds a tenant cdn origin
      *
@@ -186,7 +174,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Removes a tenant cdn origin
      *
@@ -200,21 +187,19 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Enables or disabled tenant CDN feature
      *
      *@param cdnType Type of CDN: private or public
      *@param isEnabled value to set
      */
-    public SetTenantCdnEnabled(cdnType: SPOTenantCdnType, isEnabled: boolean): Promise<void> {
+    public setTenantCdnEnabled(cdnType: SPOTenantCdnType, isEnabled: boolean): Promise<void> {
         return spPost(Office365Tenant(this, "setTenantCdnEnabled"), body({
             cdnType,
             isEnabled,
         }));
     }
 
-    // TODO::test
     /**
      *Gets whether tenant CDN feature is enabled
      *
@@ -227,7 +212,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Sets policy for the tenant CDN
      *
@@ -243,7 +227,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Gets list of policies for the tenant CDN
      *
@@ -256,7 +239,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Creates default origins for requested CDN type
      */
@@ -266,7 +248,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Add a custom theme to the tenant so that it will be available when selecting a site theme
      *
@@ -281,7 +262,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Update the properties of a custom theme
      *
@@ -296,7 +276,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Remove a custom theme from the tenant
      *
@@ -308,7 +287,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Retrieves a custom theme previously added to the tenant
      *
@@ -321,7 +299,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Retrieves all custom themes added to the tenant
      *
@@ -331,7 +308,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         return spPost(Office365Tenant(this, "GetAllTenantThemes"));
     }
 
-    // TODO::test
     /**
      *Retrieves a setting specifying whether default SharePoint themes should be hidden from the web UI
      *
@@ -341,7 +317,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         return spPost(Office365Tenant(this, "GetHideDefaultThemes"));
     }
 
-    // TODO::test
     /**
      *Updates a setting specifying whether default SharePoint themes should be hidden from the web UI
      *
@@ -354,7 +329,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Adds an SDN provider to the tenant
      *
@@ -368,7 +342,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Removes an entry from the list of supported SDN providers
      */
@@ -376,7 +349,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         return spPost(Office365Tenant(this, "RemoveSdnProvider"));
     }
 
-    // TODO::test
     /**
      *Returns a collection of User objects corresponding to external users in the tenancy
      *
@@ -398,7 +370,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Returns a collection of User objects corresponding to external users in the tenancy
      *
@@ -423,7 +394,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Returns a collection of User objects corresponding to external users who have accessed this site collection
      *
@@ -447,7 +417,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Removes from the directory external users whose full ExternalUser.UniqueId property belongs in (case insensitive) the array of strings.
      *This method is unaffected by the value of the SharingCapability property
@@ -461,7 +430,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      * Queues an import of custom properties into user profiles from an external data source. This is a mostly asynchronous call in that it doesn't download
      * the source data or do the import, it simply adds it to a queue to do later
@@ -484,7 +452,7 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
      *@returns Guid identifying the import job that has been queued
      */
     // eslint-disable-next-line max-len
-    public QueueImportProfileProperties(idType: ImportProfilePropertiesUserIdTypes, sourceDataIdProperty: string, propertyMap: Record<string, string>, sourceUri: string): Promise<string> {
+    public queueImportProfileProperties(idType: ImportProfilePropertiesUserIdTypes, sourceDataIdProperty: string, propertyMap: Record<string, string>, sourceUri: string): Promise<string> {
         return spPost(Office365Tenant(this, "QueueImportProfileProperties"), body({
             idType,
             sourceDataIdProperty,
@@ -493,7 +461,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Deletes a previously queued job to import of custom properties into user profiles. Only certain jobs can be deleted:
      *- Only jobs that haven't been started yet (have been queued but not imported) can be deleted.
@@ -508,7 +475,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Gets high-level status for all the import profile properties jobs for the current tenant
      *
@@ -518,7 +484,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         return spPost(Office365Tenant(this, "GetImportProfilePropertyJobs"));
     }
 
-    // TODO::test
     /**
      *Gets high-level status for the import profile properties job specified by jobId. This jobId would have been returned by the original call to QueueImportProfileProperties
      *
@@ -531,7 +496,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Disables non-owners of a site to share content to users that are not members of the site collection
      *
@@ -543,7 +507,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Gets whether non-owners of a site can share content to users that are not members of the site collection
      *
@@ -556,7 +519,6 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
         }));
     }
 
-    // TODO::test
     /**
      *Revokes all user sessions for a given username
      *
@@ -598,6 +560,22 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
             isPublic,
             optionalParams,
         }));
+    }
+
+    /**
+     * Supports calling POST methods not added explicitly to this class
+     *
+     * @param method method name, used in url path (ex: "CreateGroupForSite")
+     * @param args optional, any arguments to include in the body
+     * @returns The result of the method invocation T
+     */
+    public call<T = any>(method: string, args?: any): Promise<T> {
+        const query = Office365Tenant(this, method);
+        if (typeof args !== "undefined") {
+            return spPost(query, body(args));
+        } else {
+            return spPost(query);
+        }
     }
 }
 export interface IOffice365Tenant extends _Office365Tenant { }

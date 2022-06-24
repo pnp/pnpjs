@@ -574,6 +574,22 @@ class _Tenant extends _SPInstance<ITenantInfo> {
     public getSiteSubscriptionId(): Promise<string> {
         return spPost(Tenant(this, "GetSiteSubscriptionId"));
     }
+
+    /**
+     * Supports calling POST methods not added explicitly to this class
+     *
+     * @param method method name, used in url path (ex: "CreateGroupForSite")
+     * @param args optional, any arguments to include in the body
+     * @returns The result of the method invocation T
+     */
+    public call<T = any>(method: string, args?: any): Promise<T> {
+        const query = Tenant(this, method);
+        if (typeof args !== "undefined") {
+            return spPost(query, body(args));
+        } else {
+            return spPost(query);
+        }
+    }
 }
 export interface ITenant extends _Tenant { }
 export const Tenant = spInvokableFactory<ITenant>(_Tenant);
