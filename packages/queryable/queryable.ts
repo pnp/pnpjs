@@ -1,4 +1,4 @@
-import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection, lifecycle } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryablePreObserver = (this: IQueryableInternal, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
@@ -14,6 +14,7 @@ export type QueryablePostObserver = (this: IQueryableInternal, url: URL, result:
 export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: T) => void;
 
 type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
+type QueryableInheritObserver = (this: IQueryableInternal, parent: IQueryableInternal) => void;
 
 const DefaultMoments = {
     pre: asyncReduce<QueryablePreObserver>(),
@@ -42,6 +43,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
     protected InternalResolve = Symbol.for("Queryable_Resolve");
     protected InternalReject = Symbol.for("Queryable_Reject");
     protected InternalPromise = Symbol.for("Queryable_Promise");
+    protected InternalInherit = Symbol.for("Queryable_Inherit");
 
     constructor(init: QueryableInit, path?: string) {
 
@@ -49,13 +51,14 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         // add an intneral moment with specific implementaion for promise creation
         this.moments[this.InternalPromise] = reduce<QueryablePromiseObserver>();
+        // add an internal moment for inheritance
+        this.moments[this.InternalInherit] = lifecycle<QueryableInheritObserver>();
 
-        let url = "";
-        let observers: ObserverCollection | undefined = undefined;
+        let parent: Queryable<any>;
 
         if (typeof init === "string") {
 
-            url = combine(init, path);
+            this._url = combine(init, path);
 
         } else if (isArray(init)) {
 
@@ -63,27 +66,28 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
                 throw Error("When using the tuple first param only two arguments are supported");
             }
 
-            const q: Queryable<any> = init[0];
-            const _url: string = init[1];
-
-            url = combine(_url, path);
-            observers = q.observers;
+            parent = init[0];
+            this._url = combine(init[1], path);
 
         } else {
 
-            const { _url, observers: _observers } = init as Queryable<any>;
-
-            url = combine(_url, path);
-            observers = _observers;
+            parent = init as Queryable<any>;
+            this._url = combine(parent._url, path);
         }
 
-        if (typeof observers !== "undefined") {
-            this.observers = observers;
-            this._inheritingObservers = true;
-        }
-
-        this._url = url;
         this._query = new Map<string, string>();
+
+        if (typeof parent !== "undefined") {
+
+            this.observers = parent.observers;
+            this._inheritingObservers = true;
+
+            // because we are inheriting we need to emit the InternalInherit moment
+            // this allows behaviors to perform actions involving the parent/child
+            // object relationship as part of their time structure
+            // see: Cancelable for an example of this in action
+            this.emit[this.InternalInherit](parent);
+        }
     }
 
     /**

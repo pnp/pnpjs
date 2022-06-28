@@ -123,16 +123,16 @@ export function request<T extends ObserverFunction>(): (observers: T[], ...args:
  * possibly modifying the "this" instance, with the final product returned
  *
  */
-export function lifecycle<T extends ObserverFunction>(): (observers: T[]) => Timeline<any> {
+export function lifecycle<T extends ObserverAction>(): (observers: T[], ...args: [...Parameters<T>]) => Timeline<any> {
 
-    return function (this: Timeline<any>, observers: T[]): Timeline<any> {
+    return function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Timeline<any> {
 
         const obs = [...observers];
 
         // process each handler which updates our instance in order
         // very similar to asyncReduce but the state is the object itself
         for (let i = 0; i < obs.length; i++) {
-            Reflect.apply(obs[i], this, []);
+            Reflect.apply(obs[i], this, args);
         }
 
         return this;

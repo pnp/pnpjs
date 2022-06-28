@@ -84,6 +84,8 @@ async function cancelPrimitive(this: Queryable, controller: AbortController): Pr
     controller.abort();
 }
 
+const yyy = Symbol.for("test");
+
 /**
  * Allows requests to be canceled by the caller by adding a cancel method to the Promise returned by the library
  *
@@ -98,6 +100,17 @@ export function Cancelable(): TimelinePipe<Queryable> {
     return (instance: Queryable) => {
 
         let signal: AbortSignal;
+
+        instance[yyy] = {
+            test: "here",
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        instance.on[(<any>instance).InternalInherit](function (this: Queryable, parent: Queryable) {
+
+
+            console.log("here");
+        });
 
         // init our queryable to support cancellation
         instance.on.init(function (this: Queryable) {
