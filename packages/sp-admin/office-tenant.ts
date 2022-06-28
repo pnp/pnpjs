@@ -508,7 +508,7 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
     }
 
     /**
-     *Gets whether non-owners of a site can share content to users that are not members of the site collection
+     * Gets whether non-owners of a site can share content to users that are not members of the site collection
      *
      *@param siteUrl The siteUrl of the site collection to check if restrict sharing is enabled
      *@returns A Boolean indicating if sharing is disabled for site members in the site collection
@@ -520,7 +520,7 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
     }
 
     /**
-     *Revokes all user sessions for a given username
+     * Revokes all user sessions for a given username
      *
      *@param userName The home tenant user name, which is being used at authentication time (user@contoso.com)
      *@returns An value which represents the state of the operation
@@ -532,7 +532,7 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
     }
 
     /**
-     *Revokes all user sessions for a given user's puid
+     * Revokes all user sessions for a given user's puid
      *
      *@param puidList A list of puids to be revoked (ex: 10037ffe8000008d)
      *@returns An SPOUserSessionRevocationResult enum value which represents the state of the operation
@@ -544,7 +544,7 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
     }
 
     /**
-     *Create a new Office 365 Group and connect it to an existing site. After this succeeds for a given site, calling it again with the same site will throw an Exception
+     * Create a new Office 365 Group and connect it to an existing site. After this succeeds for a given site, calling it again with the same site will throw an Exception
      *
      *@param siteUrl The full URL of the site to connect to
      *@param displayName The desired display name of the new group

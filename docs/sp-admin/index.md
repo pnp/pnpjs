@@ -135,4 +135,3 @@ await sp.admin.office365Tenant.call<void>("CreateGroupForSite", {
 // call GetSiteSubscriptionId which takes no args
 const id = await spTenant.admin.tenant.call<string>("GetSiteSubscriptionId");
 ```
-
