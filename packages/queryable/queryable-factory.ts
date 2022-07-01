@@ -6,7 +6,14 @@ export function queryableFactory<InstanceType extends IQueryableInternal>(
 
     return (init: QueryableInit, path?: string) => {
 
-        // provides a point where we can potentially intercept any queryable being created
-        return new constructor(init, path);
+        // construct the concrete instance
+        const instance = new constructor(init, path);
+
+        // we emit the construct event from the factory because we need all of the decorators and constructors
+        // to have fully finished before we emit, which is now true. We type the instance to any to get around
+        // the protected nature of emit
+        (<any>instance).emit.construct(init, path);
+
+        return instance;
     };
 }

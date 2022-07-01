@@ -1,4 +1,4 @@
-import { body, TextParse, BlobParse, BufferParse, JSONParse, cancelableScope, CancelAction } from "@pnp/queryable";
+import { body, TextParse, BlobParse, BufferParse, JSONParse, cancelableScope } from "@pnp/queryable";
 import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
 import {
     _SPCollection,
@@ -45,6 +45,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param content The file content
      * @param parameters Additional parameters to control method behavior
      */
+    @cancelableScope
     public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileAddResult> {
 
         const path = [`AddUsingPath(decodedurl='${escapeQueryStrValue(url)}'`];
@@ -102,6 +103,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param templateFileType The type of use to create the file.
      * @returns The template file that was added and the raw response.
      */
+    @cancelableScope
     public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult> {
         const response: IFileInfo = await spPost(Files(this, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`));
         return {
@@ -212,6 +214,7 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
      */
+    @cancelableScope
     public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth = false): Promise<void> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
@@ -411,9 +414,10 @@ export class _File extends _SPInstance<IFileInfo> {
         const totalBlocks = parseInt((fileSize / chunkSize).toString(), 10) + ((fileSize % chunkSize === 0) ? 1 : 0);
         const uploadId = getGUID();
 
-        const fileRef = File(this).using(CancelAction(() => {
-            return File(fileRef).cancelUpload(uploadId);
-        }));
+        const fileRef = File(this);
+        // .using(CancelAction(() => {
+        // return File(fileRef).cancelUpload(uploadId);
+        // }));
 
         // report that we are starting
         progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks });

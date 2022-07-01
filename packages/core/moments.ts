@@ -112,9 +112,7 @@ export function request<T extends ObserverFunction>(): (observers: T[], ...args:
 
         const handler = observers[0];
 
-        const result = await Reflect.apply(handler, this, args);
-
-        return result;
+        return Reflect.apply(handler, this, args);
     };
 }
 
