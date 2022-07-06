@@ -54,18 +54,9 @@ export function reduce<T extends ObserverFunction<[...Parameters<T>]>>(): (obser
 
     return function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): [...Parameters<T>] {
 
-        // get our initial values
-        let r = args;
-
         const obs = [...observers];
 
-        // process each handler which updates our "state" in order
-        // returning the new "state" as a tuple [...Parameters<T>]
-        for (let i = 0; i < obs.length; i++) {
-            r = Reflect.apply(obs[i], this, r);
-        }
-
-        return r;
+        return obs.reduce((params, func: T) => Reflect.apply(func, this, params), args);
     };
 }
 
@@ -79,20 +70,9 @@ export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (
 
     return async function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Promise<[...Parameters<T>]> {
 
-        // get our initial values
-        let r = args;
-
         const obs = [...observers];
 
-        // process each handler which updates our "state" in order
-        // returning the new "state" as a tuple [...Parameters<T>]
-        // this is conceptually the redux pattern, each function gets a copy of the
-        // previous state, may optionally modify it, and return a new state
-        for (let i = 0; i < obs.length; i++) {
-            r = await Reflect.apply(obs[i], this, r);
-        }
-
-        return r;
+        return obs.reduce((prom, func: T) => prom.then((params) => Reflect.apply(func, this, params)), Promise.resolve(args));
     };
 }
 

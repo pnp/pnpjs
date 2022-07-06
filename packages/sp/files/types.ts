@@ -1,4 +1,4 @@
-import { body, TextParse, BlobParse, BufferParse, JSONParse, cancelableScope } from "@pnp/queryable";
+import { body, TextParse, BlobParse, BufferParse, JSONParse, cancelableScope, CancelAction } from "@pnp/queryable";
 import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
 import {
     _SPCollection,
@@ -89,9 +89,9 @@ export class _Files extends _SPCollection<IFileInfo[]> {
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
 
-        // file.using(CancelAction(() => {
-        //     return File(file).delete();
-        // }));
+        file.using(CancelAction(() => {
+            return File(file).delete();
+        }));
 
         return await file.setContentChunked(content, progress, chunkSize);
     }
@@ -414,10 +414,9 @@ export class _File extends _SPInstance<IFileInfo> {
         const totalBlocks = parseInt((fileSize / chunkSize).toString(), 10) + ((fileSize % chunkSize === 0) ? 1 : 0);
         const uploadId = getGUID();
 
-        const fileRef = File(this);
-        // .using(CancelAction(() => {
-        // return File(fileRef).cancelUpload(uploadId);
-        // }));
+        const fileRef = File(this).using(CancelAction(() => {
+            return File(fileRef).cancelUpload(uploadId);
+        }));
 
         // report that we are starting
         progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks });

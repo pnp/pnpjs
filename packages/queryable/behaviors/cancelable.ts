@@ -1,4 +1,4 @@
-import { asyncBroadcast, isArray, TimelinePipe } from "@pnp/core";
+import { asyncBroadcast, isArray, TimelinePipe, getGUID } from "@pnp/core";
 import { Queryable, QueryableInit } from "../queryable.js";
 
 /**
@@ -19,7 +19,7 @@ import { Queryable, QueryableInit } from "../queryable.js";
  *
  *    The first is the use of either the cancelableScope decorator of the asCancelableScope method
  *    wrapper. These create an upper level cancel info that is then shared across the child requests within
- *    the complex method. Meaning if I do a files.addChunked the same cancel info (signal and cancel method)
+ *    the complex method. Meaning if I do a files.addChunked the same cancel info (and cancel method)
  *    are set on the current "this" which is user object on which the method was called. This info is then
  *    passed down to any child requests using the original "this" as a base using the construct moment.
  *
@@ -28,13 +28,62 @@ import { Queryable, QueryableInit } from "../queryable.js";
  */
 
 // this is a special moment used to broadcast when a request is canceled
-const CancelMoment = "__CancelMoment__";
+const MomentName = "__CancelMoment__";
 
 // represents a Promise including the cancel method
 export type CancelablePromise<T = any> = Promise<T> & { cancel(): Promise<void> };
 
 // this value is used to track cancel state and the value is represetented by ICancelInfo
-const CancelMethodProp = Symbol.for("CancelMethodProp");
+const ScopeId = Symbol.for("CancelScopeId");
+
+/**
+ * Defines the information we store for each cancelation scope
+ */
+interface IScopeInfo {
+    actions: any[];
+    currentSelf: Queryable<any>;
+    controller: AbortController;
+    cancel: () => Promise<void>;
+}
+
+// module map of all currently tracked cancel scopes
+const cancelScopes = new Map<string, IScopeInfo>();
+
+/**
+ * This method is partially bound and used as the cancel method exposed to the user via cancelable promise
+ *
+ * @param this unused, the current promise
+ * @param scopeId Id bound at creation time
+ */
+async function cancelPrimitive(scopeId: string): Promise<void> {
+
+    const scope = cancelScopes.get(scopeId);
+
+    scope.controller.abort();
+
+    if (isArray(scope?.actions)) {
+        scope.actions.map(action => scope.currentSelf.on[MomentName](action));
+    }
+
+    return (<any>scope.currentSelf).emit[MomentName]();
+}
+
+/**
+ * Creates a new scope id, sets it on the instance's CancelScopeId property, and adds the info to the map
+ *
+ * @returns the new scope id (GUID)
+ */
+function createScope(instance: Queryable): string {
+    const id = getGUID();
+    instance[ScopeId] = id;
+    cancelScopes.set(id, {
+        cancel: cancelPrimitive.bind({}, id),
+        actions: [],
+        controller: null,
+        currentSelf: instance,
+    });
+    return id;
+}
 
 /**
  * Defines the signature for observers subscribing to the cancelable moment
@@ -54,10 +103,8 @@ export const asCancelableScope = <T extends any[], U>(func: (...args: T) => U): 
         // ensure we have setup "this" to cancel
         // 1. for single requests the value is set in the behavior's init observer
         // 2. for complex requests the value is set here
-        // ensureCancelProp(this);
-
-        if (!Reflect.has(this, CancelMethodProp)) {
-            this[CancelMethodProp] = cancelPrimitive;
+        if (!Reflect.has(this, ScopeId)) {
+            createScope(this);
         }
 
         // execute the original function, but don't await it
@@ -67,11 +114,12 @@ export const asCancelableScope = <T extends any[], U>(func: (...args: T) => U): 
         if (typeof result?.finally === "function") {
 
             // ensure the synthetic promise from a complex method has a cancel method
-            (<CancelablePromise>result).cancel = this[CancelMethodProp];
+            (<CancelablePromise>result).cancel = cancelScopes.get(this[ScopeId]).cancel;
 
             result.finally(() => {
-                // remove any cancel scope stuff tied to this instance
-                delete this[CancelMethodProp];
+                // remove any cancel scope values tied to this instance
+                cancelScopes.delete(this[ScopeId]);
+                delete this[ScopeId];
             });
         }
 
@@ -85,31 +133,6 @@ export const asCancelableScope = <T extends any[], U>(func: (...args: T) => U): 
 export function cancelableScope(_target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     // wrapping the original method
     descriptor.value = asCancelableScope(descriptor.value);
-}
-
-/**
- * This method is partially bound and used as the cancel method exposed to the user via cancelable promise
- *
- * @param this Current queryable
- * @param controller The controller associated with this cancel method
- */
-async function cancelPrimitive(): Promise<void> {
-
-    if (isArray(this?.cancel?.cancelActions)) {
-        this.cancel.cancelActions.map(action => this.cancel.self.on[CancelMoment](action));
-    }
-
-    try {
-        await this.cancel.self.emit[CancelMoment]();
-    } catch (e) {
-        this.log(`Error in CancelMoment: ${e?.message || "unknown"}`);
-    }
-
-    try {
-        this.cancel.controller.abort();
-    } catch (e) {
-        console.error(e);
-    }
 }
 
 /**
@@ -132,33 +155,37 @@ export function Cancelable(): TimelinePipe<Queryable> {
 
                 const parent = isArray(init) ? init[0] : init;
 
-                if (Reflect.has(parent, CancelMethodProp)) {
-
-                    this[CancelMethodProp] = parent[CancelMethodProp];
-
-                } else {
-
-                    // ensure we have setup "this" to cancel
-                    // 1. for single requests this will set the value
-                    // 2. for complex requests the value is set in asCancelableScope
-                    // ensureCancelProp(this);
-                    if (!Reflect.has(this, CancelMethodProp)) {
-                        this[CancelMethodProp] = cancelPrimitive;
-                    }
+                if (Reflect.has(parent, ScopeId)) {
+                    // ensure we carry over the scope id to the new instance from the parent
+                    this[ScopeId] = parent[ScopeId];
                 }
 
                 // define the moment's implementation
-                this.moments[CancelMoment] = asyncBroadcast<CancelableObserver>();
+                this.moments[MomentName] = asyncBroadcast<CancelableObserver>();
             }
         });
 
         // init our queryable to support cancellation
         instance.on.init(function (this: Queryable) {
 
+            if (!Reflect.has(this, ScopeId)) {
+
+                // ensure we have setup "this" to cancel
+                // 1. for single requests this will set the value
+                // 2. for complex requests the value is set in asCancelableScope
+                const id = createScope(this);
+
+                // if we are creating the scope here, we have not created it within asCancelableScope
+                // meaning the finally handler there will not delete the tracked scope reference
+                this.on.dispose(() => {
+                    cancelScopes.delete(id);
+                });
+            }
+
             this.on[this.InternalPromise]((promise: Promise<any>) => {
 
                 // when a new promise is created add a cancel method
-                (<CancelablePromise>promise).cancel = this[CancelMethodProp];
+                (<CancelablePromise>promise).cancel = cancelScopes.get(this[ScopeId]).cancel;
 
                 return [promise];
             });
@@ -168,14 +195,16 @@ export function Cancelable(): TimelinePipe<Queryable> {
 
             const controller = new AbortController();
 
-            this[CancelMethodProp].controller = controller;
-            this[CancelMethodProp].self = this;
+            // grab the current scope, update the controller and currentSelf
+            const existingScope = cancelScopes.get(this[ScopeId]);
+            existingScope.controller = controller;
+            existingScope.currentSelf = this;
 
             if (init.signal) {
 
                 // we do our best to hook our logic to the existing signal
                 init.signal.addEventListener("abort", () => {
-                    this[CancelMethodProp]();
+                    existingScope.cancel();
                 });
 
             } else {
@@ -188,7 +217,8 @@ export function Cancelable(): TimelinePipe<Queryable> {
 
         // clean up any cancel info from the object after the request lifecycle is complete
         instance.on.dispose(function (this: Queryable) {
-            delete this[CancelMethodProp];
+            delete this[ScopeId];
+            delete this.moments[MomentName];
         });
 
         return instance;
@@ -207,12 +237,14 @@ export function CancelAction(action: CancelableObserver): TimelinePipe<Queryable
 
         instance.on.pre(async function (this: Queryable, ...args) {
 
-            if (!isArray(this[CancelMethodProp].cancelActions)) {
-                this[CancelMethodProp].cancelActions = [];
+            const existingScope = cancelScopes.get(this[ScopeId]);
+
+            if (!isArray(existingScope.actions)) {
+                existingScope.actions = [];
             }
 
-            if (this[CancelMethodProp].cancelActions.indexOf(action) < 0) {
-                this[CancelMethodProp].cancelActions.push(action);
+            if (existingScope.actions.indexOf(action) < 0) {
+                existingScope.actions.push(action);
             }
 
             return args;

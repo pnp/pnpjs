@@ -9,7 +9,7 @@ export async function Example(settings: ITestingSettings) {
 
   const sp = spSetup(settings);
 
-  const w = await sp.web.appcatalog();
+  const w = await sp.web();
 
   Logger.log({
     data: w,

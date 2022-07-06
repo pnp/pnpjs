@@ -57,6 +57,7 @@ const rebased2 = Child([baseQueryable, "https://somethingelse.com"], "subpath");
 
 The Queryable lifecycle is:
 
+- `construct` (Added in 3.5.0)
 - `init`
 - `pre`
 - `auth`
@@ -142,6 +143,46 @@ query.on.error((err) => {
         console.error(err);
         // do other stuff with the error (send it to telemetry)
     }
+});
+```
+
+### construct
+
+_Added in 3.5.0_
+
+This moment exists to assist behaviors that need to transfer some information from a parent to a child through the fluent chain. We added this to support cancelable scopes for the Cancelable behavior, but it may have other uses. It is invoked AFTER the new instance is fully realized via `new` and supplied with the parameters used to create the new instance. As with all moments the "this" within the observer is the current (NEW) instance.
+
+For your observers on the construct method to work correctly they must be registered before the instance is created.
+
+> The construct moment is NOT async and is designed to support simple operations.
+
+```TypeScript
+query.on.construct(function (this: Queryable, init: QueryableInit, path?: string): void {
+    if (typeof init !== "string") {
+        
+        // get a ref to the parent Queryable instance used to create this new instance
+        const parent = isArray(init) ? init[0] : init;
+
+        if (Reflect.has(parent, "SomeSpecialValueKey")) {
+
+            // copy that specail value to the new child
+            this["SomeSpecialValueKey"] = parent["SomeSpecialValueKey"];
+        }
+    }     
+});
+
+query.on.pre(async function(url, init, result) {
+
+    // we have access to the copied special value throughout the lifecycle
+    this.log(this["SomeSpecialValueKey"]);
+
+    return [url, init, result];
+});
+
+query.on.dispose(() => {
+
+    // be a good citizen and clean up your behavior's values when you're done
+    delete this["SomeSpecialValueKey"];
 });
 ```
 

@@ -32,7 +32,7 @@ extendFactory(File, {
 
         const uploadId = getGUID();
 
-        const fileRef = File(this).using(CancelAction(async () => {
+        const fileRef = File(this).using(CancelAction(() => {
             return File(this).cancelUpload(uploadId);
         }));
 
@@ -100,9 +100,9 @@ extendFactory(Files, {
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
 
-        // file.using(CancelAction(async () => {
-        //     return File(file).delete();
-        // }));
+        file.using(CancelAction(async () => {
+            return File(file).delete();
+        }));
 
         if ("function" === typeof (content as ReadStream).read) {
             return file.setStreamContentChunked(content as ReadStream, progress);
