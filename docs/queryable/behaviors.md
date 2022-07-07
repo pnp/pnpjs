@@ -148,6 +148,25 @@ const itemsInfo = await cachingList.items();
 const itemsInfo2 = await cachingList.items();
 ```
 
+## CacheKey
+
+_Added in 3.5.0_
+
+This behavior allows you to set a pre-determined cache key for a given request. It needs to be used **PER** request otherwise the value will be continuously overwritten.
+
+```TypeScript
+import { Caching, CacheKey } from "@pnp/queryable";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...).using(Caching());
+
+// note the application of the behavior on individual requests, if you share a CacheKey behavior across requests you'll encounter conflicts
+const webInfo = await sp.web.using(CacheKey("MyWebInfoCacheKey"))();
+
+const listsInfo = await sp.web.lists.using(CacheKey("MyListsInfoCacheKey"))();
+```
+
 ## Caching Pessimistic Refresh
 
 This behavior is slightly different than our default Caching behavior in that it will always return the cached value if there is one, but also asyncronously update the cached value in the background. Like the default CAchine behavior it allows you to cache the results of get requests in either session or local storage. If neither is available (such as in Nodejs) the library will shim using an in memory map.
