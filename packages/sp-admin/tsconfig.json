@@ -3,7 +3,8 @@
     "include": [
         "./**/*.ts",
         "../core/**/*.ts",
-        "../queryable/**/*.ts"
+        "../queryable/**/*.ts",
+        "./presets/**/*.ts"
     ],
     "references": [
         {
@@ -11,6 +12,9 @@
         },
         {
             "path": "../queryable/tsconfig.json"
+        },
+        {
+            "path": "../sp/tsconfig.json"
         }
     ]
 }

@@ -104,6 +104,8 @@ nav:
       - 'User custom actions': 'sp/user-custom-actions.md'      
       - Views: 'sp/views.md'
       - Webs: 'sp/webs.md'
+    - sp-admin:
+      - sp-admin: 'sp-admin/index.md'
   - Advanced:
     - 'Custom Bundle': 'concepts/custom-bundle.md'
     - 'Custom Call/Path': 'concepts/invokable.md'

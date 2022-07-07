@@ -28,6 +28,7 @@ The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%
 || [nodejs](./packages#nodejs) | Provides functionality enabling the @pnp libraries within nodejs |
 || [queryable](./packages#queryable) | Provides shared query functionality and base classes |
 || [sp](./packages#sp) | Provides a fluent api for working with SharePoint REST |
+|| [sp-admin](./packages#sp-admin) | Provides a fluent api for working with M365 Tenant admin methods |
 
 ## Authentication
 
