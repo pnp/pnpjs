@@ -106,7 +106,7 @@ export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePi
                         }
 
                         if (/AbortError/.test(err.name)) {
-                            // don't retry aborted requests
+                            // don't retry canceled requests
                             throw err;
                         }
 

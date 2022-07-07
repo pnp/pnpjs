@@ -1,5 +1,7 @@
-import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle, isUrlAbsolute } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
+
+export type QueryableConstructObserver = (this: IQueryableInternal, init: QueryableInit, path?: string) => void;
 
 export type QueryablePreObserver = (this: IQueryableInternal, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
 
@@ -16,6 +18,7 @@ export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: 
 type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
 
 const DefaultMoments = {
+    construct: lifecycle<QueryableConstructObserver>(),
     pre: asyncReduce<QueryablePreObserver>(),
     auth: asyncReduce<QueryableAuthObserver>(),
     send: request<QueryableSendObserver>(),
@@ -47,43 +50,40 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         super(DefaultMoments);
 
+        this._query = new Map<string, string>();
+
         // add an intneral moment with specific implementaion for promise creation
         this.moments[this.InternalPromise] = reduce<QueryablePromiseObserver>();
 
-        let url = "";
-        let observers: ObserverCollection | undefined = undefined;
+        let parent: Queryable<any>;
 
         if (typeof init === "string") {
 
-            url = combine(init, path);
+            this._url = combine(init, path);
 
         } else if (isArray(init)) {
 
             if (init.length !== 2) {
-                throw Error("When using the tuple first param only two arguments are supported");
+                throw Error("When using the tuple param only two arguments are supported");
             }
 
-            const q: Queryable<any> = init[0];
-            const _url: string = init[1];
+            if (typeof init[1] !== "string" || !isUrlAbsolute(init[1])) {
+                throw Error("Expected second tuple param to be an absolute url");
+            }
 
-            url = combine(_url, path);
-            observers = q.observers;
+            parent = init[0];
+            this._url = combine(init[1], path);
 
         } else {
 
-            const { _url, observers: _observers } = init as Queryable<any>;
-
-            url = combine(_url, path);
-            observers = _observers;
+            parent = init as Queryable<any>;
+            this._url = combine(parent._url, path);
         }
 
-        if (typeof observers !== "undefined") {
-            this.observers = observers;
+        if (typeof parent !== "undefined") {
+            this.observers = parent.observers;
             this._inheritingObservers = true;
         }
-
-        this._url = url;
-        this._query = new Map<string, string>();
     }
 
     /**

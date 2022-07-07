@@ -45,6 +45,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param content The file content
      * @param parameters Additional parameters to control method behavior
      */
+    @cancelableScope
     public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileAddResult> {
 
         const path = [`AddUsingPath(decodedurl='${escapeQueryStrValue(url)}'`];
@@ -88,9 +89,9 @@ export class _Files extends _SPCollection<IFileInfo[]> {
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
 
-        // file.using(CancelAction(() => {
-        //     return File(file).delete();
-        // }));
+        file.using(CancelAction(() => {
+            return File(file).delete();
+        }));
 
         return await file.setContentChunked(content, progress, chunkSize);
     }
@@ -102,6 +103,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param templateFileType The type of use to create the file.
      * @returns The template file that was added and the raw response.
      */
+    @cancelableScope
     public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult> {
         const response: IFileInfo = await spPost(Files(this, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`));
         return {
@@ -212,6 +214,7 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
      */
+    @cancelableScope
     public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth = false): Promise<void> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
