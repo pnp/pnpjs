@@ -30,7 +30,7 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
             // only cache get requested data or where the CacheAlways header is present (allows caching of POST requests)
             if (/get/i.test(init.method) || init?.headers["X-PnP-CacheAlways"]) {
 
-                const key = keyFactory(url.toString());
+                const key = init?.headers["X-PnP-CacheKey"] ? init.headers["X-PnP-CacheKey"] : keyFactory(url.toString());
 
                 const cached = s.get(key);
 
