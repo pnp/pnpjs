@@ -152,7 +152,7 @@ const itemsInfo2 = await cachingList.items();
 
 _Added in 3.5.0_
 
-This behaviod allows you to set a pre-determined cache key for a given request. This behavior needs to be used PER request otherwise the value will be continuously overwritten.
+This behavior allows you to set a pre-determined cache key for a given request. It needs to be used **PER** request otherwise the value will be continuously overwritten.
 
 ```TypeScript
 import { Caching, CacheKey } from "@pnp/queryable";
