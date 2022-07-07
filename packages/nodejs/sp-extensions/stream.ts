@@ -97,7 +97,8 @@ extendFactory(Files, {
         if (!stringIsNullOrEmpty(odataUrl) && /%27/i.test(odataUrl)) {
             odataUrl = odataUrl.replace(/%27/ig, "''");
         }
-        const file = File(odataUrl);
+        const file = this.clone(File);
+        file.data.url = odataUrl;
 
         if ("function" === typeof (content as ReadStream).read) {
             return file.setStreamContentChunked(content as ReadStream, progress, chunkSize);
