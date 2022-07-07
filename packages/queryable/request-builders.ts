@@ -24,6 +24,7 @@ export function headers<T extends Partial<RequestInit>, U extends Record<string,
  * no caching observers are registered this has no effect.
  *
  * @param previous Any previous RequestInit to extend
+ * @param key An optional key to use when caching the wrapped value. If not supplied a key will be generated as a hash of the `previous` value supplied
  * @returns A RequestInit combining the caching header and any previous RequestInit
  */
 export function cacheAlways<T extends Partial<RequestInit>>(previous?: T, key?: string) {

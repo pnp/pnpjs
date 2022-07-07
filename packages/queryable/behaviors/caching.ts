@@ -10,6 +10,21 @@ export interface ICachingProps {
     expireFunc?: CacheExpireFunc;
 }
 
+export function CacheKey(key: string) {
+
+    return (instance: Queryable) => {
+
+        instance.on.pre.prepend(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+
+            init.headers = { ...init.headers, "X-PnP-CacheKey": key };
+
+            return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+
 export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
 
     const storage = new PnPClientStorage();
