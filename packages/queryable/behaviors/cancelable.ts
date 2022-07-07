@@ -33,7 +33,7 @@ const MomentName = "__CancelMoment__";
 // represents a Promise including the cancel method
 export type CancelablePromise<T = any> = Promise<T> & { cancel(): Promise<void> };
 
-// this value is used to track cancel state and the value is represetented by ICancelInfo
+// this value is used to track cancel state and the value is represetented by IScopeInfo
 const ScopeId = Symbol.for("CancelScopeId");
 
 /**
@@ -50,7 +50,7 @@ interface IScopeInfo {
 const cancelScopes = new Map<string, IScopeInfo>();
 
 /**
- * This method is partially bound and used as the cancel method exposed to the user via cancelable promise
+ * This method is bound to a scope id and used as the cancel method exposed to the user via cancelable promise
  *
  * @param this unused, the current promise
  * @param scopeId Id bound at creation time
@@ -69,7 +69,7 @@ async function cancelPrimitive(scopeId: string): Promise<void> {
 }
 
 /**
- * Creates a new scope id, sets it on the instance's CancelScopeId property, and adds the info to the map
+ * Creates a new scope id, sets it on the instance's ScopeId property, and adds the info to the map
  *
  * @returns the new scope id (GUID)
  */

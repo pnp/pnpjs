@@ -67,9 +67,7 @@ extendFactory(File, {
             stream.on("end", async () => {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 progress!({ uploadId, blockNumber, chunkSize: -1, currentPointer: -1, fileSize: -1, stage: "finishing", totalBlocks: -1 });
-                promise.then((pointer) => {
-                    return resolve(fileRef.finishUpload(uploadId, pointer, Buffer.from([])));
-                });
+                promise.then((pointer) => resolve(fileRef.finishUpload(uploadId, pointer, Buffer.from([]))));
             });
         });
     }),
