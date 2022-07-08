@@ -133,10 +133,14 @@ export const FieldLink = spInvokableFactory<IFieldLink>(_FieldLink);
 
 export interface IContentTypeInfo {
     Description: string;
+    DispFormClientSideComponentId: string;
+    DispFormClientSideComponentProperties: string;
     DisplayFormTemplateName: string;
     DisplayFormUrl: string;
     DocumentTemplate: string;
     DocumentTemplateUrl: string;
+    EditFormClientSideComponentId: string;
+    EditFormClientSideComponentProperties: string;
     EditFormTemplateName: string;
     EditFormUrl: string;
     Group: string;
@@ -147,6 +151,8 @@ export interface IContentTypeInfo {
     MobileEditFormUrl: string;
     MobileNewFormUrl: string;
     Name: string;
+    NewFormClientSideComponentId: string;
+    NewFormClientSideComponentProperties: string;
     NewFormTemplateName: string;
     NewFormUrl: string;
     ReadOnly: boolean;
