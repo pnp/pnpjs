@@ -31,14 +31,15 @@ extendFactory(File, {
         }
 
         const uploadId = getGUID();
-        let blockNumber = -1;
-        let promise = Promise.resolve(0);
 
-        const fileRef = File(this).using(CancelAction(async () => {
+        const fileRef = File(this).using(CancelAction(() => {
             return File(this).cancelUpload(uploadId);
         }));
 
         return new Promise((resolve) => {
+
+            let blockNumber = -1;
+            let promise = Promise.resolve(0);
 
             stream.on("data", (chunk) => {
 
@@ -97,9 +98,9 @@ extendFactory(Files, {
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
 
-        // file.using(CancelAction(async () => {
-        //     return File(file).delete();
-        // }));
+        file.using(CancelAction(async () => {
+            return File(file).delete();
+        }));
 
         if ("function" === typeof (content as ReadStream).read) {
             return file.setStreamContentChunked(content as ReadStream, progress);

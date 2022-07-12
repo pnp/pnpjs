@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.5.0 - 2022-July-12
+
+### Fixed
+
+- docs
+  - Documentation update for config/services setup
+- graph
+  - Addresses #2316 -  PR #2318 Remove specific encodeURIComponents to address double encoding.
+  - PR #2319 - Added tests for certain graph queryable methods
+- sp
+  - Updates lists IRenderListDataParameters & RenderListDataOptions with new values not present originally
+- queryable:
+  - Beta 2 - Support for cancelling requests (see docs for known issues)
+- behaviors
+  - Fixes #2333 - PR #2344 Addresses issues with reviewing caching and batching.
+  - Fixes #2329 - Argument of type 'WebPartContext' is not assignable to parameter of type 'ISPFXContext'.
+
+### Added
+
+- sp-admin
+  - Added sp-admin library to support tenant admin APIs  
+
 ## 3.4.1 - 2022-June-13
 
 ### Fixed

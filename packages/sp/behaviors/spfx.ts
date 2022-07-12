@@ -11,10 +11,6 @@ export interface ISPFXContext {
         }>;
     };
 
-    msGraphClientFactory?: {
-        getClient: () => Promise<any>;
-    };
-
     pageContext: {
         web: {
             absoluteUrl: string;

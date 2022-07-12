@@ -2,8 +2,6 @@ import { ITestingSettings } from "../../test/load-settings.js";
 import { Logger, LogLevel } from "@pnp/logging";
 import { spSetup } from "./setup.js";
 import "@pnp/sp/webs";
-import "@pnp/sp/files";
-import "@pnp/sp/folders";
 
 declare var process: { exit(code?: number): void };
 
@@ -16,7 +14,7 @@ export async function Example(settings: ITestingSettings) {
   Logger.log({
     data: w,
     level: LogLevel.Info,
-    message: "List of Web Data",
+    message: "Web Data",
   });
 
   process.exit(0);

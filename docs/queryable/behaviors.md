@@ -148,6 +148,25 @@ const itemsInfo = await cachingList.items();
 const itemsInfo2 = await cachingList.items();
 ```
 
+## CacheKey
+
+_Added in 3.5.0_
+
+This behavior allows you to set a pre-determined cache key for a given request. It needs to be used **PER** request otherwise the value will be continuously overwritten.
+
+```TypeScript
+import { Caching, CacheKey } from "@pnp/queryable";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...).using(Caching());
+
+// note the application of the behavior on individual requests, if you share a CacheKey behavior across requests you'll encounter conflicts
+const webInfo = await sp.web.using(CacheKey("MyWebInfoCacheKey"))();
+
+const listsInfo = await sp.web.lists.using(CacheKey("MyListsInfoCacheKey"))();
+```
+
 ## Caching Pessimistic Refresh
 
 This behavior is slightly different than our default Caching behavior in that it will always return the cached value if there is one, but also asyncronously update the cached value in the background. Like the default CAchine behavior it allows you to cache the results of get requests in either session or local storage. If neither is available (such as in Nodejs) the library will shim using an in memory map.
@@ -321,15 +340,14 @@ clearTimeout(timer);
 
 ![Beta](https://img.shields.io/badge/Beta-important.svg)
 
-_Added as Beta in 3.4.0_
+_Updated as Beta 2 in 3.5.0_
 
 This behavior allows you to cancel requests before they are complete. It is similar to timeout however you control when and if the request is canceled. Please consider this behavior as beta while we work to stabalize the functionality.
 
 ### Known Issues
 
-- Cancelling requests in parallel is not supported
-- There is currently a race condition when cancelling addChunked where cancelUpload is called, but depending on where things sit in the event loop a continueUpload may be called after which throws an error
-- Likely more! This was a complicated one, so please let us know feedback/issues you see
+- Due to how the event loop works you may get unhandled rejections after canceling a request
+
 
 ```TypeScript
 import { Cancelable, CancelablePromise } from "@pnp/queryable";
@@ -373,7 +391,7 @@ setTimeout(() => {
 
     // you should await the cancel operation to ensure it completes
     await p.cancel();
-}, 200);
+}, 10000);
 
 // this is awaiting the results of the request
 await p;
