@@ -9,12 +9,6 @@ interface ISPFXContext {
             getToken(resource: string): Promise<string>;
         }>;
     };
-
-    pageContext: {
-        web: {
-            absoluteUrl: string;
-        };
-    };
 }
 
 export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
