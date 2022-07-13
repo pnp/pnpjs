@@ -1,4 +1,4 @@
-import { asyncBroadcast, isArray, TimelinePipe, getGUID } from "@pnp/core";
+import { asyncBroadcast, isArray, TimelinePipe, getGUID, objectDefinedNotNull } from "@pnp/core";
 import { Queryable, QueryableInit } from "../queryable.js";
 
 /**
@@ -239,12 +239,16 @@ export function CancelAction(action: CancelableObserver): TimelinePipe<Queryable
 
             const existingScope = cancelScopes.get(this[ScopeId]);
 
-            if (!isArray(existingScope.actions)) {
-                existingScope.actions = [];
-            }
+            // if we don't have a scope this request is not using Cancelable so we do nothing
+            if (objectDefinedNotNull(existingScope)) {
 
-            if (existingScope.actions.indexOf(action) < 0) {
-                existingScope.actions.push(action);
+                if (!isArray(existingScope.actions)) {
+                    existingScope.actions = [];
+                }
+
+                if (existingScope.actions.indexOf(action) < 0) {
+                    existingScope.actions.push(action);
+                }
             }
 
             return args;
