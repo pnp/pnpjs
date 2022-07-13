@@ -1,4 +1,4 @@
-import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle, isUrlAbsolute } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryableConstructObserver = (this: IQueryableInternal, init: QueryableInit, path?: string) => void;
