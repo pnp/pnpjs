@@ -64,11 +64,11 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
         } else if (isArray(init)) {
 
             if (init.length !== 2) {
-                throw Error("When using the tuple param only two arguments are supported");
+                throw Error("When using the tuple param exactly two arguments are expected.");
             }
 
-            if (typeof init[1] !== "string" || !isUrlAbsolute(init[1])) {
-                throw Error("Expected second tuple param to be an absolute url");
+            if (typeof init[1] !== "string") {
+                throw Error("Expected second tuple param to be a string.");
             }
 
             parent = init[0];

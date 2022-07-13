@@ -5,12 +5,6 @@ import { RequestDigest } from "./request-digest.js";
 
 export interface ISPFXContext {
 
-    aadTokenProviderFactory?: {
-        getTokenProvider(): Promise<{
-            getToken(resource: string): Promise<string>;
-        }>;
-    };
-
     pageContext: {
         web: {
             absoluteUrl: string;
