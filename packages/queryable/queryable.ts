@@ -1,4 +1,4 @@
-import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle, isUrlAbsolute } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryableConstructObserver = (this: IQueryableInternal, init: QueryableInit, path?: string) => void;
@@ -64,11 +64,11 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
         } else if (isArray(init)) {
 
             if (init.length !== 2) {
-                throw Error("When using the tuple param only two arguments are supported");
+                throw Error("When using the tuple param exactly two arguments are expected.");
             }
 
-            if (typeof init[1] !== "string" || !isUrlAbsolute(init[1])) {
-                throw Error("Expected second tuple param to be an absolute url");
+            if (typeof init[1] !== "string") {
+                throw Error("Expected second tuple param to be a string.");
             }
 
             parent = init[0];
