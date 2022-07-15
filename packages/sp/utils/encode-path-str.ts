@@ -1,7 +1,12 @@
 import { stringIsNullOrEmpty } from "@pnp/core";
 
-// deprecated, will be removed in future versions
-export function escapeQueryStrValue(value: string): string {
+/**
+ * Encodes path portions of SharePoint urls such as decodedUrl=`encodePath(pathStr)`
+ *
+ * @param value The string path to encode
+ * @returns A path encoded for use in SP urls
+ */
+export function encodePath(value: string): string {
 
     if (stringIsNullOrEmpty(value)) {
         return "";
@@ -15,6 +20,6 @@ export function escapeQueryStrValue(value: string): string {
         });
 
     } else {
-        return value.replace(/'/ig, "''");
+        return encodeURIComponent(value.replace(/'/ig, "''"));
     }
 }

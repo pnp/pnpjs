@@ -1,6 +1,6 @@
 import { asCancelableScope, CancelAction, headers } from "@pnp/queryable";
 import { File, Files, IFile, IFileAddResult, IFiles, IFileUploadProgressData } from "@pnp/sp/files/index.js";
-import { spPost, escapeQueryStrValue } from "@pnp/sp";
+import { spPost, encodePath } from "@pnp/sp";
 import { ReadStream } from "fs";
 import { PassThrough } from "stream";
 import { extendFactory, getGUID, isFunc } from "@pnp/core";
@@ -94,7 +94,7 @@ extendFactory(Files, {
         chunkSize = 10485760
     ) {
 
-        const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
+        const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${encodePath(url)}')`));
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
 

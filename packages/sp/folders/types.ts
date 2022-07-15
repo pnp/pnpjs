@@ -14,9 +14,9 @@ import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { IItem, Item } from "../items/types.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath, IResourcePath } from "../utils/to-resource-path.js";
+import { encodePath } from "../utils/encode-path-str.js";
 
 @defaultPath("folders")
 export class _Folders extends _SPCollection<IFolderInfo[]> {
@@ -27,7 +27,7 @@ export class _Folders extends _SPCollection<IFolderInfo[]> {
      * @param name Folder's name
      */
     public getByUrl(name: string): IFolder {
-        return Folder(this).concat(`('${escapeQueryStrValue(name)}')`);
+        return Folder(this).concat(`('${encodePath(name)}')`);
     }
 
     /**
@@ -38,7 +38,7 @@ export class _Folders extends _SPCollection<IFolderInfo[]> {
      */
     public async addUsingPath(serverRelativeUrl: string, overwrite = false): Promise<IFolderAddResult> {
 
-        const data: IFolderInfo = await spPost(Folders(this, `addUsingPath(DecodedUrl='${escapeQueryStrValue(serverRelativeUrl)}',overwrite=${overwrite})`));
+        const data: IFolderInfo = await spPost(Folders(this, `addUsingPath(DecodedUrl='${encodePath(serverRelativeUrl)}',overwrite=${overwrite})`));
 
         return {
             data,
@@ -251,7 +251,7 @@ export const Folder = spInvokableFactory<IFolder>(_Folder);
  */
 export function folderFromServerRelativePath(base: ISPQueryable, serverRelativePath: string): IFolder {
 
-    return Folder([base, extractWebUrl(base.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativePath)}')`);
+    return Folder([base, extractWebUrl(base.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${encodePath(serverRelativePath)}')`);
 }
 
 /**

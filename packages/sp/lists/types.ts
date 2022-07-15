@@ -15,7 +15,6 @@ import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { IBasePermissions } from "../security/types.js";
 import { IFieldInfo } from "../fields/types.js";
 import { IFormInfo } from "../forms/types.js";
@@ -23,6 +22,7 @@ import { IFolderInfo } from "../folders/types.js";
 import { IViewInfo } from "../views/types.js";
 import { IUserCustomActionInfo } from "../user-custom-actions/types.js";
 import { IResourcePath, toResourcePath } from "../utils/to-resource-path.js";
+import { encodePath } from "../utils/encode-path-str.js";
 
 @defaultPath("lists")
 export class _Lists extends _SPCollection<IListInfo[]> {
@@ -42,7 +42,7 @@ export class _Lists extends _SPCollection<IListInfo[]> {
      * @param title The title of the list
      */
     public getByTitle(title: string): IList {
-        return List(this, `getByTitle('${escapeQueryStrValue(title)}')`);
+        return List(this, `getByTitle('${encodePath(title)}')`);
     }
 
     /**

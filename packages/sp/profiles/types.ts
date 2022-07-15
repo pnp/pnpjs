@@ -51,7 +51,7 @@ export class _Profiles extends _SPInstance {
      */
     public amIFollowedBy(loginName: string): Promise<boolean> {
         const q = Profiles(this, "amifollowedby(@v)");
-        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${loginName}'`);
         return q();
     }
 
@@ -62,7 +62,7 @@ export class _Profiles extends _SPInstance {
      */
     public amIFollowing(loginName: string): Promise<boolean> {
         const q = Profiles(this, "amifollowing(@v)");
-        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${loginName}'`);
         return q();
     }
 
@@ -82,7 +82,7 @@ export class _Profiles extends _SPInstance {
      */
     public getFollowersFor(loginName: string): Promise<any[]> {
         const q = Profiles(this, "getfollowersfor(@v)");
-        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${loginName}'`);
         return q();
     }
 
@@ -109,7 +109,7 @@ export class _Profiles extends _SPInstance {
      */
     public getPeopleFollowedBy(loginName: string): Promise<any[]> {
         const q = Profiles(this, "getpeoplefollowedby(@v)");
-        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${loginName}'`);
         return q();
     }
 
@@ -120,7 +120,7 @@ export class _Profiles extends _SPInstance {
      */
     public getPropertiesFor(loginName: string): Promise<any> {
         const q = Profiles(this, "getpropertiesfor(@v)");
-        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${loginName}'`);
         return q();
     }
 
@@ -142,7 +142,7 @@ export class _Profiles extends _SPInstance {
      */
     public getUserProfilePropertyFor(loginName: string, propertyName: string): Promise<string> {
         const q = Profiles(this, `getuserprofilepropertyfor(accountname=@v, propertyname='${propertyName}')`);
-        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${loginName}'`);
         return q();
     }
 
@@ -153,7 +153,7 @@ export class _Profiles extends _SPInstance {
      */
     public hideSuggestion(loginName: string): Promise<void> {
         const q = Profiles(this, "hidesuggestion(@v)");
-        q.query.set("@v", `'${encodeURIComponent(loginName)}'`);
+        q.query.set("@v", `'${loginName}'`);
         return spPost(q);
     }
 
@@ -166,8 +166,8 @@ export class _Profiles extends _SPInstance {
     public isFollowing(follower: string, followee: string): Promise<boolean> {
         const q = Profiles(this, null);
         q.concat(".isfollowing(possiblefolloweraccountname=@v, possiblefolloweeaccountname=@y)");
-        q.query.set("@v", `'${encodeURIComponent(follower)}'`);
-        q.query.set("@y", `'${encodeURIComponent(followee)}'`);
+        q.query.set("@v", `'${follower}'`);
+        q.query.set("@y", `'${followee}'`);
         return q();
     }
 

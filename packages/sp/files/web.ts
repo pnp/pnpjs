@@ -1,6 +1,5 @@
 import { _Web } from "../webs/types.js";
 import { File, fileFromServerRelativePath, IFile } from "./types.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 
 declare module "../webs/types" {
     interface _Web {
@@ -42,5 +41,5 @@ _Web.prototype.getFileById = function (this: _Web, uniqueId: string): IFile {
 };
 
 _Web.prototype.getFileByUrl = function (this: _Web, fileUrl: string): IFile {
-    return File(this, `getFileByUrl('!@p1::${escapeQueryStrValue(fileUrl)}')`);
+    return File(this, `getFileByUrl('!@p1::${fileUrl}')`);
 };

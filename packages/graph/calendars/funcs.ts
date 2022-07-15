@@ -34,7 +34,7 @@ export function findRooms(this: IGraphQueryable, roomList?: string): IGraphQuery
     const query = GraphQueryableCollection(this, roomList ? "findRooms(RoomList=@roomList)" : "findRooms");
     query.using(Endpoint("beta"));
     if (roomList) {
-        query.query.set("@roomList", `'${encodeURIComponent(roomList)}'`);
+        query.query.set("@roomList", `'${roomList}'`);
     }
     return query;
 }
@@ -49,8 +49,6 @@ export function findRooms(this: IGraphQueryable, roomList?: string): IGraphQuery
  */
 export function instances(this: IGraphQueryable, start: string, end: string): IGraphQueryableCollection<IInstance[]> {
     const query = GraphQueryableCollection(this, "instances");
-    // query.query.set("startDateTime", encodeURIComponent(start));
-    // query.query.set("endDateTime", encodeURIComponent(end));
     query.query.set("startDateTime", start);
     query.query.set("endDateTime", end);
     return query;
