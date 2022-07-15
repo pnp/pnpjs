@@ -6,7 +6,6 @@ import "@pnp/sp/lists/web";
 import { ISPFXContext, SPFI, spfi, SPFx } from "@pnp/sp";
 import { NodeFetchWithRetry } from "@pnp/nodejs";
 import { CopyFrom, isArray } from "@pnp/core";
-import { Queryable } from "@pnp/queryable";
 
 describe("SPFx", function () {
 
