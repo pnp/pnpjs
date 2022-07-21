@@ -165,6 +165,10 @@ export enum ViewScope {
 }
 
 export interface IViewInfo {
+    AssociatedContentTypeId: string | null;
+    CustomFormatter: string | null;
+    DefaultView: boolean;
+    DefaultViewForContentType: boolean;
     EditorModified: boolean;
     Formats: string | null;
     Hidden: boolean;
@@ -199,5 +203,6 @@ export interface IViewInfo {
     ViewProjectedFields: { SchemaXml: string } | null;
     ViewQuery: string;
     ViewType: string;
+    ViewType2: "KANBAN" | "TILES" | "COMPACTLIST" | null;
     VisualizationInfo: any | null;
 }
