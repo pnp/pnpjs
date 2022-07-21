@@ -165,6 +165,7 @@ export enum ViewScope {
 }
 
 export interface IViewInfo {
+    DefaultView: boolean;
     EditorModified: boolean;
     Formats: string | null;
     Hidden: boolean;
