@@ -20,8 +20,7 @@ const graph = graphfi(...);
 
 const drives = await graph.users.getById('user@tenant.onmicrosoft.com').drives();
 
-const drives = await graph.me.drive();
-
+const drive = await graph.me.drive();
 ```
 
 ## Get all of the drives
@@ -280,4 +279,25 @@ const move = await graph.users.getById('user@tenant.onmicrosoft.com').drives.get
 
 const move = await graph.me.drives.getById('driveId').items.getById('itemId').move({ parentReference: { id: 'itemId'}}, {name: "New Name"});
 
+```
+
+## Get the users special folders
+
+Using the users default drive you can get special folders, including: Documents, Photos, CameraRoll, AppRoot, Music
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/onedrive";
+import { SpecialFolder, IDriveItem } from "@pnp/graph/onedrive";
+
+const graph = graphfi(...);
+
+// Get the special folder (App Root)
+const driveItem: IDriveItem = await graph.me.drive.special(SpecialFolder.AppRoot)();
+
+// Get the special folder (Documents)
+const driveItem: IDriveItem = await graph.me.drive.special(SpecialFolder.Documents)();
+
+// ETC
 ```

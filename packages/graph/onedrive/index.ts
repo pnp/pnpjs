@@ -1,6 +1,10 @@
 import "./users.js";
 
 export {
+    SpecialFolder,
+} from "./users.js";
+
+export {
     Drive,
     DriveItem,
     DriveItems,
