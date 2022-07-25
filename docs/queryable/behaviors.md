@@ -267,6 +267,21 @@ import "@pnp/sp/webs";
 const sp = spfi(...).using(HeaderParse());
 ```
 
+### JSONHeaderParse
+
+Checks for errors and parses the headers of the Respnose as well as the JSON and returns an object with both values.
+
+```TypeScript
+import { JSONHeaderParse } from "@pnp/queryable";
+
+import "@pnp/sp/webs";
+
+const sp = spfi(...).using(JSONHeaderParse());
+
+...sp.data
+...sp.headers
+```
+
 ## Resolvers
 
 These two behaviors are special and should always be included when composing your own defaults. They implement the expected behavior of resolving or rejecting the promise returned when executing a timeline. They are implemented as behaviors should there be a need to do something different the logic is not locked into the core of the library.

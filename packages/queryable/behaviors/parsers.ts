@@ -43,6 +43,23 @@ export function HeaderParse(): TimelinePipe {
     return parseBinderWithErrorCheck(async r => r.headers);
 }
 
+export function JSONHeaderParse(): TimelinePipe {
+
+    return parseBinderWithErrorCheck(async (response) => {
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        if ((response.headers.has("Content-Length") && parseFloat(response.headers.get("Content-Length")!) === 0) || response.status === 204) {
+            return {};
+        }
+
+        // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
+        const txt = await response.text();
+        const json = txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {};
+        const all = { data: { ...parseODataJSON(json) }, headers: { ...response.headers } };
+        return all;
+    });
+}
+
 export async function errorCheck(url: URL, response: Response, result: any): Promise<[URL, Response, any]> {
 
     if (!response.ok) {

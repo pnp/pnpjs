@@ -6,7 +6,7 @@ import { Drive, Group } from "@microsoft/microsoft-graph-types";
 import { hOP, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
 
-describe.only("Queryable", function () {
+describe("Queryable", function () {
     let testUserName = "";
 
     before(async function () {
