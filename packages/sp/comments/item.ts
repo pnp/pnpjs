@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/queryable";
 import { _Item, Item } from "../items/types.js";
-import { Comments, IComments, ILikeData, ILikedByInformation } from "./types.js";
+import { Comments, IComments, ILikeData, ILikedByInformation, RatingValues } from "./types.js";
 import { spPost } from "../operations.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { combine } from "@pnp/core";
@@ -13,6 +13,7 @@ declare module "../items/types" {
         like(): Promise<void>;
         unlike(): Promise<void>;
         getLikedByInformation(): Promise<ILikedByInformation>;
+        rate(rating: RatingValues): Promise<void>;
     }
     interface IItem {
         readonly comments: IComments;
@@ -32,6 +33,11 @@ declare module "../items/types" {
          * Unlikes this item as the current user
          */
         getLikedByInformation(): Promise<ILikedByInformation>;
+        /**
+         * Rates this item as the current user
+         * @param rating rating number between 1-5
+         */
+        rate(rating: RatingValues): Promise<void>;
     }
 }
 
@@ -59,4 +65,12 @@ _Item.prototype.unlike = async function (this: _Item) {
 
 _Item.prototype.getLikedByInformation = function (this: _Item): Promise<ILikedByInformation> {
     return Item(this, "likedByInformation").expand("likedby")<ILikedByInformation>();
+};
+
+_Item.prototype.rate = async function(this: _Item, value: RatingValues): Promise<void> {
+    const itemInfo = await this.getParentInfos();
+    const baseUrl = extractWebUrl(this.toUrl());
+    const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetRating(listID=@a1,itemID=@a2,rating=@a3)";
+    const rateUrl = baseUrl + reputationUrl + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=${value}`;
+    return spPost(SPQueryable([this, rateUrl]));
 };

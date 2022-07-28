@@ -169,4 +169,9 @@ describe("Items", function () {
         const item = await list.items.select("Id").top(1)().then(r => r[0]);
         return expect(list.items.getById(item.Id).getWopiFrameUrl()).to.eventually.be.fulfilled;
     });
+
+    it("rate", async function () {
+        const item = await list.items.select("Id").top(1)().then(r => r[0]);
+        return expect(item.rate(2)).to.eventually.be.fulfilled;
+    });
 });
