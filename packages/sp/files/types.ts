@@ -93,7 +93,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
             return File(file).delete();
         }));
 
-        return await file.setContentChunked(content, progress, chunkSize);
+        return file.setContentChunked(content, progress, chunkSize);
     }
 
     /**

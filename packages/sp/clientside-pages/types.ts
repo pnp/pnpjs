@@ -871,7 +871,7 @@ export class _ClientsidePage extends _SPQueryable {
             }
         }
 
-        return await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
+        return spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
     }
 
     /**

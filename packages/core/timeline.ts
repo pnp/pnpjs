@@ -234,13 +234,8 @@ export abstract class Timeline<T extends Moments> {
         // initialize our timeline
         this.emit.init();
 
-        // execute the timeline and get a ref to the promise
-        // this gives the implementation of execute the ability to mutate the promise object, which
-        // enabled us to add the cancel behavior, and opens up another piece of flexibility in the framework
-        const p = this.execute(init);
-
         // attach our dispose logic
-        p.finally(() => {
+        return this.execute(init).finally(() => {
 
             try {
 
@@ -257,8 +252,6 @@ export abstract class Timeline<T extends Moments> {
                 this.error(e2);
             }
         });
-
-        return p;
     }
 
     /**
