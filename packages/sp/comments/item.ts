@@ -13,7 +13,7 @@ declare module "../items/types" {
         like(): Promise<void>;
         unlike(): Promise<void>;
         getLikedByInformation(): Promise<ILikedByInformation>;
-        rate(rating: RatingValues): Promise<void>;
+        rate(rating: RatingValues): Promise<number>;
     }
     interface IItem {
         readonly comments: IComments;
@@ -36,8 +36,9 @@ declare module "../items/types" {
         /**
          * Rates this item as the current user
          * @param rating rating number between 1-5
+         * @returns rating number
          */
-        rate(rating: RatingValues): Promise<void>;
+        rate(rating: RatingValues): Promise<number>;
     }
 }
 
@@ -67,7 +68,7 @@ _Item.prototype.getLikedByInformation = function (this: _Item): Promise<ILikedBy
     return Item(this, "likedByInformation").expand("likedby")<ILikedByInformation>();
 };
 
-_Item.prototype.rate = async function(this: _Item, value: RatingValues): Promise<void> {
+_Item.prototype.rate = async function(this: _Item, value: RatingValues): Promise<number> {
     const itemInfo = await this.getParentInfos();
     const baseUrl = extractWebUrl(this.toUrl());
     const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetRating(listID=@a1,itemID=@a2,rating=@a3)";
