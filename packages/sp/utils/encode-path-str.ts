@@ -16,10 +16,14 @@ export function encodePath(value: string): string {
     if (/!(@.*?)::(.*?)/ig.test(value)) {
 
         return value.replace(/!(@.*?)::(.*)$/ig, (match, labelName, v) => {
+            // we do not need to encodeURIComponent v as it will be encoded automatically when it is added as a query string param
+            // we do need to double any ' chars
             return `!${labelName}::${v.replace(/'/ig, "''")}`;
         });
 
     } else {
+
+        // because this is a literal path value we encodeURIComponent after doubling any ' chars
         return encodeURIComponent(value.replace(/'/ig, "''"));
     }
 }

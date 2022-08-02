@@ -1,3 +1,4 @@
+import { encodePath } from "../utils/encode-path-str.js";
 import { _Web } from "../webs/types.js";
 import { File, fileFromServerRelativePath, IFile } from "./types.js";
 
@@ -41,5 +42,5 @@ _Web.prototype.getFileById = function (this: _Web, uniqueId: string): IFile {
 };
 
 _Web.prototype.getFileByUrl = function (this: _Web, fileUrl: string): IFile {
-    return File(this, `getFileByUrl('!@p1::${fileUrl}')`);
+    return File(this, `getFileByUrl('${encodePath("!@p1::" + fileUrl)}')`);
 };

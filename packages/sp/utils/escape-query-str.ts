@@ -1,6 +1,6 @@
 import { stringIsNullOrEmpty } from "@pnp/core";
 
-// deprecated, will be removed in future versions
+// deprecated, will be removed in future versions, no longer used internally
 export function escapeQueryStrValue(value: string): string {
 
     if (stringIsNullOrEmpty(value)) {
