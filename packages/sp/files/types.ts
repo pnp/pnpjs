@@ -14,10 +14,10 @@ import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spGet } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath } from "../utils/to-resource-path.js";
 import { ISiteUserProps } from "../site-users/types.js";
+import { encodePath } from "../utils/encode-path-str.js";
 
 /**
  * Describes a collection of File objects
@@ -35,7 +35,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
         if (/%#/.test(name)) {
             throw Error("For file names containing % or # please use web.getFileByServerRelativePath");
         }
-        return File(this).concat(`('${escapeQueryStrValue(name)}')`);
+        return File(this).concat(`('${encodePath(name)}')`);
     }
 
     /**
@@ -48,7 +48,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
     @cancelableScope
     public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileAddResult> {
 
-        const path = [`AddUsingPath(decodedurl='${escapeQueryStrValue(url)}'`];
+        const path = [`AddUsingPath(decodedurl='${encodePath(url)}'`];
 
         if (parameters) {
             if (parameters.Overwrite) {
@@ -58,7 +58,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
                 path.push(",AutoCheckoutOnInvalidData=true");
             }
             if (!stringIsNullOrEmpty(parameters.XorHash)) {
-                path.push(`,XorHash=${escapeQueryStrValue(parameters.XorHash)}`);
+                path.push(`,XorHash=${encodePath(parameters.XorHash)}`);
             }
         }
 
@@ -85,7 +85,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
     @cancelableScope
     public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
 
-        const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${escapeQueryStrValue(url)}')`));
+        const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${encodePath(url)}')`));
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
 
@@ -93,7 +93,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
             return File(file).delete();
         }));
 
-        return await file.setContentChunked(content, progress, chunkSize);
+        return file.setContentChunked(content, progress, chunkSize);
     }
 
     /**
@@ -105,7 +105,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      */
     @cancelableScope
     public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult> {
-        const response: IFileInfo = await spPost(Files(this, `addTemplateFile(urloffile='${escapeQueryStrValue(fileUrl)}',templatefiletype=${templateFileType})`));
+        const response: IFileInfo = await spPost(Files(this, `addTemplateFile(urloffile='${encodePath(fileUrl)}',templatefiletype=${templateFileType})`));
         return {
             data: response,
             file: fileFromServerRelativePath(this, response.ServerRelativeUrl),
@@ -158,7 +158,7 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param comment The comment for the approval.
      */
     public approve(comment = ""): Promise<void> {
-        return spPost(File(this, `approve(comment='${escapeQueryStrValue(comment)}')`));
+        return spPost(File(this, `approve(comment='${encodePath(comment)}')`));
     }
 
     /**
@@ -186,7 +186,7 @@ export class _File extends _SPInstance<IFileInfo> {
             throw Error("The maximum comment length is 1023 characters.");
         }
 
-        return spPost(File(this, `checkin(comment='${escapeQueryStrValue(comment)}',checkintype=${checkinType})`));
+        return spPost(File(this, `checkin(comment='${encodePath(comment)}',checkintype=${checkinType})`));
     }
 
     /**
@@ -203,7 +203,7 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      */
     public copyTo(url: string, shouldOverWrite = true): Promise<void> {
-        return spPost(File(this, `copyTo(strnewurl='${escapeQueryStrValue(url)}',boverwrite=${shouldOverWrite})`));
+        return spPost(File(this, `copyTo(strnewurl='${encodePath(url)}',boverwrite=${shouldOverWrite})`));
     }
 
     /**
@@ -241,7 +241,7 @@ export class _File extends _SPInstance<IFileInfo> {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return spPost(File(this, `deny(comment='${escapeQueryStrValue(comment)}')`));
+        return spPost(File(this, `deny(comment='${encodePath(comment)}')`));
     }
 
     /**
@@ -277,7 +277,7 @@ export class _File extends _SPInstance<IFileInfo> {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return spPost(File(this, `publish(comment='${escapeQueryStrValue(comment)}')`));
+        return spPost(File(this, `publish(comment='${encodePath(comment)}')`));
     }
 
     /**
@@ -315,7 +315,7 @@ export class _File extends _SPInstance<IFileInfo> {
         if (comment.length > 1023) {
             throw Error("The maximum comment length is 1023 characters.");
         }
-        return spPost(File(this, `unpublish(comment='${escapeQueryStrValue(comment)}')`));
+        return spPost(File(this, `unpublish(comment='${encodePath(comment)}')`));
     }
 
     /**
@@ -508,7 +508,7 @@ export const File = spInvokableFactory<IFile>(_File);
  */
 export function fileFromServerRelativePath(base: ISPQueryable, serverRelativePath: string): IFile {
 
-    return File([base, extractWebUrl(base.toUrl())], `_api/web/getFileByServerRelativePath(decodedUrl='${escapeQueryStrValue(serverRelativePath)}')`);
+    return File([base, extractWebUrl(base.toUrl())], `_api/web/getFileByServerRelativePath(decodedUrl='${encodePath(serverRelativePath)}')`);
 }
 
 /**
@@ -559,7 +559,7 @@ export class _Versions extends _SPCollection {
      * @param label The version label of the file version to delete, for example: 1.2
      */
     public deleteByLabel(label: string): Promise<void> {
-        return spPost(Versions(this, `deleteByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
+        return spPost(Versions(this, `deleteByLabel(versionlabel='${encodePath(label)}')`));
     }
 
     /**
@@ -568,7 +568,7 @@ export class _Versions extends _SPCollection {
      * @param label The version label of the file version to delete, for example: 1.2
      */
     public recycleByLabel(label: string): Promise<void> {
-        return spPost(Versions(this, `recycleByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
+        return spPost(Versions(this, `recycleByLabel(versionlabel='${encodePath(label)}')`));
     }
 
     /**
@@ -577,7 +577,7 @@ export class _Versions extends _SPCollection {
      * @param label The version label of the file version to restore, for example: 1.2
      */
     public restoreByLabel(label: string): Promise<void> {
-        return spPost(Versions(this, `restoreByLabel(versionlabel='${escapeQueryStrValue(label)}')`));
+        return spPost(Versions(this, `restoreByLabel(versionlabel='${encodePath(label)}')`));
     }
 }
 export interface IVersions extends _Versions { }

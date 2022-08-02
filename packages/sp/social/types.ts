@@ -26,15 +26,15 @@ export class _Social extends _SPInstance implements ISocial {
     }
 
     public async follow(actorInfo: ISocialActorInfo): Promise<SocialFollowResult> {
-        return await spPost(SocialCloneFactory(this, "follow"), this.createSocialActorInfoRequestBody(actorInfo));
+        return spPost(SocialCloneFactory(this, "follow"), this.createSocialActorInfoRequestBody(actorInfo));
     }
 
     public async isFollowed(actorInfo: ISocialActorInfo): Promise<boolean> {
-        return await spPost(SocialCloneFactory(this, "isfollowed"), this.createSocialActorInfoRequestBody(actorInfo));
+        return spPost(SocialCloneFactory(this, "isfollowed"), this.createSocialActorInfoRequestBody(actorInfo));
     }
 
     public async stopFollowing(actorInfo: ISocialActorInfo): Promise<void> {
-        return await spPost(SocialCloneFactory(this, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo));
+        return spPost(SocialCloneFactory(this, "stopfollowing"), this.createSocialActorInfoRequestBody(actorInfo));
     }
 
     private createSocialActorInfoRequestBody(actorInfo: ISocialActorInfo) {

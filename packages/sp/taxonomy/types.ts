@@ -1,7 +1,7 @@
 import { isArray } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
 import { _SPInstance, spInvokableFactory, _SPCollection } from "../spqueryable.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
+import { encodePath } from "../utils/encode-path-str.js";
 
 /**
  * Describes a collection of Form objects
@@ -33,7 +33,7 @@ export class _TermStore extends _SPInstance<ITermStoreInfo> {
     public async searchTerm(params: ISearchTermParams): Promise<Required<Pick<ITermInfo, SearchTermPickedProps>>[]> {
 
         const query = Reflect.ownKeys(params).reduce((c, prop: string) => {
-            c.push(`${prop}='${escapeQueryStrValue(params[prop])}'`);
+            c.push(`${prop}='${encodePath(params[prop])}'`);
             return c;
         }, []).join(",");
 

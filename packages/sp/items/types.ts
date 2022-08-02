@@ -10,7 +10,7 @@ import {
     ISPInstance,
 } from "../spqueryable.js";
 import { hOP } from "@pnp/core";
-import { escapeQueryStrValue, extractWebUrl } from "@pnp/sp";
+import { extractWebUrl } from "@pnp/sp";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { body, headers, parseBinderWithErrorCheck, parseODataJSON } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
@@ -52,9 +52,9 @@ export class _Items extends _SPCollection {
      */
     public skip(skip: number, reverse = false): this {
         if (reverse) {
-            this.query.set("$skiptoken", encodeURIComponent(`Paged=TRUE&PagedPrev=TRUE&p_ID=${skip}`));
+            this.query.set("$skiptoken", `Paged=TRUE&PagedPrev=TRUE&p_ID=${skip}`);
         } else {
-            this.query.set("$skiptoken", encodeURIComponent(`Paged=TRUE&p_ID=${skip}`));
+            this.query.set("$skiptoken", `Paged=TRUE&p_ID=${skip}`);
         }
         return this;
     }
@@ -256,9 +256,9 @@ export class _Item extends _SPInstance {
 
         const q = SPQueryable(webUrl, "/_api/web/UploadImage");
         q.concat("(listTitle=@a1,imageName=@a2,listId=@a3,itemId=@a4)");
-        q.query.set("@a1", `'${escapeQueryStrValue(contextInfo.ParentList.Title)}'`);
-        q.query.set("@a2", `'${escapeQueryStrValue(imageName)}'`);
-        q.query.set("@a3", `'${escapeQueryStrValue(contextInfo.ParentList.Id)}'`);
+        q.query.set("@a1", `'${contextInfo.ParentList.Title}'`);
+        q.query.set("@a2", `'${imageName}'`);
+        q.query.set("@a3", `'${contextInfo.ParentList.Id}'`);
         q.query.set("@a4", contextInfo.Item.Id);
 
         const result = await spPost<IItemImageUploadResult>(q, { body: imageContent });

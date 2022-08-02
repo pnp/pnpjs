@@ -4,9 +4,9 @@ import { Folder } from "../folders/types.js";
 import { IFieldDefault } from "./types.js";
 import { IResourcePath } from "../utils/to-resource-path.js";
 import { combine, isArray } from "@pnp/core";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { spPost } from "../operations.js";
 import { SPCollection } from "../presets/all.js";
+import { encodePath } from "../utils/encode-path-str.js";
 
 declare module "../lists/types" {
     interface _List {
@@ -35,7 +35,7 @@ _List.prototype.getDefaultColumnValues = async function (this: _List): Promise<I
     const pathPart: { ServerRelativePath: IResourcePath } = await this.rootFolder.select("ServerRelativePath")();
     const webUrl: { ParentWeb: { Url: string } } = await this.select("ParentWeb/Url").expand("ParentWeb")();
     const path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms/client_LocationBasedDefaults.html");
-    const baseFilePath = combine(webUrl.ParentWeb.Url, `_api/web/getFileByServerRelativePath(decodedUrl='${escapeQueryStrValue(path)}')`);
+    const baseFilePath = combine(webUrl.ParentWeb.Url, `_api/web/getFileByServerRelativePath(decodedUrl='${encodePath(path)}')`);
 
     let xml = "";
 
@@ -197,7 +197,7 @@ _List.prototype.setDefaultColumnValues = async function (this: _List, defaults: 
     const pathPart: { ServerRelativePath: IResourcePath } = await this.rootFolder.select("ServerRelativePath")();
     const webUrl: { ParentWeb: { Url: string } } = await this.select("ParentWeb/Url").expand("ParentWeb")();
     const path = combine("/", pathPart.ServerRelativePath.DecodedUrl, "Forms");
-    const baseFilePath = combine(webUrl.ParentWeb.Url, "_api/web", `getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(path)}')`, "files");
+    const baseFilePath = combine(webUrl.ParentWeb.Url, "_api/web", `getFolderByServerRelativePath(decodedUrl='${encodePath(path)}')`, "files");
 
     await spPost(Folder([this, baseFilePath], "add(overwrite=true,url='client_LocationBasedDefaults.html')"), { body: xml });
 

@@ -639,9 +639,9 @@ export class _ClientsidePage extends _SPQueryable {
         const filename = fileUrl.pathname.split(/[\\/]/i).pop();
 
         const request = ClientsidePage(this, "_api/sitepages/AddImageFromExternalUrl");
-        request.query.set("imageFileName", `'${encodeURIComponent(filename)}'`);
-        request.query.set("pageName", `'${encodeURIComponent(pageName)}'`);
-        request.query.set("externalUrl", `'${encodeURIComponent(url)}'`);
+        request.query.set("imageFileName", `'${filename}'`);
+        request.query.set("pageName", `'${pageName}'`);
+        request.query.set("externalUrl", `'${url}'`);
         request.select("ServerRelativeUrl");
 
         const result = await spPost<Pick<IFileInfo, "ServerRelativeUrl">>(request);
@@ -871,7 +871,7 @@ export class _ClientsidePage extends _SPQueryable {
             }
         }
 
-        return await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
+        return spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
     }
 
     /**

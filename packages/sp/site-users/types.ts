@@ -38,7 +38,7 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      * @param loginName The login name of the user to retrieve
      */
     public getByLoginName(loginName: string): ISiteUser {
-        return SiteUser(this).concat(`('!@v::${encodeURIComponent(loginName)}')`);
+        return SiteUser(this).concat(`('!@v::${loginName}')`);
     }
 
     /**
@@ -57,7 +57,7 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      */
     public removeByLoginName(loginName: string): Promise<any> {
         const o = SiteUsers(this, "removeByLoginName(@v)");
-        o.query.set("@v", `'${encodeURIComponent(loginName)}'`);
+        o.query.set("@v", `'${loginName}'`);
         return spPost(o);
     }
 

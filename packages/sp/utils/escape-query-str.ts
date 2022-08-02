@@ -1,5 +1,6 @@
 import { stringIsNullOrEmpty } from "@pnp/core";
 
+// deprecated, will be removed in future versions, no longer used internally
 export function escapeQueryStrValue(value: string): string {
 
     if (stringIsNullOrEmpty(value)) {
@@ -7,14 +8,13 @@ export function escapeQueryStrValue(value: string): string {
     }
 
     // replace all instance of ' with ''
-
     if (/!(@.*?)::(.*?)/ig.test(value)) {
-        // to ensure our param aliasing still works we need to treat these special or we'll hear about it
-        // so we encode JUST the part that will end up in the url
+
         return value.replace(/!(@.*?)::(.*)$/ig, (match, labelName, v) => {
-            return `!${labelName}::${encodeURIComponent(v.replace(/'/ig, "''"))}`;
+            return `!${labelName}::${v.replace(/'/ig, "''")}`;
         });
+
     } else {
-        return encodeURIComponent(value.replace(/'/ig, "''"));
+        return value.replace(/'/ig, "''");
     }
 }
