@@ -45,7 +45,7 @@ export async function shareObject(o: ShareableQueryable, options: IShareObjectOp
         ...options,
     };
 
-    const roleValue = await getRoleValue(options.role, options.group);
+    const roleValue = await getRoleValue.apply(o, [options.role, options.group]);
 
     // handle the multiple input types
     if (!isArray(options.loginNames)) {
@@ -217,7 +217,7 @@ export async function shareWith(
 
 async function sendShareObjectRequest(o: ShareableQueryable, options: any): Promise<Partial<ISharingResult>> {
 
-    const w = Web([this, extractWebUrl(o.toUrl())]);
+    const w = Web([o, extractWebUrl(o.toUrl())], "/_api/SP.Web.ShareObject");
     return spPost(w.expand("UsersWithAccessRequests", "GroupsSharedWith"), body(options));
 }
 
@@ -227,19 +227,19 @@ async function sendShareObjectRequest(o: ShareableQueryable, options: any): Prom
  * @param role The Sharing Role
  * @param group The Group type
  */
-async function getRoleValue(role: SharingRole, group: RoleType): Promise<string> {
+async function getRoleValue(this: ShareableQueryable, role: SharingRole, group: RoleType): Promise<string> {
 
     // we will give group precedence, because we had to make a choice
     if (group !== undefined && group !== null) {
 
         switch (group) {
             case RoleType.Contributor: {
-                const g1 = await Web("_api/web", "associatedmembergroup").select("Id")<{ Id: number }>();
+                const g1 = await Web([this, "_api/web"], "associatedmembergroup").select("Id")<{ Id: number }>();
                 return `group: ${g1.Id}`;
             }
             case RoleType.Reader:
             case RoleType.Guest: {
-                const g2 = await Web("_api/web", "associatedvisitorgroup").select("Id")<{ Id: number }>();
+                const g2 = await Web([this, "_api/web"], "associatedvisitorgroup").select("Id")<{ Id: number }>();
                 return `group: ${g2.Id}`;
             }
             default:
@@ -248,7 +248,7 @@ async function getRoleValue(role: SharingRole, group: RoleType): Promise<string>
     } else {
 
         const roleFilter = role === SharingRole.Edit ? RoleType.Contributor : RoleType.Reader;
-        const def = await RoleDefinitions("_api/web").select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`)<{ Id: number }[]>();
+        const def = await RoleDefinitions([this, "_api/web"]).select("Id").top(1).filter(`RoleTypeKind eq ${roleFilter}`)<{ Id: number }[]>();
         if (def === undefined || def?.length < 1) {
             throw Error("Could not locate associated role definition for supplied role. Edit and View are supported");
         }
