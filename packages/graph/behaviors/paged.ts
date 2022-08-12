@@ -18,7 +18,7 @@ export function AsPaged(col: IGraphQueryableCollection): IGraphQueryableCollecti
 
     const q = GraphQueryableCollection(col).using(Paged());
 
-    const queryParams = ["$top", "$select", "$expand", "$filter", "$orderby"];
+    const queryParams = ["$search", "$count", "$top", "$select", "$expand", "$filter", "$orderby"];
 
     for (let i = 0; i < queryParams.length; i++) {
         const param = col.query.get(queryParams[i]);
