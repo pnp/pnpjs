@@ -58,21 +58,11 @@ describe("Content Type", function () {
         return expect(this.pnp.sp.web.contentTypes.getById(contentTypeId).workflowAssociations()).to.eventually.be.fulfilled;
     });
 
-    it("update", function () {
-
-        const p = this.pnp.sp.web.contentTypes.getById(contentTypeId)().then((ct) => {
-
-            const newName = ct.Name + " updated";
-            this.pnp.sp.web.contentTypes.getById(contentTypeId).update({ Name: newName }).then(() => {
-
-                this.pnp.sp.web.contentTypes.getById(contentTypeId)().then(function (ct2) {
-                    if (ct2.Name !== newName) {
-                        throw Error("Update web failed");
-                    }
-                });
-            });
-        });
-
-        return expect(p).to.eventually.be.fulfilled;
+    it("update", async function () {
+        const ct = await this.pnp.sp.web.contentTypes.getById(contentTypeId)();
+        const newName = ct.Name + " updated";
+        await this.pnp.sp.web.contentTypes.getById(contentTypeId).update({ Name: newName });
+        const ct2 = await this.pnp.sp.web.contentTypes.getById(contentTypeId)();
+        return expect(ct2.Name).to.eq(newName);
     });
 });
