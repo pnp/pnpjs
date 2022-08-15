@@ -10,6 +10,21 @@ export interface ICachingProps {
     expireFunc?: CacheExpireFunc;
 }
 
+export function CacheKey(key: string) {
+
+    return (instance: Queryable) => {
+
+        instance.on.pre.prepend(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+
+            init.headers = { ...init.headers, "X-PnP-CacheKey": key };
+
+            return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+
 export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
 
     const storage = new PnPClientStorage();
@@ -30,7 +45,7 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
             // only cache get requested data or where the CacheAlways header is present (allows caching of POST requests)
             if (/get/i.test(init.method) || init?.headers["X-PnP-CacheAlways"]) {
 
-                const key = keyFactory(url.toString());
+                const key = init?.headers["X-PnP-CacheKey"] ? init.headers["X-PnP-CacheKey"] : keyFactory(url.toString());
 
                 const cached = s.get(key);
 

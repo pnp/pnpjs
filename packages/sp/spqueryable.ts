@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, isArray } from "@pnp/core";
+import { combine, isUrlAbsolute, isArray, objectDefinedNotNull, stringIsNullOrEmpty } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
 import { spPostDelete, spPostDeleteETag } from "./operations.js";
 
@@ -69,7 +69,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
             this.parentUrl = q.toUrl();
 
             const target = q.query.get("@target");
-            if (target !== undefined) {
+            if (objectDefinedNotNull(target)) {
                 this.query.set("@target", target);
             }
         }
@@ -80,18 +80,24 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      */
     public toRequestUrl(): string {
 
-        const aliasedParams = new Map<string, string>(this.query);
+        const aliasedParams = new URLSearchParams(this.query);
 
-        // '!(@.*?)::(.*?)(?<!')'(?!')/ig <- Lookback query breaks Safari browser https://caniuse.com/js-regexp-lookbehind
-        let url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
+        // this regex is designed to locate aliased parameters within url paths. These may have the form:
+        // /something(!@p1::value)
+        // /something(!@p1::value, param=value)
+        // /something(param=value,!@p1::value)
+        // /something(param=value,!@p1::value,param=value)
+        // /something(param=!@p1::value)
+        // there could be spaces or not around the boundaries
+        let url = this.toUrl().replace(/([( *| *, *| *= *])'!(@.*?)::(.*?)'([ *)| *, *])/ig, (match, frontBoundary, labelName, value, endBoundary) => {
             this.log(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, 0);
-            aliasedParams.set(labelName, `'${value}'`);
-            return labelName;
+            aliasedParams.set(labelName,`'${value}'`);
+            return `${frontBoundary}${labelName}${endBoundary}`;
         });
 
-        if (aliasedParams.size > 0) {
-            const char = url.indexOf("?") > -1 ? "&" : "?";
-            url += `${char}${Array.from(aliasedParams).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
+        const query = aliasedParams.toString();
+        if (!stringIsNullOrEmpty(query)) {
+            url += `${url.indexOf("?") > -1 ? "&" : "?"}${query}`;
         }
 
         return url;
@@ -104,7 +110,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      */
     public select(...selects: string[]): this {
         if (selects.length > 0) {
-            this.query.set("$select", selects.map(encodeURIComponent).join(","));
+            this.query.set("$select", selects.join(","));
         }
         return this;
     }
@@ -116,7 +122,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      */
     public expand(...expands: string[]): this {
         if (expands.length > 0) {
-            this.query.set("$expand", expands.map(encodeURIComponent).join(","));
+            this.query.set("$expand", expands.join(","));
         }
         return this;
     }
@@ -156,7 +162,7 @@ export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
      * @param filter The string representing the filter query
      */
     public filter(filter: string): this {
-        this.query.set("$filter", encodeURIComponent(filter));
+        this.query.set("$filter", filter);
         return this;
     }
 
@@ -169,7 +175,7 @@ export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
     public orderBy(orderBy: string, ascending = true): this {
         const o = "$orderby";
         const query = this.query.has(o) ? this.query.get(o).split(",") : [];
-        query.push(`${encodeURIComponent(orderBy)} ${ascending ? "asc" : "desc"}`);
+        query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
         this.query.set(o, query.join(","));
         return this;
     }

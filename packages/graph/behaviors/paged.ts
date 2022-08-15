@@ -1,4 +1,4 @@
-import { stringIsNullOrEmpty, TimelinePipe } from "@pnp/core";
+import { objectDefinedNotNull, stringIsNullOrEmpty, TimelinePipe } from "@pnp/core";
 import { errorCheck, parseODataJSON } from "@pnp/queryable";
 import { GraphQueryableCollection, IGraphQueryable, IGraphQueryableCollection } from "../graphqueryable.js";
 
@@ -22,7 +22,7 @@ export function AsPaged(col: IGraphQueryableCollection): IGraphQueryableCollecti
 
     for (let i = 0; i < queryParams.length; i++) {
         const param = col.query.get(queryParams[i]);
-        if (param !== undefined) {
+        if (objectDefinedNotNull(param)) {
             q.query.set(queryParams[i], param);
         }
     }

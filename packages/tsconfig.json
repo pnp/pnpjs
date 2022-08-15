@@ -26,6 +26,9 @@
         },
         {
             "path": "./sp/tsconfig.json"
+        },
+        {
+            "path": "./sp-admin/tsconfig.json"
         }
     ]
 }

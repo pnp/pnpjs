@@ -1,5 +1,7 @@
-import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
+
+export type QueryableConstructObserver = (this: IQueryableInternal, init: QueryableInit, path?: string) => void;
 
 export type QueryablePreObserver = (this: IQueryableInternal, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
 
@@ -16,6 +18,7 @@ export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: 
 type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
 
 const DefaultMoments = {
+    construct: lifecycle<QueryableConstructObserver>(),
     pre: asyncReduce<QueryablePreObserver>(),
     auth: asyncReduce<QueryableAuthObserver>(),
     send: request<QueryableSendObserver>(),
@@ -31,7 +34,7 @@ export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
     // tracks any query paramters which will be appended to the request url
-    private _query: Map<string, string>;
+    private _query: URLSearchParams;
 
     // tracks the current url for a given Queryable
     protected _url: string;
@@ -47,43 +50,40 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         super(DefaultMoments);
 
+        this._query = new URLSearchParams();
+
         // add an intneral moment with specific implementaion for promise creation
         this.moments[this.InternalPromise] = reduce<QueryablePromiseObserver>();
 
-        let url = "";
-        let observers: ObserverCollection | undefined = undefined;
+        let parent: Queryable<any>;
 
         if (typeof init === "string") {
 
-            url = combine(init, path);
+            this._url = combine(init, path);
 
         } else if (isArray(init)) {
 
             if (init.length !== 2) {
-                throw Error("When using the tuple first param only two arguments are supported");
+                throw Error("When using the tuple param exactly two arguments are expected.");
             }
 
-            const q: Queryable<any> = init[0];
-            const _url: string = init[1];
+            if (typeof init[1] !== "string") {
+                throw Error("Expected second tuple param to be a string.");
+            }
 
-            url = combine(_url, path);
-            observers = q.observers;
+            parent = init[0];
+            this._url = combine(init[1], path);
 
         } else {
 
-            const { _url, observers: _observers } = init as Queryable<any>;
-
-            url = combine(_url, path);
-            observers = _observers;
+            parent = init as Queryable<any>;
+            this._url = combine(parent._url, path);
         }
 
-        if (typeof observers !== "undefined") {
-            this.observers = observers;
+        if (typeof parent !== "undefined") {
+            this.observers = parent.observers;
             this._inheritingObservers = true;
         }
-
-        this._url = url;
-        this._query = new Map<string, string>();
     }
 
     /**
@@ -102,19 +102,18 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
      */
     public toRequestUrl(): string {
 
-        let u = this.toUrl();
+        let url = this.toUrl();
 
-        if (this._query.size > 0) {
-            u += "?" + Array.from(this._query).map((v: [string, string]) => `${v[0]}=${encodeURIComponent(v[1])}`).join("&");
-        }
+        const char = url.indexOf("?") > -1 ? "&" : "?";
+        url += char + this.query.toString();
 
-        return u;
+        return url;
     }
 
     /**
      * Querystring key, value pairs which will be included in the request
      */
-    public get query(): Map<string, string> {
+    public get query(): URLSearchParams {
         return this._query;
     }
 
@@ -224,7 +223,7 @@ export interface Queryable<R = any> extends IInvokable<R> { }
 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
-    readonly query: Map<string, string>;
+    readonly query: URLSearchParams;
     <T = R>(this: IQueryableInternal, init?: RequestInit): Promise<T>;
     using(...behaviors: TimelinePipe[]): this;
     toRequestUrl(): string;

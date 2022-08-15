@@ -63,9 +63,7 @@ export function JSONHeaderParse(): TimelinePipe {
 export async function errorCheck(url: URL, response: Response, result: any): Promise<[URL, Response, any]> {
 
     if (!response.ok) {
-        // within observers we just throw to indicate an unrecoverable error within the pipeline
-        const y = await HttpRequestError.init(response);
-        throw y;
+        throw await HttpRequestError.init(response);
     }
 
     return [url, response, result];
@@ -110,7 +108,7 @@ export function parseBinderWithErrorCheck(impl: (r: Response) => Promise<any>): 
         instance.on.parse.replace(errorCheck);
         instance.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
 
-            if (typeof result === "undefined") {
+            if (response.ok && typeof result === "undefined") {
                 result = await impl(response);
             }
 
@@ -130,8 +128,7 @@ export class HttpRequestError extends Error {
     }
 
     public static async init(r: Response): Promise<HttpRequestError> {
-
         const t = await r.clone().text();
-        return new HttpRequestError(`Error making HttpClient request in queryable [${r.status}] ${r.statusText} ::> ${t}`, r.clone());
+        return new HttpRequestError(`Error making HttpClient request in queryable [${r.status}] ${r.statusText} ::> ${t}`, r);
     }
 }

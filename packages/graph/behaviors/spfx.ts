@@ -9,16 +9,6 @@ interface ISPFXContext {
             getToken(resource: string): Promise<string>;
         }>;
     };
-
-    msGraphClientFactory?: {
-        getClient: () => Promise<any>;
-    };
-
-    pageContext: {
-        web: {
-            absoluteUrl: string;
-        };
-    };
 }
 
 export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {

@@ -55,7 +55,6 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      */
     public select(...selects: string[]): this {
         if (selects.length > 0) {
-            // this.query.set("$select", selects.map(encodeURIComponent).join(","));
             this.query.set("$select", selects.join(","));
         }
         return this;
@@ -68,26 +67,9 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      */
     public expand(...expands: string[]): this {
         if (expands.length > 0) {
-            // this.query.set("$expand", expands.map(encodeURIComponent).join(","));
             this.query.set("$expand", expands.join(","));
         }
         return this;
-    }
-
-    /**
-     * Gets the full url with query information
-     *
-     */
-    public toUrlAndQuery(): string {
-
-        let url = this.toUrl();
-
-        if (this.query.size > 0) {
-            const char = url.indexOf("?") > -1 ? "&" : "?";
-            url += `${char}${Array.from(this.query).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
-        }
-
-        return url;
     }
 
     /**
@@ -131,7 +113,6 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     public orderBy(orderBy: string, ascending = true): this {
         const o = "$orderby";
         const query = this.query.get(o)?.split(",") || [];
-        // const eUri = encodeURIComponent(orderBy);
         query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
         this.query.set(o, query.join(","));
         return this;

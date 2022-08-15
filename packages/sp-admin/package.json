@@ -1,0 +1,13 @@
+{
+    "name": "@pnp/sp-admin",
+    "version": "0.0.0-PLACEHOLDER",
+    "description": "pnp - provides a fluent api for working with SharePoint's Tenant Admin REST",
+    "main": "./index.js",
+    "typings": "./index",
+    "dependencies": {
+        "tslib": "2.4.0",
+        "@pnp/core": "0.0.0-PLACEHOLDER",
+        "@pnp/queryable": "0.0.0-PLACEHOLDER",
+        "@pnp/sp": "0.0.0-PLACEHOLDER"
+    }
+}

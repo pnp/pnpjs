@@ -246,21 +246,29 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
             throw Error("Could not properly parse responses to match requests in batch.");
         }
 
-        // this structure ensures that we resolve the batched requests in the order we expect
-        return responses.reduce((p, response, index) => p.then(async () => {
-
-            const [, , , resolve, reject] = requests[index];
+        return new Promise<void>((res, rej) => {
 
             try {
 
-                resolve(response);
+                for (let index = 0; index < responses.length; index++) {
+                    const [, , , resolve, reject] = requests[index];
+                    try {
+                        resolve(responses[index]);
+                    } catch (e) {
+                        reject(e);
+                    }
+                }
+
+                // this small delay allows the promises to resolve correctly in order by dropping this resolve behind
+                // the other work in the event loop. Feels hacky, but it works so 🤷
+                setTimeout(res, 0);
 
             } catch (e) {
 
-                reject(e);
+                setTimeout(() => rej(e), 0);
             }
 
-        }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => void (0)));
+        }).then(() => Promise.all(completePromises)).then(() => void (0));
     };
 
     const register = (instance: ISPQueryable) => {

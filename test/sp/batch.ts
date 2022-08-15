@@ -102,8 +102,11 @@ describe("Batching", function () {
             await execute();
 
             order.push(3);
+
             return expect(order.toString()).to.eql(expected.toString());
+
         } else {
+
             assert.fail(`Did not succesfully create list ${listTitle}`);
         }
     });

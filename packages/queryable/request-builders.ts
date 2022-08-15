@@ -1,4 +1,4 @@
-import { jsS } from "@pnp/core";
+import { getHashCode, jsS, stringIsNullOrEmpty } from "@pnp/core";
 
 /**
  * takes the supplied object of type U, JSON.stringify's it, and sets it as the value of a "body" property
@@ -24,10 +24,17 @@ export function headers<T extends Partial<RequestInit>, U extends Record<string,
  * no caching observers are registered this has no effect.
  *
  * @param previous Any previous RequestInit to extend
+ * @param key An optional key to use when caching the wrapped value. If not supplied a key will be generated as a hash of the `previous` value supplied
  * @returns A RequestInit combining the caching header and any previous RequestInit
  */
-export function cacheAlways<T extends Partial<RequestInit>>(previous?: T) {
+export function cacheAlways<T extends Partial<RequestInit>>(previous?: T, key?: string) {
+
+    if (stringIsNullOrEmpty(key)) {
+        key = getHashCode(JSON.stringify(previous)).toString();
+    }
+
     return headers({
         "X-PnP-CacheAlways": "1",
+        "X-PnP-CacheKey": key,
     }, previous);
 }
