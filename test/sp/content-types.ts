@@ -57,4 +57,22 @@ describe("Content Type", function () {
     it("workflowAssociations", function () {
         return expect(this.pnp.sp.web.contentTypes.getById(contentTypeId).workflowAssociations()).to.eventually.be.fulfilled;
     });
+
+    it("update", function () {
+
+        const p = this.pnp.sp.web.contentTypes.getById(contentTypeId)().then((ct) => {
+
+            const newName = ct.Name + " updated";
+            this.pnp.sp.web.contentTypes.getById(contentTypeId).update({ Name: newName }).then(() => {
+
+                this.pnp.sp.web.contentTypes.getById(contentTypeId)().then(function (ct2) {
+                    if (ct2.Name !== newName) {
+                        throw Error("Update web failed");
+                    }
+                });
+            });
+        });
+
+        return expect(p).to.eventually.be.fulfilled;
+    });
 });
