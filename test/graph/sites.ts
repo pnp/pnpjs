@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "@pnp/graph/sites";
 
-describe.only("Sites", function () {
+describe("Sites", function () {
 
     before(async function () {
 
