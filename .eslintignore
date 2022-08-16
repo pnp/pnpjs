@@ -8,3 +8,8 @@ samples
 tools
 # don't lint nyc coverage output
 coverage
+
+# local files
+.eslintrc.cjs
+debug
+buildsystem-config.ts

@@ -147,8 +147,14 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
                 log("Beginning request", 1);
 
+                // include the request id in the headers to assist with debugging against logs
+                const initSeed = {
+                    ...userInit,
+                    headers: { ...userInit.headers, "X-PnPjs-RequestId": requestId },
+                };
+
                 // eslint-disable-next-line prefer-const
-                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), userInit || {}, undefined);
+                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), initSeed, undefined);
 
                 log(`Url: ${url}`, 1);
 

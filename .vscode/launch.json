@@ -72,5 +72,29 @@
         "<node_internals>/**"
       ]
     },
+    {
+      "name": "Debug Watch",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/debug/launch/main.ts",
+      "args": [],
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "build-watch",
+      "runtimeExecutable": null,
+      "runtimeArgs": [
+        "--nolazy",
+        "--experimental-loader",
+        "file://${workspaceRoot}/build/debugging/tools/local-module-resolver/esm-debug.js"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/build/debugging/**/*.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    }
   ]
 }

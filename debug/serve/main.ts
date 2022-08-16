@@ -26,7 +26,9 @@ document.onreadystatechange = async () => {
 
         try {
 
-            const sp = spfi("https://318studios.sharepoint.com/sites/dev/").using(SPBrowser());
+            const sp = spfi().using(SPBrowser({
+                baseUrl: "https://318studios.sharepoint.com/sites/dev/",
+            }));
 
             const r = await sp.web();
 

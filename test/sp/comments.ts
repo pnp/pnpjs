@@ -143,16 +143,25 @@ describe("Comments", function () {
         expect(item.comments()).to.eventually.have.length(0);
     });
 
-    it("like & unlike", async function () {
-
-        const pageName = `CommentPage_${getRandomString(4)}`;
+    it("like", async function () {
+        const pageName = `CommentPage_Like_${getRandomString(4)}`;
         const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
         await page.save();
         const comment = await page.addComment("A test comment");
-
         await comment.like();
+        const commentNew = await page.getCommentById(comment.id);
+        return expect(commentNew.likeCount === 1).to.be.true;
+    });
 
-        return expect(comment.unlike()).to.eventually.be.fulfilled;
+    it("unlike", async function () {
+        const pageName = `CommentPage_Unlike_${getRandomString(4)}`;
+        const page = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
+        await page.save();
+        const comment = await page.addComment("A test comment");
+        await comment.like();
+        await comment.unlike();
+        const commentNew = await page.getCommentById(comment.id);
+        return expect(commentNew.likeCount === 0).to.be.true;
     });
 
     it("replies - add", async function () {
