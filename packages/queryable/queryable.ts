@@ -34,7 +34,7 @@ export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
     // tracks any query paramters which will be appended to the request url
-    private _query: Map<string, string>;
+    private _query: URLSearchParams;
 
     // tracks the current url for a given Queryable
     protected _url: string;
@@ -50,7 +50,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         super(DefaultMoments);
 
-        this._query = new Map<string, string>();
+        this._query = new URLSearchParams();
 
         // add an intneral moment with specific implementaion for promise creation
         this.moments[this.InternalPromise] = reduce<QueryablePromiseObserver>();
@@ -102,19 +102,18 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
      */
     public toRequestUrl(): string {
 
-        let u = this.toUrl();
+        let url = this.toUrl();
 
-        if (this._query.size > 0) {
-            u += "?" + Array.from(this._query).map((v: [string, string]) => `${v[0]}=${encodeURIComponent(v[1])}`).join("&");
-        }
+        const char = url.indexOf("?") > -1 ? "&" : "?";
+        url += char + this.query.toString();
 
-        return u;
+        return url;
     }
 
     /**
      * Querystring key, value pairs which will be included in the request
      */
-    public get query(): Map<string, string> {
+    public get query(): URLSearchParams {
         return this._query;
     }
 
@@ -148,8 +147,14 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
                 log("Beginning request", 1);
 
+                // include the request id in the headers to assist with debugging against logs
+                const initSeed = {
+                    ...userInit,
+                    headers: { ...userInit.headers, "X-PnPjs-RequestId": requestId },
+                };
+
                 // eslint-disable-next-line prefer-const
-                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), userInit || {}, undefined);
+                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), initSeed, undefined);
 
                 log(`Url: ${url}`, 1);
 
@@ -224,7 +229,7 @@ export interface Queryable<R = any> extends IInvokable<R> { }
 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
-    readonly query: Map<string, string>;
+    readonly query: URLSearchParams;
     <T = R>(this: IQueryableInternal, init?: RequestInit): Promise<T>;
     using(...behaviors: TimelinePipe[]): this;
     toRequestUrl(): string;

@@ -115,7 +115,6 @@ export const mochaHooks = {
                         scopes: this.pnp.settings.graph.msal.scopes,
                     },
                 }), NodeFetch({ replace: true }));
-
             } finally {
                 const setupEnd = Date.now();
                 console.log(`Graph Setup completed in ${((setupEnd - setupStart) / 1000).toFixed(4)} seconds.`);

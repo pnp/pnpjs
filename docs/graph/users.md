@@ -82,20 +82,6 @@ const people = await graph.me.people();
 const people = await graph.me.people.top(3)();
 ```
 
-## People
-
-```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/users";
-
-const graph = graphfi(...);
-
-const people = await graph.me.people();
-
-// get the top 3 people
-const people = await graph.me.people.top(3)();
-```
-
 ## Manager
 
 ```TypeScript
@@ -138,3 +124,7 @@ See [Photos](./photos.md)
 ## User Presence Operation
 
 See [Cloud Communications](./cloud-communications.md)
+
+## User Messages (Mail)
+
+See [Messages](./messages.md)

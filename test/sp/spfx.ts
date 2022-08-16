@@ -5,8 +5,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { ISPFXContext, SPFI, spfi, SPFx } from "@pnp/sp";
 import { NodeFetchWithRetry } from "@pnp/nodejs";
-import { isArray } from "@pnp/core";
-import { Queryable } from "@pnp/queryable";
+import { CopyFrom, isArray } from "@pnp/core";
 
 describe("SPFx", function () {
 
@@ -28,16 +27,10 @@ describe("SPFx", function () {
             },
         };
 
-        spfxSP = spfi().using(SPFx(SPFxContext), NodeFetchWithRetry({ replace: true }));
-
-        const auth = this.pnp.sp.web.on.auth.toArray();
-
-        spfxSP.using(function (instance: Queryable) {
-
-            for (let i = 0; i < auth.length; i++) {
-                instance.on.auth(auth[i]);
-            }
-        });
+        spfxSP = spfi().using(
+            SPFx(SPFxContext),
+            NodeFetchWithRetry({ replace: true }),
+            CopyFrom(this.pnp.sp.web, "replace", (m) => m === "auth"));
     });
 
     it("get web", async function () {

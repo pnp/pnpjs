@@ -2,8 +2,8 @@ import { body } from "@pnp/queryable";
 import { spPost } from "../operations.js";
 import { ISPQueryable, _SPQueryable } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { combine } from "@pnp/core";
+import { encodePath } from "../utils/encode-path-str.js";
 
 export class _SiteScripts extends _SPQueryable {
 
@@ -31,7 +31,7 @@ export class _SiteScripts extends _SPQueryable {
      */
     public createSiteScript(title: string, description: string, content: any): Promise<ISiteScriptInfo> {
         return SiteScriptsCloneFactory(this,
-            `CreateSiteScript(Title=@title,Description=@desc)?@title='${escapeQueryStrValue(title)}'&@desc='${escapeQueryStrValue(description)}'`)
+            `CreateSiteScript(Title=@title,Description=@desc)?@title='${encodePath(title)}'&@desc='${encodePath(description)}'`)
             .run<ISiteScriptInfo>(content);
     }
 

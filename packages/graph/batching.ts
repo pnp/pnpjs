@@ -183,21 +183,29 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
 
             const response: ParsedGraphResponse = await graphPost(batchQuery, body(batchRequest));
 
-            // this structure ensures that we resolve the batched requests in the order we expect
-            await response.responses.reduce((p, resp, index) => p.then(() => {
-
-                const [, , , resolve, reject] = requestsChunk[index];
+            return new Promise<void>((res, rej) => {
 
                 try {
 
-                    resolve(resp);
+                    for (let index = 0; index < response.responses.length; index++) {
+                        const [, , , resolve, reject] = requests[index];
+                        try {
+                            resolve(response.responses[index]);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    }
+
+                    // this small delay allows the promises to resolve correctly in order by dropping this resolve behind
+                    // the other work in the event loop. Feels hacky, but it works so 🤷
+                    setTimeout(res, 0);
 
                 } catch (e) {
 
-                    reject(e);
+                    setTimeout(() => rej(e), 0);
                 }
 
-            }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => void (0)));
+            }).then(() => Promise.all(completePromises)).then(() => void (0));
         }
     };
 

@@ -29,7 +29,7 @@ import(findup("settings.js")).then((settings: { settings: ITestingSettings }) =>
         warning: "yellow",
     }));
 
-   Example(settings.settings);
+    Example(settings.settings);
 
     // you can also set break points inside the src folder to examine how things are working
     // within the library while debugging

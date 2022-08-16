@@ -73,7 +73,7 @@ export default class PnPjsExample extends React.Component<IPnPjsExampleProps, II
 
 ### Use a service class
 
-Because you do not have full access to the context object within a service you need to setup things a little differently. If you do not need AAD tokens you can leave that part out and specify just the pageContext (Option 2).
+Because you do not have full access to the context object within a service you need to setup things a little differently. If you do not need AAD tokens you can leave that part out -- required for @pnp/graph to work -- and specify just the pageContext (Option 2).
 
 ```TypeScript
 import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
@@ -99,7 +99,7 @@ export class SampleService {
         const pageContext = serviceScope.consume(PageContext.serviceKey);
         const tokenProviderFactory = serviceScope.consume(AadTokenProviderFactory.serviceKey);
 
-        //Option 1 - with AADTokenProvider
+        //Option 1 - with AADTokenProvider (REQUIRED FOR graphfi)
         this._sp = spfi().using(SPFx({
             aadTokenProviderFactory: tokenProviderFactory,
             pageContext: pageContext,

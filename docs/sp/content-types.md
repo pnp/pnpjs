@@ -29,6 +29,16 @@ const d: IContentType = await sp.web.contentTypes.getById("0x01")();
 console.log(d.name);
 ```
 
+### Update a Content Type
+
+```Typescript
+import { IContentType } from "@pnp/sp/content-types";
+
+const sp = spfi(...);
+
+await sp.web.contentTypes.getById("0x01").update({EditFormClientSideComponentId: "9dfdb916-7380-4b69-8d92-bc711f5fa339"});
+```
+
 ### Add a new Content Type
 
 To add a new Content Type to a collection, parameters id and name are required. For more information on creating content type IDs reference the [Microsoft Documentation](https://docs.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/aa543822(v=office.14)). While this documentation references SharePoint 2010 the structure of the IDs has not changed.

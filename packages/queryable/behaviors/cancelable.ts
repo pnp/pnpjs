@@ -65,7 +65,13 @@ async function cancelPrimitive(scopeId: string): Promise<void> {
         scope.actions.map(action => scope.currentSelf.on[MomentName](action));
     }
 
-    return (<any>scope.currentSelf).emit[MomentName]();
+    try {
+
+        await (<any>scope.currentSelf).emit[MomentName]();
+
+    } catch (e) {
+        scope.currentSelf.log(`Error in cancel: ${e}`, 3);
+    }
 }
 
 /**
@@ -108,20 +114,14 @@ export const asCancelableScope = <T extends any[], U>(func: (...args: T) => U): 
         }
 
         // execute the original function, but don't await it
-        const result = func.apply(this, args);
+        const result = func.apply(this, args).finally(() => {
+            // remove any cancel scope values tied to this instance
+            cancelScopes.delete(this[ScopeId]);
+            delete this[ScopeId];
+        });
 
-        // if result is async we need to attach the cancel to the promise
-        if (typeof result?.finally === "function") {
-
-            // ensure the synthetic promise from a complex method has a cancel method
-            (<CancelablePromise>result).cancel = cancelScopes.get(this[ScopeId]).cancel;
-
-            result.finally(() => {
-                // remove any cancel scope values tied to this instance
-                cancelScopes.delete(this[ScopeId]);
-                delete this[ScopeId];
-            });
-        }
+        // ensure the synthetic promise from a complex method has a cancel method
+        (<CancelablePromise>result).cancel = cancelScopes.get(this[ScopeId]).cancel;
 
         return result;
     };
@@ -193,23 +193,28 @@ export function Cancelable(): TimelinePipe<Queryable> {
 
         instance.on.pre(async function (this: Queryable, url, init, result) {
 
-            const controller = new AbortController();
-
             // grab the current scope, update the controller and currentSelf
             const existingScope = cancelScopes.get(this[ScopeId]);
-            existingScope.controller = controller;
-            existingScope.currentSelf = this;
 
-            if (init.signal) {
+            // if we are here without a scope we are likely running a CancelAction request so we just ignore canceling
+            if (objectDefinedNotNull(existingScope)) {
 
-                // we do our best to hook our logic to the existing signal
-                init.signal.addEventListener("abort", () => {
-                    existingScope.cancel();
-                });
+                const controller = new AbortController();
 
-            } else {
+                existingScope.controller = controller;
+                existingScope.currentSelf = this;
 
-                init.signal = controller.signal;
+                if (init.signal) {
+
+                    // we do our best to hook our logic to the existing signal
+                    init.signal.addEventListener("abort", () => {
+                        existingScope.cancel();
+                    });
+
+                } else {
+
+                    init.signal = controller.signal;
+                }
             }
 
             return [url, init, result];

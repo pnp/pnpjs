@@ -8,7 +8,7 @@
         "postinstall": "node ./post-install.cjs"
     },
     "dependencies": {
-        "@microsoft/microsoft-graph-types": "2.22.0",
+        "@microsoft/microsoft-graph-types": "2.23.0",
         "tslib": "2.4.0",
         "@pnp/core": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER"

@@ -10,7 +10,7 @@ import { spPost } from "../operations.js";
 export async function getUserEffectivePermissions(this: SecurableQueryable, loginName: string): Promise<IBasePermissions> {
 
     const q = SPInstance(this, "getUserEffectivePermissions(@user)");
-    q.query.set("@user", `'${encodeURIComponent(loginName)}'`);
+    q.query.set("@user", `'${loginName}'`);
     return q();
 }
 

@@ -19,6 +19,36 @@
             }
         },
         {
+            "label": "build-watch",
+            "type": "shell",
+            "command": "npx",
+            "args": [
+                "tsc",
+                "-p",
+                "./debug/launch/tsconfig.json",
+                "--watch"
+            ],
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "typescript",
+                "fileLocation": "relative",
+                "pattern": {
+                    "regexp": "^([^\\s].*)\\((\\d+|\\d+,\\d+|\\d+,\\d+,\\d+,\\d+)\\):\\s+(error|warning|info)\\s+(TS\\d+)\\s*:\\s*(.*)$",
+                    "file": 1,
+                    "location": 2,
+                    "severity": 3,
+                    "code": 4,
+                    "message": 5
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "Starting incremental compilation\\.\\.\\.$",
+                    "endsPattern": "Watching for file changes\\.$"
+                    
+                }
+            }
+        },
+        {
             "label": "build-buildsystem",
             "type": "shell",
             "command": "tsc -p ./tools/buildsystem",

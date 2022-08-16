@@ -5,7 +5,6 @@ import { combine, hOP, isArray } from "@pnp/core";
 import { body, TextParse } from "@pnp/queryable";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { IChangeQuery } from "../types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { emptyGuid } from "../types.js";
@@ -134,7 +133,7 @@ export class _Site extends _SPInstance {
      */
     public async getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]> {
         const q = Site([this, this.parentUrl], "_api/sp.web.getdocumentlibraries(@v)");
-        q.query.set("@v", `'${escapeQueryStrValue(absoluteWebUrl)}'`);
+        q.query.set("@v", `'${absoluteWebUrl}'`);
         const data = await q();
         return hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data;
     }
@@ -147,7 +146,7 @@ export class _Site extends _SPInstance {
     public async getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string> {
 
         const q = Site([this, this.parentUrl], "_api/sp.web.getweburlfrompageurl(@v)");
-        q.query.set("@v", `'${escapeQueryStrValue(absolutePageUrl)}'`);
+        q.query.set("@v", `'${absolutePageUrl}'`);
         const data = await q();
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;
     }

@@ -74,25 +74,14 @@ The baseUrl prop can be used to configure a fallback when making urls absolute.
 
 > If you are building a SPA you likely need to handle authentication. For this we support the [msal library](../concepts/authentication.md#MSAL-in-Browser) which you can use directly or as a pattern to roll your own MSAL implementation behavior.
 
-```TypeScript
-import { spfi, SPBrowser } from "@pnp/sp";
-import "@pnp/sp/webs";
-
-const sp = spfi().using(SPBrowser());
-
-await sp.web();
-```
-
-You can also set a baseUrl. This is equivalent to calling spfi with an absolute url.
+You should set a baseUrl as shown below.
 
 ```TypeScript
 import { spfi, SPBrowser } from "@pnp/sp";
 import "@pnp/sp/webs";
 
+// you should use the baseUrl value when working in a SPA to ensure it is always properly set for all requests
 const sp = spfi().using(SPBrowser({ baseUrl: "https://tenant.sharepoint.com/sites/dev" }));
-
-// this is the same as the above, and maybe a litter easier to read, and is more efficient
-// const sp = spfi("https://tenant.sharepoint.com/sites/dev").using(SPBrowser());
 
 await sp.web();
 ```

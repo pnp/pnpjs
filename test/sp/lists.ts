@@ -260,7 +260,7 @@ describe("List", function () {
             ViewXml: "<View><RowLimit>5</RowLimit></View>",
         };
 
-        const r = await rList.renderListDataAsStream(renderListDataParams, {}, new Map([["FilterField1", "Title"], ["FilterValue1", encodeURIComponent("Item 2")]]));
+        const r = await rList.renderListDataAsStream(renderListDataParams, {}, new Map([["FilterField1", "Title"], ["FilterValue1", "Item 2"]]));
 
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(r).to.not.be.null;

@@ -59,9 +59,7 @@ export class _AppCatalog extends _SPCollection {
             }
         }
 
-        const poster = AppCatalog([this, webUrl], `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`);
-
-        return await spPost(poster);
+        return spPost(AppCatalog([this, webUrl], `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`));
     }
 
     /**
