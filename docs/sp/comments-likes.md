@@ -231,21 +231,21 @@ You can like/unlike client-side pages, items, and comments on items. See above f
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import "@pnp/sp/comments/item";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/comments";
 import { ILikeData, ILikedByInformation } from "@pnp/sp/comments";
 
 const sp = spfi(...);
 
-const item = await sp.web.getFileByServerRelativePath("/sites/dev/SitePages/Home.aspx").getItem();
+const item = sp.web.lists.getByTitle("PnP List").items.getById(1);
 
 // like an item
 await item.like();
 
 // unlike an item
 await item.unlike();
-
-// get the liked by data
-const likedByData: ILikeData[] = await item.getLikedBy();
 
 // get the liked by information
 const likedByInfo: ILikedByInformation = await item.getLikedByInformation();
