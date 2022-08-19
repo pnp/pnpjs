@@ -171,7 +171,7 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
                 q.query.set(queryParams[i], param);
             }
         }
-        
+
         const r = await q.top(1)();
         return parseFloat(r["@odata.count"]);
     }
