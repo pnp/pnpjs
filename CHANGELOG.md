@@ -25,7 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - graph
   - addresses #2323 - Special Folder support
   - support for Lists, Columns, Content Types
-  - addresses #2373 - add $search and $filter parameters to Count() and Paged Behaviour
 - sp
   - update method for content types
   - addresses #2357 - add missing properties to IViewInfo typing
