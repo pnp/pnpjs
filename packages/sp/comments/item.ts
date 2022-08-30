@@ -68,10 +68,10 @@ _Item.prototype.getLikedByInformation = function (this: _Item): Promise<ILikedBy
     return Item(this, "likedByInformation").expand("likedby")<ILikedByInformation>();
 };
 
-_Item.prototype.rate = async function(this: _Item, value: RatingValues): Promise<number> {
+_Item.prototype.rate = async function (this: _Item, value: RatingValues): Promise<number> {
     const itemInfo = await this.getParentInfos();
     const baseUrl = extractWebUrl(this.toUrl());
     const reputationUrl = "_api/Microsoft.Office.Server.ReputationModel.Reputation.SetRating(listID=@a1,itemID=@a2,rating=@a3)";
-    const rateUrl = baseUrl + reputationUrl + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=${value}`;
+    const rateUrl = combine(baseUrl, reputationUrl) + `?@a1='{${itemInfo.ParentList.Id}}'&@a2='${itemInfo.Item.Id}'&@a3=${value}`;
     return spPost(SPQueryable([this, rateUrl]));
 };

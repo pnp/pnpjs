@@ -38,6 +38,13 @@ describe("Items", function () {
         item = this.pnp.sp.web.lists.getByTitle(listTitle).items.getById(itemData[0].Id);
     });
 
+    after(async function () {
+        // Cleanup list
+        if (list != null) {
+            list.delete();
+        }
+    });
+
     describe("Invokable Properties - IItem", testSPInvokables(() => item,
         "effectiveBasePermissions",
         "effectiveBasePermissionsForUI",
@@ -168,10 +175,5 @@ describe("Items", function () {
 
         const item = await list.items.select("Id").top(1)().then(r => r[0]);
         return expect(list.items.getById(item.Id).getWopiFrameUrl()).to.eventually.be.fulfilled;
-    });
-
-    it("rate", async function () {
-        const item = await list.items.select("Id").top(1)().then(r => r[0]);
-        return expect(item.rate(2)).to.eventually.be.fulfilled;
     });
 });
