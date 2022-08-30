@@ -38,6 +38,13 @@ describe("Items", function () {
         item = this.pnp.sp.web.lists.getByTitle(listTitle).items.getById(itemData[0].Id);
     });
 
+    after(async function () {
+        // Cleanup list
+        if (list != null) {
+            list.delete();
+        }
+    });
+
     describe("Invokable Properties - IItem", testSPInvokables(() => item,
         "effectiveBasePermissions",
         "effectiveBasePermissionsForUI",
