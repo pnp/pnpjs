@@ -74,7 +74,7 @@ export function updateable() {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public update(this: IGraphQueryable, props: any): Promise<void> {
+            public update(this: IGraphQueryable, props: any): Promise<T> {
                 return graphPatch(this, body(props));
             }
         };
@@ -87,7 +87,7 @@ export interface IUpdateable<T = any> {
      *
      * @param props Set of properties to update
      */
-    update(props: T): Promise<void>;
+    update(props: T): Promise<T>;
 }
 
 /**
@@ -98,7 +98,7 @@ export function updateableWithETag() {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public update(this: IGraphQueryable, props: any, eTag = "*"): Promise<void> {
+            public update(this: IGraphQueryable, props: any, eTag = "*"): Promise<T> {
                 return graphPatch(this, body(props, headers({
                     "If-Match": eTag,
                 })));
@@ -113,7 +113,7 @@ export interface IUpdateableWithETag<T = any> {
      *
      * @param props Set of properties to update
      */
-    update(props: T, eTag?: string): Promise<void>;
+    update(props: T, eTag?: string): Promise<T>;
 }
 
 /**
