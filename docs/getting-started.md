@@ -45,7 +45,7 @@ No additional steps required
 
 ### SPFx Version 1.12.1 => 1.14.0
 
-1. Update the rush stack compiler to 4.2. This is covered in this [great article by Elio](https://www.eliostruyf.com/define-the-typescript-version-you-want-to-use-in-sharepoint-framework/), but the steps are listed below.
+1. Update the [rush stack](https://rushstack.io/) compiler to 4.2. This is covered in this [great article by Elio](https://www.eliostruyf.com/define-the-typescript-version-you-want-to-use-in-sharepoint-framework/), but the steps are listed below.
     - Uninstall existing rush stack compiler (replace the ? with the version that is currently referenced in your package.json):
       `npm uninstall @microsoft/rush-stack-compiler-3.?`
     - Install 4.2 version:
@@ -56,29 +56,29 @@ No additional steps required
 1. Replace the contents of the gulpfile.js with:
     >Note: The only change is the addition of the line to disable tslint.
 
-        ```JS
-        'use strict';
-        
-        const build = require('@microsoft/sp-build-web');
-        
-        build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
-        
-        var getTasks = build.rig.getTasks;
-        build.rig.getTasks = function () {
-            var result = getTasks.call(build.rig);
-        
-            result.set('serve', result.get('serve-deprecated'));
-        
-            return result;
-        };
-        
-        // ********* ADDED *******
-        // disable tslint
-        build.tslintCmd.enabled = false;
-        // ********* ADDED *******
-        
-        build.initialize(require('gulp'));
-        ```
+```js
+'use strict';
+
+const build = require('@microsoft/sp-build-web');
+
+build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
+
+var getTasks = build.rig.getTasks;
+build.rig.getTasks = function () {
+    var result = getTasks.call(build.rig);
+
+    result.set('serve', result.get('serve-deprecated'));
+
+    return result;
+};
+
+// ********* ADDED *******
+// disable tslint
+build.tslintCmd.enabled = false;
+// ********* ADDED *******
+
+build.initialize(require('gulp'));
+```
 
 ### SPFx Version 1.11.0 & earlier
 
