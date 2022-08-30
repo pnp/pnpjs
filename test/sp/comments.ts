@@ -9,7 +9,7 @@ import { ICommentInfo } from "@pnp/sp/comments/types.js";
 import { IList } from "@pnp/sp/lists";
 import { IItem } from "@pnp/sp/items";
 
-describe.only("Comments", function () {
+describe("Comments", function () {
 
     this.beforeAll(async function () {
         if (!this.pnp.settings.enableWebTests) {
