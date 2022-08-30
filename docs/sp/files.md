@@ -333,7 +333,7 @@ const perms = await item.getCurrentUserEffectivePermissions();
 console.log(perms);
 ```
 
-### move
+### move by path
 
 It's possible to move a file to a new destination within a site collection  
 
@@ -349,6 +349,27 @@ const destinationUrl = `/sites/dev/SiteAssets/new-file.docx`;
 
 await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").moveByPath(destinationUrl, false, true);
 ```  
+
+_Added in 3.7.0_
+
+You can also supply a set of detailed options to better control the move process:
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+const sp = spfi(...);
+
+// destination is a server-relative url of a new file
+const destinationUrl = `/sites/dev2/SiteAssets/new-file.docx`;
+
+await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").moveByPath(destinationUrl, false, {
+    KeepBoth: false,
+    RetainEditorAndModifiedOnMove: true,
+    ShouldBypassSharedLocks: false,
+});
+```
 
 ### copy
 
@@ -382,6 +403,27 @@ const sp = spfi(...);
 const destinationUrl = `/sites/dev2/SiteAssets/new-file.docx`;
 
 await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").copyByPath(destinationUrl, false, true);
+```
+
+_Added in 3.7.0_
+
+You can also supply a set of detailed options to better control the copy process:
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+const sp = spfi(...);
+
+// destination is a server-relative url of a new file
+const destinationUrl = `/sites/dev2/SiteAssets/new-file.docx`;
+
+await sp.web.getFileByServerRelativePath("/sites/dev/Shared Documents/test.docx").copyByPath(destinationUrl, false, {
+    KeepBoth: false,
+    ResetAuthorAndCreatedOnCopy: true,
+    ShouldBypassSharedLocks: false,
+});
 ```
 
 ### getFileById
