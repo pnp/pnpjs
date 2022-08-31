@@ -52,7 +52,7 @@ export function Paged(): TimelinePipe {
             const txt = await response.text();
             const json = txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {};
             const nextLink = json["@odata.nextLink"];
-            const count = json["@odata.count"];
+            const count = parseInt(json["@odata.count"], 10);
 
             const hasNext = !stringIsNullOrEmpty(nextLink);
 

@@ -163,7 +163,7 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     public async count(): Promise<number> {
         const q = AsPaged(this);
         const r: IPagedResult = await q.top(1)();
-        return parseFloat(r.count);
+        return r.count;
     }
 
     /**
