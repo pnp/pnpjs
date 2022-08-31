@@ -1,5 +1,5 @@
 import { isArray } from "@pnp/core";
-import { IInvokable, JSONParse, Queryable, queryableFactory } from "@pnp/queryable";
+import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
 import { ConsistencyLevel } from "./behaviors/consistency-level.js";
 import { AsPaged, IPagedResult } from "./behaviors/paged.js";
 
@@ -161,10 +161,9 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
      * 	Retrieves the total count of matching resources
      */
     public async count(): Promise<number> {
-        const q = GraphQueryableCollection(this).using(ConsistencyLevel(), JSONParse());
-        q.query.set("$count", "true");
-        const r = await q.top(1)();
-        return parseFloat(r["@odata.count"]);
+        const q = AsPaged(this);
+        const r: IPagedResult = await q.top(1)();
+        return parseFloat(r.count);
     }
 
     /**
