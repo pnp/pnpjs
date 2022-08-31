@@ -1,4 +1,4 @@
-import { isArray } from "@pnp/core";
+import { isArray, objectDefinedNotNull } from "@pnp/core";
 import { IInvokable, JSONParse, Queryable, queryableFactory } from "@pnp/queryable";
 import { ConsistencyLevel } from "./behaviors/consistency-level.js";
 import { AsPaged, IPagedResult } from "./behaviors/paged.js";
@@ -162,7 +162,16 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
      */
     public async count(): Promise<number> {
         const q = GraphQueryableCollection(this).using(ConsistencyLevel(), JSONParse());
-        q.query.set("$count", "true");
+
+        const queryParams = ["$search", "$count", "$filter"];
+
+        for (let i = 0; i < queryParams.length; i++) {
+            const param = q.query.get(queryParams[i]);
+            if (objectDefinedNotNull(param)) {
+                q.query.set(queryParams[i], param);
+            }
+        }
+
         const r = await q.top(1)();
         return parseFloat(r["@odata.count"]);
     }
