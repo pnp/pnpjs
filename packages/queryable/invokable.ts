@@ -1,4 +1,5 @@
 import { get, op } from "./operations.js";
+import { isFunc } from "@pnp/core";
 
 /**
  * Allows a decorated object to be invoked as a function, optionally providing an implementation for that action
@@ -8,7 +9,7 @@ import { get, op } from "./operations.js";
  */
 export function invokable(invokeableAction?: (this: any, init?: RequestInit) => Promise<any>) {
 
-    if (typeof invokeableAction !== "function") {
+    if (!isFunc(invokeableAction)) {
         invokeableAction = function (this: any, init?: RequestInit) {
             return op(this, get, init);
         };
@@ -24,8 +25,7 @@ export function invokable(invokeableAction?: (this: any, init?: RequestInit) => 
 
                     // the "this" for our invoked object will be set by extendable OR we use invokableInstance directly
                     const localThis = typeof this === "undefined" ? invokableInstance : this;
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    return Reflect.apply(invokeableAction!, localThis, [init]);
+                    return Reflect.apply(invokeableAction, localThis, [init]);
 
                 }, Reflect.construct(clz, args, newTarget));
 

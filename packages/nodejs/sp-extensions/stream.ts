@@ -48,16 +48,14 @@ extendFactory(File, {
                 if (blockNumber === 0) {
 
                     promise = promise.then(() => {
-                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                        progress!({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: 0, fileSize: -1, stage: "starting", totalBlocks: -1 });
+                        progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: 0, fileSize: -1, stage: "starting", totalBlocks: -1 });
                         return fileRef.startUpload(uploadId, <any>chunk);
                     });
 
                 } else {
 
                     promise = promise.then((pointer) => {
-                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                        progress!({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: pointer, fileSize: -1, stage: "continue", totalBlocks: -1 });
+                        progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: pointer, fileSize: -1, stage: "continue", totalBlocks: -1 });
                         return fileRef.continueUpload(uploadId, pointer, <any>chunk);
                     });
 
@@ -65,8 +63,7 @@ extendFactory(File, {
             });
 
             stream.on("end", async () => {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                progress!({ uploadId, blockNumber, chunkSize: -1, currentPointer: -1, fileSize: -1, stage: "finishing", totalBlocks: -1 });
+                progress({ uploadId, blockNumber, chunkSize: -1, currentPointer: -1, fileSize: -1, stage: "finishing", totalBlocks: -1 });
                 promise.then((pointer) => resolve(fileRef.finishUpload(uploadId, pointer, Buffer.from([]))));
             });
         });
