@@ -227,7 +227,7 @@ export class _File extends _SPInstance<IFileInfo> {
     @cancelableScope
     public async copyByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>] | [boolean, boolean?]): Promise<void> {
 
-        let options: IMoveCopyOptions = {
+        let options: Partial<IMoveCopyOptions> = {
             ShouldBypassSharedLocks: true,
             ResetAuthorAndCreatedOnCopy: true,
             KeepBoth: false,
@@ -285,7 +285,7 @@ export class _File extends _SPInstance<IFileInfo> {
     @cancelableScope
     public async moveByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">>] | [boolean, boolean?]): Promise<void> {
 
-        let options: IMoveCopyOptions = {
+        let options: Partial<IMoveCopyOptions> = {
             KeepBoth: false,
             ShouldBypassSharedLocks: true,
             RetainEditorAndModifiedOnMove: false,
