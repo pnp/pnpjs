@@ -7,6 +7,7 @@ Queryable is the base class for both the sp and graph fluent interfaces and prov
 By design the library is meant to allow creating the next part of a url from the current part. In this way each queryable instance is built from a previous instance. As such understanding the Queryable constructor's behavior is important. The constructor takes two parameters, the first required and the second optional.
 
 The first parameter can be another queryable, a string, or a tuple of [Queryable, string].
+
 |Parameter|Behavior|
 |---|---|
 |Queryable|The new queryable inherits all of the supplied queryable's observers. Any supplied path (second constructor param) is appended to the supplied queryable's url becoming the url of the newly constructed queryable|
