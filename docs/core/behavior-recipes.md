@@ -101,7 +101,7 @@ const webInfo = await sp.webs();
 
 Starting with v3 we no longer provide support for ACS authentication within the library. However you may have a need (legacy applications, on-premises) to use ACS authentication while wanting to migrate to v3. Below you can find an example implementation of an Authentication observer for ACS. This is not a 100% full implementation, for example the tokens are not cached.
 
-> Whenever possible we encourage you to use AAD authentication and away from ACS for securing your server-side applications.
+> Whenever possible we encourage you to use AAD authentication and move away from ACS for securing your server-side applications.
 
 ```Typescript
 export function ACS(clientId: string, clientSecret: string, authUrl = "https://accounts.accesscontrol.windows.net"): (instance: Queryable) => Queryable {
