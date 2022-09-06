@@ -157,3 +157,4 @@ export interface ILikedByInformation {
     isLikedByUser: boolean;
     likeCount: number;
 }
+export type RatingValues = 1|2|3|4|5;

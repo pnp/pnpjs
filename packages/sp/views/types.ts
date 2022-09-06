@@ -8,6 +8,7 @@ import {
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
+import { encodePath } from "../utils/encode-path-str.js";
 
 @defaultPath("views")
 export class _Views extends _SPCollection<IViewInfo[]> {
@@ -48,7 +49,7 @@ export class _Views extends _SPCollection<IViewInfo[]> {
      * @param title The case-sensitive title of the view
      */
     public getByTitle(title: string): IView {
-        return View(this, `getByTitle('${title}')`);
+        return View(this, `getByTitle('${encodePath(title)}')`);
     }
 }
 export interface IViews extends _Views { }
@@ -115,7 +116,7 @@ export class _ViewFields extends _SPCollection<{ Items: string[]; SchemaXml: str
      * @param fieldTitleOrInternalName The case-sensitive internal name or display name of the field to add.
      */
     public add(fieldTitleOrInternalName: string): Promise<void> {
-        return spPost(ViewFields(this, `addviewfield('${fieldTitleOrInternalName}')`));
+        return spPost(ViewFields(this, `addviewfield('${encodePath(fieldTitleOrInternalName)}')`));
     }
 
     /**
@@ -141,7 +142,7 @@ export class _ViewFields extends _SPCollection<{ Items: string[]; SchemaXml: str
      * @param fieldInternalName The case-sensitive internal name of the field to remove from the view.
      */
     public remove(fieldInternalName: string): Promise<void> {
-        return spPost(ViewFields(this, `removeviewfield('${fieldInternalName}')`));
+        return spPost(ViewFields(this, `removeviewfield('${encodePath(fieldInternalName)}')`));
     }
 }
 export interface IViewFields extends _ViewFields { }
@@ -165,6 +166,11 @@ export enum ViewScope {
 }
 
 export interface IViewInfo {
+    AssociatedContentTypeId: string | null;
+    CalendarViewStyles: string | null;
+    CustomFormatter: string | null;
+    DefaultView: boolean;
+    DefaultViewForContentType: boolean;
     EditorModified: boolean;
     Formats: string | null;
     Hidden: boolean;
@@ -199,5 +205,6 @@ export interface IViewInfo {
     ViewProjectedFields: { SchemaXml: string } | null;
     ViewQuery: string;
     ViewType: string;
+    ViewType2: "KANBAN" | "TILES" | "COMPACTLIST" | "MODERNCALENDAR" | null;
     VisualizationInfo: any | null;
 }

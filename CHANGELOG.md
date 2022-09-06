@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.6.0 - 2022-Aug-16
+
+### Fixed
+
+- core
+  - addresses #2222, #2356 - Updates to simplify url & query escaping
+- sp
+  - addresses #2372 - Fix bugs with sharing
+
+### Added
+
+- docs
+  - added docs for Graph messages
+  - update for getting started videos
+  - update to docs around SPBrowser usage and setting baseUrl
+- querable
+  - new JSONHeaderParse behavior
+- graph
+  - addresses #2323 - Special Folder support
+  - support for Lists, Columns, Content Types
+- sp
+  - update method for content types
+  - addresses #2357 - add missing properties to IViewInfo typing
+
 ## 3.5.1 - 2022-July-13
 
 ### Fixed

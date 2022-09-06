@@ -14,17 +14,17 @@ import { Queryable, QueryableInit } from "../queryable.js";
  *
  * 2. Complex method present a larger challenge because they are comprised of > 1 request and the promise
  *    that is actually returned to the user is not directly from one of our calls. This promise is the
- *    one "created" by the language when you await. For complex method we have two things that solve these
+ *    one "created" by the language when you await. For complex methods we have two things that solve these
  *    needs.
  *
- *    The first is the use of either the cancelableScope decorator of the asCancelableScope method
+ *    The first is the use of either the cancelableScope decorator or the asCancelableScope method
  *    wrapper. These create an upper level cancel info that is then shared across the child requests within
  *    the complex method. Meaning if I do a files.addChunked the same cancel info (and cancel method)
  *    are set on the current "this" which is user object on which the method was called. This info is then
  *    passed down to any child requests using the original "this" as a base using the construct moment.
  *
- * The CancelAction behavior is used to apply additional actions to a request once it is canceled. For example
- * in the case of uploading files chunked in sp we cancel the upload by id.
+ *    The CancelAction behavior is used to apply additional actions to a request once it is canceled. For example
+ *    in the case of uploading files chunked in sp we cancel the upload by id.
  */
 
 // this is a special moment used to broadcast when a request is canceled

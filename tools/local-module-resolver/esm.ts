@@ -46,6 +46,7 @@ export function createResolve(innerPath: string): ResolverFunc {
                 const resolved: ResolvedValue = {
                     url,
                     format: "module",
+                    shortCircuit: true,
                 };
 
                 cache.set(modulePath, resolved);
@@ -84,6 +85,7 @@ export function createResolve(innerPath: string): ResolverFunc {
                     return {
                         ...localSpecifier,
                         format: "module",
+                        shortCircuit: true,
                     };
                 }
             }
@@ -97,6 +99,7 @@ export function createResolve(innerPath: string): ResolverFunc {
 export interface ResolvedValue {
     url: string;
     format?: "module";
+    shortCircuit?: boolean;
 }
 
 export interface ResolveContext {
