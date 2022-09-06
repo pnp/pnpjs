@@ -26,7 +26,6 @@
         "findup-sync": "5.0.0",
         "mocha": "10.0.0",
         "msal": "1.4.17",
-        "node-abort-controller": "3.0.1",
         "node-fetch": "3.2.10",
         "prettyjson": "1.2.5",
         "stacktrace-js": "2.0.2",
