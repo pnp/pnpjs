@@ -190,10 +190,10 @@ import { CacheBust } from "./acs-auth-behavior.ts";
 import "@pnp/sp/webs";
 import { SPDefault } from "@pnp/nodejs";
 
-const sp = spfi("https://tenant.sharepoint.com/sites.dev").using(SPDefault(), ACS("{client id}", "{client secret}")());
+const sp = spfi("https://tenant.sharepoint.com/sites.dev").using(SPDefault(), ACS("{client id}", "{client secret}"));
 
 // you can optionally provide the authentication url, here using the one for China's sovereign cloud or an local url if working on-premises
-// const sp = spfi("https://tenant.sharepoint.com/sites.dev").using(SPDefault(), ACS("{client id}", "{client secret}", "https://accounts.accesscontrol.chinacloudapi.cn")());
+// const sp = spfi("https://tenant.sharepoint.com/sites.dev").using(SPDefault(), ACS("{client id}", "{client secret}", "https://accounts.accesscontrol.chinacloudapi.cn"));
 
 const webInfo = await sp.webs();
 ```
