@@ -9,7 +9,6 @@ import {
     RejectOnError,
     ResolveOnData,
 } from "@pnp/queryable";
-import { AbortController } from "node-abort-controller";
 import { default as nodeFetch } from "node-fetch";
 import "@pnp/sp/webs";
 import { getRandomString } from "@pnp/core";
