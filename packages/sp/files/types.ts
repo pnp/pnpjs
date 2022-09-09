@@ -207,26 +207,46 @@ export class _File extends _SPInstance<IFileInfo> {
     }
 
     /**
-     * Copies the file by path to destination path.
+     * Moves the file by path to the specified destination url.
      * Also works with different site collections.
      *
-     * @param destUrl The absolute url or server relative url of the destination file path to copy to.
+     * @param destUrl The absolute url or server relative url of the destination file path to move to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     * @param options Allows you to supply the full set of options controlling the copy behavior
+     */
+    public async copyByPath(destUrl: string, shouldOverWrite: boolean, options: Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>): Promise<void>;
+    /**
+     * Moves the file by path to the specified destination url.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination file path to move to.
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
      */
+    public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<void>;
     @cancelableScope
-    public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth = false): Promise<void> {
+    public async copyByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>] | [boolean, boolean?]): Promise<void> {
+
+        let options: Partial<IMoveCopyOptions> = {
+            ShouldBypassSharedLocks: true,
+            ResetAuthorAndCreatedOnCopy: true,
+            KeepBoth: false,
+        };
+
+        if (rest.length === 2) {
+            if (typeof rest[1] === "boolean") {
+                options.KeepBoth = rest[1];
+            } else if (typeof rest[1] === "object") {
+                options = { ...options, ...rest[1] };
+            }
+        }
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
+        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
-                options: {
-                    KeepBoth,
-                    ResetAuthorAndCreatedOnCopy: true,
-                    ShouldBypassSharedLocks: true,
-                },
+                options,
                 srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
             }));
     }
@@ -250,20 +270,41 @@ export class _File extends _SPInstance<IFileInfo> {
      *
      * @param destUrl The absolute url or server relative url of the destination file path to move to.
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     * @param options Allows you to supply the full set of options controlling the move behavior
+     */
+    public async moveByPath(destUrl: string, shouldOverWrite: boolean, options: Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">>): Promise<void>;
+    /**
+     * Moves the file by path to the specified destination url.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination file path to move to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
      */
-    public async moveByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth = false): Promise<void> {
+    public async moveByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<void>;
+    @cancelableScope
+    public async moveByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">>] | [boolean, boolean?]): Promise<void> {
+
+        let options: Partial<IMoveCopyOptions> = {
+            KeepBoth: false,
+            ShouldBypassSharedLocks: true,
+            RetainEditorAndModifiedOnMove: false,
+        };
+
+        if (rest.length === 2) {
+            if (typeof rest[1] === "boolean") {
+                options.KeepBoth = rest[1];
+            } else if (typeof rest[1] === "object") {
+                options = { ...options, ...rest[1] };
+            }
+        }
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${shouldOverWrite}`),
+        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
-                options: {
-                    KeepBoth,
-                    ResetAuthorAndCreatedOnCopy: false,
-                    ShouldBypassSharedLocks: true,
-                },
+                options,
                 srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
             }));
     }
@@ -709,4 +750,29 @@ export interface IFileDeleteParams {
      * to target a file with a matching value. Use null to unconditionally delete the file.
      */
     ETagMatch: string;
+}
+
+/**
+ * Contains options used to modify the behaviour of a move or copy operation
+ */
+export interface IMoveCopyOptions {
+    /**
+     * Boolean specifying whether to rename and copy the source file when the destination file exists
+     */
+    KeepBoth: boolean;
+
+    /**
+     * Boolean specifying whether to reset the destination of the copy author to the current user and the created by datetime to the current time.
+     */
+    ResetAuthorAndCreatedOnCopy: boolean;
+
+    /**
+     * Boolean specifying whether to allow File and Folder Move operations when file contain co-authoring shared locks
+     */
+    ShouldBypassSharedLocks: boolean;
+
+    /**
+     * Boolean specifying whether to retain the source of the move's editor and modified by datetime.
+     */
+    RetainEditorAndModifiedOnMove: boolean;
 }

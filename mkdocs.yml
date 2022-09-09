@@ -74,6 +74,7 @@ nav:
       - 'Column Defaults': 'sp/column-defaults.md'
       - 'Comments and Likes': 'sp/comments-likes.md'
       - 'Content Types': 'sp/content-types.md'
+      - Favorites: 'sp/favorites.md'
       - Features: 'sp/features.md'
       - Fields: 'sp/fields.md'
       - Files: 'sp/files.md'

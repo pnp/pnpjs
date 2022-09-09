@@ -225,7 +225,7 @@ const comments: IComments = await item.comments();
 const replies = await comments[0].replies();
 ```
 
-## Like
+## Like/Unlike
 
 You can like/unlike client-side pages, items, and comments on items. See above for how to like or unlike a comment. Below you can see how to like and unlike an items, as well as get the liked by data.
 
@@ -274,4 +274,24 @@ await page.unlike();
 
 // get the liked by information
 const likedByInfo: ILikedByInformation = await page.getLikedByInformation();
+```
+
+## Rate
+
+You can rate list items with a numeric values between 1 and 5.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/comments";
+import { ILikeData, ILikedByInformation } from "@pnp/sp/comments";
+
+const sp = spfi(...);
+
+const item = sp.web.lists.getByTitle("PnP List").items.getById(1);
+
+// rate an item
+await item.rate(2);
 ```
