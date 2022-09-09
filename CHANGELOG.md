@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.7.0 - 2022-Sept-9
+
+### Added
+
+- docs
+  - Updated getting started docs
+- sp
+  - added support for item rating
+  - added support for favorite sites and items
+- graph
+  - added $search and $filter parameters to Count() and Paged Behavior
+
+### Fixed
+
+- docs
+  - sample for ACS authentication
+- sp
+  - updated for escaping query strings
+  - enchance copyByPath and moveByPath for sp/file allowing for passing all valid params
+
 ## 3.6.0 - 2022-Aug-16
 
 ### Fixed
