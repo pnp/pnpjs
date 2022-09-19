@@ -55,6 +55,11 @@ describe("Folder", function () {
         return expect(x).to.haveOwnProperty("Id");
     });
 
+    it("storageMetrics", async function () {
+        const metrics = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").storageMetrics();
+        return expect(metrics).to.haveOwnProperty("TotalSize");
+    });
+
     it("moveByPath", async function () {
         const folderName = `test2_${getRandomString(5)}`;
         await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);

@@ -118,6 +118,25 @@ const sp = spfi(...);
 const folderItem = await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").getItem();
 ```
 
+### storageMetrics
+
+_Added in 3.8.0_
+
+Gets a set of metrics describing the total file size contained in the folder.
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+const metrics = await sp.web.getFolderByServerRelativePath("/sites/dev/shared documents/target").storageMetrics();
+
+// you can also select specific metrics if desired:
+const metrics2 = await sp.web.getFolderByServerRelativePath("/sites/dev/shared documents/target").storageMetrics.select("TotalSize")();
+```
+
 ### move
 
 It's possible to move a folder to a new destination within a site collection  

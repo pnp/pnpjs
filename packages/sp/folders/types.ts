@@ -87,6 +87,14 @@ export class _Folder extends _SPInstance<IFolderInfo> {
     }
 
     /**
+     * Gets this folder's storage metrics information
+     *
+     */
+    public get storageMetrics(): ISPInstance<IStorageMetrics> {
+        return SPInstance(this, "storagemetrics");
+    }
+
+    /**
      * Updates folder's properties
      * @param props Folder's properties to update
      */
@@ -299,6 +307,16 @@ export interface IFolderInfo {
     TimeLastModified: string;
     UniqueId: string;
     WelcomePage: string;
+    ContentTypeOrder: string[];
+    UniqueContentTypeOrder: string[];
+    StorageMetrics?: IStorageMetrics;
+}
+
+export interface IStorageMetrics {
+    LastModified: string;
+    TotalFileCount: number;
+    TotalFileStreamSize: number;
+    TotalSize: number;
 }
 
 export interface IFolderDeleteParams {
