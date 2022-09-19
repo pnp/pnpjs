@@ -48,6 +48,62 @@ const url = "/sites/dev/documents/folder4";
 const folder = folderFromServerRelativePath(sp.web, url);
 ```
 
+### folderFromAbsolutePath
+
+_Added in 3.8.0_
+
+Utility method allowing you to get an IFile reference using any SPQueryable as a base and an absolute path to the file.
+
+> Works across site collections within the same tenant
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { folderFromAbsolutePath } from "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+const url = "https://tenant.sharepoint.com/sites/dev/documents/folder";
+
+// file is an IFile and supports all the file operations
+const folder = folderFromAbsolutePath(sp.web, url);
+
+// for example
+const folderInfo = await folder();
+```
+
+### folderFromPath
+
+_Added in 3.8.0_
+
+Utility method allowing you to get an IFolder reference using any SPQueryable as a base and an absolute OR server relative path to the file.
+
+> Works across site collections within the same tenant
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { folderFromPath } from "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+const url = "https://tenant.sharepoint.com/sites/dev/documents/folder";
+
+// file is an IFile and supports all the file operations
+const folder = folderFromPath(sp.web, url);
+
+// for example
+const folderInfo = await folder();
+
+const url2 = "/sites/dev/documents/folder";
+
+// file is an IFile and supports all the file operations
+const folder2 = folderFromPath(sp.web, url2);
+
+// for example
+const folderInfo2 = await folder2();
+```
+
 ### add
 
 Adds a new folder to collection of folders

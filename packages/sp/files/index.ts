@@ -19,6 +19,7 @@ export {
     IAddUsingPathProps,
     IFileInfo,
     fileFromServerRelativePath,
-    IMoveCopyOptions,
+    fileFromAbsolutePath,
+    fileFromPath,
     IFileDeleteParams,
 } from "./types.js";

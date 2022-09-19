@@ -1,5 +1,5 @@
 import { isUrlAbsolute, combine } from "@pnp/core";
-import { body } from "@pnp/queryable";
+import { body, cancelableScope } from "@pnp/queryable";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -17,6 +17,8 @@ import { spPost, spPostMerge } from "../operations.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath, IResourcePath } from "../utils/to-resource-path.js";
 import { encodePath } from "../utils/encode-path-str.js";
+import "../context-info/index.js";
+import { IMoveCopyOptions } from "../types.js";
 
 @defaultPath("folders")
 export class _Folders extends _SPCollection<IFolderInfo[]> {
@@ -129,13 +131,38 @@ export class _Folder extends _SPInstance<IFolderInfo> {
     }
 
     /**
-     * Moves a folder by path to destination path
+     * Moves the file by path to the specified destination url.
      * Also works with different site collections.
      *
-     * @param destUrl Absolute or relative URL of the destination path
-     * @param keepBoth Keep both if folder with the same name in the same location already exists?
+     * @param destUrl The absolute url or server relative url of the destination file path to move to.
+     * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
+     * @param options Allows you to supply the full set of options controlling the move behavior
      */
-    public async moveByPath(destUrl: string, KeepBoth = false): Promise<void> {
+    public async moveByPath(destUrl: string, options: Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">>): Promise<IFolder>;
+    /**
+     * Moves the file by path to the specified destination url.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination file path to move to.
+     * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
+     */
+    public async moveByPath(destUrl: string, KeepBoth?: boolean): Promise<IFolder>;
+    @cancelableScope
+    public async moveByPath(destUrl: string,  ...rest: Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">> | boolean?): Promise<IFolder> {
+
+        let options: Partial<IMoveCopyOptions> = {
+            KeepBoth: false,
+            ShouldBypassSharedLocks: true,
+            RetainEditorAndModifiedOnMove: false,
+        };
+
+        if (rest.length === 1) {
+            if (typeof rest[0] === "boolean") {
+                options.KeepBoth = rest[0];
+            } else if (typeof rest[0] === "object") {
+                options = { ...options, ...rest[0] };
+            }
+        }
 
         const urlInfo = await this.getParentInfos();
 
@@ -144,15 +171,22 @@ export class _Folder extends _SPInstance<IFolderInfo> {
         await spPost(Folder([this, uri.origin], "/_api/SP.MoveCopyUtil.MoveFolderByPath()"),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
-                options: {
-                    KeepBoth,
-                    ResetAuthorAndCreatedOnCopy: true,
-                    ShouldBypassSharedLocks: true,
-                },
+                options,
                 srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
             }));
+
+        return folderFromPath(this, destUrl);
     }
 
+    /**
+     * Moves the folder by path to the specified destination url.
+     * Also works with different site collections.
+     *
+     * @param destUrl The absolute url or server relative url of the destination folder path to move to.
+     * @param shouldOverWrite Should a folder with the same name in the same location be overwritten?
+     * @param options Allows you to supply the full set of options controlling the copy behavior
+     */
+    public async copyByPath(destUrl: string, shouldOverWrite: boolean, options: Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>): Promise<IFolder>;
     /**
      * Copies a folder by path to destination path
      * Also works with different site collections.
@@ -160,7 +194,23 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      * @param destUrl Absolute or relative URL of the destination path
      * @param keepBoth Keep both if folder with the same name in the same location already exists?
      */
-    public async copyByPath(destUrl: string, KeepBoth = false): Promise<void> {
+    public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<IFolder>;
+    @cancelableScope
+    public async copyByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>] | [boolean, boolean?]): Promise<IFolder> {
+
+        let options: Partial<IMoveCopyOptions> = {
+            ShouldBypassSharedLocks: true,
+            ResetAuthorAndCreatedOnCopy: true,
+            KeepBoth: false,
+        };
+
+        if (rest.length === 2) {
+            if (typeof rest[1] === "boolean") {
+                options.KeepBoth = rest[1];
+            } else if (typeof rest[1] === "object") {
+                options = { ...options, ...rest[1] };
+            }
+        }
 
         const urlInfo = await this.getParentInfos();
 
@@ -169,13 +219,11 @@ export class _Folder extends _SPInstance<IFolderInfo> {
         await spPost(Folder([this, uri.origin], "/_api/SP.MoveCopyUtil.CopyFolderByPath()"),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
-                options: {
-                    KeepBoth: KeepBoth,
-                    ResetAuthorAndCreatedOnCopy: true,
-                    ShouldBypassSharedLocks: true,
-                },
+                options,
                 srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
             }));
+
+        return folderFromPath(this, destUrl);
     }
 
     /**
@@ -260,6 +308,31 @@ export const Folder = spInvokableFactory<IFolder>(_Folder);
 export function folderFromServerRelativePath(base: ISPQueryable, serverRelativePath: string): IFolder {
 
     return Folder([base, extractWebUrl(base.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${encodePath(serverRelativePath)}')`);
+}
+
+/**
+ * Creates an IFolder instance given a base object and an absolute path
+ *
+ * @param base Valid SPQueryable from which the observers will be used
+ * @param serverRelativePath The absolute url to the folder (ex: 'https://tenant.sharepoint.com/sites/dev/documents/folder/')
+ * @returns IFolder instance referencing the folder described by the supplied parameters
+ */
+export async function folderFromAbsolutePath(base: ISPQueryable, absoluteFolderPath: string): Promise<IFolder> {
+
+    const { WebFullUrl } = await base.getContextInfo(absoluteFolderPath);
+    const { pathname } = new URL(absoluteFolderPath);
+    return folderFromServerRelativePath(Folder([base, combine(WebFullUrl, "_api/web")]), decodeURIComponent(pathname));
+}
+
+/**
+ * Creates an IFolder intance given a base object and either an absolute or server relative path to a folder
+ *
+ * @param base Valid SPQueryable from which the observers will be used
+ * @param serverRelativePath server relative or absolute url to the file (ex: 'https://tenant.sharepoint.com/sites/dev/documents/folder' or '/sites/dev/documents/folder')
+ * @returns IFile instance referencing the file described by the supplied parameters
+ */
+export async function folderFromPath(base: ISPQueryable, path: string): Promise<IFolder> {
+    return (isUrlAbsolute(path) ? folderFromAbsolutePath : folderFromServerRelativePath)(base, path);
 }
 
 /**

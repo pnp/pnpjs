@@ -1,5 +1,5 @@
 import { body, TextParse, BlobParse, BufferParse, JSONParse, cancelableScope, CancelAction } from "@pnp/queryable";
-import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute } from "@pnp/core";
+import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute, combine } from "@pnp/core";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -18,6 +18,8 @@ import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath } from "../utils/to-resource-path.js";
 import { ISiteUserProps } from "../site-users/types.js";
 import { encodePath } from "../utils/encode-path-str.js";
+import "../context-info/index.js";
+import { IMoveCopyOptions } from "../types.js";
 
 /**
  * Describes a collection of File objects
@@ -214,7 +216,7 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param options Allows you to supply the full set of options controlling the copy behavior
      */
-    public async copyByPath(destUrl: string, shouldOverWrite: boolean, options: Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>): Promise<void>;
+    public async copyByPath(destUrl: string, shouldOverWrite: boolean, options: Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>): Promise<IFile>;
     /**
      * Moves the file by path to the specified destination url.
      * Also works with different site collections.
@@ -223,9 +225,9 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
      */
-    public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<void>;
+    public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<IFile>;
     @cancelableScope
-    public async copyByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>] | [boolean, boolean?]): Promise<void> {
+    public async copyByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>] | [boolean, boolean?]): Promise<IFile> {
 
         let options: Partial<IMoveCopyOptions> = {
             ShouldBypassSharedLocks: true,
@@ -243,12 +245,14 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
+        await spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
                 options,
                 srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
             }));
+
+        return fileFromPath(this, destUrl);
     }
 
     /**
@@ -272,7 +276,7 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param options Allows you to supply the full set of options controlling the move behavior
      */
-    public async moveByPath(destUrl: string, shouldOverWrite: boolean, options: Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">>): Promise<void>;
+    public async moveByPath(destUrl: string, shouldOverWrite: boolean, options: Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">>): Promise<IFile>;
     /**
      * Moves the file by path to the specified destination url.
      * Also works with different site collections.
@@ -281,9 +285,9 @@ export class _File extends _SPInstance<IFileInfo> {
      * @param shouldOverWrite Should a file with the same name in the same location be overwritten?
      * @param keepBoth Keep both if file with the same name in the same location already exists? Only relevant when shouldOverWrite is set to false.
      */
-    public async moveByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<void>;
+    public async moveByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<IFile>;
     @cancelableScope
-    public async moveByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">>] | [boolean, boolean?]): Promise<void> {
+    public async moveByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">>] | [boolean, boolean?]): Promise<IFile> {
 
         let options: Partial<IMoveCopyOptions> = {
             KeepBoth: false,
@@ -301,12 +305,14 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        return spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
+        spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
                 options,
                 srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
             }));
+
+        return fileFromPath(this, destUrl);
     }
 
     /**
@@ -553,6 +559,31 @@ export function fileFromServerRelativePath(base: ISPQueryable, serverRelativePat
 }
 
 /**
+ * Creates an IFile instance given a base object and an absolute path
+ *
+ * @param base Valid SPQueryable from which the observers will be used
+ * @param serverRelativePath The absolute url to the file (ex: 'https://tenant.sharepoint.com/sites/dev/documents/file.txt')
+ * @returns IFile instance referencing the file described by the supplied parameters
+ */
+export async function fileFromAbsolutePath(base: ISPQueryable, absoluteFilePath: string): Promise<IFile> {
+
+    const { WebFullUrl } = await base.getContextInfo(absoluteFilePath);
+    const { pathname } = new URL(absoluteFilePath);
+    return fileFromServerRelativePath(File([base, combine(WebFullUrl, "_api/web")]), decodeURIComponent(pathname));
+}
+
+/**
+ * Creates an IFile intance given a base object and either an absolute or server relative path to a file
+ *
+ * @param base Valid SPQueryable from which the observers will be used
+ * @param serverRelativePath server relative or absolute url to the file (ex: 'https://tenant.sharepoint.com/sites/dev/documents/file.txt' or '/sites/dev/documents/file.txt')
+ * @returns IFile instance referencing the file described by the supplied parameters
+ */
+export async function fileFromPath(base: ISPQueryable, path: string): Promise<IFile> {
+    return (isUrlAbsolute(path) ? fileFromAbsolutePath : fileFromServerRelativePath)(base, path);
+}
+
+/**
  * Describes a collection of Version objects
  *
  */
@@ -750,29 +781,4 @@ export interface IFileDeleteParams {
      * to target a file with a matching value. Use null to unconditionally delete the file.
      */
     ETagMatch: string;
-}
-
-/**
- * Contains options used to modify the behaviour of a move or copy operation
- */
-export interface IMoveCopyOptions {
-    /**
-     * Boolean specifying whether to rename and copy the source file when the destination file exists
-     */
-    KeepBoth: boolean;
-
-    /**
-     * Boolean specifying whether to reset the destination of the copy author to the current user and the created by datetime to the current time.
-     */
-    ResetAuthorAndCreatedOnCopy: boolean;
-
-    /**
-     * Boolean specifying whether to allow File and Folder Move operations when file contain co-authoring shared locks
-     */
-    ShouldBypassSharedLocks: boolean;
-
-    /**
-     * Boolean specifying whether to retain the source of the move's editor and modified by datetime.
-     */
-    RetainEditorAndModifiedOnMove: boolean;
 }
