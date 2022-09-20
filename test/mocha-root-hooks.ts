@@ -10,6 +10,7 @@ import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import "mocha";
 import "@pnp/sp/webs";
+import { Web } from "@pnp/sp/webs";
 
 declare module "mocha" {
     interface Context {
@@ -32,6 +33,7 @@ declare module "mocha" {
 }
 
 let testStart: number;
+let siteUsed = false;
 
 export const mochaHooks = {
     beforeAll: [
@@ -59,7 +61,6 @@ export const mochaHooks = {
                     return;
                 }
 
-                let siteUsed = false;
                 this.pnp.settings.sp.testWebUrl = this.pnp.settings.sp.url;
 
                 if (this.pnp.args.site && this.pnp.args.site.length > 0) {
@@ -132,7 +133,9 @@ export const mochaHooks = {
 
                 if (this.pnp.args.deleteAllWebs) {
 
-                    await cleanUpAllSubsites(this.pnp.sp.web);
+                    const rootCleanupWeb = siteUsed ? this.pnp.sp.web : Web([this.pnp.sp.web, this.pnp.settings.sp.url]);
+
+                    await cleanUpAllSubsites(rootCleanupWeb);
 
                 } else if (this.pnp.args.deleteWeb && this.pnp.settings.enableWebTests) {
 

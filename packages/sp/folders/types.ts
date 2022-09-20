@@ -148,7 +148,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      */
     public async moveByPath(destUrl: string, KeepBoth?: boolean): Promise<IFolder>;
     @cancelableScope
-    public async moveByPath(destUrl: string,  ...rest: Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">> | boolean?): Promise<IFolder> {
+    public async moveByPath(destUrl: string,  ...rest: [Partial<Omit<IMoveCopyOptions, "ResetAuthorAndCreatedOnCopy">>] | [boolean?]): Promise<IFolder> {
 
         let options: Partial<IMoveCopyOptions> = {
             KeepBoth: false,
@@ -186,7 +186,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      * @param shouldOverWrite Should a folder with the same name in the same location be overwritten?
      * @param options Allows you to supply the full set of options controlling the copy behavior
      */
-    public async copyByPath(destUrl: string, shouldOverWrite: boolean, options: Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>): Promise<IFolder>;
+    public async copyByPath(destUrl: string, options: Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>): Promise<IFolder>;
     /**
      * Copies a folder by path to destination path
      * Also works with different site collections.
@@ -194,9 +194,9 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      * @param destUrl Absolute or relative URL of the destination path
      * @param keepBoth Keep both if folder with the same name in the same location already exists?
      */
-    public async copyByPath(destUrl: string, shouldOverWrite: boolean, KeepBoth?: boolean): Promise<IFolder>;
+    public async copyByPath(destUrl: string, KeepBoth?: boolean): Promise<IFolder>;
     @cancelableScope
-    public async copyByPath(destUrl: string, ...rest: [boolean, Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>] | [boolean, boolean?]): Promise<IFolder> {
+    public async copyByPath(destUrl: string, ...rest: [Partial<Omit<IMoveCopyOptions, "RetainEditorAndModifiedOnMove">>] | [boolean?]): Promise<IFolder> {
 
         let options: Partial<IMoveCopyOptions> = {
             ShouldBypassSharedLocks: true,
@@ -204,11 +204,11 @@ export class _Folder extends _SPInstance<IFolderInfo> {
             KeepBoth: false,
         };
 
-        if (rest.length === 2) {
-            if (typeof rest[1] === "boolean") {
-                options.KeepBoth = rest[1];
-            } else if (typeof rest[1] === "object") {
-                options = { ...options, ...rest[1] };
+        if (rest.length === 1) {
+            if (typeof rest[0] === "boolean") {
+                options.KeepBoth = rest[0];
+            } else if (typeof rest[0] === "object") {
+                options = { ...options, ...rest[0] };
             }
         }
 

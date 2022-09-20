@@ -193,40 +193,6 @@ const metrics = await sp.web.getFolderByServerRelativePath("/sites/dev/shared do
 const metrics2 = await sp.web.getFolderByServerRelativePath("/sites/dev/shared documents/target").storageMetrics.select("TotalSize")();
 ```
 
-### move
-
-It's possible to move a folder to a new destination within a site collection  
-
-```TypeScript
-import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/folders";
-
-const sp = spfi(...);
-
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
-
-await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").moveByPath(destinationUrl);
-```  
-
-### copy
-
-It's possible to copy a folder to a new destination within a site collection  
-
-```TypeScript
-import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/folders";
-
-const sp = spfi(...);
-
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
-
-await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").copyByPath(destinationUrl);
-```  
-
 ### move by path
 
 It's possible to move a folder to a new destination within the same or a different site collection  
@@ -244,6 +210,27 @@ const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
 await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").moveByPath(destinationUrl, true);
 ```  
 
+_Added in 3.8.0_
+
+You can also supply a set of detailed options to better control the move process:
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+// destination is a server-relative url of a new file
+const destinationUrl = `/sites/dev2/SiteAssets/folder`;
+
+await sp.web.getFolderByServerRelativePath("/sites/dev/Shared Documents/folder").moveByPath(destinationUrl, {
+    KeepBoth: false,
+    RetainEditorAndModifiedOnMove: true,
+    ShouldBypassSharedLocks: false,
+});
+```
+
 ### copy by path
 
 It's possible to copy a folder to a new destination within the same or a different site collection  
@@ -260,6 +247,27 @@ const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
 
 await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").copyByPath(destinationUrl, true);
 ```  
+
+_Added in 3.8.0_
+
+You can also supply a set of detailed options to better control the copy process:
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+// destination is a server-relative url of a new file
+const destinationUrl = `/sites/dev2/SiteAssets/folder`;
+
+await sp.web.getFolderByServerRelativePath("/sites/dev/Shared Documents/folder").copyByPath(destinationUrl, false, {
+    KeepBoth: false,
+    ResetAuthorAndCreatedOnCopy: true,
+    ShouldBypassSharedLocks: false,
+});
+```
 
 ### delete
 

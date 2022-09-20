@@ -28,13 +28,13 @@ _SPQueryable.prototype.getContextInfo = async function (path = this.parentUrl): 
 };
 
 /**
- * This is the interface to expose data i.e. context information of a site
+ * This is the interface to expose data context information for a site/web
  */
 export interface IContextInfo {
-    FormDigestTimeoutSeconds?: number;
-    FormDigestValue?: number;
-    LibraryVersion?: string;
-    SiteFullUrl?: string;
-    SupportedSchemaVersions?: string[];
-    WebFullUrl?: string;
+    FormDigestTimeoutSeconds: number;
+    FormDigestValue: number;
+    LibraryVersion: string;
+    SiteFullUrl: string;
+    SupportedSchemaVersions: string[];
+    WebFullUrl: string;
 }

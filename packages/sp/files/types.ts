@@ -305,7 +305,7 @@ export class _File extends _SPInstance<IFileInfo> {
 
         const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
         const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
+        await spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
             body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
                 options,
@@ -554,7 +554,6 @@ export const File = spInvokableFactory<IFile>(_File);
  * @returns IFile instance referencing the file described by the supplied parameters
  */
 export function fileFromServerRelativePath(base: ISPQueryable, serverRelativePath: string): IFile {
-
     return File([base, extractWebUrl(base.toUrl())], `_api/web/getFileByServerRelativePath(decodedUrl='${encodePath(serverRelativePath)}')`);
 }
 

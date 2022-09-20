@@ -61,19 +61,43 @@ describe("Folder", function () {
     });
 
     it("moveByPath", async function () {
-        const folderName = `test2_${getRandomString(5)}`;
+        const folderName = `test_${getRandomString(5)}`;
         await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
         const { ServerRelativeUrl: srcUrl } = await this.pnp.sp.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
         const moveToUrl = `${srcUrl}/SiteAssets/moved_${getRandomString(5)}`;
         return expect(this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName).moveByPath(moveToUrl)).to.eventually.be.fulfilled;
     });
 
+    it("moveByPath - options", async function () {
+        const folderName = `test_${getRandomString(5)}`;
+        await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+        const { ServerRelativeUrl: srcUrl } = await this.pnp.sp.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
+        const moveToUrl = `${srcUrl}/SiteAssets/moved_${getRandomString(5)}`;
+        return expect(this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName).moveByPath(moveToUrl, {
+            ShouldBypassSharedLocks: true,
+            RetainEditorAndModifiedOnMove: true,
+            KeepBoth: false,
+        })).to.eventually.be.fulfilled;
+    });
+
     it("copyByPath", async function () {
-        const folderName = `test2_${getRandomString(5)}`;
+        const folderName = `test_${getRandomString(5)}`;
         await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
         const { ServerRelativeUrl: srcUrl } = await this.pnp.sp.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
         const copyToUrl = `${srcUrl}/SiteAssets/copied_${getRandomString(5)}`;
         return expect(this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName).copyByPath(copyToUrl)).to.eventually.be.fulfilled;
+    });
+
+    it("copyByPath - options", async function () {
+        const folderName = `test_${getRandomString(5)}`;
+        await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+        const { ServerRelativeUrl: srcUrl } = await this.pnp.sp.web.select("ServerRelativeUrl")<{ ServerRelativeUrl: string }>();
+        const copyToUrl = `${srcUrl}/SiteAssets/copied_${getRandomString(5)}`;
+        return expect(this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(folderName).copyByPath(copyToUrl, {
+            KeepBoth: true,
+            ResetAuthorAndCreatedOnCopy: false,
+            ShouldBypassSharedLocks: true,
+        })).to.eventually.be.fulfilled;
     });
 
     it("recycle", async function () {
