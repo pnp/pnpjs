@@ -2,9 +2,11 @@ import { expect } from "chai";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
-import { IDocumentLibraryInformation, IContextInfo, IOpenWebByIdResult, Site } from "@pnp/sp/sites";
+import { IDocumentLibraryInformation, IOpenWebByIdResult, Site } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
 import { combine, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
+import { IContextInfo } from "@pnp/sp/context-info";
+import "@pnp/sp/context-info";
 
 describe("Sites", function () {
 

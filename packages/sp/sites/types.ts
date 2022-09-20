@@ -82,7 +82,6 @@ export class _Site extends _SPInstance {
      * @param webId The GUID id of the web to open
      */
     public async openWebById(webId: string): Promise<IOpenWebByIdResult> {
-
         const data = await spPost(Site(this, `openWebById('${webId}')`));
         return {
             data,
@@ -97,22 +96,6 @@ export class _Site extends _SPInstance {
     public async getRootWeb(): Promise<IWeb> {
         const web = await this.rootWeb.select("Url")<{ Url: string }>();
         return Web([this, web.Url]);
-    }
-
-    /**
-     * Gets the context information for this site collection
-     */
-    public async getContextInfo(): Promise<IContextInfo> {
-
-        const data = await spPost(Site([this, this.parentUrl], "_api/contextinfo"));
-
-        if (hOP(data, "GetContextWebInformation")) {
-            const info = data.GetContextWebInformation;
-            info.SupportedSchemaVersions = info.SupportedSchemaVersions.results;
-            return info;
-        } else {
-            return data;
-        }
     }
 
     /**
@@ -297,18 +280,6 @@ export const Site = spInvokableFactory<ISite>(_Site);
 export interface IOpenWebByIdResult {
     data: any;
     web: IWeb;
-}
-
-/**
- * This is the interface to expose data i.e. context information of a site
- */
-export interface IContextInfo {
-    FormDigestTimeoutSeconds?: number;
-    FormDigestValue?: number;
-    LibraryVersion?: string;
-    SiteFullUrl?: string;
-    SupportedSchemaVersions?: string[];
-    WebFullUrl?: string;
 }
 
 /**
