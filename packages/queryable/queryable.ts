@@ -145,7 +145,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
             try {
 
-                log("Beginning request", 1);
+                log("Beginning request", 0);
 
                 // include the request id in the headers to assist with debugging against logs
                 const initSeed = {
@@ -198,7 +198,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
             } finally {
 
-                log("Finished request", 1);
+                log("Finished request", 0);
             }
 
         }, 0);

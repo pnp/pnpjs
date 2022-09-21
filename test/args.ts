@@ -1,3 +1,5 @@
+import { LogLevel } from "@pnp/logging";
+
 export function getProcessArgs(): IProcessArgs {
 
     // we need to load up the appropriate settings based on where we are running
@@ -5,7 +7,7 @@ export function getProcessArgs(): IProcessArgs {
     let site: string = null;
     let skipWeb = false;
     let deleteWeb = false;
-    let logging = false;
+    let logging = LogLevel.Off;
     let deleteAllWebs = false;
 
     for (let i = 0; i < process.argv.length; i++) {
@@ -32,7 +34,27 @@ export function getProcessArgs(): IProcessArgs {
             deleteAllWebs = true;
         }
         if (/^--logging/i.test(arg)) {
-            logging = true;
+
+            if (/Verbose|Info|Warning|Error/i.test(process.argv[i + 1])) {
+
+                switch (process.argv[++i].toLowerCase()) {
+                    case "verbose":
+                        logging = LogLevel.Verbose;
+                        break;
+                    case "info":
+                        logging = LogLevel.Info;
+                        break;
+                    case "warning":
+                        logging = LogLevel.Warning;
+                        break;
+                    case "error":
+                        logging = LogLevel.Error;
+                        break;
+                }
+
+            } else {
+                logging = LogLevel.Info;
+            }
         }
     }
 
@@ -61,6 +83,6 @@ export interface IProcessArgs {
     site: string | null;
     skipWeb: boolean;
     deleteWeb: boolean;
-    logging: boolean;
+    logging: LogLevel;
     deleteAllWebs: boolean;
 }

@@ -11,6 +11,7 @@ import chaiAsPromised from "chai-as-promised";
 import "mocha";
 import "@pnp/sp/webs";
 import { Web } from "@pnp/sp/webs";
+import { PnPLogging, ConsoleListener, Logger } from "@pnp/logging";
 
 declare module "mocha" {
     interface Context {
@@ -40,6 +41,8 @@ export const mochaHooks = {
         async function setup(this: Context) {
 
             chai.use(chaiAsPromised);
+
+            Logger.subscribe(ConsoleListener());
 
             // start a timer
             testStart = Date.now();
@@ -78,6 +81,7 @@ export const mochaHooks = {
                 if (siteUsed) {
                     // we were given a site, so we don't need to create one
                     this.pnp.sp = rootSP;
+                    this.pnp.sp.using(PnPLogging(this.pnp.args.logging));
                     return;
                 }
 
@@ -96,6 +100,9 @@ export const mochaHooks = {
                         scopes: this.pnp.settings.sp.msal.scopes,
                     },
                 }), NodeFetch({ replace: true }));
+
+                this.pnp.sp.using(PnPLogging(this.pnp.args.logging));
+
             } finally {
                 const setupEnd = Date.now();
                 console.log(`SP Setup completed in ${((setupEnd - setupStart) / 1000).toFixed(4)} seconds.`);
@@ -116,6 +123,9 @@ export const mochaHooks = {
                         scopes: this.pnp.settings.graph.msal.scopes,
                     },
                 }), NodeFetch({ replace: true }));
+
+                this.pnp.graph.using(PnPLogging(this.pnp.args.logging));
+
             } finally {
                 const setupEnd = Date.now();
                 console.log(`Graph Setup completed in ${((setupEnd - setupStart) / 1000).toFixed(4)} seconds.`);
