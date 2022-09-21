@@ -1,11 +1,12 @@
 import { expect } from "chai";
-import { ContentType, List } from "@microsoft/microsoft-graph-types";
+import { ContentType } from "@microsoft/microsoft-graph-types";
 import "@pnp/graph/sites";
 import "@pnp/graph/lists";
 import "@pnp/graph/content-types";
 import { IList } from "@pnp/graph/lists";
 import { ISite } from "@pnp/graph/sites";
 import { getRandomString } from "@pnp/core";
+import getTestingGraphSPSite from "./utilities/getTestingGraphSPSite.js";
 
 describe("ContentTypes", function () {
     let site: ISite;
@@ -22,35 +23,20 @@ describe("ContentTypes", function () {
         id: "0x0100CDB27E23CEF44850904C80BD666FA645",
     };
 
-    const sampleList: List = {
-        displayName: "PnPGraphTestContentTypes",
-        list: { "template": "genericList" },
-    };
-
     before(async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
-        const rootSite = await this.pnp.graph.sites.getById(this.pnp.settings.graph.id);
-        if (rootSite != null) {
-            site = this.pnp.graph.sites.getById(this.pnp.settings.graph.id);
-            const lists = await site.lists();
-            let listIdx = -1;
-            for (let i = 0; i < lists.length; i++) {
-                if (lists[i].displayName === sampleList.displayName) {
-                    listIdx = i;
-                    break;
-                }
-            }
-            if (listIdx === -1) {
-                const addList = await site.lists.add(sampleList);
-                list = addList.list;
-            } else {
-                list = site.lists.getById(lists[listIdx].id);
-            }
-        }
+        site = await getTestingGraphSPSite(this);
+
+        const listTmp = await site.lists.add({
+            displayName: `PnPGraphTestContentTypes_${getRandomString(8)}`,
+            list: { "template": "genericList" },
+        });
+
+        list = site.lists.getById(listTmp.data.id);
     });
 
     after(async function () {
@@ -60,6 +46,7 @@ describe("ContentTypes", function () {
     });
 
     describe("Site", function () {
+
         it("content types", async function () {
             const ct = await site.contentTypes();
             return expect(ct).to.be.an("array") && expect(ct[0]).to.haveOwnProperty("id");

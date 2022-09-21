@@ -36,7 +36,8 @@
       "outFiles": [],
       "args": [
         "--verbose",
-        "--logging"
+        "--logging",
+        "Error",
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
