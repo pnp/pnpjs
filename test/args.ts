@@ -9,6 +9,8 @@ export function getProcessArgs(): IProcessArgs {
     let deleteWeb = false;
     let logging = LogLevel.Off;
     let deleteAllWebs = false;
+    let record = false;
+    let recordMode: "read" | "write" = "read";
 
     for (let i = 0; i < process.argv.length; i++) {
         const arg = process.argv[i];
@@ -56,6 +58,20 @@ export function getProcessArgs(): IProcessArgs {
                 logging = LogLevel.Info;
             }
         }
+        if (/^--record/i.test(arg)) {
+
+            record = true;
+
+            if (/write/i.test(process.argv[i + 1])) {
+
+                switch (process.argv[++i].toLowerCase()) {
+                    case "write":
+                        recordMode = "write";
+                        break;
+                }
+
+            }
+        }
     }
 
     const processArgs = {
@@ -65,6 +81,8 @@ export function getProcessArgs(): IProcessArgs {
         deleteWeb,
         logging,
         deleteAllWebs,
+        record,
+        recordMode,
     };
 
     console.log("*****************************");
@@ -85,4 +103,6 @@ export interface IProcessArgs {
     deleteWeb: boolean;
     logging: LogLevel;
     deleteAllWebs: boolean;
+    record: boolean;
+    recordMode: "read" | "write";
 }

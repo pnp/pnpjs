@@ -38,6 +38,8 @@
         "--verbose",
         "--logging",
         "Error",
+        "--record",
+        "write"
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
