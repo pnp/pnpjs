@@ -12,8 +12,7 @@ import "mocha";
 import "@pnp/sp/webs";
 import { Web } from "@pnp/sp/webs";
 import { PnPLogging, ConsoleListener, Logger, LogLevel } from "@pnp/logging";
-import { initRecording } from "./test-recording.js";
-import { TestProps } from "./test-props.js";
+import { disposeRecording, initRecording } from "./test-recording.js";
 
 declare module "mocha" {
     interface Context {
@@ -217,12 +216,8 @@ export const mochaHooks = {
                 console.log(`Graph Teardown completed in ${((teardownEnd - teardownStart) / 1000).toFixed(4)} seconds.`);
             }
         },
-        async function saveTestProps(this: Context) {
-
-            // save our updated test props
-            if (this.pnp.args.record) {
-                return (<TestProps>this.pnp.testProps).save();
-            }
+        async function recordingTeardown(this: Context) {
+            return disposeRecording(this);
         },
         function goodbye() {
             console.log("All done. Have a nice day :)");

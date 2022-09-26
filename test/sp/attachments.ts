@@ -7,7 +7,7 @@ import "@pnp/sp/attachments";
 import { IList } from "@pnp/sp/lists";
 import { pnpTest } from "../pnp-test.js";
 
-describe.only("Attachments", function () {
+describe("Attachments", function () {
 
     let list: IList = null;
 

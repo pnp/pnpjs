@@ -1,4 +1,4 @@
-import { isFunc, TimelinePipe, dateAdd } from "@pnp/core";
+import { isFunc, TimelinePipe, dateAdd, getHashCode, isUrlAbsolute } from "@pnp/core";
 import { Queryable } from "@pnp/queryable";
 import { statSync, readFileSync, existsSync, writeFileSync, mkdirSync } from "fs";
 import { join, resolve } from "path";
@@ -18,11 +18,14 @@ export function initRecording(ctx: Context | Suite, options?: Partial<IRecording
         resolvedTestSettingsPath,
     } = {
         resolvedRecordingPath: resolve("./.recordings"),
-        resolvedTestSettingsPath: resolve("./.recordings/recorded-test-settings.json"),
+        resolvedTestSettingsPath: resolve("./.recordings/test-props.json"),
         ...options,
     };
 
     if (ctx.pnp.args.record) {
+
+        console.log("Recording is currently disabled while we work out some bugs.");
+        return;
 
         // if we are recording we want to use the TestProps cache
         ctx.pnp.testProps = new TestProps(resolvedTestSettingsPath);
@@ -33,6 +36,54 @@ export function initRecording(ctx: Context | Suite, options?: Partial<IRecording
         ctx.pnp._sp.using(RequestRecorderCache(resolvedRecordingPath, mode));
         ctx.pnp._graph.using(RequestRecorderCache(resolvedRecordingPath, mode));
     }
+}
+
+export async function disposeRecording(ctx: Context | Suite): Promise<void> {
+
+    if (ctx.pnp.args.record && ctx.pnp.args.recordMode === "write") {
+        // save our updated test props
+        return (<TestProps>ctx.pnp.testProps).save();
+    }
+}
+
+const counters = new Map<string, number>();
+
+function incrementCounter(key: string): number {
+
+    let counter = 0;
+
+    if (counters.has(key)) {
+
+        counter = counters.get(key);
+        counter++;
+        counters.set(key, counter);
+
+    } else {
+
+        counters.set(key, counter);
+    }
+
+    return counter;
+}
+
+/**
+ * creats a deterministically unique file name to store a request's response
+ *
+ * @param url request url
+ * @param init request init (contains test id)
+ * @returns unique file name to store request response
+ */
+function getResponseFileName(url: string, init: RequestInit): string {
+
+    const testId = init.headers[PnPTestHeaderName];
+
+    let localUrl = url;
+
+    if (isUrlAbsolute(localUrl)) {
+        localUrl = localUrl.substring(localUrl.indexOf("_api/"));
+    }
+
+    return `${testId}_${getHashCode(localUrl)}_${incrementCounter(`${testId}:${localUrl}`)}.json`;
 }
 
 function RequestRecorderCache(resolvedRecordingPath: string, mode: "playback" | "record" = "playback", isExpired?: (Date) => boolean): TimelinePipe {
@@ -52,18 +103,15 @@ function RequestRecorderCache(resolvedRecordingPath: string, mode: "playback" | 
 
     return (instance: Queryable) => {
 
-        let testReqCount = 0;
-
         instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
-            const testId = init.headers[PnPTestHeaderName];
-
-            this[recorderFilePath] = join(resolvedRecordingPath, `result.${testId}_${++testReqCount}.json`);
+            this[recorderFilePath] = join(resolvedRecordingPath, getResponseFileName(url, init));
 
             if (existsSync(this[recorderFilePath])) {
 
                 const stats = statSync(this[recorderFilePath]);
                 if (!isExpired(stats.mtime)) {
+
                     result = JSON.parse(readFileSync(this[recorderFilePath]).toString());
                     return [url, init, result];
                 }
