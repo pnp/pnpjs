@@ -1,4 +1,4 @@
-import { getHashCode, jsS, stringIsNullOrEmpty } from "@pnp/core";
+import { jsS } from "@pnp/core";
 
 /**
  * takes the supplied object of type U, JSON.stringify's it, and sets it as the value of a "body" property
@@ -17,24 +17,4 @@ export function body<T extends Partial<RequestInit>, U = any>(o: U, previous?: T
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function headers<T extends Partial<RequestInit>, U extends Record<string, string> = {}>(o: U, previous?: T): T & { headers: U } {
     return Object.assign({}, previous, { headers: { ...previous?.headers, ...o } });
-}
-
-/**
- * Adds the X-PnP-CacheAlways header to a request indicating to any caching observers this request should be cached. If
- * no caching observers are registered this has no effect.
- *
- * @param previous Any previous RequestInit to extend
- * @param key An optional key to use when caching the wrapped value. If not supplied a key will be generated as a hash of the `previous` value supplied
- * @returns A RequestInit combining the caching header and any previous RequestInit
- */
-export function cacheAlways<T extends Partial<RequestInit>>(previous?: T, key?: string) {
-
-    if (stringIsNullOrEmpty(key)) {
-        key = getHashCode(JSON.stringify(previous)).toString();
-    }
-
-    return headers({
-        "X-PnP-CacheAlways": "1",
-        "X-PnP-CacheKey": key,
-    }, previous);
 }

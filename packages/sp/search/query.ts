@@ -1,6 +1,6 @@
 import { _SPInstance, ISPQueryable } from "../spqueryable.js";
-import { hOP, isArray } from "@pnp/core";
-import { body, cacheAlways } from "@pnp/queryable";
+import { getHashCode, hOP, isArray } from "@pnp/core";
+import { body, CacheAlways, CacheKey } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
 import { spPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
@@ -93,7 +93,7 @@ export class _Search extends _SPInstance {
 
         const query = this.parseQuery(queryInit);
 
-        const postBody: RequestInit = cacheAlways(body({
+        const postBody: RequestInit = body({
             request: {
                 ...query,
                 HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
@@ -103,13 +103,15 @@ export class _Search extends _SPInstance {
                 SelectProperties: this.fixArrProp(query.SelectProperties),
                 SortList: this.fixArrProp(query.SortList),
             },
-        }));
+        });
 
-        const data = await spPost(this, postBody);
+        const poster = new _Search([this, this.parentUrl]);
+        poster.using(CacheAlways(), CacheKey(getHashCode(JSON.stringify(postBody)).toString()));
+
+        const data = await spPost(poster, postBody);
 
         // Create search instance copy for SearchResult's getPage request.
-        const search = new _Search([this, this.parentUrl]);
-        return new SearchResults(data, search, query);
+        return new SearchResults(data, new _Search([this, this.parentUrl]), query);
     }
 
     /**
@@ -117,7 +119,7 @@ export class _Search extends _SPInstance {
      *
      * @param prop property to fix for container struct
      */
-    private fixArrProp(prop: any): any[] {
+    private fixArrProp<T>(prop: T | T[]): T[] {
         return typeof prop === "undefined" ? [] : isArray(prop) ? prop : [prop];
     }
 
