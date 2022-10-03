@@ -105,6 +105,8 @@ The cache key factory has the form `(url: string) => string` and you must ensure
 
 The expire date factory has the form `(url: string) => Date` and should return the Date when the cached data should expire. If you know that some particular data won't expire often you can set this date far in the future, or for more frequently updated information you can set it lower. If you set the expiration too short there is no reason to use caching as any stored information will likely always be expired. Additionally, you can set the storage to use local storage which will persist across sessions.
 
+> Note that for sp.search() requests if you want to specify a key you will need to use the CacheKey behavior below, the keyFactory value will be overwritten
+
 ```TypeScript
 import { getHashCode, PnPClientStorage, dateAdd, TimelinePipe } from "@pnp/core";
 import { Caching } from "@pnp/queryable";
@@ -165,6 +167,22 @@ const sp = spfi(...).using(Caching());
 const webInfo = await sp.web.using(CacheKey("MyWebInfoCacheKey"))();
 
 const listsInfo = await sp.web.lists.using(CacheKey("MyListsInfoCacheKey"))();
+```
+
+## CacheAlways
+
+_Added in 3.8.0_
+
+This behavior allows you to force caching for a given request. This should not be used for update/create operations as the request will not execute if a result is found in the cache
+
+```TypeScript
+import { Caching, CacheAlways } from "@pnp/queryable";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...).using(Caching());
+
+const webInfo = await sp.web.using(CacheAlways())();
 ```
 
 ## Caching Pessimistic Refresh

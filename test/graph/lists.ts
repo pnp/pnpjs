@@ -4,6 +4,7 @@ import "@pnp/graph/lists";
 import { List } from "@microsoft/microsoft-graph-types";
 import { ISite } from "@pnp/graph/sites";
 import { getRandomString } from "@pnp/core";
+import getTestingGraphSPSite from "./utilities/getTestingGraphSPSite.js";
 
 describe("Lists", function () {
     let site: ISite;
@@ -18,10 +19,7 @@ describe("Lists", function () {
             this.skip();
         }
 
-        const rootSite = await this.pnp.graph.sites.getById(this.pnp.settings.graph.id);
-        if (rootSite != null) {
-            site = this.pnp.graph.sites.getById(this.pnp.settings.graph.id);
-        }
+        site = await getTestingGraphSPSite(this);
     });
 
     it("lists", async function () {

@@ -68,6 +68,62 @@ const file = fileFromServerRelativePath(sp.web, url);
 const fileContent = await file.getText();
 ```
 
+### fileFromAbsolutePath
+
+_Added in 3.8.0_
+
+Utility method allowing you to get an IFile reference using any SPQueryable as a base and an absolute path to the file.
+
+> Works across site collections within the same tenant
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { fileFromAbsolutePath } from "@pnp/sp/files";
+
+const sp = spfi(...);
+
+const url = "https://tenant.sharepoint.com/sites/dev/documents/file.txt";
+
+// file is an IFile and supports all the file operations
+const file = fileFromAbsolutePath(sp.web, url);
+
+// for example
+const fileContent = await file.getText();
+```
+
+### fileFromPath
+
+_Added in 3.8.0_
+
+Utility method allowing you to get an IFile reference using any SPQueryable as a base and an absolute OR server relative path to the file.
+
+> Works across site collections within the same tenant
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { fileFromPath } from "@pnp/sp/files";
+
+const sp = spfi(...);
+
+const url = "https://tenant.sharepoint.com/sites/dev/documents/file.txt";
+
+// file is an IFile and supports all the file operations
+const file = fileFromPath(sp.web, url);
+
+// for example
+const fileContent = await file.getText();
+
+const url2 = "/sites/dev/documents/file.txt";
+
+// file is an IFile and supports all the file operations
+const file2 = fileFromPath(sp.web, url2);
+
+// for example
+const fileContent2 = await file2.getText();
+```
+
 ## Adding Files
 
 Likewise you can add files using one of two methods, addUsingPath or addChunked. AddChunked is appropriate for larger files, generally larger than 10 MB but this may differ based on your bandwidth/latency so you can adjust the code to use the chunked method. The below example shows getting the file object from an input and uploading it to SharePoint, choosing the upload method based on file size.

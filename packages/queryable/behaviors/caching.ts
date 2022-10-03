@@ -10,6 +10,31 @@ export interface ICachingProps {
     expireFunc?: CacheExpireFunc;
 }
 
+/**
+ * Behavior that forces caching for the request regardless of "method"
+ *
+ * @returns TimelinePipe
+ */
+export function CacheAlways() {
+
+    return (instance: Queryable) => {
+
+        instance.on.pre.prepend(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+
+            init.headers = { ...init.headers, "X-PnP-CacheAlways": "1" };
+
+            return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+
+/**
+ * Behavior that allows you to specify a cache key for a request
+ *
+ * @param key The key to use for caching
+  */
 export function CacheKey(key: string) {
 
     return (instance: Queryable) => {
