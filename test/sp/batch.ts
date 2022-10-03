@@ -10,8 +10,9 @@ import { createBatch } from "@pnp/sp/batching";
 import { CheckinType } from "@pnp/sp/files";
 import { AssignFrom, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { IItem } from "@pnp/sp/items";
+import { pnpTest } from "../pnp-test.js";
 
-describe("Batching", function () {
+describe.only("Batching", function () {
 
     before(function () {
 
@@ -20,7 +21,7 @@ describe("Batching", function () {
         }
     });
 
-    it("Single Request", async function () {
+    it("Single Request", pnpTest("7fdd5c90-d114-409e-b4c2-cdd5e4d8f55e", async function () {
         const order: number[] = [];
         const expected: number[] = [1, 2];
 
@@ -34,9 +35,9 @@ describe("Batching", function () {
         order.push(2);
 
         return expect(order.toString()).to.eql(expected.toString());
-    });
+    }));
 
-    it("Even # Requests", async function () {
+    it("Even # Requests", pnpTest("ef00c520-fa8f-4395-b47d-c11d3f114a32", async function () {
         const order: number[] = [];
         const expected: number[] = [1, 2, 3];
 
@@ -55,9 +56,9 @@ describe("Batching", function () {
         order.push(3);
 
         return expect(order.toString()).to.eql(expected.toString());
-    });
+    }));
 
-    it("Odd # Requests", async function () {
+    it("Odd # Requests", pnpTest("56318b9d-6808-4caf-bb80-5fb83a196bb6", async function () {
         const order: number[] = [];
         const expected: number[] = [1, 2, 3, 4];
 
@@ -79,23 +80,26 @@ describe("Batching", function () {
 
         order.push(4);
         return expect(order.toString()).to.eql(expected.toString());
-    });
+    }));
 
-    it("Cloned Requests", async function () {
+    it("Cloned Requests", pnpTest("e663666a-21cf-4953-b6e1-055aa08623c8", async function () {
         const order: number[] = [];
         const expected: number[] = [1, 2, 3];
-        const listTitle = "BatchItemAddTest";
 
-        const ler = await this.pnp.sp.web.lists.ensure(listTitle);
+        const props = await this.props({
+            listTitle: "BatchItemAddTest",
+        });
+
+        const ler = await this.pnp.sp.web.lists.ensure(props.listTitle);
 
         if (ler.data) {
             const [batchedSP, execute] = this.pnp.sp.batched();
 
-            batchedSP.web.lists.getByTitle(listTitle).items.add({ Title: "Hello 1" }).then(function () {
+            batchedSP.web.lists.getByTitle(props.listTitle).items.add({ Title: "Hello 1" }).then(function () {
                 order.push(1);
             });
 
-            batchedSP.web.lists.getByTitle(listTitle).items.add({ Title: "Hello 2" }).then(function () {
+            batchedSP.web.lists.getByTitle(props.listTitle).items.add({ Title: "Hello 2" }).then(function () {
                 order.push(2);
             });
 
@@ -107,11 +111,11 @@ describe("Batching", function () {
 
         } else {
 
-            assert.fail(`Did not succesfully create list ${listTitle}`);
+            assert.fail(`Did not succesfully create list ${props.listTitle}`);
         }
-    });
+    }));
 
-    it("Cloned Requests (not items.add)", async function () {
+    it("Cloned Requests (not items.add)", pnpTest("3a0cfb90-3f86-44ea-b573-6f2d22339e9d", async function () {
 
         if (stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -140,17 +144,23 @@ describe("Batching", function () {
         } else {
             assert.fail("Did not succesfully retrieve visitors group id");
         }
-    });
+    }));
 
-    it("Complex Ordering", async function () {
+    it("Complex Ordering", pnpTest("5c76caaa-0eac-4afd-8eb2-3ea9d996d48c", async function () {
         const order: number[] = [];
         const expected: number[] = [1, 2, 3, 4];
-        const listTitle = "BatchOrderingTest";
 
-        const ler = await this.pnp.sp.web.lists.ensure(listTitle, "", 101);
+        const props = await this.props({
+            listTitle: "BatchOrderingTest",
+            fileName: `MyFile${getRandomString(4)}.txt`,
+            fileName2: "test.txt",
+            content: "Some content",
+        });
+
+        const ler = await this.pnp.sp.web.lists.ensure(props.listTitle, "", 101);
 
         // ensure we have a file
-        const far = await ler.list.rootFolder.files.addUsingPath(`MyFile${getRandomString(4)}.txt`, "Some content");
+        const far = await ler.list.rootFolder.files.addUsingPath(props.fileName, props.content);
 
         const item = await far.file.getItem();
 
@@ -164,7 +174,7 @@ describe("Batching", function () {
         });
 
         item.update({
-            Title: "test.txt",
+            Title: props.fileName2,
         }).then(function () {
             order.push(2);
         });
@@ -178,9 +188,9 @@ describe("Batching", function () {
         order.push(4);
 
         return expect(order.sort().toString()).to.eql(expected.toString());
-    });
+    }));
 
-    it("Web batch", async function () {
+    it.only("Web batch", pnpTest("1c62186c-cce9-4359-8386-043bf8081f66", async function () {
 
         const order: number[] = [];
         const expected: number[] = [1, 2, 3];
@@ -194,9 +204,9 @@ describe("Batching", function () {
         await execute().then(() => order.push(3));
 
         return expect(order.toString()).to.eql(expected.toString());
-    });
+    }));
 
-    it("Should work with the same Queryable when properly cloned (Advanced)", async function () {
+    it("Should work with the same Queryable when properly cloned (Advanced)", pnpTest("91489d5c-453a-4620-b13c-e649876a4660", async function () {
 
         const web = this.pnp.sp.web;
 
@@ -209,9 +219,9 @@ describe("Batching", function () {
         this.pnp.sp.web.using(batchedBehavior)();
 
         return expect(execute()).to.eventually.be.fulfilled;
-    });
+    }));
 
-    it("Should work with the same Queryable when properly cloned by factory (Advanced)", async function () {
+    it("Should work with the same Queryable when properly cloned by factory (Advanced)", pnpTest("9faa1780-9ca7-493b-b8e3-f00a6dcb116f", async function () {
 
         const web = this.pnp.sp.web;
 
@@ -223,9 +233,9 @@ describe("Batching", function () {
         Web(web).using(batchedBehavior)();
 
         return expect(execute()).to.eventually.be.fulfilled;
-    });
+    }));
 
-    it("Should fail with the same Queryable (Advanced)", async function () {
+    it("Should fail with the same Queryable (Advanced)", pnpTest("d9535bc2-c59a-49ba-8666-b3d80510aca5", async function () {
 
         const web = this.pnp.sp.web;
 
@@ -243,32 +253,34 @@ describe("Batching", function () {
 
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(p2).to.eventually.be.fulfilled;
-    });
+    }));
 
-    it("Should rebase objects to allow queries on returned objects", async function () {
+    it("Should rebase objects to allow queries on returned objects", pnpTest("d9535bc2-c59a-49ba-8666-b3d80510aca5", async function () {
+
+        const props = await this.props({
+            listName: "BatchTestRebase",
+            titles: [
+                getRandomString(5),
+                getRandomString(5),
+                getRandomString(5),
+            ],
+            titles2: [
+                getRandomString(5),
+                getRandomString(5),
+                getRandomString(5),
+            ],
+        });
 
         const res: IItem[] = [];
         const ids: number[] = [];
-        const titles = [
-            getRandomString(5),
-            getRandomString(5),
-            getRandomString(5),
-        ];
 
-        const titles2 = [
-            getRandomString(5),
-            getRandomString(5),
-            getRandomString(5),
-        ];
-
-        const listName = "BatchTestRebase";
-        const { list } = await this.pnp.sp.web.lists.ensure(listName);
+        const { list } = await this.pnp.sp.web.lists.ensure(props.listName);
 
         const [batchedBehavior, execute] = createBatch(list);
         list.using(batchedBehavior);
 
         for (let i = 0; i < 3; i++) {
-            list.items.add({ Title: titles[i] }).then(r => {
+            list.items.add({ Title: props.titles[i] }).then(r => {
                 ids.push(r.data.Id);
                 res.push(r.item);
             });
@@ -278,10 +290,10 @@ describe("Batching", function () {
 
         for (let i = 0; i < 3; i++) {
             const y = await res[i].select("Title")();
-            expect(y, `Failed on add then select title ${i}`).to.haveOwnProperty("Title", titles[i]);
+            expect(y, `Failed on add then select title ${i}`).to.haveOwnProperty("Title", props.titles[i]);
         }
 
-        const updateList = this.pnp.sp.web.lists.getByTitle(listName);
+        const updateList = this.pnp.sp.web.lists.getByTitle(props.listName);
         const [batchedBehavior2, execute2] = createBatch(updateList);
         updateList.using(batchedBehavior2);
 
@@ -289,7 +301,7 @@ describe("Batching", function () {
 
         for (let i = 0; i < 3; i++) {
             updateList.items.getById(ids[i]).update({
-                Title: titles2[i],
+                Title: props.titles2[i],
             }).then(r => {
                 res.push(r.item);
             });
@@ -299,7 +311,7 @@ describe("Batching", function () {
 
         for (let i = 0; i < 3; i++) {
             const y = await res[i].select("Title")();
-            expect(y, `Failed on update then select title ${i}`).to.haveOwnProperty("Title", titles2[i]);
+            expect(y, `Failed on update then select title ${i}`).to.haveOwnProperty("Title", props.titles2[i]);
         }
-    });
+    }));
 });
