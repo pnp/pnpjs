@@ -44,7 +44,7 @@ if (yargs.packages || yargs.p) {
 }
 
 const reporter = yargs.verbose ? "spec" : "dot";
-const retries = yargs.noretries ? "0" : "0";
+const retries = yargs.noretries ? "0" : "2";
 
 const config = {
     package: "./package.json",
