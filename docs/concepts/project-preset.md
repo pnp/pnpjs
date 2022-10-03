@@ -73,13 +73,14 @@ export default class PnPjsExample extends React.Component<IPnPjsExampleProps, II
 
 ### Use a service class
 
-Because you do not have full access to the context object within a service you need to setup things a little differently. If you do not need AAD tokens you can leave that part out -- required for @pnp/graph to work -- and specify just the pageContext (Option 2).
+Because you do not have full access to the context object within a service you need to setup things a little differently.
 
 ```TypeScript
 import { ServiceKey, ServiceScope } from "@microsoft/sp-core-library";
 import { PageContext } from "@microsoft/sp-page-context";
 import { AadTokenProviderFactory } from "@microsoft/sp-http";
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi, SPFI, SPFx as spSPFx } from "@pnp/sp";
+import { graphfi, GraphFI, SPFx as gSPFx } from "@pnp/graph";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 
@@ -91,22 +92,20 @@ export class SampleService {
 
     public static readonly serviceKey: ServiceKey<ISampleService> = ServiceKey.create<ISampleService>('SPFx:SampleService', SampleService);
     private _sp: SPFI;
+    private _graph: GraphFI;
 
     constructor(serviceScope: ServiceScope) {
 
         serviceScope.whenFinished(() => {
 
         const pageContext = serviceScope.consume(PageContext.serviceKey);
-        const tokenProviderFactory = serviceScope.consume(AadTokenProviderFactory.serviceKey);
+        const aadTokenProviderFactory = serviceScope.consume(AadTokenProviderFactory.serviceKey);
 
-        //Option 1 - with AADTokenProvider (REQUIRED FOR graphfi)
-        this._sp = spfi().using(SPFx({
-            aadTokenProviderFactory: tokenProviderFactory,
-            pageContext: pageContext,
-        }));
+        //SharePoint
+        this._sp = spfi().using(spSPFx({ pageContext }));
 
-        //Option 2 - without AADTokenProvider
-        this._sp = spfi().using(SPFx({ pageContext }));
+        //Graph
+        this._graph = graphfi().using(gSPFx({ aadTokenProviderFactory }));
     }
 
     public getLists(): Promise<any[]> {

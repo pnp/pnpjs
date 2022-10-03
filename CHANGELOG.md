@@ -320,4 +320,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - sp-addinhelpers:
   - Dropped entire package, no longer needed
+
+- config-store:
+  - Dropped entire package.
   
