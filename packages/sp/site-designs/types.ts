@@ -245,10 +245,6 @@ export interface ISiteDesignCreationInfo {
      */
     TemplateFeatures?: string[];
     /**
-     * Indicates if current site design is out of box template or customer provided.
-     */
-    IsOutOfBoxTemplate: boolean;
-    /**
      * The supported web templates for this SiteDesign.
      */
     SupportedWebTemplates?: string[];
