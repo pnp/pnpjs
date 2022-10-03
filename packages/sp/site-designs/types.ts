@@ -294,7 +294,9 @@ export interface ISiteDesignCreationInfo {
  * Data for updating a site design
  *
  */
-export interface ISiteDesignUpdateInfo extends ISiteDesignCreationInfo { }
+export interface ISiteDesignUpdateInfo extends Partial<ISiteDesignCreationInfo> {
+    Id: string;
+}
 
 export const enum TemplateDesignType {
     /// <summary>
