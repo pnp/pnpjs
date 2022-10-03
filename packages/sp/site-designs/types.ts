@@ -231,47 +231,114 @@ export interface ISiteDesignCreationInfo {
      * For more information see Customize a default site design https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/customize-default-site-design.
      */
     IsDefault?: boolean;
+    /**
+     * Optional thumbnailed preview image data for the SiteDesign.
+     */
+    ThumbnailUrl?: string;
+    /**
+     * Design package associated with this SiteDesign.
+     */
+    DesignPackageId?: string;
+    /**
+     * Optional Template Features of the SiteDesign. It will be an user-readable list of what the site design does.
+     *
+     */
+    TemplateFeatures?: string[];
+    /**
+     * Indicates if current site design is out of box template or customer provided.
+     */
+    IsOutOfBoxTemplate: boolean;
+    /**
+     * The supported web templates for this SiteDesign.
+     */
+    SupportedWebTemplates?: string[];
+    /**
+     * If true, indicates that the site design only works on a group-connected site.
+     */
+    RequiresGroupConnected?: boolean;
+    /**
+     * If true, indicates that the site design only works on a teams-connected site.
+     */
+    RequiresTeamsConnected?: boolean;
+    /**
+     * If true, indicates that the site design only works on a yammer-connected site.
+     */
+    RequiresYammerConnected?: boolean;
+    /**
+     * If true, indicates that the site design only works on an EDU class-connected site.
+     */
+    RequiresClassConnected?: boolean;
+    /**
+     * If true, indicates that the site design only works if the customer has a Syntex license
+     */
+    RequiresSyntexLicense?: boolean;
+    /**
+     * The site design is only for the tenant admin scenario.
+     */
+    IsTenantAdminOnly?: boolean;
+    /**
+     * The design type indicating whether it is a site or list design.
+     */
+    DesignType?: TemplateDesignType;
+    /**
+     * Indicates the default color associated with list design.
+     */
+    ListColor?: ListDesignColor;
+    /**
+     * Indicates the default icon associated with list design.
+     */
+    ListIcon?: ListDesignIcon;
+    /**
+     * Indicates the set of platforms the list design should be available on. (A List design can target multiple platforms.)
+     */
+    TargetPlatforms?: string[];
 }
 
 /**
  * Data for updating a site design
  *
  */
-export interface ISiteDesignUpdateInfo {
-    /**
-     * The ID of the site design to apply.
-     */
-    Id: string;
-    /**
-     * (Optional) The new display name of the updated site design.
-     */
-    Title?: string;
-    /**
-     * (Optional) The new template to add the site design to. Use the value 64 for the Team site template, and the value 68 for the Communication site template.
-     */
-    WebTemplate?: string;
-    /**
-     * (Optional) A new array of one or more site scripts. Each is identified by an ID. The scripts run in the order listed.
-     */
-    SiteScriptIds?: string[];
-    /**
-     * (Optional) The new display description of the updated site design.
-     */
-    Description?: string;
-    /**
-     * (Optional) The new URL of a preview image.
-     */
-    PreviewImageUrl?: string;
-    /**
-     * (Optional) The new alt text description of the image for accessibility.
-     */
-    PreviewImageAltText?: string;
-    /**
-     * (Optional) True if the site design is applied as the default site design; otherwise, false.
-     * For more information see Customize a default site design https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/customize-default-site-design.
-     * If you had previously set the IsDefault parameter to TRUE and wish it to remain true, you must pass in this parameter again (otherwise it will be reset to FALSE).
-     */
-    IsDefault?: boolean;
+export interface ISiteDesignUpdateInfo extends ISiteDesignCreationInfo { }
+
+export const enum TemplateDesignType {
+    /// <summary>
+    /// Represents the Site design type.
+    /// </summary>
+    Site = 0,
+    /// <summary>
+    /// Represents the List design type.
+    /// </summary>
+    List = 1
+}
+
+export const enum ListDesignColor {
+    DarkRed = 0,
+    Red = 1,
+    Orange = 2,
+    Green = 3,
+    DarkGreen = 4,
+    Teal = 5,
+    Blue = 6,
+    NavyBlue = 7,
+    BluePurple = 8,
+    DarkBlue = 9,
+    Lavendar = 10,
+    Pink = 11
+}
+
+export const enum ListDesignIcon {
+    Bug = 0,
+    Calendar = 1,
+    BullseyeTarget = 2,
+    ClipboardList = 3,
+    Airplane = 4,
+    Rocket = 5,
+    Color = 6,
+    Insights = 7,
+    CubeShape = 8,
+    TestBeakerSolid = 9,
+    Robot = 10,
+    Savings = 11
 }
 
 /**
