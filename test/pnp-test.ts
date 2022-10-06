@@ -46,7 +46,7 @@ function PnPTestIdHeader(id: () => string): TimelinePipe {
  */
 export function pnpTest(id: string, testFunc: (this: IPnPTestFuncThis) => any): IPnPTestFunc {
 
-    return async function (this: IPnPTestFuncThis) {
+    return async function (this: IPnPTestFuncThis, ...args: any[]) {
 
         this.pnpid = id;
         this.props = this.pnp.testProps.get.bind(this.pnp.testProps, this.pnpid);
@@ -55,6 +55,6 @@ export function pnpTest(id: string, testFunc: (this: IPnPTestFuncThis) => any): 
         this.pnp.sp = spfi(this.pnp._sp).using(PnPTestIdHeader(() => this.pnpid));
         this.pnp.graph = graphfi(this.pnp._graph).using(PnPTestIdHeader(() => this.pnpid));
 
-        return testFunc.apply(this);
+        return testFunc.apply(this, args);
     };
 }

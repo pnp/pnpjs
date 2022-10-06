@@ -12,7 +12,7 @@ import { AssignFrom, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { IItem } from "@pnp/sp/items";
 import { pnpTest } from "../pnp-test.js";
 
-describe.only("Batching", function () {
+describe("Batching", function () {
 
     before(function () {
 
@@ -190,7 +190,7 @@ describe.only("Batching", function () {
         return expect(order.sort().toString()).to.eql(expected.toString());
     }));
 
-    it.only("Web batch", pnpTest("1c62186c-cce9-4359-8386-043bf8081f66", async function () {
+    it("Web batch", pnpTest("1c62186c-cce9-4359-8386-043bf8081f66", async function () {
 
         const order: number[] = [];
         const expected: number[] = [1, 2, 3];
