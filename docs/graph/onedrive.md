@@ -51,9 +51,9 @@ import "@pnp/graph/onedrive";
 
 const graph = graphfi(...);
 
-const drive = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId');
+const drive = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')();
 
-const drive = await graph.me.drives.getById('driveId');
+const drive = await graph.me.drives.getById('driveId')();
 
 ```
 
