@@ -69,7 +69,6 @@ export function getProcessArgs(): IProcessArgs {
                         recordMode = "write";
                         break;
                 }
-
             }
         }
     }

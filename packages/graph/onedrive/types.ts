@@ -142,7 +142,7 @@ export class _DriveItems extends _GraphQueryableCollection {
 
         return {
             data,
-            driveItem: (<any>this).getById(data.id),
+            driveItem: DriveItem([this, `${combine("drives", data.parentReference.driveId, "items", data.id)}`]),
         };
     }
 
@@ -163,7 +163,7 @@ export class _DriveItems extends _GraphQueryableCollection {
 
         return {
             data,
-            driveItem: (<any>this).getById(data.id),
+            driveItem: DriveItem([this, `${combine("drives", data.parentReference.driveId, "items", data.id)}`]),
         };
     }
 }
