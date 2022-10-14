@@ -123,6 +123,9 @@ export const mochaHooks = {
                     NodeFetch({ replace: true }),
                     PnPLogging(this.pnp.args.logging));
 
+                // TODO:: remove once pnpTest is used everywhere
+                this.pnp.sp = this.pnp._sp;
+
             } finally {
                 const setupEnd = Date.now();
                 console.log(`SP Setup completed in ${((setupEnd - setupStart) / 1000).toFixed(4)} seconds.`);
@@ -143,6 +146,9 @@ export const mochaHooks = {
                         scopes: this.pnp.settings.graph.msal.scopes,
                     },
                 }), NodeFetch({ replace: true }), PnPLogging(this.pnp.args.logging));
+
+                // TODO:: remove once pnpTest is used everywhere
+                this.pnp.graph = this.pnp._graph;
 
             } finally {
                 const setupEnd = Date.now();
