@@ -41,12 +41,16 @@ export function initRecording(ctx: Context | Suite, options?: Partial<IRecording
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function disposeRecording(ctx: Context | Suite): Promise<void> {
 
-    if (ctx.pnp.args.record && ctx.pnp.args.recordMode === "write") {
-        // save our updated test props
-        return (<TestProps>ctx.pnp.testProps).save();
-    }
+    // TODO:: we do nothing currently until recording is ready
+    return;
+
+    // if (ctx.pnp.args.record && ctx.pnp.args.recordMode === "write" && typeof (<any>ctx.pnp?.testProps)?.save === "function") {
+    //     // save our updated test props
+    //     return (<TestProps>ctx.pnp.testProps).save();
+    // }
 }
 
 const counters = new Map<string, number>();
