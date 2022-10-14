@@ -5,7 +5,6 @@ export {
     IOpenWebByIdResult,
     ISite,
     Site,
-    IContextInfo,
     IDocumentLibraryInformation,
 } from "./types.js";
 

@@ -127,6 +127,8 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
         const setInfo = await this.select(...selects)();
         const tree: IOrderedTermInfo[] = [];
 
+        const rootFilter: string[] = [];
+
         const ensureOrder = (terms: IOrderedTermInfo[], sorts: ITermSortOrderInfo[], setSorts?: string[]): IOrderedTermInfo[] => {
 
             // handle no custom sort information present
@@ -163,7 +165,7 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
             return terms;
         };
 
-        const visitor = async (source: { children: IChildren }, parent: IOrderedTermInfo[]) => {
+        const visitor = async (source: any, parent: IOrderedTermInfo[]) => {
 
             const children = await source.children.select(...selects)();
 
@@ -171,7 +173,7 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
 
                 const child = children[i];
 
-                const orderedTerm = {
+                const orderedTerm: Partial<IOrderedTermInfo> = {
                     children: <IOrderedTermInfo[]>[],
                     defaultLabel: child.labels.find(l => l.isDefault).name,
                     ...child,
@@ -180,13 +182,24 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
                 if (child.childrenCount > 0) {
                     await visitor(this.getTermById(children[i].id), <any>orderedTerm.children);
                     orderedTerm.children = ensureOrder(<any>orderedTerm.children, child.customSortOrder);
+
                 }
 
-                parent.push(orderedTerm);
+                if (rootFilter.indexOf(orderedTerm.id) < 0) {
+                    rootFilter.push(orderedTerm.id);
+                    parent.push(<Required<IOrderedTermInfo>>orderedTerm);
+                }
             }
         };
 
-        await visitor(this, tree);
+        // we need to get all the terms first, which will include copied terms inside the termset (#2414)
+        // we then normalize the tree with visitor using rootFilter
+        // to keep the visitor code consistent we create this small facade to get things going
+        const rootTerms = {
+            children: Terms(this.terms, ""),
+        };
+
+        await visitor(rootTerms, tree);
 
         return ensureOrder(tree, null, setInfo.customSortOrder);
     }
@@ -214,6 +227,10 @@ export interface ITerms extends _Terms { }
 export const Terms = spInvokableFactory<ITerms>(_Terms);
 
 export class _Term extends _SPInstance<ITermInfo> {
+
+    public get terms(): IChildren {
+        return Terms(this);
+    }
 
     public get children(): IChildren {
         return Children(this);

@@ -278,7 +278,6 @@ export interface ISearchQuery {
  * Provides hints at the properties which may be available on the result object
  */
 export interface ISearchResult {
-
     Rank?: number;
     DocId?: number;
     WorkId?: number;
@@ -320,6 +319,15 @@ export interface ISearchResult {
     PartitionId?: string;
     UrlZone?: number;
     Culture?: string;
+    GeoLocationSource?: string;
+    SiteId?: string;
+    WebId?: string;
+    ListId?: string;
+    IsExternalContent?: boolean;
+    DocumentSignature?: string;
+    LinkingUrl?: string;
+    ResultTypeId?: string;
+    ResultTypeIdList?: string;
 }
 
 export interface ISearchResponse {

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { ColumnDefinition, ContentType, List } from "@microsoft/microsoft-graph-types";
+import { ColumnDefinition } from "@microsoft/microsoft-graph-types";
 import "@pnp/graph/sites";
 import "@pnp/graph/lists";
 import "@pnp/graph/columns";
@@ -8,27 +8,13 @@ import { IList } from "@pnp/graph/lists";
 import { ISite } from "@pnp/graph/sites";
 import { IContentType } from "@pnp/graph/content-types";
 import { getRandomString } from "@pnp/core";
+import getTestingGraphSPSite from "./utilities/getTestingGraphSPSite.js";
 
 describe("Columns", function () {
+
     let site: ISite;
     let list: IList;
     let contentType: IContentType;
-
-    const sampleContentType: ContentType = {
-        name: "PnPTestContentType",
-        description: "PnPTestContentType Description",
-        base: {
-            name: "Item",
-            id: "0x01",
-        },
-        group: "PnPTest Content Types",
-        id: "0x0100CDB27E23CEF44850904C80BD666FA645",
-    };
-
-    const sampleList: List = {
-        displayName: "PnPGraphTestColumns",
-        list: { "template": "genericList" },
-    };
 
     const sampleColumn: ColumnDefinition = {
         description: "PnPTestColumn Description",
@@ -51,17 +37,30 @@ describe("Columns", function () {
             this.skip();
         }
 
-        const rootSite = await this.pnp.graph.sites.getById(this.pnp.settings.graph.id);
-        if (rootSite != null) {
-            site = this.pnp.graph.sites.getById(this.pnp.settings.graph.id);
+        site = await getTestingGraphSPSite(this);
 
-            const ctTemplate = JSON.parse(JSON.stringify(sampleContentType));
-            ctTemplate.name += getRandomString(5) + "Columns";
-            const addCT = await site.contentTypes.add(ctTemplate);
-            contentType = addCT.contentType;
-            const addList = await site.lists.add(sampleList);
-            list = addList.list;
-        }
+        const ctTemplate = JSON.parse(JSON.stringify({
+            name: "PnPTestContentType",
+            description: "PnPTestContentType Description",
+            base: {
+                name: "Item",
+                id: "0x01",
+            },
+            group: "PnPTest Content Types",
+            id: "0x0100CDB27E23CEF44850904C80BD666FA645",
+        }));
+
+        ctTemplate.name += getRandomString(5) + "Columns";
+
+        const addCT = await site.contentTypes.add(ctTemplate);
+        contentType = addCT.contentType;
+
+        const addList = await site.lists.add({
+            displayName: "PnPGraphTestColumns",
+            list: { "template": "genericList" },
+        });
+
+        list = addList.list;
     });
 
     after(async function () {
@@ -76,7 +75,10 @@ describe("Columns", function () {
     describe("Site", function () {
         it("columns", async function () {
             const columns = await site.columns();
-            return expect(columns).to.be.an("array") && expect(columns[0]).to.haveOwnProperty("id");
+            expect(columns).to.be.an("array");
+            if (columns.length > 0) {
+                expect(columns[0]).to.haveOwnProperty("id");
+            }
         });
 
         it("getById()", async function () {

@@ -48,6 +48,62 @@ const url = "/sites/dev/documents/folder4";
 const folder = folderFromServerRelativePath(sp.web, url);
 ```
 
+### folderFromAbsolutePath
+
+_Added in 3.8.0_
+
+Utility method allowing you to get an IFile reference using any SPQueryable as a base and an absolute path to the file.
+
+> Works across site collections within the same tenant
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { folderFromAbsolutePath } from "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+const url = "https://tenant.sharepoint.com/sites/dev/documents/folder";
+
+// file is an IFile and supports all the file operations
+const folder = folderFromAbsolutePath(sp.web, url);
+
+// for example
+const folderInfo = await folder();
+```
+
+### folderFromPath
+
+_Added in 3.8.0_
+
+Utility method allowing you to get an IFolder reference using any SPQueryable as a base and an absolute OR server relative path to the file.
+
+> Works across site collections within the same tenant
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { folderFromPath } from "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+const url = "https://tenant.sharepoint.com/sites/dev/documents/folder";
+
+// file is an IFile and supports all the file operations
+const folder = folderFromPath(sp.web, url);
+
+// for example
+const folderInfo = await folder();
+
+const url2 = "/sites/dev/documents/folder";
+
+// file is an IFile and supports all the file operations
+const folder2 = folderFromPath(sp.web, url2);
+
+// for example
+const folderInfo2 = await folder2();
+```
+
 ### add
 
 Adds a new folder to collection of folders
@@ -118,39 +174,24 @@ const sp = spfi(...);
 const folderItem = await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").getItem();
 ```
 
-### move
+### storageMetrics
 
-It's possible to move a folder to a new destination within a site collection  
+_Added in 3.8.0_
 
-```TypeScript
+Gets a set of metrics describing the total file size contained in the folder.
+
+```TS
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
+const metrics = await sp.web.getFolderByServerRelativePath("/sites/dev/shared documents/target").storageMetrics();
 
-await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").moveByPath(destinationUrl);
-```  
-
-### copy
-
-It's possible to copy a folder to a new destination within a site collection  
-
-```TypeScript
-import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/folders";
-
-const sp = spfi(...);
-
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
-
-await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").copyByPath(destinationUrl);
-```  
+// you can also select specific metrics if desired:
+const metrics2 = await sp.web.getFolderByServerRelativePath("/sites/dev/shared documents/target").storageMetrics.select("TotalSize")();
+```
 
 ### move by path
 
@@ -169,6 +210,27 @@ const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
 await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").moveByPath(destinationUrl, true);
 ```  
 
+_Added in 3.8.0_
+
+You can also supply a set of detailed options to better control the move process:
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+// destination is a server-relative url of a new file
+const destinationUrl = `/sites/dev2/SiteAssets/folder`;
+
+await sp.web.getFolderByServerRelativePath("/sites/dev/Shared Documents/folder").moveByPath(destinationUrl, {
+    KeepBoth: false,
+    RetainEditorAndModifiedOnMove: true,
+    ShouldBypassSharedLocks: false,
+});
+```
+
 ### copy by path
 
 It's possible to copy a folder to a new destination within the same or a different site collection  
@@ -185,6 +247,27 @@ const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
 
 await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").copyByPath(destinationUrl, true);
 ```  
+
+_Added in 3.8.0_
+
+You can also supply a set of detailed options to better control the copy process:
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+// destination is a server-relative url of a new file
+const destinationUrl = `/sites/dev2/SiteAssets/folder`;
+
+await sp.web.getFolderByServerRelativePath("/sites/dev/Shared Documents/folder").copyByPath(destinationUrl, false, {
+    KeepBoth: false,
+    ResetAuthorAndCreatedOnCopy: true,
+    ShouldBypassSharedLocks: false,
+});
+```
 
 ### delete
 

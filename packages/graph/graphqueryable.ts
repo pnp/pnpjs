@@ -82,6 +82,11 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
         base: GraphInit = this.parentUrl,
         path?: string): T {
 
+        if (typeof base === "string") {
+            // we need to ensure the parent has observers, even if we are rebasing the url (#2435)
+            base = [this, base];
+        }
+
         return new factory(base, path);
     }
 }
