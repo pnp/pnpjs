@@ -639,7 +639,7 @@ const items = await list.items.top(2)();
 
 ### defaultDocumentLibrary
 
-Get a reference of the default documents library of a web
+Get a reference to the default document library of a web
 
 ```TypeScript
 import { spfi } from "@pnp/sp";

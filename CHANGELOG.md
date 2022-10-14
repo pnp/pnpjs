@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.8.0 - 2022-Oct-14
+
+### Added
+
+- sp
+  - adds storage metrics for IFolder
+  - adds return of IFolder or IFile from copyByPath and moveByPath
+  - adds fileFromPath and fileFromAbsolutePath to get an IFile from arbitrary file paths
+  - adds folderFromPath and folderFromAbsolutePath to get an IFolder from arbitrary file paths
+  - adds ability to pass all options to IFolder's moveByPath and copyByPath to match IFile
+  - adds docs/tests for the new stuff
+  - adds a new sp module context-info allowing for easier retrieval of contextual information
+  - adds new CacheAlways behavior
+  - adds additional props to ISearchResult
+  - adds additional props to site scripts create/update
+
+### Fixed
+
+- docs
+  - General typo fixes
+  - Fixed service class example
+
+- graph
+  - Fixed bug with getAllChildrenAsOrderedTree, #2414
+  - Fixed issue with observables missing when adding drive item, #2435
+
 ## 3.7.0 - 2022-Sept-9
 
 ### Added
