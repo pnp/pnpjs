@@ -188,7 +188,8 @@ describe("OneDrive", function () {
     //         const folder = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.addFolder(testFolderName);
     //         if (folder != null) {
     //             const folderId: string = folder.data.id;
-    //             const move = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id).move({ parentReference: { id: folderId }, name: testFileName2 });
+    //             const move = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId)
+    //                   .getItemById(children.data.id).move({ parentReference: { id: folderId }, name: testFileName2 });
     //             driveItemUpdate = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id)();
     //             // Clean up test file
     //             await children.driveItem.delete();
