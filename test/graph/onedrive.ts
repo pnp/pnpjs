@@ -17,7 +17,7 @@ describe("OneDrive", function () {
         // Get a sample user
         try {
             testUserName = this.pnp.settings.testUser.substr(this.pnp.settings.testUser.lastIndexOf("|") + 1);
-            const drives = await this.pnp._graph.users.getById(testUserName).drives();
+            const drives = await this.pnp.graph.users.getById(testUserName).drives();
             if (drives.length > 0) {
                 driveId = drives[0].id;
             }
@@ -27,7 +27,7 @@ describe("OneDrive", function () {
     });
 
     it("Get Default Drive", async function () {
-        const drives = await this.pnp._graph.users.getById(testUserName).drives();
+        const drives = await this.pnp.graph.users.getById(testUserName).drives();
         return expect(drives.length).is.greaterThan(0);
     });
 
@@ -35,7 +35,7 @@ describe("OneDrive", function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
         }
-        const drive = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId)();
+        const drive = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId)();
         return expect(drive).is.not.null;
     });
 
@@ -43,7 +43,7 @@ describe("OneDrive", function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
         }
-        const list = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).list();
+        const list = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).list();
         return expect(list).is.not.null;
     });
 
@@ -52,7 +52,7 @@ describe("OneDrive", function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
         }
-        const recent = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).recent();
+        const recent = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).recent();
         return expect(recent).is.not.null;
     });
 
@@ -60,7 +60,7 @@ describe("OneDrive", function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
         }
-        const root = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root();
+        const root = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root();
         return expect(root).is.not.null;
     });
 
@@ -68,7 +68,7 @@ describe("OneDrive", function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
         }
-        const children = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.children();
+        const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children();
         return expect(children).is.not.null;
     });
 
@@ -77,7 +77,7 @@ describe("OneDrive", function () {
             this.skip();
         }
         const testFileName = `TestFile_${getRandomString(4)}.txt`;
-        const children = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
+        const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
         if (children != null) {
             // Clean up test file
             await children.driveItem.delete();
@@ -90,7 +90,7 @@ describe("OneDrive", function () {
             this.skip();
         }
         const testFolderName = `TestFolder_${getRandomString(4)}`;
-        const folder = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.children.addFolder(testFolderName);
+        const folder = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.addFolder(testFolderName);
         if (folder != null) {
             // Clean up test file
             await folder.driveItem.delete();
@@ -105,10 +105,10 @@ describe("OneDrive", function () {
     //     }
     //     const searchString = `TestFile_${getRandomString(4)}`;
     //     const testFileName = `${searchString}.txt`;
-    //     const children = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
+    //     const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
     //     let searchResults;
     //     if (children != null) {
-    //         searchResults = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.search(searchString)();
+    //         searchResults = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.search(searchString)();
     //         // Clean up test file
     //         await children.driveItem.delete();
     //     }
@@ -120,10 +120,10 @@ describe("OneDrive", function () {
             this.skip();
         }
         const testFileName = `${getRandomString(4)}.txt`;
-        const children = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
+        const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
         let driveItemId;
         if (children != null) {
-            driveItemId = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id)();
+            driveItemId = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id)();
             // Clean up test file
             await children.driveItem.delete();
         }
@@ -134,7 +134,7 @@ describe("OneDrive", function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
         }
-        const thumbnails = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.thumbnails();
+        const thumbnails = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.thumbnails();
         return expect(thumbnails).is.not.null;
     });
 
@@ -143,13 +143,13 @@ describe("OneDrive", function () {
             this.skip();
         }
         const testFileName = `${getRandomString(4)}.txt`;
-        const children = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
+        const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
         let driveItemId = null;
         if (children != null) {
             // Clean up test file
             await children.driveItem.delete();
             try {
-                driveItemId = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id)();
+                driveItemId = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id)();
             } catch (err) {
                 // Do nothing as this is the expected outcome
             }
@@ -163,11 +163,11 @@ describe("OneDrive", function () {
         }
         const testFileName = `${getRandomString(4)}.txt`;
         const testFileName2 = `${getRandomString(4)}.txt`;
-        const children = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
+        const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
         let driveItemUpdate;
         if (children != null) {
-            await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id).update({ name: testFileName2 });
-            driveItemUpdate = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id)();
+            await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id).update({ name: testFileName2 });
+            driveItemUpdate = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id)();
             // Clean up test file
             await children.driveItem.delete();
         }
@@ -181,15 +181,15 @@ describe("OneDrive", function () {
     //     }
     //     const testFileName = `${getRandomString(4)}.txt`;
     //     const testFileName2 = `${getRandomString(4)}.txt`;
-    //     const children = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
+    //     const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.add(testFileName, "My File Content String");
     //     let driveItemUpdate;
     //     if (children != null) {
     //         const testFolderName = `TestFolder_${getRandomString(4)}`;
-    //         const folder = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).root.children.addFolder(testFolderName);
+    //         const folder = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.addFolder(testFolderName);
     //         if (folder != null) {
     //             const folderId: string = folder.data.id;
-    //             const move = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id).move({ parentReference: { id: folderId }, name: testFileName2 });
-    //             driveItemUpdate = await this.pnp._graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id)();
+    //             const move = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id).move({ parentReference: { id: folderId }, name: testFileName2 });
+    //             driveItemUpdate = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id)();
     //             // Clean up test file
     //             await children.driveItem.delete();
     //             // Clean up test folder
