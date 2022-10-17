@@ -79,3 +79,9 @@ const graph = graphfi(...);
 
 await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").columns();
 ```
+
+## Get List Items
+
+Currently, recieving list items via @pnpjs/graph API is not possible.
+
+This can currently be done with a call by path as documented under [@pnpjs/graph/sites](./sites.md)
