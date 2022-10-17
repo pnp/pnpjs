@@ -84,4 +84,4 @@ await graph.sites.getById("{site identifier}").lists.getById("{list identifier}"
 
 Currently, recieving list items via @pnpjs/graph API is not possible.
 
-This can currently be done with a call by path as documented under [@pnpjs/graph/sites](./sites.md)
+This can currently be done with a call by path as documented under [@pnpjs/graph/sites](./items.md)
