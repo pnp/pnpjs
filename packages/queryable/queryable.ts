@@ -129,7 +129,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         // if there are NO observers registered this is likely either a bug in the library or a user error, direct to docs
         if (Reflect.ownKeys(this.observers).length < 1) {
-            throw Error("No observers registered for this request. (https://pnp.github.io/pnpjs/queryable/queryable#No-observers-registered-for-this-request)");
+            throw Error("No observers registered for this request. (https://pnp.github.io/pnpjs/queryable/queryable#no-observers-registered-for-this-request)");
         }
 
         // schedule the execution after we return the promise below in the next event loop
