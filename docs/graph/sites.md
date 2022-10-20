@@ -26,26 +26,6 @@ const graph = graphfi(...);
 const siteInfo = await graph.sites.getById("{site identifier}")();
 ```
 
-## Make additional calls
+## Make additional calls or recieve items from lists
 
-We don't currently implement all of the available options in graph for sites, rather focusing on the sp library. While we do accept PRs to add functionality, you can also make calls by path:
-
-### Get list items
-
-```TypeScript
-import { Site } from "@pnp/graph/sites";
-
-const sites = graph.sites.getById("{site id}");
-
-const users = await Site(sites, "lists/{listid}/items")();
-```
-
-### Get File/Item version information
-
-```TypeScript
-import { Site } from "@pnp/graph/sites";
-
-const sites = graph.sites.getById("{site id}");
-
-const users = await Site(sites, "lists/{listid}/items/{item id}/versions")();
-```
+We don't currently implement all of the available options in graph for sites, rather focusing on the sp library. While we do accept PRs to add functionality, you can [also make calls by path.](./items.md)
