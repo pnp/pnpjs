@@ -55,6 +55,13 @@ describe("Folder", function () {
         return expect(x).to.haveOwnProperty("Id");
     });
 
+    it("getItem - call list", async function () {
+        const far = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(`test${getRandomString(4)}`);
+        const x = await far.folder.getItem();
+        const y = await x.list();
+        return expect(y).to.haveOwnProperty("odata.metadata").contains("$metadata#SP.ApiData.Lists");
+    });
+
     it("storageMetrics", async function () {
         const metrics = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").storageMetrics();
         return expect(metrics).to.haveOwnProperty("TotalSize");

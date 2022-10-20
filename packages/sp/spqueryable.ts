@@ -65,8 +65,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
             super(base, path);
 
             const q: Queryable<any> = isArray(base) ? base[0] : base;
-
-            this.parentUrl = q.toUrl();
+            this.parentUrl = isArray(base) ? base[1] : q.toUrl();
 
             const target = q.query.get("@target");
             if (objectDefinedNotNull(target)) {
