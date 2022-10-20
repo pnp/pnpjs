@@ -1,14 +1,15 @@
-import { body, TextParse, BlobParse, BufferParse, JSONParse, cancelableScope, CancelAction } from "@pnp/queryable";
+import { body, cancelableScope, CancelAction } from "@pnp/queryable";
 import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute, combine } from "@pnp/core";
 import {
     _SPCollection,
     spInvokableFactory,
-    _SPInstance,
     SPInstance,
     ISPInstance,
     IDeleteableWithETag,
     deleteableWithETag,
     ISPQueryable,
+    deleteable,
+    IDeleteable,
 } from "../spqueryable.js";
 import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
@@ -18,8 +19,9 @@ import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath } from "../utils/to-resource-path.js";
 import { ISiteUserProps } from "../site-users/types.js";
 import { encodePath } from "../utils/encode-path-str.js";
-import "../context-info/index.js";
 import { IMoveCopyOptions } from "../types.js";
+import { ReadableFile } from "./readable-file.js";
+import "../context-info/index.js";
 
 /**
  * Describes a collection of File objects
@@ -121,7 +123,7 @@ export const Files = spInvokableFactory<IFiles>(_Files);
  * Describes a single File instance
  *
  */
-export class _File extends _SPInstance<IFileInfo> {
+export class _File extends ReadableFile<IFileInfo> {
 
     public delete = deleteableWithETag();
 
@@ -381,42 +383,6 @@ export class _File extends _SPInstance<IFileInfo> {
     }
 
     /**
-     * Gets the contents of the file as text. Not supported in batching.
-     *
-     */
-    public getText(): Promise<string> {
-
-        return File(this, "$value").using(TextParse())();
-    }
-
-    /**
-     * Gets the contents of the file as a blob, does not work in Node.js. Not supported in batching.
-     *
-     */
-    public getBlob(): Promise<Blob> {
-
-        return File(this, "$value").using(BlobParse())();
-    }
-
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
-     */
-    public getBuffer(): Promise<ArrayBuffer> {
-
-        return File(this, "$value").using(BufferParse())();
-    }
-
-    // (headers({ "binaryStringResponseBody": "true" })
-
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
-     */
-    public getJSON(): Promise<any> {
-
-        return File(this, "$value").using(JSONParse())();
-    }
-
-    /**
      * Sets the content of a file, for large files use setContentChunked. Not supported in batching.
      *
      * @param content The file content
@@ -658,8 +624,10 @@ export const Versions = spInvokableFactory<IVersions>(_Versions);
  * Describes a single Version instance
  *
  */
-export class _Version extends _SPInstance { }
-export interface IVersion extends _Version, IDeleteableWithETag { }
+export class _Version extends ReadableFile<IVersionInfo> {
+    public delete = deleteable();
+}
+export interface IVersion extends _Version, IDeleteable { }
 export const Version = spInvokableFactory<IVersion>(_Version);
 
 /**
@@ -764,6 +732,18 @@ export interface IFileInfo {
     UIVersionLabel: string;
     UniqueId: string;
     WebId: string;
+}
+
+export interface IVersionInfo {
+    Created: string;
+    ID: number;
+    VersionLabel: string;
+    Length: number;
+    Size: number;
+    CreatedBy: any;
+    Url: string;
+    IsCurrentVersion: boolean;
+    CheckInComment: string;
 }
 
 export interface IFileDeleteParams {
