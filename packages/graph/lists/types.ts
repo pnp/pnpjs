@@ -1,6 +1,5 @@
 import { List as IListEntity } from "@microsoft/microsoft-graph-types";
-import { _DirectoryObject } from "../directory-objects/types.js";
-import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
 import { graphPost } from "../operations.js";
 import { body } from "@pnp/queryable";
@@ -10,7 +9,7 @@ import { body } from "@pnp/queryable";
  */
 @deleteable()
 @updateable()
-export class _List extends _DirectoryObject<IListEntity> { }
+export class _List extends _GraphQueryableInstance<IListEntity> { }
 export interface IList extends _List, IDeleteable, IUpdateable { }
 export const List = graphInvokableFactory<IList>(_List);
 

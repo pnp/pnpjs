@@ -2,8 +2,7 @@ import {
     ContentType as IContentTypeEntity,
     ItemReference as IItemReference,
 } from "@microsoft/microsoft-graph-types";
-import { _DirectoryObject } from "../directory-objects/types.js";
-import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
 import { graphGet, graphPost } from "../operations.js";
 import { body } from "@pnp/queryable";
@@ -14,7 +13,7 @@ import { JSONHeaderParse } from "@pnp/queryable";
  */
 @deleteable()
 @updateable()
-export class _ContentType extends _DirectoryObject<IContentTypeEntity> {
+export class _ContentType extends _GraphQueryableInstance<IContentTypeEntity> {
 
     /**
       * Check the publishing status of a contentType in a content type hub site.
