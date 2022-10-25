@@ -1,6 +1,6 @@
-import { _SPInstance, ISPQueryable } from "../spqueryable.js";
+import { _SPInstance, spInvokableFactory, SPInit } from "../spqueryable.js";
 import { getHashCode, hOP, isArray } from "@pnp/core";
-import { body, CacheAlways, CacheKey } from "@pnp/queryable";
+import { body, CacheAlways, CacheKey, invokable } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
 import { spPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
@@ -84,6 +84,9 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder 
  *
  */
 @defaultPath("_api/search/postquery")
+@invokable(function (this: _Search, init) {
+    return this.run(<SearchQueryInit>init);
+})
 export class _Search extends _SPInstance {
 
     /**
@@ -144,13 +147,10 @@ export class _Search extends _SPInstance {
     }
 }
 
-export interface ISearch {
-    (queryInit: SearchQueryInit): Promise<SearchResults>;
+export interface ISearch extends Pick<_Search, "run" | "using"> {
+    (init: SearchQueryInit): Promise<SearchResults>;
 }
-
-export const Search = (baseUrl: string | ISPQueryable): ISearch => (queryInit: SearchQueryInit) => {
-    return (new _Search(baseUrl)).run(queryInit);
-};
+export const Search: (base: SPInit, path?: string) => ISearch = <any>spInvokableFactory(_Search);
 
 export class SearchResults {
 
