@@ -164,6 +164,7 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
 
     /**
      * 	Retrieves the total count of matching resources
+     *  If the resource doesn't support count, this value will always be zero
      */
     public async count(): Promise<number> {
         const q = AsPaged(this);

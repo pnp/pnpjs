@@ -1,9 +1,9 @@
 import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
-import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { graphInvokableFactory } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
 import { graphPost } from "../operations.js";
-import { _DirectoryObject } from "../directory-objects/types.js";
+import { _DirectoryObject, _DirectoryObjects } from "../directory-objects/types.js";
 
 export enum GroupType {
     /**
@@ -81,7 +81,7 @@ export const Group = graphInvokableFactory<IGroup>(_Group);
  */
 @defaultPath("groups")
 @getById(Group)
-export class _Groups extends _GraphQueryableCollection<IGroupType[]> {
+export class _Groups extends _DirectoryObjects<IGroupType[]> {
 
     /**
      * Create a new group as specified in the request body.

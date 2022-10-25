@@ -143,7 +143,7 @@ export class _Item extends _SPInstance {
      * this item's list
      */
     public get list(): IList {
-        return this.getParent<IList>(List, "", this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
+        return this.getParent<IList>(List, "", this.parentUrl.substring(0, this.parentUrl.lastIndexOf("/")));
     }
 
     /**
