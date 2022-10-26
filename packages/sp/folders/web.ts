@@ -1,4 +1,3 @@
-import { combine } from "@pnp/core";
 import { addProp } from "@pnp/queryable";
 import { _Web } from "../webs/types.js";
 import { Folders, IFolders, Folder, IFolder, folderFromServerRelativePath } from "./types.js";
