@@ -33,9 +33,11 @@ import { getRandomString } from "@pnp/core";
 
 The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises you will need to use [version 2](./v2/SPFx-on-premises/index.html) of the library. If you are targeting SharePoint online you will need to take the additional steps outlined below based on the version of the SharePoint Framework you are targeting.
 
-We've created a Getting Started [sample](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-sample) project, utilizing SPFx 1.14 and V3, that showcases some of the more dramatic changes to the library. In addition, there is a companion video series on YouTube if you prefer to see things done through that medium here's a link to the playlist for the 5 part series:
+We've created two Getting Started samples. The first uses the more traditional React Component classes and can be found in the [react-pnp-js-sample](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-sample) project, utilizing SPFx 1.15.2 and PnPjs V3, it showcases some of the more dramatic changes to the library. There is also a companion video series on YouTube if you prefer to see things done through that medium here's a link to the playlist for the 5 part series:
 
 [Getting started with PnPjs 3.0: 5-part series](https://youtube.com/playlist?list=PLR9nK3mnD-OWvmtj9TKE6tM7ZrUosV_vB)
+
+In addition, [Beau Cameron](https://github.com/bcameron1231) gave the team an assist by converting the sample project from React Component to React Hooks. His version can be found in [react-pnp-js-hooks](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-hooks). This sammple will help those struggling to establish context correctly while using the hooks conventions.
 
 The SharePoint Framework supports different versions of TypeScript natively and as of 1.14 release still doesn't natively support TypeScript 4.x. Sadly, this means that to use Version 3 of PnPjs you will need to take a few additional configuration steps to get them to work together.
 

@@ -36,6 +36,8 @@ _Added in 3.4.0_
 
 The Paged behavior allows you to access the information in a collection through a series of pages. While you can use it directly, you will likely use the `paged` method of the collections which handles things for you.
 
+> Note that not all entity types support `count` and where it is unsupported it will return 0.
+
 Basic example, read all users:
 
 ```TypeScript
