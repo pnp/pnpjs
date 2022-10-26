@@ -170,15 +170,19 @@ const results2 = await sp.searchSuggest({
 
 You can also configure a search or suggest query against any valid SP url using the factory methods.
 
+> In this case you'll need to ensure you add observers, or use the [tuple constructor](../queryable/queryable.md/#queryable-constructor) to inherit
+
 ```TypeScript
 import { spfi } from "@pnp/sp";
+import "@pnp/sp/web";
 import "@pnp/sp/search";
 import { Search, Suggest } from "@pnp/sp/search";
+import { SPDefault } from "@pnp/nodejs";
 
 const sp = spfi(...);
 
 // set the url for search
-const searcher = Search("https://mytenant.sharepoint.com/sites/dev");
+const searcher = Search([sp.web, "https://mytenant.sharepoint.com/sites/dev"]);
 
 // this can accept any of the query types (text, ISearchQuery, or SearchQueryBuilder)
 const results = await searcher("test");
@@ -187,7 +191,17 @@ const results = await searcher("test");
 const results2 = await searcher("another query");
 
 // same process works for Suggest
-const suggester = Suggest("https://mytenant.sharepoint.com/sites/dev");
+const suggester = Suggest([sp.web, "https://mytenant.sharepoint.com/sites/dev"]);
 
 const suggestions = await suggester({ querytext: "test" });
+
+// resetting the observers on the instance
+const searcher2 = Search("https://mytenant.sharepoint.com/sites/dev").using(SPDefault({
+  msal: {
+    config: {...},
+    scopes: [...],
+  },
+}));
+
+const results3 = await searcher2("test");
 ```
