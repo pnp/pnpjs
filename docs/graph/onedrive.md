@@ -189,9 +189,12 @@ import "@pnp/graph/onedrive";
 
 const graph = graphfi(...);
 
-const search = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId')root.search('queryText')();
+// Where searchTerm is the query text used to search for items.
+// Values may be matched across several fields including filename, metadata, and file content.
 
-const search = await graph.me.drives.getById('driveId')root.search('queryText')();
+const search = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').root.search(searchTerm)();
+
+const search = await graph.me.drives.getById('driveId').root.search(searchTerm)();
 
 ```
 
@@ -206,10 +209,30 @@ import "@pnp/graph/onedrive";
 
 const graph = graphfi(...);
 
-const item = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId');
+const item = await graph.users.getById('user@tenant.onmicrosoft.com').drives.getById('driveId').items.getById('itemId')();
 
-const item = await graph.me.drives.getById('driveId').items.getById('itemId');
+const item = await graph.me.drives.getById('driveId').items.getById('itemId')();
 
+```
+
+## Get drive item contents
+
+Using the item.getContent() you can get the content of a file.
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/onedrive";
+
+const graph = graphfi(...);
+
+// Where itemId is the id of the item
+const fileContents: Blob = await graph.me.drive.getItemById(itemId).getContent();
+const content: ArrayBuffer = await this._readFileAsync(fileContents);
+
+// This is an example of decoding plain text from the ArrayBuffer
+const decoder = new TextDecoder('utf-8');
+const decodedContent = decoder.decode(content);
 ```
 
 ## Get thumbnails
