@@ -369,8 +369,10 @@ function parseResponse(body: string): Response[] {
     let status: number;
     let statusText: string;
     let headers = {};
+    const bodyReader = [];
+
     for (let i = 0; i < lines.length; ++i) {
-        const line = lines[i];
+        let line = lines[i];
         switch (state) {
             case "batch":
                 if (line.substring(0, header.length) === header) {
@@ -407,7 +409,19 @@ function parseResponse(body: string): Response[] {
                 }
                 break;
             case "body":
-                responses.push(new Response(status === 204 ? null : line, { status, statusText, headers }));
+
+                // reset the body reader
+                bodyReader.length = 0;
+                // this allows us to capture batch bodies that are returned as multi-line (renderListDataAsStream, #2454)
+                while (line.substring(0, header.length) !== header) {
+                    bodyReader.push(line);
+                    line = lines[++i];
+                }
+                // because we have read the closing --batchresponse_ line, we need to move the line pointer back one
+                // so that the logic works as expected either to get the next result or end processing
+                i--;
+
+                responses.push(new Response(status === 204 ? null : bodyReader.join(""), { status, statusText, headers }));
                 state = "batch";
                 headers = {};
                 break;

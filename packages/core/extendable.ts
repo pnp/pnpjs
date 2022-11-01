@@ -79,7 +79,10 @@ export function extend<T extends object>(target: T, extensions: ExtensionType | 
     _enableExtensions = true;
 
     if (!Reflect.has(target, ObjExtensionsSym)) {
-        Reflect.set(target, ObjExtensionsSym, []);
+        Reflect.defineProperty(target, ObjExtensionsSym, {
+            writable: true,
+            value: [],
+        });
     }
 
     extendCol(<ExtensionType[]>Reflect.get(target, ObjExtensionsSym), extensions);

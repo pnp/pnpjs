@@ -1,7 +1,7 @@
 import { SPFI } from "../fi.js";
 import { SearchQueryInit } from "./types.js";
-import { SearchResults, Search } from "./query.js";
-import { ISuggestQuery, ISuggestResult, Suggest } from "./suggest.js";
+import { SearchResults, _Search } from "./query.js";
+import { ISuggestQuery, ISuggestResult, _Suggest } from "./suggest.js";
 
 export * from "./types.js";
 
@@ -39,10 +39,10 @@ declare module "../fi" {
 
 SPFI.prototype.search = function (this: SPFI, query: SearchQueryInit): Promise<SearchResults> {
 
-    return Search(this._root)(query);
+    return (new _Search(this._root)).run(query);
 };
 
 SPFI.prototype.searchSuggest = function (this: SPFI, query: string | ISuggestQuery): Promise<ISuggestResult> {
 
-    return Suggest(this._root)(typeof query === "string" ? { querytext: query } : query);
+    return (new _Suggest(this._root)).run(typeof query === "string" ? { querytext: query } : query);
 };
