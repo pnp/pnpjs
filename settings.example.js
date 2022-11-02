@@ -41,6 +41,8 @@ export const settings = {
         },
         // all are optional if using msal
         graph: {
+            // optional for sites test
+            testSiteUrl: "{ site collection url }",
             // all three of these are optional if using msal
             tenant: "{tenant.onmicrosoft.com}",
             id: "{your app id}",

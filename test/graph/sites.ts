@@ -22,6 +22,17 @@ describe("Sites", function () {
         return expect(passed).is.true;
     });
 
+    it("getByUrl()", async function() {
+        if (!this.pnp.settings.graph.testSiteUrl) {
+            this.skip();
+        }
+        let passed = true;
+        const url = new URL(this.pnp.settings.graph.testSiteUrl);
+        const siteByUrl = await this.pnp.graph.sites.getByUrl(url.hostname, url.pathname)();
+        passed = (siteByUrl.webUrl.toLowerCase() === this.pnp.settings.graph.testSiteUrl.toLowerCase());
+        return expect(passed).is.true;
+    });
+    
     // The overhead for creating a group and waiting for the groups related site to be ready it too much for the testing framework.
     it.skip("getSiteForGroup");
 });

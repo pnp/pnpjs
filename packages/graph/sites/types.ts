@@ -17,6 +17,10 @@ export class _Sites extends _GraphQueryableCollection<ISiteType[]> {
     public getById(id: string): ISite {
         return Site(this, id);
     }
+
+    public getByUrl(hostname: string, siteUrl: string): ISite {
+        return Site(this, `${hostname}:${siteUrl}:`);
+    }
 }
 export interface ISites extends _Sites { }
 export const Sites = graphInvokableFactory<ISites>(_Sites);

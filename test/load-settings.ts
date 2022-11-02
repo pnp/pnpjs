@@ -7,6 +7,7 @@ export interface ISettings {
     testUser?: string;
     graph?: {
         id?: string;
+        testSiteUrl?: string;
         secret?: string;
         tenant?: string;
         msal?: {
