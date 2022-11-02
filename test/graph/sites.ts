@@ -32,7 +32,7 @@ describe("Sites", function () {
         passed = (siteByUrl.webUrl.toLowerCase() === this.pnp.settings.graph.testSiteUrl.toLowerCase());
         return expect(passed).is.true;
     });
-    
+
     // The overhead for creating a group and waiting for the groups related site to be ready it too much for the testing framework.
     it.skip("getSiteForGroup");
 });
