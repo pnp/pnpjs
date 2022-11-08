@@ -1,7 +1,10 @@
 import { expect } from "chai";
+import getTestingGraphSPSite from "./utilities/getTestingGraphSPSite.js";
 import "@pnp/graph/sites";
+import { ISite } from "@pnp/graph/sites";
 
 describe("Sites", function () {
+    let site: ISite;
 
     before(async function () {
 
@@ -23,13 +26,12 @@ describe("Sites", function () {
     });
 
     it("getByUrl()", async function() {
-        if (!this.pnp.settings.graph.testSiteUrl) {
-            this.skip();
-        }
         let passed = true;
-        const url = new URL(this.pnp.settings.graph.testSiteUrl);
+        site = await getTestingGraphSPSite(this);
+        const tetssite = await site();
+        const url = new URL(tetssite.webUrl);
         const siteByUrl = await this.pnp.graph.sites.getByUrl(url.hostname, url.pathname)();
-        passed = (siteByUrl.webUrl.toLowerCase() === this.pnp.settings.graph.testSiteUrl.toLowerCase());
+        passed = (siteByUrl.webUrl.toLowerCase() === tetssite.webUrl.toLowerCase());
         return expect(passed).is.true;
     });
 
