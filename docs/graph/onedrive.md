@@ -226,6 +226,17 @@ import "@pnp/graph/onedrive";
 
 const graph = graphfi(...);
 
+private _readFileAsync(file: Blob): Promise<ArrayBuffer> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result as ArrayBuffer);
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
 // Where itemId is the id of the item
 const fileContents: Blob = await graph.me.drive.getItemById(itemId).getContent();
 const content: ArrayBuffer = await this._readFileAsync(fileContents);
