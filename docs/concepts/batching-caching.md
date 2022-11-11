@@ -10,7 +10,7 @@ import { Caching } from "@pnp/queryable";
 
 const sp = spfi(...);
 
-const [batchedSP, execute] = await sp.batched();
+const [batchedSP, execute] = sp.batched();
 
 batchedSP.using(Caching());
 
@@ -43,7 +43,7 @@ import { Caching } from "@pnp/queryable";
 
 const sp = spfi(...);
 
-const [batchedSP, execute] = await sp.batched();
+const [batchedSP, execute] = sp.batched();
 
 batchedSP.using(Caching());
 
