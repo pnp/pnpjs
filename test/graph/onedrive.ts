@@ -16,7 +16,7 @@ describe("OneDrive", function () {
 
         // Get a sample user
         try {
-            testUserName = this.pnp.settings.testUser.substr(this.pnp.settings.testUser.lastIndexOf("|") + 1);
+            testUserName = this.pnp.settings.testUser.substring(this.pnp.settings.testUser.lastIndexOf("|") + 1);
             const drives = await this.pnp.graph.users.getById(testUserName).drives();
             if (drives.length > 0) {
                 driveId = drives[0].id;

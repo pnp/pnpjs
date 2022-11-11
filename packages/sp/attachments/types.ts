@@ -1,12 +1,11 @@
-import { TimelinePipe } from "@pnp/core";
-import { headers, BlobParse, TextParse, JSONParse, BufferParse } from "@pnp/queryable";
+import { headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
+import { ReadableFile } from "../files/readable-file.js";
 import { spPost } from "../operations.js";
 import {
     IDeleteableWithETag,
     _SPCollection,
     spInvokableFactory,
-    _SPInstance,
     deleteableWithETag,
 } from "../spqueryable.js";
 
@@ -41,54 +40,18 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
 export interface IAttachments extends _Attachments { }
 export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
 
-export class _Attachment extends _SPInstance<IAttachmentInfo> {
+export class _Attachment extends ReadableFile<IAttachmentInfo> {
 
     public delete = deleteableWithETag();
-
-    /**
-     * Gets the contents of the file as text
-     *
-     */
-    public getText(): Promise<string> {
-
-        return this.getParsed(TextParse());
-    }
-
-    /**
-     * Gets the contents of the file as a blob, does not work in Node.js
-     *
-     */
-    public getBlob(): Promise<Blob> {
-
-        return this.getParsed(BlobParse());
-    }
-
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    public getBuffer(): Promise<ArrayBuffer> {
-
-        return this.getParsed(BufferParse());
-    }
-
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    public getJSON(): Promise<any> {
-
-        return this.getParsed(JSONParse());
-    }
 
     /**
      * Sets the content of a file. Not supported for batching
      *
      * @param content The value to set for the file contents
      */
-    public async setContent(content: string | ArrayBuffer | Blob): Promise<IAttachment> {
+    public async setContent(body: string | ArrayBuffer | Blob): Promise<IAttachment> {
 
-        await spPost(Attachment(this, "$value"), headers({ "X-HTTP-Method": "PUT" }, {
-            body: content,
-        }));
+        await spPost(Attachment(this, "$value"), headers({ "X-HTTP-Method": "PUT" }, { body }));
 
         return this;
     }
@@ -104,10 +67,6 @@ export class _Attachment extends _SPInstance<IAttachmentInfo> {
             "IF-Match": eTag,
             "X-HTTP-Method": "DELETE",
         }));
-    }
-
-    private getParsed<T>(parser: TimelinePipe): Promise<T> {
-        return Attachment(this, "$value").using(parser)();
     }
 }
 export interface IAttachment extends _Attachment, IDeleteableWithETag { }

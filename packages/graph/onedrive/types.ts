@@ -65,10 +65,8 @@ export class _Root extends _GraphQueryableInstance<IDrive> {
         return DriveItems(this, "children");
     }
 
-    public search(query: string): Promise<any> {
-        const searcher = Root(this);
-        searcher.query.set("search", `'${query}'`);
-        return searcher();
+    public search(query: string): IGraphQueryableCollection {
+        return GraphQueryableCollection(this, `search(q='${query}')`);
     }
 
     public get thumbnails(): IGraphQueryableCollection {

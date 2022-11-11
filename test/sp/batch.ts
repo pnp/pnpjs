@@ -4,6 +4,7 @@ import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
 import "@pnp/sp/files/item";
 import "@pnp/sp/folders/list";
+import "@pnp/sp/lists";
 import "@pnp/sp/site-groups/web";
 import "@pnp/sp/site-users/web";
 import { createBatch } from "@pnp/sp/batching";
@@ -14,12 +15,44 @@ import { pnpTest } from "../pnp-test.js";
 
 describe("Batching", function () {
 
-    before(function () {
+    let listId = "";
+
+    before(pnpTest("a43c9e3a-4851-4b64-9818-cda698380aff", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-    });
+
+        const props = await this.props({
+            listTitle: `BatchingTest_${getRandomString(4)}`,
+        });
+
+        const { data, created } = await this.pnp.sp.web.lists.ensure(props.listTitle);
+
+        listId = data.Id;
+
+        if (created) {
+
+            const [batch, execute] = this.pnp.sp.web.batched();
+
+            const list = batch.lists.getById(data.Id);
+
+            list.items.add({
+                Title: "Item 1",
+            });
+
+            list.items.add({
+                Title: "Item 2",
+            });
+
+            list.items.add({
+                Title: "Item 3",
+            });
+
+            await execute();
+        }
+
+    }));
 
     it("Single Request", pnpTest("7fdd5c90-d114-409e-b4c2-cdd5e4d8f55e", async function () {
         const order: number[] = [];
@@ -313,5 +346,17 @@ describe("Batching", function () {
             const y = await res[i].select("Title")();
             expect(y, `Failed on update then select title ${i}`).to.haveOwnProperty("Title", props.titles2[i]);
         }
+    }));
+
+    it("Should work for multi-line responses (renderListDataAsStream)", pnpTest("b0192288-db64-496e-a306-61a6f8f6b7a4", async function () {
+
+        const [batch, execute] = this.pnp.sp.web.batched();
+
+        batch.lists.getById(listId).renderListDataAsStream({ AddAllFields: true }).then(v => {
+
+            expect(v).to.have.property("Row").is.a("Array");
+        });
+
+        await execute();
     }));
 });

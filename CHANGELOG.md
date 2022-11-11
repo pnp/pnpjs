@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.9.0 - 2022-Nov-11
+
+### Added
+
+- sp
+  - Support for multi-line batch responses
+
+- graph
+  - Add getting site by resource url instead of id
+
+### Fixed
+
+- docs
+  - General typo fixes and updates
+
+- sp
+  - Updates Search and Suggest to be true invokable factories
+  - Updates docs for search on using factory methods
+  - Updates logic in sp.search and sp.searchSuggest
+  - fix to await the completePromises in batches that have no requests due to caching supplying all the results.
+
+- graph
+  - This update includes a fix for an improperly formed search endpoint on the root drive.
+
 ## 3.8.0 - 2022-Oct-14
 
 ### Added

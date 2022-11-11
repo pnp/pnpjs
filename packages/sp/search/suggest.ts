@@ -1,4 +1,4 @@
-import { _SPInstance, ISPQueryable } from "../spqueryable.js";
+import { _SPInstance, SPInit, spInvokableFactory } from "../spqueryable.js";
 import { hOP } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
 
@@ -44,13 +44,10 @@ export class _Suggest extends _SPInstance {
     }
 }
 
-export interface ISuggest {
-    (query: ISuggestQuery): Promise<ISuggestResult>;
+export interface ISuggest extends Pick<_Suggest, "run" | "using"> {
+    (init: ISuggestQuery): Promise<ISuggestResult>;
 }
-
-export const Suggest = (baseUrl: string | ISPQueryable): ISuggest => (query: ISuggestQuery) => {
-    return (new _Suggest(baseUrl)).run(query);
-};
+export const Suggest: (base: SPInit, path?: string) => ISuggest = <any>spInvokableFactory(_Suggest);
 
 /**
  * Defines a query execute against the search/suggest endpoint (see https://msdn.microsoft.com/en-us/library/office/dn194079.aspx)
