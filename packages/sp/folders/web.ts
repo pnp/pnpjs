@@ -1,4 +1,3 @@
-import { combine } from "@pnp/core";
 import { addProp } from "@pnp/queryable";
 import { _Web } from "../webs/types.js";
 import { Folders, IFolders, Folder, IFolder, folderFromServerRelativePath } from "./types.js";
@@ -43,7 +42,7 @@ addProp(_Web, "folders", Folders);
 addProp(_Web, "rootFolder", Folder);
 
 _Web.prototype.getFolderByServerRelativePath = function (this: _Web, folderRelativeUrl: string): IFolder {
-    return folderFromServerRelativePath(this, combine("/", folderRelativeUrl));
+    return folderFromServerRelativePath(this, folderRelativeUrl);
 };
 
 _Web.prototype.getFolderById = function (this: _Web, uniqueId: string): IFolder {
