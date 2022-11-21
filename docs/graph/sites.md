@@ -26,6 +26,19 @@ const graph = graphfi(...);
 const siteInfo = await graph.sites.getById("{site identifier}")();
 ```
 
+## Call graph.sites.getByUrl
+
+Using the sites.getByUrl() you can get a site using url instead of identifier
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/sites";
+
+const graph = graphfi(...);
+const sharepointHostName = "contoso.sharepoint.com";
+const serverRelativeUrl = "/sites/teamsite1";
+const siteInfo = await graph.sites.getByUrl(sharepointHostName, serverRelativeUrl)();
+```
+
 ## Make additional calls or recieve items from lists
 
 We don't currently implement all of the available options in graph for sites, rather focusing on the sp library. While we do accept PRs to add functionality, you can [also make calls by path.](./items.md)
