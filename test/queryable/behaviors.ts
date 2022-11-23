@@ -11,20 +11,20 @@ import {
 } from "@pnp/queryable";
 import { default as nodeFetch } from "node-fetch";
 import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 import { getRandomString } from "@pnp/core";
 import { spfi } from "@pnp/sp";
 
 describe("Behaviors", function () {
 
-    // CachingPessimistic needs rework after adding the abort controller.
-    it.skip("CachingPessimistic", async function () {
+    it("CachingPessimistic", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
         // Testing a behavior, creating new instance of sp
-        const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh({
+        const spInstance = spfi(this.pnp._sp).using(CachingPessimisticRefresh({
             store: "session",
         }));
 
@@ -46,15 +46,14 @@ describe("Behaviors", function () {
         return expect(test1 && test2).to.be.true;
     });
 
-    // CachingPessimistic needs rework after adding the abort controller.
-    it.skip("CachingPessimistic (headers)", async function () {
+    it("CachingPessimistic (headers)", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
         // Testing a behavior, creating new instance of sp
-        const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh({
+        const spInstance = spfi(this.pnp._sp).using(CachingPessimisticRefresh({
             store: "session",
         }));
 
@@ -86,8 +85,9 @@ describe("Behaviors", function () {
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
+
         // Testing a behavior, creating new instance of sp
-        const spInstance = spfi(this.pnp.sp).using(Caching({ store: "session" }));
+        const spInstance = spfi(this.pnp._sp).using(Caching({ store: "session" }));
 
         // Test caching behavior
         const startCheckpoint = new Date();
