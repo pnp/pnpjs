@@ -24,7 +24,9 @@ describe("Behaviors", function () {
         }
 
         // Testing a behavior, creating new instance of sp
-        const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh("session"));
+        const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh({
+            store: "session",
+        }));
 
         // Test caching behavior
         const startCheckpoint = new Date();
@@ -52,7 +54,9 @@ describe("Behaviors", function () {
         }
 
         // Testing a behavior, creating new instance of sp
-        const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh("session"));
+        const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh({
+            store: "session",
+        }));
 
         // Add a text field, which augments header, to validate that CachingPessimisticRefresh execute function honors header
         const testFieldNameRand = `CachingPessimisticRefreshField_${getRandomString(10)}`;
