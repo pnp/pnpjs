@@ -52,7 +52,7 @@ export function CacheKey(key: string) {
 
 /**
  * Adds caching to the requests based on the supplied props
- * 
+ *
  * @param props Optional props that configure how caching will work
  * @returns TimelinePipe used to configure requests
  */
