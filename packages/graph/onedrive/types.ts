@@ -33,12 +33,23 @@ export class _Drive extends _GraphQueryableInstance<IDriveType> {
         return DriveItems(this, "recent");
     }
 
-    public get sharedWithMe(): IDriveItems {
+    // public get sharedWithMe(): IDriveItems {
+    //     return DriveItems(this, "sharedWithMe");
+    // }
+
+    public sharedWithMe(allowexternal = false): IDriveItems {
+        if (allowexternal) {
+            this.query.set("allowexternal", "true");
+        }
         return DriveItems(this, "sharedWithMe");
     }
 
     public getItemById(id: string): IDriveItem {
         return DriveItem(this, combine("items", id));
+    }
+
+    public get following(): IDriveItems {
+        return DriveItems(this, "following");
     }
 }
 export interface IDrive extends _Drive { }

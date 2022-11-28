@@ -1,4 +1,4 @@
-import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle, stringIsNullOrEmpty } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryableConstructObserver = (this: IQueryableInternal, init: QueryableInit, path?: string) => void;
@@ -104,8 +104,10 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         let url = this.toUrl();
 
-        const char = url.indexOf("?") > -1 ? "&" : "?";
-        url += char + this.query.toString();
+        const query = this.query.toString();
+        if (!stringIsNullOrEmpty(query)) {
+            url += `${url.indexOf("?") > -1 ? "&" : "?"}${query}`;
+        }
 
         return url;
     }
