@@ -147,7 +147,10 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
         await Promise.all(registrationPromises);
 
         if (requests.length < 1) {
-            return;
+            // even if we have no requests we need to await the complete promises to ensure
+            // that execute only resolves AFTER every child request disposes #2457
+            // this likely means caching is being used, we returned values for all child requests from the cache
+            return Promise.all(completePromises).then(() => void (0));
         }
 
         const batchBody: string[] = [];
