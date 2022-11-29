@@ -197,6 +197,8 @@ const metrics2 = await sp.web.getFolderByServerRelativePath("/sites/dev/shared d
 
 It's possible to move a folder to a new destination within the same or a different site collection  
 
+> If you change the filename during the move operation this is considered an "edit" and the file's modified information will be updated regardless of the "RetainEditorAndModifiedOnMove" setting.
+
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
