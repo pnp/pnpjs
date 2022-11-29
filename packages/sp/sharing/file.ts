@@ -51,10 +51,11 @@ _File.prototype.checkSharingPermissions = async function (this: IFile, recipient
     const item = await this.getItem();
     return item.checkSharingPermissions(recipients);
 };
+// TODO:: clean up this method signature for next major release
 // eslint-disable-next-line max-len
-_File.prototype.getSharingInformation = async function (this: IFile, request: ISharingInformationRequest = null, expands: string[] = []): Promise<ISharingInformation> {
+_File.prototype.getSharingInformation = async function (this: IFile, request: ISharingInformationRequest = null, expands?: string[], selects?: string[]): Promise<ISharingInformation> {
     const item = await this.getItem();
-    return item.getSharingInformation(request, expands);
+    return item.getSharingInformation(request, expands, selects);
 };
 _File.prototype.getObjectSharingSettings = async function (this: IFile, useSimplifiedRoles = true): Promise<IObjectSharingSettings> {
     const item = await this.getItem();

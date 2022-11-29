@@ -50,29 +50,24 @@ export function CacheKey(key: string) {
     };
 }
 
+/**
+ * Adds caching to the requests based on the supplied props
+ *
+ * @param props Optional props that configure how caching will work
+ * @returns TimelinePipe used to configure requests
+ */
 export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
-
-    const storage = new PnPClientStorage();
-
-    const { store, keyFactory, expireFunc } = {
-        store: "local",
-        keyFactory: (url: string) => getHashCode(url.toLowerCase()).toString(),
-        expireFunc: () => dateAdd(new Date(), "minute", 5),
-        ...props,
-    };
-
-    const s = store === "session" ? storage.session : storage.local;
 
     return (instance: Queryable) => {
 
         instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
 
+            const [shouldCache, getCachedValue, setCachedValue] = bindCachingCore(url, init, props);
+
             // only cache get requested data or where the CacheAlways header is present (allows caching of POST requests)
-            if (/get/i.test(init.method) || init?.headers["X-PnP-CacheAlways"]) {
+            if (shouldCache) {
 
-                const key = init?.headers["X-PnP-CacheKey"] ? init.headers["X-PnP-CacheKey"] : keyFactory(url.toString());
-
-                const cached = s.get(key);
+                const cached = getCachedValue();
 
                 // we need to ensure that result stays "undefined" unless we mean to set null as the result
                 if (cached === null) {
@@ -80,7 +75,7 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
                     // if we don't have a cached result we need to get it after the request is sent and parsed
                     this.on.post(async function (url: URL, result: any) {
 
-                        s.put(key, result, expireFunc(url.toString()));
+                        setCachedValue(result);
 
                         return [url, result];
                     });
@@ -96,4 +91,35 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
 
         return instance;
     };
+}
+
+const storage = new PnPClientStorage();
+
+/**
+ * Based on the supplied properties, creates bound logic encapsulating common caching configuration
+ * sharable across implementations to more easily provide consistent behavior across behaviors
+ *
+ * @param props Any caching props used to initialize the core functions
+ */
+export function bindCachingCore(url: string, init: RequestInit, props?: Partial<ICachingProps>): [boolean, () => any, (any) => void] {
+
+    const { store, keyFactory, expireFunc } = {
+        store: "local",
+        keyFactory: (url: string) => getHashCode(url.toLowerCase()).toString(),
+        expireFunc: () => dateAdd(new Date(), "minute", 5),
+        ...props,
+    };
+
+    const s = store === "session" ? storage.session : storage.local;
+
+    const key = init?.headers["X-PnP-CacheKey"] ? init.headers["X-PnP-CacheKey"] : keyFactory(url);
+
+    return [
+        // calculaged value indicating if we should cache this request
+        /get/i.test(init.method) || init?.headers["X-PnP-CacheAlways"],
+        // gets the cached value
+        () => s.get(key),
+        // sets the cached value
+        (value: any) => s.put(key, value, expireFunc(url)),
+    ];
 }
