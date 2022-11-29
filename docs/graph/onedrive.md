@@ -106,6 +106,26 @@ const shared = await graph.users.getById('user@tenant.onmicrosoft.com').drives.g
 
 const shared = await graph.me.drives.getById('driveId').sharedWithMe();
 
+// By default, sharedWithMe return items shared within your own tenant. To include items shared from external tenants include the options object.
+
+const options: ISharingWithMeOptions = {allowExternal: true};
+const shared = await graph.me.drives.getById('driveId').sharedWithMe(options);
+
+```
+
+## Get the following files
+
+List the items that have been followed by the signed in user.
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/onedrive";
+
+const graph = graphfi(...);
+
+const files = await graph.me.drives.getById('driveId').following();
+
 ```
 
 ## Get the Root folder

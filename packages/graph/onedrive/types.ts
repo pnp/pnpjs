@@ -33,15 +33,13 @@ export class _Drive extends _GraphQueryableInstance<IDriveType> {
         return DriveItems(this, "recent");
     }
 
-    // public get sharedWithMe(): IDriveItems {
-    //     return DriveItems(this, "sharedWithMe");
-    // }
-
-    public sharedWithMe(allowexternal = false): IDriveItems {
-        if (allowexternal) {
-            this.query.set("allowexternal", "true");
+    public async sharedWithMe(options: ISharingWithMeOptions = null): Promise<IDriveItems> {
+        const q = DriveItems(this, "sharedWithMe");
+        if (options?.allowExternal != null) {
+            q.query.set("allowexternal", options?.allowExternal.toString());
         }
-        return DriveItems(this, "sharedWithMe");
+
+        return q();
     }
 
     public getItemById(id: string): IDriveItem {
@@ -197,4 +195,8 @@ export interface IDriveItemVersionInfo {
     };
     lastModifiedDateTime: string;
     size: number;
+}
+
+export interface ISharingWithMeOptions {
+    allowExternal: boolean;
 }
