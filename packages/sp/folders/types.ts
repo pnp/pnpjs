@@ -284,16 +284,6 @@ export class _Folder extends _SPInstance<IFolderInfo> {
             },
         };
     }
-
-    /**
-     * Gets the shareable item associated with this folder
-     */
-    protected async getShareable(): Promise<IItem> {
-
-        // sharing only works on the item end point, not the file one
-        const d = await SPInstance(this, "listItemAllFields").select("odata.id")();
-        return Item([this, odataUrlFrom(d)]);
-    }
 }
 export interface IFolder extends _Folder, IDeleteableWithETag { }
 export const Folder = spInvokableFactory<IFolder>(_Folder);
