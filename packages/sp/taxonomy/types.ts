@@ -1,5 +1,7 @@
 import { isArray } from "@pnp/core";
+import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
+import { spDelete, spPatch, spPost } from "../operations.js";
 import { _SPInstance, spInvokableFactory, _SPCollection } from "../spqueryable.js";
 import { encodePath } from "../utils/encode-path-str.js";
 
@@ -39,6 +41,17 @@ export class _TermStore extends _SPInstance<ITermStoreInfo> {
 
         return TermStore(this, `searchTerm(${query})`).expand("set")();
     }
+
+    /**
+     * Update settings for TermStore
+     *
+     * @param props The set or properties to update
+     * @returns The updated term store information
+     */
+    public update(props: Partial<Pick<ITermStoreInfo, "defaultLanguageTag" | "languageTags">>): Promise<ITermStoreInfo> {
+
+        return spPatch(this, body(props));
+    }
 }
 export interface ITermStore extends _TermStore { }
 export const TermStore = spInvokableFactory<ITermStore>(_TermStore);
@@ -54,6 +67,16 @@ export class _TermGroups extends _SPCollection<ITermGroupInfo[]> {
     public getById(id: string): ITermGroup {
         return TermGroup(this, id);
     }
+
+    /**
+     * Adds a new term group to this store
+     * @param props The set of properties
+     * @returns The information on the create group
+     */
+    public add(props: Partial<Omit<ITermGroupInfo, "id" | "createdDateTime" | "lastModifiedDateTime" | "type">>): Promise<ITermGroupInfo> {
+
+        return spPost(this, body(props));
+    }
 }
 export interface ITermGroups extends _TermGroups { }
 export const TermGroups = spInvokableFactory<ITermGroups>(_TermGroups);
@@ -65,6 +88,15 @@ export class _TermGroup extends _SPInstance<ITermGroupInfo> {
      */
     public get sets(): ITermSets {
         return TermSets(this, "sets");
+    }
+
+    /**
+     * Deletes this group
+     *
+     * @returns void
+     */
+    public delete(): Promise<void> {
+        return spDelete(this);
     }
 }
 export interface ITermGroup extends _TermGroup { }
@@ -81,6 +113,16 @@ export class _TermSets extends _SPCollection<ITermSetInfo[]> {
      */
     public getById(id: string): ITermSet {
         return TermSet(this, id);
+    }
+
+    /**
+     * Adds a new term set to this collection
+     * @param props The set of properties
+     * @returns The information on the create group
+     */
+    public add(props: Partial<ITermSetCreateParams>): Promise<ITermGroupInfo> {
+
+        return spPost(this, body(props));
     }
 }
 export interface ITermSets extends _TermSets { }
@@ -109,6 +151,26 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
 
     public getTermById(id: string): ITerm {
         return Term(this, `terms/${id}`);
+    }
+
+    /**
+     * Update settings for TermSet
+     *
+     * @param props The set or properties to update
+     * @returns The updated term set information
+     */
+    public update(props: Partial<Pick<ITermSetInfo, "localizedNames" | "description" | "properties">>): Promise<ITermSetInfo> {
+
+        return spPatch(this, body(props));
+    }
+
+    /**
+     * Deletes this group
+     *
+     * @returns void
+     */
+    public delete(): Promise<void> {
+        return spDelete(this);
     }
 
     /**
@@ -195,7 +257,17 @@ export interface ITermSet extends _TermSet { }
 export const TermSet = spInvokableFactory<ITermSet>(_TermSet);
 
 @defaultPath("children")
-export class _Children extends _SPCollection<ITermInfo[]> { }
+export class _Children extends _SPCollection<ITermInfo[]> {
+    /**
+     * Adds a new term set to this collection
+     * @param props The set of properties
+     * @returns The information on the create group
+     */
+    public add(props: Pick<ITermInfo, "labels">): Promise<ITermInfo> {
+
+        return spPost(this, body(props));
+    }
+}
 export interface IChildren extends _Children { }
 export const Children = spInvokableFactory<IChildren>(_Children);
 
@@ -215,10 +287,6 @@ export const Terms = spInvokableFactory<ITerms>(_Terms);
 
 export class _Term extends _SPInstance<ITermInfo> {
 
-    public get terms(): IChildren {
-        return Terms(this);
-    }
-
     public get children(): IChildren {
         return Children(this);
     }
@@ -230,6 +298,26 @@ export class _Term extends _SPInstance<ITermInfo> {
     public get set(): ITermSet {
         return TermSet(this, "set");
     }
+
+    /**
+     * Update settings for TermSet
+     *
+     * @param props The set or properties to update
+     * @returns The updated term set information
+     */
+    public update(props: Partial<Pick<ITermInfo, "labels" | "descriptions" | "properties">>): Promise<ITermSetInfo> {
+
+        return spPatch(this, body(props));
+    }
+
+    /**
+     * Deletes this group
+     *
+     * @returns void
+     */
+    public delete(): Promise<void> {
+        return spDelete(this);
+    }
 }
 export interface ITerm extends _Term { }
 export const Term = spInvokableFactory<ITerm>(_Term);
@@ -238,33 +326,34 @@ export const Term = spInvokableFactory<ITerm>(_Term);
 @defaultPath("relations")
 export class _Relations extends _SPCollection<IRelationInfo[]> {
     /**
-     * Gets a term group by id
-     *
-     * @param id Id of the term group to access
+     * Adds a new relation to this term
+     * @param props The set of properties
+     * @returns The information on the created relation
      */
-    public getById(id: string): IRelation {
-        return Relation(this, id);
+    public add(props: Omit<IRelationCreateInfo, "id">): Promise<IRelationCreateInfo> {
+
+        return spPost(this, body(props));
     }
 }
 export interface IRelations extends _Relations { }
 export const Relations = spInvokableFactory<IRelations>(_Relations);
 
-export class _Relation extends _SPInstance<IRelationInfo> {
+// export class _Relation extends _SPInstance<IRelationInfo> {
 
-    public get fromTerm(): ITerm {
-        return Term(this, "fromTerm");
-    }
+//     public get fromTerm(): ITerm {
+//         return Term(this, "fromTerm");
+//     }
 
-    public get toTerm(): ITerm {
-        return Term(this, "toTerm");
-    }
+//     public get toTerm(): ITerm {
+//         return Term(this, "toTerm");
+//     }
 
-    public get set(): ITermSet {
-        return TermSet(this, "set");
-    }
-}
-export interface IRelation extends _Relation { }
-export const Relation = spInvokableFactory<IRelation>(_Relation);
+//     public get set(): ITermSet {
+//         return TermSet(this, "set");
+//     }
+// }
+// export interface IRelation extends _Relation { }
+// export const Relation = spInvokableFactory<IRelation>(_Relation);
 
 export interface ITermStoreInfo {
     id: string;
@@ -297,6 +386,21 @@ export interface ITermSetInfo {
     isOpen: boolean;
     isAvailableForTagging: boolean;
     contact: string;
+}
+
+export interface ITermSetCreateParams {
+    localizedNames: { name: string; languageTag: string }[];
+    description?: string;
+    properties?: ITaxonomyProperty[];
+    /**
+     * When adding a term set using ITermStore.sets parentGroup is required, when adding from ITermGroup.sets parentGroup is not needed
+     */
+    parentGroup?: {
+        id: string;
+    };
+    isOpen?: boolean;
+    isAvailableForTagging?: boolean;
+    contact?: string;
 }
 
 export interface ITermInfo {
@@ -356,6 +460,20 @@ export interface IOrderedTermInfo extends ITermInfo {
 export interface IRelationInfo {
     id: string;
     relationType: string;
+}
+
+export interface IRelationCreateInfo {
+    id: string;
+    relationship: "pin" | "reuse";
+    fromTerm: {
+        id: string;
+    };
+    toTerm: {
+        id: string;
+    };
+    set: {
+        id: string;
+    };
 }
 
 export interface ITaxonomyUserInfo {
