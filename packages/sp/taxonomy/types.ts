@@ -188,6 +188,7 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
 
         const setInfo = await this.select(...selects)();
         const tree: IOrderedTermInfo[] = [];
+        const childIds = [];
 
         const ensureOrder = (terms: IOrderedTermInfo[], sorts: ITermSortOrderInfo[], setSorts?: string[]): IOrderedTermInfo[] => {
 
@@ -227,11 +228,12 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
 
         const visitor = async (source: any, parent: IOrderedTermInfo[]) => {
 
-            const children = await source.children.select(...selects)();
+            const children = await source();
 
             for (let i = 0; i < children.length; i++) {
 
                 const child = children[i];
+                childIds.push(child.id);
 
                 const orderedTerm: Partial<IOrderedTermInfo> = {
                     children: <IOrderedTermInfo[]>[],
@@ -240,7 +242,7 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
                 };
 
                 if (child.childrenCount > 0) {
-                    await visitor(this.getTermById(children[i].id), <any>orderedTerm.children);
+                    await visitor(this.getTermById(children[i].id).children.select(...selects), <any>orderedTerm.children);
                     orderedTerm.children = ensureOrder(<any>orderedTerm.children, child.customSortOrder);
                 }
 
@@ -248,7 +250,15 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
             }
         };
 
-        await visitor(this, tree);
+        // There is a series of issues where users expect that copied terms appear in the result of this method call. Copied terms are not "children" so we need
+        // to get all the children + all the "/terms" and filter out the children. This is expensive but this method call is already indicated to be used with caching
+        await visitor(this.children.select(...selects), tree);
+        await visitor(async () => {
+
+            const terms = await Terms(this).select(...selects)();
+            return terms.filter((t) => childIds.indexOf(t.id) < 0);
+
+        }, tree);
 
         return ensureOrder(tree, null, setInfo.customSortOrder);
     }
