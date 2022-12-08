@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "@pnp/sp/taxonomy";
-import { IRelation, ITermSet } from "@pnp/sp/taxonomy";
+import { ITermSet } from "@pnp/sp/taxonomy";
 
 describe("Taxonomy", function () {
 
@@ -174,64 +174,5 @@ describe("Taxonomy", function () {
             const relations = await term.relations();
             return expect(relations).to.be.an("Array");
         });
-
-        // TODO: set gives API not found error on termset... need to remove/or fix.
-        it.skip("term.set", async function () {
-            const set = await term.set();
-            return expect(set).has.property("id");
-        });
-    });
-
-    /**
-     * Terms
-     */
-    describe("Relations", function () {
-        let relation: IRelation = null;
-
-        before(async function () {
-            const groups = await this.pnp.sp.termStore.groups();
-
-            if (groups === undefined || groups?.length < 1) {
-                this.skip();
-            }
-            const groupId = groups[0].id;
-
-            const sets = await this.pnp.sp.termStore.groups.getById(groupId).sets();
-
-            if (sets === undefined || sets?.length < 1) {
-                this.skip();
-            }
-            const setId = sets[0].id;
-
-            const relations = await this.pnp.sp.termStore.groups.getById(groupId).sets.getById(setId).relations();
-
-            if (relations === undefined || relations?.length < 1) {
-                this.skip();
-            }
-
-            const relationId = relations[0].id;
-            relation = this.pnp.sp.termStore.groups.getById(groupId).sets.getById(setId).relations.getById(relationId);
-        });
-
-        it("getById", async function () {
-            const invoke = await relation();
-            return expect(invoke).has.property("id");
-        });
-
-        it("relation.fromTerm", async function () {
-            const term = await relation.fromTerm();
-            return expect(term).has.property("id");
-        });
-
-        it("relation.toTerm", async function () {
-            const term = await relation.toTerm();
-            return expect(term).has.property("id");
-        });
-
-        it("relation.set", async function () {
-            const set = await relation.set();
-            return expect(set).has.property("id");
-        });
-
     });
 });
