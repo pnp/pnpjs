@@ -27,8 +27,6 @@ export class ReadableFile<T = any> extends _SPInstance<T> {
         return this.getParsed(BufferParse());
     }
 
-    // (headers({ "binaryStringResponseBody": "true" })
-
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
      */

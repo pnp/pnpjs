@@ -71,6 +71,55 @@ type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<Defau
 export type TimelinePipe<T extends Timeline<any> = any> = (intance: T) => T;
 
 /**
+ * Field name to hold any flags on observer functions used to modify their behavior
+ */
+const flags = Symbol.for("ObserverLifecycleFlags");
+
+/**
+ * Bitwise flags to indicate modified behavior
+ */
+const enum ObserverLifecycleFlags {
+    // eslint-disable-next-line no-bitwise
+    noInherit = 1 << 0,
+    // eslint-disable-next-line no-bitwise
+    once = 1 << 1,
+}
+
+/**
+ * Creates a filter function for use in Array.filter that will filter OUT any observers with the specified [flag]
+ *
+ * @param flag The flag used to exclude observers
+ * @returns An Array.filter function
+ */
+// eslint-disable-next-line no-bitwise
+const byFlag = (flag: ObserverLifecycleFlags) => ((observer) => !((observer[flags] || 0) & flag));
+
+/**
+ * Creates an observer lifecycle modification flag application function
+ * @param flag The flag to the bound function should add
+ * @returns A function that can be used to apply [flag] to any valid observer
+ */
+const addFlag = (flag: ObserverLifecycleFlags) => (<T extends ValidObserver>(observer: T): T => {
+    // eslint-disable-next-line no-bitwise
+    observer[flags] = (observer[flags] || 0) | flag;
+    return observer;
+});
+
+/**
+ * Observer lifecycle modifier that indicates this observer should NOT be inherited by any child
+ * timelines.
+ */
+export const noInherit = addFlag(ObserverLifecycleFlags.noInherit);
+
+/**
+ * Observer lifecycle modifier that indicates this observer should only fire once per instance, it is then removed.
+ *
+ * Note: If you have a parent and child timeline "once" will affect both and the observer will fire once for a parent lifecycle
+ * and once for a child lifecycle
+ */
+export const once = addFlag(ObserverLifecycleFlags.once);
+
+/**
  * Timeline represents a set of operations executed in order of definition,
  * with each moment's behavior controlled by the implementing function
  */
@@ -210,9 +259,14 @@ export abstract class Timeline<T extends Moments> {
 
                         } else {
 
+
                             // if all else fails, re-throw as we are getting errors from error observers meaning something is sideways
                             throw e;
                         }
+                    } finally {
+
+                        // here we need to remove any "once" observers
+                        Reflect.set(target.observers, p, observers.filter(byFlag(ObserverLifecycleFlags.once)));
                     }
                 },
             });
@@ -317,7 +371,8 @@ export function cloneObserverCollection(source: ObserverCollection): ObserverCol
 
     return Reflect.ownKeys(source).reduce((clone: ObserverCollection, key: string) => {
 
-        clone[key] = [...source[key]];
+        // eslint-disable-next-line no-bitwise
+        clone[key] = [...source[key].filter(byFlag(ObserverLifecycleFlags.noInherit))];
 
         return clone;
     }, {});
