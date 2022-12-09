@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.15.0 - 2022-Dec-9
+
+### Fixed
+
+- all: Now using the newer adal-node version (0.2.3) to fix issue #2496
+
+## 2.14.0 - 2022-Jul-12
+
+## 2.13.0 - 2022-Mar-11
+
 ## 2.12.0 - 2022-Feb-11
 
 ### Fixed
