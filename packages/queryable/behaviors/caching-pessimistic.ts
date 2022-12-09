@@ -1,4 +1,4 @@
-import { objectDefinedNotNull, TimelinePipe } from "@pnp/core";
+import { noInherit, objectDefinedNotNull, TimelinePipe } from "@pnp/core";
 import { Queryable } from "../queryable.js";
 import { bindCachingCore, ICachingProps } from "./caching.js";
 
@@ -49,12 +49,12 @@ export function CachingPessimisticRefresh(props?: ICachingProps): TimelinePipe {
 
                 // register the post handler to cache the value as there is not one already in the cache
                 // and we need to run this request as normal
-                this.on.post(async function (url: URL, result: any) {
+                this.on.post(noInherit(async function (url: URL, result: any) {
 
                     setCachedValue(result);
 
                     return [url, result];
-                });
+                }));
             }
 
             return [url, init, result];
