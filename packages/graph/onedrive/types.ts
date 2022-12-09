@@ -11,7 +11,7 @@ import {
 import { Drive as IDriveType } from "@microsoft/microsoft-graph-types";
 import { combine } from "@pnp/core";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
-import { body, BlobParse } from "@pnp/queryable";
+import { body, BlobParse, CacheNever } from "@pnp/queryable";
 import { graphPatch, graphPost, graphPut } from "../operations.js";
 
 /**
@@ -111,7 +111,9 @@ export class _DriveItem extends _GraphQueryableInstance<any> {
 
     public async getContent(): Promise<Blob> {
         const info = await this();
-        const query = GraphQueryable([this, info["@microsoft.graph.downloadUrl"]], null).using(BlobParse());
+        const query = GraphQueryable([this, info["@microsoft.graph.downloadUrl"]], null)
+            .using(BlobParse())
+            .using(CacheNever());
 
         query.on.pre(async (url, init, result) => {
 

@@ -30,6 +30,27 @@ export function CacheAlways() {
     };
 }
 
+
+/**
+ * Behavior that forces caching for the request regardless of "method"
+ *
+ * @returns TimelinePipe
+ */
+export function CacheNever() {
+
+    return (instance: Queryable) => {
+
+        instance.on.pre.prepend(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+
+            init.headers = { ...init.headers, "X-PnP-CacheNever": "1" };
+
+            return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+
 /**
  * Behavior that allows you to specify a cache key for a request
  *
@@ -73,7 +94,7 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
                 if (cached === null) {
 
                     // if we don't have a cached result we need to get it after the request is sent and parsed
-                    this.on.post(async function (url: URL, result: any) {
+                    instance.on.post(async function (url: URL, result: any) {
 
                         setCachedValue(result);
 
@@ -115,8 +136,8 @@ export function bindCachingCore(url: string, init: RequestInit, props?: Partial<
     const key = init?.headers["X-PnP-CacheKey"] ? init.headers["X-PnP-CacheKey"] : keyFactory(url);
 
     return [
-        // calculaged value indicating if we should cache this request
-        /get/i.test(init.method) || init?.headers["X-PnP-CacheAlways"],
+        // calculated value indicating if we should cache this request
+        (init?.headers["X-PnP-CacheNever"] == null) ? /get/i.test(init.method) || init?.headers["X-PnP-CacheAlways"] : !(init?.headers["X-PnP-CacheNever"] === "1"),
         // gets the cached value
         () => s.get(key),
         // sets the cached value
