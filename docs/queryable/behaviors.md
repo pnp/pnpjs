@@ -235,6 +235,22 @@ const sp = spfi(...).using(Caching());
 const webInfo = await sp.web.using(CacheAlways())();
 ```
 
+## CacheNever
+
+_Added in 3.10.0_
+
+This behavior allows you to force skipping caching for a given request.
+
+```TypeScript
+import { Caching, CacheNever } from "@pnp/queryable";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...).using(Caching());
+
+const webInfo = await sp.web.using(CacheNever())();
+```
+
 ## Caching Pessimistic Refresh
 
 This behavior is slightly different than our default Caching behavior in that it will always return the cached value if there is one, but also asyncronously update the cached value in the background. Like the default CAchine behavior it allows you to cache the results of get requests in either session or local storage. If neither is available (such as in Nodejs) the library will shim using an in memory map.
@@ -430,7 +446,6 @@ This behavior allows you to cancel requests before they are complete. It is simi
 ### Known Issues
 
 - Due to how the event loop works you may get unhandled rejections after canceling a request
-
 
 ```TypeScript
 import { Cancelable, CancelablePromise } from "@pnp/queryable";

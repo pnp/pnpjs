@@ -232,6 +232,8 @@ const view4 = await graph.me.calendarView("2020-01-01", "2020-03-01")();
 
 Gets the `emailAddress` objects that represent all the meeting rooms in the user's tenant or in a specific room list.
 
+![Beta Endpoint](https://img.shields.io/badge/Endpoint-Beta-blueviolet.svg)
+
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import '@pnp/graph/calendars';
