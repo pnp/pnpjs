@@ -263,6 +263,7 @@ export abstract class Timeline<T extends Moments> {
                             // if all else fails, re-throw as we are getting errors from error observers meaning something is sideways
                             throw e;
                         }
+
                     } finally {
 
                         // here we need to remove any "once" observers

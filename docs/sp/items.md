@@ -445,9 +445,7 @@ const newItem = await sp.web.lists.getByTitle("TestList").items.add({
 // to do that for each field value you need to serialize each as -1;#{field label}|{field id} joined by ";#"
 // update with the values you want, this also works in the add call directly to avoid a second call
 const updateVal = {};
-Reflect.defineProperty(updateVal, fields[0].InternalName, {
-  value: "-1;#New Term|bb046161-49cc-41bd-a459-5667175920d4;#-1;#New 2|0069972e-67f1-4c5e-99b6-24ac5c90b7c9"
-});
+updateVal[fields[0].InternalName] = "-1;#New Term|bb046161-49cc-41bd-a459-5667175920d4;#-1;#New 2|0069972e-67f1-4c5e-99b6-24ac5c90b7c9";
 // execute the update call
 await newItem.item.update(updateVal);
 ```
