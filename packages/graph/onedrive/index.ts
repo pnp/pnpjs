@@ -17,4 +17,5 @@ export {
     IDrives,
     IRoot,
     Root,
+    ISharingWithMeOptions,
 } from "./types.js";
