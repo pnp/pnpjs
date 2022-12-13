@@ -189,6 +189,15 @@ const sp = spfi(...);
 
 // Get the sharing information for a folder
 const info = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getSharingInformation();
+
+// get sharing informaiton with a request object
+const info2 = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getSharingInformation({
+    maxPrincipalsToReturn: 10,
+    populateInheritedLinks: true,
+});
+
+// get sharing informaiton using select and expand, NOTE expand comes first in the API signature
+const info3 = await sp.web.getFolderByServerRelativeUrl("/sites/dev/Shared Documents/test").getSharingInformation({}, ["permissionsInformation"], ["permissionsInformation","anyoneLinkTrackUsers"]);
 ```
 
 ## getObjectSharingSettings

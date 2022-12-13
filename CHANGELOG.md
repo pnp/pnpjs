@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.10.0 - 2022-Dec-13
+
+### Added
+
+- queryable
+  - Added CacheNever behavior
+  - Adds bindCachingCore method to reuse the caching props calculation logic
+
+- sp
+  - Added ability to limit the getSharingInformation returned properties
+  - Adding support for add/update/delete for taxonomy entities
+
+- graph
+  - Added followed endpoint to Drives
+  - Adds options to Graph - OneDrive sharedWithMe method
+
+### Fixed
+
+- docs
+  - General typo fixes and updates
+
+- queryable
+  - Fix for CachingPessimistic behavior
+
+- sp
+  - Fixing #2448 appears to have reverted #2414, and now fixed again
+
+- graph
+  - Bug fix for DrvieItem.getContent when using Caching behavior
+  
 ## 3.9.0 - 2022-Nov-11
 
 ### Added

@@ -26,6 +26,7 @@ export type ICalendarViewInfo = IEventWithTag;
 
 /**
  * Get the emailAddress objects that represent all the meeting rooms in the user's tenant or in a specific room list.
+ *  - This is a beta graph feature and uses the beta endpoint.
  *
  * @param this IGraphQueryable instance
  * @param roomList The SMTP address associated with the room list.

@@ -58,6 +58,24 @@ const results3 = await sp.termStore.searchTerm({
 });
 ```
 
+### update
+
+_Added in 3.10.0_
+
+Allows you to update language setttings for the store
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+await sp.termStore.update({
+  defaultLanguageTag: "en-US",
+  languageTags: ["en-US", "en-IE", "de-DE"],
+});
+```
+
 ## Term Groups
 
 Access term group information
@@ -86,6 +104,45 @@ const sp = spfi(...);
 
 // get term groups data
 const info: ITermGroupInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72")();
+```
+
+### Add
+
+_Added in 3.10.0_
+
+Allows you to add a term group to a store.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+import { ITermGroupInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+const groupInfo: ITermGroupInfo = await sp.termStore.groups.add({
+  displayName: "Accounting",
+  description: "Term Group for Accounting",
+  name: "accounting1",
+  scope: "global",
+});
+```
+
+## Term Group
+
+### Delete
+
+_Added in 3.10.0_
+
+Allows you to add a term group to a store.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+import { ITermGroupInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").delete();
 ```
 
 ## Term Sets
@@ -121,6 +178,55 @@ const info: ITermSetInfo = await sp.termStore.groups.getById("338666a8-1111-2222
 const infoByTermSetId: ITermSetInfo = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72")();
 ```
 
+### Add
+
+_Added in 3.10.0_
+
+Allows you to add a term set.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+import { ITermGroupInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+// when adding a set sirectly from the root .sets property, you must include the "parentGroup" property
+const setInfo = await sp.termStore.sets.add({
+  parentGroup: {
+    id: "338666a8-1111-2222-3333-f72471314e72"
+  },
+  contact: "steve",
+  description: "description",
+  isAvailableForTagging: true,
+  isOpen: true,
+  localizedNames: [{
+    name: "MySet",
+    languageTag: "en-US",
+  }],
+  properties: [{
+    key: "key1",
+    value: "value1",
+  }]
+});
+
+// when adding a termset through a group's sets property you do not specify the "parentGroup" property
+const setInfo2 = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.add({
+  contact: "steve",
+  description: "description",
+  isAvailableForTagging: true,
+  isOpen: true,
+  localizedNames: [{
+    name: "MySet2",
+    languageTag: "en-US",
+  }],
+  properties: [{
+    key: "key1",
+    value: "value1",
+  }]
+});
+```
+
 ### getAllChildrenAsOrderedTree
 
 This method will get all of a set's child terms in an ordered array. It is a costly method in terms of requests so we suggest you cache the results as taxonomy trees seldom change.
@@ -150,6 +256,52 @@ const cachedTree = await store.local.getOrPut("myKey", () => {
 // you can also get all the properties and localProperties
 const set = sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72");
 const childTree = await set.getAllChildrenAsOrderedTree({ retrieveProperties: true });
+```
+
+## TermSet
+
+Access term set information
+
+### Update
+
+_Added in 3.10.0_
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+import { ITermGroupInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+const termSetInfo = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").update({
+  properties: [{
+    key: "MyKey2",
+    value: "MyValue2",
+  }],
+});
+
+const termSetInfo2 = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").update({
+  properties: [{
+    key: "MyKey3",
+    value: "MyValue3",
+  }],
+});
+```
+
+### Delete
+
+_Added in 3.10.0_
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+import { ITermGroupInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").delete();
+
+await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").delete();
 ```
 
 ## Terms
@@ -198,6 +350,82 @@ const sp = spfi(...);
 
 // get term set data
 const info: ITermInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72")();
+```
+
+### Add
+
+_Added in 3.10.0_
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+import { ITermInfo } from "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+const newTermInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").children.add({
+  labels: [
+    {
+      isDefault: true,
+      languageTag: "en-us",
+      name: "New Term",
+    }
+  ]
+});
+
+const newTermInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").children.add({
+  labels: [
+    {
+      isDefault: true,
+      languageTag: "en-us",
+      name: "New Term 2",
+    }
+  ]
+});
+```
+
+## Term
+
+### Update
+
+> Note that when updating a Term if you update the `properties` it replaces the collection, so a merge of existing + new needs to be handled by your application.
+
+_Added in 3.10.0_
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+const termInfo = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72").update({
+  properties: [{
+    key: "something",
+    value: "a value 2",
+  }],
+});
+
+const termInfo2 = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72").update({
+  properties: [{
+    key: "something",
+    value: "a value",
+  }],
+});
+```
+
+### Delete
+
+_Added in 3.10.0_
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/taxonomy";
+
+const sp = spfi(...);
+
+const termInfo = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72").delete();
+
+const termInfo2 = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72").delete();
 ```
 
 ## Get Term Parent

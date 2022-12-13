@@ -150,6 +150,56 @@ const itemsInfo = await cachingList.items();
 const itemsInfo2 = await cachingList.items();
 ```
 
+### bindCachingCore
+
+_Added in 3.10.0_
+
+The `bindCachingCore` method is supplied to allow all caching behaviors to share a common logic around the handling of ICachingProps. Usage of this function is not required to build your own caching method. However, it does provide consistent logic and will incoroporate any future enhancements. It can be used to create your own caching behavior. Here we show how we use the binding function within `Caching` as a basic example.
+
+The `bindCachingCore` method is designed for use in a `pre` observer and the first two parameters are the url and init passed to pre. The third parameter is an optional Partial<ICachingProps>. It returns a tuple with three values. The first is a calculated value indicating if this request should be cached based on the internal default logic of the library, you can use this value in conjunction with your own logic. The second value is a function that will get a cached value, note no key is passed - the key is calculated and held within `bindCachingCore`. The third value is a function to which you pass a value to cache. The key and expiration are similarly calculated and held within `bindCachingCore`.
+
+```TS
+import { TimelinePipe } from "@pnp/core";
+import { bindCachingCore, ICachingProps, Queryable } from "@pnp/queryable";
+
+export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
+
+    return (instance: Queryable) => {
+
+        instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+
+            const [shouldCache, getCachedValue, setCachedValue] = bindCachingCore(url, init, props);
+
+            // only cache get requested data or where the CacheAlways header is present (allows caching of POST requests)
+            if (shouldCache) {
+
+                const cached = getCachedValue();
+
+                // we need to ensure that result stays "undefined" unless we mean to set null as the result
+                if (cached === null) {
+
+                    // if we don't have a cached result we need to get it after the request is sent and parsed
+                    this.on.post(async function (url: URL, result: any) {
+
+                        setCachedValue(result);
+
+                        return [url, result];
+                    });
+
+                } else {
+
+                    result = cached;
+                }
+            }
+
+            return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+```
+
 ## CacheKey
 
 _Added in 3.5.0_
@@ -183,6 +233,22 @@ import "@pnp/sp/lists";
 const sp = spfi(...).using(Caching());
 
 const webInfo = await sp.web.using(CacheAlways())();
+```
+
+## CacheNever
+
+_Added in 3.10.0_
+
+This behavior allows you to force skipping caching for a given request.
+
+```TypeScript
+import { Caching, CacheNever } from "@pnp/queryable";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...).using(Caching());
+
+const webInfo = await sp.web.using(CacheNever())();
 ```
 
 ## Caching Pessimistic Refresh
@@ -380,7 +446,6 @@ This behavior allows you to cancel requests before they are complete. It is simi
 ### Known Issues
 
 - Due to how the event loop works you may get unhandled rejections after canceling a request
-
 
 ```TypeScript
 import { Cancelable, CancelablePromise } from "@pnp/queryable";

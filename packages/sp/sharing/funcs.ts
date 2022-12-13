@@ -115,10 +115,10 @@ export function checkPermissions(this: ShareableQueryable, recipients: ISharingR
  * @param expands Expand more fields.
  *
  */
-export function getSharingInformation(this: ShareableQueryable, request: ISharingInformationRequest = null, expands: string[] = []): Promise<ISharingInformation> {
+export function getSharingInformation(this: ShareableQueryable, request: ISharingInformationRequest = null, expands: string[] = [], selects = ["*"]): Promise<ISharingInformation> {
 
     const o = SPInstance(this, "getSharingInformation");
-    return spPost(o.expand(...expands), body({ request }));
+    return spPost(o.select(...selects).expand(...expands), body({ request }));
 }
 
 /**
