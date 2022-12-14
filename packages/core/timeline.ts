@@ -289,8 +289,11 @@ export abstract class Timeline<T extends Moments> {
         // initialize our timeline
         this.emit.init();
 
+        // get a ref to the promise returned by execute
+        const p = this.execute(init);
+
         // attach our dispose logic
-        return this.execute(init).finally(() => {
+        p.finally(() => {
 
             try {
 
@@ -307,6 +310,9 @@ export abstract class Timeline<T extends Moments> {
                 this.error(e2);
             }
         });
+
+        // give the promise back to the caller
+        return p;
     }
 
     /**
