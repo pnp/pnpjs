@@ -1,5 +1,5 @@
 import { Queryable } from "../queryable.js";
-import { getHashCode, PnPClientStorage, dateAdd, TimelinePipe } from "@pnp/core";
+import { getHashCode, PnPClientStorage, dateAdd, TimelinePipe, noInherit } from "@pnp/core";
 
 export type CacheKeyFactory = (url: string) => string;
 export type CacheExpireFunc = (url: string) => Date;
@@ -32,7 +32,10 @@ export function CacheAlways() {
 
 
 /**
- * Behavior that forces caching for the request regardless of "method"
+ * Behavior that blocks caching for the request regardless of "method"
+ *
+ * Note: If both Caching and CacheAlways are present AND CacheNever is present the request will not be cached
+ * as we give priority to the CacheNever case
  *
  * @returns TimelinePipe
  */
@@ -94,12 +97,12 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
                 if (cached === null) {
 
                     // if we don't have a cached result we need to get it after the request is sent and parsed
-                    instance.on.post(async function (url: URL, result: any) {
+                    this.on.post(noInherit(async function (url: URL, result: any) {
 
                         setCachedValue(result);
 
                         return [url, result];
-                    });
+                    }));
 
                 } else {
 
@@ -137,7 +140,7 @@ export function bindCachingCore(url: string, init: RequestInit, props?: Partial<
 
     return [
         // calculated value indicating if we should cache this request
-        (init?.headers["X-PnP-CacheNever"] == null) ? /get/i.test(init.method) || init?.headers["X-PnP-CacheAlways"] : !(init?.headers["X-PnP-CacheNever"] === "1"),
+        (/get/i.test(init.method) || (init?.headers["X-PnP-CacheAlways"] ?? false)) && !(init?.headers["X-PnP-CacheNever"] ?? false),
         // gets the cached value
         () => s.get(key),
         // sets the cached value

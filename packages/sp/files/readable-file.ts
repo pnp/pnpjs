@@ -1,5 +1,5 @@
 import { TimelinePipe } from "@pnp/core";
-import { BlobParse, BufferParse, JSONParse, TextParse } from "@pnp/queryable/index.js";
+import { BlobParse, BufferParse, CacheNever, JSONParse, TextParse } from "@pnp/queryable/index.js";
 import { _SPInstance, SPQueryable } from "../spqueryable.js";
 
 export class ReadableFile<T = any> extends _SPInstance<T> {
@@ -27,8 +27,6 @@ export class ReadableFile<T = any> extends _SPInstance<T> {
         return this.getParsed(BufferParse());
     }
 
-    // (headers({ "binaryStringResponseBody": "true" })
-
     /**
      * Gets the contents of a file as an ArrayBuffer, works in Node.js. Not supported in batching.
      */
@@ -37,6 +35,6 @@ export class ReadableFile<T = any> extends _SPInstance<T> {
     }
 
     private getParsed<T>(parser: TimelinePipe): Promise<T> {
-        return SPQueryable(this, "$value").using(parser)();
+        return SPQueryable(this, "$value").using(parser, CacheNever())();
     }
 }
