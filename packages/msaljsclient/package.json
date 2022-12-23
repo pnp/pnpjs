@@ -6,7 +6,7 @@
     "typings": "./index",
     "dependencies": {
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
-        "msal": "1.4.16",
-        "tslib": "2.4.0"
+        "msal": "1.4.17",
+        "tslib": "2.4.1"
     }
 }
