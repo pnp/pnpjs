@@ -385,15 +385,6 @@ const listItemId = await list.reserveListItemId();
 console.log(listItemId);
 ```
 
-### Get list item entity type name
-
-```TypeScript
-const entityTypeFullName = await list.getListItemEntityTypeFullName();
-
-// log entity type name
-console.log(entityTypeFullName);
-```
-
 ### Add a list item using path (folder), validation and set field values
 
 ```TypeScript
