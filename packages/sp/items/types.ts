@@ -254,7 +254,7 @@ export class _Item extends _SPInstance {
 
         const webUrl = extractWebUrl(this.toUrl());
 
-        const q = SPQueryable(webUrl, "/_api/web/UploadImage");
+        const q = SPQueryable([this, webUrl], "/_api/web/UploadImage");
         q.concat("(listTitle=@a1,imageName=@a2,listId=@a3,itemId=@a4)");
         q.query.set("@a1", `'${contextInfo.ParentList.Title}'`);
         q.query.set("@a2", `'${imageName}'`);
