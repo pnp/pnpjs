@@ -366,15 +366,20 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new user field called 'My Field' in web
-const field = await sp.web.fields.addUser("My Field", { { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
+const field = await sp.web.fields.addUser("My Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
 // create a new user field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addUser("My Field", { { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
+const field2 = await sp.web.lists.getByTitle("My List").fields.addUser("My Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();
 
 // log the field Id to console
 console.log(r.Id);
+
+// **
+// Adding a lookup that supports multiple values takes two calls:
+const fieldAddResult = await sp.web.fields.addUser("Multi User Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly });
+await fieldAddResult.field.update({ AllowMultipleValues: true }, "SP.FieldUser");
 ```
 
 ### Add a Lookup Field
@@ -405,9 +410,8 @@ console.log(r.Id);
 
 // **
 // Adding a lookup that supports multiple values takes two calls:
-const fieldAddResult = await sp.web.fields.addLookup("Test Lookup 124", { LookupListId: list.data.Id, LookupFieldName: "Title" });
-
-await fieldAddResult.field.update({ Description: 'New Description' }, "SP.FieldLookup");
+const fieldAddResult = await sp.web.fields.addLookup("Multi Lookup Field", { LookupListId: list.data.Id, LookupFieldName: "Title" });
+await fieldAddResult.field.update({ AllowMultipleValues: true }, "SP.FieldLookup");
 ```
 
 ### Add a Choice Field
