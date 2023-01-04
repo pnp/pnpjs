@@ -198,8 +198,7 @@ export class _Site extends _SharePointQueryableInstance {
      * Get the creation status for a site
      * @param absoluteUrl Site Url that you want to check
      */
-    public async getSiteStatus(absoluteUrl: string): Promise<ISiteCreationResponse>
-    {
+    public async getSiteStatus(absoluteUrl: string): Promise<ISiteCreationResponse> {
         return spGet(Site(extractWebUrl(this.toUrl()), `/_api/SPSiteManager/status?url='${encodeURIComponent(absoluteUrl)}'`));
     }
 
@@ -278,8 +277,7 @@ export class _Site extends _SharePointQueryableInstance {
      * Get the creation status for a teamsite
      * @param groupId Group Id for the site you want to check
      */
-    public async getTeamSiteStatus(groupId: string): Promise<IGroupSiteInfo>
-    {
+    public async getTeamSiteStatus(groupId: string): Promise<IGroupSiteInfo> {
         return spGet(Site(extractWebUrl(this.toUrl()), `/_api/GroupSiteManager/GetSiteStatus?groupId='${groupId}'`));
     }
 }
