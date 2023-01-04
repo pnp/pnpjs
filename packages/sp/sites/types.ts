@@ -4,7 +4,7 @@ import { Web, IWeb } from "../webs/types.js";
 import { hOP, assign } from "@pnp/common";
 import { body } from "@pnp/odata";
 import { odataUrlFrom } from "../odata.js";
-import { spPost } from "../operations.js";
+import { spGet, spPost } from "../operations.js";
 import { SPBatch } from "../batch.js";
 import { escapeQueryStrValue } from "../utils/escapeQueryStrValue.js";
 import { IChangeQuery } from "../types.js";
@@ -195,6 +195,15 @@ export class _Site extends _SharePointQueryableInstance {
     }
 
     /**
+     * Get the creation status for a site
+     * @param absoluteUrl Site Url that you want to check
+     */
+    public async getSiteStatus(absoluteUrl: string): Promise<ISiteCreationResponse>
+    {
+        return spGet(Site(extractWebUrl(this.toUrl()), `/_api/SPSiteManager/status?url='${encodeURIComponent(absoluteUrl)}'`));
+    }
+
+    /**
      * Creates a Modern team site backed by Office 365 group. For use in SP Online only. This will not work with App-only tokens
      *
      * @param displayName The title or display name of the Modern team site to be created
@@ -263,6 +272,15 @@ export class _Site extends _SharePointQueryableInstance {
         }
 
         return spPost(Site(extractWebUrl(this.toUrl()), "/_api/GroupSiteManager/CreateGroupEx"), body(postBody));
+    }
+
+    /**
+     * Get the creation status for a teamsite
+     * @param groupId Group Id for the site you want to check
+     */
+    public async getTeamSiteStatus(groupId: string): Promise<IGroupSiteInfo>
+    {
+        return spGet(Site(extractWebUrl(this.toUrl()), `/_api/GroupSiteManager/GetSiteStatus?groupId='${groupId}'`));
     }
 }
 export interface ISite extends _Site {}
