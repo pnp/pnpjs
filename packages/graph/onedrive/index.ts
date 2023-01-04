@@ -1,8 +1,14 @@
 import "./users.js";
+import "./groups.js";
+import "./sites.js";
 
 export {
     SpecialFolder,
 } from "./users.js";
+
+export {
+    ICheckInOptions,
+} from "./funcs.js";
 
 export {
     Drive,
@@ -18,4 +24,8 @@ export {
     IRoot,
     Root,
     ISharingWithMeOptions,
+    IItemOptions as IItemReferenceOptions,
+    IDeltaItems,
+    IPreviewOptions,
+    IFileOptions,
 } from "./types.js";
