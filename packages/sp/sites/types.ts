@@ -224,7 +224,7 @@ export class _Site extends _SPInstance {
         owners?: string[],
         hubSiteId?: string,
         siteDesignId?: string,
-    ): Promise<ISiteCreationResponse> {
+    ): Promise<IGroupSiteInfo> {
 
         return this.createModernTeamSiteFromProps({
             alias,
@@ -239,7 +239,7 @@ export class _Site extends _SPInstance {
         });
     }
 
-    public async createModernTeamSiteFromProps(props: ICreateTeamSiteProps): Promise<ISiteCreationResponse> {
+    public async createModernTeamSiteFromProps(props: ICreateTeamSiteProps): Promise<IGroupSiteInfo> {
 
         // handle defaults
         const p = Object.assign({}, {
@@ -320,7 +320,31 @@ export interface ICreateTeamSiteProps {
 }
 
 export interface ISiteCreationResponse {
-    "SiteId": string;
-    "SiteStatus": 0 | 1 | 2 | 3;
-    "SiteUrl": string;
+    SiteId: string;
+    /**
+     * Creation status
+     * - 0 - Not Found. The site doesn't exist.
+     * - 1 - Provisioning. The site is currently being provisioned.
+     * - 2 - Ready. The site has been created.
+     * - 3 - Error. An error occurred while provisioning the site.
+     * - 4 - Site with requested URL already exist.
+     */
+    SiteStatus: 0 | 1 | 2 | 3 | 4;
+    SiteUrl: string;
+}
+
+export interface IGroupSiteInfo {
+    DocumentsUrl: string | null;
+    ErrorMessage: string | null;
+    GroupId: string;
+    /**
+     * Creation status
+     * - 0 - Not Found. The site doesn't exist.
+     * - 1 - Provisioning. The site is currently being provisioned.
+     * - 2 - Ready. The site has been created.
+     * - 3 - Error. An error occurred while provisioning the site.
+     * - 4 - Site with requested URL already exist.
+     */
+    SiteStatus: 0 | 1 | 2 | 3 | 4;
+    SiteUrl: string;
 }
