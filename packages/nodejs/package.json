@@ -12,8 +12,8 @@
         "@pnp/sp": "0.0.0-PLACEHOLDER",
         "adal-node": "^0.2.3",
         "https-proxy-agent": "^5.0.0",
-        "jsonwebtoken": "8.5.1",
-        "node-fetch": "2.6.1",
+        "jsonwebtoken": "^9.0.0",
+        "node-fetch": "^2.6.7",
         "tslib": "2.3.0"
     },
     "author": {
