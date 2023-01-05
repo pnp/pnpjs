@@ -6,7 +6,7 @@
     "typings": "./index",
     "dependencies": {
         "@pnp/common": "0.0.0-PLACEHOLDER",
-        "msal": "1.4.11",
+        "msal": "^1.4.11",
         "tslib": "2.3.0"
     },
     "author": {
