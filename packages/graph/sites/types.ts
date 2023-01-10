@@ -18,6 +18,12 @@ export class _Sites extends _GraphQueryableCollection<ISiteType[]> {
         return Site(this, id);
     }
 
+    /**
+     * Get a Site by URL
+     * @param hostname: string, the host of the site e.g. "contoso.sharepoint.com"
+     * @param siteUrl: string, the server relative url of the site e.g. "/sites/teamsite1"
+     * @returns ISite
+    */
     public getByUrl(hostname: string, siteUrl: string): ISite {
         return Site(this, `${hostname}:${siteUrl}:`);
     }
