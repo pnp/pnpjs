@@ -29,6 +29,9 @@ const siteInfo = await graph.sites.getById("{site identifier}")();
 ## Call graph.sites.getByUrl
 
 Using the sites.getByUrl() you can get a site using url instead of identifier
+
+![Known Issue Banner](https://img.shields.io/badge/Known%20Issue-important.svg) If you get a site with this method, the graph does not support chaining a request further than .drive. We will review and try and create a work around for this issue.
+
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/sites";

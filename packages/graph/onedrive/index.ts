@@ -1,6 +1,8 @@
+import { GraphFI } from "../fi.js";
 import "./users.js";
 import "./groups.js";
 import "./sites.js";
+import { Drives, IDrives } from "./types.js";
 
 export {
     SpecialFolder,
@@ -28,4 +30,19 @@ export {
     IDeltaItems,
     IPreviewOptions,
     IFileOptions,
+    IAnalyticsOptions,
 } from "./types.js";
+
+declare module "../fi" {
+    interface GraphFI {
+        readonly drives: IDrives;
+    }
+}
+
+Reflect.defineProperty(GraphFI.prototype, "drives", {
+    configurable: true,
+    enumerable: true,
+    get: function (this: GraphFI) {
+        return this.create(Drives);
+    },
+});

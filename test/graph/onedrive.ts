@@ -5,7 +5,7 @@ import findupSync from "findup-sync";
 import "@pnp/graph/users";
 import "@pnp/graph/onedrive";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
-import { IItemOptions } from "@pnp/graph/onedrive/types";
+import { IAnalyticsOptions, IItemOptions } from "@pnp/graph/onedrive/types";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
@@ -351,4 +351,26 @@ describe.only("OneDrive", function () {
         return expect(previewDriveItem).to.haveOwnProperty("getUrl");
     });
 
+    it("Get Drive Root Analytics - All Time", async function () {
+        if (stringIsNullOrEmpty(driveId)) {
+            this.skip();
+        }
+        const analyticOptions: IAnalyticsOptions = {
+            timeRange: "allTime",
+        };
+        const analytics = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.analytics(analyticOptions)();
+        return expect(analytics).to.haveOwnProperty("@odata.context");
+    });
+
+    it("Get Drive Item Analytics - Last Seven Days", async function () {
+        if (stringIsNullOrEmpty(driveId)) {
+            this.skip();
+        }
+        const testFileName = `TestFile_${getRandomString(4)}.txt`;
+        const fo = JSON.parse(JSON.stringify(fileOptions));
+        fo.filePathName = testFileName;
+        const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.upload(fo);
+        const analytics = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id).analytics()();
+        return expect(analytics).to.haveOwnProperty("@odata.context");
+    });
 });

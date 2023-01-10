@@ -67,11 +67,13 @@ const drive = await graph.users.getById("user@tenant.onmicrosoft.com").drives.ge
 
 const drive = await graph.me.drives.getById("{drive id}")();
 
+const drive = await graph.drives.getById("{drive id}")();
+
 ```
 
 ## Get the associated list of a drive
 
-Using the list() you get the associated list
+Using the list() you get the associated list information
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -84,6 +86,24 @@ const list = await graph.users.getById("user@tenant.onmicrosoft.com").drives.get
 
 const list = await graph.me.drives.getById("{drive id}").list();
 
+```
+
+Using the getList(), from the lists implementation, you get the associated IList object.
+Form more infomration about acting on the IList object see [@pnpjs/graph/lists](./lists.md)
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/onedrive";
+import "@pnp/graph/lists";
+
+const graph = graphfi(...);
+
+const listObject: IList = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").getList();
+
+const listOBject: IList = await graph.me.drives.getById("{drive id}").getList();
+
+const list = await listObject();
 ```
 
 ## Get the recent files
@@ -557,4 +577,28 @@ const delta: IDeltaItems = await graph.users.getById("user@tenant.onmicrosoft.co
 
 // Get the changes for the drive items from token
 const delta: IDeltaItems = await graph.me.drive.root.delta("{token}")();
+```
+
+## Get Drive Item Analytics
+
+Using the analytics() you get the ItemAnalytics for a DriveItem
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/onedrive";
+import { IAnalyticsOptions } from "@pnp/graph/onedrive";
+
+const graph = graphfi(...);
+
+// Defaults to lastSevenDays
+const analytics = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").analytics()();
+
+const analytics = await graph.me.drives.getById("{drive id}").items.getById("{item id}").analytics()();
+
+const analyticOptions: IAnalyticsOptions = {
+    timeRange: "allTime"
+};
+
+const analyticsAllTime = await graph.me.drives.getById("{drive id}").items.getById("{item id}").analytics(analyticOptions)();
 ```
