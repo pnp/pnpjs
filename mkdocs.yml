@@ -7,6 +7,7 @@ nav:
   - 'Getting Started': 'getting-started.md'
   - 'V2->V3 Transition': 'transition-guide.md'
   - 'Year in Review':
+    - '2022': 'news/2022-year-in-review.md'
     - '2021': 'news/2021-year-in-review.md'
     - '2020': 'news/2020-year-in-review.md'
   - 'Library Usage Tips':
