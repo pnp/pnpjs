@@ -5,7 +5,7 @@
     "version": "3.10.0",
     "description": "A JavaScript library for SharePoint & Graph development.",
     "devDependencies": {
-        "@azure/msal-node": "1.14.5",
+        "@azure/msal-node": "1.14.6",
         "@microsoft/microsoft-graph-types": "2.25.0",
         "@pnp/buildsystem": "3.0.5",
         "@types/chai": "4.3.4",
