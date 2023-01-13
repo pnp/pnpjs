@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.11.0 - 2023-Jan-13
+
+### Added
+
+- graph
+  - Added various methods to OneDrive module; GraphFI.Drives,Drives - delta,Drives - upload,Drive - getItemByPath,Drive - getItemsByPath,DriveItem - moveItem,DriveItem - copyItem,DriveItem - convertContent,DriveItem - upload,DriveItem - preview,Root/DriveItem - analytics,List - IDrive.getList
+
+### Fixed
+
+- docs
+  - General typo fixes and updates
+
+- core
+  - Fixes #2507 - Updates the timeline start logic to get a ref to the promise rather than attaching finally directly.
+
+- sp
+  - Fixes #2509 - Fix but with item.setImageField
+
+- node
+  - Fixes #2532 - Fix setStreamContentChunked: await loading chunks
+
+### Removed
+
+- graph
+  - Deprecated OneDrive module; DriveItem - move - replaced by moveItem, DriveItem - setContent - replaced by upload
+
 ## 3.10.0 - 2022-Dec-13
 
 ### Added
