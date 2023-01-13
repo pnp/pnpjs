@@ -43,20 +43,26 @@ extendFactory(File, {
 
             stream.on("data", (chunk) => {
 
+                stream.pause();
+
                 blockNumber += 1;
 
                 if (blockNumber === 0) {
 
-                    promise = promise.then(() => {
+                    promise = promise.then(async () => {
                         progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: 0, fileSize: -1, stage: "starting", totalBlocks: -1 });
-                        return fileRef.startUpload(uploadId, <any>chunk);
+                        const result = await fileRef.startUpload(uploadId, <any>chunk);
+                        stream.resume();
+                        return result;
                     });
 
                 } else {
 
-                    promise = promise.then((pointer) => {
+                    promise = promise.then(async (pointer) => {
                         progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: pointer, fileSize: -1, stage: "continue", totalBlocks: -1 });
-                        return fileRef.continueUpload(uploadId, pointer, <any>chunk);
+                        const result = await fileRef.continueUpload(uploadId, pointer, <any>chunk);
+                        stream.resume();
+                        return result;
                     });
 
                 }
