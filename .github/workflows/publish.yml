@@ -23,6 +23,9 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
           
+      # Run the npm install          
+      - run: npm ci
+          
       # Runs a set of commands using the runners shell
       - name: Test - not setup
         run: echo this would be the tests
