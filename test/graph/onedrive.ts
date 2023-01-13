@@ -10,7 +10,7 @@ import { IAnalyticsOptions, IItemOptions } from "@pnp/graph/onedrive/types";
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
-describe.only("OneDrive", function () {
+describe("OneDrive", function () {
     let testUserName = "";
     let driveId = null;
     const fileOptions = {
