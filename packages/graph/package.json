@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "@microsoft/microsoft-graph-types": "2.25.0",
-        "tslib": "2.4.0",
+        "tslib": "2.4.1",
         "@pnp/core": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER"
     }
