@@ -28,7 +28,7 @@ export function extendable() {
 
             construct(clz, args, newTarget: any) {
 
-                let r = Reflect.construct(clz, args, newTarget);
+                let r: object = Reflect.construct(clz, args, newTarget);
 
                 // this block handles the factory function extensions by picking
                 // them off the factory and applying them to the created object
