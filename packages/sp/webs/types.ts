@@ -141,7 +141,7 @@ export class _Web extends _SPInstance<IWebInfo> {
     public async getParentWeb(): Promise<IWeb> {
         const { Url, ParentWeb } = await this.select("Url", "ParentWeb/ServerRelativeUrl").expand("ParentWeb")<{ Url: string; ParentWeb: { ServerRelativeUrl: string } }>();
         if (ParentWeb?.ServerRelativeUrl) {
-            return Web([this, Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length)]);
+            return Web([this, combine((new URL(Url)).origin, ParentWeb.ServerRelativeUrl)]);
         }
         return null;
     }
