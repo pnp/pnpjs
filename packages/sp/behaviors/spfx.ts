@@ -30,12 +30,13 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
                 const sameWeb = (new RegExp(`^${combine(context.pageContext.web.absoluteUrl, "/_api")}`, "i")).test(url);
                 if (sameWeb && context?.pageContext?.legacyPageContext?.formDigestValue) {
 
-                    // account for page lifetime in timeout #2304 & others
-                    const expiration = (context.pageContext.legacyPageContext?.formDigestTimeoutSeconds || 1600) - (performance.now() / 1000) - 15;
+                    const creationDateFromDigest = new Date(context.pageContext.legacyPageContext.formDigestValue.split(",")[1]);
 
+                    // account for page lifetime in timeout #2304 & others
+                    // account for tab sleep #2550
                     return {
                         value: context.pageContext.legacyPageContext.formDigestValue,
-                        expiration: dateAdd(new Date(), "second", expiration),
+                        expiration: dateAdd(creationDateFromDigest, "second", context.pageContext.legacyPageContext?.formDigestTimeoutSeconds - 15 || 1585),
                     };
                 }
             }));
