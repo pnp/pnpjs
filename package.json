@@ -47,6 +47,7 @@
         "pnp-publish-beta": "npm run clean && npm run package && pnpbuild -n publish-beta",
         "pnp-publish-v3nightly": "npm run clean && npm run package && pnpbuild -n publish-v3nightly",
         "serve": "tsc -p ./debug/serve/tsconfig.json && node ./build/server/debug/serve/plumbing/run.js",
+        "spfx": "node ./debug/spfx/pnpjs-local-debug-start.js",
         "start": "npm run serve",
         "test": "tsc -p ./test/tsconfig.json && mocha --verbose --logging error",
         "test-build": "tsc -p ./test/tsconfig.json"
