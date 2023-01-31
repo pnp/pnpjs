@@ -42,7 +42,7 @@ function rebaseSiteUrl(candidate: string, path: string | undefined): string {
 }
 
 @defaultPath("_api/site")
-export class _Site extends _SPInstance {
+export class _Site extends _SPInstance<ISiteInfo> {
 
     constructor(base: SPInit, path?: string) {
 
@@ -117,7 +117,7 @@ export class _Site extends _SPInstance {
     public async getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]> {
         const q = Site([this, this.parentUrl], "_api/sp.web.getdocumentlibraries(@v)");
         q.query.set("@v", `'${absoluteWebUrl}'`);
-        const data = await q();
+        const data = await q<any>();
         return hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data;
     }
 
@@ -130,7 +130,7 @@ export class _Site extends _SPInstance {
 
         const q = Site([this, this.parentUrl], "_api/sp.web.getweburlfrompageurl(@v)");
         q.query.set("@v", `'${absolutePageUrl}'`);
-        const data = await q();
+        const data = await q<any>();
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;
     }
 
@@ -286,11 +286,15 @@ export interface IOpenWebByIdResult {
  * This is the interface to expose data for Document Library
  */
 export interface IDocumentLibraryInformation {
-    AbsoluteUrl?: string;
-    Modified?: Date;
-    ModifiedFriendlyDisplay?: string;
-    ServerRelativeUrl?: string;
-    Title?: string;
+    AbsoluteUrl: string;
+    DriveId: string;
+    FromCrossFarm: boolean;
+    Id: string;
+    IsDefaultDocumentLibrary: boolean;
+    Modified: string;
+    ModifiedFriendlyDisplay: string;
+    ServerRelativeUrl: string;
+    Title: string;
 }
 
 export interface ICreateCommSiteProps {
@@ -323,4 +327,52 @@ export interface ISiteCreationResponse {
     "SiteId": string;
     "SiteStatus": 0 | 1 | 2 | 3;
     "SiteUrl": string;
+}
+
+export interface ISiteInfo {
+    AllowCreateDeclarativeWorkflow: boolean;
+    AllowDesigner: boolean;
+    AllowMasterPageEditing: boolean;
+    AllowRevertFromTemplate: boolean;
+    AllowSaveDeclarativeWorkflowAsTemplate: boolean;
+    AllowSavePublishDeclarativeWorkflow: boolean;
+    AllowSelfServiceUpgrade: boolean;
+    AllowSelfServiceUpgradeEvaluation: boolean;
+    AuditLogTrimmingRetention: number;
+    ChannelGroupId: string;
+    Classification: string;
+    CompatibilityLevel: number;
+    CurrentChangeToken: { StringValue: string };
+    DisableAppViews: boolean;
+    DisableCompanyWideSharingLinks: boolean;
+    DisableFlows: boolean;
+    ExternalSharingTipsEnabled: boolean;
+    GeoLocation: string;
+    GroupId: string;
+    HubSiteId: string;
+    Id: string;
+    IsHubSite: boolean;
+    LockIssue: string | null;
+    MaxItemsPerThrottledOperation: number;
+    MediaTranscriptionDisabled: boolean;
+    NeedsB2BUpgrade: boolean;
+    PrimaryUri: string;
+    ReadOnly: boolean;
+    RequiredDesignerVersion: string;
+    ResourcePath: { DecodedUrl: string };
+    SandboxedCodeActivationCapability: number;
+    SensitivityLabel: string;
+    SensitivityLabelId: string | null;
+    ServerRelativeUrl: string;
+    ShareByEmailEnabled: boolean;
+    ShareByLinkEnabled: boolean;
+    ShowUrlStructure: boolean;
+    TrimAuditLog: boolean;
+    UIVersionConfigurationEnabled: boolean;
+    UpgradeReminderDate: string;
+    UpgradeScheduled: boolean;
+    UpgradeScheduledDate: string;
+    Upgrading: boolean;
+    Url: string;
+    WriteLocked: boolean;
 }
