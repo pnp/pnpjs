@@ -181,7 +181,7 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
-const graph = graphfi(...);
+const graph = graphfi(...).using(SPFx(this.context));
 
 await graph.users();
 ```
@@ -197,6 +197,22 @@ const graph = graphfi().using(graphSPFx(this.context));
 ```
 
 If you want to use a different form of authentication you can apply that behavior after `SPFx` to override it. In this case we are using the [client MSAL authentication](../msaljsclient).
+
+## SPFxToken
+
+_Added in 3.12_
+
+Allows you to include the SharePoint Framework application token in requests. This behavior is include within the SPFx behavior, but is available separately should you wish to compose it into your own behaviors.
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+
+// this.context represents the context object within an SPFx webpart, application customizer, or ACE.
+const graph = graphfi(...).using(SPFxToken(this.context));
+
+await graph.users();
+```
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";

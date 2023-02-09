@@ -95,7 +95,7 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
-const sp = spfi(...);
+const sp = spfi(...).using(SPFx(this.context));
 
 await sp.web();
 ```
@@ -108,6 +108,22 @@ import { SPFI, spfi, SPFx as spSPFx } from '@pnp/sp'
 
 const sp = spfi().using(spSPFx(this.context));
 const graph = graphfi().using(graphSPFx(this.context));
+```
+
+## SPFxToken
+
+_Added in 3.12_
+
+Allows you to include the SharePoint Framework application token in requests. This behavior is include within the SPFx behavior, but is available separately should you wish to compose it into your own behaviors.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+
+// this.context represents the context object within an SPFx webpart, application customizer, or ACE.
+const sp = spfi(...).using(SPFxToken(this.context));
+
+await sp.web();
 ```
 
 ## Telemetry

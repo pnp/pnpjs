@@ -965,7 +965,8 @@ export class _ClientsidePage extends _SPQueryable {
 
         // this is to handle the special case in issue #1690
         // must ensure that searchablePlainTexts values have < replaced with &lt; in links web part
-        if ((<any>control).data.controlType === 3 && (<any>control).data.webPartId === "c70391ea-0b10-4ee9-b2b4-006d3fcad0cd") {
+        // For #2561 need to process for code snippet webpart and any control && (<any>control).data.webPartId === "c70391ea-0b10-4ee9-b2b4-006d3fcad0cd"
+        if ((<any>control).data.controlType === 3) {
             const texts = (<any>control).data?.webPartData?.serverProcessedContent?.searchablePlainTexts || null;
             if (objectDefinedNotNull(texts)) {
                 const keys = Object.getOwnPropertyNames(texts);

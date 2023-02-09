@@ -18,23 +18,20 @@ export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorld
 
     this.domElement.innerHTML = `<div class="${styles.helloWorld}">${getGUID()}</div>`;
 
-    setTimeout(() => {
+    const button = document.createElement("button");
 
-      const button = document.createElement("button");
+    button.textContent = "Press Me!";
 
-      button.textContent = "Testing";
+    button.addEventListener("click", async (event) => {
 
-      button.addEventListener("click", async (event) => {
-        event.preventDefault();
+      event.preventDefault();
 
-        await this.sp.web.update({
-          Title: `Testing Web`,
-        });
-      });
+      const data = await this.sp.web();
 
-      this.domElement.append(button);
+      console.log(JSON.stringify(data, null, 2));
+    });
 
-    }, 1000);
+    this.domElement.append(button);
   }
 
   protected onInit(): Promise<void> {
