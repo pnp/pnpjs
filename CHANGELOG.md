@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2023-Feb-10
+
+We are official closing support for v2. Moving forward we will no longer do releases for the v2 version.
+
 ## 2.15.0 - 2022-Dec-9
 
 ### Fixed
