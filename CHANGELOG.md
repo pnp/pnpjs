@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.12.0 - 2023-Feb-10
+
+**Please note:** We are official closing support for v2. Moving forward we will no longer do releases for the v2 version.
+
+### Added 
+
+- graph
+  - Addresses #2552 - Adds an SPFx Token behavior to sp and graph libraries
+
+- sp
+  - Addresses #2552 - Adds an SPFx Token behavior to sp and graph libraries
+  - Addresses #2551 - Add typings when fetching Site data and change typings for getDocumentLibraries
+
+### Fixed
+
+- core
+  - Fixes #2539 - Fix unhandlable promise in start()
+
+- sp
+  - Fixes #2561 - Changes behavior in processing for saving client side pages to process all controls through the specialSaveHandling function
+  - Fixes #2558 - Issue with getParentWeb from root site
+  - Fixes #2550 - Fix for request digest timeout after tab sleeps
+
+- sp-admin
+  - Fixes #2518 - Replacing 'CreateGroupForSite' method example by 'AddTenantCdnOrigin'
+
 ## 3.11.0 - 2023-Jan-13
 
 ### Added
