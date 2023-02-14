@@ -50,7 +50,8 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
             DefaultInit(),
             BrowserFetchWithRetry(),
             DefaultParse(),
-            SPFxToken(context),
+            // remove SPFx Token in default due to issues #2570, #2571
+            // SPFxToken(context),
             RequestDigest((url) => {
 
                 const sameWeb = (new RegExp(`^${combine(context.pageContext.web.absoluteUrl, "/_api")}`, "i")).test(url);
