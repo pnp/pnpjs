@@ -102,9 +102,9 @@ export type CancelableObserver = (this: Queryable) => Promise<void>;
  * @param func Func to wrap
  * @returns The same func signature, wrapped with our cancel scoping logic
  */
-export const asCancelableScope = <T extends any[], U>(func: (...args: T) => U): (...args: T) => U => {
+export const asCancelableScope = <F extends (...args: any[]) => any>(func: F): (...args: Parameters<F>) => ReturnType<F> => {
 
-    return function (this: Queryable, ...args: T): U {
+    return function (this: Queryable, ...args: Parameters<F>): ReturnType<F> {
 
         // ensure we have setup "this" to cancel
         // 1. for single requests the value is set in the behavior's init observer
