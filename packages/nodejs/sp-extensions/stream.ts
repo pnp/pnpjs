@@ -113,6 +113,11 @@ extendFactory(Files, {
     }),
 });
 
+// these are needed to avoid a type/name not found issue where TSC doesn't properly keep
+// the references used within the module declarations below
+type ProgressFunc = (data: IFileUploadProgressData) => void;
+type ChunkedResult = Promise<IFileAddResult>;
+
 declare module "@pnp/sp/files/types" {
 
     interface IFile {
@@ -126,8 +131,8 @@ declare module "@pnp/sp/files/types" {
          */
         setStreamContentChunked(
             stream: ReadStream,
-            progress?: (data: IFileUploadProgressData) => void,
-        ): Promise<IFileAddResult>;
+            progress?: ProgressFunc,
+        ): ChunkedResult;
     }
 
     interface IFiles {
@@ -137,9 +142,9 @@ declare module "@pnp/sp/files/types" {
         addChunked(
             url: string,
             content: Blob | ReadStream,
-            progress?: (data: IFileUploadProgressData) => void,
+            progress?: ProgressFunc,
             shouldOverWrite?: boolean,
             chunkSize?: number,
-        ): Promise<IFileAddResult>;
+        ): ChunkedResult;
     }
 }
