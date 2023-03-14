@@ -139,7 +139,7 @@ import "@pnp/sp/folders";
 const sp = spfi(...);
 
 //Sample uses pure JavaScript to access the input tag of type="file" ->https://www.w3schools.com/tags/att_input_type_file.asp 
-let input = <HTMLInputElement>document.getElementById("thefileinput");
+let file = <HTMLInputElement>document.getElementById("thefileinput");
 const fileNamePath = encodeURI(file.name);
 let result: IFileAddResult;
 // you can adjust this number to control what size files are uploaded in chunks

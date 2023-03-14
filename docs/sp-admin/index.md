@@ -115,22 +115,21 @@ await sp.admin.siteProperties.clearSharingLockDown("https://tenant.sharepoint.co
 
 All three nodes support a `call` method to easily allow calling methods not explictly added to the library. If there is a method you use often that would be a good candidate to add, please open an issue or submit a PR. The call method is meant to help unblock folks before methods are added.
 
-This sample shows using call to invoke the "CreateGroupForSite" method of office365Tenant. While we already support for this method, it helps to show the relationship between `call` and an existing method.
+This sample shows using call to invoke the "AddTenantCdnOrigin" method of office365Tenant. While we already support for this method, it helps to show the relationship between `call` and an existing method.
 
 ```TS
 import { spfi } from "@pnp/sp";
-import "@pnp/sp-admin";
+import { SPOTenantCdnType } from '@pnp/sp-admin';
 
 const sp = spfi(...);
 
-// call CreateGroupForSite
-await sp.admin.office365Tenant.call<void>("CreateGroupForSite", {
-            siteUrl: "https://tenant.sharepoint.com/sites/site1",
-            displayName: "Site 1 Group",
-            alias: "site1",
-            isPublic: true,
-            optionalParams: {},
-        });
+// call AddTenantCdnOrigin
+await sp.admin.office365Tenant.call<void>("AddTenantCdnOrigin", {
+    "cdnType": SPOTenantCdnType.Public,
+    "originUrl": "*/clientsideassets"
+});
+
+const spTenant = spfi("https://{tenant}-admin.sharepoint.com");
 
 // call GetSiteSubscriptionId which takes no args
 const id = await spTenant.admin.tenant.call<string>("GetSiteSubscriptionId");

@@ -309,7 +309,7 @@ export abstract class Timeline<T extends Moments> {
 
                 this.error(e2);
             }
-        });
+        }).catch(() => void(0));
 
         // give the promise back to the caller
         return p;

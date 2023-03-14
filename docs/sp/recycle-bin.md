@@ -24,7 +24,7 @@ const rbItem = await sp.web.recycleBin.getById(bin[0].id);
 // delete the item from the recycle bin
 await rbItem.delete();
 
-// restore the item from teh recycle bin
+// restore the item from the recycle bin
 await rbItem.restore();
 
 // move the item to the second-stage (site) recycle bin.

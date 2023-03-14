@@ -5,6 +5,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.12.1 - 2023-Feb-14
+
+### Fixed
+
+- sp
+  - Addresses #2570, #2571 - Removes adding a bearer token by default to SPFx requests
+
+## 3.12.0 - 2023-Feb-10
+
+**Please note:** We are official closing support for v2. Moving forward we will no longer do releases for the v2 version.
+
+### Added 
+
+- graph
+  - Addresses #2552 - Adds an SPFx Token behavior to sp and graph libraries
+
+- sp
+  - Addresses #2552 - Adds an SPFx Token behavior to sp and graph libraries
+  - Addresses #2551 - Add typings when fetching Site data and change typings for getDocumentLibraries
+
+### Fixed
+
+- core
+  - Fixes #2539 - Fix unhandlable promise in start()
+
+- sp
+  - Fixes #2561 - Changes behavior in processing for saving client side pages to process all controls through the specialSaveHandling function
+  - Fixes #2558 - Issue with getParentWeb from root site
+  - Fixes #2550 - Fix for request digest timeout after tab sleeps
+
+- sp-admin
+  - Fixes #2518 - Replacing 'CreateGroupForSite' method example by 'AddTenantCdnOrigin'
+
+## 3.11.0 - 2023-Jan-13
+
+### Added
+
+- graph
+  - Added various methods to OneDrive module; GraphFI.Drives,Drives - delta,Drives - upload,Drive - getItemByPath,Drive - getItemsByPath,DriveItem - moveItem,DriveItem - copyItem,DriveItem - convertContent,DriveItem - upload,DriveItem - preview,Root/DriveItem - analytics,List - IDrive.getList
+
+### Fixed
+
+- docs
+  - General typo fixes and updates
+
+- core
+  - Fixes #2507 - Updates the timeline start logic to get a ref to the promise rather than attaching finally directly.
+
+- sp
+  - Fixes #2509 - Fix but with item.setImageField
+
+- node
+  - Fixes #2532 - Fix setStreamContentChunked: await loading chunks
+
+### Removed
+
+- graph
+  - Deprecated OneDrive module; DriveItem - move - replaced by moveItem, DriveItem - setContent - replaced by upload
+
 ## 3.10.0 - 2022-Dec-13
 
 ### Added

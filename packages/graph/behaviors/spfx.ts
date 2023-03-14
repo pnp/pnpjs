@@ -11,15 +11,9 @@ interface ISPFXContext {
     };
 }
 
-export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
+export function SPFxToken(context: ISPFXContext): TimelinePipe<Queryable> {
 
     return (instance: Queryable) => {
-
-        instance.using(
-            DefaultHeaders(),
-            DefaultInit(),
-            BrowserFetchWithRetry(),
-            DefaultParse());
 
         instance.on.auth.replace(async function (url: URL, init: RequestInit) {
 
@@ -31,6 +25,21 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
 
             return [url, init];
         });
+
+        return instance;
+    };
+}
+
+export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
+
+    return (instance: Queryable) => {
+
+        instance.using(
+            DefaultHeaders(),
+            DefaultInit(),
+            BrowserFetchWithRetry(),
+            DefaultParse(),
+            SPFxToken(context));
 
         return instance;
     };

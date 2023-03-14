@@ -34,7 +34,6 @@ export function asyncBroadcast<T extends ObserverFunction<void>>(): (observers: 
 
         const promises = [];
 
-        // process each handler which updates our "state" in order
         for (let i = 0; i < obs.length; i++) {
             promises.push(Reflect.apply(obs[i], this, r));
         }
