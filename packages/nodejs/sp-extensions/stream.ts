@@ -36,43 +36,29 @@ extendFactory(File, {
             return File(this).cancelUpload(uploadId);
         }));
 
-        return new Promise((resolve) => {
+        let blockNumber = -1;
+        let pointer = 0;
 
-            let blockNumber = -1;
-            let promise = Promise.resolve(0);
-
-            stream.on("data", (chunk) => {
-
-                stream.pause();
-
-                blockNumber += 1;
-
-                if (blockNumber === 0) {
-
-                    promise = promise.then(async () => {
-                        progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: 0, fileSize: -1, stage: "starting", totalBlocks: -1 });
-                        const result = await fileRef.startUpload(uploadId, <any>chunk);
-                        stream.resume();
-                        return result;
-                    });
-
-                } else {
-
-                    promise = promise.then(async (pointer) => {
-                        progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: pointer, fileSize: -1, stage: "continue", totalBlocks: -1 });
-                        const result = await fileRef.continueUpload(uploadId, pointer, <any>chunk);
-                        stream.resume();
-                        return result;
-                    });
-
-                }
+        for await (const chunk of stream) {
+            blockNumber++;
+            progress({
+                uploadId,
+                blockNumber,
+                chunkSize: chunk.length,
+                currentPointer: pointer,
+                fileSize: -1,
+                stage: blockNumber === 0 ? "starting" : "continue",
+                totalBlocks: -1,
             });
+            if (blockNumber === 0) {
+                pointer = await fileRef.startUpload(uploadId, chunk);
+            } else {
+                pointer = await fileRef.continueUpload(uploadId, pointer, chunk);
+            }
+        }
 
-            stream.on("end", async () => {
-                progress({ uploadId, blockNumber, chunkSize: -1, currentPointer: -1, fileSize: -1, stage: "finishing", totalBlocks: -1 });
-                promise.then((pointer) => resolve(fileRef.finishUpload(uploadId, pointer, Buffer.from([]))));
-            });
-        });
+        progress({ uploadId, blockNumber, chunkSize: -1, currentPointer: -1, fileSize: -1, stage: "finishing", totalBlocks: -1 });
+        return await fileRef.finishUpload(uploadId, pointer, Buffer.from([]));
     }),
 });
 
