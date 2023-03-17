@@ -12,5 +12,5 @@ import "@pnp/sp/publishing-sitepageservice";
 
 const sp = spfi(...);
 
-const groupIdentifiers = await sp.spPublishingSitePageService.getCurrentUserMemberships();
+const groupIdentifiers = await sp.publishingSitePageService.getCurrentUserMemberships();
 ```

@@ -11,11 +11,11 @@ declare module "../fi" {
         /**
          * Access to SP.Publishing.SitePageService API which allows you to get your current unified group memberships
          */
-        readonly spPublishingSitePageService: ISitePageService;
+        readonly publishingSitePageService: ISitePageService;
     }
 }
 
-Reflect.defineProperty(SPFI.prototype, "spPublishingSitePageService", {
+Reflect.defineProperty(SPFI.prototype, "publishingSitePageService", {
     get: function (this: SPFI) {
         return this.create(SitePageService);
     },
