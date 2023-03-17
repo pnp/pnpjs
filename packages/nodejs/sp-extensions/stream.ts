@@ -36,43 +36,29 @@ extendFactory(File, {
             return File(this).cancelUpload(uploadId);
         }));
 
-        return new Promise((resolve) => {
+        let blockNumber = -1;
+        let pointer = 0;
 
-            let blockNumber = -1;
-            let promise = Promise.resolve(0);
-
-            stream.on("data", (chunk) => {
-
-                stream.pause();
-
-                blockNumber += 1;
-
-                if (blockNumber === 0) {
-
-                    promise = promise.then(async () => {
-                        progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: 0, fileSize: -1, stage: "starting", totalBlocks: -1 });
-                        const result = await fileRef.startUpload(uploadId, <any>chunk);
-                        stream.resume();
-                        return result;
-                    });
-
-                } else {
-
-                    promise = promise.then(async (pointer) => {
-                        progress({ uploadId, blockNumber, chunkSize: chunk.length, currentPointer: pointer, fileSize: -1, stage: "continue", totalBlocks: -1 });
-                        const result = await fileRef.continueUpload(uploadId, pointer, <any>chunk);
-                        stream.resume();
-                        return result;
-                    });
-
-                }
+        for await (const chunk of stream) {
+            blockNumber++;
+            progress({
+                uploadId,
+                blockNumber,
+                chunkSize: chunk.length,
+                currentPointer: pointer,
+                fileSize: -1,
+                stage: blockNumber === 0 ? "starting" : "continue",
+                totalBlocks: -1,
             });
+            if (blockNumber === 0) {
+                pointer = await fileRef.startUpload(uploadId, chunk);
+            } else {
+                pointer = await fileRef.continueUpload(uploadId, pointer, chunk);
+            }
+        }
 
-            stream.on("end", async () => {
-                progress({ uploadId, blockNumber, chunkSize: -1, currentPointer: -1, fileSize: -1, stage: "finishing", totalBlocks: -1 });
-                promise.then((pointer) => resolve(fileRef.finishUpload(uploadId, pointer, Buffer.from([]))));
-            });
-        });
+        progress({ uploadId, blockNumber, chunkSize: -1, currentPointer: -1, fileSize: -1, stage: "finishing", totalBlocks: -1 });
+        return await fileRef.finishUpload(uploadId, pointer, Buffer.from([]));
     }),
 });
 
@@ -113,6 +99,11 @@ extendFactory(Files, {
     }),
 });
 
+// these are needed to avoid a type/name not found issue where TSC doesn't properly keep
+// the references used within the module declarations below
+type ProgressFunc = (data: IFileUploadProgressData) => void;
+type ChunkedResult = Promise<IFileAddResult>;
+
 declare module "@pnp/sp/files/types" {
 
     interface IFile {
@@ -126,8 +117,8 @@ declare module "@pnp/sp/files/types" {
          */
         setStreamContentChunked(
             stream: ReadStream,
-            progress?: (data: IFileUploadProgressData) => void,
-        ): Promise<IFileAddResult>;
+            progress?: ProgressFunc,
+        ): ChunkedResult;
     }
 
     interface IFiles {
@@ -137,9 +128,9 @@ declare module "@pnp/sp/files/types" {
         addChunked(
             url: string,
             content: Blob | ReadStream,
-            progress?: (data: IFileUploadProgressData) => void,
+            progress?: ProgressFunc,
             shouldOverWrite?: boolean,
             chunkSize?: number,
-        ): Promise<IFileAddResult>;
+        ): ChunkedResult;
     }
 }
