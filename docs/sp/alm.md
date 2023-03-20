@@ -18,10 +18,10 @@ import "@pnp/sp/webs";
 const sp = spfi(...);
 
 // get the current context web's app catalog
-const catalog = await sp.web.getAppCatalog()();
+const catalog = sp.web.appcatalog;
 
 // you can also chain off the app catalog
-const apps = await sp.web.getAppCatalog()();
+const apps = await sp.web.appcatalog();
 console.log(apps);
 ```
 
@@ -33,22 +33,19 @@ import "@pnp/sp/webs";
 const sp = spfi(...);
 
 // you can get the tenant app catalog (or any app catalog) by using the getTenantAppCatalogWeb method
-const appCatWeb = await sp.getTenantAppCatalogWeb()();
-const appCatalog = await appCatWeb.getAppCatalog()();
+const appCatWeb = await sp.getTenantAppCatalogWeb();
+const appCatalog = await appCatWeb.appcatalog;
 
-// you can get the tenant app catalog (or any app catalog) by passing in a url
-// get the tenant app catalog
-const tenantCatalog = await sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/appcatalog")();
-
-// get a different app catalog
-const catalog = await sp.web.getAppCatalog("https://mytenant.sharepoint.com/sites/anothersite")();
+// you can also chain off the app catalog
+const tenantApps = await appCatWeb.appcatalog();
+console.log(apps);
 ```
 
 ```TypeScript
 // alternatively you can create a new app catalog instance directly by importing the AppCatalog class
 import { IAppCatalog, AppCatalog } from '@pnp/sp/appcatalog';
 
-const catalog: IAppCatalog = await AppCatalog("https://mytenant.sharepoint.com/sites/apps")();
+const catalog: IAppCatalog = await AppCatalog("https://mytenant.sharepoint.com/sites/apps");
 ```
 
 ```TypeScript
@@ -59,7 +56,7 @@ import { AppCatalog } from '@pnp/sp/appcatalog';
 
 const sp = spfi().using(...);
 const web = Web([sp.web, "https://mytenant.sharepoint.com/sites/apps"]);
-const catalog = await AppCatalog(web)();
+const catalog = await AppCatalog(web);
 ```
 
 The following examples make use of a variable "catalog" which is assumed to represent an AppCatalog instance obtained using one of the above methods, supporting code is omitted for brevity.
