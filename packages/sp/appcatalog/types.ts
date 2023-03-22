@@ -23,7 +23,7 @@ function getAppCatalogPath(base: string, path: string): string {
         }
     }
 
-    return url;
+    return combine(base, path);
 }
 
 @defaultPath("_api/web/tenantappcatalog/AvailableApps")
