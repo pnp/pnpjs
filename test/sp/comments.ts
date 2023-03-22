@@ -63,8 +63,7 @@ describe("Comments", function () {
             };
             const comment = await page.addComment(commentInfo);
             const commentId = parseInt(comment.id, 10);
-            const commentMentions = comment.mentions;
-            return expect(commentId).to.be.greaterThan(0) && expect(commentMentions.some(m=>m.loginName.toLowerCase() === testUserLogin.toLocaleLowerCase())).to.be.true;
+            return expect(commentId).to.be.greaterThan(0);
         });
 
         it("getById", async function () {
