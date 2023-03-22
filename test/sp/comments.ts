@@ -56,13 +56,15 @@ describe("Comments", function () {
                 this.skip();
             }
 
+            const mentionHtml = `<a data-sp-mention-user-id="${testUserLogin}" href="mailto&#58;${testUserEmail}" tabindex="-1">${testUser}</a>`;
             const commentInfo: Partial<ICommentInfo> = {
                 mentions: [{ loginName: testUserLogin, email: testUserEmail, name: testUser }],
-                text: "This is the test comment with at mentions",
+                text: `${mentionHtml} This is the test comment with at mentions`,
             };
             const comment = await page.addComment(commentInfo);
             const commentId = parseInt(comment.id, 10);
-            return expect(commentId).to.be.greaterThan(0);
+            const commentMentions = comment.mentions;
+            return expect(commentId).to.be.greaterThan(0) && expect(commentMentions.some(m=>m.loginName.toLowerCase() === testUserLogin.toLocaleLowerCase())).to.be.true;
         });
 
         it("getById", async function () {
