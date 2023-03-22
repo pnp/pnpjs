@@ -152,10 +152,13 @@ const sp = spfi(...);
 // you can add a comment as a string
 const comment = await item.comments.add("string comment");
 
-// or you can add it as an object to include mentions
-const commentInfo: Partial<ICommentInfo> = { text: "This is the test comment with at mentions", 
+//or you can include the @mentions. html anchor required to include mention in text body.
+const mentionHtml = `<a data-sp-mention-user-id="test@contoso.com" href="mailto&#58;test@contoso.com.com" tabindex="-1">Test User</a>`;
+
+const commentInfo: Partial<ICommentInfo> = { text: `${mentionHtml} This is the test comment with at mentions`, 
     mentions: [{ loginName: 'test@contoso.com', email: 'test@contoso.com', name: 'Test User' }], };
 const comment = await page.addComment(commentInfo);
+
 ```
 
 ### Delete a Comment
