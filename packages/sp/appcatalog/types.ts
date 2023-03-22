@@ -12,6 +12,20 @@ import { File, IFile } from "../files/types.js";
 import { combine } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
 
+function getAppCatalogPath(base: string, path: string): string {
+
+    const paths = ["_api/web/tenantappcatalog/", "_api/web/sitecollectionappcatalog/"];
+
+    for (let i = 0; i < paths.length; i++) {
+        const index = base.indexOf(paths[i]);
+        if (index > -1) {
+            return combine(base.substring(index, index + paths[i].length), path);
+        }
+    }
+
+    return url;
+}
+
 @defaultPath("_api/web/tenantappcatalog/AvailableApps")
 export class _AppCatalog extends _SPCollection {
 
@@ -38,7 +52,7 @@ export class _AppCatalog extends _SPCollection {
 
         // This REST call requires that you refer the list item id of the solution in the app catalog site.
         let appId = null;
-        const webUrl = extractWebUrl(this.toUrl()) + "_api/web";
+        const webUrl = combine(extractWebUrl(this.toUrl()), "_api/web");
 
         if (useSharePointItemId) {
 
@@ -59,7 +73,7 @@ export class _AppCatalog extends _SPCollection {
             }
         }
 
-        return spPost(AppCatalog([this, webUrl], `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`));
+        return spPost(AppCatalog(this, getAppCatalogPath(this.toUrl(), `SyncSolutionToTeams(id=${appId})`)));
     }
 
     /**
@@ -73,7 +87,7 @@ export class _AppCatalog extends _SPCollection {
     public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
 
         // you don't add to the availableapps collection
-        const adder = AppCatalog([this, extractWebUrl(this.toUrl())], `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`);
+        const adder = AppCatalog(this, getAppCatalogPath(this.toUrl(), `add(overwrite=${shouldOverWrite},url='${filename}')`));
 
         const r = await spPost(adder, {
             body: content, headers: {
