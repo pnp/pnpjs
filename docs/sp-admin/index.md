@@ -5,8 +5,12 @@ The `@pnp/sp-admin` library enables you to call the static SharePoint admin API'
 - `_api/Microsoft.Online.SharePoint.TenantManagement.Office365Tenant`
 - `_api/Microsoft.Online.SharePoint.TenantAdministration.SiteProperties`
 - `_api/Microsoft.Online.SharePoint.TenantAdministration.Tenant`
+- `_api/groupsitemanager`
 
-These APIs typically require an elevated level of permissions and should not be relied upon in general user facing solutions. Before using this library please understand the impact of what you are doing as you are updating settings at the tenant level for all users.
+These APIs typically require an elevated level of permissions and should not be relied upon in general user facing solutions. Before using this library please understand the impact of what you are doing as you are updating settings at the tenant level for all users. 
+
+!!! warning
+    These APIs are officially not documented which means there is no SLA provided by Microsoft. Furthermore, they can be updated without notification.
 
 ## Use
 
@@ -109,13 +113,9 @@ const selectedProps = await sp.admin.siteProperties.select("LockState")();
 await sp.admin.siteProperties.clearSharingLockDown("https://tenant.sharepoint.com/sites/site1");
 ```
 
-> For more information on the methods available and how to use them, please review the code comments in the source.
+## groupSiteManager
 
-## call
-
-All three nodes support a `call` method to easily allow calling methods not explictly added to the library. If there is a method you use often that would be a good candidate to add, please open an issue or submit a PR. The call method is meant to help unblock folks before methods are added.
-
-This sample shows using call to invoke the "CreateGroupForSite" method of office365Tenant. While we already support for this method, it helps to show the relationship between `call` and an existing method.
+The `groupSiteManager` node represents calls to `_api/groupsitemanager` endpoint and is accessible from any site url.
 
 ```TS
 import { spfi } from "@pnp/sp";
@@ -123,14 +123,38 @@ import "@pnp/sp-admin";
 
 const sp = spfi(...);
 
-// call CreateGroupForSite
-await sp.admin.office365Tenant.call<void>("CreateGroupForSite", {
-            siteUrl: "https://tenant.sharepoint.com/sites/site1",
-            displayName: "Site 1 Group",
-            alias: "site1",
-            isPublic: true,
-            optionalParams: {},
-        });
+// call method to get teams membership for a user
+const userTeams = await sp.admin.groupSiteManager.GetUserTeamConnectedMemberGroups("meganb@contoso.onmicrosoft.com");
+
+// call method to delete a group-connected site
+await sp.admin.groupSiteManager.Delete("https://contoso.sharepoint.com/sites/hrteam");
+
+// call method to check if the current user can create Microsoft 365 groups
+const isUserAllowed = await sp.admin.groupSiteManager.CanUserCreateGroup();
+
+```
+
+> For more information on the methods available and how to use them, please review the code comments in the source.
+
+## call
+
+All those nodes support a `call` method to easily allow calling methods not explictly added to the library. If there is a method you use often that would be a good candidate to add, please open an issue or submit a PR. The call method is meant to help unblock folks before methods are added.
+
+This sample shows using call to invoke the "AddTenantCdnOrigin" method of office365Tenant. While we already support for this method, it helps to show the relationship between `call` and an existing method.
+
+```TS
+import { spfi } from "@pnp/sp";
+import { SPOTenantCdnType } from '@pnp/sp-admin';
+
+const sp = spfi(...);
+
+// call AddTenantCdnOrigin
+await sp.admin.office365Tenant.call<void>("AddTenantCdnOrigin", {
+    "cdnType": SPOTenantCdnType.Public,
+    "originUrl": "*/clientsideassets"
+});
+
+const spTenant = spfi("https://{tenant}-admin.sharepoint.com");
 
 // call GetSiteSubscriptionId which takes no args
 const id = await spTenant.admin.tenant.call<string>("GetSiteSubscriptionId");

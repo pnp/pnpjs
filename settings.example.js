@@ -21,6 +21,7 @@ var msalInit = {
 export const settings = {
     testing: {
         enableWebTests: true,
+        enableGroupTests: true,
         // AAD login for test user
         testUser: "i:0#.f|membership|user@consto.com",
         sp: {

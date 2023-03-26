@@ -13,6 +13,8 @@ import "@pnp/sp/webs";
 import { Web } from "@pnp/sp/webs";
 import { PnPLogging, ConsoleListener, Logger, LogLevel } from "@pnp/logging";
 import { disposeRecording, initRecording } from "./test-recording.js";
+import { GroupType } from "@pnp/graph/groups/types";
+import "@pnp/graph/groups";
 
 declare module "mocha" {
     interface Context {
@@ -139,6 +141,13 @@ export const mochaHooks = {
                     },
                 }), NodeFetch({ replace: true }), PnPLogging(this.pnp.args.logging));
 
+                if (this.pnp.settings.enableGroupTests) {
+                    const d = new Date();
+                    const groupTestName = `PnP-JS-Core-Group-Testing-${(d.getTime())}`;
+                    const groupTestResult = await this.pnp._graph.groups.add(groupTestName, groupTestName, GroupType.Office365);
+                    this.pnp.settings.graph.groupId = await (await groupTestResult.group()).id;
+                }
+
                 // TODO:: remove once pnpTest is used everywhere
                 this.pnp.graph = this.pnp._graph;
 
@@ -203,11 +212,16 @@ export const mochaHooks = {
 
             return Promise.resolve();
         },
-        function graphTeardown(this: Context) {
+        async function graphTeardown(this: Context) {
             const teardownStart = Date.now();
             try {
-
-                console.log("No Graph teardown");
+                if (this.pnp.args.deleteGroup && this.pnp.settings.graph.groupId) {
+                    await this.pnp.graph.groups.getById(this.pnp.settings.graph.groupId).delete();
+                } else if (this.pnp.settings.enableGroupTests) {
+                    console.log(`Leaving M365 group ${this.pnp.settings.graph.groupId} alone.`);
+                } else {
+                    console.log("No Graph teardown");
+                }
 
             } finally {
                 const teardownEnd = Date.now();

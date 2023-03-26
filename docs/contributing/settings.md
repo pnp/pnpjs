@@ -43,6 +43,7 @@ var msalInit = {
 export const settings = {
     testing: {
         enableWebTests: true,
+        enableGroupTests: true,
         testUser: "i:0#.f|membership|user@consto.com",
         sp: {
             url: "{required for MSAL - absolute url of test site}",
@@ -68,6 +69,7 @@ The settings object has a single sub-object `testing` which contains the configu
 |||
 |--|--|
 |**enableWebTests**|Flag to toggle if tests are run against the live services or not. If this is set to false none of the other sections are required.|
+|**enableGroupTests**|Flag to toggle if tests are run against an ephemeral M365 group or not. If this is set to false no M365 group will be created for tests.|
 |**testUser**|AAD login account to be used when running tests.|
 |**sp**|Settings used to configure SharePoint (sp library) debugging and tests|
 |**graph**|Settings used to configure Microsoft Graph (graph library) debugging and tests|

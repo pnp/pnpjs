@@ -1677,3 +1677,97 @@ export interface IHomeSitesDetails {
     Title: string;
     MatchingAudiences: string[];
 }
+
+export interface EnsureTeamForGroupExResponse {
+    teamsId: string;
+    teamsUrl: string;
+}
+
+export interface OrgLabelsContext {
+    DisplayName: string;
+    LabelApplicableTo: string;
+    ObjectId: string;
+}
+
+export interface OrgLabelsContextList {
+    IsLastPage: boolean;
+    Labels: OrgLabelsContext[];
+}
+
+export interface GroupCreationContext {
+    ClassificationDescriptions: { Key: string; Value: any; ValueType: string }[];
+    ClassificationDescriptionsNew: { Key: string; Value: any; ValueType: string }[];
+    ClassificationExtSharingValue: { Key: string; Value: any; ValueType: string }[];
+    ClassificationPrivacyValue: { Key: string; Value: any; ValueType: string }[];
+    CustomFormUrl: string;
+    DataClassificationOptions: string[];
+    DataClassificationOptionsNew: { Key: string; Value: any; ValueType: string }[];
+    DefaultClassification: string;
+    ExternalInvitationEnabled: boolean;
+    MachineLearningCaptureEnabled: boolean;
+    MachineLearningExperienceEnabled: boolean;
+    PreferredLanguage: number;
+    RequireSecondaryContact: boolean;
+    SensitivityLabelPolicyMandatory: boolean;
+    ShowSelfServiceSiteCreation: boolean;
+    SiteCreationNewUX: boolean;
+    SitePath: string;
+    SiteSensitivityLabelId: string;
+    URLForCustomHelpPageSensitivityLabel: string;
+    UsageGuidelineUrl: string;
+}
+
+export interface GroupSiteConversionInfo {
+    GroupType: number;
+    IsGroupifyDisabled: boolean;
+    IsRegionRestricted: boolean;
+    IsWrongPdl: boolean;
+    SuggestedMembers: string[];
+    SuggestedOwners: string[];
+    UnsuggestablePrincipals: string[];
+}
+
+export interface GroupSiteInfo {
+    DocumentsUrl: string;
+    ErrorMessage: string;
+    GroupId: string;
+    SiteStatus: number;
+    SiteUrl: string;
+}
+
+export interface ChannelInfo {
+    description: string;
+    displayName: string;
+    filesFolderWebUrl: string;
+    id: string;
+    memberShipType: number;
+    webUrl: string;
+}
+
+export interface ChannelInfoCollection {
+    CacheUpdatedTime: Date;
+    value: ChannelInfo[];
+}
+
+export interface M365TabItem {
+    displayName: string;
+    isDefault: boolean;
+    itemType: number;
+    url: string;
+}
+
+export interface PinToTeamParams {
+    tabs: M365TabItem[];
+    teamsId: string;
+}
+
+export interface PinToTeamResponse {
+    FailedPinning: M365TabItem[];
+    SuccessfulPinning: M365TabItem[];
+}
+
+export interface FavoriteListHomeItem {
+    favoritesOrder: number;
+    lastPolled: number;
+    order: number;
+}
