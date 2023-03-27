@@ -103,6 +103,7 @@ nav:
       - 'Site Users': 'sp/site-users.md'
       - Sites: 'sp/sites.md'
       - Social: 'sp/social.md'
+      - 'SP.Publishing.SitePageService': 'sp/publishing-sitepageservice.md'
       - 'SP.Utilities.Utility': 'sp/sp-utilities-utility.md'
       - Subscriptions: 'sp/subscriptions.md'
       - Taxonomy: 'sp/taxonomy.md'

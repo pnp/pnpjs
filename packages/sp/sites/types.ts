@@ -4,7 +4,7 @@ import { Web, IWeb } from "../webs/types.js";
 import { combine, hOP, isArray } from "@pnp/core";
 import { body, TextParse } from "@pnp/queryable";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
-import { spPost } from "../operations.js";
+import { spPatch, spPost } from "../operations.js";
 import { IChangeQuery } from "../types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { emptyGuid } from "../types.js";
@@ -269,6 +269,11 @@ export class _Site extends _SPInstance<ISiteInfo> {
         }
 
         return spPost(Site([this, extractWebUrl(this.toUrl())], "/_api/GroupSiteManager/CreateGroupEx").using(TextParse()), body(postBody));
+    }
+
+    public update(props: ISiteInfo): Promise<any> {
+
+        return spPatch(this, body(props));
     }
 }
 export interface ISite extends _Site { }
