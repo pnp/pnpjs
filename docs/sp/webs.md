@@ -65,7 +65,7 @@ const r = await sp.web();
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
+import "@pnp/sp/presets/all";
 
 const sp = spfi(...);
 
