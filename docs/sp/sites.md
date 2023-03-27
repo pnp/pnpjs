@@ -139,7 +139,6 @@ You may need to supply additional parameters such as WebTemplate, to do so pleas
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
 import "@pnp/sp/sites";
 
 const sp = spfi(...);
@@ -203,7 +202,6 @@ You may need to supply additional parameters, to do so please use the `createMod
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
 import "@pnp/sp/sites";
 
 const sp = spfi(...);
@@ -242,6 +240,7 @@ Using the library, you can check if a specific site collection exist or not on y
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
+import "@pnp/sp/sites";
 
 const sp = spfi(...);
 
@@ -249,4 +248,22 @@ const sp = spfi(...);
 const siteUrl = "https://tenant.sharepoint.com/sites/subsite";
 const exists = await sp.site.exists(siteUrl);
 console.log(exists);
+```
+
+## Set the site logo
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/sites";
+import {ISiteLogoProperties, SiteLogoAspect, SiteLogoType} from "@pnp/sp/sites";
+
+const sp = spfi(...);
+
+//set the web's site logo
+const logoProperties: ISiteLogoProperties = {
+    relativeLogoUrl: "/sites/mySite/SiteAssets/site_logo.png", 
+    aspect: SiteLogoAspect.Rectangular, 
+    type: SiteLogoType.WebLogo
+};
+await sp.site.setSiteLogo(logoProperties);
 ```

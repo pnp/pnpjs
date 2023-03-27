@@ -6,6 +6,9 @@ export {
     ISite,
     Site,
     IDocumentLibraryInformation,
+    SiteLogoAspect,
+    SiteLogoType,
+    ISiteLogoProperties,
 } from "./types.js";
 
 declare module "../fi" {

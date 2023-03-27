@@ -1,4 +1,4 @@
-import { _SPInstance, spInvokableFactory, SPInit } from "../spqueryable.js";
+import { _SPInstance, spInvokableFactory, SPInit, SPQueryable } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
 import { combine, hOP, isArray } from "@pnp/core";
@@ -275,6 +275,15 @@ export class _Site extends _SPInstance<ISiteInfo> {
 
         return spPatch(this, body(props));
     }
+
+    /**
+     * Set's the site's `Site Logo` property, vs the Site Icon property available on the web's properties
+     *
+     * @param logoProperties An instance of ISiteLogoProperties which sets the new site logo.
+     */
+    public setSiteLogo(logoProperties: ISiteLogoProperties): Promise<void> {
+        return spPost(SPQueryable([this, extractWebUrl(this.toUrl())], "_api/siteiconmanager/setsitelogo"), body(logoProperties) );
+    }
 }
 export interface ISite extends _Site { }
 export const Site = spInvokableFactory<ISite>(_Site);
@@ -380,4 +389,34 @@ export interface ISiteInfo {
     Upgrading: boolean;
     Url: string;
     WriteLocked: boolean;
+}
+
+export const enum SiteLogoType {
+    /**
+     * Site header logo
+     */
+    WebLogo = 0,
+    /**
+     * Hub site logo
+     */
+    HubLogo = 1,
+    /**
+     * Header background image
+     */
+    HeaderBackground = 2,
+    /**
+     * Global navigation logo
+     */
+    GlobalNavLogo = 3
+}
+
+export const enum SiteLogoAspect {
+    Square = 0,
+    Rectangular = 1,
+}
+
+export interface ISiteLogoProperties {
+    relativeLogoUrl: string;
+    type: SiteLogoType;
+    aspect: SiteLogoAspect;
 }
