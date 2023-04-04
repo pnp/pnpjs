@@ -48,7 +48,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ### "Sharing is Caring"
 
-Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole _SharePoint Patterns and Practices (PnP) program_.
+Please use [http://aka.ms/community/home](http://aka.ms/community/home) for the latest updates around the whole *Microsoft 365 and Power Platform Community(PnP)* initiative.
 
 ### Disclaimer
 

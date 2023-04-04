@@ -1,6 +1,6 @@
 PnPjs is a fluent JavaScript API for consuming SharePoint and Microsoft Graph REST APIs in a type-safe way. You can use it with SharePoint Framework, Nodejs, or JavaScript projects. This an open source initiative complementing existing SDKs provided by Microsoft.
 
-Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole *SharePoint Patterns and Practices (PnP) initiative*.
+Please use [http://aka.ms/community/home](http://aka.ms/community/home) for the latest updates around the whole *Microsoft 365 and Power Platform Community(PnP)* initiative.
 
 >If you are moving from v2 please review the [transition guide](https://pnp.github.io/pnpjs/transition-guide/)
 
