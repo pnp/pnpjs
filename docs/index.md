@@ -21,10 +21,11 @@ The latest published version is [![npm version](https://badge.fury.io/js/%40pnp%
 |     ||  |
 | ---| -------------|-------------|
 | @pnp/| | |
+|| [azidjsclient](./concepts/auth-nodejs)  | Provides an Azure Identity wrapper suitable for use with PnPjs |
 || [core](./packages#core)  | Provides shared functionality across all pnp libraries |
 || [graph](./packages#graph) | Provides a fluent api for working with Microsoft Graph |
 || [logging](./packages#logging) | Light-weight, subscribable logging framework |
-|| [msaljsclient](./concepts/authentication.md#MSAL-in-Browser)  | Provides an msal wrapper suitable for use with PnPjs |
+|| [msaljsclient](./concepts/authentication)  | Provides an msal wrapper suitable for use with PnPjs |
 || [nodejs](./packages#nodejs) | Provides functionality enabling the @pnp libraries within nodejs |
 || [queryable](./packages#queryable) | Provides shared query functionality and base classes |
 || [sp](./packages#sp) | Provides a fluent api for working with SharePoint REST |
