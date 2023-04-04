@@ -52,7 +52,7 @@ export class _RecycleBin extends _SPCollection<IRecycleBinItemObject[]> {
     * @param id The string id of the recycle bin item
     */
     public getById(id: string): IRecycleBinItem {
-        return RecycleBinItem(this).concat(`(${id})`);
+        return RecycleBinItem(this).concat(`('${id}')`);
     }
 
     /**
