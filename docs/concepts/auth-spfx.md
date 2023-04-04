@@ -40,25 +40,37 @@ const sp = spfi().using(SPFx(context), SPFxToken(context));
 
 ## MSAL + SPFx
 
+We support MSAL for both browser and nodejs by providing a thin wrapper around the official libraries. We won't document the fully possible MSAL configuration, but any parameters supplied are passed through to the underlying implementation. To use the browser MSAL package you'll need to install the @pnp/msaljsclient package which is deployed as a standalone due to the large MSAL dependency.
+
+`npm install @pnp/msaljsclient --save`
+
+At this time we're using version 1.x of the `msal` library which uses Implicit Flow. For more informaiton on the msal library please see the [AzureAD/microsoft-authentication-library-for-js](https://github.com/AzureAD/microsoft-authentication-library-for-js#readme).
+
+Each of the following samples reference a MSAL configuration that utilizes an Azure AD App Registration, these are samples that show the typings for those objects:
+
 ```TypeScript
-import { spfi, SPBrowser } from "@pnp/sp";
+import { SPFx as graphSPFx, graphfi } from "@pnp/graph";
+import { SPFx as spSPFx, spfi } from "@pnp/sp";
 import { MSAL } from "@pnp/msaljsclient";
+import { Configuration, AuthenticationParameters } from "msal";
+import "@pnp/graph/users";
 import "@pnp/sp/webs";
 
-const sp = spfi("https://tenant.sharepoint.com/sites/dev").using(SPBrowser(), MSAL(configuration, authParams));
+const configuration: Configuration = {
+  auth: {
+    authority: "https://login.microsoftonline.com/{tenant Id}/",
+    clientId: "{AAD Application Id/Client Id}"
+  }
+};
 
-const webData = await sp.web();
-```
-
-## MSAL + SPFx + Graph
-
-```TypeScript
-import { SPFx, graphfi } from "@pnp/graph";
-import { MSAL } from "@pnp/msaljsclient";
-import "@pnp/graph/users";
+const authParams: AuthenticationParameters = {
+  scopes: ["https://graph.microsoft.com/.default"] 
+};
 
 // within a webpart, application customizer, or adaptive card extension where the context object is available
-const graph = graphfi().using(SPFx(this.context), MSAL(configuration, authParams));
+const graph = graphfi().using(graphSPFx(this.context), MSAL(configuration, authParams));
+const sp = spfi().using(spSPFx(this.context), MSAL(configuration, authParams));
 
 const meData = await graph.me();
+const webData = await sp.web();
 ```
