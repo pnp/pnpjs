@@ -1,5 +1,4 @@
 import { SPFI, _SPQueryable, spInvokableFactory } from "@pnp/sp";
-import { GroupSiteManager, IGroupSiteManager } from "./groupsitemanager.js";
 import { IOffice365Tenant, Office365Tenant } from "./office-tenant.js";
 import { ITenantSiteProperties, TenantSiteProperties } from "./site-properties.js";
 import { ITenant, Tenant } from "./tenant.js";
@@ -27,10 +26,6 @@ Reflect.defineProperty(SPFI.prototype, "admin", {
 
 class _Admin extends _SPQueryable {
 
-    public get groupSiteManager() {
-        return GroupSiteManager(this);
-    }
-
     public get office365Tenant() {
         return Office365Tenant(this);
     }
@@ -44,7 +39,6 @@ class _Admin extends _SPQueryable {
     }
 }
 export interface IAdmin {
-    readonly groupSiteManager: IGroupSiteManager;
     readonly office365Tenant: IOffice365Tenant;
     readonly siteProperties: ITenantSiteProperties;
     readonly tenant: ITenant;

@@ -5,7 +5,6 @@ The `@pnp/sp-admin` library enables you to call the static SharePoint admin API'
 - `_api/Microsoft.Online.SharePoint.TenantManagement.Office365Tenant`
 - `_api/Microsoft.Online.SharePoint.TenantAdministration.SiteProperties`
 - `_api/Microsoft.Online.SharePoint.TenantAdministration.Tenant`
-- `_api/groupsitemanager`
 
 These APIs typically require an elevated level of permissions and should not be relied upon in general user facing solutions. Before using this library please understand the impact of what you are doing as you are updating settings at the tenant level for all users. 
 
@@ -111,27 +110,6 @@ const selectedProps = await sp.admin.siteProperties.select("LockState")();
 
 // call method
 await sp.admin.siteProperties.clearSharingLockDown("https://tenant.sharepoint.com/sites/site1");
-```
-
-## groupSiteManager
-
-The `groupSiteManager` node represents calls to `_api/groupsitemanager` endpoint and is accessible from any site url.
-
-```TS
-import { spfi } from "@pnp/sp";
-import "@pnp/sp-admin";
-
-const sp = spfi(...);
-
-// call method to get teams membership for a user
-const userTeams = await sp.admin.groupSiteManager.GetUserTeamConnectedMemberGroups("meganb@contoso.onmicrosoft.com");
-
-// call method to delete a group-connected site
-await sp.admin.groupSiteManager.Delete("https://contoso.sharepoint.com/sites/hrteam");
-
-// call method to check if the current user can create Microsoft 365 groups
-const isUserAllowed = await sp.admin.groupSiteManager.CanUserCreateGroup();
-
 ```
 
 > For more information on the methods available and how to use them, please review the code comments in the source.

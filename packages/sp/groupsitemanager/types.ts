@@ -1,15 +1,5 @@
 import { body, BufferParse } from "@pnp/queryable";
 import { _SPInstance, defaultPath, spPost, spInvokableFactory, ISPQueryable, spGet } from "@pnp/sp";
-import {
-    ChannelInfoCollection,
-    EnsureTeamForGroupExResponse,
-    GroupCreationContext,
-    GroupSiteConversionInfo,
-    GroupSiteInfo,
-    OrgLabelsContextList,
-    PinToTeamParams,
-    PinToTeamResponse,
-} from "./types.js";
 
 @defaultPath("_api/groupsitemanager")
 class _GroupSiteManager extends _SPInstance<Record<string, never>> {
@@ -18,14 +8,14 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *
      *@returns True if possible, otherwise false
      */
-    public CanUserCreateGroup(): Promise<boolean> {
+    public canUserCreateGroup(): Promise<boolean> {
         return spGet(GroupSiteManager(this, "CanUserCreateGroup"));
     }
 
     /**
      * Clears Teams cache for current user / application
      */
-    public ClearCurrentUserTeamsCache(): Promise<void> {
+    public clearCurrentUserTeamsCache(): Promise<void> {
         return spPost(GroupSiteManager(this, "ClearCurrentUserTeamsCache"));
     }
 
@@ -36,7 +26,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param groupId Id of the Microsoft 365 group
      *@returns Created SharePoint site information (or current creation status)
      */
-    public Create(groupId: string): Promise<GroupSiteInfo> {
+    public create(groupId: string): Promise<IGroupSiteInfo> {
         return spPost(GroupSiteManager(this, "Create"), body({
             groupId,
         }));
@@ -54,7 +44,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@returns Created SharePoint site information and group Id (or current creation status)
      */
     // eslint-disable-next-line max-len
-    public CreateGroup(displayName: string, alias: string, isPublic: boolean, ownerPrincipalNames: string[], description: string, creationOptions: string[]): Promise<GroupSiteInfo> {
+    public createGroup(displayName: string, alias: string, isPublic: boolean, ownerPrincipalNames: string[], description: string, creationOptions: string[]): Promise<IGroupSiteInfo> {
         return spPost(GroupSiteManager(this, "CreateGroup"), body({
             displayName,
             alias,
@@ -73,7 +63,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *
      *@param siteUrl URL of the group-connected site to delete
      */
-    public Delete(siteUrl: string): Promise<void> {
+    public delete(siteUrl: string): Promise<void> {
         return spPost(GroupSiteManager(this, "Delete"), body({
             siteUrl,
         }));
@@ -85,7 +75,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *
      *@returns The group-connected site team URL
      */
-    public EnsureTeamForGroup(): Promise<string> {
+    public ensureTeamForGroup(): Promise<string> {
         return spPost(GroupSiteManager(this, "EnsureTeamForGroup"));
     }
 
@@ -96,7 +86,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *
      *@returns The group-connected site team ID and URL
      */
-    public EnsureTeamForGroupEx(): Promise<EnsureTeamForGroupExResponse> {
+    public ensureTeamForGroupEx(): Promise<IEnsureTeamForGroupExResponse> {
         return spPost(GroupSiteManager(this, "EnsureTeamForGroupEx"));
     }
 
@@ -106,7 +96,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param pageNumber Page results number to display
      *@returns A list of labels
      */
-    public GetAllOrgLabels(pageNumber: number): Promise<OrgLabelsContextList> {
+    public getAllOrgLabels(pageNumber: number): Promise<IOrgLabelsContextList> {
         return spPost(GroupSiteManager(this, "GetAllOrgLabels"), body({
             pageNumber,
         }));
@@ -121,7 +111,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param forceCacheUpdate True to force cache update, otherwise false
      *@returns A list of teams with detailed information. The returned value is a JSON object which can be parsed
      */
-    public GetCurrentUserJoinedTeams(getLogoData: boolean, forceCacheUpdate: boolean): Promise<string> {
+    public getCurrentUserJoinedTeams(getLogoData: boolean, forceCacheUpdate: boolean): Promise<string> {
         return spPost(GroupSiteManager(this, "GetCurrentUserJoinedTeams"), body({
             getLogoData,
             forceCacheUpdate,
@@ -135,7 +125,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@returns A list of teams shared channels with summary information (object id, acronym, banner color, ...).
       The returned value is a JSON object which can be parsed
      */
-    public GetCurrentUserSharedChannelMemberGroups(): Promise<string> {
+    public getCurrentUserSharedChannelMemberGroups(): Promise<string> {
         return spPost(GroupSiteManager(this, "GetCurrentUserSharedChannelMemberGroups"));
     }
 
@@ -146,7 +136,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@returns A list of teams with summary information (object id, acronym, banner color,...).
       The returned value is a JSON object which can be parsed
      */
-    public GetCurrentUserTeamConnectedMemberGroups(): Promise<string> {
+    public getCurrentUserTeamConnectedMemberGroups(): Promise<string> {
         return spPost(GroupSiteManager(this, "GetCurrentUserTeamConnectedMemberGroups"));
     }
 
@@ -155,7 +145,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *
      *@returns Information about current configuration
      */
-    public GetGroupCreationContext(): Promise<GroupCreationContext> {
+    public getGroupCreationContext(): Promise<IGroupCreationContext> {
         return spGet(GroupSiteManager(this, "GetGroupCreationContext"));
     }
 
@@ -164,7 +154,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *
      *@returns Information about current configuration
      */
-    public GetGroupSiteConversionData(): Promise<GroupSiteConversionInfo> {
+    public getGroupSiteConversionData(): Promise<IGroupSiteConversionInfo> {
         return spGet(GroupSiteManager(this, "GetGroupSiteConversionData"));
     }
 
@@ -174,7 +164,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param groupId Microsoft 365 group Id
      *@returns SharePoint site information and group Id (or current creation status)
      */
-    public GetSiteStatus(groupId: string): Promise<GroupSiteInfo> {
+    public getSiteStatus(groupId: string): Promise<IGroupSiteInfo> {
         return spPost(GroupSiteManager(this, "GetSiteStatus"), body({
             groupId,
         }));
@@ -189,7 +179,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param channelId Teams's channel Id
      *@returns Stream information about team channel files URL. The returned value is a JSON object which can be parsed
      */
-    public GetTeamChannelFilesUrl(teamId: string, channelId: string): Promise<ArrayBuffer> {
+    public getTeamChannelFilesUrl(teamId: string, channelId: string): Promise<ArrayBuffer> {
         return spPost(GroupSiteManager(this, "GetTeamChannelFilesUrl").using(BufferParse()), body({
             teamId,
             channelId,
@@ -205,7 +195,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param useStagingEndpoint Use staging endpoint or not
      *@returns Stream information about team's channels. The returned value is a JSON object which can be parsed
      */
-    public GetTeamChannels(teamId: string, useStagingEndpoint: boolean): Promise<ArrayBuffer> {
+    public getTeamChannels(teamId: string, useStagingEndpoint: boolean): Promise<ArrayBuffer> {
         return spPost(GroupSiteManager(this, "GetTeamChannels").using(BufferParse()), body({
             teamId,
             useStagingEndpoint,
@@ -220,7 +210,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param teamId Team's group Id
      *@returns Detailed information about team's channels. The returned value is a JSON object which can be parsed
      */
-    public GetTeamChannelsDirect(teamId: string): Promise<string> {
+    public getTeamChannelsDirect(teamId: string): Promise<string> {
         return spPost(GroupSiteManager(this, "GetTeamChannelsDirect"), body({
             teamId,
         }));
@@ -234,7 +224,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param teamId Team's group Id
      *@returns Detailed information about team's channels
      */
-    public GetTeamChannelsEx(teamId: string): Promise<ChannelInfoCollection> {
+    public getTeamChannelsEx(teamId: string): Promise<IChannelInfoCollection> {
         return spPost(GroupSiteManager(this, "GetTeamChannelsEx"), body({
             teamId,
         }));
@@ -249,7 +239,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param siteUrl group-connected site URL
      *@returns Detailed information about team's channels
      */
-    public GetTeamChannelsWithSiteUrl(siteUrl: string): Promise<ChannelInfoCollection> {
+    public getTeamChannelsWithSiteUrl(siteUrl: string): Promise<IChannelInfoCollection> {
         return spPost(GroupSiteManager(this, "GetTeamChannelsWithSiteUrl"), body({
             siteUrl,
         }));
@@ -261,7 +251,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param userName User principal name to get shared channels membership
      *@returns Information about user's shared channels. The returned value is a JSON object which can be parsed
      */
-    public GetUserSharedChannelMemberGroups(userName: string): Promise<string> {
+    public getUserSharedChannelMemberGroups(userName: string): Promise<string> {
         return spPost(GroupSiteManager(this, "GetUserSharedChannelMemberGroups"), body({
             userName,
         }));
@@ -273,7 +263,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param userName User principal name to get teams membership
      *@returns Information about requested user's teams. The returned value is a JSON object which can be parsed
      */
-    public GetUserTeamConnectedMemberGroups(userName: string): Promise<string> {
+    public getUserTeamConnectedMemberGroups(userName: string): Promise<string> {
         return spPost(GroupSiteManager(this, "GetUserTeamConnectedMemberGroups"), body({
             userName,
         }));
@@ -287,7 +277,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param isTeamSite True if target is a group-connected site, otherwise false (optional)
      *@returns A valid SharePoint site URL
      */
-    public GetValidSiteUrlFromAlias(alias: string, managedPath?: string, isTeamSite?: boolean): Promise<string> {
+    public getValidSiteUrlFromAlias(alias: string, managedPath?: string, isTeamSite?: boolean): Promise<string> {
         return spPost(GroupSiteManager(this, "GetValidSiteUrlFromAlias"), body({
             alias,
             managedPath,
@@ -302,7 +292,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param siteUrl Group-Connected site
      *@returns true if "Teamify" prompt is hidden, otherwise false
      */
-    public IsTeamifyPromptHidden(siteUrl?: string): Promise<boolean> {
+    public isTeamifyPromptHidden(siteUrl?: string): Promise<boolean> {
         return spPost(GroupSiteManager(this, "IsTeamifyPromptHidden"), body({
             siteUrl,
         }));
@@ -314,7 +304,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param groupId Id of the Microsoft 365 group
      *@returns URL of the group's default OneNote Notebook
      */
-    public Notebook(groupId: string): Promise<string> {
+    public notebook(groupId: string): Promise<string> {
         return spPost(GroupSiteManager(this, "Notebook"), body({
             groupId,
         }));
@@ -328,7 +318,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
      *@param requestParams Parameters including the tabs data and the team's group Id
      *@returns Successful and failed results for the submitted tabs to add
      */
-    public PinToTeam(requestParams: PinToTeamParams): Promise<PinToTeamResponse> {
+    public pinToTeam(requestParams: IPinToTeamParams): Promise<IPinToTeamResponse> {
         return spPost(GroupSiteManager(this, "PinToTeam"), body({
             requestParams,
         }));
@@ -353,3 +343,91 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
 
 export interface IGroupSiteManager extends _GroupSiteManager { }
 export const GroupSiteManager = spInvokableFactory<ISPQueryable<any>>(_GroupSiteManager);
+
+export interface IEnsureTeamForGroupExResponse {
+    teamsId: string;
+    teamsUrl: string;
+}
+
+export interface IOrgLabelsContext {
+    DisplayName: string;
+    LabelApplicableTo: string;
+    ObjectId: string;
+}
+
+export interface IOrgLabelsContextList {
+    IsLastPage: boolean;
+    Labels: IOrgLabelsContext[];
+}
+
+export interface IGroupCreationContext {
+    ClassificationDescriptions: { Key: string; Value: any; ValueType: string }[];
+    ClassificationDescriptionsNew: { Key: string; Value: any; ValueType: string }[];
+    ClassificationExtSharingValue: { Key: string; Value: any; ValueType: string }[];
+    ClassificationPrivacyValue: { Key: string; Value: any; ValueType: string }[];
+    CustomFormUrl: string;
+    DataClassificationOptions: string[];
+    DataClassificationOptionsNew: { Key: string; Value: any; ValueType: string }[];
+    DefaultClassification: string;
+    ExternalInvitationEnabled: boolean;
+    MachineLearningCaptureEnabled: boolean;
+    MachineLearningExperienceEnabled: boolean;
+    PreferredLanguage: number;
+    RequireSecondaryContact: boolean;
+    SensitivityLabelPolicyMandatory: boolean;
+    ShowSelfServiceSiteCreation: boolean;
+    SiteCreationNewUX: boolean;
+    SitePath: string;
+    SiteSensitivityLabelId: string;
+    URLForCustomHelpPageSensitivityLabel: string;
+    UsageGuidelineUrl: string;
+}
+
+export interface IGroupSiteConversionInfo {
+    GroupType: number;
+    IsGroupifyDisabled: boolean;
+    IsRegionRestricted: boolean;
+    IsWrongPdl: boolean;
+    SuggestedMembers: string[];
+    SuggestedOwners: string[];
+    UnsuggestablePrincipals: string[];
+}
+
+export interface IGroupSiteInfo {
+    DocumentsUrl: string;
+    ErrorMessage: string;
+    GroupId: string;
+    SiteStatus: number;
+    SiteUrl: string;
+}
+
+export interface IChannelInfo {
+    description: string;
+    displayName: string;
+    filesFolderWebUrl: string;
+    id: string;
+    memberShipType: number;
+    webUrl: string;
+}
+
+export interface IChannelInfoCollection {
+    CacheUpdatedTime: Date;
+    value: IChannelInfo[];
+}
+
+export interface IM365TabItem {
+    displayName: string;
+    isDefault: boolean;
+    itemType: number;
+    url: string;
+}
+
+export interface IPinToTeamParams {
+    tabs: IM365TabItem[];
+    teamsId: string;
+}
+
+export interface IPinToTeamResponse {
+    FailedPinning: IM365TabItem[];
+    SuccessfulPinning: IM365TabItem[];
+}
