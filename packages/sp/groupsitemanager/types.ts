@@ -342,7 +342,7 @@ class _GroupSiteManager extends _SPInstance<Record<string, never>> {
 }
 
 export interface IGroupSiteManager extends _GroupSiteManager { }
-export const GroupSiteManager = spInvokableFactory<ISPQueryable<any>>(_GroupSiteManager);
+export const GroupSiteManager = spInvokableFactory<ISPQueryable<IGroupSiteManager>>(_GroupSiteManager);
 
 export interface IEnsureTeamForGroupExResponse {
     teamsId: string;
