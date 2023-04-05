@@ -1677,9 +1677,3 @@ export interface IHomeSitesDetails {
     Title: string;
     MatchingAudiences: string[];
 }
-
-export interface FavoriteListHomeItem {
-    favoritesOrder: number;
-    lastPolled: number;
-    order: number;
-}
