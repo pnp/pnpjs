@@ -34,10 +34,10 @@ export function AzureIdentity(credential: ValidCredential,
     scopes: string[] = ["https://graph.microsoft.com/.default"],
     options?: GetTokenOptions): (instance: Queryable) => Queryable {
 
-    return (instance: Queryable) => {
-        const key = `AzureIdentityCredential${getHashCode(scopes.join())}`;
-        const storage = new PnPClientStorage();
+    const key = `AzureIdentityCredential${getHashCode(scopes.join())}`;
+    const storage = new PnPClientStorage();
 
+    return (instance: Queryable) => {
         instance.on.auth.replace(async (url: URL, init: RequestInit) => {
             let token: string;
             let expires: Date;
