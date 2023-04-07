@@ -12,6 +12,9 @@ nav:
     - '2020': 'news/2020-year-in-review.md'
   - 'Library Usage Tips':
     - 'Authentication': 'concepts/authentication.md'
+      - 'In SPFx': 'concepts/auth-spfx.md'
+      - 'In Browser': 'concepts/auth-browser.md'
+      - 'In NodeJS': 'concepts/auth-nodejs.md'
     - 'Batching': 'concepts/batching.md'
     - 'Batching & Caching': 'concepts/batching-caching.md'
     - 'Custom Bundling': 'concepts/custom-bundle.md'
@@ -23,6 +26,8 @@ nav:
     - 'Nightly Builds': 'concepts/nightly-builds.md'
   - Packages:
     - Packages: 'packages.md'
+    - azidjsclient:
+      - azidjsclient: 'azidjsclient/index.md'
     - core:
       - core: 'packages/#core'
       - behaviors: 'core/behaviors.md'

@@ -113,12 +113,13 @@ _Added in 3.10.0_
 Allows you to add a term group to a store.
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+import { spfi, SPFxToken, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermGroupInfo } from "@pnp/sp/taxonomy";
 
-const sp = spfi(...);
-
+// NOTE: Because this endpoint requires a token and does not work with cookie auth you must create an instance of SPFI that includes an auth token.
+// We've included a new behavior to support getting a token for sharepoint called `SPFxToken`
+const sp = spfi().using(SPFx(context), SPFxToken(context));
 const groupInfo: ITermGroupInfo = await sp.termStore.groups.add({
   displayName: "Accounting",
   description: "Term Group for Accounting",
@@ -136,11 +137,13 @@ _Added in 3.10.0_
 Allows you to add a term group to a store.
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+import { spfi, SPFxToken, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermGroupInfo } from "@pnp/sp/taxonomy";
 
-const sp = spfi(...);
+// NOTE: Because this endpoint requires a token and does not work with cookie auth you must create an instance of SPFI that includes an auth token.
+// We've included a new behavior to support getting a token for sharepoint called `SPFxToken`
+const sp = spfi().using(SPFx(context), SPFxToken(context));
 
 await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").delete();
 ```
@@ -185,13 +188,15 @@ _Added in 3.10.0_
 Allows you to add a term set.
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+import { spfi, SPFxToken, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermGroupInfo } from "@pnp/sp/taxonomy";
 
-const sp = spfi(...);
+// NOTE: Because this endpoint requires a token and does not work with cookie auth you must create an instance of SPFI that includes an auth token.
+// We've included a new behavior to support getting a token for sharepoint called `SPFxToken`
+const sp = spfi().using(SPFx(context), SPFxToken(context));
 
-// when adding a set sirectly from the root .sets property, you must include the "parentGroup" property
+// when adding a set directly from the root .sets property, you must include the "parentGroup" property
 const setInfo = await sp.termStore.sets.add({
   parentGroup: {
     id: "338666a8-1111-2222-3333-f72471314e72"
@@ -267,11 +272,13 @@ Access term set information
 _Added in 3.10.0_
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+import { spfi, SPFxToken, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermGroupInfo } from "@pnp/sp/taxonomy";
 
-const sp = spfi(...);
+// NOTE: Because this endpoint requires a token and does not work with cookie auth you must create an instance of SPFI that includes an auth token.
+// We've included a new behavior to support getting a token for sharepoint called `SPFxToken`
+const sp = spfi().using(SPFx(context), SPFxToken(context));
 
 const termSetInfo = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").update({
   properties: [{
@@ -293,11 +300,13 @@ const termSetInfo2 = await sp.termStore.groups.getById("338666a8-1111-2222-3333-
 _Added in 3.10.0_
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+import { spfi, SPFxToken, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermGroupInfo } from "@pnp/sp/taxonomy";
 
-const sp = spfi(...);
+// NOTE: Because this endpoint requires a token and does not work with cookie auth you must create an instance of SPFI that includes an auth token.
+// We've included a new behavior to support getting a token for sharepoint called `SPFxToken`
+const sp = spfi().using(SPFx(context), SPFxToken(context));
 
 await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").delete();
 
@@ -357,11 +366,13 @@ const info: ITermInfo = await sp.termStore.groups.getById("338666a8-1111-2222-33
 _Added in 3.10.0_
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+import { spfi, SPFxToken, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 import { ITermInfo } from "@pnp/sp/taxonomy";
 
-const sp = spfi(...);
+// NOTE: Because this endpoint requires a token and does not work with cookie auth you must create an instance of SPFI that includes an auth token.
+// We've included a new behavior to support getting a token for sharepoint called `SPFxToken`
+const sp = spfi().using(SPFx(context), SPFxToken(context));
 
 const newTermInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").children.add({
   labels: [
@@ -393,10 +404,12 @@ const newTermInfo = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f
 _Added in 3.10.0_
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+import { spfi, SPFxToken, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 
-const sp = spfi(...);
+// NOTE: Because this endpoint requires a token and does not work with cookie auth you must create an instance of SPFI that includes an auth token.
+// We've included a new behavior to support getting a token for sharepoint called `SPFxToken`
+const sp = spfi().using(SPFx(context), SPFxToken(context));
 
 const termInfo = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72").update({
   properties: [{
@@ -418,10 +431,12 @@ const termInfo2 = await sp.termStore.groups.getById("338666a8-1111-2222-3333-f72
 _Added in 3.10.0_
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+import { spfi, SPFxToken, SPFx } from "@pnp/sp";
 import "@pnp/sp/taxonomy";
 
-const sp = spfi(...);
+// NOTE: Because this endpoint requires a token and does not work with cookie auth you must create an instance of SPFI that includes an auth token.
+// We've included a new behavior to support getting a token for sharepoint called `SPFxToken`
+const sp = spfi().using(SPFx(context), SPFxToken(context));
 
 const termInfo = await sp.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72").delete();
 

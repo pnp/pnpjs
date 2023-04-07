@@ -7,12 +7,17 @@ import { MSAL } from "./msal.js";
 
 export interface ISPDefaultProps {
     baseUrl?: string;
-    msal: {
+    msal?: {
         config: Configuration;
         scopes: string[];
     };
 }
 
+/**
+ * Behavior for adding the default observers to the SP queryable object
+ * @param props - Specify the ISPDefaultProps for configuring the object
+ *        props.msal: (deprecated, use separate MSAL behavior)
+ */
 export function SPDefault(props: ISPDefaultProps): TimelinePipe<Queryable> {
 
     if (props.baseUrl && !isUrlAbsolute(props.baseUrl)) {
@@ -20,13 +25,11 @@ export function SPDefault(props: ISPDefaultProps): TimelinePipe<Queryable> {
     }
 
     return (instance: Queryable) => {
-
-        instance.using(
-            MSAL(props.msal.config, props.msal.scopes),
-            DefaultHeaders(),
-            DefaultInit(),
-            NodeFetchWithRetry(),
-            DefaultParse());
+        const behaviors: TimelinePipe<any>[] = [DefaultHeaders(), DefaultInit(), NodeFetchWithRetry(), DefaultParse()];
+        if(props.msal){
+            behaviors.push(MSAL(props.msal.config, props.msal.scopes));
+        }
+        instance.using(...behaviors);
 
         instance.on.pre.prepend(async (url, init, result) => {
 
