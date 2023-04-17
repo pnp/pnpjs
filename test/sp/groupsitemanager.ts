@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import "@pnp/graph/groups";
 import "@pnp/sp/groupsitemanager";
+import { stringIsNullOrEmpty } from "@pnp/core/util";
 
 describe("GroupSiteManager (without group context)", function () {
 
@@ -56,24 +57,32 @@ describe("GroupSiteManager (without group context)", function () {
 describe("GroupSiteManager (group context)", function () {
 
     before(async function () {
-        if (!this.pnp.settings.enableGroupTests || this.pnp.settings.enableGroupTests && !this.pnp.settings.graph.groupId) {
+        if (stringIsNullOrEmpty(this.pnp.settings.testGroupId)) {
             this.skip();
         }
     });
 
     it("create", async function () {
-        const grpSite = await this.pnp.sp.groupSiteManager.create(this.pnp.settings.graph.groupId);
+        const grpSite = await this.pnp.sp.groupSiteManager.create(this.pnp.settings.testGroupId);
         return expect(grpSite.SiteStatus).to.eq(2);
     });
 
     it("getSiteStatus", async function () {
-        const parentGrp = await this.pnp.sp.groupSiteManager.getSiteStatus(this.pnp.settings.graph.groupId);
+        const parentGrp = await this.pnp.sp.groupSiteManager.getSiteStatus(this.pnp.settings.testGroupId);
         return expect(parentGrp.SiteStatus).to.to.eq(2);
     });
 
     it("notebook", async function () {
-        const grpNotebook = await this.pnp.sp.groupSiteManager.notebook(this.pnp.settings.graph.groupId);
+        const grpNotebook = await this.pnp.sp.groupSiteManager.notebook(this.pnp.settings.testGroupId);
         console.log(grpNotebook);
         return expect(grpNotebook).to.contain("SiteAssets");
+    });
+
+    // Remove the test data we created
+    after(async function () {
+        if (!stringIsNullOrEmpty(this.pnp.settings.testGroupId)) {
+            await this.pnp.graph.groups.getById(this.pnp.settings.testGroupId).delete();
+        }
+        return;
     });
 });

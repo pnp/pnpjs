@@ -24,6 +24,7 @@ export const settings = {
         enableGroupTests: true,
         // AAD login for test user
         testUser: "i:0#.f|membership|user@consto.com",
+        testGroupId:"41a45964-261c-4fd4-a02d-1772786cee9a",
         sp: {
             // legacy client id (optional if using msal)
             id: "{ client id }",

@@ -11,7 +11,6 @@ export function getProcessArgs(): IProcessArgs {
     let deleteAllWebs = false;
     let record = false;
     let recordMode: "read" | "write" = "read";
-    let deleteGroup = true;
 
     for (let i = 0; i < process.argv.length; i++) {
         const arg = process.argv[i];
@@ -72,9 +71,6 @@ export function getProcessArgs(): IProcessArgs {
                 }
             }
         }
-        if (/^--deleteGroup/i.test(arg)) {
-            deleteGroup = true;
-        }
     }
 
     const processArgs = {
@@ -86,7 +82,6 @@ export function getProcessArgs(): IProcessArgs {
         deleteAllWebs,
         record,
         recordMode,
-        deleteGroup,
     };
 
     console.log("*****************************");
@@ -109,5 +104,4 @@ export interface IProcessArgs {
     deleteAllWebs: boolean;
     record: boolean;
     recordMode: "read" | "write";
-    deleteGroup: boolean;
 }
