@@ -12,9 +12,9 @@ nav:
     - '2020': 'news/2020-year-in-review.md'
   - 'Library Usage Tips':
     - 'Authentication': 'concepts/authentication.md'
-      - 'In SPFx': 'concepts/auth-spfx.md'
-      - 'In Browser': 'concepts/auth-browser.md'
-      - 'In NodeJS': 'concepts/auth-nodejs.md'
+    - 'In SPFx': 'concepts/auth-spfx.md'
+    - 'In Browser': 'concepts/auth-browser.md'
+    - 'In NodeJS': 'concepts/auth-nodejs.md'
     - 'Batching': 'concepts/batching.md'
     - 'Batching & Caching': 'concepts/batching-caching.md'
     - 'Custom Bundling': 'concepts/custom-bundle.md'
@@ -175,7 +175,7 @@ extra:
     - icon: 'fontawesome/brands/youtube'
       link: 'http://aka.ms/community/videos'
     - icon: 'fontawesome/brands/microsoft'
-      link: 'https://aka.ms/community/home
+      link: 'https://aka.ms/community/home'
 
 repo_url: https://github.com/pnp/pnpjs
 
