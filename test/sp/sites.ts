@@ -2,11 +2,21 @@ import { expect } from "chai";
 import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
-import { IDocumentLibraryInformation, IOpenWebByIdResult, Site } from "@pnp/sp/sites";
+import { IDocumentLibraryInformation, IOpenWebByIdResult, ISiteLogoProperties, Site, SiteLogoAspect, SiteLogoType } from "@pnp/sp/sites";
 import { IWeb } from "@pnp/sp/webs";
 import { combine, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { IContextInfo } from "@pnp/sp/context-info";
 import "@pnp/sp/context-info";
+
+
+import "@pnp/sp/files";
+import { IFiles } from "@pnp/sp/files";
+import { readFileSync } from "fs";
+import { resolve, dirname } from "path";
+import findupSync from "findup-sync";
+
+// get a single reference to the projectRoot
+const projectRoot = resolve(dirname(findupSync("package.json")));
 
 describe("Sites", function () {
 
@@ -64,6 +74,16 @@ describe("Sites", function () {
         const notExists: boolean = await this.pnp.sp.site.exists(`${oWeb.Url}/RANDOM`);
         const success = exists && !notExists;
         return expect(success).to.be.true;
+    });
+
+    it.only("setSiteLogo", async function(){
+        const files: IFiles = this.pnp.sp.web.defaultDocumentLibrary.rootFolder.files;
+        const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
+        const content = readFileSync(resolve(projectRoot, "./test/sp/assets/sample_file.jpg"));
+        const far = await files.addChunked(name, <any>content, null, true, 1000000);
+        const path = far.data.ServerRelativeUrl;
+        const logoProperties: ISiteLogoProperties = {relativeLogoUrl: path, aspect: SiteLogoAspect.Square, type: SiteLogoType.WebLogo};
+        await this.pnp.sp.site.setSiteLogo(logoProperties);
     });
 });
 

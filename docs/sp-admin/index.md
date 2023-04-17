@@ -6,7 +6,10 @@ The `@pnp/sp-admin` library enables you to call the static SharePoint admin API'
 - `_api/Microsoft.Online.SharePoint.TenantAdministration.SiteProperties`
 - `_api/Microsoft.Online.SharePoint.TenantAdministration.Tenant`
 
-These APIs typically require an elevated level of permissions and should not be relied upon in general user facing solutions. Before using this library please understand the impact of what you are doing as you are updating settings at the tenant level for all users.
+These APIs typically require an elevated level of permissions and should not be relied upon in general user facing solutions. Before using this library please understand the impact of what you are doing as you are updating settings at the tenant level for all users. 
+
+!!! warning
+    These APIs are officially not documented which means there is no SLA provided by Microsoft. Furthermore, they can be updated without notification.
 
 ## Use
 
@@ -113,7 +116,7 @@ await sp.admin.siteProperties.clearSharingLockDown("https://tenant.sharepoint.co
 
 ## call
 
-All three nodes support a `call` method to easily allow calling methods not explictly added to the library. If there is a method you use often that would be a good candidate to add, please open an issue or submit a PR. The call method is meant to help unblock folks before methods are added.
+All those nodes support a `call` method to easily allow calling methods not explictly added to the library. If there is a method you use often that would be a good candidate to add, please open an issue or submit a PR. The call method is meant to help unblock folks before methods are added.
 
 This sample shows using call to invoke the "AddTenantCdnOrigin" method of office365Tenant. While we already support for this method, it helps to show the relationship between `call` and an existing method.
 
