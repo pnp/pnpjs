@@ -115,12 +115,6 @@ This flag will enable "verbose" OData mode for SharePoint tests. This flag is co
 npm test -- --spverbose
 ```
 
-#### deleteGroup
-
->`--deleteGroup`
-
-This flag will delete the created M365 group used for testing purposes, if `enableGroupTests` setting is set to **true**.
-
 ## build
 
 Invokes the pnpbuild cli to transpile the TypeScript into JavaScript. All behavior is controlled via the tsconfig.json in the root of the project and sub folders as needed.
