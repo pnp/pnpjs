@@ -18,15 +18,15 @@ export interface ISPDefaultProps {
  * @param props - Specify the ISPDefaultProps for configuring the object
  *        props.msal: (deprecated, use separate MSAL behavior)
  */
-export function SPDefault(props: ISPDefaultProps): TimelinePipe<Queryable> {
+export function SPDefault(props?: ISPDefaultProps): TimelinePipe<Queryable> {
 
-    if (props.baseUrl && !isUrlAbsolute(props.baseUrl)) {
+    if (props?.baseUrl && !isUrlAbsolute(props?.baseUrl)) {
         throw Error("SPDefault props.baseUrl must be absolute when supplied.");
     }
 
     return (instance: Queryable) => {
         const behaviors: TimelinePipe<any>[] = [DefaultHeaders(), DefaultInit(), NodeFetchWithRetry(), DefaultParse()];
-        if(props.msal){
+        if(props?.msal){
             behaviors.push(MSAL(props.msal.config, props.msal.scopes));
         }
         instance.using(...behaviors);
@@ -34,7 +34,7 @@ export function SPDefault(props: ISPDefaultProps): TimelinePipe<Queryable> {
         instance.on.pre.prepend(async (url, init, result) => {
 
             if (!isUrlAbsolute(url)) {
-                url = combine(props.baseUrl, url);
+                url = combine(props?.baseUrl, url);
             }
 
             return [url, init, result];
