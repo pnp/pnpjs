@@ -17,7 +17,7 @@ fixes #X, mentioned in #Y
 *You can delete this section when you are submitting the pull request.* 
 
 * Please update this PR information accordingly. We'll use this as part of our release notes in monthly communications.
-* Please target your PR to "version-2" branch for v2 changes and "version-1" branch for v1 changes
+* Please target your PR to "version-3" branch for v3 changes
 * Please ensure you have updated any associated docs files based on your code changes
 * Please ensure you have updated/added tests to cover your change.
   * If you are fixing a bug include a test that would have caught the bug you are fixing
