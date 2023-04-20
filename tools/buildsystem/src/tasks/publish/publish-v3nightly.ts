@@ -22,7 +22,7 @@ export function publishV3Nightly(_version: string, config: PublishSchema): Promi
 
                 log(`${colors.bgBlue(" ")} Publishing v3 NIGHTLY ${packagePath}`);
 
-                exec("npm publish --tag v3nightly --access public",
+                exec("npm publish --tag v3nightly --access public --provenance",
                     {
                         cwd: resolve(publishRoot, packageFolders[i]),
                     }, (error, stdout, _stderr) => {
