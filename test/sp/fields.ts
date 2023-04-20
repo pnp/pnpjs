@@ -56,7 +56,7 @@ describe("Fields", function () {
         });
         it("add", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            const field = await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            const field = await this.pnp.sp.web.fields.add(testFieldNameRand, "SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("addText", async function () {
@@ -75,7 +75,7 @@ describe("Fields", function () {
                 .addCalculated(testFieldNameRand, {
                     Formula: "=Modified+1",
                     DateFormat: DateTimeFieldFormatType.DateOnly,
-                    FieldTypeKind: FieldTypes.DateTime,
+                    FieldTypeKind: FieldTypes.Calculated,
                     Group: testFieldGroup,
                 });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
@@ -172,14 +172,14 @@ describe("Fields", function () {
         });
         it("update", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            await this.pnp.sp.web.fields.add(testFieldNameRand, "SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             await this.pnp.sp.web.fields.getByTitle(testFieldNameRand).update({ Description: testFieldDescription });
             const fieldResult = await this.pnp.sp.web.fields.getByTitle(testFieldNameRand)();
             return expect(fieldResult.Description).to.be.equal(testFieldDescription);
         });
         it("setShowInDisplayForm", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            await this.pnp.sp.web.fields.add(testFieldNameRand, "SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             try {
                 await this.pnp.sp.web.fields.getByTitle(testFieldNameRand).setShowInDisplayForm(true);
                 return expect(true).to.be.true;
@@ -189,7 +189,7 @@ describe("Fields", function () {
         });
         it("setShowInEditForm", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            await this.pnp.sp.web.fields.add(testFieldNameRand, "SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             try {
                 await this.pnp.sp.web.fields.getByTitle(testFieldNameRand).setShowInEditForm(true);
                 return expect(true).to.be.true;
@@ -199,7 +199,7 @@ describe("Fields", function () {
         });
         it("setShowInNewForm", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            await this.pnp.sp.web.fields.add(testFieldNameRand, "SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             try {
                 await this.pnp.sp.web.fields.getByTitle(testFieldNameRand).setShowInNewForm(true);
                 return expect(true).to.be.true;
@@ -209,7 +209,7 @@ describe("Fields", function () {
         });
         it("delete", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            const f = await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            const f = await this.pnp.sp.web.fields.add(testFieldNameRand, "SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             return expect(f.field.delete()).to.eventually.be.fulfilled;
         });
     });
@@ -247,7 +247,7 @@ describe("Fields", function () {
         });
         it("add", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand,"SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("addText", async function () {
@@ -347,14 +347,14 @@ describe("Fields", function () {
         });
         it("update", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand,"SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             await this.pnp.sp.web.lists.getByTitle(listName).fields.getByTitle(testFieldNameRand).update({ Description: testFieldDescription });
             const fieldResult = await this.pnp.sp.web.lists.getByTitle(listName).fields.getByTitle(testFieldNameRand)();
             return expect(fieldResult.Description).to.be.equal(testFieldDescription);
         });
         it("setShowInDisplayForm", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand,"SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             try {
                 await this.pnp.sp.web.lists.getByTitle(listName).fields.getByTitle(testFieldNameRand).setShowInDisplayForm(true);
                 return expect(true).to.be.true;
@@ -364,7 +364,7 @@ describe("Fields", function () {
         });
         it("setShowInEditForm", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand,"SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             try {
                 await this.pnp.sp.web.lists.getByTitle(listName).fields.getByTitle(testFieldNameRand).setShowInEditForm(true);
                 return expect(true).to.be.true;
@@ -374,7 +374,7 @@ describe("Fields", function () {
         });
         it("setShowInNewForm", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand,"SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             try {
                 await this.pnp.sp.web.lists.getByTitle(listName).fields.getByTitle(testFieldNameRand).setShowInNewForm(true);
                 return expect(true).to.be.true;
@@ -384,7 +384,7 @@ describe("Fields", function () {
         });
         it("delete", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            const f = await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            const f = await this.pnp.sp.web.lists.getByTitle(listName).fields.add(testFieldNameRand,"SP.FieldText", FieldTypes.Text, { Group: testFieldGroup });
             return expect(f.field.delete()).to.eventually.be.fulfilled;
         });
     });

@@ -122,9 +122,9 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
+const field: IFieldAddResult = await sp.web.fields.add("My Field", "SP.FieldText", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
 // create a new field called 'My Field' in the list 'My List'
-const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
+const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.add("My Field","SP.FieldText", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();
@@ -147,7 +147,7 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
+const field: IFieldAddResult = await sp.web.fields.add("My Field", "SP.FieldText", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
 // add the site field 'My Field' to the list 'My List'
 const r = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(field.data.SchemaXml as string);
 
@@ -194,9 +194,9 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new calculated field called 'My Field' in web
-const field = await sp.web.fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: "MyGroup" });
+const field = await sp.web.fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
 // create a new calculated field called 'My Field' in the list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat:  DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: "MyGroup" });
+const field2 = await sp.web.lists.getByTitle("My List").fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat:  DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();
