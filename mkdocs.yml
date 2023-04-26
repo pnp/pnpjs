@@ -90,6 +90,7 @@ nav:
       - Files: 'sp/files.md'
       - Folders: 'sp/folders.md'
       - Forms: 'sp/forms.md'
+      - GroupSiteManager: 'sp/groupSiteManager.md'
       - Hubsites: 'sp/hubsites.md'
       - 'List Items': 'sp/items.md'
       - Lists: 'sp/lists.md'      

@@ -35,6 +35,6 @@ const siteUrl = await sp.groupSiteManager.getValidSiteUrlFromAlias("contoso");
 
 //call method to check if teamify prompt is hidden
 const isTeamifyPromptHidden = await sp.groupSiteManager.isTeamifyPromptHidden("https://contoso.sharepoint.com/sites/hrteam");
-
-
 ```
+
+> For more information on the methods available and how to use them, please review the code comments in the source.
