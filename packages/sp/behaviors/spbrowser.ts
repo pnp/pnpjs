@@ -1,7 +1,6 @@
 import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
 import { BrowserFetchWithRetry, DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "./defaults.js";
-import { RequestDigest } from "./request-digest.js";
 
 export interface ISPBrowserProps {
     baseUrl?: string;
@@ -19,8 +18,7 @@ export function SPBrowser(props?: ISPBrowserProps): TimelinePipe<Queryable> {
             DefaultHeaders(),
             DefaultInit(),
             BrowserFetchWithRetry(),
-            DefaultParse(),
-            RequestDigest());
+            DefaultParse());
 
         if (isUrlAbsolute(props?.baseUrl)) {
 

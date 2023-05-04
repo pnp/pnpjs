@@ -68,7 +68,7 @@ await sp.web();
 
 ## SPBrowser
 
-A composed behavior suitable for use within a SPA or other scenario outside of SPFx. It includes DefaultHeaders, DefaultInit, BrowserFetchWithRetry, DefaultParse, and RequestDigest. As well it adds a pre observer to try and ensure the request url is absolute if one is supplied in props.
+A composed behavior suitable for use within a SPA or other scenario outside of SPFx. It includes DefaultHeaders, DefaultInit, BrowserFetchWithRetry, and DefaultParse. As well it adds a pre observer to try and ensure the request url is absolute if one is supplied in props.
 
 The baseUrl prop can be used to configure a fallback when making urls absolute.
 
