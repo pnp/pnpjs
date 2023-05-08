@@ -344,15 +344,15 @@ import "@pnp/sp/webs";
 const sp = spfi(...);
 
 // Option 1: Create a new instance of Queryable
-const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
+const spWebB = spfi({Other Web URL}).using(SPFx(this.context));
 
 // Option 2: Copy/Assign a new instance of Queryable using the existing
 const spWebB = spfi({Other Web URL}).using(AssignFrom(sp.web));
 
 // Option 3: Create a new instance of Queryable using other credentials?
-const spWebB = spfi({Other Web URL}).using(SPDefault(this.context));
+const spWebB = spfi({Other Web URL}).using(SPFx(this.context));
 
-// Option 4: Create new Web instance by using copying SPQuerable and new pointing to new web url
+// Option 4: Create new Web instance by using copying SPQuerable and new pointing to new web url (e.g. https://contoso.sharepoint.com/sites/Web2)
 const web = Web([sp.web, {Other Web URL}]);
 ```
 
