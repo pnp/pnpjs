@@ -34,7 +34,7 @@ export function AzureIdentity(credential: ValidCredential,
     scopes: string[] = ["https://graph.microsoft.com/.default"],
     options?: GetTokenOptions): (instance: Queryable) => Queryable {
 
-    const key = `AzureIdentityCredential${getHashCode(scopes.join())}`;
+    const key = `AzureIdentityCredential${Math.abs(getHashCode(scopes.join()))}`;
     const storage = new PnPClientStorage();
 
     return (instance: Queryable) => {
@@ -45,7 +45,7 @@ export function AzureIdentity(credential: ValidCredential,
             const tokenStore = storage.session.get(key);
             if (tokenStore) {
                 const storedToken: IAzureIdentityToken = JSON.parse(tokenStore);
-                if (storedToken.expires < (new Date())) {
+                if (new Date(storedToken.expires) > (new Date())) {
                     token = storedToken.token;
                 }
             }
