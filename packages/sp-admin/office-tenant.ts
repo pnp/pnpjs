@@ -2,7 +2,6 @@ import { body } from "@pnp/queryable";
 import { _SPInstance, defaultPath, spPost, IResourcePath, spInvokableFactory } from "@pnp/sp";
 import {
     IGetExternalUsersResults,
-    IGroupCreationParams,
     IImportProfilePropertiesJobInfo,
     ImportProfilePropertiesUserIdTypes,
     IOffice365TenantInfo,
@@ -544,28 +543,9 @@ class _Office365Tenant extends _SPInstance<IOffice365TenantInfo> {
     }
 
     /**
-     * Create a new Office 365 Group and connect it to an existing site. After this succeeds for a given site, calling it again with the same site will throw an Exception
-     *
-     *@param siteUrl The full URL of the site to connect to
-     *@param displayName The desired display name of the new group
-     *@param alias The desired email alias for the new group
-     *@param isPublic Whether the new group should be public or private
-     *@param optionalParams An optional set of creation parameters for the group
-     */
-    public createGroupForSite(siteUrl: string, displayName: string, alias: string, isPublic: boolean, optionalParams: IGroupCreationParams): Promise<void> {
-        return spPost(Office365Tenant(this, "CreateGroupForSite"), body({
-            siteUrl,
-            displayName,
-            alias,
-            isPublic,
-            optionalParams,
-        }));
-    }
-
-    /**
      * Supports calling POST methods not added explicitly to this class
      *
-     * @param method method name, used in url path (ex: "CreateGroupForSite")
+     * @param method method name, used in url path (ex: "AddTenantCdnOrigin")
      * @param args optional, any arguments to include in the body
      * @returns The result of the method invocation T
      */
