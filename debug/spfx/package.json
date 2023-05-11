@@ -17,8 +17,10 @@
     "@microsoft/sp-office-ui-fabric-core": "1.16.1",
     "@microsoft/sp-property-pane": "1.16.1",
     "@microsoft/sp-webpart-base": "1.16.1",
-    "@pnp/core": "^3.11.0",
-    "@pnp/sp": "^3.11.0",
+    "@pnp/core": "^3.13.0",
+    "@pnp/graph": "^3.13.0",
+    "@pnp/logging": "^3.13.0",
+    "@pnp/sp": "^3.13.0",
     "tslib": "2.3.1"
   },
   "devDependencies": {

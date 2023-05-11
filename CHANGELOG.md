@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.14.0 - 2023-Apr-17
+
+### Added
+
+- sp
+  - Added groupsitemanager module to help manage team sites.
+  - Addresses #2565 - Adds a method to Sites to set the site logo vs web property update to set the site logo thumbnail
+  - Addresses #2602 - adds a tenantAppcatalog property to the root sp object; ensures that web.appcatalog points to the sitecollection appcatalog
+
+- azidjsclient
+  - Added new azidjsclient package that supports Azure Identity, most useful for node-js development and managed identity
+
+- node
+  Update to node package GraphDefault and SPDefault package to make msal parameter optional (deprecated) and updated the documentation for new guidance on passing the MSAL (and AzureIdentity) auth methods as separate observerable on the using call.
+
+### Fixed
+
+- docs
+  - Updated Taxonomy documentation to call out need for auth token on add/update/delete events.
+  - Addresses #2604 - Updating Docs for Page Comments to include proper atMention functionality.
+
+- general
+  - Updated debug scenarios for spa to make debugging work with settings file.
+  - Updated package-lock.json for SPFx debugging scenario to fix a bug
+
+- sp
+  - Addresses #2629 - Bug fix for missing quotes on sp recycle bin getById method.
+  - Addresses #2615 - fixes a bug with batching and caching in graph where requests were not resolving correctly, the fix from Version 3 - launch prep 1 #2052 applied to graph lib
+
+## 3.13.0 - 2023-Mar-17
+
+### Added
+
+- sp
+  - Added getCurrentUserMemberships to new publishingSitePageService import.
+
+### Fixed
+
+- node
+  - Fixed typing issues with asCanceable wrapper and dropped references in stream.d.ts.
+  - Fixed setStreamContentChunked to fixed unhandled promise.
+
 ## 3.12.1 - 2023-Feb-14
 
 ### Fixed

@@ -22,7 +22,7 @@ export function publishPackage(_version: string, config: PublishSchema): Promise
 
                 log(`${colors.bgBlue(" ")} Publishing ${packagePath}`);
 
-                exec("npm publish --access public",
+                exec("npm publish --access public --provenance",
                     {
                         cwd: resolve(publishRoot, packageFolders[i]),
                     }, (error, _stdout, _stderr) => {

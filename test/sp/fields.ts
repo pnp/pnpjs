@@ -75,7 +75,7 @@ describe("Fields", function () {
                 .addCalculated(testFieldNameRand, {
                     Formula: "=Modified+1",
                     DateFormat: DateTimeFieldFormatType.DateOnly,
-                    FieldTypeKind: FieldTypes.DateTime,
+                    FieldTypeKind: FieldTypes.Calculated,
                     Group: testFieldGroup,
                 });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);

@@ -206,9 +206,7 @@ export const mochaHooks = {
         function graphTeardown(this: Context) {
             const teardownStart = Date.now();
             try {
-
                 console.log("No Graph teardown");
-
             } finally {
                 const teardownEnd = Date.now();
                 console.log(`Graph Teardown completed in ${((teardownEnd - teardownStart) / 1000).toFixed(4)} seconds.`);

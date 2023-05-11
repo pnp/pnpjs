@@ -194,9 +194,9 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new calculated field called 'My Field' in web
-const field = await sp.web.fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: "MyGroup" });
+const field = await sp.web.fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
 // create a new calculated field called 'My Field' in the list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat:  DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: "MyGroup" });
+const field2 = await sp.web.lists.getByTitle("My List").fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat:  DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();
