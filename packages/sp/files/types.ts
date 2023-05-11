@@ -1,5 +1,5 @@
 import { body, cancelableScope, CancelAction } from "@pnp/queryable";
-import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute, combine } from "@pnp/core";
+import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute, combine, noInherit } from "@pnp/core";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -22,6 +22,7 @@ import { encodePath } from "../utils/encode-path-str.js";
 import { IMoveCopyOptions } from "../types.js";
 import { ReadableFile } from "./readable-file.js";
 import "../context-info/index.js";
+import { BatchNever } from "../batching.js";
 
 /**
  * Describes a collection of File objects
@@ -245,16 +246,7 @@ export class _File extends ReadableFile<IFileInfo> {
             }
         }
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        await spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.CopyFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
-            body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
-                options,
-                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
-            }));
-
-        return fileFromPath(this, destUrl);
+        return this.moveCopyImpl(destUrl, options, rest[0], "CopyFileByPath");
     }
 
     /**
@@ -305,16 +297,7 @@ export class _File extends ReadableFile<IFileInfo> {
             }
         }
 
-        const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await this.select("ServerRelativeUrl")();
-        const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
-        await spPost(File([this, webBaseUrl.toString()], `/_api/SP.MoveCopyUtil.MoveFileByPath(overwrite=@a1)?@a1=${rest[0]}`),
-            body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
-                options,
-                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
-            }));
-
-        return fileFromPath(this, destUrl);
+        return this.moveCopyImpl(destUrl, options, rest[0], "MoveFileByPath");
     }
 
     /**
@@ -507,6 +490,31 @@ export class _File extends ReadableFile<IFileInfo> {
             file: fileFromServerRelativePath(this, response.ServerRelativeUrl),
         };
     }
+
+    protected moveCopyImpl(destUrl: string, options: Partial<IMoveCopyOptions>, overwrite: boolean, methodName: string): Promise<IFile> {
+
+        // create a timeline we will manipulate for this request
+        const poster = File(this);
+
+        // add our pre-request actions, this fixes issues with batching hanging #2668
+        poster.on.pre(noInherit(async (url, init, result) => {
+
+            const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await File(this).using(BatchNever()).select("ServerRelativeUrl")();
+            const webBaseUrl = new URL(extractWebUrl(absoluteUrl));
+
+            url = combine(webBaseUrl.toString(), `/_api/SP.MoveCopyUtil.${methodName}(overwrite=@a1)?@a1=${overwrite}`);
+
+            init = body({
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${destUrl}`),
+                options,
+                srcPath: toResourcePath(isUrlAbsolute(srcUrl) ? srcUrl : `${webBaseUrl.protocol}//${webBaseUrl.host}${srcUrl}`),
+            }, init);
+
+            return [url, init, result];
+        }));
+
+        return spPost(poster).then(() => fileFromPath(this, destUrl));
+    }
 }
 
 export interface IFile extends _File, IDeleteableWithETag { }
@@ -532,7 +540,7 @@ export function fileFromServerRelativePath(base: ISPQueryable, serverRelativePat
  */
 export async function fileFromAbsolutePath(base: ISPQueryable, absoluteFilePath: string): Promise<IFile> {
 
-    const { WebFullUrl } = await base.getContextInfo(absoluteFilePath);
+    const { WebFullUrl } = await File(this).using(BatchNever()).getContextInfo(absoluteFilePath);
     const { pathname } = new URL(absoluteFilePath);
     return fileFromServerRelativePath(File([base, combine(WebFullUrl, "_api/web")]), decodeURIComponent(pathname));
 }

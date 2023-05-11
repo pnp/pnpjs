@@ -276,11 +276,32 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
 
     const register = (instance: ISPQueryable) => {
 
+        instance.on.init(function (this: ISPQueryable) {
+
+            if (isFunc(this[RegistrationCompleteSym])) {
+                throw Error("This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse.");
+            }
+
+            // we need to ensure we wait to start execute until all our batch children hit the .send method to be fully registered
+            registrationPromises.push(new Promise((resolve) => {
+                this[RegistrationCompleteSym] = resolve;
+            }));
+
+            return this;
+        });
+
         instance.on.pre(async function (this: ISPQueryable, url, init, result) {
 
-            // Do not add to timeline if using BatchNever behavior.
-            if(hOP(init.headers, "X-PnP-BatchNever")){
-                return [url,init,result];
+            // Do not add to timeline if using BatchNever behavior
+            if (hOP(init.headers, "X-PnP-BatchNever")) {
+                // clean up the init operations from the timeline
+                // not strictly necessary as none of the logic that uses this should be in the request, but good to keep things tidy
+                if (typeof (this[RequestCompleteSym]) === "function") {
+                    this[RequestCompleteSym]();
+                    delete this[RequestCompleteSym];
+                }
+
+                return [url, init, result];
             }
 
             // the entire request will be auth'd - we don't need to run this for each batch request
@@ -342,20 +363,7 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
                 }
             });
 
-            return [url,init,result];
-        });
-
-        instance.on.init(function (this: ISPQueryable) {
-
-            if (isFunc(this[RegistrationCompleteSym])) {
-                throw Error("This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse.");
-            }
-            // we need to ensure we wait to start execute until all our batch children hit the .send method to be fully registered
-            registrationPromises.push(new Promise((resolve) => {
-                this[RegistrationCompleteSym] = resolve;
-            }));
-
-            return this;
+            return [url, init, result];
         });
 
         return instance;
