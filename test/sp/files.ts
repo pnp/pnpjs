@@ -269,6 +269,26 @@ describe("File", function () {
         return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
     });
 
+    it("moveByPath - batched", async function () {
+
+        const rand = getRandomString(4);
+        const name = `Testing moveByPath - ${rand}.txt`;
+        await files.addUsingPath(name, getRandomString(42));
+        const folderData = await this.pnp.sp.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+        const name2 = `I Copied - ${rand}.aspx`;
+
+        const sourcePath = combine("/", folderData.ServerRelativeUrl, name);
+        const path = combine("/", folderData.ServerRelativeUrl, name2);
+
+        const [batch, execute] = this.pnp.sp.web.batched();
+
+        batch.getFileByServerRelativePath(sourcePath).moveByPath(path, true);
+
+        await execute();
+
+        return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
+    });
+
     it("recycle", async function () {
 
         const name = `Testing Recycle - ${getRandomString(4)}.txt`;

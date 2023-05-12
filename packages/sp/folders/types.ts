@@ -1,4 +1,4 @@
-import { isUrlAbsolute, combine } from "@pnp/core";
+import { isUrlAbsolute, combine, noInherit } from "@pnp/core";
 import { body, cancelableScope } from "@pnp/queryable";
 import {
     _SPCollection,
@@ -19,6 +19,7 @@ import { toResourcePath, IResourcePath } from "../utils/to-resource-path.js";
 import { encodePath } from "../utils/encode-path-str.js";
 import "../context-info/index.js";
 import { IMoveCopyOptions } from "../types.js";
+import { BatchNever } from "../batching.js";
 
 @defaultPath("folders")
 export class _Folders extends _SPCollection<IFolderInfo[]> {
@@ -164,18 +165,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
             }
         }
 
-        const urlInfo = await this.getParentInfos();
-
-        const uri = new URL(urlInfo.ParentWeb.Url);
-
-        await spPost(Folder([this, urlInfo.ParentWeb.Url], "/_api/SP.MoveCopyUtil.MoveFolderByPath()"),
-            body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
-                options,
-                srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
-            }));
-
-        return folderFromPath(this, destUrl);
+        return this.moveCopyImpl(destUrl, options, "MoveFolderByPath");
     }
 
     /**
@@ -212,18 +202,7 @@ export class _Folder extends _SPInstance<IFolderInfo> {
             }
         }
 
-        const urlInfo = await this.getParentInfos();
-
-        const uri = new URL(urlInfo.ParentWeb.Url);
-
-        await spPost(Folder([this, urlInfo.ParentWeb.Url], "/_api/SP.MoveCopyUtil.CopyFolderByPath()"),
-            body({
-                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
-                options,
-                srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
-            }));
-
-        return folderFromPath(this, destUrl);
+        return this.moveCopyImpl(destUrl, options, "CopyFolderByPath");
     }
 
     /**
@@ -284,6 +263,40 @@ export class _Folder extends _SPInstance<IFolderInfo> {
             },
         };
     }
+
+    /**
+     * Implementation of folder move/copy
+     *
+     * @param destUrl The server relative path to which the folder will be copied/moved
+     * @param options Any options
+     * @param methodName The method to call
+     * @returns An IFolder representing the moved or copied folder
+     */
+    protected moveCopyImpl(destUrl: string, options: Partial<IMoveCopyOptions>, methodName: "MoveFolderByPath" | "CopyFolderByPath"): Promise<IFolder> {
+
+        // create a timeline we will manipulate for this request
+        const poster = Folder(this);
+
+        // add our pre-request actions, this fixes issues with batching hanging #2668
+        poster.on.pre(noInherit(async (url, init, result) => {
+
+            const urlInfo = await Folder(this).using(BatchNever()).getParentInfos();
+
+            const uri = new URL(urlInfo.ParentWeb.Url);
+
+            url = combine(urlInfo.ParentWeb.Url, `/_api/SP.MoveCopyUtil.${methodName}()`);
+
+            init = body({
+                destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
+                options,
+                srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
+            }, init);
+
+            return [url, init, result];
+        }));
+
+        return spPost(poster).then(() => folderFromPath(this, destUrl));
+    }
 }
 export interface IFolder extends _Folder, IDeleteableWithETag { }
 export const Folder = spInvokableFactory<IFolder>(_Folder);
@@ -309,7 +322,7 @@ export function folderFromServerRelativePath(base: ISPQueryable, serverRelativeP
  */
 export async function folderFromAbsolutePath(base: ISPQueryable, absoluteFolderPath: string): Promise<IFolder> {
 
-    const { WebFullUrl } = await base.getContextInfo(absoluteFolderPath);
+    const { WebFullUrl } = await Folder(this).using(BatchNever()).getContextInfo(absoluteFolderPath);
     const { pathname } = new URL(absoluteFolderPath);
     return folderFromServerRelativePath(Folder([base, combine(WebFullUrl, "_api/web")]), decodeURIComponent(pathname));
 }

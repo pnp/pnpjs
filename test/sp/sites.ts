@@ -76,7 +76,7 @@ describe("Sites", function () {
         return expect(success).to.be.true;
     });
 
-    it.only("setSiteLogo", async function(){
+    it("setSiteLogo", async function(){
         const files: IFiles = this.pnp.sp.web.defaultDocumentLibrary.rootFolder.files;
         const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
         const content = readFileSync(resolve(projectRoot, "./test/sp/assets/sample_file.jpg"));
