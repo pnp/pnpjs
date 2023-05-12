@@ -117,7 +117,7 @@ class BatchQueryable extends _SPQueryable {
             // that we maintain the references to the InternalResolve and InternalReject events through
             // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
             // which ignores symbol properties.
-            base.using(CopyFrom(this, "replace", (k) => /(auth|send|init)/i.test(k)));
+            base.using(CopyFrom(this, "replace", (k) => /(auth|send|pre|init)/i.test(k)));
         });
     }
 }
@@ -294,12 +294,15 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
 
             // Do not add to timeline if using BatchNever behavior
             if (hOP(init.headers, "X-PnP-BatchNever")) {
+
                 // clean up the init operations from the timeline
                 // not strictly necessary as none of the logic that uses this should be in the request, but good to keep things tidy
                 if (typeof (this[RequestCompleteSym]) === "function") {
                     this[RequestCompleteSym]();
                     delete this[RequestCompleteSym];
                 }
+
+                this.using(CopyFrom(batchQuery, "replace", (k) => /(init|pre)/i.test(k)));
 
                 return [url, init, result];
             }
@@ -359,7 +362,7 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
                     // that we maintain the references to the InternalResolve and InternalReject events through
                     // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
                     // which ignores symbol properties.
-                    this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
+                    this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|pre|send|init|dispose)/i.test(k)));
                 }
             });
 
