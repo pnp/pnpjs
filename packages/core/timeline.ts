@@ -259,7 +259,6 @@ export abstract class Timeline<T extends Moments> {
 
                         } else {
 
-
                             // if all else fails, re-throw as we are getting errors from error observers meaning something is sideways
                             throw e;
                         }
@@ -267,7 +266,9 @@ export abstract class Timeline<T extends Moments> {
                     } finally {
 
                         // here we need to remove any "once" observers
-                        Reflect.set(target.observers, p, observers.filter(byFlag(ObserverLifecycleFlags.once)));
+                        if (observers && observers.length > 0) {
+                            Reflect.set(target.observers, p, observers.filter(byFlag(ObserverLifecycleFlags.once)));
+                        }
                     }
                 },
             });
@@ -309,7 +310,7 @@ export abstract class Timeline<T extends Moments> {
 
                 this.error(e2);
             }
-        }).catch(() => void(0));
+        }).catch(() => void (0));
 
         // give the promise back to the caller
         return p;

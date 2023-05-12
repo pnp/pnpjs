@@ -18,9 +18,9 @@ export interface IGraphDefaultProps {
  * @param props - Specify the IGraphDefaultProps for configuring the object
  *        props.msal: (deprecated, use separate MSAL behavior)
  */
-export function GraphDefault(props: IGraphDefaultProps): TimelinePipe<Queryable> {
+export function GraphDefault(props?: IGraphDefaultProps): TimelinePipe<Queryable> {
 
-    if (props.baseUrl && !isUrlAbsolute(props.baseUrl)) {
+    if (props?.baseUrl && !isUrlAbsolute(props?.baseUrl)) {
         throw Error("GraphDefault props.baseUrl must be absolute when supplied.");
     }
 
@@ -31,7 +31,7 @@ export function GraphDefault(props: IGraphDefaultProps): TimelinePipe<Queryable>
 
     return (instance: Queryable) => {
         const behaviors: TimelinePipe<any>[] = [DefaultHeaders(), DefaultInit(), NodeFetchWithRetry(), DefaultParse()];
-        if(props.msal){
+        if(props?.msal){
             behaviors.push(MSAL(msal.config, msal?.scopes || [combine(baseUrl, ".default")]));
         }
         instance.using(...behaviors);
