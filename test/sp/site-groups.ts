@@ -41,8 +41,8 @@ describe("SiteGroups", function () {
             return expect(this.pnp.sp.web.associatedVisitorGroup()).to.eventually.be.fulfilled;
         });
 
+        // requires Custom Scripts to be enabled. Set-PnPSite -Identity <SiteURL> -NoScriptSite $false
         it("createDefaultAssociatedGroups()", async function () {
-
             await this.pnp.sp.web.ensureUser(this.pnp.settings.testUser);
             const groupName = `TestGroup_${getRandomString(4)}`;
             return expect(this.pnp.sp.web.createDefaultAssociatedGroups(groupName,
