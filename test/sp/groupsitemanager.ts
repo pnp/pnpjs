@@ -4,10 +4,10 @@ import "@pnp/sp/groupsitemanager";
 import { stringIsNullOrEmpty } from "@pnp/core/util";
 
 describe("GroupSiteManager (without group context)", function () {
-
-    it("canUserCreateGroup", async function () {
-        // skip because app only tests.
-        this.skip();
+    // skip because app only tests.
+    it.skip("canUserCreateGroup", async function () {
+        const isGroupCreationEnable = await this.pnp.sp.groupSiteManager.canUserCreateGroup();
+        return expect(isGroupCreationEnable).to.be.false;
     });
 
     it("getAllOrgLabels", async function () {
