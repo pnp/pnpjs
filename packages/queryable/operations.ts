@@ -1,4 +1,4 @@
-import { IQueryableInternal } from "./queryable";
+import type { IQueryableInternal } from "./queryable";
 
 function ensureInit(method: string, init: RequestInit = { headers: {} }): RequestInit {
 

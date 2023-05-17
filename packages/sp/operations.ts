@@ -1,5 +1,5 @@
 import { op, get, post, patch, del } from "@pnp/queryable";
-import { ISPQueryable } from "./spqueryable.js";
+import type { ISPQueryable } from "./spqueryable.js";
 
 export const spGet = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
     return op(o, get, init);

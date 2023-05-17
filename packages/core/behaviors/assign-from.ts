@@ -1,4 +1,4 @@
-import { Timeline, TimelinePipe } from "@pnp/core";
+import { Timeline, TimelinePipe } from "../timeline.js";
 
 /**
  * Behavior that will assign a ref to the source's observers and reset the instance's inheriting flag

@@ -1,4 +1,4 @@
-import { ObserverAction, ObserverFunction, Timeline } from "./timeline.js";
+import type { ObserverAction, ObserverFunction, Timeline } from "./timeline.js";
 import { isArray } from "./util.js";
 
 /**

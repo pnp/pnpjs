@@ -1,7 +1,7 @@
 import "./list.js";
 import "./folder.js";
 
-export {
+export type {
     IFieldDefault,
     IFieldDefaultProps,
     AllowedDefaultColumnValues,

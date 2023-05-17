@@ -1,4 +1,4 @@
-import { ILogEntry, ILogListener } from "./index.js";
+import type { ILogEntry, ILogListener } from "./index.js";
 
 export function ConsoleListener(prefix?: string, colors?: IConsoleListenerColors): ILogListener {
     return new _ConsoleListener(prefix, colors);
