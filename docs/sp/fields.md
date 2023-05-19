@@ -455,9 +455,9 @@ const sp = spfi(...);
 
 const choices = [`ChoiceA`, `ChoiceB`, `ChoiceC`];
 // create a new multi-choice field called 'My Field' in web
-const field = await sp.web.fields.addMultiChoice("My Field", { Choices: choices, EditFormat: ChoiceFieldFormatType.Dropdown, FillInChoice: false, Group: "My Group" });
+const field = await sp.web.fields.addMultiChoice("My Field", { Choices: choices, FillInChoice: false, Group: "My Group" });
 // create a new multi-choice field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addMultiChoice("My Field", { Choices: choices, EditFormat: ChoiceFieldFormatType.Dropdown, FillInChoice: false, Group: "My Group" });
+const field2 = await sp.web.lists.getByTitle("My List").fields.addMultiChoice("My Field", { Choices: choices, FillInChoice: false, Group: "My Group" });
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();
