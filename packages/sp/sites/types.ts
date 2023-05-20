@@ -1,11 +1,10 @@
-import { _SPInstance, spInvokableFactory, SPInit } from "../spqueryable.js";
+import { _SPInstance, spInvokableFactory, SPInit, SPQueryable } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { Web, IWeb } from "../webs/types.js";
 import { combine, hOP, isArray } from "@pnp/core";
 import { body, TextParse } from "@pnp/queryable";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
-import { spPost } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
+import { spPatch, spPost } from "../operations.js";
 import { IChangeQuery } from "../types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { emptyGuid } from "../types.js";
@@ -43,7 +42,7 @@ function rebaseSiteUrl(candidate: string, path: string | undefined): string {
 }
 
 @defaultPath("_api/site")
-export class _Site extends _SPInstance {
+export class _Site extends _SPInstance<ISiteInfo> {
 
     constructor(base: SPInit, path?: string) {
 
@@ -83,7 +82,6 @@ export class _Site extends _SPInstance {
      * @param webId The GUID id of the web to open
      */
     public async openWebById(webId: string): Promise<IOpenWebByIdResult> {
-
         const data = await spPost(Site(this, `openWebById('${webId}')`));
         return {
             data,
@@ -98,22 +96,6 @@ export class _Site extends _SPInstance {
     public async getRootWeb(): Promise<IWeb> {
         const web = await this.rootWeb.select("Url")<{ Url: string }>();
         return Web([this, web.Url]);
-    }
-
-    /**
-     * Gets the context information for this site collection
-     */
-    public async getContextInfo(): Promise<IContextInfo> {
-
-        const data = await spPost(Site([this, this.parentUrl], "_api/contextinfo"));
-
-        if (hOP(data, "GetContextWebInformation")) {
-            const info = data.GetContextWebInformation;
-            info.SupportedSchemaVersions = info.SupportedSchemaVersions.results;
-            return info;
-        } else {
-            return data;
-        }
     }
 
     /**
@@ -134,8 +116,8 @@ export class _Site extends _SPInstance {
      */
     public async getDocumentLibraries(absoluteWebUrl: string): Promise<IDocumentLibraryInformation[]> {
         const q = Site([this, this.parentUrl], "_api/sp.web.getdocumentlibraries(@v)");
-        q.query.set("@v", `'${escapeQueryStrValue(absoluteWebUrl)}'`);
-        const data = await q();
+        q.query.set("@v", `'${absoluteWebUrl}'`);
+        const data = await q<any>();
         return hOP(data, "GetDocumentLibraries") ? data.GetDocumentLibraries : data;
     }
 
@@ -147,8 +129,8 @@ export class _Site extends _SPInstance {
     public async getWebUrlFromPageUrl(absolutePageUrl: string): Promise<string> {
 
         const q = Site([this, this.parentUrl], "_api/sp.web.getweburlfrompageurl(@v)");
-        q.query.set("@v", `'${escapeQueryStrValue(absolutePageUrl)}'`);
-        const data = await q();
+        q.query.set("@v", `'${absolutePageUrl}'`);
+        const data = await q<any>();
         return hOP(data, "GetWebUrlFromPageUrl") ? data.GetWebUrlFromPageUrl : data;
     }
 
@@ -288,6 +270,20 @@ export class _Site extends _SPInstance {
 
         return spPost(Site([this, extractWebUrl(this.toUrl())], "/_api/GroupSiteManager/CreateGroupEx").using(TextParse()), body(postBody));
     }
+
+    public update(props: ISiteInfo): Promise<any> {
+
+        return spPatch(this, body(props));
+    }
+
+    /**
+     * Set's the site's `Site Logo` property, vs the Site Icon property available on the web's properties
+     *
+     * @param logoProperties An instance of ISiteLogoProperties which sets the new site logo.
+     */
+    public setSiteLogo(logoProperties: ISiteLogoProperties): Promise<void> {
+        return spPost(SPQueryable([this, extractWebUrl(this.toUrl())], "_api/siteiconmanager/setsitelogo"), body(logoProperties) );
+    }
 }
 export interface ISite extends _Site { }
 export const Site = spInvokableFactory<ISite>(_Site);
@@ -301,26 +297,18 @@ export interface IOpenWebByIdResult {
 }
 
 /**
- * This is the interface to expose data i.e. context information of a site
- */
-export interface IContextInfo {
-    FormDigestTimeoutSeconds?: number;
-    FormDigestValue?: number;
-    LibraryVersion?: string;
-    SiteFullUrl?: string;
-    SupportedSchemaVersions?: string[];
-    WebFullUrl?: string;
-}
-
-/**
  * This is the interface to expose data for Document Library
  */
 export interface IDocumentLibraryInformation {
-    AbsoluteUrl?: string;
-    Modified?: Date;
-    ModifiedFriendlyDisplay?: string;
-    ServerRelativeUrl?: string;
-    Title?: string;
+    AbsoluteUrl: string;
+    DriveId: string;
+    FromCrossFarm: boolean;
+    Id: string;
+    IsDefaultDocumentLibrary: boolean;
+    Modified: string;
+    ModifiedFriendlyDisplay: string;
+    ServerRelativeUrl: string;
+    Title: string;
 }
 
 export interface ICreateCommSiteProps {
@@ -353,4 +341,82 @@ export interface ISiteCreationResponse {
     "SiteId": string;
     "SiteStatus": 0 | 1 | 2 | 3;
     "SiteUrl": string;
+}
+
+export interface ISiteInfo {
+    AllowCreateDeclarativeWorkflow: boolean;
+    AllowDesigner: boolean;
+    AllowMasterPageEditing: boolean;
+    AllowRevertFromTemplate: boolean;
+    AllowSaveDeclarativeWorkflowAsTemplate: boolean;
+    AllowSavePublishDeclarativeWorkflow: boolean;
+    AllowSelfServiceUpgrade: boolean;
+    AllowSelfServiceUpgradeEvaluation: boolean;
+    AuditLogTrimmingRetention: number;
+    ChannelGroupId: string;
+    Classification: string;
+    CompatibilityLevel: number;
+    CurrentChangeToken: { StringValue: string };
+    DisableAppViews: boolean;
+    DisableCompanyWideSharingLinks: boolean;
+    DisableFlows: boolean;
+    ExternalSharingTipsEnabled: boolean;
+    GeoLocation: string;
+    GroupId: string;
+    HubSiteId: string;
+    Id: string;
+    IsHubSite: boolean;
+    LockIssue: string | null;
+    MaxItemsPerThrottledOperation: number;
+    MediaTranscriptionDisabled: boolean;
+    NeedsB2BUpgrade: boolean;
+    PrimaryUri: string;
+    ReadOnly: boolean;
+    RequiredDesignerVersion: string;
+    ResourcePath: { DecodedUrl: string };
+    SandboxedCodeActivationCapability: number;
+    SensitivityLabel: string;
+    SensitivityLabelId: string | null;
+    ServerRelativeUrl: string;
+    ShareByEmailEnabled: boolean;
+    ShareByLinkEnabled: boolean;
+    ShowUrlStructure: boolean;
+    TrimAuditLog: boolean;
+    UIVersionConfigurationEnabled: boolean;
+    UpgradeReminderDate: string;
+    UpgradeScheduled: boolean;
+    UpgradeScheduledDate: string;
+    Upgrading: boolean;
+    Url: string;
+    WriteLocked: boolean;
+}
+
+export const enum SiteLogoType {
+    /**
+     * Site header logo
+     */
+    WebLogo = 0,
+    /**
+     * Hub site logo
+     */
+    HubLogo = 1,
+    /**
+     * Header background image
+     */
+    HeaderBackground = 2,
+    /**
+     * Global navigation logo
+     */
+    GlobalNavLogo = 3
+}
+
+export const enum SiteLogoAspect {
+    Square = 0,
+    Rectangular = 1,
+}
+
+export interface ISiteLogoProperties {
+    relativeLogoUrl: string;
+    type: SiteLogoType;
+    aspect: SiteLogoAspect;
 }

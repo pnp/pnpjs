@@ -11,14 +11,14 @@ Fields in SharePoint can be applied to both webs and lists. When referencing a w
 Gets a field from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/fields";
 
 // set up sp root object
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 // get the field by Id for web
 const field: IField = sp.web.fields.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
 // get the field by Id for list 'My List'
@@ -36,13 +36,13 @@ console.log(r.Title);
 You can also get a field from the collection by title.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists"
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 // get the field with the title 'Author' for web
 const field: IField = sp.web.fields.getByTitle("Author");
 // get the field with the title 'Title' for list 'My List'
@@ -60,13 +60,13 @@ console.log(r.Id);
 You can also get a field from the collection regardless of if the string is the fields internal name or title which can be different.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists"
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 // get the field with the internal name 'ModifiedBy' for web
 const field: IField = sp.web.fields.getByInternalNameOrTitle("ModifiedBy");
 // get the field with the internal name 'ModifiedBy' for list 'My List'
@@ -84,14 +84,14 @@ console.log(r.Id);
 Create a new field by defining an XML schema that assigns all the properties for the field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IField, IFieldAddResult } from "@pnp/sp/fields/types";
 
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // define the schema for your new field, in this case a date field with a default date of today.
 const fieldSchema = `<Field ID="{03b09ff4-d99d-45ed-841d-3855f77a2483}" StaticName="MyField" Name="MyField" DisplayName="My New Field" FriendlyDisplayFormat="Disabled" Format="DateOnly" Type="DateTime" Group="My Group"><Default>[today]</Default></Field>`;
@@ -113,13 +113,13 @@ console.log(r.Id);
 Use the add method to create a new field where you define the field type
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IField, IFieldAddResult, FieldTypes } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new field called 'My Field' in web.
 const field: IFieldAddResult = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
@@ -138,13 +138,13 @@ console.log(r.Id);
 Use the createFieldAsXml method to add a site field to a list.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IFieldAddResult, FieldTypes } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new field called 'My Field' in web.
 const field: IFieldAddResult = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
@@ -160,13 +160,13 @@ console.log(r.data.Id);
 Use the addText method to create a new text field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IFieldAddResult, FieldTypes } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new text field called 'My Field' in web.
 const field: IFieldAddResult = await sp.web.fields.addText("My Field", { MaxLength: 255, Group: "My Group" });
@@ -185,18 +185,18 @@ console.log(r.Id);
 Use the addCalculated method to create a new calculated field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { DateTimeFieldFormatType, FieldTypes } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new calculated field called 'My Field' in web
-const field = await sp.web.fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: "MyGroup" });
+const field = await sp.web.fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
 // create a new calculated field called 'My Field' in the list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat:  DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.DateTime, Group: "MyGroup" });
+const field2 = await sp.web.lists.getByTitle("My List").fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat:  DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();
@@ -210,13 +210,13 @@ console.log(r.Id);
 Use the addDateTime method to create a new date/time field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { DateTimeFieldFormatType, CalendarType, DateTimeFieldFriendlyFormatType } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new date/time field called 'My Field' in web
 const field = await sp.web.fields.addDateTime("My Field", { DisplayFormat: DateTimeFieldFormatType.DateOnly, DateTimeCalendarType: CalendarType.Gregorian, FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled,  Group: "My Group" });
@@ -235,12 +235,12 @@ console.log(r.Id);
 Use the addCurrency method to create a new currency field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new currency field called 'My Field' in web
 const field = await sp.web.fields.addCurrency("My Field", { MinimumValue: 0, MaximumValue: 100, CurrencyLocaleId: 1033, Group: "My Group" });
@@ -260,12 +260,12 @@ Use the addMultilineText method to create a new multi-line text field.
 >For Enhanced Rich Text mode, see the next section.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new multi-line text field called 'My Field' in web
 const field = await sp.web.fields.addMultilineText("My Field", { NumberOfLines: 6, RichText: true, RestrictedMode: false, AppendOnly: false, AllowHyperlink: true, Group: "My Group" });
@@ -284,12 +284,12 @@ console.log(r.Id);
 The REST endpoint doesn't support setting the `RichTextMode` field therefore you will need to revert to Xml to create the field. The following is an example that will create a multi-line text field in Enhanced Rich Text mode.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //Create a new multi-line text field called 'My Field' in web
 const field = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(
@@ -308,12 +308,12 @@ console.log(r.Id);
 Use the addNumber method to create a new number field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new number field called 'My Field' in web
 const field = await sp.web.fields.addNumber("My Field", { MinimumValue: 1, MaximumValue: 100, Group: "My Group" });
@@ -332,13 +332,13 @@ console.log(r.Id);
 Use the addUrl method to create a new url field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { UrlFieldFormatType } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new url field called 'My Field' in web
 const field = await sp.web.fields.addUrl("My Field", { DisplayFormat: UrlFieldFormatType.Hyperlink, Group: "My Group" });
@@ -357,24 +357,29 @@ console.log(r.Id);
 Use the addUser method to create a new user field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { FieldUserSelectionMode } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new user field called 'My Field' in web
-const field = await sp.web.fields.addUser("My Field", { { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
+const field = await sp.web.fields.addUser("My Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
 // create a new user field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addUser("My Field", { { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
+const field2 = await sp.web.lists.getByTitle("My List").fields.addUser("My Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();
 
 // log the field Id to console
 console.log(r.Id);
+
+// **
+// Adding a lookup that supports multiple values takes two calls:
+const fieldAddResult = await sp.web.fields.addUser("Multi User Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly });
+await fieldAddResult.field.update({ AllowMultipleValues: true }, "SP.FieldUser");
 ```
 
 ### Add a Lookup Field
@@ -382,14 +387,14 @@ console.log(r.Id);
 Use the addLookup method to create a new lookup field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { FieldTypes } from "@pnp/sp/fields/types";
 
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const list = await sp.web.lists.getByTitle("My Lookup List")();
 // create a new lookup field called 'My Field' based on an existing list 'My Lookup List' showing 'Title' field in web.
@@ -405,9 +410,8 @@ console.log(r.Id);
 
 // **
 // Adding a lookup that supports multiple values takes two calls:
-const fieldAddResult = await sp.web.fields.addLookup("Test Lookup 124", { LookupListId: list.data.Id, LookupFieldName: "Title" });
-
-await fieldAddResult.field.update({ Description: 'New Description' }, "SP.FieldLookup");
+const fieldAddResult = await sp.web.fields.addLookup("Multi Lookup Field", { LookupListId: list.data.Id, LookupFieldName: "Title" });
+await fieldAddResult.field.update({ AllowMultipleValues: true }, "SP.FieldLookup");
 ```
 
 ### Add a Choice Field
@@ -415,13 +419,13 @@ await fieldAddResult.field.update({ Description: 'New Description' }, "SP.FieldL
 Use the addChoice method to create a new choice field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { ChoiceFieldFormatType } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const choices = [`ChoiceA`, `ChoiceB`, `ChoiceC`];
 // create a new choice field called 'My Field' in web
@@ -441,13 +445,13 @@ console.log(r.Id);
 Use the addMultiChoice method to create a new multi-choice field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { ChoiceFieldFormatType } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const choices = [`ChoiceA`, `ChoiceB`, `ChoiceC`];
 // create a new multi-choice field called 'My Field' in web
@@ -467,12 +471,12 @@ console.log(r.Id);
 Use the addBoolean method to create a new boolean field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new boolean field called 'My Field' in web
 const field = await sp.web.fields.addBoolean("My Field", { Group: "My Group" });
@@ -491,12 +495,12 @@ console.log(r.Id);
 Use the addDependentLookupField method to create a new dependent lookup field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const field = await sp.web.fields.addLookup("My Field", { LookupListId: list.Id, LookupFieldName: "Title" });
 // create a new dependent lookup field called 'My Dep Field' showing 'Description' based on an existing 'My Field' lookup field in web.
@@ -517,12 +521,12 @@ console.log(r.Id);
 Use the addLocation method to create a new location field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // create a new location field called 'My Field' in web
 const field = await sp.web.fields.addLocation("My Field", { Group: "My Group" });
@@ -541,11 +545,11 @@ console.log(r.Id);
 Use the delete method to delete a field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.fields.addBoolean("Temp Field", { Group: "My Group" });
 await sp.web.fields.addBoolean("Temp Field 2", { Group: "My Group" });
@@ -567,12 +571,12 @@ const result2 = await sp.web.lists.getByTitle("My List").fields.getByTitle("Temp
 Use the update method to update a field.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // update the field called 'My Field' with a description in web, returns FieldUpdateResult
 const fieldUpdate = await sp.web.fields.getByTitle("My Field").update({ Description: "My Description" });
@@ -589,12 +593,12 @@ const fieldUpdate2 = await sp.web.lists.getByTitle("My List").fields.getByTitle(
 Use the setShowInDisplayForm method to add a field to the display form.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // show field called 'My Field' in display form throughout web
 await sp.web.fields.getByTitle("My Field").setShowInDisplayForm(true);
@@ -607,12 +611,12 @@ await sp.web.lists.getByTitle("My List").fields.getByTitle("My Field").setShowIn
 Use the setShowInEditForm method to add a field to the edit form.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // show field called 'My Field' in edit form throughout web
 await sp.web.fields.getByTitle("My Field").setShowInEditForm(true);
@@ -625,12 +629,12 @@ await sp.web.lists.getByTitle("My List").fields.getByTitle("My Field").setShowIn
 Use the setShowInNewForm method to add a field to the display form.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // show field called 'My Field' in new form throughout web
 await sp.web.fields.getByTitle("My Field").setShowInNewForm(true);

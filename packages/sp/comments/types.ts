@@ -95,7 +95,7 @@ export class _Replies extends _SPCollection<ICommentInfo[]> {
 
         const d = await spPost(Replies(this, null), body(info));
 
-        return Object.assign(Comment(odataUrlFrom(d)), d);
+        return Object.assign(Comment([this, odataUrlFrom(d)]), d);
     }
 }
 export interface IReplies extends _Replies { }
@@ -157,3 +157,4 @@ export interface ILikedByInformation {
     isLikedByUser: boolean;
     likeCount: number;
 }
+export type RatingValues = 1|2|3|4|5;

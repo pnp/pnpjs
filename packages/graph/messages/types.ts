@@ -1,5 +1,5 @@
 import { Message as IMessageType, MailFolder as IMailFolderType, MailboxSettings as IMailboxSettingsType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, _GraphQueryableInstance, _GraphQueryableSearchableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
 import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable } from "../decorators.js";
 
 /**
@@ -15,7 +15,7 @@ export const Message = graphInvokableFactory<IMessage>(_Message);
 @defaultPath("messages")
 @getById(Message)
 @addable()
-export class _Messages extends _GraphQueryableSearchableCollection<IMessageType[]> { }
+export class _Messages extends _GraphQueryableCollection<IMessageType[]> { }
 export interface IMessages extends _Messages, IGetById<IMessage>, IAddable<IMessageType> { }
 export const Messages = graphInvokableFactory<IMessages>(_Messages);
 

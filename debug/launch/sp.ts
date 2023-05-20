@@ -14,7 +14,7 @@ export async function Example(settings: ITestingSettings) {
   Logger.log({
     data: w,
     level: LogLevel.Info,
-    message: "List of Web Data",
+    message: "Web Data",
   });
 
   process.exit(0);

@@ -45,3 +45,9 @@ Extending Timeline this package provides the base functionality to create web re
 This package provides a fluent SDK for calling SharePoint.
 
 `npm install @pnp/sp --save`
+
+## SP-Admin
+
+This package provides a fluent SDK for calling SharePoint tenant admin APIs
+
+`npm install @pnp/sp-admin --save`

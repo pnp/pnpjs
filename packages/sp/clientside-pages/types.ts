@@ -101,6 +101,7 @@ export class _ClientsidePage extends _SPQueryable {
                 textAlignment: "Left",
                 title: "",
                 topicHeader: "",
+                enableGradientEffect: true,
             },
             reservedHeight: 280,
             serverProcessedContent: { htmlStrings: {}, searchablePlainTexts: {}, imageSources: {}, links: {} },
@@ -147,7 +148,7 @@ export class _ClientsidePage extends _SPQueryable {
     }
 
     public get title(): string {
-        return this._layoutPart.properties.title;
+        return this.json.Title;
     }
 
     public set title(value: string) {
@@ -480,9 +481,40 @@ export class _ClientsidePage extends _SPQueryable {
      */
     public async copyTo(page: IClientsidePage, publish = true): Promise<IClientsidePage> {
 
-
         // we know the method is on the class - but it is protected so not part of the interface
         (<any>page).setControls(this.getControls());
+
+        // copy page properties
+        if (this._layoutPart.properties) {
+
+            if (hOP(this._layoutPart.properties, "topicHeader")) {
+                page.topicHeader = this._layoutPart.properties.topicHeader;
+            }
+
+            if (hOP(this._layoutPart.properties, "imageSourceType")) {
+                page._layoutPart.properties.imageSourceType = this._layoutPart.properties.imageSourceType;
+            }
+
+            if (hOP(this._layoutPart.properties, "layoutType")) {
+                page._layoutPart.properties.layoutType = this._layoutPart.properties.layoutType;
+            }
+
+            if (hOP(this._layoutPart.properties, "textAlignment")) {
+                page._layoutPart.properties.textAlignment = this._layoutPart.properties.textAlignment;
+            }
+
+            if (hOP(this._layoutPart.properties, "showTopicHeader")) {
+                page._layoutPart.properties.showTopicHeader = this._layoutPart.properties.showTopicHeader;
+            }
+
+            if (hOP(this._layoutPart.properties, "showPublishDate")) {
+                page._layoutPart.properties.showPublishDate = this._layoutPart.properties.showPublishDate;
+            }
+
+            if (hOP(this._layoutPart.properties, "enableGradientEffect")) {
+                page._layoutPart.properties.enableGradientEffect = this._layoutPart.properties.enableGradientEffect;
+            }
+        }
 
         // we need to do some work to set the banner image url in the copied page
         if (!stringIsNullOrEmpty(this.json.BannerImageUrl)) {
@@ -607,9 +639,9 @@ export class _ClientsidePage extends _SPQueryable {
         const filename = fileUrl.pathname.split(/[\\/]/i).pop();
 
         const request = ClientsidePage(this, "_api/sitepages/AddImageFromExternalUrl");
-        request.query.set("imageFileName", `'${encodeURIComponent(filename)}'`);
-        request.query.set("pageName", `'${encodeURIComponent(pageName)}'`);
-        request.query.set("externalUrl", `'${encodeURIComponent(url)}'`);
+        request.query.set("imageFileName", `'${filename}'`);
+        request.query.set("pageName", `'${pageName}'`);
+        request.query.set("externalUrl", `'${url}'`);
         request.select("ServerRelativeUrl");
 
         const result = await spPost<Pick<IFileInfo, "ServerRelativeUrl">>(request);
@@ -689,29 +721,17 @@ export class _ClientsidePage extends _SPQueryable {
         await item.delete();
     }
 
-    // not yet active in service
-    // /**
-    //  * Schedules a page for publishing
-    //  *
-    //  * @param publishDate Date to publish the item
-    //  * @returns Publish work item details
-    //  */
-    // public async schedulePublish(publishDate: Date): Promise<string> {
-
-    //     let r: string;
-
-    //     // currently the server throws an exception, but then the page is published as expected
-    //     // so we just ignore that error for now, YMMV
-    //     try {
-    //         r = await spPost(initFrom(this, `_api/sitepages/pages(${this.json.Id})/SchedulePublish`), body({
-    //             sitePage: { PublishStartDate: publishDate },
-    //         }));
-    //     } catch {
-    //         r = "";
-    //     }
-
-    //     return r;
-    // }
+    /**
+     * Schedules a page for publishing
+     *
+     * @param publishDate Date to publish the item
+     * @returns Version which was scheduled to be published
+     */
+    public async schedulePublish(publishDate: Date): Promise<string> {
+        return spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/SchedulePublish`), body({
+            sitePage: { PublishStartDate: publishDate },
+        }));
+    }
 
     /**
      * Saves a copy of this page as a template in this library's Templates folder
@@ -851,7 +871,7 @@ export class _ClientsidePage extends _SPQueryable {
             }
         }
 
-        return await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
+        return spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
     }
 
     /**
@@ -945,7 +965,8 @@ export class _ClientsidePage extends _SPQueryable {
 
         // this is to handle the special case in issue #1690
         // must ensure that searchablePlainTexts values have < replaced with &lt; in links web part
-        if ((<any>control).data.controlType === 3 && (<any>control).data.webPartId === "c70391ea-0b10-4ee9-b2b4-006d3fcad0cd") {
+        // For #2561 need to process for code snippet webpart and any control && (<any>control).data.webPartId === "c70391ea-0b10-4ee9-b2b4-006d3fcad0cd"
+        if ((<any>control).data.controlType === 3) {
             const texts = (<any>control).data?.webPartData?.serverProcessedContent?.searchablePlainTexts || null;
             if (objectDefinedNotNull(texts)) {
                 const keys = Object.getOwnPropertyNames(texts);
@@ -1599,6 +1620,7 @@ interface ILayoutPartsContent {
         showTopicHeader: boolean;
         showPublishDate: boolean;
         topicHeader: string;
+        enableGradientEffect: boolean;
         authorByline: string[];
         authors: {
             id: string;
@@ -1613,6 +1635,7 @@ interface ILayoutPartsContent {
         translateX?: number;
         translateY?: number;
         altText?: string;
+        hasTitleBeenCommitted?: boolean;
     };
     reservedHeight: number;
 }

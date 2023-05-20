@@ -23,6 +23,7 @@ export const settings = {
         enableWebTests: true,
         // AAD login for test user
         testUser: "i:0#.f|membership|user@consto.com",
+        testGroupId:"{ Microsoft 365 Group ID }",
         sp: {
             // legacy client id (optional if using msal)
             id: "{ client id }",

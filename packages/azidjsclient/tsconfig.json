@@ -1,0 +1,12 @@
+{
+    "extends": "../tsconfig.json",
+    "include": [
+        "./**/*.ts",
+        "../queryable/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../queryable/tsconfig.json"
+        }
+    ]
+}

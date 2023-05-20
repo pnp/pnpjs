@@ -9,10 +9,10 @@ The search module allows you to access the Microsoft Graph Search API. You can r
 This example shows calling the search API via the `query` method of the root graph object.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/search";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const results = await graph.query({
     entityTypes: ["site"],

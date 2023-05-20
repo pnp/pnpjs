@@ -1,6 +1,9 @@
 import { isArray } from "@pnp/core";
+import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
+import { spDelete, spPatch, spPost } from "../operations.js";
 import { _SPInstance, spInvokableFactory, _SPCollection } from "../spqueryable.js";
+import { encodePath } from "../utils/encode-path-str.js";
 
 /**
  * Describes a collection of Form objects
@@ -22,10 +25,36 @@ export class _TermStore extends _SPInstance<ITermStoreInfo> {
     public get sets(): ITermSets {
         return TermSets(this);
     }
+
+    /**
+     * Allows you to locate terms within the termStore
+     *
+     * @param params Search parameters used to locate the terms, label is required
+     * @returns Array of terms including set information for each term
+     */
+    public async searchTerm(params: ISearchTermParams): Promise<Required<Pick<ITermInfo, SearchTermPickedProps>>[]> {
+
+        const query = Reflect.ownKeys(params).reduce((c, prop: string) => {
+            c.push(`${prop}='${encodePath(params[prop])}'`);
+            return c;
+        }, []).join(",");
+
+        return TermStore(this, `searchTerm(${query})`).expand("set")();
+    }
+
+    /**
+     * Update settings for TermStore
+     *
+     * @param props The set or properties to update
+     * @returns The updated term store information
+     */
+    public update(props: Partial<Pick<ITermStoreInfo, "defaultLanguageTag" | "languageTags">>): Promise<ITermStoreInfo> {
+
+        return spPatch(this, body(props));
+    }
 }
 export interface ITermStore extends _TermStore { }
 export const TermStore = spInvokableFactory<ITermStore>(_TermStore);
-
 
 @defaultPath("groups")
 export class _TermGroups extends _SPCollection<ITermGroupInfo[]> {
@@ -38,6 +67,16 @@ export class _TermGroups extends _SPCollection<ITermGroupInfo[]> {
     public getById(id: string): ITermGroup {
         return TermGroup(this, id);
     }
+
+    /**
+     * Adds a new term group to this store
+     * @param props The set of properties
+     * @returns The information on the create group
+     */
+    public add(props: Partial<Omit<ITermGroupInfo, "id" | "createdDateTime" | "lastModifiedDateTime" | "type">>): Promise<ITermGroupInfo> {
+
+        return spPost(this, body(props));
+    }
 }
 export interface ITermGroups extends _TermGroups { }
 export const TermGroups = spInvokableFactory<ITermGroups>(_TermGroups);
@@ -49,6 +88,15 @@ export class _TermGroup extends _SPInstance<ITermGroupInfo> {
      */
     public get sets(): ITermSets {
         return TermSets(this, "sets");
+    }
+
+    /**
+     * Deletes this group
+     *
+     * @returns void
+     */
+    public delete(): Promise<void> {
+        return spDelete(this);
     }
 }
 export interface ITermGroup extends _TermGroup { }
@@ -65,6 +113,16 @@ export class _TermSets extends _SPCollection<ITermSetInfo[]> {
      */
     public getById(id: string): ITermSet {
         return TermSet(this, id);
+    }
+
+    /**
+     * Adds a new term set to this collection
+     * @param props The set of properties
+     * @returns The information on the create group
+     */
+    public add(props: Partial<ITermSetCreateParams>): Promise<ITermGroupInfo> {
+
+        return spPost(this, body(props));
     }
 }
 export interface ITermSets extends _TermSets { }
@@ -96,6 +154,26 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
     }
 
     /**
+     * Update settings for TermSet
+     *
+     * @param props The set or properties to update
+     * @returns The updated term set information
+     */
+    public update(props: Partial<Pick<ITermSetInfo, "localizedNames" | "description" | "properties">>): Promise<ITermSetInfo> {
+
+        return spPatch(this, body(props));
+    }
+
+    /**
+     * Deletes this group
+     *
+     * @returns void
+     */
+    public delete(): Promise<void> {
+        return spDelete(this);
+    }
+
+    /**
      * Gets all the terms in this termset in an ordered tree using the appropriate sort ordering
      * ** This is an expensive operation and you should strongly consider caching the results **
      *
@@ -110,6 +188,7 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
 
         const setInfo = await this.select(...selects)();
         const tree: IOrderedTermInfo[] = [];
+        const childIds = [];
 
         const ensureOrder = (terms: IOrderedTermInfo[], sorts: ITermSortOrderInfo[], setSorts?: string[]): IOrderedTermInfo[] => {
 
@@ -147,30 +226,39 @@ export class _TermSet extends _SPInstance<ITermSetInfo> {
             return terms;
         };
 
-        const visitor = async (source: { children: IChildren }, parent: IOrderedTermInfo[]) => {
+        const visitor = async (source: any, parent: IOrderedTermInfo[]) => {
 
-            const children = await source.children.select(...selects)();
+            const children = await source();
 
             for (let i = 0; i < children.length; i++) {
 
                 const child = children[i];
+                childIds.push(child.id);
 
-                const orderedTerm = {
+                const orderedTerm: Partial<IOrderedTermInfo> = {
                     children: <IOrderedTermInfo[]>[],
                     defaultLabel: child.labels.find(l => l.isDefault).name,
                     ...child,
                 };
 
                 if (child.childrenCount > 0) {
-                    await visitor(this.getTermById(children[i].id), orderedTerm.children);
-                    orderedTerm.children = ensureOrder(orderedTerm.children, child.customSortOrder);
+                    await visitor(this.getTermById(children[i].id).children.select(...selects), <any>orderedTerm.children);
+                    orderedTerm.children = ensureOrder(<any>orderedTerm.children, child.customSortOrder);
                 }
 
-                parent.push(orderedTerm);
+                parent.push(<Required<IOrderedTermInfo>>orderedTerm);
             }
         };
 
-        await visitor(this, tree);
+        // There is a series of issues where users expect that copied terms appear in the result of this method call. Copied terms are not "children" so we need
+        // to get all the children + all the "/terms" and filter out the children. This is expensive but this method call is already indicated to be used with caching
+        await visitor(this.children.select(...selects), tree);
+        await visitor(async () => {
+
+            const terms = await Terms(this).select(...selects)();
+            return terms.filter((t) => childIds.indexOf(t.id) < 0);
+
+        }, tree);
 
         return ensureOrder(tree, null, setInfo.customSortOrder);
     }
@@ -179,7 +267,17 @@ export interface ITermSet extends _TermSet { }
 export const TermSet = spInvokableFactory<ITermSet>(_TermSet);
 
 @defaultPath("children")
-export class _Children extends _SPCollection<ITermInfo[]> { }
+export class _Children extends _SPCollection<ITermInfo[]> {
+    /**
+     * Adds a new term set to this collection
+     * @param props The set of properties
+     * @returns The information on the create group
+     */
+    public add(props: Pick<ITermInfo, "labels">): Promise<ITermInfo> {
+
+        return spPost(this, body(props));
+    }
+}
 export interface IChildren extends _Children { }
 export const Children = spInvokableFactory<IChildren>(_Children);
 
@@ -210,6 +308,26 @@ export class _Term extends _SPInstance<ITermInfo> {
     public get set(): ITermSet {
         return TermSet(this, "set");
     }
+
+    /**
+     * Update settings for TermSet
+     *
+     * @param props The set or properties to update
+     * @returns The updated term set information
+     */
+    public update(props: Partial<Pick<ITermInfo, "labels" | "descriptions" | "properties">>): Promise<ITermSetInfo> {
+
+        return spPatch(this, body(props));
+    }
+
+    /**
+     * Deletes this group
+     *
+     * @returns void
+     */
+    public delete(): Promise<void> {
+        return spDelete(this);
+    }
 }
 export interface ITerm extends _Term { }
 export const Term = spInvokableFactory<ITerm>(_Term);
@@ -218,33 +336,34 @@ export const Term = spInvokableFactory<ITerm>(_Term);
 @defaultPath("relations")
 export class _Relations extends _SPCollection<IRelationInfo[]> {
     /**
-     * Gets a term group by id
-     *
-     * @param id Id of the term group to access
+     * Adds a new relation to this term
+     * @param props The set of properties
+     * @returns The information on the created relation
      */
-    public getById(id: string): IRelation {
-        return Relation(this, id);
+    public add(props: Omit<IRelationCreateInfo, "id">): Promise<IRelationCreateInfo> {
+
+        return spPost(this, body(props));
     }
 }
 export interface IRelations extends _Relations { }
 export const Relations = spInvokableFactory<IRelations>(_Relations);
 
-export class _Relation extends _SPInstance<IRelationInfo> {
+// export class _Relation extends _SPInstance<IRelationInfo> {
 
-    public get fromTerm(): ITerm {
-        return Term(this, "fromTerm");
-    }
+//     public get fromTerm(): ITerm {
+//         return Term(this, "fromTerm");
+//     }
 
-    public get toTerm(): ITerm {
-        return Term(this, "toTerm");
-    }
+//     public get toTerm(): ITerm {
+//         return Term(this, "toTerm");
+//     }
 
-    public get set(): ITermSet {
-        return TermSet(this, "set");
-    }
-}
-export interface IRelation extends _Relation { }
-export const Relation = spInvokableFactory<IRelation>(_Relation);
+//     public get set(): ITermSet {
+//         return TermSet(this, "set");
+//     }
+// }
+// export interface IRelation extends _Relation { }
+// export const Relation = spInvokableFactory<IRelation>(_Relation);
 
 export interface ITermStoreInfo {
     id: string;
@@ -279,21 +398,64 @@ export interface ITermSetInfo {
     contact: string;
 }
 
+export interface ITermSetCreateParams {
+    localizedNames: { name: string; languageTag: string }[];
+    description?: string;
+    properties?: ITaxonomyProperty[];
+    /**
+     * When adding a term set using ITermStore.sets parentGroup is required, when adding from ITermGroup.sets parentGroup is not needed
+     */
+    parentGroup?: {
+        id: string;
+    };
+    isOpen?: boolean;
+    isAvailableForTagging?: boolean;
+    contact?: string;
+}
+
 export interface ITermInfo {
     childrenCount: number;
     id: string;
     labels: { name: string; isDefault: boolean; languageTag: string }[];
     createdDateTime: string;
-    customSortOrder: ITermSortOrderInfo[];
+    customSortOrder?: ITermSortOrderInfo[];
     lastModifiedDateTime: string;
     descriptions: { description: string; languageTag: string }[];
     properties?: ITaxonomyProperty[];
     localProperties?: ITaxonomyLocalProperty[];
     isDeprecated: boolean;
     isAvailableForTagging: { setId: string; isAvailable: boolean }[];
-    topicRequested: boolean;
+    topicRequested?: boolean;
     parent?: ITermInfo;
+    set?: ITermSetInfo;
+    relations?: IRelationInfo[];
+    children?: ITermInfo[];
 }
+
+export interface ISearchTermParams {
+    /**
+     * The term label to search for.
+     */
+    label: string;
+    /**
+     * The setId to scope down the search under a termSet.
+     */
+    setId?: string;
+    /**
+     * The parentTermId to scope down the search under a termSet, under a parent term.
+     */
+    parentTermId?: string;
+    /**
+     * The languageTag to scope down the search to a specific language.
+     */
+    languageTag?: string;
+    /**
+     * Indicates what type of string matching should be performed when searching.
+     */
+    stringMatchOption?: "ExactMatch" | "StartsWith";
+}
+
+type SearchTermPickedProps = "childrenCount" | "createdDateTime" | "descriptions" | "id" | "isAvailableForTagging" | "isDeprecated" | "labels" | "lastModifiedDateTime" | "set";
 
 export interface ITermSortOrderInfo {
     setId: string;
@@ -301,13 +463,27 @@ export interface ITermSortOrderInfo {
 }
 
 export interface IOrderedTermInfo extends ITermInfo {
-    children: IOrderedTermInfo[];
+    children: ITermInfo[];
     defaultLabel: string;
 }
 
 export interface IRelationInfo {
     id: string;
     relationType: string;
+}
+
+export interface IRelationCreateInfo {
+    id: string;
+    relationship: "pin" | "reuse";
+    fromTerm: {
+        id: string;
+    };
+    toTerm: {
+        id: string;
+    };
+    set: {
+        id: string;
+    };
 }
 
 export interface ITaxonomyUserInfo {

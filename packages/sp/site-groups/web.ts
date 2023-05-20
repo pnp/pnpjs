@@ -1,8 +1,8 @@
 import { addProp } from "@pnp/queryable";
-import { escapeQueryStrValue } from "../index.js";
 import { spPost } from "../operations.js";
 import { Web, _Web } from "../webs/types.js";
 import { ISiteGroups, SiteGroups, ISiteGroup, SiteGroup } from "./types.js";
+import "../security/web.js";
 
 declare module "../webs/types" {
 
@@ -65,9 +65,9 @@ _Web.prototype.createDefaultAssociatedGroups = async function (
     await this.breakRoleInheritance(copyRoleAssignments, clearSubscopes);
 
     const q = Web(this, "createDefaultAssociatedGroups(userLogin=@u,userLogin2=@v,groupNameSeed=@s)");
-    q.query.set("@u", `'${escapeQueryStrValue(siteOwner || "")}'`);
-    q.query.set("@v", `'${escapeQueryStrValue(siteOwner2 || "")}'`);
-    q.query.set("@s", `'${escapeQueryStrValue(groupNameSeed || "")}'`);
+    q.query.set("@u", `'${siteOwner || ""}'`);
+    q.query.set("@v", `'${siteOwner2 || ""}'`);
+    q.query.set("@s", `'${groupNameSeed || ""}'`);
     return spPost(q);
 };
 

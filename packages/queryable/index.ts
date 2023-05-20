@@ -12,6 +12,7 @@ export * from "./behaviors/bearer-token.js";
 export * from "./behaviors/browser-fetch.js";
 export * from "./behaviors/caching.js";
 export * from "./behaviors/caching-pessimistic.js";
+export * from "./behaviors/cancelable.js";
 export * from "./behaviors/inject-headers.js";
 export * from "./behaviors/parsers.js";
 export * from "./behaviors/timeout.js";

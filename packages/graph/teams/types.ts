@@ -8,6 +8,7 @@ import {
     TeamsAsyncOperation as ITeamsAsyncOperation,
     TeamsTab as ITeamsTabType,
     TeamsAppInstallation as ITeamsAppInstallation,
+    ChatMessage as IChatMessage,
 } from "@microsoft/microsoft-graph-types";
 
 /**
@@ -132,6 +133,10 @@ export const Teams = graphInvokableFactory<ITeams>(_Teams);
 export class _Channel extends _GraphQueryableInstance {
     public get tabs(): ITabs {
         return Tabs(this);
+    }
+
+    public async messages(message: IChatMessage): Promise<IChatMessage> {
+        return graphPost(Channel(this, "messages"), body(message));
     }
 }
 export interface IChannel extends _Channel { }

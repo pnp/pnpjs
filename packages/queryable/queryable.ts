@@ -1,5 +1,7 @@
-import { combine, getGUID, Timeline, asyncReduce, broadcast, request, extendable, isArray, TimelinePipe, ObserverCollection } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle, stringIsNullOrEmpty } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
+
+export type QueryableConstructObserver = (this: IQueryableInternal, init: QueryableInit, path?: string) => void;
 
 export type QueryablePreObserver = (this: IQueryableInternal, url: string, init: RequestInit, result: any) => Promise<[string, RequestInit, any]>;
 
@@ -13,7 +15,10 @@ export type QueryablePostObserver = (this: IQueryableInternal, url: URL, result:
 
 export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: T) => void;
 
+type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
+
 const DefaultMoments = {
+    construct: lifecycle<QueryableConstructObserver>(),
     pre: asyncReduce<QueryablePreObserver>(),
     auth: asyncReduce<QueryableAuthObserver>(),
     send: request<QueryableSendObserver>(),
@@ -28,49 +33,57 @@ export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 @invokable()
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
-    private _query: Map<string, string>;
+    // tracks any query paramters which will be appended to the request url
+    private _query: URLSearchParams;
+
+    // tracks the current url for a given Queryable
     protected _url: string;
-    protected InternalResolveEvent = Symbol.for("Queryable_Resolve");
-    protected InternalRejectEvent = Symbol.for("Queryable_Reject");
+
+    // these keys represent internal events for Queryable, users are not expected to
+    // subscribe directly to these, rather they enable functionality within Queryable
+    // they are Symbols such that there are NOT cloned between queryables as we only grab string keys (by design)
+    protected InternalResolve = Symbol.for("Queryable_Resolve");
+    protected InternalReject = Symbol.for("Queryable_Reject");
+    protected InternalPromise = Symbol.for("Queryable_Promise");
 
     constructor(init: QueryableInit, path?: string) {
 
         super(DefaultMoments);
 
-        let url = "";
-        let observers: ObserverCollection | undefined = undefined;
+        this._query = new URLSearchParams();
+
+        // add an intneral moment with specific implementaion for promise creation
+        this.moments[this.InternalPromise] = reduce<QueryablePromiseObserver>();
+
+        let parent: Queryable<any>;
 
         if (typeof init === "string") {
 
-            url = combine(init, path);
+            this._url = combine(init, path);
 
         } else if (isArray(init)) {
 
             if (init.length !== 2) {
-                throw Error("When using the tuple first param only two arguments are supported");
+                throw Error("When using the tuple param exactly two arguments are expected.");
             }
 
-            const q: Queryable<any> = init[0];
-            const _url: string = init[1];
+            if (typeof init[1] !== "string") {
+                throw Error("Expected second tuple param to be a string.");
+            }
 
-            url = combine(_url, path);
-            observers = q.observers;
+            parent = init[0];
+            this._url = combine(init[1], path);
 
         } else {
 
-            const { _url, observers: _observers } = init as Queryable<any>;
-
-            url = combine(_url, path);
-            observers = _observers;
+            parent = init as Queryable<any>;
+            this._url = combine(parent._url, path);
         }
 
-        if (typeof observers !== "undefined") {
-            this.observers = observers;
+        if (typeof parent !== "undefined") {
+            this.observers = parent.observers;
             this._inheritingObservers = true;
         }
-
-        this._url = url;
-        this._query = new Map<string, string>();
     }
 
     /**
@@ -89,19 +102,20 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
      */
     public toRequestUrl(): string {
 
-        let u = this.toUrl();
+        let url = this.toUrl();
 
-        if (this._query.size > 0) {
-            u += "?" + Array.from(this._query).map((v: [string, string]) => `${v[0]}=${encodeURIComponent(v[1])}`).join("&");
+        const query = this.query.toString();
+        if (!stringIsNullOrEmpty(query)) {
+            url += `${url.indexOf("?") > -1 ? "&" : "?"}${query}`;
         }
 
-        return u;
+        return url;
     }
 
     /**
      * Querystring key, value pairs which will be included in the request
      */
-    public get query(): Map<string, string> {
+    public get query(): URLSearchParams {
         return this._query;
     }
 
@@ -115,6 +129,12 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
     protected execute(userInit: RequestInit): Promise<void> {
 
+        // if there are NO observers registered this is likely either a bug in the library or a user error, direct to docs
+        if (Reflect.ownKeys(this.observers).length < 1) {
+            throw Error("No observers registered for this request. (https://pnp.github.io/pnpjs/queryable/queryable#no-observers-registered-for-this-request)");
+        }
+
+        // schedule the execution after we return the promise below in the next event loop
         setTimeout(async () => {
 
             const requestId = getGUID();
@@ -127,10 +147,16 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
             try {
 
-                log("Beginning request", 1);
+                log("Beginning request", 0);
+
+                // include the request id in the headers to assist with debugging against logs
+                const initSeed = {
+                    ...userInit,
+                    headers: { ...userInit.headers, "X-PnPjs-RequestId": requestId },
+                };
 
                 // eslint-disable-next-line prefer-const
-                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), userInit || {}, undefined);
+                let [url, init, result] = await this.emit.pre(this.toRequestUrl(), initSeed, undefined);
 
                 log(`Url: ${url}`, 1);
 
@@ -174,17 +200,25 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
             } finally {
 
-                log("Finished request", 1);
+                log("Finished request", 0);
             }
 
         }, 0);
 
-        return new Promise((resolve, reject) => {
+        // this is the promise that the calling code will recieve and await
+        let promise = new Promise<void>((resolve, reject) => {
+
             // we overwrite any pre-existing internal events as a
-            // given queryable can only process a single request at a time
-            this.on[this.InternalResolveEvent].replace(resolve);
-            this.on[this.InternalRejectEvent].replace(reject);
+            // given queryable only processes a single request at a time
+            this.on[this.InternalResolve].replace(resolve);
+            this.on[this.InternalReject].replace(reject);
         });
+
+        // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
+        // cancelable to work as envisioned, but may have other users. Meant for internal use in the library accessed via behaviors.
+        [promise] = this.emit[this.InternalPromise](promise);
+
+        return promise;
     }
 }
 
@@ -197,7 +231,7 @@ export interface Queryable<R = any> extends IInvokable<R> { }
 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
-    readonly query: Map<string, string>;
+    readonly query: URLSearchParams;
     <T = R>(this: IQueryableInternal, init?: RequestInit): Promise<T>;
     using(...behaviors: TimelinePipe[]): this;
     toRequestUrl(): string;

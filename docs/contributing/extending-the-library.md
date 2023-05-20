@@ -38,10 +38,11 @@ And the matching graph type:
 The general idea of a factory function is that it takes two parameters. The first is either a string or Queryable derivative which forms base for the new object. The second is the next part of the url. In some cases (like the webs property example above) you will note there is no second parameter. Some classes are decorated with defaultPath, which automatically fills the second param. Don't worry too much right now about the deep internals of the library, let's instead focus on some concrete examples.
 
 ```TypeScript
+import { SPFx } from "@pnp/sp";
 import { Web } from "@pnp/sp/webs";
 
 // create a web from an absolute url
-const web = Web("https://tenant.sharepoint.com");
+const web = Web("https://tenant.sharepoint.com").using(SPFx(this.context));
 
 // as an example, create a new web using the first as a base
 // targets: https://tenant.sharepoint.com/sites/dev

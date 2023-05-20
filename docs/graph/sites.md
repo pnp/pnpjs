@@ -7,10 +7,10 @@ The search module allows you to access the Microsoft Graph Sites API.
 ## Call graph.sites
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/sites";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const sitesInfo = await graph.sites();
 ```
@@ -18,54 +18,30 @@ const sitesInfo = await graph.sites();
 ## Call graph.sites.getById
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/sites";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const siteInfo = await graph.sites.getById("{site identifier}")();
 ```
 
-## Make additional calls
+## Call graph.sites.getByUrl
 
-We don't currently implement all of the available options in graph for sites, rather focusing on the sp library. While we do accept PRs to add functionality, you can also make calls by path:
+Using the sites.getByUrl() you can get a site using url instead of identifier
 
-### Get lists
-
-```TypeScript
-import { Site } from "@pnp/graph/sites";
-
-const sites = graph.sites.getById("{site id}");
-
-const listsInfo = await Site(sites, "lists")();
-```
-
-### Get list
+![Known Issue Banner](https://img.shields.io/badge/Known%20Issue-important.svg) If you get a site with this method, the graph does not support chaining a request further than .drive. We will review and try and create a work around for this issue.
 
 ```TypeScript
-import { Site } from "@pnp/graph/sites";
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/sites";
 
-const sites = graph.sites.getById("{site id}");
-
-const listInfo = await Site(sites, "lists/{listid}")();
+const graph = graphfi(...);
+const sharepointHostName = "contoso.sharepoint.com";
+const serverRelativeUrl = "/sites/teamsite1";
+const siteInfo = await graph.sites.getByUrl(sharepointHostName, serverRelativeUrl)();
 ```
 
-### Get list items
+## Make additional calls or recieve items from lists
 
-```TypeScript
-import { Site } from "@pnp/graph/sites";
-
-const sites = graph.sites.getById("{site id}");
-
-const users = await Site(sites, "lists/{listid}/items")();
-```
-
-### Get File/Item version information
-
-```TypeScript
-import { Site } from "@pnp/graph/sites";
-
-const sites = graph.sites.getById("{site id}");
-
-const users = await Site(sites, "lists/{listid}/items/{item id}/versions")();
-```
+We don't currently implement all of the available options in graph for sites, rather focusing on the sp library. While we do accept PRs to add functionality, you can [also make calls by path.](./items.md)

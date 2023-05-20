@@ -14,4 +14,6 @@ declare module "../webs/types" {
     }
 }
 
-addProp(_Web, "appcatalog", AppCatalog);
+// we use this function to wrap the AppCatalog as we want to ignore any path values addProp
+// will pass and use the defaultPath defined for AppCatalog
+addProp(_Web, "appcatalog", (s: _Web) => AppCatalog(s, "_api/web/sitecollectionappcatalog/AvailableApps"));

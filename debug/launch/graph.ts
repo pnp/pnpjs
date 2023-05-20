@@ -9,7 +9,7 @@ export async function Example(settings: any) {
     const graph = graphSetup(settings);
 
     const users = await graph.users();
-  
+ 
     Logger.log({
       data: users,
       level: LogLevel.Info,

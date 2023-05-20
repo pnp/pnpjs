@@ -12,4 +12,8 @@ export {
     IFolderInfo,
     IFolderDeleteParams,
     IFolderParentInfos,
+    folderFromServerRelativePath,
+    folderFromAbsolutePath,
+    folderFromPath,
+    IStorageMetrics,
 } from "./types.js";

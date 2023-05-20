@@ -1,4 +1,4 @@
-import { body } from "@pnp/queryable";
+import { body, headers } from "@pnp/queryable";
 import {
     _SPCollection,
     _SPInstance,
@@ -8,6 +8,7 @@ import {
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { spPost, spPostMerge } from "../operations.js";
+import { metadata } from "../utils/metadata.js";
 
 @defaultPath("fields")
 export class _Fields extends _SPCollection<IFieldInfo[]> {
@@ -64,25 +65,20 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public async add(title: string, fieldTypeKind: number, properties: IFieldCreationProperties): Promise<IFieldAddResult> {
+    public async add(title: string, fieldTypeKind: number, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
 
-        const createData = await spPost<{ Id: string }>(Fields(this, null), body({
+        const data = await spPost<{Id: string }>(Fields(this,null), body(Object.assign(metadata(mapFieldTypeEnumToString(fieldTypeKind)),{
             Title: title,
             FieldTypeKind: fieldTypeKind,
-            Required: properties.Required || false,
-        }));
-
-        const field = this.getById(createData.Id);
-
-        if (typeof properties !== "undefined") {
-            await field.update(properties);
-        }
-
-        const data = await field();
+            ...properties,
+        }), headers({
+            "Accept":"application/json;odata=verbose",
+            "Content-Type":"application/json;odata=verbose",
+        })));
 
         return {
             data,
-            field,
+            field:this.getById(data.Id),
         };
     }
 
@@ -92,7 +88,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public async addField(title: string, fieldTypeKind: number, properties: IAddFieldProperties): Promise<IFieldAddResult> {
+    public async addField(title: string, fieldTypeKind: number, properties?: IAddFieldProperties): Promise<IFieldAddResult> {
 
         const data = await spPost<{ Id: string }>(Fields(this, "AddField"), body({
             parameters: {
@@ -160,7 +156,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      */
     public addNumber(title: string, properties?: IFieldCreationProperties & AddNumberProps): Promise<IFieldAddResult> {
 
-        return this.add(title, 9, { ...properties });
+        return this.add(title, 9, properties);
     }
 
     /**
@@ -241,11 +237,14 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      */
     public addChoice(title: string, properties?: IFieldCreationProperties & AddChoiceProps): Promise<IFieldAddResult> {
 
-        return this.add(title, 6, {
-            EditFormat: ChoiceFieldFormatType.Dropdown,
-            FillInChoice: false,
+        const props = {
             ...properties,
-        });
+            Choices:{
+                results:properties.Choices,
+            },
+        };
+
+        return this.add(title, 6, props);
     }
 
     /**
@@ -256,10 +255,14 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      */
     public addMultiChoice(title: string, properties?: IFieldCreationProperties & AddChoiceProps): Promise<IFieldAddResult> {
 
-        return this.add(title, 15, {
-            FillInChoice: false,
+        const props = {
             ...properties,
-        });
+            Choices: {
+                results: properties.Choices,
+            },
+        };
+
+        return this.add(title, 15, props);
     }
 
     /**
@@ -465,6 +468,35 @@ export const enum FieldTypes {
     WorkflowStatus = 28,
     AllDayEvent = 29,
     WorkflowEventType = 30,
+    Location = 33,
+    Image = 34
+}
+
+const FieldTypeClassMapping = {
+    [FieldTypes.Calculated]:"SP.FieldCalculated",
+    [FieldTypes.Choice]: "SP.FieldChoice",
+    [FieldTypes.Computed]:"SP.FieldComputed",
+    [FieldTypes.Currency]:"SP.FieldCurrency",
+    [FieldTypes.DateTime]:"SP.FieldDateTime",
+    [FieldTypes.GridChoice]:"SP.FieldRatingScale",
+    [FieldTypes.Guid]: "SP.FieldGuid",
+    [FieldTypes.Image]:"FieldMultiLineText",
+    [FieldTypes.Integer]:"SP.FieldNumber",
+    [FieldTypes.Location]:"SP.FieldLocation",
+    [FieldTypes.Lookup]:"SP.FieldLookup",
+    [FieldTypes.ModStat]: "SP.FieldChoice",
+    [FieldTypes.MultiChoice] :"SP.FieldMultiChoice",
+    [FieldTypes.Note]:"SP.FieldMultiLineText",
+    [FieldTypes.Number]:"SP.FieldNumber",
+    [FieldTypes.Text]:"SP.FieldText",
+    [FieldTypes.URL]:"SP.FieldUrl",
+    [FieldTypes.User]:"SP.FieldUser",
+    [FieldTypes.WorkflowStatus]:"SP.FieldChoice",
+    [FieldTypes.WorkflowEventType]:"SP.FieldNumber",
+};
+
+function mapFieldTypeEnumToString(enumValue: FieldTypes): string {
+    return FieldTypeClassMapping[enumValue] ?? "SP.Field";
 }
 
 export enum DateTimeFieldFormatType {

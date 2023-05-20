@@ -16,9 +16,9 @@ import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { spPost, spPostMerge } from "../operations.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
 import { extractWebUrl } from "../index.js";
 import { combine, isArray } from "@pnp/core";
+import { encodePath } from "../utils/encode-path-str.js";
 
 @defaultPath("webs")
 export class _Webs extends _SPCollection<IWebInfo[]> {
@@ -141,7 +141,7 @@ export class _Web extends _SPInstance<IWebInfo> {
     public async getParentWeb(): Promise<IWeb> {
         const { Url, ParentWeb } = await this.select("Url", "ParentWeb/ServerRelativeUrl").expand("ParentWeb")<{ Url: string; ParentWeb: { ServerRelativeUrl: string } }>();
         if (ParentWeb?.ServerRelativeUrl) {
-            return Web([this, Url.substring(0, Url.indexOf(ParentWeb.ServerRelativeUrl) + ParentWeb.ServerRelativeUrl.length)]);
+            return Web([this, combine((new URL(Url)).origin, ParentWeb.ServerRelativeUrl)]);
         }
         return null;
     }
@@ -182,7 +182,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      */
     public applyWebTemplate(template: string): Promise<void> {
 
-        return spPost(Web(this, `applywebtemplate(webTemplate='${escapeQueryStrValue(template)}')`));
+        return spPost(Web(this, `applywebtemplate(webTemplate='${encodePath(template)}')`));
     }
 
     /**
@@ -202,7 +202,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param progId The ProgID of the application that was used to create the file, in the form OLEServerName.ObjectName
      */
     public mapToIcon(filename: string, size = 0, progId = ""): Promise<string> {
-        return Web(this, `maptoicon(filename='${escapeQueryStrValue(filename)}',progid='${escapeQueryStrValue(progId)}',size=${size})`)();
+        return Web(this, `maptoicon(filename='${encodePath(filename)}',progid='${encodePath(progId)}',size=${size})`)();
     }
 
     /**
@@ -211,7 +211,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param key Id of storage entity to be set
      */
     public getStorageEntity(key: string): Promise<IStorageEntity> {
-        return Web(this, `getStorageEntity('${escapeQueryStrValue(key)}')`)();
+        return Web(this, `getStorageEntity('${encodePath(key)}')`)();
     }
 
     /**
@@ -237,7 +237,7 @@ export class _Web extends _SPInstance<IWebInfo> {
      * @param key Id of storage entity to be removed
      */
     public removeStorageEntity(key: string): Promise<void> {
-        return spPost(Web(this, `removeStorageEntity('${escapeQueryStrValue(key)}')`));
+        return spPost(Web(this, `removeStorageEntity('${encodePath(key)}')`));
     }
 
     /**

@@ -7,6 +7,9 @@
     "include": [],
     "references": [
         {
+            "path": "./azidjsclient/tsconfig.json"
+        },
+        {
             "path": "./core/tsconfig.json"
         },
         {
@@ -26,6 +29,9 @@
         },
         {
             "path": "./sp/tsconfig.json"
+        },
+        {
+            "path": "./sp-admin/tsconfig.json"
         }
     ]
 }

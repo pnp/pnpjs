@@ -22,7 +22,7 @@ export function publishBetaPackage(_version: string, config: PublishSchema): Pro
 
                 log(`${colors.bgBlue(" ")} Publishing BETA ${packagePath}`);
 
-                exec("npm publish --tag beta --access public",
+                exec("npm publish --tag beta --access public --provenance",
                     {
                         cwd: resolve(publishRoot, packageFolders[i]),
                     }, (error, stdout, _stderr) => {

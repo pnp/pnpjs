@@ -9,12 +9,12 @@ The column defaults sub-module allows you to manage the default column values on
 You can get the default values for a specific folder as shown below:
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const defaults = await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_GHk5").getDefaultColumnValues();
 
@@ -45,12 +45,12 @@ When setting the defaults for a folder you need to include the field's internal 
 >_Note: Be very careful when setting the path as the site collection url is case sensitive_
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_GHk5").setDefaultColumnValues([{
   name: "TextField",
@@ -67,12 +67,12 @@ await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_G
 You can also get all of the defaults for the entire library.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const defaults = await sp.web.lists.getByTitle("DefaultColumnValues").getDefaultColumnValues();
 
@@ -103,12 +103,12 @@ You can also set the defaults for an entire library at once (root and all sub-fo
 >_Note: Be very careful when setting the path as the site collection url is case sensitive_
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([{
   name: "TextField",
@@ -122,12 +122,12 @@ await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([{
 If you want to clear all of the folder defaults you can use the clear method:
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_GHk5").clearDefaultColumnValues();
 ```
@@ -137,12 +137,12 @@ await sp.web.getFolderByServerRelativePath("/sites/dev/DefaultColumnValues/fld_G
 If you need to clear all of the default column values in a library you can pass an empty array to the list's setDefaultColumnValues method.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/column-defaults";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.lists.getByTitle("DefaultColumnValues").setDefaultColumnValues([]);
 ```
@@ -212,13 +212,13 @@ The following is an example of the structure for setting the default column valu
 This example shows fully how to get the taxonomy values and set them as a default column value using PnPjs.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 import "@pnp/sp/column-defaults";
 import "@pnp/sp/taxonomy";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // get the term's info we want to use as the default
 const term = await sp.termStore.sets.getById("ea6fc521-d293-4f3d-9e84-f3a5bc0936ce").getTermById("775c9cf6-c3cd-4db9-8cfa-fc0aeefad93a")();

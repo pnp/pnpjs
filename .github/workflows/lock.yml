@@ -12,9 +12,7 @@ jobs:
       - uses: dessant/lock-threads@v2
         with:
           github-token: ${{ github.token }}
-          issue-lock-inactive-days: '30'
-          issue-exclude-labels: 'help wanted 🐇,Roadmap,status: blocked,status: in progress,status: investigate'
+          issue-lock-inactive-days: '2'
           issue-lock-labels: 'auto-locked'
           issue-lock-comment: 'This issue is locked for inactivity or age. If you have a related issue please open a new issue and reference this one. Closed issues are not tracked.'
           issue-lock-reason: ''
-          process-only: 'issues'

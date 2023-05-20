@@ -15,29 +15,37 @@ The IClientsidePage interface has three methods to provide easier access to the 
 You can add a comment using the addComment method as shown
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const page = await CreateClientsidePage(sp.web, "mypage", "My Page Title", "Article");
 // optionally publish the page first
 await page.save();
 
+//add a comment as text
 const comment = await page.addComment("A test comment");
+
+//or you can include the @mentions. html anchor required to include mention in text body.
+const mentionHtml = `<a data-sp-mention-user-id="test@contoso.com" href="mailto&#58;test@contoso.com.com" tabindex="-1">Test User</a>`;
+
+const commentInfo: Partial<ICommentInfo> = { text: `${mentionHtml} This is the test comment with at mentions`, 
+    mentions: [{ loginName: 'test@contoso.com', email: 'test@contoso.com', name: 'Test User' }], };
+const comment = await page.addComment(commentInfo);
 ```
 
 ### Get Page Comments
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const page = await CreateClientsidePage(sp.web, "mypage", "My Page Title", "Article");
 // optionally publish the page first
@@ -58,13 +66,13 @@ const comments = await page.getComments();
 Used to control the availability of comments on a page
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 // you need to import the comments sub-module or use the all preset
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // our page instance
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
@@ -79,12 +87,12 @@ await page.disableComments();
 ### GetById
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { CreateClientsidePage } from "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 import "@pnp/sp/webs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const page = await CreateClientsidePage(sp.web, "mypage", "My Page Title", "Article");
 // optionally publish the page first
@@ -100,13 +108,13 @@ const commentData = await page.getCommentById(parseInt(comment.id, 10));
 ## Item Comments
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/files/web";
 import "@pnp/sp/items";
 import "@pnp/sp/comments/item";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const item = await sp.web.getFileByServerRelativePath("/sites/dev/SitePages/Test_8q5L.aspx").getItem();
 
@@ -127,10 +135,10 @@ const comments = await item.comments();
 You can also get the comments merged with instances of the Comment class to immediately start accessing the properties and methods:
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const comments: IComments = await item.comments();
 
@@ -144,27 +152,24 @@ const comments = await item.comments.expand("replies", "likedBy", "replies/liked
 ### Add Comment
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { ICommentInfo } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // you can add a comment as a string
 const comment = await item.comments.add("string comment");
 
-// or you can add it as an object to include mentions
-const commentInfo: Partial<ICommentInfo> = { text: "This is the test comment with at mentions", 
-    mentions: [{ loginName: 'test@contoso.com', email: 'test@contoso.com', name: 'Test User' }], };
-const comment = await page.addComment(commentInfo);
+
 ```
 
 ### Delete a Comment
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const comments: IComments = await item.comments();
 
@@ -175,10 +180,10 @@ comments[0].delete()
 ### Like Comment
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const comments: IComments = await item.comments();
 
@@ -189,10 +194,10 @@ comments[0].like();
 ### Unlike Comment
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const comments: IComments = await item.comments();
 
@@ -202,10 +207,10 @@ comments[0].unlike()
 ### Reply to a Comment
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const comments: IComments = await item.comments();
 
@@ -215,37 +220,37 @@ const comment = await comments[0].comments.add({ text: "#PnPjs is pretty ok!" })
 ### Load Replies to a Comment
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { IComments } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const comments: IComments = await item.comments();
 
 const replies = await comments[0].replies();
 ```
 
-## Like
+## Like/Unlike
 
 You can like/unlike client-side pages, items, and comments on items. See above for how to like or unlike a comment. Below you can see how to like and unlike an items, as well as get the liked by data.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
-import "@pnp/sp/comments/item";
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/comments";
 import { ILikeData, ILikedByInformation } from "@pnp/sp/comments";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
-const item = await sp.web.getFileByServerRelativePath("/sites/dev/SitePages/Home.aspx").getItem();
+const item = sp.web.lists.getByTitle("PnP List").items.getById(1);
 
 // like an item
 await item.like();
 
 // unlike an item
 await item.unlike();
-
-// get the liked by data
-const likedByData: ILikeData[] = await item.getLikedBy();
 
 // get the liked by information
 const likedByInfo: ILikedByInformation = await item.getLikedByInformation();
@@ -254,7 +259,7 @@ const likedByInfo: ILikedByInformation = await item.getLikedByInformation();
 To like/unlike a client-side page and get liked by information.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { ILikedByInformation } from "@pnp/sp/comments";
 import { IClientsidePage } from "@pnp/sp/clientside-pages";
 
@@ -262,7 +267,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/clientside-pages";
 import "@pnp/sp/comments/clientside-page";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const page: IClientsidePage = await sp.web.loadClientsidePage("/sites/dev/sitepages/home.aspx");
 
@@ -274,4 +279,24 @@ await page.unlike();
 
 // get the liked by information
 const likedByInfo: ILikedByInformation = await page.getLikedByInformation();
+```
+
+## Rate
+
+You can rate list items with a numeric values between 1 and 5.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/comments";
+import { ILikeData, ILikedByInformation } from "@pnp/sp/comments";
+
+const sp = spfi(...);
+
+const item = sp.web.lists.getByTitle("PnP List").items.getById(1);
+
+// rate an item
+await item.rate(2);
 ```

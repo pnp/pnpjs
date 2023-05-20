@@ -93,6 +93,18 @@ If you include this flag a console logger will be subscribed and the log level w
 npm test -- --logging
 ```
 
+You can also optionally set a log level of error, warning, info, or verbose:
+
+```cmd
+# enable logging during testing in verbose (lots of info)
+npm test -- --logging verbose
+```
+
+```cmd
+# enable logging during testing in error
+npm test -- --logging error
+```
+
 #### spVerbose
 
 >`--spverbose`

@@ -6,11 +6,11 @@ you can add, update and delete items in Teams.
 ## Teams the user is a member of
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const joinedTeams = await graph.users.getById('99dc1039-eb80-43b1-a09e-250d50a80b26').joinedTeams();
 
@@ -23,10 +23,10 @@ const myJoinedTeams = await graph.me.joinedTeams();
 Using the teams.getById() you can get a specific Team.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const team = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528')();
 ```
@@ -41,11 +41,11 @@ Follow the example in Groups to create the group and get the GroupID. Then make 
 Here we get the group via id and use `createTeam`
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 import "@pnp/graph/groups";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const createdTeam = await graph.groups.getById('679c8ff4-f07d-40de-b02b-60ec332472dd').createTeam({
 "memberSettings": {
@@ -66,10 +66,10 @@ const createdTeam = await graph.groups.getById('679c8ff4-f07d-40de-b02b-60ec3324
 The second way to create a new Team and corresponding Group is to do so in one call. This can be done by using the createTeam method.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const team = {
         "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
@@ -92,10 +92,10 @@ const createdTeamStatus = await graph.teams.getById(createdTeam.teamId).getOpera
 ## Clone a Team
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
 'Cloned','description','apps,tabs,settings,channels,members','public');
@@ -105,10 +105,10 @@ const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82265
 ## Get Teams Async Operation
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').cloneTeam(
 'Cloned','description','apps,tabs,settings,channels,members','public');
@@ -118,10 +118,10 @@ const clonedTeamStatus = await graph.teams.getById(clonedTeam.teamId).getOperati
 ## Archive a Team
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').archive();
 ```
@@ -129,10 +129,10 @@ const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 ## Unarchive a Team
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').unarchive();
 ```
@@ -140,10 +140,10 @@ const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 ## Get all channels of a Team
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels();
 ```
@@ -153,20 +153,20 @@ const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 Using the teams.getById() you can get a specific Team.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 const channel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').primaryChannel();
 ```
 
 ## Get channel by Id
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const channel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype')();
 
@@ -175,21 +175,39 @@ const channel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528'
 ## Create a new Channel
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const newChannel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.create('New Channel', 'Description');
+
+```
+
+## Add chat message to Channel
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+import { ChatMessage } from "@microsoft/microsoft-graph-types";
+
+const graph = graphfi(...);
+
+const message = {
+      "body": {
+        "content": "Hello World"
+      }
+    }
+const chatMessage: ChatMessage = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').messages(message);
 
 ```
 
 ## Get installed Apps
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const installedApps = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps();
 
@@ -198,10 +216,10 @@ const installedApps = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82
 ## Add an App
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const addedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.add('https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a');
 
@@ -210,10 +228,10 @@ const addedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 ## Remove an App
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const removedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').installedApps.delete();
 
@@ -222,10 +240,10 @@ const removedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82265
 ## Get Tabs from a Channel
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const tabs = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
 channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs();
@@ -235,10 +253,10 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs();
 ## Get Tab by Id
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const tab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
 channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getById('Id')();
@@ -248,10 +266,10 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getByI
 ## Add a new Tab
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
 
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...);
 
 const newTab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
 channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.add('Tab','https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a',<TabsConfiguration>{});

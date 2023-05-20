@@ -7,11 +7,11 @@ The regional settings module helps with managing dates and times across various 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/regional-settings/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // get all the web's regional settings
 const s = await sp.web.regionalSettings();
@@ -25,11 +25,11 @@ const s2 = await sp.web.regionalSettings.select("DecimalSeparator", "ListSeparat
 You can get a list of the installed languages in the web.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/regional-settings/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const s = await sp.web.regionalSettings.getInstalledLanguages();
 ```
@@ -41,11 +41,11 @@ const s = await sp.web.regionalSettings.getInstalledLanguages();
 You can also get information about the selected timezone in the web and all of the defined timezones.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/regional-settings/web";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // get the web's configured timezone
 const s = await sp.web.regionalSettings.timeZone();
@@ -74,11 +74,11 @@ const s7 = await sp.web.regionalSettings.timeZone.utcToLocalTime(new Date(2019, 
 Some objects allow you to read language specific title information as shown in the following sample. This applies to Web, List, Field, Content Type, and User Custom Actions.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/regional-settings";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //
 // The below methods appears on

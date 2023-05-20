@@ -7,7 +7,7 @@ The profile services allows you to work with the SharePoint User Profile Store.
 Profiles is accessed directly from the root sp object.
 
 ```typescript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/profiles";
 ```
 
@@ -18,7 +18,7 @@ getEditProfileLink(): Promise<string>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const editProfileLink = await sp.profiles.getEditProfileLink();
 ```
 
@@ -31,7 +31,7 @@ getIsMyPeopleListPublic(): Promise<boolean>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const isPublic = await sp.profiles.getIsMyPeopleListPublic();
 ```
 
@@ -44,7 +44,7 @@ amIFollowedBy(loginName: string): Promise<boolean>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const isFollowedBy = await sp.profiles.amIFollowedBy(loginName);
 ```
@@ -58,7 +58,7 @@ amIFollowing(loginName: string): Promise<boolean>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const following = await sp.profiles.amIFollowing(loginName);
 ```
@@ -72,7 +72,7 @@ getFollowedTags(maxCount = 20): Promise<string[]>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const tags = await sp.profiles.getFollowedTags();
 ```
 
@@ -85,7 +85,7 @@ getFollowersFor(loginName: string): Promise<any[]>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const followers = await sp.profiles.getFollowersFor(loginName);
 followers.forEach((value) => {
@@ -102,7 +102,7 @@ myFollowers(): ISPCollection
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const folowers = await sp.profiles.myFollowers();
 ```
 
@@ -115,7 +115,7 @@ myProperties(): ISPInstance
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const profile = await sp.profiles.myProperties();
 console.log(profile.DisplayName);
 console.log(profile.Email);
@@ -134,7 +134,7 @@ console.log("Account Name: " + profile.userProperties.AccountName);
 
 ```TypeScript
 // you can also select properties to return before
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const profile = await sp.profiles.myProperties.select("Title", "Email")();
 console.log(profile.Email);
 console.log(profile.Title);
@@ -147,7 +147,7 @@ getPeopleFollowedBy(loginName: string): Promise<any[]>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const folowers = await sp.profiles.getFollowersFor(loginName);
 followers.forEach((value) => {
@@ -162,7 +162,7 @@ getPropertiesFor(loginName: string): Promise<any>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const profile = await sp.profiles.getPropertiesFor(loginName);
 console.log(profile.DisplayName);
@@ -190,7 +190,7 @@ trendingTags(): Promise<IHashTagCollection>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const tags = await sp.profiles.trendingTags();
 tags.Items.forEach((tag) => {
   ...
@@ -204,7 +204,7 @@ getUserProfilePropertyFor(loginName: string, propertyName: string): Promise<stri
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const propertyName = "AccountName";
 const property = await sp.profiles.getUserProfilePropertyFor(loginName, propertyName);
@@ -219,7 +219,7 @@ hideSuggestion(loginName: string): Promise<void>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 await sp.profiles.hideSuggestion(loginName);
 ```
@@ -235,7 +235,7 @@ isFollowing(follower: string, followee: string): Promise<boolean>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const follower = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const followee = "i:0#.f|membership|testuser2@mytenant.onmicrosoft.com";
 const isFollowing = await sp.profiles.isFollowing(follower, followee);
@@ -253,14 +253,14 @@ setMyProfilePic(profilePicSource: Blob): Promise<void>
 ```
 
 ```typescript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/profiles";
 import "@pnp/sp/folders";
 import "@pnp/sp/files";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // get the blob object through a request or from a file input
 const blob = await sp.web.lists.getByTitle("Documents").rootFolder.files.getByName("profile.jpg").getBlob();
@@ -279,7 +279,7 @@ setSingleValueProfileProperty(accountName: string, propertyName: string, propert
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 await sp.profiles.setSingleValueProfileProperty(loginName, "CellPhone", "(123) 555-1212");
 ```
@@ -295,7 +295,7 @@ setMultiValuedProfileProperty(accountName: string, propertyName: string, propert
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const propertyName = "SPS-Skills";
 const propertyValues = ["SharePoint", "Office 365", "Architecture", "Azure"];
@@ -319,7 +319,7 @@ createPersonalSiteEnqueueBulk(...emails: string[]): Promise<void>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 let userEmails: string[] = ["testuser1@mytenant.onmicrosoft.com", "testuser2@mytenant.onmicrosoft.com"];
 await sp.profiles.createPersonalSiteEnqueueBulk(userEmails);
 ```
@@ -331,7 +331,7 @@ ownerUserProfile(): Promise<IUserProfile>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const profile = await sp.profiles.ownerUserProfile();
 ```
 
@@ -342,7 +342,7 @@ userProfile(): Promise<any>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const profile = await sp.profiles.userProfile();
 ```
 
@@ -353,7 +353,7 @@ createPersonalSite(interactiveRequest = false): Promise<void>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 await sp.profiles.createPersonalSite();
 ```
 
@@ -366,7 +366,7 @@ shareAllSocialData(share: boolean): Promise<void>
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 await sp.profiles.shareAllSocialData(true);
 ```
 
@@ -379,7 +379,7 @@ clientPeoplePickerResolveUser(queryParams: IClientPeoplePickerQueryParameters): 
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const result = await sp.profiles.clientPeoplePickerSearchUser({
   AllowEmailAddresses: true,
   AllowMultipleEntities: false,
@@ -397,7 +397,7 @@ clientPeoplePickerSearchUser(queryParams: IClientPeoplePickerQueryParameters): P
 ```
 
 ```typescript
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 const result = await sp.profiles.clientPeoplePickerSearchUser({
   AllowEmailAddresses: true,
   AllowMultipleEntities: false,

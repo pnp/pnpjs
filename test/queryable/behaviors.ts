@@ -1,4 +1,4 @@
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import {
     Caching,
     CachingPessimisticRefresh,
@@ -9,9 +9,9 @@ import {
     RejectOnError,
     ResolveOnData,
 } from "@pnp/queryable";
-import { AbortController } from "node-abort-controller";
 import { default as nodeFetch } from "node-fetch";
 import "@pnp/sp/webs";
+import "@pnp/sp/fields";
 import { getRandomString } from "@pnp/core";
 import { spfi } from "@pnp/sp";
 
@@ -23,29 +23,27 @@ describe("Behaviors", function () {
             this.skip();
         }
 
-        try {
-            // Testing a behavior, creating new instance of sp
-            const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh("session"));
+        // Testing a behavior, creating new instance of sp
+        const spInstance = spfi(this.pnp._sp).using(CachingPessimisticRefresh({
+            store: "session",
+        }));
 
-            // Test caching behavior
-            const startCheckpoint = new Date();
-            const u = await spInstance.web();
-            const midCheckpoint = new Date();
-            const u2 = await spInstance.web();
-            const endCheckpoint = new Date();
+        // Test caching behavior
+        const startCheckpoint = new Date();
+        const u = await spInstance.web();
+        const midCheckpoint = new Date();
+        const u2 = await spInstance.web();
+        const endCheckpoint = new Date();
 
-            // Results should be the same
-            const test1 = JSON.stringify(u) === JSON.stringify(u2);
+        // Results should be the same
+        const test1 = JSON.stringify(u) === JSON.stringify(u2);
 
-            // Assume first call should take longer as it's not cached
-            const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
-            const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
-            const test2 = call1Time > call2Time;
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            expect(test1 && test2).to.be.true;
-        } catch (err) {
-            assert.fail(`Behaviors/Queryable/CachingPessimistic - ${err.message}`);
-        }
+        // Assume first call should take longer as it's not cached
+        const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
+        const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
+        const test2 = call1Time > call2Time;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        return expect(test1 && test2).to.be.true;
     });
 
     it("CachingPessimistic (headers)", async function () {
@@ -54,34 +52,32 @@ describe("Behaviors", function () {
             this.skip();
         }
 
-        try {
-            // Testing a behavior, creating new instance of sp
-            const spInstance = spfi(this.pnp.sp).using(CachingPessimisticRefresh("session"));
+        // Testing a behavior, creating new instance of sp
+        const spInstance = spfi(this.pnp._sp).using(CachingPessimisticRefresh({
+            store: "session",
+        }));
 
-            // Add a text field, which augments header, to validate that CachingPessimisticRefresh execute function honors header
-            const testFieldNameRand = `CachingPessimisticRefreshField_${getRandomString(10)}`;
-            const f = await spInstance.web.fields.addText(testFieldNameRand);
-            await f.field.delete();
+        // Add a text field, which augments header, to validate that CachingPessimisticRefresh execute function honors header
+        const testFieldNameRand = `CachingPessimisticRefreshField_${getRandomString(10)}`;
+        const f = await spInstance.web.fields.addText(testFieldNameRand);
+        await f.field.delete();
 
-            // Test caching behavior
-            const startCheckpoint = new Date();
-            const u = await spInstance.web();
-            const midCheckpoint = new Date();
-            const u2 = await spInstance.web();
-            const endCheckpoint = new Date();
+        // Test caching behavior
+        const startCheckpoint = new Date();
+        const u = await spInstance.web();
+        const midCheckpoint = new Date();
+        const u2 = await spInstance.web();
+        const endCheckpoint = new Date();
 
-            // Results should be the same
-            const test1 = JSON.stringify(u) === JSON.stringify(u2);
+        // Results should be the same
+        const test1 = JSON.stringify(u) === JSON.stringify(u2);
 
-            // Assume first call should take longer as it's not cached
-            const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
-            const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
-            const test2 = call1Time > call2Time;
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            expect(test1 && test2).to.be.true;
-        } catch (err) {
-            assert.fail(`Behaviors/Queryable/CachingPessimistic - ${err.message}`);
-        }
+        // Assume first call should take longer as it's not cached
+        const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
+        const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
+        const test2 = call1Time > call2Time;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        return expect(test1 && test2).to.be.true;
     });
 
     it("Caching", async function () {
@@ -90,29 +86,25 @@ describe("Behaviors", function () {
             this.skip();
         }
 
-        try {
-            // Testing a behavior, creating new instance of sp
-            const spInstance = spfi(this.pnp.sp).using(Caching({ store: "session" }));
+        // Testing a behavior, creating new instance of sp
+        const spInstance = spfi(this.pnp._sp).using(Caching({ store: "session" }));
 
-            // Test caching behavior
-            const startCheckpoint = new Date();
-            const u = await spInstance.web();
-            const midCheckpoint = new Date();
-            const u2 = await spInstance.web();
-            const endCheckpoint = new Date();
+        // Test caching behavior
+        const startCheckpoint = new Date();
+        const u = await spInstance.web();
+        const midCheckpoint = new Date();
+        const u2 = await spInstance.web();
+        const endCheckpoint = new Date();
 
-            // Results should be the same
-            const test1 = JSON.stringify(u) === JSON.stringify(u2);
+        // Results should be the same
+        const test1 = JSON.stringify(u) === JSON.stringify(u2);
 
-            // Assume first call should take longer as it's not cached
-            const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
-            const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
-            const test2 = call1Time > call2Time;
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            expect(test1 && test2).to.be.true;
-        } catch (err) {
-            assert.fail(`Behaviors/Queryable/Caching - ${err.message}`);
-        }
+        // Assume first call should take longer as it's not cached
+        const call1Time = (midCheckpoint.getTime() - startCheckpoint.getTime());
+        const call2Time = (endCheckpoint.getTime() - midCheckpoint.getTime());
+        const test2 = call1Time > call2Time;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        return expect(test1 && test2).to.be.true;
     });
 
     it("Bearer Token", async function () {
@@ -132,7 +124,7 @@ describe("Behaviors", function () {
 
         query.on.parse.replace(async function (this: Queryable, url, response, result) {
 
-            this.emit[this.InternalResolveEvent](null);
+            this.emit[this.InternalResolve](null);
 
             return [url, response, result];
         });
@@ -162,7 +154,7 @@ describe("Behaviors", function () {
 
         query.on.parse.replace(async function (this: Queryable, url, response, result) {
 
-            this.emit[this.InternalResolveEvent](null);
+            this.emit[this.InternalResolve](null);
 
             return [url, response, result];
         });
@@ -172,18 +164,14 @@ describe("Behaviors", function () {
 
     it("Timeout", async function () {
 
-        // must patch in node < 15
-        const controller = new AbortController();
-
         const query = new Queryable("https://bing.com");
-        query.using(Timeout(controller.signal));
+        query.using(Timeout(50));
         query.using(ResolveOnData(), RejectOnError());
 
         query.on.send.replace(async (url, init) => <any>nodeFetch(url.toString(), <any>init));
 
         try {
 
-            controller.abort();
             await query();
 
             expect.fail("Timeout should cause error and we end up in catch before this line.");

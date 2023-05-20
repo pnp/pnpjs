@@ -3,7 +3,7 @@ import { _Web, Web } from "../webs/types.js";
 import { Lists, ILists, IList, List } from "./types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { ISPCollection, SPCollection } from "../spqueryable.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
+import { encodePath } from "../utils/encode-path-str.js";
 
 declare module "../webs/types" {
     interface _Web {
@@ -59,10 +59,10 @@ addProp(_Web, "defaultDocumentLibrary", List);
 addProp(_Web, "customListTemplates", SPCollection, "getcustomlisttemplates");
 
 _Web.prototype.getList = function (this: _Web, listRelativeUrl: string): IList {
-    return List(this, `getList('${escapeQueryStrValue(listRelativeUrl)}')`);
+    return List(this, `getList('${encodePath(listRelativeUrl)}')`);
 };
 
 _Web.prototype.getCatalog = async function (this: _Web, type: number): Promise<IList> {
     const data = await Web(this, `getcatalog(${type})`).select("Id")();
-    return List(odataUrlFrom(data));
+    return List([this, odataUrlFrom(data)]);
 };

@@ -1,6 +1,6 @@
-import { _SPInstance, ISPQueryable } from "../spqueryable.js";
-import { hOP, isArray } from "@pnp/core";
-import { body } from "@pnp/queryable";
+import { _SPInstance, spInvokableFactory, SPInit } from "../spqueryable.js";
+import { getHashCode, hOP, isArray } from "@pnp/core";
+import { body, CacheAlways, CacheKey, invokable } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
 import { spPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
@@ -84,6 +84,9 @@ export function SearchQueryBuilder(queryText = "", _query = {}): ISearchBuilder 
  *
  */
 @defaultPath("_api/search/postquery")
+@invokable(function (this: _Search, init) {
+    return this.run(<SearchQueryInit>init);
+})
 export class _Search extends _SPInstance {
 
     /**
@@ -94,7 +97,7 @@ export class _Search extends _SPInstance {
         const query = this.parseQuery(queryInit);
 
         const postBody: RequestInit = body({
-            request:{
+            request: {
                 ...query,
                 HitHighlightedProperties: this.fixArrProp(query.HitHighlightedProperties),
                 Properties: this.fixArrProp(query.Properties),
@@ -105,11 +108,13 @@ export class _Search extends _SPInstance {
             },
         });
 
-        const data = await spPost(this, postBody);
+        const poster = new _Search([this, this.parentUrl]);
+        poster.using(CacheAlways(), CacheKey(getHashCode(JSON.stringify(postBody)).toString()));
+
+        const data = await spPost(poster, postBody);
 
         // Create search instance copy for SearchResult's getPage request.
-        const search = new _Search([this, this.parentUrl]);
-        return new SearchResults(data, search, query);
+        return new SearchResults(data, new _Search([this, this.parentUrl]), query);
     }
 
     /**
@@ -117,12 +122,8 @@ export class _Search extends _SPInstance {
      *
      * @param prop property to fix for container struct
      */
-    private fixArrProp(prop: any): any[] {
-        if (typeof prop === "undefined") {
-            return [];
-        }
-
-        return isArray(prop) ? prop : [prop];
+    private fixArrProp<T>(prop: T | T[]): T[] {
+        return typeof prop === "undefined" ? [] : isArray(prop) ? prop : [prop];
     }
 
     /**
@@ -146,13 +147,10 @@ export class _Search extends _SPInstance {
     }
 }
 
-export interface ISearch {
-    (queryInit: SearchQueryInit): Promise<SearchResults>;
+export interface ISearch extends Pick<_Search, "run" | "using"> {
+    (init: SearchQueryInit): Promise<SearchResults>;
 }
-
-export const Search = (baseUrl: string | ISPQueryable): ISearch => (queryInit: SearchQueryInit) => {
-    return (new _Search(baseUrl)).run(queryInit);
-};
+export const Search: (base: SPInit, path?: string) => ISearch = <any>spInvokableFactory(_Search);
 
 export class SearchResults {
 

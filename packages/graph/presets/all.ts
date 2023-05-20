@@ -1,5 +1,6 @@
 import "../attachments/index.js";
 import "../calendars/index.js";
+import "../cloud-communications/index.js";
 import "../contacts/index.js";
 import "../conversations/index.js";
 import "../directory-objects/index.js";
@@ -19,6 +20,7 @@ import "../users/index.js";
 
 export * from "../attachments/index.js";
 export * from "../calendars/index.js";
+export * from "../cloud-communications/index.js";
 export * from "../contacts/index.js";
 export * from "../conversations/index.js";
 export * from "../directory-objects/index.js";

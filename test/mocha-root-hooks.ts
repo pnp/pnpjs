@@ -9,6 +9,10 @@ import { cleanUpAllSubsites } from "./clean-subsite.js";
 import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import "mocha";
+import "@pnp/sp/webs";
+import { Web } from "@pnp/sp/webs";
+import { PnPLogging, ConsoleListener, Logger, LogLevel } from "@pnp/logging";
+import { disposeRecording, initRecording } from "./test-recording.js";
 
 declare module "mocha" {
     interface Context {
@@ -17,6 +21,12 @@ declare module "mocha" {
             settings: ISettings;
             sp?: SPFI;
             graph?: GraphFI;
+            _sp?: SPFI;
+            _graph?: GraphFI;
+            testProps: {
+                get<T>(key: string, defaults: T): Promise<T>;
+                set<T>(key: string, props: T): Promise<void>;
+            };
         };
     }
 
@@ -26,20 +36,27 @@ declare module "mocha" {
             settings: ISettings;
             sp?: SPFI;
             graph?: GraphFI;
+            _sp?: SPFI;
+            _graph?: GraphFI;
+            testProps: {
+                get<T>(key: string, defaults: T): Promise<T>;
+                set<T>(key: string, props: T): Promise<void>;
+            };
         };
     }
 }
 
 let testStart: number;
+let siteUsed = false;
 
 export const mochaHooks = {
     beforeAll: [
         async function setup(this: Context) {
 
-            chai.use(chaiAsPromised);
-
             // start a timer
             testStart = Date.now();
+
+            chai.use(chaiAsPromised);
 
             // establish the testing settings shared across the testing context
             const args = getProcessArgs();
@@ -47,7 +64,16 @@ export const mochaHooks = {
             this.pnp = {
                 args,
                 settings,
+                testProps: {
+                    get: async (_k, r) => r,
+                    set: async () => void (0),
+                },
             };
+
+            if (this.pnp.args.logging > LogLevel.Off) {
+                // add a listener for logging if we are enabled at any level
+                Logger.subscribe(ConsoleListener());
+            }
         },
         async function spSetup(this: Context) {
 
@@ -58,7 +84,6 @@ export const mochaHooks = {
                     return;
                 }
 
-                let siteUsed = false;
                 this.pnp.settings.sp.testWebUrl = this.pnp.settings.sp.url;
 
                 if (this.pnp.args.site && this.pnp.args.site.length > 0) {
@@ -71,11 +96,11 @@ export const mochaHooks = {
                         config: this.pnp.settings.sp.msal.init,
                         scopes: this.pnp.settings.sp.msal.scopes,
                     },
-                }), NodeFetch({ replace: true }));
+                }), NodeFetch({ replace: true }), PnPLogging(this.pnp.args.logging));
 
                 if (siteUsed) {
                     // we were given a site, so we don't need to create one
-                    this.pnp.sp = rootSP;
+                    this.pnp._sp = rootSP;
                     return;
                 }
 
@@ -88,12 +113,11 @@ export const mochaHooks = {
                 this.pnp.settings.sp.testWebUrl = testWebResult.data.Url;
 
                 // create a new testing site
-                this.pnp.sp = spfi(this.pnp.settings.sp.testWebUrl).using(SPDefault({
-                    msal: {
-                        config: this.pnp.settings.sp.msal.init,
-                        scopes: this.pnp.settings.sp.msal.scopes,
-                    },
-                }), NodeFetch({ replace: true }));
+                this.pnp._sp = spfi([rootSP.web, this.pnp.settings.sp.testWebUrl]);
+
+                // TODO:: remove once pnpTest is used everywhere
+                this.pnp.sp = this.pnp._sp;
+
             } finally {
                 const setupEnd = Date.now();
                 console.log(`SP Setup completed in ${((setupEnd - setupStart) / 1000).toFixed(4)} seconds.`);
@@ -108,17 +132,27 @@ export const mochaHooks = {
                     return;
                 }
 
-                this.pnp.graph = graphfi().using(GraphDefault({
+                this.pnp._graph = graphfi().using(GraphDefault({
                     msal: {
                         config: this.pnp.settings.graph.msal.init,
                         scopes: this.pnp.settings.graph.msal.scopes,
                     },
-                }), NodeFetch({ replace: true }));
+                }), NodeFetch({ replace: true }), PnPLogging(this.pnp.args.logging));
+
+                // TODO:: remove once pnpTest is used everywhere
+                this.pnp.graph = this.pnp._graph;
 
             } finally {
                 const setupEnd = Date.now();
                 console.log(`Graph Setup completed in ${((setupEnd - setupStart) / 1000).toFixed(4)} seconds.`);
             }
+        },
+        async function recordingSetup(this: Context) {
+
+            // we do this here because both sp and graph should be configured and ready
+            // meaning we can apply our recording to the shared contextual roots (sp & graph)
+            // if recording is not enabled via --record flag, then this function call has no side-effects
+            initRecording(this);
         },
     ],
     afterAll: [
@@ -132,7 +166,9 @@ export const mochaHooks = {
 
                 if (this.pnp.args.deleteAllWebs) {
 
-                    await cleanUpAllSubsites(this.pnp.sp.web);
+                    const rootCleanupWeb = siteUsed ? this.pnp.sp.web : Web([this.pnp.sp.web, this.pnp.settings.sp.url]);
+
+                    await cleanUpAllSubsites(rootCleanupWeb);
 
                 } else if (this.pnp.args.deleteWeb && this.pnp.settings.enableWebTests) {
 
@@ -170,13 +206,14 @@ export const mochaHooks = {
         function graphTeardown(this: Context) {
             const teardownStart = Date.now();
             try {
-
                 console.log("No Graph teardown");
-
             } finally {
                 const teardownEnd = Date.now();
                 console.log(`Graph Teardown completed in ${((teardownEnd - teardownStart) / 1000).toFixed(4)} seconds.`);
             }
+        },
+        async function recordingTeardown(this: Context) {
+            return disposeRecording(this);
         },
         function goodbye() {
             console.log("All done. Have a nice day :)");

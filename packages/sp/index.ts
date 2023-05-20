@@ -11,10 +11,11 @@ export {
 
 export * from "./types.js";
 
-export * from "./utils/escape-query-str.js";
 export * from "./utils/extract-web-url.js";
 export * from "./utils/file-names.js";
 export * from "./utils/odata-url-from.js";
+export * from "./utils/to-resource-path.js";
+export * from "./utils/encode-path-str.js";
 
 export * from "./behaviors/defaults.js";
 export * from "./behaviors/telemetry.js";

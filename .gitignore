@@ -18,7 +18,7 @@ coverage
 # node-waf configuration
 .lock-wscript
 
-.test-recording
+.recordings
 
 # Dependency directory
 node_modules
@@ -46,6 +46,7 @@ debug/launch/*
 
 debug/serve/*
 !debug/serve/main.ts
+!debug/serve/spa.html
 !debug/serve/tsconfig.json
 !debug/serve/plumbing
 

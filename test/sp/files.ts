@@ -222,6 +222,23 @@ describe("File", function () {
         return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
     });
 
+    it("copyByPath - options", async function () {
+
+        const rand = getRandomString(4);
+        const name = `Testing copyByPath - ${rand}.txt`;
+        await files.addUsingPath(name, getRandomString(42));
+        const folderData = await this.pnp.sp.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+        const name2 = `I Copied - ${rand}.aspx`;
+        const path = combine("/", folderData.ServerRelativeUrl, name2);
+
+        await files.getByUrl(name).copyByPath(path, true, {
+            KeepBoth: true,
+            ResetAuthorAndCreatedOnCopy: false,
+            ShouldBypassSharedLocks: true,
+        });
+        return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
+    });
+
     it("moveByPath", async function () {
 
         const rand = getRandomString(4);
@@ -232,6 +249,43 @@ describe("File", function () {
         const path = combine("/", folderData.ServerRelativeUrl, name2);
 
         await files.getByUrl(name).moveByPath(path, true);
+        return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
+    });
+
+    it("moveByPath - options", async function () {
+
+        const rand = getRandomString(4);
+        const name = `Testing moveByPath - ${rand}.txt`;
+        await files.addUsingPath(name, getRandomString(42));
+        const folderData = await this.pnp.sp.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+        const name2 = `I Copied - ${rand}.aspx`;
+        const path = combine("/", folderData.ServerRelativeUrl, name2);
+
+        await files.getByUrl(name).moveByPath(path, true, {
+            KeepBoth: true,
+            RetainEditorAndModifiedOnMove: false,
+            ShouldBypassSharedLocks: true,
+        });
+        return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
+    });
+
+    it("moveByPath - batched", async function () {
+
+        const rand = getRandomString(4);
+        const name = `Testing moveByPath - ${rand}.txt`;
+        await files.addUsingPath(name, getRandomString(42));
+        const folderData = await this.pnp.sp.web.defaultDocumentLibrary.rootFolder.select("ServerRelativeUrl")();
+        const name2 = `I Copied - ${rand}.aspx`;
+
+        const sourcePath = combine("/", folderData.ServerRelativeUrl, name);
+        const path = combine("/", folderData.ServerRelativeUrl, name2);
+
+        const [batch, execute] = this.pnp.sp.web.batched();
+
+        batch.getFileByServerRelativePath(sourcePath).moveByPath(path, true);
+
+        await execute();
+
         return expect(files.getByUrl(name2)()).to.eventually.be.fulfilled;
     });
 
@@ -273,5 +327,12 @@ describe("File", function () {
         await files.addUsingPath(name, "Some test text content.");
         const item = await files.getByUrl(name).getItem();
         return expect(item()).to.eventually.be.fulfilled;
+    });
+
+    it("getLockedByUser", async function () {
+        const name = `Testing getLockedByUser - ${getRandomString(4)}.txt`;
+        await files.addUsingPath(name, "Some test text content.");
+        const lockedByUser = await files.getByUrl(name).getLockedByUser();
+        return expect(lockedByUser).to.be.null;
     });
 });

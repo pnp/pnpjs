@@ -30,6 +30,77 @@ await graph.users();
 
 > DefaultInit and DefaultHeaders are separated to make it easier to create your own default headers or init behavior. You should include both if composing your own default behavior.
 
+## Paged
+
+_Added in 3.4.0_
+
+The Paged behavior allows you to access the information in a collection through a series of pages. While you can use it directly, you will likely use the `paged` method of the collections which handles things for you.
+
+> Note that not all entity types support `count` and where it is unsupported it will return 0.
+
+Basic example, read all users:
+
+```TypeScript
+import { graphfi, DefaultHeaders } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(DefaultHeaders());
+
+const allUsers = [];
+let users = await graph.users.top(300).paged();
+
+allUsers.push(...users.value);
+
+while (users.hasNext) {
+  users = await users.next();
+  allUsers.push(...users.value);
+}
+
+console.log(`All users: ${JSON.stringify(allUsers)}`);
+```
+
+Beyond the basics other query operations are supported such as filter and select.
+
+```TypeScript
+import { graphfi, DefaultHeaders } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(DefaultHeaders());
+
+const allUsers = [];
+let users = await graph.users.top(50).select("userPrincipalName", "displayName").filter("startswith(displayName, 'A')").paged();
+
+allUsers.push(...users.value);
+
+while (users.hasNext) {
+  users = await users.next();
+  allUsers.push(...users.value);
+}
+
+console.log(`All users: ${JSON.stringify(allUsers)}`);
+```
+
+And similarly for groups, showing the same pattern for different types of collections
+
+```TypeScript
+import { graphfi, DefaultHeaders } from "@pnp/graph";
+import "@pnp/graph/groups";
+
+const graph = graphfi().using(DefaultHeaders());
+
+const allGroups = [];
+let groups = await graph.groups.paged();
+
+allGroups.push(...groups.value);
+
+while (groups.hasNext) {
+  groups = await groups.next();
+  allGroups.push(...groups.value);
+}
+
+console.log(`All groups: ${JSON.stringify(allGroups)}`);
+```
+
 ## Endpoint
 
 This behavior is used to change the endpoint to which requests are made, either "beta" or "v1.0". This allows you to easily switch back and forth between the endpoints as needed.
@@ -106,19 +177,45 @@ await graph.users();
 This behavior is designed to work closely with SPFx. The only parameter is the current SPFx Context. `SPFx` is a composed behavior including DefaultHeaders, DefaultInit, BrowserFetchWithRetry, and DefaultParse. It also replaces any authentication present with a method to get a token from the SPFx aadTokenProviderFactory.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...).using(SPFx(this.context));
 
 await graph.users();
 ```
 
-If you want to use a different form of authentication you can apply that behavior after `SPFx` to override it. In this case we are using the [client MSAL authentication](../msaljsclient).
+Note that both the sp and graph libraries export an SPFx behavior. They are unique to their respective libraries and cannot be shared, i.e. you can't use the graph SPFx to setup sp and vice-versa.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { GraphFI, graphfi, SPFx as graphSPFx } from '@pnp/graph'
+import { SPFI, spfi, SPFx as spSPFx } from '@pnp/sp'
+
+const sp = spfi().using(spSPFx(this.context));
+const graph = graphfi().using(graphSPFx(this.context));
+```
+
+If you want to use a different form of authentication you can apply that behavior after `SPFx` to override it. In this case we are using the [client MSAL authentication](../msaljsclient).
+
+## SPFxToken
+
+_Added in 3.12_
+
+Allows you to include the SharePoint Framework application token in requests. This behavior is include within the SPFx behavior, but is available separately should you wish to compose it into your own behaviors.
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+
+// this.context represents the context object within an SPFx webpart, application customizer, or ACE.
+const graph = graphfi(...).using(SPFxToken(this.context));
+
+await graph.users();
+```
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
 import { MSAL } from "@pnp/msaljsclient";
 import "@pnp/graph/users";
 
@@ -139,6 +236,32 @@ import { graphfi, Telemetry } from "@pnp/graph";
 import "@pnp/graph/users";
 
 const graph = graphfi().using(Telemetry());
+
+await graph.users();
+```
+
+## ConsistencyLevel
+
+Using this behavior you can set the consistency level of your requests. You likely won't need to use this directly as we include it where needed.
+
+Basic usage:
+
+```TypeScript
+import { graphfi, ConsistencyLevel } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(ConsistencyLevel());
+
+await graph.users();
+```
+
+If in the future there is another value other than "eventual" you can supply it to the behavior. For now only "eventual" is a valid value, which is the default, so you do not need to pass it as a param.
+
+```TypeScript
+import { graphfi, ConsistencyLevel } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(ConsistencyLevel("{level value}"));
 
 await graph.users();
 ```

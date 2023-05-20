@@ -13,7 +13,7 @@ import { BearerToken } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(BearerToken("HereIsMyBearerTokenStringFromSomeSource"));
+const sp = spfi(...).using(BearerToken("HereIsMyBearerTokenStringFromSomeSource"));
 
 // optionally clear any configured authentication as you are supplying a token so additional calls shouldn't be needed
 // but take care as other behaviors may add observers to auth
@@ -34,7 +34,7 @@ import { BrowserFetch } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(BrowserFetch());
+const sp = spfi(...).using(BrowserFetch());
 
 const webInfo = await sp.webs();
 ```
@@ -44,7 +44,7 @@ import { BrowserFetch } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(BrowserFetch({ replace: false }));
+const sp = spfi(...).using(BrowserFetch({ replace: false }));
 
 const webInfo = await sp.webs();
 ```
@@ -58,7 +58,7 @@ import { BrowserFetchWithRetry } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(BrowserFetchWithRetry());
+const sp = spfi(...).using(BrowserFetchWithRetry());
 
 const webInfo = await sp.webs();
 ```
@@ -70,7 +70,7 @@ import { BrowserFetchWithRetry } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(BrowserFetchWithRetry({
+const sp = spfi(...).using(BrowserFetchWithRetry({
     retries: 2,
     interval: 400,
     replace: true,
@@ -88,7 +88,7 @@ import { Caching } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(Caching());
+const sp = spfi(...).using(Caching());
 
 // caching will save the data into session storage on the first request - the key is based on the full url including query strings
 const webInfo = await sp.webs();
@@ -105,13 +105,15 @@ The cache key factory has the form `(url: string) => string` and you must ensure
 
 The expire date factory has the form `(url: string) => Date` and should return the Date when the cached data should expire. If you know that some particular data won't expire often you can set this date far in the future, or for more frequently updated information you can set it lower. If you set the expiration too short there is no reason to use caching as any stored information will likely always be expired. Additionally, you can set the storage to use local storage which will persist across sessions.
 
+> Note that for sp.search() requests if you want to specify a key you will need to use the CacheKey behavior below, the keyFactory value will be overwritten
+
 ```TypeScript
 import { getHashCode, PnPClientStorage, dateAdd, TimelinePipe } from "@pnp/core";
 import { Caching } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(Caching({
+const sp = spfi(...).using(Caching({
     store: "local",
     // use a hascode for the key
     keyFactory: (url) => getHashCode(url.toLowerCase()).toString(),
@@ -136,7 +138,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-const sp = spfi();
+const sp = spfi(...);
 
 // caching will only apply to requests using `cachingList` as the base of the fluent chain
 const cachingList = sp.web.lists.getByTitle("{List Title}").using(Caching());
@@ -146,6 +148,107 @@ const itemsInfo = await cachingList.items();
 
 // caching will retriece this value from the cache saving a network requests the second time it is loaded (either in the same page, a reload of the page, etc.)
 const itemsInfo2 = await cachingList.items();
+```
+
+### bindCachingCore
+
+_Added in 3.10.0_
+
+The `bindCachingCore` method is supplied to allow all caching behaviors to share a common logic around the handling of ICachingProps. Usage of this function is not required to build your own caching method. However, it does provide consistent logic and will incoroporate any future enhancements. It can be used to create your own caching behavior. Here we show how we use the binding function within `Caching` as a basic example.
+
+The `bindCachingCore` method is designed for use in a `pre` observer and the first two parameters are the url and init passed to pre. The third parameter is an optional Partial<ICachingProps>. It returns a tuple with three values. The first is a calculated value indicating if this request should be cached based on the internal default logic of the library, you can use this value in conjunction with your own logic. The second value is a function that will get a cached value, note no key is passed - the key is calculated and held within `bindCachingCore`. The third value is a function to which you pass a value to cache. The key and expiration are similarly calculated and held within `bindCachingCore`.
+
+```TS
+import { TimelinePipe } from "@pnp/core";
+import { bindCachingCore, ICachingProps, Queryable } from "@pnp/queryable";
+
+export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
+
+    return (instance: Queryable) => {
+
+        instance.on.pre(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+
+            const [shouldCache, getCachedValue, setCachedValue] = bindCachingCore(url, init, props);
+
+            // only cache get requested data or where the CacheAlways header is present (allows caching of POST requests)
+            if (shouldCache) {
+
+                const cached = getCachedValue();
+
+                // we need to ensure that result stays "undefined" unless we mean to set null as the result
+                if (cached === null) {
+
+                    // if we don't have a cached result we need to get it after the request is sent and parsed
+                    this.on.post(async function (url: URL, result: any) {
+
+                        setCachedValue(result);
+
+                        return [url, result];
+                    });
+
+                } else {
+
+                    result = cached;
+                }
+            }
+
+            return [url, init, result];
+        });
+
+        return instance;
+    };
+}
+```
+
+## CacheKey
+
+_Added in 3.5.0_
+
+This behavior allows you to set a pre-determined cache key for a given request. It needs to be used **PER** request otherwise the value will be continuously overwritten.
+
+```TypeScript
+import { Caching, CacheKey } from "@pnp/queryable";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...).using(Caching());
+
+// note the application of the behavior on individual requests, if you share a CacheKey behavior across requests you'll encounter conflicts
+const webInfo = await sp.web.using(CacheKey("MyWebInfoCacheKey"))();
+
+const listsInfo = await sp.web.lists.using(CacheKey("MyListsInfoCacheKey"))();
+```
+
+## CacheAlways
+
+_Added in 3.8.0_
+
+This behavior allows you to force caching for a given request. This should not be used for update/create operations as the request will not execute if a result is found in the cache
+
+```TypeScript
+import { Caching, CacheAlways } from "@pnp/queryable";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...).using(Caching());
+
+const webInfo = await sp.web.using(CacheAlways())();
+```
+
+## CacheNever
+
+_Added in 3.10.0_
+
+This behavior allows you to force skipping caching for a given request.
+
+```TypeScript
+import { Caching, CacheNever } from "@pnp/queryable";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...).using(Caching());
+
+const webInfo = await sp.web.using(CacheNever())();
 ```
 
 ## Caching Pessimistic Refresh
@@ -159,7 +262,7 @@ import { CachingPessimisticRefresh } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(CachingPessimisticRefresh());
+const sp = spfi(...).using(CachingPessimisticRefresh());
 
 // caching will save the data into session storage on the first request - the key is based on the full url including query strings
 const webInfo = await sp.webs();
@@ -179,7 +282,7 @@ import { InjectHeaders } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(InjectHeaders({
+const sp = spfi(...).using(InjectHeaders({
     "X-Something": "a value",
     "MyCompanySpecialAuth": "special company token",
 }));
@@ -202,7 +305,7 @@ import { DefaultParse } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(DefaultParse());
+const sp = spfi(...).using(DefaultParse());
 
 const webInfo = await sp.webs();
 ```
@@ -216,7 +319,7 @@ import { TextParse } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(TextParse());
+const sp = spfi(...).using(TextParse());
 ```
 
 ### BlobParse
@@ -228,7 +331,7 @@ import { BlobParse } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(BlobParse());
+const sp = spfi(...).using(BlobParse());
 ```
 
 ### JSONParse
@@ -240,7 +343,7 @@ import { JSONParse } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(JSONParse());
+const sp = spfi(...).using(JSONParse());
 ```
 
 ### BufferParse
@@ -252,7 +355,7 @@ import { BufferParse } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(BufferParse());
+const sp = spfi(...).using(BufferParse());
 ```
 
 ### HeaderParse
@@ -264,7 +367,22 @@ import { HeaderParse } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(HeaderParse());
+const sp = spfi(...).using(HeaderParse());
+```
+
+### JSONHeaderParse
+
+Checks for errors and parses the headers of the Respnose as well as the JSON and returns an object with both values.
+
+```TypeScript
+import { JSONHeaderParse } from "@pnp/queryable";
+
+import "@pnp/sp/webs";
+
+const sp = spfi(...).using(JSONHeaderParse());
+
+...sp.data
+...sp.headers
 ```
 
 ## Resolvers
@@ -278,7 +396,7 @@ import { ResolveOnData, RejectOnError } from "@pnp/queryable";
 
 import "@pnp/sp/webs";
 
-const sp = spfi().using(ResolveOnData(), RejectOnError());
+const sp = spfi(...).using(ResolveOnData(), RejectOnError());
 ```
 
 ## Timeout
@@ -293,7 +411,7 @@ import { Timeout } from "@pnp/queryable";
 import "@pnp/sp/webs";
 
 // requests should timeout in 5 seconds
-const sp = spfi().using(Timeout(5000));
+const sp = spfi(...).using(Timeout(5000));
 ```
 
 ```TypeScript
@@ -303,7 +421,7 @@ import "@pnp/sp/webs";
 
 const controller = new AbortController();
 
-const sp = spfi().using(Timeout(controller.signal));
+const sp = spfi(...).using(Timeout(controller.signal));
 
 // abort requests after 6 seconds using our own controller
 const timer = setTimeout(() => {
@@ -315,4 +433,64 @@ const webInfo = await sp.webs();
 
 // be a good citizen and cancel unneeded timers
 clearTimeout(timer);
+```
+
+## Cancelable
+
+![Beta](https://img.shields.io/badge/Beta-important.svg)
+
+_Updated as Beta 2 in 3.5.0_
+
+This behavior allows you to cancel requests before they are complete. It is similar to timeout however you control when and if the request is canceled. Please consider this behavior as beta while we work to stabalize the functionality.
+
+### Known Issues
+
+- Due to how the event loop works you may get unhandled rejections after canceling a request
+
+```TypeScript
+import { Cancelable, CancelablePromise } from "@pnp/queryable";
+import { IWebInfo } from "@pnp/sp/webs";
+import "@pnp/sp/webs";
+
+const sp = spfi().using(Cancelable());
+
+const p: CancelablePromise<IWebInfo> = <any>sp.web();
+
+setTimeout(() => {
+
+    // you should await the cancel operation to ensure it completes
+    await p.cancel();
+}, 200);
+
+// this is awaiting the results of the request
+const webInfo: IWebInfo = await p;
+```
+
+### Cancel long running operations
+
+Some operations such as chunked uploads that take longer to complete are good candidates for canceling based on user input such as a button select.
+
+```TypeScript
+import { Cancelable, CancelablePromise } from "@pnp/queryable";
+import { IFileAddResult } from "@pnp/sp/files";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+import "@pnp/sp/folders";
+import { getRandomString } from "@pnp/core";
+import { createReadStream } from "fs";
+
+const sp = spfi().using(Cancelable());
+
+const file = createReadStream(join("C:/some/path", "test.mp4"));
+
+const p: CancelablePromise<IFileAddResult> = <any>sp.web.getFolderByServerRelativePath("/sites/dev/Shared Documents").files.addChunked(`te's't-${getRandomString(4)}.mp4`, <any>file);
+
+setTimeout(() => {
+
+    // you should await the cancel operation to ensure it completes
+    await p.cancel();
+}, 10000);
+
+// this is awaiting the results of the request
+await p;
 ```

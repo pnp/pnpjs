@@ -19,6 +19,47 @@ export function broadcast<T extends ObserverAction>(): (observers: T[], ...args:
 }
 
 /**
+ * Defines a moment that executes each observer asynchronously in parallel awaiting all promises to resolve or reject before continuing
+ *
+ * @returns The final set of arguments
+ */
+export function asyncBroadcast<T extends ObserverFunction<void>>(): (observers: T[], ...args: [...Parameters<T>]) => Promise<any[]> {
+
+    return async function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Promise<any[]> {
+
+        // get our initial values
+        const r = args;
+
+        const obs = [...observers];
+
+        const promises = [];
+
+        for (let i = 0; i < obs.length; i++) {
+            promises.push(Reflect.apply(obs[i], this, r));
+        }
+
+        return Promise.all(promises);
+    };
+}
+
+
+/**
+ * Defines a moment that executes each observer synchronously, passing the returned arguments as the arguments to the next observer.
+ * This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state
+ *
+ * @returns The final set of arguments
+ */
+export function reduce<T extends ObserverFunction<[...Parameters<T>]>>(): (observers: T[], ...args: [...Parameters<T>]) => [...Parameters<T>] {
+
+    return function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): [...Parameters<T>] {
+
+        const obs = [...observers];
+
+        return obs.reduce((params, func: T) => Reflect.apply(func, this, params), args);
+    };
+}
+
+/**
  * Defines a moment that executes each observer asynchronously, awaiting the result and passes the returned arguments as the arguments to the next observer.
  * This is very much like the redux pattern taking the arguments as the state which each observer may modify then returning a new state
  *
@@ -28,20 +69,9 @@ export function asyncReduce<T extends ObserverFunction<[...Parameters<T>]>>(): (
 
     return async function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Promise<[...Parameters<T>]> {
 
-        // get our initial values
-        let r = args;
-
         const obs = [...observers];
 
-        // process each handler which updates our "state" in order
-        // returning the new "state" as a tuple [...Parameters<T>]
-        // this is conceptually the redux pattern, each function gets a copy of the
-        // previous state, may optionally modify it, and return a new state
-        for (let i = 0; i < obs.length; i++) {
-            r = await Reflect.apply(obs[i], this, r);
-        }
-
-        return r;
+        return obs.reduce((prom, func: T) => prom.then((params) => Reflect.apply(func, this, params)), Promise.resolve(args));
     };
 }
 
@@ -61,9 +91,7 @@ export function request<T extends ObserverFunction>(): (observers: T[], ...args:
 
         const handler = observers[0];
 
-        const result = await Reflect.apply(handler, this, args);
-
-        return result;
+        return Reflect.apply(handler, this, args);
     };
 }
 
@@ -72,16 +100,16 @@ export function request<T extends ObserverFunction>(): (observers: T[], ...args:
  * possibly modifying the "this" instance, with the final product returned
  *
  */
-export function lifecycle<T extends ObserverFunction>(): (observers: T[]) => Timeline<any> {
+export function lifecycle<T extends ObserverAction>(): (observers: T[], ...args: [...Parameters<T>]) => Timeline<any> {
 
-    return function (this: Timeline<any>, observers: T[]): Timeline<any> {
+    return function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): Timeline<any> {
 
         const obs = [...observers];
 
         // process each handler which updates our instance in order
         // very similar to asyncReduce but the state is the object itself
         for (let i = 0; i < obs.length; i++) {
-            Reflect.apply(obs[i], this, []);
+            Reflect.apply(obs[i], this, args);
         }
 
         return this;

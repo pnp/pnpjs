@@ -1,4 +1,4 @@
-import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe, isFunc } from "@pnp/core";
+import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe, isFunc, hOP } from "@pnp/core";
 import { InjectHeaders, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "./operations.js";
 import { ISPQueryable, _SPQueryable } from "./spqueryable.js";
@@ -117,7 +117,7 @@ class BatchQueryable extends _SPQueryable {
             // that we maintain the references to the InternalResolve and InternalReject events through
             // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
             // which ignores symbol properties.
-            base.using(CopyFrom(this, "replace", (k) => /(auth|send|init)/i.test(k)));
+            base.using(CopyFrom(this, "replace", (k) => /(auth|send|pre|init)/i.test(k)));
         });
     }
 }
@@ -147,7 +147,10 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
         await Promise.all(registrationPromises);
 
         if (requests.length < 1) {
-            return;
+            // even if we have no requests we need to await the complete promises to ensure
+            // that execute only resolves AFTER every child request disposes #2457
+            // this likely means caching is being used, we returned values for all child requests from the cache
+            return Promise.all(completePromises).then(() => void (0));
         }
 
         const batchBody: string[] = [];
@@ -246,21 +249,29 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
             throw Error("Could not properly parse responses to match requests in batch.");
         }
 
-        // this structure ensures that we resolve the batched requests in the order we expect
-        return responses.reduce((p, response, index) => p.then(async () => {
-
-            const [, , , resolve, reject] = requests[index];
+        return new Promise<void>((res, rej) => {
 
             try {
 
-                resolve(response);
+                for (let index = 0; index < responses.length; index++) {
+                    const [, , , resolve, reject] = requests[index];
+                    try {
+                        resolve(responses[index]);
+                    } catch (e) {
+                        reject(e);
+                    }
+                }
+
+                // this small delay allows the promises to resolve correctly in order by dropping this resolve behind
+                // the other work in the event loop. Feels hacky, but it works so 🤷
+                setTimeout(res, 0);
 
             } catch (e) {
 
-                reject(e);
+                setTimeout(() => rej(e), 0);
             }
 
-        }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => void (0)));
+        }).then(() => Promise.all(completePromises)).then(() => void (0));
     };
 
     const register = (instance: ISPQueryable) => {
@@ -279,69 +290,110 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
             return this;
         });
 
-        // the entire request will be auth'd - we don't need to run this for each batch request
-        instance.on.auth.clear();
+        instance.on.pre(async function (this: ISPQueryable, url, init, result) {
 
-        // we replace the send function with our batching logic
-        instance.on.send.replace(async function (this: ISPQueryable, url: URL, init: RequestInit) {
+            // Do not add to timeline if using BatchNever behavior
+            if (hOP(init.headers, "X-PnP-BatchNever")) {
 
-            // this is the promise that Queryable will see returned from .emit.send
-            const promise = new Promise<Response>((resolve, reject) => {
-                // add the request information into the batch
-                requests.push([this, url.toString(), init, resolve, reject]);
-            });
+                // clean up the init operations from the timeline
+                // not strictly necessary as none of the logic that uses this should be in the request, but good to keep things tidy
+                if (typeof (this[RequestCompleteSym]) === "function") {
+                    this[RequestCompleteSym]();
+                    delete this[RequestCompleteSym];
+                }
 
-            this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
+                this.using(CopyFrom(batchQuery, "replace", (k) => /(init|pre)/i.test(k)));
 
-            // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
-            completePromises.push(new Promise((resolve) => {
-                this[RequestCompleteSym] = resolve;
-            }));
+                return [url, init, result];
+            }
 
-            // indicate that registration of this request is complete
-            this[RegistrationCompleteSym]();
+            // the entire request will be auth'd - we don't need to run this for each batch request
+            this.on.auth.clear();
 
-            return promise;
-        });
+            // we replace the send function with our batching logic
+            this.on.send.replace(async function (this: ISPQueryable, url: URL, init: RequestInit) {
 
-        instance.on.dispose(function (this: ISPQueryable) {
+                // this is the promise that Queryable will see returned from .emit.send
+                const promise = new Promise<Response>((resolve, reject) => {
+                    // add the request information into the batch
+                    requests.push([this, url.toString(), init, resolve, reject]);
+                });
 
-            if (isFunc(this[RegistrationCompleteSym])) {
+                this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
 
-                // if this request is in a batch and caching is in play we need to resolve the registration promises to unblock processing of the batch
-                // because the request will never reach the "send" moment as the result is returned from "pre"
+                // we need to ensure we wait to resolve execute until all our batch children have fully completed their request timelines
+                completePromises.push(new Promise((resolve) => {
+                    this[RequestCompleteSym] = resolve;
+                }));
+
+                // indicate that registration of this request is complete
                 this[RegistrationCompleteSym]();
 
-                // remove the symbol props we added for good hygene
-                delete this[RegistrationCompleteSym];
-            }
+                return promise;
+            });
 
-            if (isFunc(this[RequestCompleteSym])) {
+            this.on.dispose(function (this: ISPQueryable) {
 
-                // let things know we are done with this request
-                this[RequestCompleteSym]();
-                delete this[RequestCompleteSym];
+                if (isFunc(this[RegistrationCompleteSym])) {
 
-                // there is a code path where you may invoke a batch, say on items.add, whose return
-                // is an object like { data: any, item: IItem }. The expectation from v1 on is `item` in that object
-                // is immediately usable to make additional queries. Without this step when that IItem instance is
-                // created using "this.getById" within IITems.add all of the current observers of "this" are
-                // linked to the IItem instance created (expected), BUT they will be the set of observers setup
-                // to handle the batch, meaning invoking `item` will result in a half batched call that
-                // doesn't really work. To deliver the expected functionality we "reset" the
-                // observers using the original instance, mimicing the behavior had
-                // the IItem been created from that base without a batch involved. We use CopyFrom to ensure
-                // that we maintain the references to the InternalResolve and InternalReject events through
-                // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
-                // which ignores symbol properties.
-                this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
-            }
+                    // if this request is in a batch and caching is in play we need to resolve the registration promises to unblock processing of the batch
+                    // because the request will never reach the "send" moment as the result is returned from "pre"
+                    this[RegistrationCompleteSym]();
+
+                    // remove the symbol props we added for good hygene
+                    delete this[RegistrationCompleteSym];
+                }
+
+                if (isFunc(this[RequestCompleteSym])) {
+
+                    // let things know we are done with this request
+                    this[RequestCompleteSym]();
+                    delete this[RequestCompleteSym];
+
+                    // there is a code path where you may invoke a batch, say on items.add, whose return
+                    // is an object like { data: any, item: IItem }. The expectation from v1 on is `item` in that object
+                    // is immediately usable to make additional queries. Without this step when that IItem instance is
+                    // created using "this.getById" within IITems.add all of the current observers of "this" are
+                    // linked to the IItem instance created (expected), BUT they will be the set of observers setup
+                    // to handle the batch, meaning invoking `item` will result in a half batched call that
+                    // doesn't really work. To deliver the expected functionality we "reset" the
+                    // observers using the original instance, mimicing the behavior had
+                    // the IItem been created from that base without a batch involved. We use CopyFrom to ensure
+                    // that we maintain the references to the InternalResolve and InternalReject events through
+                    // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
+                    // which ignores symbol properties.
+                    this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|pre|send|init|dispose)/i.test(k)));
+                }
+            });
+
+            return [url, init, result];
         });
 
         return instance;
     };
 
     return [register, execute];
+}
+
+/**
+ * Behavior that blocks batching for the request regardless of "method"
+ *
+ * This is used for requests to bypass batching methods. Example - Request Digest where we need to get a request-digest inside of a batch.
+ * @returns TimelinePipe
+ */
+export function BatchNever() {
+
+    return (instance: Queryable) => {
+
+        instance.on.pre.prepend(async function (this: Queryable, url: string, init: RequestInit, result: any): Promise<[string, RequestInit, any]> {
+
+            init.headers = { ...init.headers, "X-PnP-BatchNever": "1" };
+
+            return [url, init, result];
+        });
+
+        return instance;
+    };
 }
 
 /**
@@ -361,8 +413,10 @@ function parseResponse(body: string): Response[] {
     let status: number;
     let statusText: string;
     let headers = {};
+    const bodyReader = [];
+
     for (let i = 0; i < lines.length; ++i) {
-        const line = lines[i];
+        let line = lines[i];
         switch (state) {
             case "batch":
                 if (line.substring(0, header.length) === header) {
@@ -399,7 +453,19 @@ function parseResponse(body: string): Response[] {
                 }
                 break;
             case "body":
-                responses.push(new Response(status === 204 ? null : line, { status, statusText, headers }));
+
+                // reset the body reader
+                bodyReader.length = 0;
+                // this allows us to capture batch bodies that are returned as multi-line (renderListDataAsStream, #2454)
+                while (line.substring(0, header.length) !== header) {
+                    bodyReader.push(line);
+                    line = lines[++i];
+                }
+                // because we have read the closing --batchresponse_ line, we need to move the line pointer back one
+                // so that the logic works as expected either to get the next result or end processing
+                i--;
+
+                responses.push(new Response(status === 204 ? null : bodyReader.join(""), { status, statusText, headers }));
                 state = "batch";
                 headers = {};
                 break;

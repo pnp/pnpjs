@@ -3,6 +3,7 @@ import { DirectoryObject as IDirectoryObjectType } from "@microsoft/microsoft-gr
 import { defaultPath, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
 import { body } from "@pnp/queryable";
 import { graphPost } from "../operations.js";
+import { AsPaged, IPagedResult } from "../behaviors/paged.js";
 
 /**
  * Represents a Directory Object entity
@@ -57,6 +58,25 @@ export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphQ
   */
     public getByIds(ids: string[], type: DirectoryObjectTypes = DirectoryObjectTypes.directoryObject): Promise<IDirectoryObjectType[]> {
         return graphPost(DirectoryObjects(this, "getByIds"), body({ ids, type }));
+    }
+
+    /**
+     * 	Retrieves the total count of matching resources
+     *  If the resource doesn't support count, this value will always be zero
+     */
+    public async count(): Promise<number> {
+        const q = AsPaged(this, true);
+        const r: IPagedResult = await q.top(1)();
+        return r.count;
+    }
+
+    /**
+     * Allows reading through a collection as pages of information whose size is determined by top or the api method's default
+     *
+     * @returns an object containing results, the ability to determine if there are more results, and request the next page of results
+     */
+    public paged(): Promise<IPagedResult> {
+        return AsPaged(this, true)();
     }
 }
 export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObjectType> { }

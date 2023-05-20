@@ -166,7 +166,7 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         await Promise.all(registrationPromises);
 
         if (requests.length < 1) {
-            return;
+            return Promise.all(completePromises).then(() => void (0));
         }
 
         // create a working copy of our requests
@@ -183,21 +183,29 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
 
             const response: ParsedGraphResponse = await graphPost(batchQuery, body(batchRequest));
 
-            // this structure ensures that we resolve the batched requests in the order we expect
-            await response.responses.reduce((p, resp, index) => p.then(() => {
-
-                const [, , , resolve, reject] = requestsChunk[index];
+            return new Promise<void>((res, rej) => {
 
                 try {
 
-                    resolve(resp);
+                    for (let index = 0; index < response.responses.length; index++) {
+                        const [, , , resolve, reject] = requests[index];
+                        try {
+                            resolve(response.responses[index]);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    }
+
+                    // this small delay allows the promises to resolve correctly in order by dropping this resolve behind
+                    // the other work in the event loop. Feels hacky, but it works so 🤷
+                    setTimeout(res, 0);
 
                 } catch (e) {
 
-                    reject(e);
+                    setTimeout(() => rej(e), 0);
                 }
 
-            }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => void (0)));
+            }).then(() => Promise.all(completePromises)).then(() => void (0));
         }
     };
 
@@ -255,6 +263,11 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         instance.on.dispose(function () {
 
             if (isFunc(this[RegistrationCompleteSym])) {
+
+                // if this request is in a batch and caching is in play we need to resolve the registration promises to unblock processing of the batch
+                // because the request will never reach the "send" moment as the result is returned from "pre"
+                this[RegistrationCompleteSym]();
+
                 // remove the symbol props we added for good hygene
                 delete this[RegistrationCompleteSym];
             }

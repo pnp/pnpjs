@@ -1,9 +1,5 @@
 /**
- * Class Decorators
- */
-
-/**
- * Decorator used to specify the default path for SharePointQueryable objects
+ * Decorator used to specify the default path for SPQueryable objects
  *
  * @param path
  */

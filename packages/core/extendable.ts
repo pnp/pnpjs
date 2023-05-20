@@ -28,7 +28,7 @@ export function extendable() {
 
             construct(clz, args, newTarget: any) {
 
-                let r = Reflect.construct(clz, args, newTarget);
+                let r: object = Reflect.construct(clz, args, newTarget);
 
                 // this block handles the factory function extensions by picking
                 // them off the factory and applying them to the created object
@@ -74,13 +74,15 @@ export function extendable() {
  * @param target Object to which extensions are applied
  * @param extensions Extensions to apply
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function extend<T extends object>(target: T, extensions: ExtensionType | ExtensionType[]): T {
 
     _enableExtensions = true;
 
     if (!Reflect.has(target, ObjExtensionsSym)) {
-        Reflect.set(target, ObjExtensionsSym, []);
+        Reflect.defineProperty(target, ObjExtensionsSym, {
+            writable: true,
+            value: [],
+        });
     }
 
     extendCol(<ExtensionType[]>Reflect.get(target, ObjExtensionsSym), extensions);
@@ -115,8 +117,7 @@ export function extendFactory<T extends (...args: any[]) => any>(factory: T, ext
             factoryExtensions.set(key, []);
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        extendCol(factoryExtensions.get(key)!, extensions);
+        extendCol(factoryExtensions.get(key), extensions);
     }
 }
 
@@ -153,14 +154,9 @@ export const enableExtensions = () => {
  */
 function extensionOrDefault(op: ValidProxyMethods, or: (...args: any[]) => any, target: any, ...rest: any[]): any {
 
-    if (_enableExtensions) {
+    if (_enableExtensions && Reflect.has(target, ObjExtensionsSym)) {
 
-        const extensions: ExtensionType[] = [];
-
-        // we need to invoke extensions tied to this object
-        if (Reflect.has(target, ObjExtensionsSym)) {
-            extensions.push(...Reflect.get(target, ObjExtensionsSym));
-        }
+        const extensions: ExtensionType[] = [...Reflect.get(target, ObjExtensionsSym)];
 
         let result = undefined;
 

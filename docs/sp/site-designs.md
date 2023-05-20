@@ -10,10 +10,10 @@ Check out [SharePoint site design and site script overview](https://docs.microso
 ## Create a new site design
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-designs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // WebTemplate: 64 Team site template, 68 Communication site template
 const siteDesign = await sp.siteDesigns.createSiteDesign({
@@ -28,10 +28,10 @@ console.log(siteDesign.Title);
 ## Applying a site design to a site
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-designs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // Limited to 30 actions in a site script, but runs synchronously
 await sp.siteDesigns.applySiteDesign("75b9d8fe-4381-45d9-88c6-b03f483ae6a8","https://contoso.sharepoint.com/sites/teamsite-pnpjs001");
@@ -43,10 +43,10 @@ const task = await sp.web.addSiteDesignTask("75b9d8fe-4381-45d9-88c6-b03f483ae6a
 ## Retrieval
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-designs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // Retrieving all site designs
 const allSiteDesigns = await sp.siteDesigns.getSiteDesigns();
@@ -60,10 +60,10 @@ console.log(siteDesign.Title);
 ## Update and delete
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-designs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // Update
 const updatedSiteDesign = await sp.siteDesigns.updateSiteDesign({ Id: "75b9d8fe-4381-45d9-88c6-b03f483ae6a8", Title: "SiteDesignUpdatedTitle001" });
@@ -75,10 +75,10 @@ await sp.siteDesigns.deleteSiteDesign("75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
 ## Setting Rights/Permissions
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-designs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // Get
 const rights = await sp.siteDesigns.getSiteDesignRights("75b9d8fe-4381-45d9-88c6-b03f483ae6a8");
@@ -98,10 +98,10 @@ await sp.siteDesigns.revokeSiteDesignRights("75b9d8fe-4381-45d9-88c6-b03f483ae6a
 ## Get a history of site designs that have run on a web
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-designs";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const runs = await sp.web.getSiteDesignRuns();
 const runs2 = await sp.siteDesigns.getSiteDesignRun("https://TENANT.sharepoint.com/sites/mysite");
