@@ -4,8 +4,8 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import styles from './HelloWorldWebPart.module.scss';
 
 import { getGUID } from "@pnp/core";
-import "@pnp/sp/webs";
 import { SPFI, SPFx, spfi } from '@pnp/sp';
+import "@pnp/sp/webs";
 
 export interface IHelloWorldWebPartProps {
 }
