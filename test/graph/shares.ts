@@ -3,6 +3,13 @@ import "@pnp/graph/shares";
 
 describe("Shares", function () {
 
+    before(async function () {
+
+        if (!this.pnp.settings.enableWebTests) {
+            this.skip();
+        }
+    });
+
     it("encodeSharingLink", async function () {
 
         const link = this.pnp.graph.shares.encodeSharingLink("https://something.sharepoint.com/sites/site/shared documents/something.docx");
