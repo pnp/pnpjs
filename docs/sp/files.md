@@ -96,6 +96,8 @@ const fileContent = await file.getText();
 
 _Added in 3.8.0_
 
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 Utility method allowing you to get an IFile reference using any SPQueryable as a base and an absolute OR server relative path to the file.
 
 > Works across site collections within the same tenant
