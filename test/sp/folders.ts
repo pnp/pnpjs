@@ -21,7 +21,7 @@ describe("Folders", function () {
 
     it("addUsingPath", function () {
         const name = `test_${getRandomString(4)}`;
-        return expect(this.pnp.sp.web.folders.addUsingPath(name)).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(name)).to.eventually.be.fulfilled;
     });
 
     it("getByUrl", function () {

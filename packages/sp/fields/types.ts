@@ -253,7 +253,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public addMultiChoice(title: string, properties?: IFieldCreationProperties & AddChoiceProps): Promise<IFieldAddResult> {
+    public addMultiChoice(title: string, properties?: IFieldCreationProperties & AddMultiChoiceProps): Promise<IFieldAddResult> {
 
         const props = {
             ...properties,
@@ -430,6 +430,11 @@ export type AddUserProps = {
 export type AddChoiceProps = {
     Choices: string[];
     EditFormat?: ChoiceFieldFormatType;
+    FillInChoice?: boolean;
+};
+
+export type AddMultiChoiceProps = {
+    Choices: string[];
     FillInChoice?: boolean;
 };
 

@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.15.0 - 2023-May-12
+
+### Fixed
+
+- timeline
+  - Addresses #2669 - Adds code in Timeline emit to ensure we don't create empty observer arrays on the Timeline.observers container due to filtering for once.
+
+- nodejs
+  - Modified SPDefault and GraphDefault so empty object is not required.
+
+- sp
+  - Addresses #2646 - Issue with creating fields when batching.
+  - Addresses #2661 - Adding BatchNever to Request-Digest Behavior when retrieving a new RequestDigest token.
+
+- azidjsclient
+  - Fix bug with caching in Azure Identity Client wrapper and improve key generation
+
 ## 3.14.0 - 2023-Apr-17
 
 ### Added

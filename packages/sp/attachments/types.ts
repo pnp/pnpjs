@@ -2,6 +2,7 @@ import { headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { ReadableFile } from "../files/readable-file.js";
 import { spPost } from "../operations.js";
+import { encodePath } from "../utils/encode-path-str.js";
 import {
     IDeleteableWithETag,
     _SPCollection,
@@ -30,7 +31,7 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
      * @param content The Base64 file content.
      */
     public async add(name: string, content: string | Blob | ArrayBuffer): Promise<IAttachmentAddResult> {
-        const response = await spPost(Attachments(this, `add(FileName='${name}')`), { body: content });
+        const response = await spPost(Attachments(this, `add(FileName='${encodePath(name)}')`), { body: content });
         return {
             data: response,
             file: this.getByName(name),
