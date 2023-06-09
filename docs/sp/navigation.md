@@ -141,6 +141,9 @@ index = nodes.findIndex(n => n.Id === node1result.data.Id)
 ```
 
 ### Update
+You are able to update various properties of a given node, such as the the Title, Url, IsVisible.
+
+You may update the Audience Targeting value for the node by passing in Microsoft Group IDs in the AudienceIds array. Be aware, Audience Targeting must already be enabled on the navigation.
 
 ```TypeScript
 import "@pnp/sp/navigation";
@@ -148,6 +151,9 @@ import "@pnp/sp/navigation";
 
 await nav.getById(4).update({
     Title: "A new title",
+    AudienceIds:["d50f9511-b811-4d76-b20a-0d6e1c8095f7"],
+    Url:"/sites/dev/SitePages/home.aspx",
+    IsVisible:false
 });
 ```
 
