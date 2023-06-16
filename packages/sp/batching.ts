@@ -1,5 +1,5 @@
 import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe, isFunc, hOP } from "@pnp/core";
-import { InjectHeaders, parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
+import { parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
 import { spPost } from "./operations.js";
 import { ISPQueryable, _SPQueryable } from "./spqueryable.js";
 import { spfi, SPFI } from "./fi.js";
@@ -136,6 +136,9 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
     const batchQuery = new BatchQueryable(base);
+    // this query is used to copy back the behaviors after the batch executes
+    // it should not manipulated or have behaviors added.
+    const refQuery = new BatchQueryable(base);
 
     const { headersCopyPattern } = {
         headersCopyPattern: /Accept|Content-Type|IF-Match/i,
@@ -238,12 +241,12 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
 
         batchBody.push(`--batch_${batchId}--\n`);
 
-        // we need to set our own headers here
-        batchQuery.using(InjectHeaders({
-            "Content-Type": `multipart/mixed; boundary=batch_${batchId}`,
-        }));
-
-        const responses: Response[] = await spPost(batchQuery, { body: batchBody.join("") });
+        const responses: Response[] = await spPost(batchQuery, {
+            body: batchBody.join(""),
+            headers: {
+                "Content-Type": `multipart/mixed; boundary=batch_${batchId}`,
+            },
+        });
 
         if (responses.length !== requests.length) {
             throw Error("Could not properly parse responses to match requests in batch.");
@@ -302,7 +305,7 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
                     delete this[RequestCompleteSym];
                 }
 
-                this.using(CopyFrom(batchQuery, "replace", (k) => /(init|pre)/i.test(k)));
+                this.using(CopyFrom(refQuery, "replace", (k) => /(init|pre)/i.test(k)));
 
                 return [url, init, result];
             }
@@ -362,7 +365,7 @@ export function createBatch(base: ISPQueryable, props?: ISPBatchProps): [Timelin
                     // that we maintain the references to the InternalResolve and InternalReject events through
                     // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
                     // which ignores symbol properties.
-                    this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|pre|send|init|dispose)/i.test(k)));
+                    this.using(CopyFrom(refQuery, "replace", (k) => /(auth|pre|send|init|dispose)/i.test(k)));
                 }
             });
 
