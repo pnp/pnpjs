@@ -130,13 +130,13 @@ export const Teams = graphInvokableFactory<ITeams>(_Teams);
 /**
  * Channel
  */
-export class _Channel extends _GraphQueryableInstance {
+export class _Channel extends _GraphQueryableInstance<IChannel> {
     public get tabs(): ITabs {
         return Tabs(this);
     }
 
-    public async messages(message: IChatMessage): Promise<IChatMessage> {
-        return graphPost(Channel(this, "messages"), body(message));
+    public get messages(): IMessages {
+        return Messages(this);
     }
 }
 export interface IChannel extends _Channel { }
@@ -147,7 +147,7 @@ export const Channel = graphInvokableFactory<IChannel>(_Channel);
  */
 @defaultPath("channels")
 @getById(Channel)
-export class _Channels extends _GraphQueryableCollection {
+export class _Channels extends _GraphQueryableCollection<IChannel[]> {
 
     /**
      * Creates a new Channel in the Team
@@ -172,6 +172,44 @@ export class _Channels extends _GraphQueryableCollection {
 }
 export interface IChannels extends _Channels, IGetById<IChannel> { }
 export const Channels = graphInvokableFactory<IChannels>(_Channels);
+
+/**
+ * Channel
+ */
+export class _Message extends _GraphQueryableInstance<IChatMessage> { }
+export interface IMessage extends _Message { }
+export const Message = graphInvokableFactory<IMessage>(_Message);
+
+/**
+ * Channels
+ */
+@defaultPath("messages")
+@getById(Message)
+export class _Messages extends _GraphQueryableCollection<IChatMessage[]> {
+
+    /**
+     * Creates a new Channel in the Team
+     * @param displayName The display name of the new channel
+     * @param description Optional description of the channel
+     *
+     */
+    public async add(displayName: string, description = ""): Promise<IMessageCreateResult> {
+
+        const postBody = {
+            description,
+            displayName,
+        };
+
+        const data = await graphPost(this, body(postBody));
+
+        return {
+            message: (<any>this).getById(data.id),
+            data,
+        };
+    }
+}
+export interface IMessages extends _Messages, IGetById<IMessage> { }
+export const Messages = graphInvokableFactory<IMessages>(_Messages);
 
 /**
  * Tab
@@ -223,6 +261,11 @@ export interface ITeamUpdateResult {
 export interface IChannelCreateResult {
     data: any;
     channel: IChannel;
+}
+
+export interface IMessageCreateResult {
+    data: any;
+    message: IMessage;
 }
 
 export interface ITabCreateResult {
