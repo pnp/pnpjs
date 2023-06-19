@@ -85,7 +85,7 @@ extendFactory(Files, {
 
         const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${encodePath(url)}')`));
 
-        const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
+        const file = fileFromServerRelativePath(this, `!@pnpFileAddResult::${response.ServerRelativeUrl}`);
 
         file.using(CancelAction(async () => {
             return File(file).delete();
