@@ -418,6 +418,39 @@ await execute();
 
 console.log("Done");
 ```
+### Update Taxonomy field
+
+Note: Updating Taxonomy field for a File item should be handled differently. Instead of using update(), use validateUpdateListItem(). Please see below
+
+List Item
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+
+await sp.web.lists.getByTitle("Demo").items.getById(1).update({
+    MetataDataColumn: { Label: "Demo", TermGuid: '883e4c81-e8f9-4f19-b90b-6ab805c9f626', WssId: '-1' }
+});
+
+```
+File List Item
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/files";
+
+const sp = spfi(...);
+
+await (await sp.web.getFileByServerRelativePath("/sites/demo/DemoLibrary/File.txt").getItem()).validateUpdateListItem([{
+    FieldName: "MetaDataColumn",
+    FieldValue:"Demo|883e4c81-e8f9-4f19-b90b-6ab805c9f626", //Label|TermGuid
+}]);
+```
 
 ### Update Multi-value Taxonomy field
 
