@@ -432,7 +432,7 @@ import "@pnp/sp/items";
 const sp = spfi(...);
 
 await sp.web.lists.getByTitle("Demo").items.getById(1).update({
-    MetataDataColumn: { Label: "Demo", TermGuid: '883e4c81-e8f9-4f19-b90b-6ab805c9f626', WssId: '-1' }
+    MetaDataColumn: { Label: "Demo", TermGuid: '883e4c81-e8f9-4f19-b90b-6ab805c9f626', WssId: '-1' }
 });
 
 ```
