@@ -3,7 +3,7 @@ import { DirectoryObject as IDirectoryObjectType } from "@microsoft/microsoft-gr
 import { defaultPath, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
 import { body } from "@pnp/queryable";
 import { graphPost } from "../operations.js";
-import { AsAsyncIterable, Count } from "../behaviors/paged.js";
+import { Count } from "../behaviors/paged.js";
 
 /**
  * Represents a Directory Object entity
