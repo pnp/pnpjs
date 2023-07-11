@@ -24,6 +24,7 @@ nav:
     - 'Typings': 'concepts/typings.md'
     - 'Using Behaviors': 'core/behaviors.md'
     - 'Nightly Builds': 'concepts/nightly-builds.md'
+    - 'Calling other endpoints': 'concepts/calling-other-endpoints.md'
   - Packages:
     - Packages: 'packages.md'
     - azidjsclient:
