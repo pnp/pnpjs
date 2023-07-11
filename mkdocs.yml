@@ -58,6 +58,7 @@ nav:
       - photos: 'graph/photos.md'
       - planner: 'graph/planner.md'
       - search: 'graph/search.md'
+      - shares: 'graph/shares.md'
       - sites: 'graph/sites.md'
       - subscriptions: 'graph/subscriptions.md'
       - teams: 'graph/teams.md'
