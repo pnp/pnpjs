@@ -31,7 +31,7 @@ The second method essentially starts from scratch where the user constructs the 
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import { spGet, SPQueryable, SPFx } from "@pnp/sp";
+import { spGet, SPQueryable, SPFx, AssignFrom } from "@pnp/sp";
 
 // Establish SPFI instance passing in the appropriate behavior to register the initial observers.
 const sp = spfi(...);
@@ -46,6 +46,12 @@ const item: any = await spGet(SPQueryable(list, "items(1)"));
 // get the item with an id of 1, constructing a new queryable and registering behaviors
 const spQueryable = SPQueryable("https://contoso.sharepoint.com/sites/testsite/_api/web/lists/getByTitle('My List')/items(1)").using(SPFx(this.context));
 
+// ***or***
+
+// For v3 the full url is require for SPQuerable when providing just a string
+const spQueryable = SPQueryable("https://contoso.sharepoint.com/sites/testsite/_api/web/lists/getByTitle('My List')/items(1)").using(AssignFrom(sp));
+
+// and then use spQueryable to make the request
 const item: any = await spGet(spQueryable);
 ```
 
@@ -182,3 +188,25 @@ const event: any = await graphPost(graphQueryable, body(props));
 
 The results call will be to the endpoint:
 `https://graph.microsoft.com/v1.0/users/jane@contoso.com/calendar/events`
+
+## Advanced Scenario
+
+If you find you need to create an instance of Queryable (for either graph or SharePoint) that would hang off the root of the url you can use the `AssignFrom` or `CopyFrom` [behaviors](../core/behaviors.md).
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import { GraphQueryable, graphPost } from "@pnp/graph";
+import { body, InjectHeaders } from "@pnp/queryable";
+import { AssignFrom } from "@pnp/core";
+
+// Establish GRAPHFI instance passing in the appropriate behavior to register the initial observers.
+const graph = graphfi(...);
+
+const chatsQueryable = GraphQueryable("chats").using(AssignFrom(graph.me));
+
+const chat: any = await graphPost(chatsQueryable, body(chatBody));
+```
+
+The results call will be to the endpoint:
+`https://graph.microsoft.com/v1.0/chats`
