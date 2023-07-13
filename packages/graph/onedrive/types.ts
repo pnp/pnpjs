@@ -14,7 +14,6 @@ import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IU
 import { body, BlobParse, CacheNever, errorCheck, InjectHeaders } from "@pnp/queryable";
 import { graphPatch, graphPost, graphPut } from "../operations.js";
 import { driveItemUpload } from "./funcs.js";
-import { AsAsyncIterable } from "../behaviors/paged.js";
 
 /**
  * Describes a Drive instance
@@ -150,7 +149,7 @@ export class _Root extends _GraphQueryableInstance<IDriveItemType> {
     public delta(token?: string): IGraphQueryableCollection<IDeltaItems> {
         const path = `delta${(token) ? `(token=${token})` : ""}`;
 
-        const query = GraphQueryableCollection(this, path);
+        const query: IGraphQueryableCollection<IDeltaItems> = <any>GraphQueryableCollection(this, path);
         query.on.parse.replace(errorCheck);
         query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
 
@@ -192,7 +191,7 @@ export class _Root extends _GraphQueryableInstance<IDriveItemType> {
      */
     public analytics(analyticsOptions?: IAnalyticsOptions): IGraphQueryableCollection<IItemAnalytics> {
         const query = `analytics/${analyticsOptions ? analyticsOptions.timeRange : "lastSevenDays"}`;
-        return GraphQueryableCollection(this, query);
+        return <IGraphQueryableCollection<IItemAnalytics>>GraphQueryableCollection(this, query);
     }
 }
 export interface IRoot extends _Root { }
@@ -363,7 +362,7 @@ export class _DriveItem extends _GraphQueryableInstance<IDriveItemType> {
      */
     public analytics(analyticsOptions?: IAnalyticsOptions): IGraphQueryableCollection<IItemAnalytics> {
         const query = `analytics/${analyticsOptions ? analyticsOptions.timeRange : "lastSevenDays"}`;
-        return GraphQueryableCollection(this, query);
+        return <IGraphQueryableCollection<IItemAnalytics>>GraphQueryableCollection(this, query);
     }
 }
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }

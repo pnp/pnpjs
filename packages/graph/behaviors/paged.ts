@@ -5,12 +5,19 @@ import { ConsistencyLevel } from "./consistency-level.js";
 
 export interface IPagedResult {
     count: number;
-    value: any[] | null;
+    value: any | any[] | null;
     hasNext: boolean;
     nextLink: string;
 }
 
-export async function Count(col: IGraphQueryableCollection): Promise<number> {
+/**
+ * A function that will take a collection defining IGraphQueryableCollection and return the count of items
+ * in that collection. Not all Graph collections support Count.
+ *
+ * @param col The collection to count
+ * @returns number representing the count
+ */
+export async function Count<T>(col: IGraphQueryableCollection<T>): Promise<number> {
 
     const q = GraphQueryableCollection(col).using(Paged(), ConsistencyLevel());
     q.query.set("$count", "true");
@@ -21,12 +28,12 @@ export async function Count(col: IGraphQueryableCollection): Promise<number> {
 }
 
 /**
- * Configures a collection query to returned paged results
+ * Configures a collection query to returned paged results via async iteration
  *
  * @param col Collection forming the basis of the paged collection, this param is NOT modified
  * @returns A duplicate collection which will return paged results
  */
-export function AsAsyncIterable(col: IGraphQueryableCollection): AsyncIterable {
+export function AsAsyncIterable<T>(col: IGraphQueryableCollection<T>): AsyncIterable<T> {
 
     const q = GraphQueryableCollection(col).using(Paged(), ConsistencyLevel());
 
@@ -42,14 +49,14 @@ export function AsAsyncIterable(col: IGraphQueryableCollection): AsyncIterable {
     return {
 
         [Symbol.asyncIterator]() {
-            return {
+            return <AsyncIterator<T>>{
 
                 _next: q,
 
                 async next() {
 
                     if (this._next === null) {
-                        return { done: true };
+                        return { done: true, value: undefined };
                     }
 
                     const result: IPagedResult = await this._next();
