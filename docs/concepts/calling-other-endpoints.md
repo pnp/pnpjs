@@ -25,7 +25,7 @@ Let's pretend that the getById method didn't exist on a lists items. The example
 
 The first is the easiest to use because, as the queryable documentation tells us, this will maintain all the registered observers on the original queryable instance. We would start with the queryable object closest to the endpoint we want to use, in this case `list`. We do this because we need to construct the full URL that will be called. Using `list` in this instance gives us the first part of the URL (e.g. `https://contoso.sharepoint.com/sites/testsite/_api/web/lists/getByTitle('My List')`) and then we can construct the remainder of the call by passing in a string.
 
-The second method essentially starts from scratch where the user constructs the entire url and then registers observers on teh SPQuerable instance. Then uses spGet to execute the call. There are many other variations to arrive at the same outcome, all are dependent on your requirements.
+The second method essentially starts from scratch where the user constructs the entire url and then registers observers on the SPQuerable instance. Then uses spGet to execute the call. There are many other variations to arrive at the same outcome, all are dependent on your requirements.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
