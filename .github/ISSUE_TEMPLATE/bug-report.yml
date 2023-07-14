@@ -28,13 +28,13 @@ body:
     validations:
       required: true
 - type: input
-    id: minorver
-    attributes:
-      label: Minor Version Number
-      description: Include the minor and patch version numbers, e.g. for 4.1.0 
-      placeholder: 1.0
-    validations:
-      required: true
+  id: minorver
+  attributes:
+    label: Minor Version Number
+    description: Include the minor and patch version numbers, e.g. for 4.1.0 
+    placeholder: 1.0
+  validations:
+    required: true
 - type: dropdown
   attributes:
     label: Target environment
