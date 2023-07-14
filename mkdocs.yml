@@ -17,13 +17,14 @@ nav:
     - 'In NodeJS': 'concepts/auth-nodejs.md'
     - 'Batching': 'concepts/batching.md'
     - 'Batching & Caching': 'concepts/batching-caching.md'
+    - 'Calling Other Endpoints': 'concepts/calling-other-endpoints'
     - 'Custom Bundling': 'concepts/custom-bundle.md'
     - 'Error-Handling': 'concepts/error-handling.md'
     - 'Project Config/Services Setup': 'concepts/project-preset.md'
     - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Typings': 'concepts/typings.md'
     - 'Using Behaviors': 'core/behaviors.md'
-    - 'Nightly Builds': 'concepts/nightly-builds.md'
+    - 'Nightly Builds': 'concepts/nightly-builds.md'md'
   - Packages:
     - Packages: 'packages.md'
     - azidjsclient:
