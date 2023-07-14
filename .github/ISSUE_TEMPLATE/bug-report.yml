@@ -25,14 +25,14 @@ body:
       - 3.x
       - 2.x (No longer supported)
       - 1.x (No longer supported)
-    validations:
-      required: true
+  validations:
+    required: true
 - type: input
   id: minorver
   attributes:
     label: Minor Version Number
     description: Include the minor and patch version numbers, e.g. for 4.1.0 
-    placeholder: 1.0
+    placeholder: '1.0'
   validations:
     required: true
 - type: dropdown
@@ -43,8 +43,8 @@ body:
       - NodeJS
       - Browser App (Hosted external to Microsoft 365 platform)
       - other (enter in the "Additional environment details" area below)
-    validations:
-      required: true
+  validations:
+    required: true
 - type: textarea
   attributes:
     label: Expected or Desired Behavior
