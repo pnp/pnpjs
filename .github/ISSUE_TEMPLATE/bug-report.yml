@@ -47,6 +47,12 @@ body:
     required: true
 - type: textarea
   attributes:
+    label: Additional environment details
+    description: Please describe the environment you're working in and how you're authenticating.
+    value: |
+      I'm using NodeJS and certificate based MSAL for authentication.
+- type: textarea
+  attributes:
     label: Expected or Desired Behavior
     description: Describe what you are trying to accomplish.
     value: |
