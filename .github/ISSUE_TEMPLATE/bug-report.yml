@@ -16,7 +16,7 @@ body:
 
       Please provide the following details about your environment. 🚨  *If this section is ignored, your submission will be flagged as **incomplete** & automatically closed.*
 
-      ##Please specify what version of PnPjs library you are using
+      ## Please specify what version of PnPjs library you are using
 - type: dropdown
   attributes:
     label: Major Version
