@@ -81,7 +81,7 @@ export class _ContentTypes extends _GraphQueryableCollection<IContentTypeEntity[
      * @param contentTypeId The ID of the content type in the content type hub that will be added to a target site or a list.
      */
     public async addCopyFromContentTypeHub(contentTypeId: string): Promise<IContentTypeAddResult> {
-        const creator = ContentType(this, null).using(JSONHeaderParse());
+        const creator = ContentType(this, "addCopyFromContentTypeHub").using(JSONHeaderParse());
         const data = await graphPost(creator, body({ contentTypeId }));
         const pendingLocation = data.headers.location || null;
         return {
