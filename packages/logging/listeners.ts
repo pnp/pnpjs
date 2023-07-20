@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ILogEntry, ILogListener, LogLevel } from "./index.js";
 
 export function ConsoleListener(prefix?: string, colors?: IConsoleListenerColors): ILogListener {
