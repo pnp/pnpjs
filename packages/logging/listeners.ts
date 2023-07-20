@@ -1,4 +1,4 @@
-import { ILogEntry, ILogListener } from "./index.js";
+import { ILogEntry, ILogListener, LogLevel } from "./index.js";
 
 export function ConsoleListener(prefix?: string, colors?: IConsoleListenerColors): ILogListener {
     return new _ConsoleListener(prefix, colors);
@@ -25,11 +25,11 @@ export interface IConsoleListenerColors {
     error?: string;
 }
 
-function withColor(msg: string, color: string | undefined): void {
+function withColor(msg: string, color: string | undefined, logMethod): void {
     if (typeof color === "undefined") {
-        console.log(msg);
+        logMethod(msg);
     } else {
-        console.log(`%c${msg}`, `color:${color}`);
+        logMethod(`%c${msg}`, `color:${color}`);
     }
 }
 
@@ -81,7 +81,26 @@ class _ConsoleListener implements ILogListener {
      * @param entry The information to be logged
      */
     public log(entry: ILogEntry): void {
-        withColor(entryToString(entry, this._prefix), this._colors[colorProps[entry.level]]);
+
+        let logMethod = console.log;
+        switch(entry.level){
+            case LogLevel.Error:
+                logMethod = console.error;
+                break;
+            case LogLevel.Warning:
+                logMethod = console.warn;
+                break;
+            case LogLevel.Verbose:
+                logMethod = console.debug;
+                break;
+            case LogLevel.Info:
+                logMethod = console.info;
+                break;
+            default:
+                logMethod = console.log;
+        }
+
+        withColor(entryToString(entry, this._prefix), this._colors[colorProps[entry.level]], logMethod);
     }
 }
 
