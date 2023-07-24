@@ -11,10 +11,6 @@ body:
       - Follow our guidance on [How To Create Good Issues](https://github.dev/juliemturner/pnpjs/wiki/How-to-Create-Good-Issues).
       - Remember to include sufficient details and context.
       - If you have multiple questions, suggestions, or bugs, please submit them in separate issues.
-
-      Please provide the following details about your environment. 🚨  *If this section is ignored, your submission will be flagged as **incomplete** & automatically closed.*
-
-      ### Please specify what version of PnPjs library you are using
 - type: dropdown
   attributes:
     label: Major Version
@@ -46,13 +42,19 @@ body:
 - type: textarea
   attributes:
     label: Additional environment details
-    description: Please describe the environment you're working in and how you're authenticating. (e.g  I'm using NodeJS and certificate based MSAL for authentication.)      
+    description: Please describe the environment you're working in and how you're authenticating.
+    placeholder: |
+      I'm using NodeJS and certificate based MSAL for authentication.
+  validations:
+    required: true    
 - type: textarea
   attributes:
     label: Expected or Desired Behavior
     description: Describe what you are trying to accomplish.
-    value: |
+    placeholder: |
       I'm trying to get items from a list in a site.
+  validations:
+    required: true         
 - type: textarea
   attributes:
     label: Observed Behavior
