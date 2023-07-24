@@ -6,14 +6,11 @@ body:
 - type: markdown
   attributes:
     value: |
-      - [x] Enhancement
-
       This issue type is for suggesting or discussing enhancements to the library.
 
       - Follow our guidance on [How To Create Good Issues](https://github.dev/juliemturner/pnpjs/wiki/How-to-Create-Good-Issues).
       - Remember to include sufficient details and context.
       - If you have multiple questions, suggestions, or bugs, please submit them in separate issues.
-
 - type: dropdown
   attributes:
     label: Target environment
@@ -29,13 +26,13 @@ body:
   attributes:
     label: Additional environment details
     description: Please describe the environment you're working in and how you're authenticating.
-    value: |
+    placeholder: |
       I'm using NodeJS and certificate based MSAL for authentication.
 - type: textarea
   attributes:
     label: Enhancement Idea
     description: Please included details to describe your situation, code fenced example code OR a link to a code snippet using GitHub or CodePen or the like to show how your code is structured and get you the right help more quickly.
-    value: |
+    placeholder: |
       I'm struggling to get a list item. Here is the code I'm running. Can anyone help me figure out what's wrong?
       
       ```TypeScript
