@@ -182,16 +182,6 @@ export class _Root extends _GraphQueryableInstance<IDriveItemType> {
     public async upload(fileOptions: IFileOptions): Promise<IDriveItemAddResult> {
         return Reflect.apply(driveItemUpload, this, [fileOptions]);
     }
-
-    /**
-     * Method for getting item analytics. Defaults to lastSevenDays.
-     * @param analyticsOptions - IAnalyticsOptions (Optional)
-     * @returns IGraphQueryableCollection<IItemAnalytics>
-     */
-    public analytics(analyticsOptions?: IAnalyticsOptions): IGraphQueryableCollection<IItemAnalytics> {
-        const query = `analytics/${analyticsOptions?analyticsOptions.timeRange:"lastSevenDays"}`;
-        return GraphQueryableCollection(this, query);
-    }
 }
 export interface IRoot extends _Root { }
 export const Root = graphInvokableFactory<IRoot>(_Root);

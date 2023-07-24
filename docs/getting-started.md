@@ -37,7 +37,7 @@ We've created two Getting Started samples. The first uses the more traditional R
 
 [Getting started with PnPjs 3.0: 5-part series](https://youtube.com/playlist?list=PLR9nK3mnD-OWvmtj9TKE6tM7ZrUosV_vB)
 
-In addition, [Beau Cameron](https://github.com/bcameron1231) gave the team an assist by converting the sample project from React Component to React Hooks. His version can be found in [react-pnp-js-hooks](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-hooks). This sammple will help those struggling to establish context correctly while using the hooks conventions.
+In addition, we have converted the sample project from React Component to React Hooks. This version can be found in [react-pnp-js-hooks](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-hooks). This sample will help those struggling to establish context correctly while using the hooks conventions.
 
 The SharePoint Framework supports different versions of TypeScript natively and as of 1.14 release still doesn't natively support TypeScript 4.x. Sadly, this means that to use Version 3 of PnPjs you will need to take a few additional configuration steps to get them to work together.
 

@@ -4,11 +4,7 @@ We support MSAL for both browser and nodejs and Azure Identity for nodejs by pro
 
 Depending on which package you want to use you will need to install an additional package from the library because of the large dependencies.
 
-For the NodeJS MSAL package:
-
-`npm install @pnp/msaljsclient --save`
-
-We support MSAL through the [msal-node](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/README.md) library.
+We support MSAL through the [msal-node](https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/README.md) library which is included by the @pnp/nodejs package.
 
 For the Azure Identity package:
 
@@ -18,7 +14,7 @@ We support Azure Identity through the [@azure/identity](https://github.com/Azure
 
 ## MSAL + NodeJS
 
-The SPDefault and GraphDefault exported by the nodejs library include MSAL and takes the parameters directly. Please consider that ability deprecated and instead use the method shown below to chain the MSAL auth behavior and configure it independently.
+The SPDefault and GraphDefault exported by the nodejs library include MSAL and takes the parameters directly.
 
 The following samples reference a MSAL configuration that utilizes an Azure AD App Registration, these are samples that show the typings for those objects:
 
@@ -26,7 +22,6 @@ The following samples reference a MSAL configuration that utilizes an Azure AD A
 import { SPDefault, GraphDefault } from "@pnp/nodejs";
 import { spfi } from "@pnp/sp";
 import { graphfi } from "@pnp/graph";
-import { MSAL } from "@pnp/msaljsclient";
 import { Configuration, AuthenticationParameters } from "msal";
 import "@pnp/graph/users";
 import "@pnp/sp/webs";
@@ -38,22 +33,41 @@ const configuration: Configuration = {
   }
 };
 
-const authParams: AuthenticationParameters = {
-  scopes: ["https://graph.microsoft.com/.default"] 
-};
+const sp = spfi("{site url}").using(SPDefault({
+    msal: {
+        config: configuration,
+        scopes: ["https://{tenant}.sharepoint.com/.default"],
+    },
+}));
 
-const sp = spfi("https://{tenant}.sharepoint.com/sites/dev").using(
-    SPDefault(),
-    MSAL(configuration, authParams)
-);
-
-const graph = graphfi().using(
-    GraphDefault(),
-    MSAL(configuration, authParams)
-);
+const graph = graphfi().using(GraphDefault({
+    msal: {
+        config: configuration,
+        scopes: ["https://graph.microsoft.com/.default"],
+    },
+}));
 
 const webData = await sp.web();
 const meData = await graph.me();
+```
+
+## Use Nodejs MSAL behavior directly
+
+It is also possible to use the MSAL behavior directly if you are composing your own strategies.
+
+```TypeScript
+import { SPDefault, GraphDefault, MSAL } from "@pnp/nodejs";
+
+const sp = spfi("{site url}").using(SPDefault(), MSAL({
+  config: configuration,
+  scopes: ["https://{tenant}.sharepoint.com/.default"],
+}));
+
+const graph = graphfi().using(GraphDefault(), MSAL({
+  config: configuration,
+  scopes: ["https://graph.microsoft.com/.default"],
+}));
+
 ```
 
 ## Azure Identity + NodeJS

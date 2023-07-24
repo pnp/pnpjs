@@ -3,9 +3,9 @@ import "@pnp/graph/groups";
 import "@pnp/sp/groupsitemanager";
 import { stringIsNullOrEmpty } from "@pnp/core/util";
 
-describe("GroupSiteManager (without group context)", function () {
+describe.skip("GroupSiteManager (without group context)", function () {
     // skip because app only tests.
-    it.skip("canUserCreateGroup", async function () {
+    it("canUserCreateGroup", async function () {
         const isGroupCreationEnable = await this.pnp.sp.groupSiteManager.canUserCreateGroup();
         return expect(isGroupCreationEnable).to.be.false;
     });

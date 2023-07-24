@@ -155,6 +155,7 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
     const batchQuery = new BatchQueryable(base);
+    const refQuery = new BatchQueryable(base);
 
     const { maxRequests } = {
         maxRequests: 30,
@@ -290,7 +291,7 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
                 // that we maintain the references to the InternalResolve and InternalReject events through
                 // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
                 // which ignores symbol properties.
-                this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
+                this.using(CopyFrom(refQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
             }
         });
 
