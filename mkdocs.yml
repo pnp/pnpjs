@@ -17,6 +17,7 @@ nav:
     - 'In NodeJS': 'concepts/auth-nodejs.md'
     - 'Batching': 'concepts/batching.md'
     - 'Batching & Caching': 'concepts/batching-caching.md'
+    - 'Calling Other Endpoints': 'concepts/calling-other-endpoints'
     - 'Custom Bundling': 'concepts/custom-bundle.md'
     - 'Error-Handling': 'concepts/error-handling.md'
     - 'Project Config/Services Setup': 'concepts/project-preset.md'

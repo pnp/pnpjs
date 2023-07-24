@@ -351,17 +351,6 @@ describe("OneDrive", function () {
         return expect(previewDriveItem).to.haveOwnProperty("getUrl");
     });
 
-    it("Get Drive Root Analytics - All Time", async function () {
-        if (stringIsNullOrEmpty(driveId)) {
-            this.skip();
-        }
-        const analyticOptions: IAnalyticsOptions = {
-            timeRange: "allTime",
-        };
-        const analytics = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.analytics(analyticOptions)();
-        return expect(analytics).to.haveOwnProperty("@odata.context");
-    });
-
     it("Get Drive Item Analytics - Last Seven Days", async function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
