@@ -1,7 +1,7 @@
 import { isArray } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
 import { ConsistencyLevel } from "./behaviors/consistency-level.js";
-import { AsPaged, IPagedResult } from "./behaviors/paged.js";
+import { AsAsyncIterable } from "./behaviors/paged.js";
 
 export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];
 
@@ -167,9 +167,8 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
      *  If the resource doesn't support count, this value will always be zero
      */
     public async count(): Promise<number> {
-        const q = AsPaged(this);
-        const r: IPagedResult = await q.top(1)();
-        return r.count;
+        // TODO::do we want to do this, or just attach count to the collections that support it? we could use a decorator for countable on the few collections that support count.
+        return -1;
     }
 
     /**
@@ -177,8 +176,8 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
      *
      * @returns an object containing results, the ability to determine if there are more results, and request the next page of results
      */
-    public paged(): Promise<IPagedResult> {
-        return AsPaged(this)();
+    public paged(): AsyncIterable<GetType> {
+        return AsAsyncIterable(this);
     }
 }
 export interface IGraphQueryableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> { }
