@@ -66,6 +66,6 @@ body:
       // get all the items from a list
       const items: any[] = await sp.web.lists.getByTitle("My List").items();
       console.log(items);
+      ```
   validations:
     required: true
-      ```
