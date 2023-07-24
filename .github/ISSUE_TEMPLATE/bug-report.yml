@@ -67,11 +67,8 @@ body:
   attributes:
     label: Steps to Reproduce
     description: Please included code fenced example code, OR a link to a code snippet using GitHub or CodePen or the like to show how your code is structured. See the sample above.
-- type: markdown
-  attributes:
-    value: |
-      **Steps to Reproduce: Sample**
-       Here is the code I'm running
+    placeholder: |
+      Here is the code I'm running
       
       ```TypeScript
       import { spfi } from "@pnp/sp";
@@ -84,5 +81,8 @@ body:
       // get all the items from a list
       const items: any[] = await sp.web.lists.getByTitle("My List").items();
       console.log(items);
-      ```
+      ```  
+  validations:
+    required: true
+       
      
