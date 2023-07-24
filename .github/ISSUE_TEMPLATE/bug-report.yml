@@ -61,10 +61,14 @@ body:
     description: Describe the results you're getting.
     value: |
       I'm getting an empty response
+- type: textarea
+  attributes:
+    label: Steps to Reproduce
+    description: Please included code fenced example code, OR a link to a code snippet using GitHub or CodePen or the like to show how your code is structured. See the sample above.
 - type: markdown
   attributes:
     value: |
-      ## Sample 
+      ### Steps to Reproduce: Sample 
        Here is the code I'm running
       
       ```TypeScript
@@ -79,8 +83,4 @@ body:
       const items: any[] = await sp.web.lists.getByTitle("My List").items();
       console.log(items);
       ```
-- type: textarea
-  attributes:
-    label: Steps to Reproduce
-    description: Please included code fenced example code, OR a link to a code snippet using GitHub or CodePen or the like to show how your code is structured. See the sample above.
      
