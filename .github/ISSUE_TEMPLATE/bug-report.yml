@@ -61,6 +61,8 @@ body:
     description: Describe the results you're getting.
     placeholder: |
       I'm getting an empty response
+  validations:
+    required: true
 - type: textarea
   attributes:
     label: Steps to Reproduce
