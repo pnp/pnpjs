@@ -59,7 +59,7 @@ body:
   attributes:
     label: Observed Behavior
     description: Describe the results you're getting.
-    value: |
+    placerholder: |
       I'm getting an empty response
 - type: textarea
   attributes:
