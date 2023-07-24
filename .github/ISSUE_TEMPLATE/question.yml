@@ -6,14 +6,11 @@ body:
 - type: markdown
   attributes:
     value: |
-      - [x] Question
-
       This issue type is for asking questions or requesting assistance in using the library. Please provide as much information as possible so a member of the community can best assist you. Thanks!
 
       - Follow our guidance on [How To Create Good Issues](https://github.dev/juliemturner/pnpjs/wiki/How-to-Create-Good-Issues).
       - Remember to include sufficient details and context.
       - If you have multiple questions, suggestions, or bugs, please submit them in separate issues.
-
 - type: dropdown
   attributes:
     label: What version of PnPjs library you are using
@@ -23,7 +20,7 @@ body:
       - 2.x (No longer supported)
       - 1.x (No longer supported)
   validations:
-    required: false
+    required: true
 - type: input
   id: minorver
   attributes:
@@ -31,11 +28,12 @@ body:
     description: Include the minor and patch version numbers, e.g. for 4.1.0 
     placeholder: '1.0'
   validations:
-    required: false
+    required: true
 - type: dropdown
   attributes:
     label: Target environment
     options:
+      - All
       - SharePoint Framework
       - NodeJS
       - Browser App (Hosted external to Microsoft 365 platform)
@@ -46,13 +44,15 @@ body:
   attributes:
     label: Additional environment details
     description: Please describe the environment you're working in and how you're authenticating.
-    value: |
+    placeholder: |
       I'm using NodeJS and certificate based MSAL for authentication.
+  validations:
+    required: true
 - type: textarea
   attributes:
     label: Question/Request
     description: Please included details to describe your situation, code fenced example code OR a link to a code snippet using GitHub or CodePen or the like to show how your code is structured and get you the right help more quickly.
-    value: |
+    placeholder: |
       I'm struggling to get a list item. Here is the code I'm running. Can anyone help me figure out what's wrong?
       
       ```TypeScript
@@ -66,4 +66,6 @@ body:
       // get all the items from a list
       const items: any[] = await sp.web.lists.getByTitle("My List").items();
       console.log(items);
+  validations:
+    required: true
       ```
