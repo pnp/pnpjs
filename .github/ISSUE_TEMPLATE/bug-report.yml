@@ -48,9 +48,7 @@ body:
 - type: textarea
   attributes:
     label: Additional environment details
-    description: Please describe the environment you're working in and how you're authenticating.
-    value: |
-      I'm using NodeJS and certificate based MSAL for authentication.
+    description: Please describe the environment you're working in and how you're authenticating. (e.g  I'm using NodeJS and certificate based MSAL for authentication.)      
 - type: textarea
   attributes:
     label: Expected or Desired Behavior
