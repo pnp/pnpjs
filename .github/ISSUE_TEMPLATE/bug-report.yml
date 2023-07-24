@@ -33,6 +33,7 @@ body:
   attributes:
     label: Target environment
     options:
+      - All
       - SharePoint Framework
       - NodeJS
       - Browser App (Hosted external to Microsoft 365 platform)
