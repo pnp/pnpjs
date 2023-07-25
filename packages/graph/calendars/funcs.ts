@@ -1,4 +1,4 @@
-import { IGraphQueryable, GraphQueryableCollection, IGraphQueryableCollection } from "../graphqueryable.js";
+import { IGraphQueryable, GraphCollection, IGraphCollection } from "../graphqueryable.js";
 import { EmailAddress, Event as IEvent } from "@microsoft/microsoft-graph-types";
 import { Endpoint } from "../behaviors/endpoint.js";
 
@@ -14,9 +14,9 @@ interface IEventWithTag extends IEvent {
  * @param start start time
  * @param end end time
  */
-export function calendarView(this: IGraphQueryable, start: string, end: string): IGraphQueryableCollection<ICalendarViewInfo[]> {
+export function calendarView(this: IGraphQueryable, start: string, end: string): IGraphCollection<ICalendarViewInfo[]> {
 
-    const query = GraphQueryableCollection(this, "calendarView");
+    const query = GraphCollection(this, "calendarView");
     query.query.set("startDateTime", start);
     query.query.set("endDateTime", end);
     return query;
@@ -31,8 +31,8 @@ export type ICalendarViewInfo = IEventWithTag;
  * @param this IGraphQueryable instance
  * @param roomList The SMTP address associated with the room list.
  */
-export function findRooms(this: IGraphQueryable, roomList?: string): IGraphQueryableCollection<EmailAddress[]> {
-    const query = GraphQueryableCollection(this, roomList ? "findRooms(RoomList=@roomList)" : "findRooms");
+export function findRooms(this: IGraphQueryable, roomList?: string): IGraphCollection<EmailAddress[]> {
+    const query = GraphCollection(this, roomList ? "findRooms(RoomList=@roomList)" : "findRooms");
     query.using(Endpoint("beta"));
     if (roomList) {
         query.query.set("@roomList", `'${roomList}'`);
@@ -48,8 +48,8 @@ export function findRooms(this: IGraphQueryable, roomList?: string): IGraphQuery
  * @param start start time
  * @param end end time
  */
-export function instances(this: IGraphQueryable, start: string, end: string): IGraphQueryableCollection<IInstance[]> {
-    const query = GraphQueryableCollection(this, "instances");
+export function instances(this: IGraphQueryable, start: string, end: string): IGraphCollection<IInstance[]> {
+    const query = GraphCollection(this, "instances");
     query.query.set("startDateTime", start);
     query.query.set("endDateTime", end);
     return query;

@@ -7,7 +7,7 @@ import {
     Planner as IPlannerType,
 } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
-import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory } from "../graphqueryable.js";
 import { getById, IGetById, deleteableWithETag, IDeleteableWithETag, updateableWithETag, IUpdateableWithETag } from "../decorators.js";
 import { graphPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
@@ -16,7 +16,7 @@ import { defaultPath } from "../decorators.js";
  * Planner
  */
 @defaultPath("planner")
-export class _Planner extends _GraphQueryableInstance<IPlannerType> {
+export class _Planner extends _GraphInstance<IPlannerType> {
 
     // Should Only be able to get by id, or else error occur
     public get plans(): IPlans {
@@ -41,7 +41,7 @@ export const Planner = graphInvokableFactory<IPlanner>(_Planner);
  */
 @defaultPath("details")
 @updateableWithETag()
-export class _PlanDetails extends _GraphQueryableInstance<IPlannerPlanDetailsType> { }
+export class _PlanDetails extends _GraphInstance<IPlannerPlanDetailsType> { }
 export interface IPlanDetails extends _PlanDetails, IUpdateableWithETag<IPlannerPlanDetailsType> { }
 export const PlanDetails = graphInvokableFactory<ITaskDetails>(_PlanDetails);
 
@@ -50,7 +50,7 @@ export const PlanDetails = graphInvokableFactory<ITaskDetails>(_PlanDetails);
  */
 @updateableWithETag()
 @deleteableWithETag()
-export class _Plan extends _GraphQueryableInstance<IPlannerPlanType> {
+export class _Plan extends _GraphInstance<IPlannerPlanType> {
 
     public get tasks(): ITasks {
         return Tasks(this);
@@ -69,7 +69,7 @@ export const Plan = graphInvokableFactory<IPlan>(_Plan);
 
 @defaultPath("plans")
 @getById(Plan)
-export class _Plans extends _GraphQueryableCollection<IPlannerPlanType[]> {
+export class _Plans extends _GraphCollection<IPlannerPlanType[]> {
     /**
      * Create a new Planner Plan.
      *
@@ -94,7 +94,7 @@ export const Plans = graphInvokableFactory<IPlans>(_Plans);
  */
 @defaultPath("details")
 @updateableWithETag()
-export class _TaskDetails extends _GraphQueryableInstance<IPlannerTaskDetailsType> { }
+export class _TaskDetails extends _GraphInstance<IPlannerTaskDetailsType> { }
 export interface ITaskDetails extends _TaskDetails, IUpdateableWithETag<IPlannerTaskDetailsType> { }
 export const TaskDetails = graphInvokableFactory<ITaskDetails>(_TaskDetails);
 
@@ -103,7 +103,7 @@ export const TaskDetails = graphInvokableFactory<ITaskDetails>(_TaskDetails);
  */
 @updateableWithETag()
 @deleteableWithETag()
-export class _Task extends _GraphQueryableInstance<IPlannerTaskType> {
+export class _Task extends _GraphInstance<IPlannerTaskType> {
     public get details(): ITaskDetails {
         return TaskDetails(this);
     }
@@ -116,7 +116,7 @@ export const Task = graphInvokableFactory<ITask>(_Task);
  */
 @defaultPath("tasks")
 @getById(Task)
-export class _Tasks extends _GraphQueryableCollection<IPlannerTaskType[]> {
+export class _Tasks extends _GraphCollection<IPlannerTaskType[]> {
     /**
      * Create a new Planner Task.
      *
@@ -156,7 +156,7 @@ export const Tasks = graphInvokableFactory<ITasks>(_Tasks);
  */
 @updateableWithETag()
 @deleteableWithETag()
-export class _Bucket extends _GraphQueryableInstance<IPlannerBucketType> {
+export class _Bucket extends _GraphInstance<IPlannerBucketType> {
     public get tasks(): ITasks {
         return Tasks(this);
     }
@@ -170,7 +170,7 @@ export const Bucket = graphInvokableFactory<IBucket>(_Bucket);
  */
 @defaultPath("buckets")
 @getById(Bucket)
-export class _Buckets extends _GraphQueryableCollection<IPlannerBucketType[]> {
+export class _Buckets extends _GraphCollection<IPlannerBucketType[]> {
     /**
      * Create a new Bucket.
      *

@@ -1,13 +1,13 @@
 export { graphfi as graphfi, GraphFI as GraphFI } from "./fi.js";
 
 export {
-    IGraphQueryableCollection,
-    IGraphQueryableInstance,
+    IGraphCollection,
+    IGraphInstance,
     GraphQueryable,
     IGraphQueryable,
-    GraphQueryableCollection,
-    GraphQueryableInstance,
-    IGraphQueryableConstructor,
+    GraphCollection,
+    GraphInstance,
+    IGraphConstructor,
 } from "./graphqueryable.js";
 
 export * from "./operations.js";

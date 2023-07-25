@@ -1,4 +1,4 @@
-import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory } from "../graphqueryable.js";
 import { body } from "@pnp/queryable";
 import { Subscription as ISubscriptionType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, deleteable, IDeleteable, IUpdateable, updateable, getById, IGetById } from "../decorators.js";
@@ -9,7 +9,7 @@ import { graphPost } from "../operations.js";
  */
 @deleteable()
 @updateable()
-export class _Subscription extends _GraphQueryableInstance<ISubscriptionType> { }
+export class _Subscription extends _GraphInstance<ISubscriptionType> { }
 export interface ISubscription extends _Subscription, IDeleteable, IUpdateable<ISubscriptionType> { }
 export const Subscription = graphInvokableFactory<ISubscription>(_Subscription);
 
@@ -18,7 +18,7 @@ export const Subscription = graphInvokableFactory<ISubscription>(_Subscription);
  */
 @defaultPath("subscriptions")
 @getById(Subscription)
-export class _Subscriptions extends _GraphQueryableCollection<ISubscriptionType[]> {
+export class _Subscriptions extends _GraphCollection<ISubscriptionType[]> {
     /**
      * Create a new Subscription.
      *

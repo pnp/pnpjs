@@ -1,4 +1,4 @@
-import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphCollection, _GraphInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { OutlookUser as IOutlookType, OutlookCategory as IOutlookCategoryType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, deleteable, getById, IDeleteable, IGetById, IUpdateable, updateable } from "../decorators.js";
 import { graphPost } from "@pnp/graph";
@@ -7,7 +7,7 @@ import { body } from "@pnp/queryable";
 /**
  * Outlook
  */
-export class _Outlook extends _GraphQueryableInstance<IOutlookType> {
+export class _Outlook extends _GraphInstance<IOutlookType> {
 
     public get masterCategories(): IMasterCategories {
         return MasterCategories(this);
@@ -22,7 +22,7 @@ export const Outlook = graphInvokableFactory<IOutlook>(_Outlook);
  */
 @deleteable()
 @updateable()
-export class _OutlookCategory extends _GraphQueryableInstance<IOutlookCategoryType> { }
+export class _OutlookCategory extends _GraphInstance<IOutlookCategoryType> { }
 export interface IOutlookCategory extends _OutlookCategory, IUpdateable<IOutlookCategoryType>, IDeleteable { }
 export const OutlookCategory = graphInvokableFactory<IOutlookCategory>(_OutlookCategory);
 
@@ -31,7 +31,7 @@ export const OutlookCategory = graphInvokableFactory<IOutlookCategory>(_OutlookC
  */
 @defaultPath("masterCategories")
 @getById(OutlookCategory)
-export class _MasterCategories extends _GraphQueryableCollection<IOutlookCategoryType[]> {
+export class _MasterCategories extends _GraphCollection<IOutlookCategoryType[]> {
 
     /**
      * Adds a new event to the collection

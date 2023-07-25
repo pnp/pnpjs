@@ -1,5 +1,5 @@
 import { defaultPath } from "../decorators.js";
-import { graphInvokableFactory, _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
+import { graphInvokableFactory, _GraphCollection, _GraphInstance } from "../graphqueryable.js";
 import { SharedDriveItem as ISharedDriveItem } from "@microsoft/microsoft-graph-types";
 import { DriveItem, IDriveItem } from "../onedrive/types.js";
 
@@ -7,7 +7,7 @@ import { DriveItem, IDriveItem } from "../onedrive/types.js";
  * Shares
  */
 @defaultPath("shares")
-export class _Shares extends _GraphQueryableCollection<ISharedDriveItem[]> {
+export class _Shares extends _GraphCollection<ISharedDriveItem[]> {
 
     /**
      * Gets a share by share id or encoded url
@@ -33,7 +33,7 @@ export const Shares = graphInvokableFactory<IShares>(_Shares);
 /**
  * Share
  */
-export class _Share extends _GraphQueryableInstance<ISharedDriveItem> {
+export class _Share extends _GraphInstance<ISharedDriveItem> {
 
     /**
      * Access the driveItem associated with this shared file

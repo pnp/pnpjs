@@ -6,8 +6,8 @@ import {
     Entity as IEntityType,
 } from "@microsoft/microsoft-graph-types";
 import {
-    _GraphQueryableInstance,
-    _GraphQueryableCollection,
+    _GraphInstance,
+    _GraphCollection,
     graphInvokableFactory,
 } from "../graphqueryable.js";
 import { defaultPath, getById, IGetById } from "../decorators.js";
@@ -16,7 +16,7 @@ import { defaultPath, getById, IGetById } from "../decorators.js";
  * Represents a insights entity
  */
 @defaultPath("insights")
-export class _Insights extends _GraphQueryableInstance<IOfficeGraphInsightsType> {
+export class _Insights extends _GraphInstance<IOfficeGraphInsightsType> {
 
     public get trending(): ITrendingInsights {
         return TrendingInsights(this);
@@ -36,7 +36,7 @@ export const Insights = graphInvokableFactory<IInsights>(_Insights);
 /**
  * Describes a Trending Insight instance
  */
-export class _TrendingInsight extends _GraphQueryableInstance<ITrendingInsightType> {
+export class _TrendingInsight extends _GraphInstance<ITrendingInsightType> {
     public get resource(): IResource {
         return Resource(this);
     }
@@ -50,14 +50,14 @@ export const TrendingInsight = graphInvokableFactory<ITrendingInsight>(_Trending
  */
 @defaultPath("trending")
 @getById(TrendingInsight)
-export class _TrendingInsights extends _GraphQueryableCollection<ITrendingInsightType[]> {}
+export class _TrendingInsights extends _GraphCollection<ITrendingInsightType[]> {}
 export interface ITrendingInsights extends _TrendingInsights, IGetById<ITrendingInsight> {}
 export const TrendingInsights = graphInvokableFactory<ITrendingInsights>(_TrendingInsights);
 
 /**
  * Describes a Used Insight instance
  */
-export class _UsedInsight extends _GraphQueryableInstance<IUsedInsightType> {
+export class _UsedInsight extends _GraphInstance<IUsedInsightType> {
     public get resource(): IResource {
         return Resource(this);
     }
@@ -71,14 +71,14 @@ export const UsedInsight = graphInvokableFactory<IUsedInsight>(_UsedInsight);
  */
 @defaultPath("used")
 @getById(UsedInsight)
-export class _UsedInsights extends _GraphQueryableCollection<IUsedInsightType[]> {}
+export class _UsedInsights extends _GraphCollection<IUsedInsightType[]> {}
 export interface IUsedInsights extends _UsedInsights, IGetById<IUsedInsight> {}
 export const UsedInsights = graphInvokableFactory<IUsedInsights>(_UsedInsights);
 
 /**
  * Describes a Shared Insight instance
  */
-export class _SharedInsight extends _GraphQueryableInstance<ISharedInsightType> {
+export class _SharedInsight extends _GraphInstance<ISharedInsightType> {
     public get resource(): IResource {
         return Resource(this);
     }
@@ -92,7 +92,7 @@ export const SharedInsight = graphInvokableFactory<ISharedInsight>(_SharedInsigh
  */
 @defaultPath("shared")
 @getById(SharedInsight)
-export class _SharedInsights extends _GraphQueryableCollection<ISharedInsightType[]> {}
+export class _SharedInsights extends _GraphCollection<ISharedInsightType[]> {}
 export interface ISharedInsights extends _SharedInsights, IGetById<ISharedInsight> {}
 export const SharedInsights = graphInvokableFactory<ISharedInsights>(_SharedInsights);
 
@@ -100,6 +100,6 @@ export const SharedInsights = graphInvokableFactory<ISharedInsights>(_SharedInsi
  * Describes a Resource Entity instance
  */
 @defaultPath("resource")
-export class _Resource extends _GraphQueryableInstance<IEntityType> {}
+export class _Resource extends _GraphInstance<IEntityType> {}
 export interface IResource extends _Resource { }
 export const Resource = graphInvokableFactory<IResource>(_Resource);

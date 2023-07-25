@@ -12,7 +12,6 @@ export {
     IItemAddResult,
     IItemUpdateResult,
     IItemUpdateResultData,
-    PagedItemCollection,
     IItemDeleteParams,
     IItemParentInfos,
 } from "./types.js";

@@ -7,7 +7,7 @@ import {
     BookingCurrency as IBookingCurrencyEntity,
     BookingCustomQuestion as IBookingCustomQuestionEntity,
 } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable.js";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
 import { graphPost } from "../operations.js";
 import { body } from "@pnp/queryable";
@@ -17,7 +17,7 @@ import { calendarView } from "./funcs.js";
  * Describes a Booking Currency entity
  *
  */
-export class _BookingCurrency extends _GraphQueryableInstance<IBookingCurrencyEntity> { }
+export class _BookingCurrency extends _GraphInstance<IBookingCurrencyEntity> { }
 export interface IBookingCurrency extends _BookingCurrency { }
 export const BookingCurrency = graphInvokableFactory<IBookingCurrency>(_BookingCurrency);
 
@@ -27,7 +27,7 @@ export const BookingCurrency = graphInvokableFactory<IBookingCurrency>(_BookingC
  */
 @defaultPath("solutions/bookingCurrencies")
 @getById(BookingCurrency)
-export class _BookingCurrencies extends _GraphQueryableCollection<IBookingCurrencyEntity[]>{ }
+export class _BookingCurrencies extends _GraphCollection<IBookingCurrencyEntity[]>{ }
 export interface IBookingCurrencies extends _BookingCurrencies, IGetById<IBookingCurrency> { }
 export const BookingCurrencies = graphInvokableFactory<IBookingCurrencies>(_BookingCurrencies);
 
@@ -36,7 +36,7 @@ export const BookingCurrencies = graphInvokableFactory<IBookingCurrencies>(_Book
  */
 @deleteable()
 @updateable()
-export class _BookingBusiness extends _GraphQueryableInstance<IBookingBusinessEntity> {
+export class _BookingBusiness extends _GraphInstance<IBookingBusinessEntity> {
     /**
      * Get the calendar view for the booking business.
      */
@@ -99,7 +99,7 @@ export const BookingBusiness = graphInvokableFactory<IBookingBusiness>(_BookingB
  */
 @defaultPath("solutions/bookingBusinesses")
 @getById(BookingBusiness)
-export class _BookingBusinesses extends _GraphQueryableCollection<IBookingBusinessEntity[]>{
+export class _BookingBusinesses extends _GraphCollection<IBookingBusinessEntity[]>{
     /**
          * Create a new booking business as specified in the request body.
          *
@@ -130,7 +130,7 @@ export const BookingBusinesses = graphInvokableFactory<IBookingBusinesses>(_Book
  */
 @deleteable()
 @updateable()
-export class _BookingApointment extends _GraphQueryableInstance<IBookingAppointmentEntity> {
+export class _BookingApointment extends _GraphInstance<IBookingAppointmentEntity> {
     /**
      * Cancel the specified bookingAppointment in the specified bookingBusiness and send a message to the involved customer and staff members.
      */
@@ -148,7 +148,7 @@ export const BookingAppointment = graphInvokableFactory<IBookingAppointment>(_Bo
  */
 @defaultPath("appointments")
 @getById(BookingAppointment)
-export class _BookingAppointments extends _GraphQueryableCollection<IBookingAppointmentEntity[]>{
+export class _BookingAppointments extends _GraphCollection<IBookingAppointmentEntity[]>{
     /**
      * Create a new booking appointment as specified in the request body.
      *
@@ -172,7 +172,7 @@ export const BookingAppointments = graphInvokableFactory<IBookingAppointments>(_
  */
 @deleteable()
 @updateable()
-export class _BookingCustomer extends _GraphQueryableInstance<IBookingCustomerEntity> { }
+export class _BookingCustomer extends _GraphInstance<IBookingCustomerEntity> { }
 export interface IBookingCustomer extends _BookingCustomer, IDeleteable, IUpdateable { }
 export const BookingCustomer = graphInvokableFactory<IBookingCustomer>(_BookingCustomer);
 
@@ -182,7 +182,7 @@ export const BookingCustomer = graphInvokableFactory<IBookingCustomer>(_BookingC
  */
 @defaultPath("customers")
 @getById(BookingCustomer)
-export class _BookingCustomers extends _GraphQueryableCollection<IBookingCustomerEntity[]>{
+export class _BookingCustomers extends _GraphCollection<IBookingCustomerEntity[]>{
     /**
      * Create a new booking customer as specified in the request body.
      *
@@ -206,7 +206,7 @@ export const BookingCustomers = graphInvokableFactory<IBookingCustomers>(_Bookin
  */
 @deleteable()
 @updateable()
-export class _BookingService extends _GraphQueryableInstance<IBookingServiceEntity> { }
+export class _BookingService extends _GraphInstance<IBookingServiceEntity> { }
 export interface IBookingService extends _BookingService, IDeleteable, IUpdateable { }
 export const BookingService = graphInvokableFactory<IBookingService>(_BookingService);
 
@@ -216,7 +216,7 @@ export const BookingService = graphInvokableFactory<IBookingService>(_BookingSer
  */
 @defaultPath("services")
 @getById(BookingService)
-export class _BookingServices extends _GraphQueryableCollection<IBookingServiceEntity[]>{
+export class _BookingServices extends _GraphCollection<IBookingServiceEntity[]>{
     /**
      * Create a new booking service as specified in the request body.
      *
@@ -240,7 +240,7 @@ export const BookingServices = graphInvokableFactory<IBookingServices>(_BookingS
  */
 @deleteable()
 @updateable()
-export class _BookingStaffMember extends _GraphQueryableInstance<IBookingStaffMemberEntity> { }
+export class _BookingStaffMember extends _GraphInstance<IBookingStaffMemberEntity> { }
 export interface IBookingStaffMember extends _BookingStaffMember, IDeleteable, IUpdateable { }
 export const BookingStaffMember = graphInvokableFactory<IBookingStaffMember>(_BookingStaffMember);
 
@@ -250,7 +250,7 @@ export const BookingStaffMember = graphInvokableFactory<IBookingStaffMember>(_Bo
  */
 @defaultPath("staffMembers")
 @getById(BookingStaffMember)
-export class _BookingStaffMembers extends _GraphQueryableCollection<IBookingStaffMemberEntity[]>{
+export class _BookingStaffMembers extends _GraphCollection<IBookingStaffMemberEntity[]>{
     /**
      * Create a new booking staffmember as specified in the request body.
      *
@@ -274,7 +274,7 @@ export const BookingStaffMembers = graphInvokableFactory<IBookingStaffMembers>(_
  */
 @deleteable()
 @updateable()
-export class _BookingCustomQuestion extends _GraphQueryableInstance<IBookingCustomQuestionEntity> { }
+export class _BookingCustomQuestion extends _GraphInstance<IBookingCustomQuestionEntity> { }
 export interface IBookingCustomQuestion extends _BookingCustomQuestion, IDeleteable, IUpdateable { }
 export const BookingCustomQuestion = graphInvokableFactory<IBookingCustomQuestion>(_BookingCustomQuestion);
 
@@ -284,7 +284,7 @@ export const BookingCustomQuestion = graphInvokableFactory<IBookingCustomQuestio
  */
 @defaultPath("customquestions")
 @getById(BookingCustomQuestion)
-export class _BookingCustomQuestions extends _GraphQueryableCollection<IBookingCustomQuestionEntity[]>{
+export class _BookingCustomQuestions extends _GraphCollection<IBookingCustomQuestionEntity[]>{
     /**
      * Create a new booking customquestions as specified in the request body.
      *

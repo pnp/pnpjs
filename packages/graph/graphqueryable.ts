@@ -1,11 +1,11 @@
-import { isArray } from "@pnp/core";
+import { isArray, objectDefinedNotNull } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
 import { ConsistencyLevel } from "./behaviors/consistency-level.js";
-import { AsAsyncIterable } from "./behaviors/paged.js";
+import { Paged } from "./behaviors/paged.js";
 
 export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];
 
-export interface IGraphQueryableConstructor<T> {
+export interface IGraphConstructor<T> {
     new(base: GraphInit, path?: string): T;
 }
 
@@ -78,7 +78,7 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      * @param factory The contructor for the class to create
      */
     protected getParent<T extends _GraphQueryable>(
-        factory: IGraphQueryableConstructor<T>,
+        factory: IGraphConstructor<T>,
         base: GraphInit = this.parentUrl,
         path?: string): T {
 
@@ -98,7 +98,7 @@ export const GraphQueryable = graphInvokableFactory<IGraphQueryable>(_GraphQuery
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<GetType> {
+export class _GraphCollection<GetType = any[]> extends _GraphQueryable<GetType> {
 
     /**
      *
@@ -171,23 +171,58 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
         return -1;
     }
 
-    /**
-     * Allows reading through a collection as pages of information whose size is determined by top or the api method's default
-     *
-     * @returns an object containing results, the ability to determine if there are more results, and request the next page of results
-     */
-    public paged(): AsyncIterable<GetType> {
-        return AsAsyncIterable(this);
+    public [Symbol.asyncIterator]() {
+
+        const q = GraphCollection(this).using(Paged(), ConsistencyLevel());
+
+        const queryParams = ["$search", "$top", "$select", "$expand", "$filter", "$orderby"];
+
+        for (let i = 0; i < queryParams.length; i++) {
+            const param = this.query.get(queryParams[i]);
+            if (objectDefinedNotNull(param)) {
+                q.query.set(queryParams[i], param);
+            }
+        }
+
+        return <AsyncIterator<GetType>>{
+
+            _next: q,
+
+            async next() {
+
+                if (this._next === null) {
+                    return { done: true, value: undefined };
+                }
+
+                const result: IPagedResult = await this._next();
+
+                if (result.hasNext) {
+                    this._next = GraphCollection([this._next, result.nextLink]);
+                    return { done: false, value: result.value };
+                } else {
+                    this._next = null;
+                    return { done: false, value: result.value };
+                }
+            },
+        };
     }
 }
-export interface IGraphQueryableCollection<GetType = any[]> extends _GraphQueryableCollection<GetType> { }
-export const GraphQueryableCollection = graphInvokableFactory<IGraphQueryableCollection>(_GraphQueryableCollection);
+
+export interface IGraphCollection<GetType = any[]> extends _GraphCollection<GetType> { }
+export const GraphCollection = graphInvokableFactory<IGraphCollection>(_GraphCollection);
 
 /**
  * Represents an instance that can be selected
  *
  */
-export class _GraphQueryableInstance<GetType = any> extends _GraphQueryable<GetType> { }
+export class _GraphInstance<GetType = any> extends _GraphQueryable<GetType> { }
 
-export interface IGraphQueryableInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> { }
-export const GraphQueryableInstance = graphInvokableFactory<IGraphQueryableInstance>(_GraphQueryableInstance);
+export interface IGraphInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> { }
+export const GraphInstance = graphInvokableFactory<IGraphInstance>(_GraphInstance);
+
+export interface IPagedResult {
+    count: number;
+    value: any | any[] | null;
+    hasNext: boolean;
+    nextLink: string;
+}
