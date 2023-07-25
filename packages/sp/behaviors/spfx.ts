@@ -28,9 +28,9 @@ class SPFxTokenNullOrUndefinedError extends Error {
         super(`SPFx Context supplied to ${behaviorName} Behavior is null or undefined.`);
     }
 
-    public static check(behaviorName: string, context?: ISPFXContext): context is ISPFxContext | never {
+    public static check(behaviorName: string, context?: ISPFXContext): void {
         if (typeof context === "undefined" || context === null) {
-            throw SPFxTokenNullOrUndefinedError(behaviorName);
+            throw new SPFxTokenNullOrUndefinedError(behaviorName);
         }
     }
 }
