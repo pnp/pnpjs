@@ -9,6 +9,9 @@ import { default as nodeFetch } from "node-fetch";
 
 // TODO:: a way to record tests from the browser -> console.log what we would save in a file along with the generated filename
 
+// PS to create Guids and put them on the clip board
+//  "pnpTest(""$(([guid]::NewGuid() | select Guid -expandproperty Guid | Out-String).Trim())"", " | Set-Clipboard
+
 export interface IRecordingOptions {
     resolvedRecordingPath: string;
     resolvedTestSettingsPath: string;

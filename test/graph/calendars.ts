@@ -5,6 +5,8 @@ import { HttpRequestError } from "@pnp/queryable";
 import { stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
 
+// TODO:: test recording setup
+
 describe("Calendar", function () {
 
     let testUserName = "";
