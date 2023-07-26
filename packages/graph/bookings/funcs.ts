@@ -1,5 +1,5 @@
 
-import { IGraphQueryable, GraphQueryableCollection, IGraphQueryableCollection } from "../graphqueryable.js";
+import { IGraphQueryable, GraphCollection, IGraphCollection } from "../graphqueryable.js";
 import { BookingAppointment as IBookingAppointmentEntity } from "@microsoft/microsoft-graph-types";
 
 /**
@@ -9,9 +9,9 @@ import { BookingAppointment as IBookingAppointmentEntity } from "@microsoft/micr
  * @param start start time
  * @param end end time
  */
-export function calendarView(this: IGraphQueryable, start: string, end: string): IGraphQueryableCollection<IBookingAppointmentEntity[]> {
+export function calendarView(this: IGraphQueryable, start: string, end: string): IGraphCollection<IBookingAppointmentEntity[]> {
 
-    const query = GraphQueryableCollection(this, "calendarView");
+    const query = GraphCollection(this, "calendarView");
     query.query.set("startDateTime", start);
     query.query.set("endDateTime", end);
     return query;

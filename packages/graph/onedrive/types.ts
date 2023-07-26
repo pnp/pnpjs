@@ -1,10 +1,10 @@
 import {
-    GraphQueryableInstance,
-    GraphQueryableCollection,
-    _GraphQueryableInstance,
-    IGraphQueryableInstance,
-    IGraphQueryableCollection,
-    _GraphQueryableCollection,
+    GraphInstance,
+    GraphCollection,
+    _GraphInstance,
+    IGraphInstance,
+    IGraphCollection,
+    _GraphCollection,
     graphInvokableFactory,
     GraphQueryable,
 } from "../graphqueryable.js";
@@ -20,7 +20,7 @@ import { driveItemUpload } from "./funcs.js";
  *
  */
 @defaultPath("drive")
-export class _Drive extends _GraphQueryableInstance<IDriveType> {
+export class _Drive extends _GraphInstance<IDriveType> {
 
     /**
      * Method for retrieving the root folder of a drive.
@@ -34,8 +34,8 @@ export class _Drive extends _GraphQueryableInstance<IDriveType> {
      * Method for retrieving the related list resource, for use with SharePoint drives.
      * @returns IGraphQueryableInstance
      */
-    public get list(): IGraphQueryableInstance {
-        return GraphQueryableInstance(this, "list");
+    public get list(): IGraphInstance {
+        return GraphInstance(this, "list");
     }
 
     /**
@@ -104,7 +104,7 @@ export const Drive = graphInvokableFactory<IDrive>(_Drive);
  */
 @defaultPath("drives")
 @getById(Drive)
-export class _Drives extends _GraphQueryableCollection<IDriveType[]> { }
+export class _Drives extends _GraphCollection<IDriveType[]> { }
 export interface IDrives extends _Drives, IGetById<IDrive> { }
 export const Drives = graphInvokableFactory<IDrives>(_Drives);
 
@@ -113,7 +113,7 @@ export const Drives = graphInvokableFactory<IDrives>(_Drives);
  *
  */
 @defaultPath("root")
-export class _Root extends _GraphQueryableInstance<IDriveItemType> {
+export class _Root extends _GraphInstance<IDriveItemType> {
 
     /**
      * Method for retrieving children of a folder drive item.
@@ -128,16 +128,16 @@ export class _Root extends _GraphQueryableInstance<IDriveItemType> {
      * @param query string, search parameter
      * @returns IGraphQueryableCollection
      */
-    public search(query: string): IGraphQueryableCollection {
-        return GraphQueryableCollection(this, `search(q='${query}')`);
+    public search(query: string): IGraphCollection {
+        return GraphCollection(this, `search(q='${query}')`);
     }
 
     /**
      * Method for retrieving thumbnails of the drive items.
      * @returns IGraphQueryableCollection
      */
-    public get thumbnails(): IGraphQueryableCollection {
-        return GraphQueryableCollection(this, "thumbnails");
+    public get thumbnails(): IGraphCollection {
+        return GraphCollection(this, "thumbnails");
     }
 
     /**
@@ -146,10 +146,10 @@ export class _Root extends _GraphQueryableInstance<IDriveItemType> {
      * change token
      * @returns IDeltaItems
      */
-    public delta(token?: string): IGraphQueryableCollection<IDeltaItems> {
+    public delta(token?: string): IGraphCollection<IDeltaItems> {
         const path = `delta${(token) ? `(token=${token})` : ""}`;
 
-        const query: IGraphQueryableCollection<IDeltaItems> = <any>GraphQueryableCollection(this, path);
+        const query: IGraphCollection<IDeltaItems> = <any>GraphCollection(this, path);
         query.on.parse.replace(errorCheck);
         query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
 
@@ -159,8 +159,8 @@ export class _Root extends _GraphQueryableInstance<IDriveItemType> {
 
             result = {
                 // TODO:: update docs to show how to load next with async iterator
-                next: () => (nextLink ? GraphQueryableCollection([this, nextLink]) : null),
-                delta: () => (deltaLink ? GraphQueryableCollection([query, deltaLink])() : null),
+                next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
+                delta: () => (deltaLink ? GraphCollection([query, deltaLink])() : null),
                 values: json.value,
             };
 
@@ -193,7 +193,7 @@ export const Root = graphInvokableFactory<IRoot>(_Root);
  */
 @deleteable()
 @updateable()
-export class _DriveItem extends _GraphQueryableInstance<IDriveItemType> {
+export class _DriveItem extends _GraphInstance<IDriveItemType> {
 
     /**
      * Method for retrieving children of a folder drive item.
@@ -207,16 +207,16 @@ export class _DriveItem extends _GraphQueryableInstance<IDriveItemType> {
      * Method for retrieving thumbnails of the drive items.
      * @returns IGraphQueryableCollection
      */
-    public get thumbnails(): IGraphQueryableCollection {
-        return GraphQueryableCollection(this, "thumbnails");
+    public get thumbnails(): IGraphCollection {
+        return GraphCollection(this, "thumbnails");
     }
 
     /**
      * Method for retrieving the versions of a drive item.
      * @returns IDriveItemVersionInfo
      */
-    public get versions(): IGraphQueryableCollection<IDriveItemVersionInfo> {
-        return <any>GraphQueryableCollection(this, "versions");
+    public get versions(): IGraphCollection<IDriveItemVersionInfo> {
+        return <any>GraphCollection(this, "versions");
     }
 
     /**
@@ -350,9 +350,9 @@ export class _DriveItem extends _GraphQueryableInstance<IDriveItemType> {
      * @param analyticsOptions - IAnalyticsOptions (Optional)
      * @returns IGraphQueryableCollection<IItemAnalytics>
      */
-    public analytics(analyticsOptions?: IAnalyticsOptions): IGraphQueryableCollection<IItemAnalytics> {
+    public analytics(analyticsOptions?: IAnalyticsOptions): IGraphCollection<IItemAnalytics> {
         const query = `analytics/${analyticsOptions ? analyticsOptions.timeRange : "lastSevenDays"}`;
-        return <IGraphQueryableCollection<IItemAnalytics>>GraphQueryableCollection(this, query);
+        return <IGraphCollection<IItemAnalytics>>GraphCollection(this, query);
     }
 }
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }
@@ -364,7 +364,7 @@ export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
  *
  */
 @getById(DriveItem)
-export class _DriveItems extends _GraphQueryableCollection<IDriveItemType[]> {
+export class _DriveItems extends _GraphCollection<IDriveItemType[]> {
     /**
      * Adds a file to this collection of drive items.
      * For more upload options please see the .upload method on DriveItem and Root.
@@ -472,8 +472,8 @@ export interface IPreviewOptions {
 }
 
 export interface IDeltaItems {
-    next: IGraphQueryableCollection<IDeltaItems>;
-    delta: IGraphQueryableCollection<IDeltaItems>;
+    next: IGraphCollection<IDeltaItems>;
+    delta: IGraphCollection<IDeltaItems>;
     values: any[];
 }
 

@@ -1,12 +1,12 @@
 import { defaultPath } from "../decorators.js";
-import { graphInvokableFactory, _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
+import { graphInvokableFactory, _GraphCollection, _GraphInstance } from "../graphqueryable.js";
 import { Site as ISiteType } from "@microsoft/microsoft-graph-types";
 
 /**
  * Sites
  */
 @defaultPath("sites")
-export class _Sites extends _GraphQueryableCollection<ISiteType[]> {
+export class _Sites extends _GraphCollection<ISiteType[]> {
     /**
      * Gets the team site for the group
      */
@@ -34,7 +34,7 @@ export const Sites = graphInvokableFactory<ISites>(_Sites);
 /**
  * Site
  */
-export class _Site extends _GraphQueryableInstance<ISiteType> {
+export class _Site extends _GraphInstance<ISiteType> {
 
     public get sites(): ISites {
         return Sites(this);

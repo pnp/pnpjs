@@ -8,8 +8,9 @@ import {
     ISPQueryable,
     SPInstance,
     ISPInstance,
+    SPCollection,
 } from "../spqueryable.js";
-import { hOP } from "@pnp/core";
+import { hOP, objectDefinedNotNull } from "@pnp/core";
 import { extractWebUrl } from "@pnp/sp";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { body, headers, parseBinderWithErrorCheck, parseODataJSON } from "@pnp/queryable";
@@ -23,7 +24,7 @@ import { IResourcePath } from "../utils/to-resource-path.js";
  *
  */
 @defaultPath("items")
-export class _Items extends _SPCollection {
+export class _Items<GetType = any[]> extends _SPCollection<GetType> {
 
     /**
     * Gets an Item by id
@@ -59,12 +60,50 @@ export class _Items extends _SPCollection {
         return this;
     }
 
-    /**
-     * Gets a collection designed to aid in paging through data
-     *
-     */
-    public getPaged<T = any[]>(): Promise<PagedItemCollection<T>> {
-        return this.using(PagedItemParser(this))();
+    public [Symbol.asyncIterator]() {
+
+        const q = SPCollection(this).using(parseBinderWithErrorCheck(async (r) => {
+
+            const json = await r.json();
+            const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
+
+            return <IPagedResult<GetType>>{
+                hasNext: typeof nextUrl === "string" && nextUrl.length > 0,
+                nextLink: nextUrl,
+                value: parseODataJSON(json),
+            };
+        }));
+
+        const queryParams = ["$top", "$select", "$expand", "$filter", "$orderby", "$skiptoken"];
+
+        for (let i = 0; i < queryParams.length; i++) {
+            const param = this.query.get(queryParams[i]);
+            if (objectDefinedNotNull(param)) {
+                q.query.set(queryParams[i], param);
+            }
+        }
+
+        return <AsyncIterator<GetType>>{
+
+            _next: q,
+
+            async next() {
+
+                if (this._next === null) {
+                    return { done: true, value: undefined };
+                }
+
+                const result: IPagedResult<GetType> = await this._next();
+
+                if (result.hasNext) {
+                    this._next = SPCollection([this._next, result.nextLink]);
+                    return { done: false, value: result.value };
+                } else {
+                    this._next = null;
+                    return { done: false, value: result.value };
+                }
+            },
+        };
     }
 
     /**
@@ -311,41 +350,10 @@ export class _ItemVersion extends _SPInstance {
 export interface IItemVersion extends _ItemVersion, IDeleteableWithETag { }
 export const ItemVersion = spInvokableFactory<IItemVersion>(_ItemVersion);
 
-/**
- * Provides paging functionality for list items
- */
-export class PagedItemCollection<T> {
-
-    constructor(private parent: _Items, private nextUrl: string, public results: T) { }
-
-    /**
-     * If true there are more results available in the set, otherwise there are not
-     */
-    public get hasNext(): boolean {
-        return typeof this.nextUrl === "string" && this.nextUrl.length > 0;
-    }
-
-    /**
-     * Gets the next set of results, or resolves to null if no results are available
-     */
-    public async getNext(): Promise<PagedItemCollection<T> | null> {
-
-        if (this.hasNext) {
-            const items = <IItems>Items([this.parent, this.nextUrl], "");
-            return items.getPaged<T>();
-        }
-
-        return null;
-    }
-}
-
-function PagedItemParser(parent: _Items) {
-
-    return parseBinderWithErrorCheck(async (r) => {
-        const json = await r.json();
-        const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
-        return new PagedItemCollection(parent, nextUrl, parseODataJSON(json));
-    });
+export interface IPagedResult<T> {
+    value: T;
+    hasNext: boolean;
+    nextLink: string;
 }
 
 function ItemUpdatedParser() {

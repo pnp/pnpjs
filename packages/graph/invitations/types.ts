@@ -1,6 +1,6 @@
 import { body } from "@pnp/queryable";
 import { Invitation as IInvitationType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphCollection, graphInvokableFactory } from "../graphqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { graphPost } from "../operations.js";
 
@@ -8,7 +8,7 @@ import { graphPost } from "../operations.js";
  * Invitations
  */
 @defaultPath("invitations")
-export class _Invitations extends _GraphQueryableCollection<IInvitationType[]> {
+export class _Invitations extends _GraphCollection<IInvitationType[]> {
 
     /**
      * Create a new Invitation via invitation manager.
