@@ -69,32 +69,16 @@ describe("Items", function () {
         return expect(list.items.getById(item.Id)()).to.eventually.be.fulfilled;
     });
 
-    it("getPaged", async function () {
-
-        let page = await list.items.top(2).getPaged();
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        expect(page.hasNext).to.be.true;
-        expect(page.results.length).to.eql(2);
-        page = await page.getNext();
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        expect(page.hasNext).to.be.true;
-        expect(page.results.length).to.eql(2);
-    });
-
     it("getAll", async function () {
 
+        const a = [];
         const itemCount = await list.select("ItemCount")().then(r => r.ItemCount);
-        const page = await list.items.getAll();
-        return expect(page.length).to.eq(itemCount);
+        for await (const items of list.items) {
+            a.push(...items);
+        }
+        return expect(a.length).to.eq(itemCount);
     });
 
-
-    it("getAll top(2)", async function () {
-
-        const itemCount = await list.select("ItemCount")().then(r => r.ItemCount);
-        const page = await list.items.top(2).getAll();
-        return expect(page.length).to.eq(itemCount);
-    });
 
     it("effectiveBasePermissions", async function () {
 
