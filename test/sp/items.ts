@@ -2,7 +2,6 @@ import { getRandomString } from "@pnp/core";
 import { expect } from "chai";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/items/list";
-import "@pnp/sp/items/get-all";
 import "@pnp/sp/batching";
 import { IList } from "@pnp/sp/lists";
 import testSPInvokables from "../test-invokable-props.js";
