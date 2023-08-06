@@ -29,9 +29,10 @@ The second method essentially starts from scratch where the user constructs the 
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
+import { AssignFrom } from "@pnp/core";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
-import { spGet, SPQueryable, SPFx, AssignFrom } from "@pnp/sp";
+import { spGet, SPQueryable, SPFx } from "@pnp/sp";
 
 // Establish SPFI instance passing in the appropriate behavior to register the initial observers.
 const sp = spfi(...);
@@ -49,7 +50,7 @@ const spQueryable = SPQueryable("https://contoso.sharepoint.com/sites/testsite/_
 // ***or***
 
 // For v3 the full url is require for SPQuerable when providing just a string
-const spQueryable = SPQueryable("https://contoso.sharepoint.com/sites/testsite/_api/web/lists/getByTitle('My List')/items(1)").using(AssignFrom(sp));
+const spQueryable = SPQueryable("https://contoso.sharepoint.com/sites/testsite/_api/web/lists/getByTitle('My List')/items(1)").using(AssignFrom(sp.web));
 
 // and then use spQueryable to make the request
 const item: any = await spGet(spQueryable);
