@@ -1,7 +1,7 @@
-# @pnp/graph/onedrive
+# @pnp/graph/drive
 
-The ability to manage drives and drive items in Onedrive is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
-you can manage drives and drive items in Onedrive.
+The ability to manage drives and drive items in OneDrive and SharePoint is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
+you can manage drives and drive items in OneDrive and SharePoint.
 
 ## IInvitations
 
@@ -9,14 +9,14 @@ you can manage drives and drive items in Onedrive.
 
 ## Get the default drive
 
-Using the drive you can get the users default drive from Onedrive, or the groups or sites default document library.
+Using the drive you can get the users default drive from OneDrive, or the groups or sites default document library.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/groups";
 import "@pnp/graph/sites";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -31,14 +31,14 @@ const siteDrive = await graph.sites.getById("{site identifier}").drive();
 
 ## Get all of the drives
 
-Using the drives() you can get the users available drives from Onedrive
+Using the drives() you can get the users available drives from OneDrive
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/groups";
 import "@pnp/graph/sites";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -59,7 +59,7 @@ Using the drives.getById() you can get one of the available drives in Outlook
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -78,7 +78,7 @@ Using the list() you get the associated list information
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -94,7 +94,7 @@ Form more infomration about acting on the IList object see [@pnpjs/graph/lists](
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 import "@pnp/graph/lists";
 
 const graph = graphfi(...);
@@ -113,7 +113,7 @@ Using the recent() you get the recent files
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -130,7 +130,7 @@ Using the sharedWithMe() you get the files shared with the user
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -152,7 +152,7 @@ List the items that have been followed by the signed in user.
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -169,7 +169,7 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/sites";
 import "@pnp/graph/groups";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -194,7 +194,7 @@ Using the children() you get the children
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -215,7 +215,7 @@ Using the drive.getItemsByPath() you can get the contents of a particular folder
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -231,9 +231,9 @@ Using the add you can add an item, for more options please user the upload metho
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 import "@pnp/graph/users";
-import {IDriveItemAddResult} from "@pnp/graph/onedrive";
+import {IDriveItemAddResult} from "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -247,9 +247,9 @@ Using the .upload method you can add or update the content of an item.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 import "@pnp/graph/users";
-import {IFileOptions, IDriveItemAddResult} from "@pnp/graph/onedrive";
+import {IFileOptions, IDriveItemAddResult} from "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -282,7 +282,7 @@ Using addFolder you can add a folder
 
 ```TypeScript
 import { graph } from "@pnp/graph";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 import "@pnp/graph/users"
 import {IDriveItemAddResult} from "@pnp/graph/ondrive";
 
@@ -300,7 +300,7 @@ Using the search() you can search for items, and optionally select properties
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -320,7 +320,7 @@ Using the items.getById() you can get a specific item from the current drive
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -337,7 +337,7 @@ Using the drive.getItemByPath() you can get a specific item from the current dri
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -354,7 +354,7 @@ Using the item.getContent() you can get the content of a file.
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -385,7 +385,7 @@ Using the item.convertContent() you can get a PDF version of the file. See [offi
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -414,7 +414,7 @@ Using the thumbnails() you get the thumbnails
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -431,7 +431,7 @@ Using the delete() you delete the current item
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -448,7 +448,7 @@ Using the update() you update the current item
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -465,7 +465,7 @@ Using the move() you move the current item, and optionally update it
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -491,7 +491,7 @@ Using the copy() you can copy the current item to a new location, returns the pa
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -517,8 +517,8 @@ Using the users default drive you can get special folders, including: Documents,
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
-import { SpecialFolder, IDriveItem } from "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
+import { SpecialFolder, IDriveItem } from "@pnp/graph/drive";
 
 const graph = graphfi(...);
 
@@ -540,8 +540,8 @@ If you want to obtain long-lived embeddable links, use the createLink API instea
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
-import { IPreviewOptions, IDriveItemPreviewInfo } from "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
+import { IPreviewOptions, IDriveItemPreviewInfo } from "@pnp/graph/drive";
 import { ItemPreviewInfo } from "@microsoft/microsoft-graph-types"
 
 const graph = graphfi(...);
@@ -566,7 +566,7 @@ Track changes in a driveItem and its children over time.
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 import { IDeltaItems } from "@pnp/graph/ondrive";
 
 const graph = graphfi(...);
@@ -587,28 +587,4 @@ for await (const val of delta.next.paged()) {
 for await (const val of delta.next.top(20).paged()) {
   console.log(JSON.stringify(val, null, 2));
 }
-```
-
-## Get Drive Item Analytics
-
-Using the analytics() you get the ItemAnalytics for a DriveItem
-
-```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
-import { IAnalyticsOptions } from "@pnp/graph/onedrive";
-
-const graph = graphfi(...);
-
-// Defaults to lastSevenDays
-const analytics = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").analytics()();
-
-const analytics = await graph.me.drives.getById("{drive id}").items.getById("{item id}").analytics()();
-
-const analyticOptions: IAnalyticsOptions = {
-    timeRange: "allTime"
-};
-
-const analyticsAllTime = await graph.me.drives.getById("{drive id}").items.getById("{item id}").analytics(analyticOptions)();
 ```

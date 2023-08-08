@@ -3,14 +3,14 @@ import * as path from "path";
 import * as fs from "fs";
 import findupSync from "findup-sync";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
-import { IAnalyticsOptions, IItemOptions } from "@pnp/graph/onedrive/types";
+import { IItemOptions } from "@pnp/graph/drive/types";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
-describe("OneDrive", function () {
+describe("Drive", function () {
     let testUserName = "";
     let driveId = null;
     const fileOptions = {
@@ -349,17 +349,5 @@ describe("OneDrive", function () {
             await children.driveItem.delete();
         }
         return expect(previewDriveItem).to.haveOwnProperty("getUrl");
-    });
-
-    it("Get Drive Item Analytics - Last Seven Days", async function () {
-        if (stringIsNullOrEmpty(driveId)) {
-            this.skip();
-        }
-        const testFileName = `TestFile_${getRandomString(4)}.txt`;
-        const fo = JSON.parse(JSON.stringify(fileOptions));
-        fo.filePathName = testFileName;
-        const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.upload(fo);
-        const analytics = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id).analytics()();
-        return expect(analytics).to.haveOwnProperty("@odata.context");
     });
 });

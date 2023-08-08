@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "@pnp/graph/sites/group";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/drive";
 import { Drive, Group } from "@microsoft/microsoft-graph-types";
 import { hOP, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";

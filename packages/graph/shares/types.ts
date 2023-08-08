@@ -1,7 +1,7 @@
 import { defaultPath } from "../decorators.js";
 import { graphInvokableFactory, _GraphQueryableCollection, _GraphQueryableInstance } from "../graphqueryable.js";
 import { SharedDriveItem as ISharedDriveItem } from "@microsoft/microsoft-graph-types";
-import { DriveItem, IDriveItem } from "../onedrive/types.js";
+import { DriveItem, IDriveItem } from "../drive/types.js";
 
 /**
  * Shares

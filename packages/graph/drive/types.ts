@@ -8,7 +8,7 @@ import {
     graphInvokableFactory,
     GraphQueryable,
 } from "../graphqueryable.js";
-import { Drive as IDriveType, DriveItem as IDriveItemType, ItemPreviewInfo as IDriveItemPreviewInfo, ItemAnalytics as IItemAnalytics } from "@microsoft/microsoft-graph-types";
+import { Drive as IDriveType, DriveItem as IDriveItemType, ItemPreviewInfo as IDriveItemPreviewInfo } from "@microsoft/microsoft-graph-types";
 import { combine } from "@pnp/core";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
 import { body, BlobParse, CacheNever, errorCheck, InjectHeaders } from "@pnp/queryable";
@@ -344,16 +344,6 @@ export class _DriveItem extends _GraphQueryableInstance<IDriveItemType> {
     public async preview(previewOptions?: IPreviewOptions): Promise<IDriveItemPreviewInfo> {
         return graphPost(DriveItem(this, "preview"), body(previewOptions));
     }
-
-    /**
-     * Method for getting item analytics. Defaults to lastSevenDays.
-     * @param analyticsOptions - IAnalyticsOptions (Optional)
-     * @returns IGraphQueryableCollection<IItemAnalytics>
-     */
-    public analytics(analyticsOptions?: IAnalyticsOptions): IGraphQueryableCollection<IItemAnalytics> {
-        const query = `analytics/${analyticsOptions ? analyticsOptions.timeRange : "lastSevenDays"}`;
-        return <IGraphQueryableCollection<IItemAnalytics>>GraphQueryableCollection(this, query);
-    }
 }
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }
 export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
@@ -475,8 +465,4 @@ export interface IDeltaItems {
     next: IGraphQueryableCollection<IDeltaItems>;
     delta: IGraphQueryableCollection<IDeltaItems>;
     values: any[];
-}
-
-export interface IAnalyticsOptions {
-    timeRange: "allTime" | "lastSevenDays";
 }
