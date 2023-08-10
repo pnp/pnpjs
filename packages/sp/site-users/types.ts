@@ -8,7 +8,7 @@ import {
 import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
+import { spPost, spPostMerge } from "../ops.js";
 import { PrincipalType } from "../types.js";
 
 @defaultPath("siteusers")

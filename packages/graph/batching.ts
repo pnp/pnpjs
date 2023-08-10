@@ -1,7 +1,7 @@
 import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull, isFunc, combine } from "@pnp/core";
 import { parseBinderWithErrorCheck, Queryable, body, InjectHeaders } from "@pnp/queryable";
 import { IGraphQueryable, _GraphQueryable } from "./graphqueryable.js";
-import { graphPost } from "./operations.js";
+import { graphPost } from "./ops.js";
 import { GraphFI } from "./fi.js";
 
 declare module "./fi" {

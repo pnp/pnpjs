@@ -2,7 +2,7 @@ import { _SPInstance, spInvokableFactory, SPInit } from "../spqueryable.js";
 import { getHashCode, hOP, isArray } from "@pnp/core";
 import { body, CacheAlways, CacheKey, invokable } from "@pnp/queryable";
 import { ISearchQuery, ISearchResponse, ISearchResult, ISearchBuilder, SearchQueryInit } from "./types.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { defaultPath } from "../decorators.js";
 
 const funcs = new Map<string, string>([

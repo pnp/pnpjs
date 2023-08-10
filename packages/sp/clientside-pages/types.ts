@@ -8,7 +8,7 @@ import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { Web, IWeb } from "../webs/types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { Site } from "../sites/types.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { getNextOrder, reindex } from "./funcs.js";
 import "../files/web.js";
 import "../comments/item.js";

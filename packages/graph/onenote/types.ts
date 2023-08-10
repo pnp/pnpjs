@@ -8,7 +8,7 @@ import {
     graphInvokableFactory,
 } from "../graphqueryable.js";
 import { defaultPath, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
+import { graphPost } from "../ops.js";
 
 /**
  * Represents a onenote entity

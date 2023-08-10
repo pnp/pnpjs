@@ -2,7 +2,7 @@ import { _GraphInstance, _GraphCollection, graphInvokableFactory } from "../grap
 import { body } from "@pnp/queryable";
 import { Subscription as ISubscriptionType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, deleteable, IDeleteable, IUpdateable, updateable, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
+import { graphPost } from "../ops.js";
 
 /**
  * Subscription

@@ -2,7 +2,7 @@ import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-g
 import { body } from "@pnp/queryable";
 import { graphInvokableFactory } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
+import { graphPost } from "../ops.js";
 import { _DirectoryObject, _DirectoryObjects } from "../directory-objects/types.js";
 
 export enum GroupType {

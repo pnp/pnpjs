@@ -12,7 +12,7 @@ import { Drive as IDriveType, DriveItem as IDriveItemType, ItemPreviewInfo as ID
 import { combine } from "@pnp/core";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
 import { body, BlobParse, CacheNever, errorCheck, InjectHeaders } from "@pnp/queryable";
-import { graphPatch, graphPost, graphPut } from "../operations.js";
+import { graphPatch, graphPost, graphPut } from "../ops.js";
 import { driveItemUpload } from "./funcs.js";
 
 /**

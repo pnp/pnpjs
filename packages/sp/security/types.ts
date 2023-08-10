@@ -11,7 +11,7 @@ import {
 } from "../spqueryable.js";
 import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
+import { spPost, spPostMerge } from "../ops.js";
 
 export type SecurableQueryable = _SPInstance & ISecurableMethods;
 

@@ -6,7 +6,7 @@ import {
     _SPCollection,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 
 @defaultPath("regionalsettings")
 export class _RegionalSettings extends _SPInstance<IRegionalSettingsInfo> {

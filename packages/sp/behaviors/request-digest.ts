@@ -2,7 +2,7 @@ import { combine, dateAdd, hOP, isFunc, objectDefinedNotNull, TimelinePipe } fro
 import { JSONParse, Queryable } from "@pnp/queryable";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { ISPQueryable, SPQueryable } from "../spqueryable.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { BatchNever } from "../batching.js";
 
 interface IDigestInfo {

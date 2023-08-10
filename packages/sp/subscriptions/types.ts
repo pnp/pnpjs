@@ -5,7 +5,7 @@ import {
 } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPatch, spDelete } from "../operations.js";
+import { spPost, spPatch, spDelete } from "../ops.js";
 
 @defaultPath("subscriptions")
 export class _Subscriptions extends _SPCollection {

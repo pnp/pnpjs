@@ -16,7 +16,7 @@ import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { body, headers, parseBinderWithErrorCheck, parseODataJSON } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { IResourcePath } from "../utils/to-resource-path.js";
 
 /**

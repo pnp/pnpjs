@@ -2,7 +2,7 @@ import { SearchRequest as ISearchRequestType, SearchResponse as ISearchResponseT
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { GraphInit, graphInvokableFactory, _GraphInstance } from "../graphqueryable.js";
-import { graphPost } from "../operations.js";
+import { graphPost } from "../ops.js";
 
 /**
  * Search

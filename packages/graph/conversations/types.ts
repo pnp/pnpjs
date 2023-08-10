@@ -12,7 +12,7 @@ import {
     graphInvokableFactory,
 } from "../graphqueryable.js";
 import { defaultPath, updateable, IUpdateable, deleteable, IDeleteable, addable, IAddable, getById, IGetById } from "../decorators.js";
-import { graphPost, graphDelete } from "../operations.js";
+import { graphPost, graphDelete } from "../ops.js";
 
 /**
  * Conversation

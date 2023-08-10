@@ -1,7 +1,7 @@
 import { _SPQueryable, ISPQueryable } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { body } from "@pnp/queryable";
 
 @defaultPath("_api/SP.RelatedItemManager")

@@ -2,7 +2,7 @@ export * from "./spqueryable.js";
 
 export * from "./decorators.js";
 
-export * from "./operations.js";
+export * from "./ops.js";
 
 export {
     SPFI,

@@ -1,7 +1,7 @@
 import { Attachment as IAttachmentType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
 import { _GraphCollection, _GraphInstance, graphInvokableFactory } from "../graphqueryable.js";
-import { graphPost } from "../operations.js";
+import { graphPost } from "../ops.js";
 import { defaultPath, getById, IGetById } from "../decorators.js";
 import { type } from "../utils/type.js";
 

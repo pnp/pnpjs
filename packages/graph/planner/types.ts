@@ -9,7 +9,7 @@ import {
 import { body } from "@pnp/queryable";
 import { _GraphInstance, _GraphCollection, graphInvokableFactory } from "../graphqueryable.js";
 import { getById, IGetById, deleteableWithETag, IDeleteableWithETag, updateableWithETag, IUpdateableWithETag } from "../decorators.js";
-import { graphPost } from "../operations.js";
+import { graphPost } from "../ops.js";
 import { defaultPath } from "../decorators.js";
 
 /**

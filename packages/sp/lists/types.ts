@@ -14,7 +14,7 @@ import {
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
+import { spPost, spPostMerge } from "../ops.js";
 import { IBasePermissions } from "../security/types.js";
 import { IFieldInfo } from "../fields/types.js";
 import { IFormInfo } from "../forms/types.js";

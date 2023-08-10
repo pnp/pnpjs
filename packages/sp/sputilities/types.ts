@@ -2,7 +2,7 @@ import { body } from "@pnp/queryable";
 import { _SPQueryable, spInvokableFactory, ISPQueryable, SPInit } from "../spqueryable.js";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { combine } from "@pnp/core";
 
 export class _Utilities extends _SPQueryable implements IUtilities {

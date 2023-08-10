@@ -10,7 +10,7 @@ export {
     IGraphConstructor,
 } from "./graphqueryable.js";
 
-export * from "./operations.js";
+export * from "./ops.js";
 
 export * from "./behaviors/consistency-level.js";
 export * from "./behaviors/defaults.js";

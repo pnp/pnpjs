@@ -10,7 +10,7 @@ import {
 import { body } from "@pnp/queryable";
 import { PrincipalType, PrincipalSource } from "../types.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { AssignFrom } from "@pnp/core";
 
 export class _Profiles extends _SPInstance {

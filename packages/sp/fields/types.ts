@@ -7,7 +7,7 @@ import {
     IDeleteable,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
+import { spPost, spPostMerge } from "../ops.js";
 import { metadata } from "../utils/metadata.js";
 
 @defaultPath("fields")

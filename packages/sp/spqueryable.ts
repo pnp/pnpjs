@@ -1,6 +1,6 @@
 import { combine, isUrlAbsolute, isArray, objectDefinedNotNull, stringIsNullOrEmpty } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
-import { spPostDelete, spPostDeleteETag } from "./operations.js";
+import { spPostDelete, spPostDeleteETag } from "./ops.js";
 
 export type SPInit = string | ISPQueryable | [ISPQueryable, string];
 

@@ -2,7 +2,7 @@ import { addProp } from "@pnp/queryable";
 import {
     ContentType as IContentTypeEntity,
 } from "@microsoft/microsoft-graph-types";
-import { graphGet, graphPost } from "../operations.js";
+import { graphGet, graphPost } from "../ops.js";
 import { body } from "@pnp/queryable";
 import { Site, _Site } from "../sites/types.js";
 import { ContentTypes, IContentType, IContentTypeAddResult, IContentTypes, _ContentTypes } from "./types.js";

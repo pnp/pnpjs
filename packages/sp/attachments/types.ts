@@ -1,7 +1,7 @@
 import { headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { ReadableFile } from "../files/readable-file.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { encodePath } from "../utils/encode-path-str.js";
 import {
     IDeleteableWithETag,

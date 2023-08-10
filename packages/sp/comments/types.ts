@@ -6,7 +6,7 @@ import {
 } from "../spqueryable.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { body } from "@pnp/queryable";
-import { spDelete, spPost } from "../operations.js";
+import { spDelete, spPost } from "../ops.js";
 
 @defaultPath("comments")
 export class _Comments extends _SPCollection<ICommentInfo[]> {

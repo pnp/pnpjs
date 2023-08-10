@@ -10,6 +10,7 @@ export {
 
 export {
     ICheckInOptions,
+    encodeSharingUrl,
 } from "./funcs.js";
 
 export {

@@ -1,5 +1,5 @@
 import { IColumn } from "./types";
-import { graphPost } from "../operations.js";
+import { graphPost } from "../ops.js";
 import { body } from "@pnp/queryable";
 import {
     ColumnDefinition as IColumnDefinition,

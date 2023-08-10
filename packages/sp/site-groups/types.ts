@@ -6,7 +6,7 @@ import {
 import { SiteUsers, ISiteUsers } from "../site-users/types.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
+import { spPost, spPostMerge } from "../ops.js";
 
 @defaultPath("sitegroups")
 export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {

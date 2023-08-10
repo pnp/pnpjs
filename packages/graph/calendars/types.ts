@@ -2,7 +2,7 @@ import { body } from "@pnp/queryable";
 import { Event as IEventType, Calendar as ICalendarType } from "@microsoft/microsoft-graph-types";
 import { _GraphCollection, _GraphInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
+import { graphPost } from "../ops.js";
 import { calendarView, instances } from "./funcs.js";
 
 /**

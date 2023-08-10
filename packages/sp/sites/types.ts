@@ -4,7 +4,7 @@ import { Web, IWeb } from "../webs/types.js";
 import { combine, hOP, isArray } from "@pnp/core";
 import { body, TextParse } from "@pnp/queryable";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
-import { spPatch, spPost } from "../operations.js";
+import { spPatch, spPost } from "../ops.js";
 import { IChangeQuery } from "../types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { emptyGuid } from "../types.js";

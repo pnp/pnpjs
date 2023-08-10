@@ -1,7 +1,7 @@
 import { _ClientsidePage } from "../clientside-pages/types.js";
 import { ICommentInfo, IComment, ILikedByInformation } from "./types.js";
 import { IItemUpdateResult, Item } from "../items/index.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { SPQueryable } from "../spqueryable.js";
 
 declare module "../clientside-pages/types" {

@@ -18,7 +18,7 @@ import {
     ISharingEmailData,
     RoleType,
 } from "./types.js";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 import { RoleDefinitions } from "../security/types.js";
 import { emptyGuid } from "../types.js";
 

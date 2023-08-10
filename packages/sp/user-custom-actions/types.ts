@@ -7,7 +7,7 @@ import {
 } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
+import { spPost, spPostMerge } from "../ops.js";
 import { IBasePermissions } from "../security/index.js";
 
 @defaultPath("usercustomactions")

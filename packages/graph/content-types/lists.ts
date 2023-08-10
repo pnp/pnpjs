@@ -1,5 +1,5 @@
 import { addProp } from "@pnp/queryable";
-import { graphPost } from "../operations.js";
+import { graphPost } from "../ops.js";
 import { _List } from "../lists/types.js";
 import { ContentTypes, IContentType, IContentTypeAddResult, IContentTypes, _ContentTypes } from "./types.js";
 import { body } from "@pnp/queryable";

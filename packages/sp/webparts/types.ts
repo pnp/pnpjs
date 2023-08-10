@@ -9,7 +9,7 @@ import {
     ISPInstance,
 } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
-import { spPost } from "../operations.js";
+import { spPost } from "../ops.js";
 
 export class _LimitedWebPartManager extends _SPQueryable implements ILimitedWebPartManager {
 
