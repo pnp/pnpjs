@@ -51,7 +51,7 @@ function PnPTestIdHeader(id: () => string): TimelinePipe {
 export function pnpTest(id: string, testFunc: (this: IPnPTestFuncThis) => any): IPnPTestFunc {
 
     if (idDupeTracker.indexOf(id.toLowerCase()) > -1) {
-        throw Error(`Test ${id} is already in use.`);
+        throw Error(`Test id ${id} is already in use.`);
     }
 
     idDupeTracker.push(id.toLowerCase());

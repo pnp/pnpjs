@@ -92,7 +92,7 @@ describe("isFunc", function () {
         })).to.be.true;
     }));
 
-    it("False", pnpTest("ff0020e6-0e1b-4b12-a4a1-8a4b2fc8fcdb", function () {
+    it("False", pnpTest("2a147d36-64ad-4888-a425-e4d18ead4448", function () {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isFunc({ val: 0 })).to.be.false;
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
