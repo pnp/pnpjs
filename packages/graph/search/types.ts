@@ -1,8 +1,7 @@
 import { SearchRequest as ISearchRequestType, SearchResponse as ISearchResponseType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { GraphInit, graphInvokableFactory, _GraphInstance } from "../graphqueryable.js";
-import { graphPost } from "../ops.js";
+import { GraphInit, graphInvokableFactory, _GraphInstance, graphPost } from "../graphqueryable.js";
 
 /**
  * Search

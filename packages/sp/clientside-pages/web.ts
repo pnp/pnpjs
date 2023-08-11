@@ -9,8 +9,7 @@ import {
     IRepostPage,
     ClientsideWebpart,
 } from "./types.js";
-import { SPCollection, SPInstance } from "../spqueryable.js";
-import { spPost } from "../ops.js";
+import { SPCollection, SPInstance, spPost } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
 import { extractWebUrl } from "@pnp/sp";
 

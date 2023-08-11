@@ -1,6 +1,6 @@
 import { body } from "@pnp/queryable";
 import { isArray, jsS } from "@pnp/core";
-import { SPCollection, SPInstance } from "../spqueryable.js";
+import { SPCollection, SPInstance, spPost } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { Web } from "../webs/types.js";
 import {
@@ -18,7 +18,6 @@ import {
     ISharingEmailData,
     RoleType,
 } from "./types.js";
-import { spPost } from "../ops.js";
 import { RoleDefinitions } from "../security/types.js";
 import { emptyGuid } from "../types.js";
 

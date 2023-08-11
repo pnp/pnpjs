@@ -1,7 +1,6 @@
 import { defaultPath } from "../decorators.js";
-import { _SPInstance, spInvokableFactory, _SPCollection, SPInit } from "../spqueryable.js";
+import { _SPInstance, spInvokableFactory, _SPCollection, SPInit, spPost } from "../spqueryable.js";
 import { hOP } from "@pnp/core";
-import { spPost } from "../ops.js";
 import { body } from "@pnp/queryable";
 import { SharepointIds, ResourceVisualization } from "@microsoft/microsoft-graph-types";
 

@@ -6,9 +6,9 @@ import {
     _GraphCollection,
     IGraphCollection,
     graphInvokableFactory,
+    graphPost,
 } from "../graphqueryable.js";
 import { defaultPath, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../ops.js";
 
 /**
  * Represents a onenote entity

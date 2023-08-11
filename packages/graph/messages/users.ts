@@ -1,7 +1,7 @@
 import { addProp, body } from "@pnp/queryable";
 import { _User, User } from "../users/types.js";
 import { IMessages, Messages, IMailboxSettings, MailboxSettings, IMailFolders, MailFolders, IMessage } from "./types.js";
-import { graphPost } from "../ops.js";
+import { graphPost } from "../graphqueryable.js";
 
 declare module "../users/types" {
     interface _User {

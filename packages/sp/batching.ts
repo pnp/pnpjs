@@ -1,7 +1,6 @@
 import { getGUID, isUrlAbsolute, combine, CopyFrom, TimelinePipe, isFunc, hOP } from "@pnp/core";
 import { parseBinderWithErrorCheck, Queryable } from "@pnp/queryable";
-import { spPost } from "./ops.js";
-import { ISPQueryable, _SPQueryable } from "./spqueryable.js";
+import { ISPQueryable, _SPQueryable, spPost } from "./spqueryable.js";
 import { spfi, SPFI } from "./fi.js";
 import { Web, IWeb, _Web } from "./webs/types.js";
 

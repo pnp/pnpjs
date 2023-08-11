@@ -1,8 +1,7 @@
 import { isArray } from "@pnp/core";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spDelete, spPatch, spPost } from "../ops.js";
-import { _SPInstance, spInvokableFactory, _SPCollection } from "../spqueryable.js";
+import { _SPInstance, spInvokableFactory, _SPCollection, spDelete, spPatch, spPost } from "../spqueryable.js";
 import { encodePath } from "../utils/encode-path-str.js";
 
 /**

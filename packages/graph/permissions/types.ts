@@ -1,8 +1,7 @@
 import { body } from "@pnp/queryable";
 import { IDeleteable, IGetById, IUpdateable, defaultPath, deleteable, getById, updateable } from "../decorators.js";
-import { graphInvokableFactory, _GraphCollection, _GraphInstance } from "../graphqueryable.js";
+import { graphInvokableFactory, _GraphCollection, _GraphInstance, graphPost } from "../graphqueryable.js";
 import { Permission as IPermissionType } from "@microsoft/microsoft-graph-types";
-import { graphPost } from "../ops.js";
 
 /**
  * Permission

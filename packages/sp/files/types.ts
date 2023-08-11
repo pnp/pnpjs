@@ -10,11 +10,12 @@ import {
     ISPQueryable,
     deleteable,
     IDeleteable,
+    spPost,
+    spGet,
 } from "../spqueryable.js";
 import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spGet } from "../ops.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath } from "../utils/to-resource-path.js";
 import { ISiteUserProps } from "../site-users/types.js";

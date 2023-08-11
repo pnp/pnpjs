@@ -1,13 +1,13 @@
 import { headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { ReadableFile } from "../files/readable-file.js";
-import { spPost } from "../ops.js";
 import { encodePath } from "../utils/encode-path-str.js";
 import {
     IDeleteableWithETag,
     _SPCollection,
     spInvokableFactory,
     deleteableWithETag,
+    spPost,
 } from "../spqueryable.js";
 
 @defaultPath("AttachmentFiles")

@@ -1,8 +1,7 @@
 
 import { Presence as IUserPresence } from "@microsoft/microsoft-graph-types";
-import { _GraphCollection, graphInvokableFactory, _GraphInstance } from "../graphqueryable.js";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance, graphPost } from "../graphqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { graphPost } from "../ops.js";
 import { body } from "@pnp/queryable";
 
 /**

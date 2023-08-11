@@ -1,6 +1,6 @@
 import { combine } from "@pnp/core";
 import { body, InjectHeaders } from "@pnp/queryable";
-import { graphPost, graphPut } from "../ops.js";
+import { graphPost, graphPut } from "../graphqueryable.js";
 import { DriveItem, IDriveItemAddResult, IFileOptions } from "./types.js";
 
 export interface ICheckInOptions {

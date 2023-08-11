@@ -3,7 +3,7 @@ import { GraphFI } from "../fi.js";
 import { _Group, Group } from "../groups/types.js";
 import { ITeamCreateResult, ITeam, Team, ITeams, Teams } from "./types.js";
 import { Team as ITeamType } from "@microsoft/microsoft-graph-types";
-import { graphPut } from "../ops.js";
+import { graphPut } from "../graphqueryable.js";
 
 import "./users.js";
 

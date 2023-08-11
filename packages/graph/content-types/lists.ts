@@ -1,8 +1,7 @@
-import { addProp } from "@pnp/queryable";
-import { graphPost } from "../ops.js";
+import { addProp, body} from "@pnp/queryable";
+import { graphPost } from "../graphqueryable.js";
 import { _List } from "../lists/types.js";
 import { ContentTypes, IContentType, IContentTypeAddResult, IContentTypes, _ContentTypes } from "./types.js";
-import { body } from "@pnp/queryable";
 
 declare module "../lists/types" {
     interface _List {

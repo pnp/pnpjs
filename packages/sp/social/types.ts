@@ -2,11 +2,11 @@ import {
     _SPInstance,
     ISPQueryable,
     SPInit,
+    spPost,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { hOP } from "@pnp/core";
 import { body } from "@pnp/queryable";
-import { spPost } from "../ops.js";
 
 @defaultPath("_api/social.following")
 export class _Social extends _SPInstance implements ISocial {

@@ -28,12 +28,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - graph
   - paged method removed from IGraphQueryableCollection
+  - ./operations.ts methods moved to ./graphqueryable.ts
 
 - sp
   - getPaged method removed from _Items/IItems
   - PagedItemCollection removed from library
   - removed /items/get-all import, unneeded, use async iterator patterns
-  - operations.ts renamed to ops.ts
+  - ./operations.ts methods moved to ./spqueryable.ts
 
 ### Changed
 
@@ -43,7 +44,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - All GraphQueryable*, _GraphQueryable*, and IGraphQueryable* have been renamed to remove "Queryable" (ex: GraphQueryableCollection is now GraphCollection)
   - @pnp/graph/onedrive renamed to @pnp/graph/files
   - ISites.getByUrl is now async
-  - operations.ts renamed to ops.ts
 
 - sp
   - _Items and IItems now supports async iterator pattern

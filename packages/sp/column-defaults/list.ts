@@ -4,7 +4,7 @@ import { Folder } from "../folders/types.js";
 import { IFieldDefault } from "./types.js";
 import { IResourcePath } from "../utils/to-resource-path.js";
 import { combine, isArray } from "@pnp/core";
-import { spPost } from "../ops.js";
+import { spPost } from "../spqueryable.js";
 import { SPCollection } from "../presets/all.js";
 import { encodePath } from "../utils/encode-path-str.js";
 

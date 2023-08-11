@@ -1,5 +1,5 @@
 import { addProp, body } from "@pnp/queryable";
-import { graphPost } from "../ops.js";
+import { graphPost } from "../graphqueryable.js";
 import { _User } from "../users/types.js";
 import { IDrive, Drive, IDrives, Drives, _Drive, DriveItem, IDriveItem, _DriveItem, IItemOptions } from "./types.js";
 

@@ -4,7 +4,7 @@ import { RoleType } from "./types.js";
 import { shareObject } from "./funcs.js";
 import { combine } from "@pnp/core";
 import { body } from "@pnp/queryable";
-import { spPost } from "../ops.js";
+import { spPost } from "../spqueryable.js";
 
 /**
  * Extend _Web

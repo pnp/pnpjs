@@ -1,5 +1,5 @@
 import { addProp } from "@pnp/queryable";
-import { spPost } from "../ops.js";
+import { spPost } from "../spqueryable.js";
 import { Web, _Web } from "../webs/types.js";
 import { ISiteGroups, SiteGroups, ISiteGroup, SiteGroup } from "./types.js";
 import "../security/web.js";

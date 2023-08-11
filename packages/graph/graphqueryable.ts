@@ -1,7 +1,7 @@
 import { isArray, objectDefinedNotNull } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
+import { IInvokable, Queryable, queryableFactory, op, get, post, patch, del, put } from "@pnp/queryable";
 import { ConsistencyLevel } from "./behaviors/consistency-level.js";
-import { Paged } from "./behaviors/paged.js";
+import { IPagedResult, Paged } from "./behaviors/paged.js";
 
 export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];
 
@@ -220,9 +220,23 @@ export class _GraphInstance<GetType = any> extends _GraphQueryable<GetType> { }
 export interface IGraphInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> { }
 export const GraphInstance = graphInvokableFactory<IGraphInstance>(_GraphInstance);
 
-export interface IPagedResult {
-    count: number;
-    value: any | any[] | null;
-    hasNext: boolean;
-    nextLink: string;
-}
+export const graphGet = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, get, init);
+};
+
+export const graphPost = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, post, init);
+};
+
+export const graphDelete = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, del, init);
+};
+
+export const graphPatch = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, patch, init);
+};
+
+export const graphPut = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, put, init);
+};
+

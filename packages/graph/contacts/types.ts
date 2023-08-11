@@ -1,7 +1,6 @@
-import { _GraphCollection, _GraphInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphCollection, _GraphInstance, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../ops.js";
 import { body } from "@pnp/queryable";
 
 /**

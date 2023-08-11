@@ -1,8 +1,7 @@
 import { combine } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
-import { graphInvokableFactory, _GraphCollection, _GraphInstance } from "../graphqueryable.js";
+import { graphInvokableFactory, _GraphCollection, _GraphInstance, graphPost } from "../graphqueryable.js";
 import { Site as ISiteType } from "@microsoft/microsoft-graph-types";
-import { graphPost } from "../ops.js";
 import { body } from "@pnp/queryable";
 
 /**
