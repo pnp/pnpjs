@@ -1,7 +1,6 @@
-import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphInstance } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphInstance, graphPost } from "../graphqueryable.js";
 import { body, HeaderParse } from "@pnp/queryable";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
-import { graphPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
 import {
     Team as ITeamType,

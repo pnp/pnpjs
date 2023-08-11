@@ -1,8 +1,7 @@
-import { _GraphInstance, _GraphCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { body } from "@pnp/queryable";
 import { Subscription as ISubscriptionType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, deleteable, IDeleteable, IUpdateable, updateable, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
 
 /**
  * Subscription

@@ -7,9 +7,9 @@ import {
     spInvokableFactory,
     SPInstance,
     ISPInstance,
+    spPost,
 } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
-import { spPost } from "../operations.js";
 
 export class _LimitedWebPartManager extends _SPQueryable implements ILimitedWebPartManager {
 

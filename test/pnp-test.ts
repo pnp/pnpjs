@@ -15,6 +15,10 @@ interface IPnPTestFunc {
 
 export const PnPTestHeaderName = "X-PnP-TestId";
 
+// we use this to identify tests with duplicate ids, which will cause problems
+// really just a safety measure for us
+const idDupeTracker = [];
+
 /**
  * Behavior used to inject the correct test id into the headers for each request
  *
@@ -45,6 +49,12 @@ function PnPTestIdHeader(id: () => string): TimelinePipe {
  * @returns The test function bound to an augmented "this"
  */
 export function pnpTest(id: string, testFunc: (this: IPnPTestFuncThis) => any): IPnPTestFunc {
+
+    if (idDupeTracker.indexOf(id.toLowerCase()) > -1) {
+        throw Error(`Test id ${id} is already in use.`);
+    }
+
+    idDupeTracker.push(id.toLowerCase());
 
     return async function (this: IPnPTestFuncThis, ...args: any[]) {
 

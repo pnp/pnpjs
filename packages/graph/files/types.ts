@@ -7,12 +7,14 @@ import {
     _GraphCollection,
     graphInvokableFactory,
     GraphQueryable,
+    graphPatch,
+    graphPost,
+    graphPut,
 } from "../graphqueryable.js";
 import { Drive as IDriveType, DriveItem as IDriveItemType, ItemPreviewInfo as IDriveItemPreviewInfo, ItemAnalytics as IItemAnalytics } from "@microsoft/microsoft-graph-types";
 import { combine } from "@pnp/core";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
 import { body, BlobParse, CacheNever, errorCheck, InjectHeaders } from "@pnp/queryable";
-import { graphPatch, graphPost, graphPut } from "../operations.js";
 import { driveItemUpload } from "./funcs.js";
 
 /**

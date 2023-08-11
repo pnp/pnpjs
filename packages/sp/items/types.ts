@@ -9,6 +9,7 @@ import {
     SPInstance,
     ISPInstance,
     SPCollection,
+    spPost,
 } from "../spqueryable.js";
 import { hOP, objectDefinedNotNull } from "@pnp/core";
 import { extractWebUrl } from "@pnp/sp";
@@ -16,7 +17,6 @@ import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { body, headers, parseBinderWithErrorCheck, parseODataJSON } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
 import { IResourcePath } from "../utils/to-resource-path.js";
 
 /**

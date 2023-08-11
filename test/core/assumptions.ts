@@ -3,10 +3,11 @@
 // our assumptions remain correct
 
 import { expect } from "chai";
+import { pnpTest } from "../pnp-test.js";
 
 describe("Assumptions", function () {
 
-    it("JS should merge objects how we expect", function () {
+    it("JS should merge objects how we expect", pnpTest("3576d9bf-aa31-4b3f-8400-104513956328", function () {
 
         const o = {};
 
@@ -58,9 +59,9 @@ describe("Assumptions", function () {
 
         expect(test5, "test 5").to.eql({});
 
-    });
+    }));
 
-    it("should destructure how we assume", function () {
+    it("should destructure how we assume", pnpTest("67a889c9-a45a-4978-a181-91d5d096edeb", function () {
 
         const props = {
             yes: false,
@@ -95,5 +96,5 @@ describe("Assumptions", function () {
         expect(title).to.eq("hello");
 
         expect(another).to.eq("something");
-    });
+    }));
 });

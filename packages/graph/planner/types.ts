@@ -7,9 +7,8 @@ import {
     Planner as IPlannerType,
 } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
-import { _GraphInstance, _GraphCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { getById, IGetById, deleteableWithETag, IDeleteableWithETag, updateableWithETag, IUpdateableWithETag } from "../decorators.js";
-import { graphPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
 
 /**

@@ -5,9 +5,10 @@ import {
     _SPInstance,
     deleteable,
     IDeleteable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { encodePath } from "../utils/encode-path-str.js";
 
 @defaultPath("views")

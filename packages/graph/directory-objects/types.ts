@@ -1,8 +1,7 @@
-import { _GraphCollection, _GraphInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphCollection, _GraphInstance, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { DirectoryObject as IDirectoryObjectType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
 import { body } from "@pnp/queryable";
-import { graphPost } from "../operations.js";
 import { Count } from "../behaviors/paged.js";
 
 /**

@@ -1,8 +1,7 @@
 import { body } from "@pnp/queryable";
 import { User as IMemberType } from "@microsoft/microsoft-graph-types";
-import { _GraphCollection, _GraphInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphCollection, _GraphInstance, graphInvokableFactory, graphDelete, graphPost } from "../graphqueryable.js";
 import { defaultPath, getById, IGetById } from "../decorators.js";
-import { graphDelete, graphPost } from "../operations.js";
 
 /**
  * Member

@@ -1,16 +1,6 @@
 export { graphfi as graphfi, GraphFI as GraphFI } from "./fi.js";
 
-export {
-    IGraphCollection,
-    IGraphInstance,
-    GraphQueryable,
-    IGraphQueryable,
-    GraphCollection,
-    GraphInstance,
-    IGraphConstructor,
-} from "./graphqueryable.js";
-
-export * from "./operations.js";
+export * from "./graphqueryable.js";
 
 export * from "./behaviors/consistency-level.js";
 export * from "./behaviors/defaults.js";

@@ -2,8 +2,6 @@ export * from "./spqueryable.js";
 
 export * from "./decorators.js";
 
-export * from "./operations.js";
-
 export {
     SPFI,
     spfi,

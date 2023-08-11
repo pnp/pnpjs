@@ -7,9 +7,8 @@ import {
     BookingCurrency as IBookingCurrencyEntity,
     BookingCustomQuestion as IBookingCustomQuestionEntity,
 } from "@microsoft/microsoft-graph-types";
-import { _GraphCollection, graphInvokableFactory, _GraphInstance } from "../graphqueryable.js";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance, graphPost } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
 import { body } from "@pnp/queryable";
 import { calendarView } from "./funcs.js";
 

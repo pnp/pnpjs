@@ -5,9 +5,10 @@ import {
     deleteable,
     spInvokableFactory,
     IDeleteable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { metadata } from "../utils/metadata.js";
 
 @defaultPath("fields")
