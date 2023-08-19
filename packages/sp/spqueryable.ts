@@ -149,20 +149,149 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
 export interface ISPQueryable<GetType = any> extends _SPQueryable<GetType> { }
 export const SPQueryable = spInvokableFactory<ISPQueryable>(_SPQueryable);
 
+
+/**
+ * Supported Odata Operators for SharePoint
+ *
+ */
+type FilterOperation = "eq" | "ne" | "gt" | "lt" | "startswith" | "endswith" | "substringof";
+
+/**
+* FilterField class for constructing OData filter operators
+*
+*/
+class FilterField<GetType> {
+    constructor(private parent: FilterBuilder<any>, private field: keyof any) {}
+
+    public equals(value: string | number): FilterBuilder<GetType> {
+        this.parent.addFilter(this.field as string, "eq", value);
+        return this.parent;
+    }
+
+    public notEquals(value: string | number): FilterBuilder<GetType> {
+        this.parent.addFilter(this.field, "ne", value);
+        return this.parent;
+    }
+
+    public greaterThan(value: number|Date): FilterBuilder<GetType> {
+        this.parent.addFilter(this.field, "gt", value);
+        return this.parent;
+    }
+
+    public lessThan(value: number|Date): FilterBuilder<GetType> {
+        this.parent.addFilter(this.field, "lt", value);
+        return this.parent;
+    }
+
+    public startsWith(value: string): FilterBuilder<GetType> {
+        this.parent.addFilter(this.field, "startswith", value);
+        return this.parent;
+    }
+
+    public endsWith(value: string): FilterBuilder<GetType> {
+        this.parent.addFilter(this.field, "endswith", value);
+        return this.parent;
+    }
+    public substringof(value: string): FilterBuilder<GetType> {
+        this.parent.addFilter(this.field, "substringof", value);
+        return this.parent;
+    }
+}
+
+/**
+ * FilterBuilder class for constructing OData filter queries
+ *
+ */
+export class FilterBuilder<GetType> {
+    private condition = "";
+
+    public field(field: keyof any): FilterField<GetType> {
+        return new FilterField<GetType>(this, field);
+    }
+
+    public and(filter: (builder: FilterBuilder<GetType>) => void): FilterBuilder<GetType> {
+        const previousCondition = this.condition;
+        filter(this);
+        const conditionInGroup = this.condition;
+        this.condition = `(${previousCondition} and ${conditionInGroup})`;
+        return this;
+    }
+
+    public or(filter: (builder: FilterBuilder<GetType>) => void): FilterBuilder<GetType> {
+        const previousCondition = this.condition;
+        filter(this);
+        const conditionInGroup = this.condition;
+        this.condition = `(${previousCondition} or ${conditionInGroup})`;
+        return this;
+    }
+
+    public addFilter(field: keyof GetType, operation: FilterOperation, value: string | number | Date): void {
+        switch(operation) {
+            case ("startswith" || "endswith"):
+                this.condition = `${operation}(${String(field)},${this.formatValue(value)})`;
+                break;
+            case "substringof":
+                this.condition = `${operation}(${this.formatValue(value)},${String(field)})}`;
+                break;
+            default:
+                this.condition = `${String(field)} ${operation} ${this.formatValue(value)}`;
+        }
+    }
+
+    private formatValue(value: string | number | object): string {
+        switch(typeof value){
+            case "string":
+                return `'${value}'`;
+            case "number":
+                return value.toString();
+            case "object":
+                if(value instanceof Date){
+                    const isoDate = value.toISOString();
+                    return `datetime'${isoDate}'`;
+                }
+                break;
+            default:
+                return `${value}`;
+        }
+    }
+
+    public build(): string {
+        return this.condition;
+    }
+}
+
 /**
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
 export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
-
+    private filterConditions: string[] = [];
     /**
      * Filters the returned collection (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#bk_supported)
      *
-     * @param filter The string representing the filter query
+     * @param filter The filter condition function
      */
-    public filter(filter: string): this {
-        this.query.set("$filter", filter);
+
+    public filter(filter: string | ((builder: FilterBuilder<GetType>) => void)): this {
+        if (typeof filter === "string") {
+            this.query.set("$filter", filter);
+        } else {
+            const filterBuilder = new FilterBuilder<GetType>();
+            filter(filterBuilder);
+            this.query.set("$filter", filterBuilder.build());
+        }
         return this;
+    }
+
+    // don't really need this.
+    public getFilterQuery(): string {
+        if (this.filterConditions.length === 0) {
+            return "";
+        } else if (this.filterConditions.length === 1) {
+            return `${this.filterConditions[0]}`;
+        } else {
+            return `${this.filterConditions.join(" and ")}`;
+        }
     }
 
     /**
