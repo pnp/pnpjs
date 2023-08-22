@@ -1,6 +1,6 @@
 name: 🐞 Bug or Error Report
 description: Submit a bug or error report.
-labels: ["type: something isn't working", "status: investigate"]
+labels: ["type: someting isn't working", "status: investigate"]
 
 body:
 - type: markdown
