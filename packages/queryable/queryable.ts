@@ -33,7 +33,7 @@ export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 @invokable()
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
-    // tracks any query paramters which will be appended to the request url
+    // tracks any query parameters which will be appended to the request url
     private _query: URLSearchParams;
 
     // tracks the current url for a given Queryable
@@ -52,7 +52,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         this._query = new URLSearchParams();
 
-        // add an intneral moment with specific implementaion for promise creation
+        // add an internal moment with specific implementation for promise creation
         this.moments[this.InternalPromise] = reduce<QueryablePromiseObserver>();
 
         let parent: Queryable<any>;
