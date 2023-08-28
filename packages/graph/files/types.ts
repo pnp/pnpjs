@@ -346,16 +346,6 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
     public async preview(previewOptions?: IPreviewOptions): Promise<IDriveItemPreviewInfo> {
         return graphPost(DriveItem(this, "preview"), body(previewOptions));
     }
-
-    // /**
-    //  * Method for getting item analytics. Defaults to lastSevenDays.
-    //  * @param analyticsOptions - IAnalyticsOptions (Optional)
-    //  * @returns IGraphCollection<IItemAnalytics>
-    //  */
-    // public analytics(analyticsOptions?: IAnalyticsOptions): IGraphCollection<IItemAnalytics> {
-    //     const query = `analytics/${analyticsOptions ? analyticsOptions.timeRange : "lastSevenDays"}`;
-    //     return <IGraphCollection<IItemAnalytics>>GraphCollection(this, query);
-    // }
 }
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }
 export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
