@@ -2,6 +2,7 @@ import { GraphFI } from "../fi.js";
 import { Sites, ISites } from "./types.js";
 
 import "./group.js";
+import "./user.js";
 
 export {
     ISites,

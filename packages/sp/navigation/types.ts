@@ -6,10 +6,11 @@ import {
     _SPQueryable,
     IDeleteable,
     ISPQueryable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { extractWebUrl } from "../index.js";
 import { combine } from "@pnp/core";
 

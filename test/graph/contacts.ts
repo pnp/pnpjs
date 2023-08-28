@@ -4,6 +4,8 @@ import "@pnp/graph/contacts";
 import { HttpRequestError } from "@pnp/queryable";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 
+// TODO:: make work with test recording
+
 describe("Contacts", function () {
 
     let testUserName = "";

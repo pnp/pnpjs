@@ -1,7 +1,6 @@
-import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphCollection, _GraphInstance, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
 import { body } from "@pnp/queryable";
 
 /**
@@ -9,7 +8,7 @@ import { body } from "@pnp/queryable";
  */
 @updateable()
 @deleteable()
-export class _Contact extends _GraphQueryableInstance<IContactType> { }
+export class _Contact extends _GraphInstance<IContactType> { }
 export interface IContact extends _Contact, IUpdateable<IContactType>, IDeleteable { }
 export const Contact = graphInvokableFactory<IContact>(_Contact);
 
@@ -18,7 +17,7 @@ export const Contact = graphInvokableFactory<IContact>(_Contact);
  */
 @defaultPath("contacts")
 @getById(Contact)
-export class _Contacts extends _GraphQueryableCollection<IContactType[]> {
+export class _Contacts extends _GraphCollection<IContactType[]> {
 
     /**
     * Create a new Contact for the user.
@@ -60,7 +59,7 @@ export const Contacts = graphInvokableFactory<IContacts>(_Contacts);
  */
 @deleteable()
 @updateable()
-export class _ContactFolder extends _GraphQueryableInstance<IContactFolderType> {
+export class _ContactFolder extends _GraphInstance<IContactFolderType> {
     /**
      * Gets the contacts in this contact folder
      */
@@ -83,7 +82,7 @@ export const ContactFolder = graphInvokableFactory<IContactFolder>(_ContactFolde
  */
 @defaultPath("contactFolders")
 @getById(ContactFolder)
-export class _ContactFolders extends _GraphQueryableCollection<IContactFolderType[]> {
+export class _ContactFolders extends _GraphCollection<IContactFolderType[]> {
 
     /**
      * Create a new Contact Folder for the user.

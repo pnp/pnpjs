@@ -1,10 +1,9 @@
 import { addProp } from "@pnp/queryable";
 import { _Item, Item } from "../items/types.js";
 import { Comments, IComments, ILikeData, ILikedByInformation, RatingValues } from "./types.js";
-import { spPost } from "../operations.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { combine } from "@pnp/core";
-import { SPQueryable } from "../spqueryable.js";
+import { SPQueryable, spPost } from "../spqueryable.js";
 
 declare module "../items/types" {
     interface _Item {

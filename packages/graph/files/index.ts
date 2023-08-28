@@ -10,6 +10,7 @@ export {
 
 export {
     ICheckInOptions,
+    encodeSharingUrl,
 } from "./funcs.js";
 
 export {
@@ -30,6 +31,7 @@ export {
     IDeltaItems,
     IPreviewOptions,
     IFileOptions,
+    IAnalyticsOptions,
 } from "./types.js";
 
 declare module "../fi" {

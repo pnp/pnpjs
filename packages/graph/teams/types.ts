@@ -1,7 +1,6 @@
-import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory, GraphQueryableInstance } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphInstance, graphPost } from "../graphqueryable.js";
 import { body, HeaderParse } from "@pnp/queryable";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
-import { graphPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
 import {
     Team as ITeamType,
@@ -16,7 +15,7 @@ import {
  */
 @defaultPath("team")
 @updateable()
-export class _Team extends _GraphQueryableInstance<ITeamType> {
+export class _Team extends _GraphInstance<ITeamType> {
 
     public get primaryChannel(): IChannel {
         return Channel(this, "primaryChannel");
@@ -95,7 +94,7 @@ export class _Team extends _GraphQueryableInstance<ITeamType> {
     }
 
     public getOperationById(id: string): Promise<ITeamsAsyncOperation> {
-        return GraphQueryableInstance(this, `operations/${id}`)();
+        return GraphInstance(this, `operations/${id}`)();
     }
 }
 export interface ITeam extends _Team, IUpdateable<ITeamType> { }
@@ -106,7 +105,7 @@ export const Team = graphInvokableFactory<ITeam>(_Team);
  */
 @defaultPath("teams")
 @getById(Team)
-export class _Teams extends _GraphQueryableCollection<ITeamType[]> {
+export class _Teams extends _GraphCollection<ITeamType[]> {
     public async create(team: ITeamType): Promise<ITeamCreateResultAsync> {
 
         const creator = Teams(this, null).using(HeaderParse());
@@ -130,7 +129,7 @@ export const Teams = graphInvokableFactory<ITeams>(_Teams);
 /**
  * Channel
  */
-export class _Channel extends _GraphQueryableInstance<IChannel> {
+export class _Channel extends _GraphInstance<IChannel> {
     public get tabs(): ITabs {
         return Tabs(this);
     }
@@ -147,7 +146,7 @@ export const Channel = graphInvokableFactory<IChannel>(_Channel);
  */
 @defaultPath("channels")
 @getById(Channel)
-export class _Channels extends _GraphQueryableCollection<IChannel[]> {
+export class _Channels extends _GraphCollection<IChannel[]> {
 
     /**
      * Creates a new Channel in the Team
@@ -176,7 +175,7 @@ export const Channels = graphInvokableFactory<IChannels>(_Channels);
 /**
  * Channel
  */
-export class _Message extends _GraphQueryableInstance<IChatMessage> { }
+export class _Message extends _GraphInstance<IChatMessage> { }
 export interface IMessage extends _Message { }
 export const Message = graphInvokableFactory<IMessage>(_Message);
 
@@ -185,7 +184,7 @@ export const Message = graphInvokableFactory<IMessage>(_Message);
  */
 @defaultPath("messages")
 @getById(Message)
-export class _Messages extends _GraphQueryableCollection<IChatMessage[]> {
+export class _Messages extends _GraphCollection<IChatMessage[]> {
 
     /**
      * Creates a new Channel in the Team
@@ -217,7 +216,7 @@ export const Messages = graphInvokableFactory<IMessages>(_Messages);
 @defaultPath("tab")
 @updateable()
 @deleteable()
-export class _Tab extends _GraphQueryableInstance { }
+export class _Tab extends _GraphInstance { }
 export interface ITab extends _Tab, IUpdateable, IDeleteable { }
 export const Tab = graphInvokableFactory<ITab>(_Tab);
 
@@ -226,7 +225,7 @@ export const Tab = graphInvokableFactory<ITab>(_Tab);
  */
 @defaultPath("tabs")
 @getById(Tab)
-export class _Tabs extends _GraphQueryableCollection {
+export class _Tabs extends _GraphCollection {
 
     /**
      * Adds a tab to the channel
@@ -292,7 +291,7 @@ export interface ITeamCreateResult {
  * InstalledApp
  */
 @deleteable()
-export class _InstalledApp extends _GraphQueryableInstance<ITeamsAppInstallation> {
+export class _InstalledApp extends _GraphInstance<ITeamsAppInstallation> {
     public upgrade(): Promise<void> {
         return graphPost(InstalledApp(this, "upgrade"));
     }
@@ -305,7 +304,7 @@ export const InstalledApp = graphInvokableFactory<IInstalledApp>(_InstalledApp);
  */
 @defaultPath("installedApps")
 @getById(InstalledApp)
-export class _InstalledApps extends _GraphQueryableCollection<ITeamsAppInstallation[]> {
+export class _InstalledApps extends _GraphCollection<ITeamsAppInstallation[]> {
 
     /**
      * Adds an installed app to the collection

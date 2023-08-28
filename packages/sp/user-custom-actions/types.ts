@@ -4,10 +4,11 @@ import {
     deleteable,
     _SPInstance,
     IDeleteable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { IBasePermissions } from "../security/index.js";
 
 @defaultPath("usercustomactions")

@@ -3,9 +3,9 @@ import * as path from "path";
 import * as fs from "fs";
 import findupSync from "findup-sync";
 import "@pnp/graph/users";
-import "@pnp/graph/drive";
+import "@pnp/graph/files";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
-import { IItemOptions } from "@pnp/graph/drive/types";
+import { IItemOptions } from "@pnp/graph/files/types";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));

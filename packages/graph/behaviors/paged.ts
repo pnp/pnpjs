@@ -1,6 +1,6 @@
-import { hOP, objectDefinedNotNull, stringIsNullOrEmpty, TimelinePipe } from "@pnp/core";
+import { hOP, stringIsNullOrEmpty, TimelinePipe } from "@pnp/core";
 import { errorCheck, parseODataJSON } from "@pnp/queryable";
-import { GraphQueryableCollection, IGraphQueryable, IGraphQueryableCollection } from "../graphqueryable.js";
+import { GraphCollection, IGraphQueryable, IGraphCollection } from "../graphqueryable.js";
 import { ConsistencyLevel } from "./consistency-level.js";
 
 export interface IPagedResult {
@@ -17,61 +17,14 @@ export interface IPagedResult {
  * @param col The collection to count
  * @returns number representing the count
  */
-export async function Count<T>(col: IGraphQueryableCollection<T>): Promise<number> {
+export async function Count<T>(col: IGraphCollection<T>): Promise<number> {
 
-    const q = GraphQueryableCollection(col).using(Paged(), ConsistencyLevel());
+    const q = GraphCollection(col).using(Paged(), ConsistencyLevel());
     q.query.set("$count", "true");
     q.top(1);
 
     const y: IPagedResult = await q();
     return y.count;
-}
-
-/**
- * Configures a collection query to returned paged results via async iteration
- *
- * @param col Collection forming the basis of the paged collection, this param is NOT modified
- * @returns A duplicate collection which will return paged results
- */
-export function AsAsyncIterable<T>(col: IGraphQueryableCollection<T>): AsyncIterable<T> {
-
-    const q = GraphQueryableCollection(col).using(Paged(), ConsistencyLevel());
-
-    const queryParams = ["$search", "$top", "$select", "$expand", "$filter", "$orderby"];
-
-    for (let i = 0; i < queryParams.length; i++) {
-        const param = col.query.get(queryParams[i]);
-        if (objectDefinedNotNull(param)) {
-            q.query.set(queryParams[i], param);
-        }
-    }
-
-    return {
-
-        [Symbol.asyncIterator]() {
-            return <AsyncIterator<T>>{
-
-                _next: q,
-
-                async next() {
-
-                    if (this._next === null) {
-                        return { done: true, value: undefined };
-                    }
-
-                    const result: IPagedResult = await this._next();
-
-                    if (result.hasNext) {
-                        this._next = GraphQueryableCollection([this._next, result.nextLink]);
-                        return { done: false, value: result.value };
-                    } else {
-                        this._next = null;
-                        return { done: false, value: result.value };
-                    }
-                },
-            };
-        },
-    };
 }
 
 /**

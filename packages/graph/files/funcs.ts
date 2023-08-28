@@ -1,6 +1,6 @@
 import { combine } from "@pnp/core";
 import { body, InjectHeaders } from "@pnp/queryable";
-import { graphPost, graphPut } from "../operations.js";
+import { graphPost, graphPut } from "../graphqueryable.js";
 import { DriveItem, IDriveItemAddResult, IFileOptions } from "./types.js";
 
 export interface ICheckInOptions {
@@ -14,6 +14,10 @@ export function checkIn(checkInOptions?: ICheckInOptions): Promise<void> {
 
 export function checkOut(): Promise<void> {
     return graphPost(DriveItem(this, "checkout"));
+}
+
+export function encodeSharingUrl(url: string): string {
+    return "u!" + Buffer.from(url, "utf8").toString("base64").replace(/=$/i, "").replace("/", "_").replace("+", "-");
 }
 
 export async function driveItemUpload(fileOptions: IFileOptions): Promise<IDriveItemAddResult> {

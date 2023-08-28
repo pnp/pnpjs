@@ -1,7 +1,7 @@
 import {
     ColumnDefinition as IColumnDefinition,
 } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable.js";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, getById, IGetById, IUpdateable, updateable } from "../decorators.js";
 
 /**
@@ -9,7 +9,7 @@ import { defaultPath, deleteable, IDeleteable, getById, IGetById, IUpdateable, u
  */
 @deleteable()
 @updateable()
-export class _Column extends _GraphQueryableInstance<IColumnDefinition> {}
+export class _Column extends _GraphInstance<IColumnDefinition> {}
 export interface IColumn extends _Column, IDeleteable, IUpdateable<IColumnDefinition> { }
 export const Column = graphInvokableFactory<IColumn>(_Column);
 
@@ -18,7 +18,7 @@ export const Column = graphInvokableFactory<IColumn>(_Column);
  */
 @defaultPath("columns")
 @getById(Column)
-export class _Columns extends _GraphQueryableCollection<IColumnDefinition[]>{}
+export class _Columns extends _GraphCollection<IColumnDefinition[]>{}
 export interface IColumns extends _Columns, IGetById<IColumn> { }
 export const Columns = graphInvokableFactory<IColumns>(_Columns);
 

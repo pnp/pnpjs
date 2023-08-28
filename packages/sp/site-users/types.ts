@@ -4,11 +4,12 @@ import {
     _SPInstance,
     IDeleteable,
     deleteable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { PrincipalType } from "../types.js";
 
 @defaultPath("siteusers")

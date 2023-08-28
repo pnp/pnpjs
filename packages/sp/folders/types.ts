@@ -9,11 +9,12 @@ import {
     ISPInstance,
     IDeleteableWithETag,
     ISPQueryable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { IItem, Item } from "../items/types.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath, IResourcePath } from "../utils/to-resource-path.js";
 import { encodePath } from "../utils/encode-path-str.js";

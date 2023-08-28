@@ -1,20 +1,20 @@
 import { body } from "@pnp/queryable";
 import { Notebook as INotebookType, Onenote as IOnenoteType, OnenoteSection as ISectionType, OnenotePage as IOnenotePageType } from "@microsoft/microsoft-graph-types";
 import {
-    GraphQueryableCollection,
-    _GraphQueryableInstance,
-    _GraphQueryableCollection,
-    IGraphQueryableCollection,
+    GraphCollection,
+    _GraphInstance,
+    _GraphCollection,
+    IGraphCollection,
     graphInvokableFactory,
+    graphPost,
 } from "../graphqueryable.js";
 import { defaultPath, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
 
 /**
  * Represents a onenote entity
  */
 @defaultPath("onenote")
-export class _OneNote extends _GraphQueryableInstance<IOnenoteType> {
+export class _OneNote extends _GraphInstance<IOnenoteType> {
 
     public get notebooks(): INotebooks {
         return Notebooks(this);
@@ -24,8 +24,8 @@ export class _OneNote extends _GraphQueryableInstance<IOnenoteType> {
         return Sections(this);
     }
 
-    public get pages(): IGraphQueryableCollection<IOnenotePageType[]> {
-        return GraphQueryableCollection(this, "pages");
+    public get pages(): IGraphCollection<IOnenotePageType[]> {
+        return GraphCollection(this, "pages");
     }
 }
 export interface IOneNote extends _OneNote {}
@@ -36,7 +36,7 @@ export const OneNote = graphInvokableFactory<IOneNote>(_OneNote);
  * Describes a notebook instance
  *
  */
-export class _Notebook extends _GraphQueryableInstance<INotebookType> {
+export class _Notebook extends _GraphInstance<INotebookType> {
     public get sections(): ISections {
         return Sections(this);
     }
@@ -50,7 +50,7 @@ export const Notebook = graphInvokableFactory<INotebook>(_Notebook);
  */
 @defaultPath("notebooks")
 @getById(Notebook)
-export class _Notebooks extends _GraphQueryableCollection<INotebookType[]> {
+export class _Notebooks extends _GraphCollection<INotebookType[]> {
     /**
      * Create a new notebook as specified in the request body.
      *
@@ -73,7 +73,7 @@ export const Notebooks = graphInvokableFactory<INotebooks>(_Notebooks);
 /**
  * Describes a sections instance
  */
-export class _Section extends _GraphQueryableInstance<ISectionType> { }
+export class _Section extends _GraphInstance<ISectionType> { }
 export interface ISection extends _Section { }
 export const Section = graphInvokableFactory<ISection>(_Section);
 
@@ -83,7 +83,7 @@ export const Section = graphInvokableFactory<ISection>(_Section);
  */
 @defaultPath("sections")
 @getById(Section)
-export class _Sections extends _GraphQueryableCollection<ISectionType[]> {
+export class _Sections extends _GraphCollection<ISectionType[]> {
     /**
      * Adds a new section
      *

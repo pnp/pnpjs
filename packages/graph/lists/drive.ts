@@ -1,7 +1,7 @@
-import { _Drive } from "../drive/types.js";
+import { _Drive } from "../files/types.js";
 import { List, IList } from "./types.js";
 
-declare module "../drive/types" {
+declare module "../files/types" {
     interface _Drive {
         getList: () => Promise<IList>;
     }

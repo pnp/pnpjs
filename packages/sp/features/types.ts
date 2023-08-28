@@ -3,9 +3,9 @@ import {
     _SPInstance,
     _SPCollection,
     spInvokableFactory,
+    spPost,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
 
 @defaultPath("features")
 export class _Features extends _SPCollection<IFeatureInfo[]> {

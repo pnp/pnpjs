@@ -32,7 +32,7 @@ const shareInfo = await graph.shares.getById(shareLink)();
 
 ## Access a Share's driveItem resource
 
-You can also access the full functionality of the driveItem via a share. Find [more details on the capabilities of driveItem here](./drive.md).
+You can also access the full functionality of the driveItem via a share. Find [more details on the capabilities of driveItem here](./files.md).
 
 ```TS
 import { graphfi } from "@pnp/graph";

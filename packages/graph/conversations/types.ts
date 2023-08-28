@@ -7,19 +7,20 @@ import {
     User as IUserType,
 } from "@microsoft/microsoft-graph-types";
 import {
-    _GraphQueryableCollection,
-    _GraphQueryableInstance,
+    _GraphCollection,
+    _GraphInstance,
     graphInvokableFactory,
+    graphPost,
+    graphDelete,
 } from "../graphqueryable.js";
 import { defaultPath, updateable, IUpdateable, deleteable, IDeleteable, addable, IAddable, getById, IGetById } from "../decorators.js";
-import { graphPost, graphDelete } from "../operations.js";
 
 /**
  * Conversation
  */
 @updateable()
 @deleteable()
-export class _Conversation extends _GraphQueryableInstance<IConversationType> {
+export class _Conversation extends _GraphInstance<IConversationType> {
 
     /**
      * Get all the threads in a group conversation.
@@ -37,7 +38,7 @@ export const Conversation = graphInvokableFactory<IConversation>(_Conversation);
 @defaultPath("conversations")
 @addable()
 @getById(Conversation)
-export class _Conversations extends _GraphQueryableCollection<IConversationType[]> { }
+export class _Conversations extends _GraphCollection<IConversationType[]> { }
 export interface IConversations extends _Conversations, IGetById<IConversation>, IAddable<IConversationType> { }
 export const Conversations = graphInvokableFactory<IConversations>(_Conversations);
 
@@ -45,7 +46,7 @@ export const Conversations = graphInvokableFactory<IConversations>(_Conversation
  * Thread
  */
 @deleteable()
-export class _Thread extends _GraphQueryableInstance {
+export class _Thread extends _GraphInstance {
 
     /**
      * Get all the threads in a group conversation.
@@ -72,7 +73,7 @@ export const Thread = graphInvokableFactory<IThread>(_Thread);
 @defaultPath("threads")
 @addable()
 @getById(Thread)
-export class _Threads extends _GraphQueryableCollection<IConversationThreadType[]> { }
+export class _Threads extends _GraphCollection<IConversationThreadType[]> { }
 export interface IThreads extends _Threads, IGetById<IThread>, IAddable<IConversationThreadType, { id: string }> { }
 export const Threads = graphInvokableFactory<IThreads>(_Threads);
 
@@ -81,7 +82,7 @@ export const Threads = graphInvokableFactory<IThreads>(_Threads);
  * Post
  */
 @deleteable()
-export class _Post extends _GraphQueryableInstance<IPostType> {
+export class _Post extends _GraphInstance<IPostType> {
     /**
      * Forward a post to a recipient
      */
@@ -107,14 +108,14 @@ export const Post = graphInvokableFactory<IPost>(_Post);
 @defaultPath("posts")
 @addable()
 @getById(Post)
-export class _Posts extends _GraphQueryableCollection<IPostType[]> { }
+export class _Posts extends _GraphCollection<IPostType[]> { }
 export interface IPosts extends _Posts, IGetById<IPost>, IAddable<IPostType> { }
 export const Posts = graphInvokableFactory<IPosts>(_Posts);
 
 /**
  * Senders
  */
-export class _Senders extends _GraphQueryableCollection<IUserType[]> {
+export class _Senders extends _GraphCollection<IUserType[]> {
 
     /**
      * Add a new user or group to this senders collection

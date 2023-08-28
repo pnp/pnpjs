@@ -5,12 +5,12 @@ import "@pnp/graph/sites";
 import "@pnp/graph/lists";
 import getTestingGraphSPSite from "./utilities/getTestingGraphSPSite.js";
 import { getRandomString } from "@pnp/core";
-import { graphPost, GraphQueryableCollection, IGraphQueryableCollection } from "@pnp/graph";
+import { graphPost, GraphCollection, IGraphCollection } from "@pnp/graph";
 import { body } from "@pnp/queryable";
 
 describe("Groups", function () {
 
-    let itemsCol: IGraphQueryableCollection;
+    let itemsCol: IGraphCollection;
 
     before(async function () {
 
@@ -26,7 +26,7 @@ describe("Groups", function () {
             list: { "template": "genericList" },
         });
 
-        itemsCol = GraphQueryableCollection(site.lists.getById(listInfo.data.id), "items");
+        itemsCol = GraphCollection(site.lists.getById(listInfo.data.id), "items");
 
         for (let i = 0; i < 11; i++) {
             await graphPost(itemsCol, body({
@@ -41,7 +41,7 @@ describe("Groups", function () {
 
         const allUsers = [];
 
-        for await (const users of this.pnp.graph.users.top(20).select("displayName").paged()) {
+        for await (const users of this.pnp.graph.users.top(20).select("displayName")) {
             allUsers.push(...users);
         }
 
@@ -56,7 +56,7 @@ describe("Groups", function () {
 
         const allGroups = [];
 
-        for await (const groups of this.pnp.graph.groups.top(20).select("displayName").paged()) {
+        for await (const groups of this.pnp.graph.groups.top(20).select("displayName")) {
             allGroups.push(...groups);
         }
 
@@ -74,7 +74,7 @@ describe("Groups", function () {
 
         const allItems = [];
 
-        for await (const items of itemsCol.paged()) {
+        for await (const items of itemsCol) {
             allItems.push(...items);
         }
 

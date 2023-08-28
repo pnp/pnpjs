@@ -1,7 +1,6 @@
 import { List as IListEntity } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable.js";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance, graphPost } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
 import { body } from "@pnp/queryable";
 
 /**
@@ -9,7 +8,7 @@ import { body } from "@pnp/queryable";
  */
 @deleteable()
 @updateable()
-export class _List extends _GraphQueryableInstance<IListEntity> {}
+export class _List extends _GraphInstance<IListEntity> { }
 export interface IList extends _List, IDeleteable, IUpdateable { }
 export const List = graphInvokableFactory<IList>(_List);
 
@@ -19,7 +18,7 @@ export const List = graphInvokableFactory<IList>(_List);
  */
 @defaultPath("lists")
 @getById(List)
-export class _Lists extends _GraphQueryableCollection<IListEntity[]>{
+export class _Lists extends _GraphCollection<IListEntity[]>{
     /**
      * Create a new list as specified in the request body.
      *

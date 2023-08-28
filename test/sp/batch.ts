@@ -288,7 +288,7 @@ describe("Batching", function () {
         expect(p2).to.eventually.be.fulfilled;
     }));
 
-    it("Should rebase objects to allow queries on returned objects", pnpTest("d9535bc2-c59a-49ba-8666-b3d80510aca5", async function () {
+    it("Should rebase objects to allow queries on returned objects", pnpTest("5e17585b-ce83-4fd0-8392-1132069b5503", async function () {
 
         const props = await this.props({
             listName: "BatchTestRebase",

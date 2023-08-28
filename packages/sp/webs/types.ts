@@ -11,11 +11,12 @@ import {
     deleteable,
     SPInit,
     ISPQueryable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { combine, isArray } from "@pnp/core";
 import { encodePath } from "../utils/encode-path-str.js";

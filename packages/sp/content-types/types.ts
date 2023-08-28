@@ -7,9 +7,10 @@ import {
     ISPCollection,
     deleteable,
     IDeleteable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 
 @defaultPath("contenttypes")
 export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
