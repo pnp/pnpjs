@@ -11,7 +11,7 @@ export interface IPagedResult {
 }
 
 /**
- * A function that will take a collection defining IGraphQueryableCollection and return the count of items
+ * A function that will take a collection defining IGraphCollection and return the count of items
  * in that collection. Not all Graph collections support Count.
  *
  * @param col The collection to count

@@ -31,7 +31,6 @@ export {
     IDeltaItems,
     IPreviewOptions,
     IFileOptions,
-    IAnalyticsOptions,
 } from "./types.js";
 
 declare module "../fi" {

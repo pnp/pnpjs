@@ -11,7 +11,7 @@ import {
     graphPost,
     graphPut,
 } from "../graphqueryable.js";
-import { Drive as IDriveType, DriveItem as IDriveItemType, ItemPreviewInfo as IDriveItemPreviewInfo, ItemAnalytics as IItemAnalytics } from "@microsoft/microsoft-graph-types";
+import { Drive as IDriveType, DriveItem as IDriveItemType, ItemPreviewInfo as IDriveItemPreviewInfo } from "@microsoft/microsoft-graph-types";
 import { combine } from "@pnp/core";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
 import { body, BlobParse, CacheNever, errorCheck, InjectHeaders } from "@pnp/queryable";
@@ -34,7 +34,7 @@ export class _Drive extends _GraphInstance<IDriveType> {
 
     /**
      * Method for retrieving the related list resource, for use with SharePoint drives.
-     * @returns IGraphQueryableInstance
+     * @returns IGraphInstance
      */
     public get list(): IGraphInstance {
         return GraphInstance(this, "list");
@@ -128,7 +128,7 @@ export class _Root extends _GraphInstance<IDriveItemType> {
     /**
      * Search drive for items matching the query
      * @param query string, search parameter
-     * @returns IGraphQueryableCollection
+     * @returns IGraphCollection
      */
     public search(query: string): IGraphCollection {
         return GraphCollection(this, `search(q='${query}')`);
@@ -136,7 +136,7 @@ export class _Root extends _GraphInstance<IDriveItemType> {
 
     /**
      * Method for retrieving thumbnails of the drive items.
-     * @returns IGraphQueryableCollection
+     * @returns IGraphCollection
      */
     public get thumbnails(): IGraphCollection {
         return GraphCollection(this, "thumbnails");
@@ -207,7 +207,7 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
 
     /**
      * Method for retrieving thumbnails of the drive items.
-     * @returns IGraphQueryableCollection
+     * @returns IGraphCollection
      */
     public get thumbnails(): IGraphCollection {
         return GraphCollection(this, "thumbnails");
@@ -346,17 +346,8 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
     public async preview(previewOptions?: IPreviewOptions): Promise<IDriveItemPreviewInfo> {
         return graphPost(DriveItem(this, "preview"), body(previewOptions));
     }
-
-    /**
-     * Method for getting item analytics. Defaults to lastSevenDays.
-     * @param analyticsOptions - IAnalyticsOptions (Optional)
-     * @returns IGraphQueryableCollection<IItemAnalytics>
-     */
-    public analytics(analyticsOptions?: IAnalyticsOptions): IGraphCollection<IItemAnalytics> {
-        const query = `analytics/${analyticsOptions ? analyticsOptions.timeRange : "lastSevenDays"}`;
-        return <IGraphCollection<IItemAnalytics>>GraphCollection(this, query);
-    }
 }
+
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }
 export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
 
@@ -477,8 +468,4 @@ export interface IDeltaItems {
     next: IGraphCollection<IDeltaItems>;
     delta: IGraphCollection<IDeltaItems>;
     values: any[];
-}
-
-export interface IAnalyticsOptions {
-    timeRange: "allTime" | "lastSevenDays";
 }

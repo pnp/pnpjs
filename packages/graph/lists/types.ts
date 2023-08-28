@@ -4,7 +4,7 @@ import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById,
 import { body } from "@pnp/queryable";
 
 /**
- * Represents a booking service entity
+ * Represents a list entity
  */
 @deleteable()
 @updateable()
@@ -13,14 +13,14 @@ export interface IList extends _List, IDeleteable, IUpdateable { }
 export const List = graphInvokableFactory<IList>(_List);
 
 /**
- * Describes a collection of booking service objects
+ * Describes a collection of list objects
  *
  */
-@defaultPath("services")
+@defaultPath("lists")
 @getById(List)
 export class _Lists extends _GraphCollection<IListEntity[]>{
     /**
-     * Create a new booking service as specified in the request body.
+     * Create a new list as specified in the request body.
      *
      * @param list  a JSON representation of a List object.
      */
