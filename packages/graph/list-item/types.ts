@@ -1,7 +1,6 @@
 import { ListItem as IListItemEntity, ListItemVersion as IListItemVersion } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance, IGraphQueryableCollection, GraphQueryableCollection } from "../graphqueryable.js";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance, IGraphCollection, GraphCollection, graphPost } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
-import { graphPost } from "../operations.js";
 import { body } from "@pnp/queryable";
 
 /**
@@ -9,13 +8,13 @@ import { body } from "@pnp/queryable";
  */
 @deleteable()
 @updateable()
-export class _ListItem extends _GraphQueryableInstance<IListItemEntity> {
+export class _ListItem extends _GraphInstance<IListItemEntity> {
     /**
      * Method for retrieving the versions of a list item.
      * @returns IListItemVersion
      */
-    public get versions(): IGraphQueryableCollection<IListItemVersion> {
-        return <any>GraphQueryableCollection(this, "versions");
+    public get versions(): IGraphCollection<IListItemVersion> {
+        return <any>GraphCollection(this, "versions");
     }
 }
 export interface IListItem extends _ListItem, IDeleteable, IUpdateable { }
@@ -27,7 +26,7 @@ export const ListItem = graphInvokableFactory<IListItem>(_ListItem);
  */
 @defaultPath("items")
 @getById(ListItem)
-export class _ListItems extends _GraphQueryableCollection<IListItemEntity[]>{
+export class _ListItems extends _GraphCollection<IListItemEntity[]>{
     /**
      * Create a new list item as specified in the request body.
      *

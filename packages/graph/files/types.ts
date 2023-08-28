@@ -34,7 +34,7 @@ export class _Drive extends _GraphInstance<IDriveType> {
 
     /**
      * Method for retrieving the related list resource, for use with SharePoint drives.
-     * @returns IGraphQueryableInstance
+     * @returns IGraphInstance
      */
     public get list(): IGraphInstance {
         return GraphInstance(this, "list");
