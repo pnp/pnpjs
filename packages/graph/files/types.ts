@@ -347,6 +347,7 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
         return graphPost(DriveItem(this, "preview"), body(previewOptions));
     }
 }
+
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }
 export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
 
