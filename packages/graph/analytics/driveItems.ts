@@ -1,5 +1,5 @@
 import { _DriveItem } from "../files/types.js";
-import { analytics } from "./types.js";
+import { analytics, IAnalyticsOptions } from "./types.js";
 import { ItemAnalytics as IItemAnalytics } from "@microsoft/microsoft-graph-types";
 
 declare module "../files/types" {
