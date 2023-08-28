@@ -469,7 +469,3 @@ export interface IDeltaItems {
     delta: IGraphCollection<IDeltaItems>;
     values: any[];
 }
-
-export interface IAnalyticsOptions {
-    timeRange: "allTime" | "lastSevenDays";
-}
