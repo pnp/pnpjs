@@ -1,6 +1,5 @@
 import { ItemAnalytics as IItemAnalytics } from "@microsoft/microsoft-graph-types";
-import { graphGet } from "../operations.js";
-import { GraphQueryable } from "../graphqueryable.js";
+import { GraphQueryable, graphGet } from "../graphqueryable.js";
 
 export interface IAnalyticsOptions {
     timeRange: "allTime" | "lastSevenDays";

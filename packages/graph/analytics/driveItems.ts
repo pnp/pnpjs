@@ -1,8 +1,8 @@
-import { _DriveItem } from "../drive/types.js";
-import { IAnalyticsOptions, analytics } from "./types.js";
+import { _DriveItem } from "../files/types.js";
+import { analytics } from "./types.js";
 import { ItemAnalytics as IItemAnalytics } from "@microsoft/microsoft-graph-types";
 
-declare module "../drive/types" {
+declare module "../files/types" {
     interface _DriveItem {
         analytics(analyticsOptions?: IAnalyticsOptions): Promise<IItemAnalytics>;
     }
