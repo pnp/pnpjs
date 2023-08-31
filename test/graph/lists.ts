@@ -7,7 +7,7 @@ import { getRandomString } from "@pnp/core";
 import getTestingGraphSPSite from "./utilities/getTestingGraphSPSite.js";
 import { pnpTest } from "../pnp-test.js";
 
-describe("Lists", function () {
+describe.only("Lists", function () {
     let site: ISite;
     const sampleList: List = {
         displayName: "PnPGraphTestList",
