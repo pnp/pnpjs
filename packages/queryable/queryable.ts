@@ -1,4 +1,4 @@
-import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, extendable, isArray, TimelinePipe, lifecycle, stringIsNullOrEmpty } from "@pnp/core";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, isArray, TimelinePipe, lifecycle, stringIsNullOrEmpty } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 
 export type QueryableConstructObserver = (this: IQueryableInternal, init: QueryableInit, path?: string) => void;
@@ -29,7 +29,6 @@ const DefaultMoments = {
 
 export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 
-@extendable()
 @invokable()
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
@@ -236,4 +235,53 @@ export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
     using(...behaviors: TimelinePipe[]): this;
     toRequestUrl(): string;
     toUrl(): string;
+}
+
+function ensureInit(method: string, init: RequestInit = { headers: {} }): RequestInit {
+
+    return { method, ...init, headers: { ...init.headers } };
+}
+
+export type Operation = <T = any>(this: IQueryableInternal, init?: RequestInit) => Promise<T>;
+
+export function get<T = any>(this: IQueryableInternal, init?: RequestInit): Promise<T> {
+    return this.start(ensureInit("GET", init));
+}
+
+export function post<T = any>(this: IQueryableInternal, init?: RequestInit): Promise<T> {
+    return this.start(ensureInit("POST", init));
+}
+
+export function put<T = any>(this: IQueryableInternal, init?: RequestInit): Promise<T> {
+    return this.start(ensureInit("PUT", init));
+}
+
+export function patch<T = any>(this: IQueryableInternal, init?: RequestInit): Promise<T> {
+    return this.start(ensureInit("PATCH", init));
+}
+
+export function del<T = any>(this: IQueryableInternal, init?: RequestInit): Promise<T> {
+    return this.start(ensureInit("DELETE", init));
+}
+
+export function op<T>(q: IQueryableInternal, operation: Operation, init?: RequestInit): Promise<T> {
+    return Reflect.apply(operation, q, [init]);
+}
+
+export function queryableFactory<InstanceType extends IQueryableInternal>(
+    constructor: { new(init: QueryableInit, path?: string): InstanceType },
+): (init: QueryableInit, path?: string) => InstanceType {
+
+    return (init: QueryableInit, path?: string) => {
+
+        // construct the concrete instance
+        const instance = new constructor(init, path);
+
+        // we emit the construct event from the factory because we need all of the decorators and constructors
+        // to have fully finished before we emit, which is now true. We type the instance to any to get around
+        // the protected nature of emit
+        (<any>instance).emit.construct(init, path);
+
+        return instance;
+    };
 }

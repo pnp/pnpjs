@@ -14,9 +14,34 @@ const ObjExtensionsSym = Symbol.for("PnPExt");
 const factoryExtensions: Map<string, ExtensionType[]> = new Map<string, ExtensionType[]>();
 
 /**
+ * Option 1
+ *
+ * just use it on individual objects, consumers make their own factory functions
+ * extend(object: any, extensions: ExtensionType)
+ *
+ * Option 2
+ *
+ * maintain some support for extending factories - but how are these applied later?
+ * that pattern needs to change
+ *
+ * Option 3
+ *
+ * leave it as a decorator, consumers subclass and tag (I don't like this)
+ *
+ * Option 4
+ *
+ * Ask the community if anyone cares. If not, punt them fully (kinda lame)
+ *
+ */
+
+
+
+
+
+
+/**
  * Decorator factory wrapping any tagged class in the extension proxy, enabling the use of object extensions
  *
- * @description MUST be applied last (i.e. be the first decorator in the list top to bottom applied to a class)
  *
  * @returns Decorator implementation
  */

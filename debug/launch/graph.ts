@@ -8,7 +8,12 @@ export async function Example(settings: any) {
 
   const graph = graphSetup(settings);
 
-  const users = await graph.users();
+  const ur = new URLSearchParams();
+  ur.set("$filter", "NOT groupTypes/any(c:c+eq+'Unified')");
+
+  const users = graph.users.filter("NOT groupTypes/any(c:c+eq+'Unified')");
+
+  const y = ur.toString();
 
   Logger.log({
     data: users,

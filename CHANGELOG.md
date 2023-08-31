@@ -38,6 +38,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- queryable
+  - moved add-props.ts and request-builders.ts to index.ts
+
 - graph
   - IGraphQueryableCollection now supports async iterator pattern
   - IGraphQueryableCollection count method now returns -1 if the collection does not support counting
