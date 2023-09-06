@@ -120,7 +120,7 @@ export class _TermSets extends _SPCollection<ITermSetInfo[]> {
      * @param props The set of properties
      * @returns The information on the create group
      */
-    public add(props: Partial<ITermSetCreateParams>): Promise<ITermGroupInfo> {
+    public add(props: Partial<ITermSetCreateParams>): Promise<ITermSetInfo> {
 
         return spPost(this, body(props));
     }
