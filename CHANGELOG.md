@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.18.0 - 2023-Sept-11
+
+- queryable
+  - missing .js extensions on 2 files.
+
 ## 3.17.0 - 2023-Jul-24
 
 - sp/graph

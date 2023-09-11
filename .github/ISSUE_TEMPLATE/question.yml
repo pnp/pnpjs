@@ -19,7 +19,7 @@ body:
       - 3.x
       - 2.x (No longer supported)
       - 1.x (No longer supported)
-    default: 3.x
+    default: 1
   validations:
     required: true
 - type: input
