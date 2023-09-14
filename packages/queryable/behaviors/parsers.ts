@@ -1,4 +1,4 @@
-import { Queryable } from "../queryable";
+import { Queryable } from "../queryable.js";
 import { hOP, TimelinePipe } from "@pnp/core";
 import { isFunc } from "@pnp/core";
 

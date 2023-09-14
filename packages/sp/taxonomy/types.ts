@@ -118,10 +118,9 @@ export class _TermSets extends _SPCollection<ITermSetInfo[]> {
     /**
      * Adds a new term set to this collection
      * @param props The set of properties
-     * @returns The information on the create group
+     * @returns The information on the created set
      */
-    public add(props: Partial<ITermSetCreateParams>): Promise<ITermGroupInfo> {
-
+    public add(props: Partial<ITermSetCreateParams>): Promise<ITermSetInfo> {
         return spPost(this, body(props));
     }
 }
