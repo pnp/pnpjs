@@ -268,9 +268,9 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new image field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.addImageField("My Field", { FieldTypeKind:FieldTypes.Image });
+const field: IFieldAddResult = await sp.web.fields.addImageField("My Field");
 // create a new image field called 'My Field' in the list 'My List'.
-const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.addImageField("My Field", { FieldTypeKind:FieldTypes.Image });
+const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.addImageField("My Field");
 
 // we can use this 'field' variable to run more queries on the field:
 const r = await field.field.select("Id")();

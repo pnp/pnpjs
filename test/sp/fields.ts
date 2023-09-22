@@ -66,7 +66,7 @@ describe("Fields", function () {
         });
         it("addImageField", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            const field = await this.pnp.sp.web.fields.addImageField(testFieldNameRand, { Group: testFieldGroup, FieldTypeKind:FieldTypes.Image });
+            const field = await this.pnp.sp.web.fields.addImageField(testFieldNameRand, { Group: testFieldGroup});
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
         it("addNumber", async function () {
