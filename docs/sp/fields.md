@@ -254,6 +254,31 @@ const r = await field.field.select("Id")();
 console.log(r.Id);
 ```
 
+### Add an Image Field
+
+Use the addImageField method to create a new image field.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import { IFieldAddResult, FieldTypes } from "@pnp/sp/fields/types";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/fields";
+
+const sp = spfi(...);
+
+// create a new image field called 'My Field' in web.
+const field: IFieldAddResult = await sp.web.fields.addImageField("My Field");
+// create a new image field called 'My Field' in the list 'My List'.
+const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.addImageField("My Field");
+
+// we can use this 'field' variable to run more queries on the field:
+const r = await field.field.select("Id")();
+
+// log the field Id to console
+console.log(r.Id);
+```
+
 ### Add a Multi-line Text Field
 
 Use the addMultilineText method to create a new multi-line text field.
