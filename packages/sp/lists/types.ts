@@ -384,7 +384,6 @@ export interface IListEnsureResult {
  * Specifies a Collaborative Application Markup Language (CAML) query on a list or joined lists.
  */
 export interface ICamlQuery {
-    
     /**
      * Gets or sets a value that indicates whether the query can return incremental results.
      */
