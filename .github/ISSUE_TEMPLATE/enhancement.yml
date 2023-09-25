@@ -1,0 +1,99 @@
+name: 🏗 Enhancement
+description: Suggest an enhancement
+labels: ["type: enhancement", "status: investigate"]
+
+body:
+- type: markdown
+  attributes:
+    value: |
+      This issue type is for suggesting or discussing enhancements to the library.
+
+      - Follow our guidance on [How To Create Good Issues](https://github.dev/juliemturner/pnpjs/wiki/How-to-Create-Good-Issues).
+      - Remember to include sufficient details and context.
+      - If you have multiple questions, suggestions, or bugs, please submit them in separate issues.
+- type: dropdown
+  attributes:
+    label: Target environment
+    options:
+      - All
+      - SharePoint Framework
+      - NodeJS
+      - Browser App (Hosted external to Microsoft 365 platform)
+      - other (enter in the "Additional environment details" area below)
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Additional environment details
+    description: Please describe the environment you're working in and how you're authenticating.
+    placeholder: |
+      I'm using NodeJS and certificate based MSAL for authentication.
+- type: textarea
+  attributes:
+    label: Enhancement Idea
+    description: Please included details to describe your situation, code fenced example code OR a link to a code snippet using GitHub or CodePen or the like to show how your code is structured and get you the right help more quickly.
+    placeholder: |
+      I'm struggling to get a list item. Here is the code I'm running. Can anyone help me figure out what's wrong?
+      
+      ```TypeScript
+      import { spfi } from "@pnp/sp";
+      import "@pnp/sp/webs";
+      import "@pnp/sp/lists";
+      import "@pnp/sp/items";
+
+      const sp = spfi(...);
+
+      // get all the items from a list
+      const items: any[] = await sp.web.lists.getByTitle("My List").items();
+      console.log(items);
+      ```
+=======
+name: 🏗 Enhancement
+description: Suggest an enhancement
+labels: ["type: enhancement", "status: investigate"]
+
+body:
+- type: markdown
+  attributes:
+    value: |
+      This issue type is for suggesting or discussing enhancements to the library.
+
+      - Follow our guidance on [How To Create Good Issues](https://github.dev/juliemturner/pnpjs/wiki/How-to-Create-Good-Issues).
+      - Remember to include sufficient details and context.
+      - If you have multiple questions, suggestions, or bugs, please submit them in separate issues.
+- type: dropdown
+  attributes:
+    label: Target environment
+    options:
+      - All
+      - SharePoint Framework
+      - NodeJS
+      - Browser App (Hosted external to Microsoft 365 platform)
+      - other (enter in the "Additional environment details" area below)
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Additional environment details
+    description: Please describe the environment you're working in and how you're authenticating.
+    placeholder: |
+      I'm using NodeJS and certificate based MSAL for authentication.
+- type: textarea
+  attributes:
+    label: Enhancement Idea
+    description: Please included details to describe your situation, code fenced example code OR a link to a code snippet using GitHub or CodePen or the like to show how your code is structured and get you the right help more quickly.
+    placeholder: |
+      I'm struggling to get a list item. Here is the code I'm running. Can anyone help me figure out what's wrong?
+      
+      ```TypeScript
+      import { spfi } from "@pnp/sp";
+      import "@pnp/sp/webs";
+      import "@pnp/sp/lists";
+      import "@pnp/sp/items";
+
+      const sp = spfi(...);
+
+      // get all the items from a list
+      const items: any[] = await sp.web.lists.getByTitle("My List").items();
+      console.log(items);
+      ```

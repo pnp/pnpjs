@@ -24,7 +24,7 @@ nav:
     - 'Selective Imports': 'concepts/selective-imports.md'
     - 'Typings': 'concepts/typings.md'
     - 'Using Behaviors': 'core/behaviors.md'
-    - 'Nightly Builds': 'concepts/nightly-builds.md'md'
+    - 'Nightly Builds': 'concepts/nightly-builds.md'
   - Packages:
     - Packages: 'packages.md'
     - azidjsclient:

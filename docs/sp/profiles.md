@@ -380,11 +380,11 @@ clientPeoplePickerResolveUser(queryParams: IClientPeoplePickerQueryParameters): 
 
 ```typescript
 const sp = spfi(...);
-const result = await sp.profiles.clientPeoplePickerSearchUser({
+const result = await sp.profiles.clientPeoplePickerResolveUser({
   AllowEmailAddresses: true,
   AllowMultipleEntities: false,
   MaximumEntitySuggestions: 25,
-  QueryString: 'John'
+  QueryString: 'mbowen@contoso.com'
 });
 ```
 

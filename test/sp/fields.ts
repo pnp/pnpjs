@@ -64,6 +64,11 @@ describe("Fields", function () {
             const field = await this.pnp.sp.web.fields.addText(testFieldNameRand, { Group: testFieldGroup });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         });
+        it("addImageField", async function () {
+            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const field = await this.pnp.sp.web.fields.addImageField(testFieldNameRand, { Group: testFieldGroup});
+            return expect(field.data.Title).to.be.equal(testFieldNameRand);
+        });
         it("addNumber", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await this.pnp.sp.web.fields.addNumber(testFieldNameRand, { Group: testFieldGroup });
