@@ -108,7 +108,7 @@ const user = await sp.web.currentUser();
 const r = await list.roleAssignments.add(user.Id, defs[0].Id);
 
 // remove a role assignment
-const { Id: fullRoleDefId } = await list.roleDefinitions.getByName('Full Control')();
+const { Id: fullRoleDefId } = await sp.web.roleDefinitions.getByName('Full Control')();
 const ras = await list.roleAssignments();
 // filter/find the role assignment you want to remove
 // here we just grab the first
