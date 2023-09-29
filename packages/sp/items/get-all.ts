@@ -30,7 +30,7 @@ _Items.prototype.getAll = async function <T = any>(this: _Items, requestSize = 2
     // $filter - allow setting a filter, though this may fail for large lists
     // $expand - allow expanding fields for filter/select support
     this.query.forEach((v: string, k: string) => {
-        if (/^\$select|filter|top|expand$/i.test(k)) {
+        if (/^\$select|filter|top|orderby|expand$/i.test(k)) {
             items.query.set(k, v);
         }
     });
