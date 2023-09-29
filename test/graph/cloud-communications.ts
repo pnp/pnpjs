@@ -28,8 +28,7 @@ describe("Cloud-Communications", function () {
     });
     
     it("Set User Presence", async function () {
-        //617b607f-48d8-4431-b708-3c06c8a4d8c7
-        const presence = await this.pnp.graph.users.getById("617b607f-48d8-4431-b708-3c06c8a4d8c7").presence.setPresence({
+        const presence = await this.pnp.graph.users.getById(testUserId).presence.setPresence({
             availability: "Busy",
             activity:"InACall",
             sessionId: sessionId,
@@ -39,7 +38,7 @@ describe("Cloud-Communications", function () {
     });
 
     it("Clear User Presence", async function () {
-        const presence = await this.pnp.graph.users.getById('617b607f-48d8-4431-b708-3c06c8a4d8c7').presence.clearPresence(sessionId);
+        const presence = await this.pnp.graph.users.getById(testUserId).presence.clearPresence(sessionId);
         return true; 
     });
 
@@ -53,7 +52,7 @@ describe("Cloud-Communications", function () {
     });
 
     it("Clear User Preferred Presence", async function () {
-        const presence = await this.pnp.graph.users.getById('617b607f-48d8-4431-b708-3c06c8a4d8c7').presence.clearPreferredPresence();
+        const presence = await this.pnp.graph.users.getById(testUserId).presence.clearPreferredPresence();
         return true;
     });
 
