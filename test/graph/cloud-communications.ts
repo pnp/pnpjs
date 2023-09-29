@@ -28,32 +28,44 @@ describe("Cloud-Communications", function () {
     });
     
     it("Set User Presence", async function () {
-        const presence = await this.pnp.graph.users.getById(testUserId).presence.setPresence({
+        return expect(this.pnp.graph.users.getById(testUserId).presence.setPresence({
             availability: "Busy",
             activity:"InACall",
             sessionId: sessionId,
             expirationDuration: "PT5M",
-        });
-        return expect(presence.availability).equals("Busy");
+        })).eventually.be.fulfilled;
     });
 
     it("Clear User Presence", async function () {
-        const presence = await this.pnp.graph.users.getById(testUserId).presence.clearPresence(sessionId);
-        return true; 
+        return expect(this.pnp.graph.users.getById(testUserId).presence.clearPresence(sessionId)).eventually.be.fulfilled;
     });
 
     it("Set User Preferred Presence", async function () {
-        const presence = await this.pnp.graph.users.getById(testUserId).presence.setPreferredPresence({
+        return expect(this.pnp.graph.users.getById(testUserId).presence.setPreferredPresence({
             availability: "Available",
             activity:"Available",
             expirationDuration: "PT5M",
-        });
-        return expect(presence.availability).equals("Available");
+        })).eventually.be.fulfilled;
     });
 
     it("Clear User Preferred Presence", async function () {
-        const presence = await this.pnp.graph.users.getById(testUserId).presence.clearPreferredPresence();
-        return true;
+        return expect(this.pnp.graph.users.getById(testUserId).presence.clearPreferredPresence()).eventually.be.fulfilled;
     });
 
+    it("Set User Status Message", async function () {
+        const date: Date = new Date();
+        date.setDate(date.getDate() + 1);
+
+        return expect(this.pnp.graph.users.getById(testUserId).presence.setStatusMessage({
+            message:{
+                content: "Test Sample Message",
+                contentType: "text"
+            },
+            expiryDateTime:{
+                dateTime: date.toISOString(),
+                timeZone: 'Pacific Standard Time'
+            }
+        })).eventually.be.fulfilled;
+    });
+    
 });

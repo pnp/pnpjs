@@ -1,5 +1,5 @@
 
-import { Presence as IUserPresence  } from "@microsoft/microsoft-graph-types";
+import { DateTimeTimeZone, Presence as IUserPresence, ItemBody  } from "@microsoft/microsoft-graph-types";
 import { _GraphCollection, graphInvokableFactory, _GraphInstance, graphPost } from "../graphqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { body } from "@pnp/queryable";
@@ -15,17 +15,17 @@ export class _Presence extends _GraphInstance<IUserPresence> {
      *
      * @param presence Presence object to set the state of a user's presence session
      */
-    public async setPresence(presence: ISetPresenceOptions): Promise<ISetPresenceOptions> {
+    public async setPresence(presence: ISetPresenceOptions): Promise<void> {
 
         const postBody = { ...presence };
         return graphPost(Presence(this, "setPresence"), body(postBody));
     }
 
     /**
-         * Clear application presence session of a user. If it is the user's only presence session, the user's presence will change to Offline/Offline.
-         *
-         * @param sessionId Id of the application to clear presence
-         */
+     * Clear application presence session of a user. If it is the user's only presence session, the user's presence will change to Offline/Offline.
+     *
+     * @param sessionId Id of the application to clear presence
+     */
     public async clearPresence(sessionId: string): Promise<void> {
 
         const postBody = { sessionId };
@@ -36,7 +36,7 @@ export class _Presence extends _GraphInstance<IUserPresence> {
      *
      * @param presence Presence object to set as preferred availbility and activity status of a user
      */
-    public async setPreferredPresence(presence: IPresenceOptions): Promise<IPresenceOptions> {
+    public async setPreferredPresence(presence: IPresenceOptions): Promise<void> {
 
         const postBody = { ...presence };
         return graphPost(Presence(this, "setUserPreferredPresence"), body(postBody));
@@ -47,6 +47,15 @@ export class _Presence extends _GraphInstance<IUserPresence> {
      */
     public async clearPreferredPresence(): Promise<void> {
         return graphPost(Presence(this, "clearUserPreferredPresence"));
+    }
+
+    /**
+     * Set a presence status message for a user
+     *
+     */
+    public async setStatusMessage(message: IPresenceStatusMessage): Promise<void> {
+        const postBody = { statusMessage: {...message} };
+        return graphPost(Presence(this, "setStatusMessage"), body(postBody));
     }
 
 }
@@ -75,4 +84,9 @@ export interface IPresenceOptions extends IUserPresence{
 
 export interface ISetPresenceOptions extends IPresenceOptions {
     sessionId: string;
+}
+
+export interface IPresenceStatusMessage {
+    message: ItemBody;
+    expiryDateTime: DateTimeTimeZone;
 }
