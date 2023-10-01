@@ -136,7 +136,7 @@ const h = await tl.go(0);
 const h2 = await tl.go(5);
 ```
 
-## Understanding the Timline Lifecycle
+## Understanding the Timeline Lifecycle
 
 Now that you implemented a simple timeline let's take a minute to understand the lifecycle of a timeline execution. There are four moments always defined for every timeline: init, dispose, log, and error. Of these init and dispose are used within the lifecycle, while log and error are used as you need.
 
