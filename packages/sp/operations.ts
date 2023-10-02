@@ -4,8 +4,8 @@ import { ISharePointQueryable } from "./sharepointqueryable.js";
 import { IFetchOptions, mergeOptions, objectDefinedNotNull, IRequestClient, isFunc, Runtime } from "@pnp/common";
 import { toAbsoluteUrl } from "./utils/toabsoluteurl.js";
 
-export function registerCustomRequestClientFactory(requestClientFactory: () => IRequestClient) {
-    httpClientFactory = isFunc(requestClientFactory) ? () => requestClientFactory : defaultFactory;
+export function registerCustomRequestClientFactory(requestClientFactory: (runtime: Runtime) => () => IRequestClient) {
+    httpClientFactory = isFunc(requestClientFactory) ? requestClientFactory : defaultFactory;
 }
 
 const defaultFactory = (runtime: Runtime) => () => new SPHttpClient(runtime);
