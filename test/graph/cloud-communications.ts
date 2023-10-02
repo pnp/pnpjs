@@ -26,7 +26,7 @@ describe("Cloud-Communications", function () {
         const presence = await this.pnp.graph.communications.getPresencesByUserId([testUserId,testUserId]);
         return expect(presence.length).is.equals(2);
     });
-    
+
     it("Set User Presence", async function () {
         return expect(this.pnp.graph.users.getById(testUserId).presence.setPresence({
             availability: "Busy",
@@ -59,13 +59,13 @@ describe("Cloud-Communications", function () {
         return expect(this.pnp.graph.users.getById(testUserId).presence.setStatusMessage({
             message:{
                 content: "Test Sample Message",
-                contentType: "text"
+                contentType: "text",
             },
             expiryDateTime:{
                 dateTime: date.toISOString(),
-                timeZone: 'Pacific Standard Time'
-            }
+                timeZone: "Pacific Standard Time",
+            },
         })).eventually.be.fulfilled;
     });
-    
+
 });

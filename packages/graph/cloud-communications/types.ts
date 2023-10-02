@@ -16,7 +16,6 @@ export class _Presence extends _GraphInstance<IUserPresence> {
      * @param presence Presence object to set the state of a user's presence session
      */
     public async setPresence(presence: ISetPresenceOptions): Promise<void> {
-
         const postBody = { ...presence };
         return graphPost(Presence(this, "setPresence"), body(postBody));
     }
@@ -27,7 +26,6 @@ export class _Presence extends _GraphInstance<IUserPresence> {
      * @param sessionId Id of the application to clear presence
      */
     public async clearPresence(sessionId: string): Promise<void> {
-
         const postBody = { sessionId };
         return graphPost(Presence(this, "clearPresence"), body(postBody));
     }
@@ -59,18 +57,17 @@ export class _Presence extends _GraphInstance<IUserPresence> {
     }
 
 }
-export interface IPresence extends _Presence { }
+export interface IPresence extends _Presence {}
 export const Presence = graphInvokableFactory<IPresence>(_Presence);
 
 @defaultPath("communications")
 export class _Communications extends _GraphCollection<IUserPresence[]> {
     /**
-     * Retrieve presence information for a group of users.
+     * Retrieve presence information for a group of users
      *
      * @param ids An array of user id's to retrieve presence for.
      */
     public async getPresencesByUserId(ids: string[]): Promise<IUserPresence[]> {
-
         const postBody = { ids };
         return graphPost(Communications(this, "getPresencesByUserId"), body(postBody));
     }
