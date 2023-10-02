@@ -8,6 +8,10 @@ export function registerCustomRequestClientFactory(requestClientFactory: () => I
     httpClientFactory = isFunc(requestClientFactory) ? () => requestClientFactory : defaultFactory;
 }
 
+export function registerCustomRequestClientFactoryWithRuntime(requestClientFactory: (runtime: Runtime) => () => IRequestClient) {
+    httpClientFactory = isFunc(requestClientFactory) ? requestClientFactory : defaultFactory;
+}
+
 const defaultFactory = (runtime: Runtime) => () => new SPHttpClient(runtime);
 let httpClientFactory: (runtime: Runtime) => () => IRequestClient = defaultFactory;
 
