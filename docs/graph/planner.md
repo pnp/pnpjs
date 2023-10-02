@@ -106,6 +106,20 @@ const updPlan = await graph.planner.plans.getById('planId').update({title: 'New 
 
 ```
 
+## Get All My Tasks from all plans
+
+Using the tasks() you can get the Tasks across all plans
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/planner";
+
+const graph = graphfi(...);
+
+const planTasks = await graph.me.tasks()
+
+```
+
 ## Get Task by Id
 
 Using the planner.tasks.getById() you can get a specific Task.
