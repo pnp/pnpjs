@@ -247,3 +247,18 @@ const graph = graphfi(...);
 const bucketTasks = await graph.planner.buckets.getById('bucketId').tasks();
 
 ```
+
+## Get Plans for a group
+
+Gets all the plans for a group
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/groups";
+import "@pnp/graph/planner";
+
+const graph = graphfi(...);
+
+const plans = await graph.groups.getById("b179a282-9f94-4bb5-a395-2a80de5a5a78").plans();
+
+```
