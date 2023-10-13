@@ -83,10 +83,22 @@ var newItem = await graph.sites.getById("{site identifier}").lists.getById("{lis
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/list-items";
 import "@pnp/graph/lists";
-import "@pnp/graph/documentSetVersions";
+
 const graph = graphfi(...);
-var item = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}")();
+var item = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions();
 var documentSetVersions = item.documentSetVersions();
+   
+```
+
+### Get Document Set Versions By Id
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/list-items";
+import "@pnp/graph/lists";
+
+const graph = graphfi(...);
+var documentSetVersion = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions.getById("{document set version id}");
    
 ```
 
@@ -96,10 +108,9 @@ var documentSetVersions = item.documentSetVersions();
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/list-items";
 import "@pnp/graph/lists";
-import "@pnp/graph/documentSetVersions";
 
 const graph = graphfi(...);
-var item = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions.add("New Comment");        
+var version = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions.add("New Comment");        
    
 ```
 
@@ -109,10 +120,9 @@ var item = await graph.sites.getById("{site identifier}").lists.getById("{list i
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/list-items";
 import "@pnp/graph/lists";
-import "@pnp/graph/documentSetVersions";
 
 const graph = graphfi(...);
-var item = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions.getById(1).restore();
+await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions.getById("{document set version id}").restore();
    
 ```
 
