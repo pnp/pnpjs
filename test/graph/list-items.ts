@@ -39,16 +39,6 @@ describe("List-Items", function () {
         if(list){
             await list.items.add({Title: `Item ${getRandomString(4)}`} as any);
             await list.items.add({Title: `Item ${getRandomString(4)}`} as any);
-        //  can't do  until Graph Drives is done.
-            /*  const documentSetCT = await site.contentTypes.getById("0x0120D520")();
-            await list.contentTypes.add(documentSetCT);
-            // create item
-            const itemData = await list.items.select("Id").top(1)<{ Id: number }[]>();
-            item = list.items.getById(itemData[0].Id?.toString());
-
-            // add document set version to item
-            item.documentSetVersions.add("Test");
-        */
         }
 
     });
