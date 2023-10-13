@@ -273,7 +273,7 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getByI
 
 ```
 
-## Add a new Tab
+## Add a new Tab to Channel
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -283,6 +283,34 @@ const graph = graphfi(...);
 
 const newTab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
 channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.add('Tab','https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a',<TabsConfiguration>{});
+
+```
+
+## Update a Tab
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const tab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
+channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getById('Id').update({
+    displayName: "New tab name"
+});
+
+```
+
+## Remove a Tab from channel
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const tab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
+channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getById('Id').delete();
 
 ```
 
