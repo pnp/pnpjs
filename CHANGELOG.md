@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.19.0 - 2023-Oct-16
+
+- sp
+  - Addresses #2762 - Adds orderby to getall's allowed query params.
+  - Addresses #2783 - Fixed a bug where the field type mapping was incorrect for adding image fields.
+  - Add AllowIncrementalResults parameter to the getItemsByCAMLQuery function.
+
+- graph
+  - Addresses #2789 - Fixes the typing on the sendmail method. It appears to be implemented incorrectly. Updated the sendMail definition to only take a Graph message Object.
+
 ## 3.18.0 - 2023-Sept-11
 
 - queryable
@@ -552,4 +562,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - config-store:
   - Dropped entire package.
-  
