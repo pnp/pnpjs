@@ -13,6 +13,7 @@ import {
     ChoiceFieldFormatType,
 } from "@pnp/sp/fields";
 import { getRandomString, getGUID } from "@pnp/core";
+import { pnpTest } from "../pnp-test.js";
 
 
 describe("Fields", function () {
@@ -32,28 +33,34 @@ describe("Fields", function () {
     describe("Web", function () {
         // Web Tests
 
-        it("getById", async function () {
+        it("getById", pnpTest("b5329930-2be1-4026-902a-9d91aa366362", async function () {
             return expect(this.pnp.sp.site.rootWeb.fields.getById(titleFieldId).select("Title")()).to.eventually.be.fulfilled;
-        });
+        }));
 
-        it("getByTitle", async function () {
+        it("getByTitle", pnpTest("58c24f33-5e86-4b80-b013-d001876dd540", async function () {
             const field = await this.pnp.sp.site.rootWeb.fields.getById(titleFieldId).select("Title")<{ Title: string }>();
             const field2 = await this.pnp.sp.site.rootWeb.fields.getByTitle(field.Title).select("Id")<{ Id: string }>();
             return expect(field2.Id).to.eq(titleFieldId);
-        });
-        it("getByInternalNameOrTitle", async function () {
+        }));
+
+        it("getByInternalNameOrTitle", pnpTest("22316017-8c38-4662-b57c-73c79b1d821f", async function () {
             const field = await this.pnp.sp.site.rootWeb.fields.getByInternalNameOrTitle("Other Address Country/Region").select("Title")<{ Title: string }>();
             return expect(field.Title).to.eq("Other Address Country/Region");
-        });
-        it("createFieldAsXml", async function () {
-            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
-            const testFieldId = getGUID();
-            const testFieldSchema = `<Field ID="{${testFieldId}}" \
-      Name="${testFieldNameRand}" DisplayName="${testFieldNameRand}" \
-      Type="Currency" Decimals="2" Min="0" Required="FALSE" Group="${testFieldGroup}" />`;
+        }));
+
+        it("createFieldAsXml", pnpTest("1ebfde07-317d-4107-bd42-addd4846cc0a", async function () {
+
+            const { name, id } = await this.props({
+                name: `${testFieldName}_${getRandomString(10)}`,
+                id: getGUID(),
+            });
+
+            const testFieldSchema = `<Field ID="{${id}}" Name="${name}" DisplayName="${name}" Type="Currency" Decimals="2" Min="0" Required="FALSE" Group="${testFieldGroup}" />`;
+
             const field = await this.pnp.sp.web.fields.createFieldAsXml(testFieldSchema);
             return expect(field).to.not.be.null;
-        });
+        }));
+
         it("add", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });

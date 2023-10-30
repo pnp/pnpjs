@@ -198,9 +198,9 @@ describe("stringIsNullOrEmpty", function () {
 
 describe("jsS", function () {
 
-    it("Sucess", function () {
+    it("Sucess", pnpTest("116d3a09-984f-4fc3-99b0-5b32835304b6", function () {
         expect(jsS({ test: true })).to.eq("{\"test\":true}");
-    });
+    }));
 
 });
 
