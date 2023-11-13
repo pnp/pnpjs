@@ -1,7 +1,6 @@
 import { ListItem as IListItemEntity, ListItemVersion as IListItemVersion, DocumentSetVersion as IDocumentSetVersionEntity } from "@microsoft/microsoft-graph-types";
 import { _GraphCollection, graphInvokableFactory, _GraphInstance, IGraphCollection, GraphCollection, graphPost } from "../graphqueryable.js";
-import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
-import { body } from "@pnp/queryable";
+import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById, addable, IAddable } from "../decorators.js";
 
 /**
  * Represents a list item entity
@@ -26,23 +25,10 @@ export const ListItem = graphInvokableFactory<IListItem>(_ListItem);
  */
 @defaultPath("items")
 @getById(ListItem)
-export class _ListItems extends _GraphCollection<IListItemEntity[]>{
-    /**
-     * Create a new list item as specified in the request body.
-     *
-     * @param listItem  a JSON representation of a List object.
-     */
-    public async add(listItem: IListItemEntity): Promise<IListItemAddResult> {
-        const data = await graphPost(this, body(listItem));
+@addable()
+export class _ListItems extends _GraphCollection<IListItemEntity[]>{}
 
-        return {
-            data,
-            list: (<any>this).getById(data.id),
-        };
-    }
-}
-
-export interface IListItems extends _ListItems, IGetById<IListItem> { }
+export interface IListItems extends _ListItems, IGetById<IListItem>, IAddable<IListItemEntity> { }
 export const ListItems = graphInvokableFactory<IListItems>(_ListItems);
 
 /**
@@ -67,34 +53,13 @@ export const DocumentSetVersion = graphInvokableFactory<IDocumentSetVersion>(_Do
  */
 @defaultPath("documentSetVersions")
 @getById(DocumentSetVersion)
-export class _DocumentSetVersions extends _GraphCollection<IDocumentSetVersionEntity[]>{
-    /**
-    * Create a new document set version as specified in the request body.
-    *
-    * @param comment a comment about the captured version
-    * @param shouldCaptureMinorVersion If true, minor versions of items are also captured; otherwise, only major versions will be captured.
-    *
-    */
-    public async add(comment: string, shouldCaptureMinorVersion = false): Promise<IDocumentSetVersionAddResult> {
-
-        const postBody = {
-            comment: comment,
-            shouldCaptureMinorVersion: shouldCaptureMinorVersion,
-        };
-        const data = await graphPost(this, body(postBody));
-
-        return {
-            data,
-            item: (<any>this).getById(data.id),
-        };
-    }
-}
-
-export interface IDocumentSetVersions extends _DocumentSetVersions, IGetById<IDocumentSetVersion> {}
+@addable()
+export class _DocumentSetVersions extends _GraphCollection<IDocumentSetVersionEntity[]>{}
+export interface IDocumentSetVersions extends _DocumentSetVersions, IGetById<IDocumentSetVersion>, IAddable<IDocumentSetVersionEntity>  {}
 export const DocumentSetVersions = graphInvokableFactory<IDocumentSetVersions>(_DocumentSetVersions);
 
 /**
- * IListAddResult
+ * IDocumentSetVersionAddResult
  */
 export interface IDocumentSetVersionAddResult {
     item: IDocumentSetVersion;

@@ -61,7 +61,7 @@ describe("List-Items", function () {
             },
         } as any);
 
-        return expect((itemAdded.data.id)).is.not.null;
+        return expect((itemAdded.id)).is.not.null;
     }));
 
     it("update", pnpTest("5766613a-51b8-4f88-ba0f-2436d160b86b", async function () {
@@ -82,7 +82,7 @@ describe("List-Items", function () {
                 title: getRandomString(5) + "Add",
             },
         } as any);
-        const r = await list.items.filter(`Id eq '${item.data.id}'`)();
+        const r = await list.items.filter(`Id eq '${item.id}'`)();
         return expect(r.length).to.eq(0);
     }));
 
@@ -99,7 +99,7 @@ describe("List-Items", function () {
     }));
 
     it.skip("documentSetVersions - add()", pnpTest("a192e096-fe84-4c2c-adc5-b1b9021c0031", async function () {
-        const documentSetVersion = await item.documentSetVersions.add("New Comment");
+        const documentSetVersion = await item.documentSetVersions.add({comment:"Test Comment"});
         return expect(documentSetVersion).to.not.be.null && expect(documentSetVersion).to.haveOwnProperty("id");
     }));
 

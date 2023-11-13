@@ -110,7 +110,7 @@ import "@pnp/graph/list-items";
 import "@pnp/graph/lists";
 
 const graph = graphfi(...);
-var version = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions.add("New Comment");        
+var version = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions.add({comment:"Test Comment", shouldCaptureMinorVersion: true});        
    
 ```
 
