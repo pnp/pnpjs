@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.20.0 - 2023-Nov-14
+
+- graph
+  - Addresses #2811 - Fixes the parameter object for the Chat Message Add method.
+  - Addresses #2825 - New utility method for converting to atob with stringification checks Updated Parser for Blobs
+
 ## 3.19.0 - 2023-Oct-16
 
 - sp
