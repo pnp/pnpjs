@@ -106,9 +106,8 @@ export function MSAL(options: MSALOptions): (instance: Queryable) => Queryable {
  *
  * @example Log out of an MSAL instance
  * ```ts
- * const username = "test@contoso.com";
- * const msalInstance = await getMSAL();
- * const currentAccount = msalInstance.getAccountByUsername(username);
+ * const msalInstance = getMSAL();
+ * const currentAccount = msalInstance.getActiveAccount();
  * msalInstance.logoutRedirect({ account: currentAccount });
  * ```
  */

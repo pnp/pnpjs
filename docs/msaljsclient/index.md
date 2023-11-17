@@ -39,8 +39,8 @@ const sp = spfi("https://tenant.sharepoint.com/sites/dev").using(SPBrowser(), MS
 const user = await sp.web.currentUser();
 
 // For logout later on
-const msalInstance = await getMSAL();
-const currentAccount = msalInstance.getAccountByUsername(user.Email);
+const msalInstance = getMSAL();
+const currentAccount = msalInstance.getActiveAccount();
 msalInstance.logoutPopup({ account: currentAccount });
 ```
 
