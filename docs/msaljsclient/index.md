@@ -6,28 +6,42 @@ You will first need to install the package:
 
 `npm install @pnp/msaljsclient --save`
 
-The configuration and authParams
+You may also need to install the MSAL library in typescript for future development with full type support:
+
+`npm install @azure/msal-browser --save-dev`
+
+The configuration
 
 ```TypeScript
+import type { MSALOptions } from "@pnp/msaljsclient";
 import { spfi, SPBrowser } from "@pnp/sp";
-import { MSAL } from "@pnp/msaljsclient";
+import { MSAL, getMSAL } from "@pnp/msaljsclient";
 import "@pnp/sp/webs";
 
-const configuation = {
-    auth: {
-        authority: "https://login.microsoftonline.com/common",
-        clientId: "{client id}",
+const options: MSALOptions = {
+    configuration: {
+        auth: {
+            authority: "https://login.microsoftonline.com/{tanent_id}/",
+            clientId: "{client id}",
+        },
+        cache: {
+            cacheLocation: "localStorage" // in order to avoid re-login after page refresh
+        }
+    },
+    authParams: {
+        forceRefresh: false,
+        scopes: ["https://{tenant}.sharepoint.com/.default"],
     }
 };
 
-const authParams = {
-    scopes: ["https://{tenant}.sharepoint.com/.default"],
-};
+const sp = spfi("https://tenant.sharepoint.com/sites/dev").using(SPBrowser(), MSAL(options));
 
-const sp = spfi("https://tenant.sharepoint.com/sites/dev").using(SPBrowser(), MSAL(configuration, authParams));
+const user = await sp.web.currentUser();
 
-const webData = await sp.web();
+// For logout later on
+const msalInstance = await getMSAL();
+const currentAccount = msalInstance.getAccountByUsername(user.Email);
+msalInstance.logoutPopup({ account: currentAccount });
 ```
 
 Please see more scenarios in the [authentication article](../concepts/authentication.md).
-
