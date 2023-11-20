@@ -14,6 +14,7 @@ import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IU
 import { body, BlobParse, CacheNever, errorCheck, InjectHeaders } from "@pnp/queryable";
 import { graphPatch, graphPost, graphPut } from "../operations.js";
 import { driveItemUpload } from "./funcs.js";
+import { AsPaged } from "../behaviors/paged.js";
 
 /**
  * Describes a Drive instance
@@ -149,17 +150,15 @@ export class _Root extends _GraphQueryableInstance<IDriveItemType> {
     public delta(token?: string): IGraphQueryableCollection<IDeltaItems> {
         const path = `delta${(token) ? `(token=${token})` : ""}`;
 
-        const query: IGraphQueryableCollection<IDeltaItems> = <any>GraphQueryableCollection(this, path);
+        const query = GraphQueryableCollection(this, path);
         query.on.parse.replace(errorCheck);
         query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
-
             const json = await response.json();
             const nextLink = json["@odata.nextLink"];
             const deltaLink = json["@odata.deltaLink"];
 
             result = {
-                // TODO:: update docs to show how to load next with async iterator
-                next: () => (nextLink ? GraphQueryableCollection([this, nextLink]) : null),
+                next: () => (nextLink ? AsPaged(GraphQueryableCollection([this, nextLink]))() : null),
                 delta: () => (deltaLink ? GraphQueryableCollection([query, deltaLink])() : null),
                 values: json.value,
             };
@@ -351,8 +350,8 @@ export class _DriveItem extends _GraphQueryableInstance<IDriveItemType> {
      * @returns IGraphQueryableCollection<IItemAnalytics>
      */
     public analytics(analyticsOptions?: IAnalyticsOptions): IGraphQueryableCollection<IItemAnalytics> {
-        const query = `analytics/${analyticsOptions ? analyticsOptions.timeRange : "lastSevenDays"}`;
-        return <IGraphQueryableCollection<IItemAnalytics>>GraphQueryableCollection(this, query);
+        const query = `analytics/${analyticsOptions?analyticsOptions.timeRange:"lastSevenDays"}`;
+        return GraphQueryableCollection(this, query);
     }
 }
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }
