@@ -577,16 +577,6 @@ const delta: IDeltaItems = await graph.users.getById("user@tenant.onmicrosoft.co
 
 // Get the changes for the drive items from token
 const delta: IDeltaItems = await graph.me.drive.root.delta("{token}")();
-
-// consume all the values using async iterator
-for await (const val of delta.next.paged()) {
-  console.log(JSON.stringify(val, null, 2));
-}
-
-// consume all the values using async iterator in pages of 20
-for await (const val of delta.next.top(20).paged()) {
-  console.log(JSON.stringify(val, null, 2));
-}
 ```
 
 ## Get Drive Item Analytics
