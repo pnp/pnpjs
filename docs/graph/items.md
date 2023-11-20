@@ -85,8 +85,7 @@ import "@pnp/graph/list-items";
 import "@pnp/graph/lists";
 
 const graph = graphfi(...);
-var item = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions();
-var documentSetVersions = item.documentSetVersions();
+var documentSetVersions = await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").items.getById("{item identifier}").documentSetVersions();
    
 ```
 
