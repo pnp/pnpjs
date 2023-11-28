@@ -109,14 +109,14 @@ describe("Behaviors", function () {
         const query = new Queryable("https://bing.com");
         query.using(BearerToken("!!token!!"));
 
-        query.on.send.replace((url, init) => {
+        query.on.send.replace(async (url, init) => {
 
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(init.headers).to.not.be.undefined.and.to.not.be.null;
 
             expect(init.headers).to.have.property("Authorization", "Bearer !!token!!");
 
-            return null;
+            return new Response({} as BodyInit, {});
         });
 
         query.on.parse.replace(async function (this: Queryable, url, response, result) {
@@ -137,7 +137,7 @@ describe("Behaviors", function () {
             "header2": "header2-value",
         }));
 
-        query.on.send.replace((url, init) => {
+        query.on.send.replace(async (url, init) => {
 
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(init.headers).to.not.be.undefined.and.to.not.be.null;
@@ -146,7 +146,7 @@ describe("Behaviors", function () {
 
             expect(init.headers).to.have.property("header2", "header2-value");
 
-            return null;
+            return new Response({} as BodyInit, {});
         });
 
         query.on.parse.replace(async function (this: Queryable, url, response, result) {
