@@ -5,7 +5,7 @@ import findupSync from "findup-sync";
 import "@pnp/graph/users";
 import "@pnp/graph/onedrive";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
-import { IAnalyticsOptions, IItemOptions } from "@pnp/graph/onedrive/types";
+import { IItemOptions } from "@pnp/graph/onedrive/types";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
