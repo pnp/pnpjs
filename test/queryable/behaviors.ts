@@ -8,6 +8,7 @@ import {
     Timeout,
     RejectOnError,
     ResolveOnData,
+    CacheKey,
 } from "@pnp/queryable";
 import { default as nodeFetch } from "node-fetch";
 import "@pnp/sp/webs";
@@ -24,9 +25,7 @@ describe("Behaviors", function () {
         }
 
         // Testing a behavior, creating new instance of sp
-        const spInstance = spfi(this.pnp._sp).using(CachingPessimisticRefresh({
-            store: "session",
-        }));
+        const spInstance = spfi(this.pnp._sp).using(CachingPessimisticRefresh({store: "session"}),CacheKey("CachingPessimistic"));
 
         // Test caching behavior
         const startCheckpoint = new Date();
@@ -53,9 +52,7 @@ describe("Behaviors", function () {
         }
 
         // Testing a behavior, creating new instance of sp
-        const spInstance = spfi(this.pnp._sp).using(CachingPessimisticRefresh({
-            store: "session",
-        }));
+        const spInstance = spfi(this.pnp._sp).using(CachingPessimisticRefresh({store: "session"}),CacheKey("CachingPessimisticHeaders"));
 
         // Add a text field, which augments header, to validate that CachingPessimisticRefresh execute function honors header
         const testFieldNameRand = `CachingPessimisticRefreshField_${getRandomString(10)}`;
@@ -87,7 +84,7 @@ describe("Behaviors", function () {
         }
 
         // Testing a behavior, creating new instance of sp
-        const spInstance = spfi(this.pnp._sp).using(Caching({ store: "session" }));
+        const spInstance = spfi(this.pnp._sp).using(Caching({ store: "session"}),CacheKey("Caching"));
 
         // Test caching behavior
         const startCheckpoint = new Date();
