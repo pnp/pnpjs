@@ -178,11 +178,8 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
                 log("Emitting send");
                 let response = await this.emit.send(requestUrl, init);
+                const responseRaw = response.clone();
                 log("Emitted send");
-
-                log("Emitting rawData");
-                this.emit.rawData(await response.clone().text());
-                log("Emitted rawData");
 
                 log("Emitting parse");
                 [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);
@@ -195,6 +192,11 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
                 log("Emitting data");
                 this.emit.data(result);
                 log("Emitted data");
+
+                log("Emitting rawData");
+                this.emit.rawData(await responseRaw.text());
+                log("Emitted rawData");
+
 
             } catch (e) {
 
