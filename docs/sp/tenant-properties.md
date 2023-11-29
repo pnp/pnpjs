@@ -27,9 +27,10 @@ await w.setStorageEntity("Test2", "Value 2", "description", "comments");
 This method can be used from any web to retrieve values previously set.
 
 ```TypeScript
-import { spfi, SPFx, IStorageEntity } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
+import { IStorageEntity } from "@pnp/sp/webs"; 
 
 const sp = spfi(...);
 
