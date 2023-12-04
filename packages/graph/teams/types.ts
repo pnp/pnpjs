@@ -180,7 +180,7 @@ export interface IMessage extends _Message { }
 export const Message = graphInvokableFactory<IMessage>(_Message);
 
 /**
- * Channels
+ * Messages
  */
 @defaultPath("messages")
 @getById(Message)
