@@ -1,3 +1,4 @@
+import "../appCatalog/index.js";
 import "../attachments/index.js";
 import "../calendars/index.js";
 import "../cloud-communications/index.js";
@@ -20,6 +21,7 @@ import "../subscriptions/index.js";
 import "../teams/index.js";
 import "../users/index.js";
 
+export * from "../appCatalog/index.js";
 export * from "../attachments/index.js";
 export * from "../calendars/index.js";
 export * from "../cloud-communications/index.js";
