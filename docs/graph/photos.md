@@ -25,6 +25,23 @@ const blobUrl = url.createObjectURL(photoValue);
 document.getElementById("photoElement").setAttribute("src", blobUrl);
 ```
 
+## Current User Photo by Size
+
+This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/photos";
+
+const graph = graphfi(...);
+
+const photoValue = await graph.me.photos.getBySize("48x48").getBlob();
+const url = window.URL || window.webkitURL;
+const blobUrl = url.createObjectURL(photoValue);
+document.getElementById("photoElement").setAttribute("src", blobUrl);
+```
+
 ## Current Group Photo
 
 This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js
@@ -37,6 +54,40 @@ import "@pnp/graph/photos";
 const graph = graphfi(...);
 
 const photoValue = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").photo.getBlob();
+const url = window.URL || window.webkitURL;
+const blobUrl = url.createObjectURL(photoValue);
+document.getElementById("photoElement").setAttribute("src", blobUrl);
+```
+
+## Current Group Photo by Size
+
+This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/groups";
+import "@pnp/graph/photos";
+
+const graph = graphfi(...);
+
+const photoValue = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").photos.getBySize("120x120").getBlob();
+const url = window.URL || window.webkitURL;
+const blobUrl = url.createObjectURL(photoValue);
+document.getElementById("photoElement").setAttribute("src", blobUrl);
+```
+
+## Current Team Photo
+
+This example shows the getBlob() endpoint, there is also a getBuffer() endpoint to support node.js
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+import "@pnp/graph/photos";
+
+const graph = graphfi(...);
+
+const photoValue = await graph.teams.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").photo.getBlob();
 const url = window.URL || window.webkitURL;
 const blobUrl = url.createObjectURL(photoValue);
 document.getElementById("photoElement").setAttribute("src", blobUrl);
@@ -67,5 +118,19 @@ const graph = graphfi(...);
 
 const input = <HTMLInputElement>document.getElementById("thefileinput");
 const file = input.files[0];
-await graph.me.photo.setContent(file);
+await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").photo.setContent(file);
+```
+
+## Set Team Photo
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+import "@pnp/graph/photos";
+
+const graph = graphfi(...);
+
+const input = <HTMLInputElement>document.getElementById("thefileinput");
+const file = input.files[0];
+await graph.teams.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").photo.setContent(file);
 ```
