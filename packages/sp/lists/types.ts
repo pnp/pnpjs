@@ -717,6 +717,11 @@ export interface IListItemFormUpdateValue {
      * Indicates whether there was an error result after validating the value for the field.
      */
     HasException?: boolean;
+
+    /**
+     * The ItemId
+     */
+    ItemId?: number;
 }
 
 /**
