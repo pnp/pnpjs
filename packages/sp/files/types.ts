@@ -543,7 +543,7 @@ export function fileFromServerRelativePath(base: ISPQueryable, serverRelativePat
  */
 export async function fileFromAbsolutePath(base: ISPQueryable, absoluteFilePath: string): Promise<IFile> {
 
-    const { WebFullUrl } = await File(this).using(BatchNever()).getContextInfo(absoluteFilePath);
+    const { WebFullUrl } = await File(base).using(BatchNever()).getContextInfo(absoluteFilePath);
     const { pathname } = new URL(absoluteFilePath);
     return fileFromServerRelativePath(File([base, combine(WebFullUrl, "_api/web")]), decodeURIComponent(pathname));
 }
