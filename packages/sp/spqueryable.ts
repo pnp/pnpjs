@@ -154,34 +154,19 @@ export const SPQueryable = spInvokableFactory<ISPQueryable>(_SPQueryable);
  *
  */
 export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
-    private filterConditions: string[] = [];
     /**
      * Filters the returned collection (https://msdn.microsoft.com/en-us/library/office/fp142385.aspx#bk_supported)
      *
      * @param filter The filter condition function
      */
 
-    public filter<T = any>(filter: string | ComparisonResult<T>): this {
+    public filter<T = any>(filter: string | ((builder: QueryableGroups<T>) => ComparisonResult<T>)): this {
         if (typeof filter === "string") {
             this.query.set("$filter", filter);
         } else {
-            this.query.set("$filter", filter.ToString());
-            // const filterBuilder = new FilterBuilder<GetType>();
-            // filter(filterBuilder);
-            // this.query.set("$filter", filterBuilder.build());
+            this.query.set("$filter", filter(new QueryableGroups<T>()).ToString());
         }
         return this;
-    }
-
-    // don't really need this.
-    public getFilterQuery(): string {
-        if (this.filterConditions.length === 0) {
-            return "";
-        } else if (this.filterConditions.length === 1) {
-            return `${this.filterConditions[0]}`;
-        } else {
-            return `${this.filterConditions.join(" and ")}`;
-        }
     }
 
     /**
@@ -307,37 +292,36 @@ class BaseQuery<TBaseInterface> {
     }
 }
 
-
 export const SPText = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, string>) => {
-    return new QueryableGroups<TBaseInterface>().TextField(InternalName);
+    return new QueryableGroups<TBaseInterface>().Text(InternalName);
 }
 
 export const SPChoice = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, string>) => {
-    return new QueryableGroups<TBaseInterface>().TextField(InternalName);
+    return new QueryableGroups<TBaseInterface>().Text(InternalName);
 }
 
 export const SPMultiChoice = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, string[]>) => {
-    return new QueryableGroups<TBaseInterface>().TextField(InternalName as any as KeysMatching<TBaseInterface, string>);
+    return new QueryableGroups<TBaseInterface>().Text(InternalName as any as KeysMatching<TBaseInterface, string>);
 }
 
 export const SPNumber = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, number>) => {
-    return new QueryableGroups<TBaseInterface>().NumberField(InternalName);
+    return new QueryableGroups<TBaseInterface>().Number(InternalName);
 }
 
 export const SPDate = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, Date>) => {
-    return new QueryableGroups<TBaseInterface>().DateField(InternalName);
+    return new QueryableGroups<TBaseInterface>().Date(InternalName);
 }
 
 export const SPBoolean = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, boolean>) => {
-    return new QueryableGroups<TBaseInterface>().BooleanField(InternalName);
+    return new QueryableGroups<TBaseInterface>().Boolean(InternalName);
 }
 
 export const SPLookup = <TBaseInterface, TKey extends KeysMatching<TBaseInterface, object>>(InternalName: TKey) => {
-    return new QueryableGroups<TBaseInterface>().LookupField(InternalName);
+    return new QueryableGroups<TBaseInterface>().Lookup(InternalName);
 }
 
-export const SPLookupId = <TBaseInterface, TKey extends KeysMatching<TBaseInterface, number>>(InternalName: TKey) => {
-    return new QueryableGroups<TBaseInterface>().LookupIdField(InternalName);
+export const SPLookupId = <TBaseInterface, TKey extends KeysMatching<TBaseInterface, number | object>>(InternalName: TKey) => {
+    return new QueryableGroups<TBaseInterface>().LookupId(InternalName);
 }
 
 export const SPAnd = <TBaseInterface>(queries: ComparisonResult<TBaseInterface>[]) => {
@@ -356,35 +340,35 @@ class QueryableFields<TBaseInterface> extends BaseQuery<TBaseInterface> {
         super(q);
     }
 
-    public TextField(InternalName: KeysMatching<TBaseInterface, string>): TextField<TBaseInterface> {
+    public Text(InternalName: KeysMatching<TBaseInterface, string>): TextField<TBaseInterface> {
         return new TextField<TBaseInterface>([...this.query, (InternalName as string)]);
     }
 
-    public ChoiceField(InternalName: KeysMatching<TBaseInterface, string>): TextField<TBaseInterface> {
+    public Choice(InternalName: KeysMatching<TBaseInterface, string>): TextField<TBaseInterface> {
         return new TextField<TBaseInterface>([...this.query, (InternalName as string)]);
     }
 
-    public MultiChoiceField(InternalName: KeysMatching<TBaseInterface, string[]>): TextField<TBaseInterface> {
+    public MultiChoice(InternalName: KeysMatching<TBaseInterface, string[]>): TextField<TBaseInterface> {
         return new TextField<TBaseInterface>([...this.query, (InternalName as string)]);
     }
 
-    public NumberField(InternalName: KeysMatching<TBaseInterface, number>): NumberField<TBaseInterface> {
+    public Number(InternalName: KeysMatching<TBaseInterface, number>): NumberField<TBaseInterface> {
         return new NumberField<TBaseInterface>([...this.query, (InternalName as string)]);
     }
 
-    public DateField(InternalName: KeysMatching<TBaseInterface, Date>): DateField<TBaseInterface> {
+    public Date(InternalName: KeysMatching<TBaseInterface, Date>): DateField<TBaseInterface> {
         return new DateField<TBaseInterface>([...this.query, (InternalName as string)]);
     }
 
-    public BooleanField(InternalName: KeysMatching<TBaseInterface, boolean>): BooleanField<TBaseInterface> {
+    public Boolean(InternalName: KeysMatching<TBaseInterface, boolean>): BooleanField<TBaseInterface> {
         return new BooleanField<TBaseInterface>([...this.query, (InternalName as string)]);
     }
 
-    public LookupField<TKey extends KeysMatching<TBaseInterface, object>>(InternalName: TKey): LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]> {
+    public Lookup<TKey extends KeysMatching<TBaseInterface, object>>(InternalName: TKey): LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]> {
         return new LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]>([...this.query], InternalName as string);
     }
 
-    public LookupIdField<TKey extends KeysMatching<TBaseInterface, number>>(InternalName: TKey): NumberField<TBaseInterface> {
+    public LookupId<TKey extends KeysMatching<TBaseInterface, number | object>>(InternalName: TKey): NumberField<TBaseInterface> {
         const col: string = (InternalName as string).endsWith("Id") ? InternalName as string : `${InternalName as string}Id`;
         return new NumberField<TBaseInterface>([...this.query, col]);
     }
@@ -425,25 +409,16 @@ class QueryableGroups<TBaseInterface> extends QueryableFields<TBaseInterface>{
     /**
      * @param queries An array of queries to be joined by AND
      */
-    public And(queries: ComparisonResult<TBaseInterface>[] | ((builder: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>)[]): ComparisonResult<TBaseInterface> {
-        let result: string[] = [];
-        if (Array.isArray(queries) && queries[0] instanceof ComparisonResult) {
-            result = queries.map(x => x.ToString());
-        } else {
-            result = queries.map(x => x(SPOData.Where<TBaseInterface>()).ToString());
-        }
+    public And(queries: ComparisonResult<TBaseInterface>[]): ComparisonResult<TBaseInterface> {
+        let result: string[] = queries.map(x => x.ToString());
         return new ComparisonResult<TBaseInterface>([`(${result.join(FilterJoinOperator.AndWithSpace)})`]);
     }
+
     /**
      * @param queries An array of queries to be joined by OR
      */
     public Or(queries: ComparisonResult<TBaseInterface>[] | ((builder: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>)[]): ComparisonResult<TBaseInterface> {
-        let result: string[] = [];
-        if (Array.isArray(queries) && queries[0] instanceof ComparisonResult) {
-            result = queries.map(x => x.ToString());
-        } else {
-            result = queries.map(x => x(SPOData.Where<TBaseInterface>()).ToString());
-        }
+        let result: string[] = queries.map(x => x.ToString());
         return new ComparisonResult<TBaseInterface>([`(${result.join(FilterJoinOperator.OrWithSpace)})`]);
     }
 }
