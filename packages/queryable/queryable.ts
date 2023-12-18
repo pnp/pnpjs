@@ -31,6 +31,7 @@ export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 
 @extendable()
 @invokable()
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
     // tracks any query parameters which will be appended to the request url
