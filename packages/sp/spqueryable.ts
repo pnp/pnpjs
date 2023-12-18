@@ -161,11 +161,11 @@ export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
      * @param filter The filter condition function
      */
 
-    public filter<T = any>(filter: string | ((builder: QueryableGroups<T>) => ComparisonResult<T>)): this {
+    public filter<T = any>(filter: string | ComparisonResult<T>): this {
         if (typeof filter === "string") {
             this.query.set("$filter", filter);
         } else {
-            this.query.set("$filter", filter(SPOData.Where<T>()).ToString());
+            this.query.set("$filter", filter.ToString());
             // const filterBuilder = new FilterBuilder<GetType>();
             // filter(filterBuilder);
             // this.query.set("$filter", filterBuilder.build());
@@ -308,6 +308,46 @@ class BaseQuery<TBaseInterface> {
 }
 
 
+export const SPText = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, string>) => {
+    return new QueryableGroups<TBaseInterface>().TextField(InternalName);
+}
+
+export const SPChoice = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, string>) => {
+    return new QueryableGroups<TBaseInterface>().TextField(InternalName);
+}
+
+export const SPMultiChoice = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, string[]>) => {
+    return new QueryableGroups<TBaseInterface>().TextField(InternalName as any as KeysMatching<TBaseInterface, string>);
+}
+
+export const SPNumber = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, number>) => {
+    return new QueryableGroups<TBaseInterface>().NumberField(InternalName);
+}
+
+export const SPDate = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, Date>) => {
+    return new QueryableGroups<TBaseInterface>().DateField(InternalName);
+}
+
+export const SPBoolean = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, boolean>) => {
+    return new QueryableGroups<TBaseInterface>().BooleanField(InternalName);
+}
+
+export const SPLookup = <TBaseInterface, TKey extends KeysMatching<TBaseInterface, object>>(InternalName: TKey) => {
+    return new QueryableGroups<TBaseInterface>().LookupField(InternalName);
+}
+
+export const SPLookupId = <TBaseInterface, TKey extends KeysMatching<TBaseInterface, number>>(InternalName: TKey) => {
+    return new QueryableGroups<TBaseInterface>().LookupIdField(InternalName);
+}
+
+export const SPAnd = <TBaseInterface>(queries: ComparisonResult<TBaseInterface>[]) => {
+    return new QueryableGroups<TBaseInterface>().And(queries);
+}
+
+export const SPOr = <TBaseInterface>(queries: ComparisonResult<TBaseInterface>[]) => {
+    return new QueryableGroups<TBaseInterface>().Or(queries);
+}
+
 /**
  * This class is used to build a query for a SharePoint list
  */
@@ -440,16 +480,16 @@ class ComparableField<TBaseInterface, TInputValueType> extends NullableField<TBa
         super(q);
     }
 
-    public EqualTo(value: TInputValueType): ComparisonResult<TBaseInterface> {
+    public Equals(value: TInputValueType): ComparisonResult<TBaseInterface> {
         return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.Equals, this.ToODataValue(value)]);
     }
 
-    public NotEqualTo(value: TInputValueType): ComparisonResult<TBaseInterface> {
+    public NotEquals(value: TInputValueType): ComparisonResult<TBaseInterface> {
         return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.NotEquals, this.ToODataValue(value)]);
     }
 
     public In(values: TInputValueType[]): ComparisonResult<TBaseInterface> {
-        return SPOData.Where<TBaseInterface>().Or(values.map(x => this.EqualTo(x)));
+        return SPOData.Where<TBaseInterface>().Or(values.map(x => this.Equals(x)));
     }
 }
 
