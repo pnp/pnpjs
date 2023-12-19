@@ -126,6 +126,11 @@ describe("Admin", function () {
             return expect(healthOverviews).to.be.an("array");
         }));
 
+        it("Get Health By Service Name", pnpTest("f06cd76b-3a61-4728-ba5e-f97bb6e718a8", async function  () {
+            const serviceHealth = await this.pnp.graph.admin.serviceAnnouncements.healthOverviews.getByName("Microsoft 365 suite")();
+            return expect(serviceHealth).has.property("id");
+        }));
+
         it("Get Health Issues", pnpTest("6b04e99e-dcbb-48ee-87c2-4d17b1fad12d", async function  () {
             const issues = await this.pnp.graph.admin.serviceAnnouncements.issues();
             return expect(issues).to.be.an("array");

@@ -162,7 +162,7 @@ import "@pnp/graph/admin";
 
 const graph = graphfi(...);
 
-const profilePropertyDelete = await graph.admin.people.profileCardProperties.getById("CustomAttribute1").delete();
+await graph.admin.people.profileCardProperties.getById("CustomAttribute1").delete();
 
 ```
 ## Service Announcements
@@ -178,6 +178,19 @@ import "@pnp/graph/admin";
 const graph = graphfi(...);
 
 const healthOverviews = await graph.admin.serviceAnnouncements.healthOverviews();
+
+```
+### Get Service Health By Name
+
+Retrieves the service health report for a tenant
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/admin";
+
+const graph = graphfi(...);
+
+const serviceHealth = await graph.admin.serviceAnnouncements.healthOverviews.getByName("Microsoft 365 suite")();
 
 ```
 ### Get Health Issues

@@ -6,7 +6,7 @@ import {
     ServiceHealthIssue as IServiceHealthIssueType,
     ServiceUpdateMessage as IServiceMessageType,
 } from "@microsoft/microsoft-graph-types";
-import { IGetById, defaultPath, getById, getByName } from "../decorators.js";
+import { IGetById, IGetByName, defaultPath, getById, getByName } from "../decorators.js";
 import { body } from "@pnp/queryable";
 
 /**
@@ -41,7 +41,7 @@ export const ServiceHealth = graphInvokableFactory<IServiceHealth>(_ServiceHealt
 @defaultPath("healthOverviews")
 @getByName(ServiceHealth)
 export class _HealthOverviews extends _GraphCollection<IServiceHealthType[]> { }
-export interface IHealthOverviews extends _HealthOverviews { }
+export interface IHealthOverviews extends _HealthOverviews, IGetByName<IServiceHealth> { }
 export const HealthOverviews = graphInvokableFactory<IHealthOverviews>(_HealthOverviews);
 
 /**
