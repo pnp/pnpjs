@@ -106,6 +106,20 @@ const updPlan = await graph.planner.plans.getById('planId').update({title: 'New 
 
 ```
 
+## Get All My Tasks from all plans
+
+Using the tasks() you can get the Tasks across all plans
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/planner";
+
+const graph = graphfi(...);
+
+const planTasks = await graph.me.tasks()
+
+```
+
 ## Get Task by Id
 
 Using the planner.tasks.getById() you can get a specific Task.
@@ -245,5 +259,20 @@ import "@pnp/graph/planner";
 const graph = graphfi(...);
 
 const bucketTasks = await graph.planner.buckets.getById('bucketId').tasks();
+
+```
+
+## Get Plans for a group
+
+Gets all the plans for a group
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/groups";
+import "@pnp/graph/planner";
+
+const graph = graphfi(...);
+
+const plans = await graph.groups.getById("b179a282-9f94-4bb5-a395-2a80de5a5a78").plans();
 
 ```

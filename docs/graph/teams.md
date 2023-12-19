@@ -3,7 +3,9 @@
 The ability to manage Team is a capability introduced in the 1.2.7 of @pnp/graph. Through the methods described
 you can add, update and delete items in Teams.
 
-## Teams the user is a member of
+## Teams
+
+### Teams the user is a member of
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -18,7 +20,7 @@ const myJoinedTeams = await graph.me.joinedTeams();
 
 ```
 
-## Get Teams by Id
+### Get Teams by Id
 
 Using the teams.getById() you can get a specific Team.
 
@@ -31,12 +33,12 @@ const graph = graphfi(...);
 const team = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528')();
 ```
 
-## Create new Team/Group - Method #1
+### Create new Team/Group - Method #1
 
 The first way to create a new Team and corresponding Group is to first create the group and then create the team.
 Follow the example in Groups to create the group and get the GroupID. Then make a call to create the team from the group.
 
-## Create a Team via a specific group
+### Create a Team via a specific group
 
 Here we get the group via id and use `createTeam`
 
@@ -61,7 +63,7 @@ const createdTeam = await graph.groups.getById('679c8ff4-f07d-40de-b02b-60ec3324
 }});
 ```
 
-## Create new Team/Group - Method #2
+### Create new Team/Group - Method #2
 
 The second way to create a new Team and corresponding Group is to do so in one call. This can be done by using the createTeam method.
 
@@ -89,7 +91,7 @@ const createdTeam: ITeamCreateResultAsync = await graph.teams.create(team);
 const createdTeamStatus = await graph.teams.getById(createdTeam.teamId).getOperationById(createdTeam.operationId);
 ```
 
-## Clone a Team
+### Clone a Team
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -102,7 +104,7 @@ const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82265
 
 ```
 
-## Get Teams Async Operation
+### Get Teams Async Operation
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -115,7 +117,7 @@ const clonedTeam = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82265
 const clonedTeamStatus = await graph.teams.getById(clonedTeam.teamId).getOperationById(clonedTeam.operationId);
 ```
 
-## Archive a Team
+### Archive a Team
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -126,7 +128,7 @@ const graph = graphfi(...);
 const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').archive();
 ```
 
-## Unarchive a Team
+### Unarchive a Team
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -137,7 +139,7 @@ const graph = graphfi(...);
 const archived = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').unarchive();
 ```
 
-## Get all channels of a Team
+### Get all channels of a Team
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -148,7 +150,7 @@ const graph = graphfi(...);
 const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels();
 ```
 
-## Get primary channel
+### Get primary channel
 
 Using the teams.getById() you can get a specific Team.
 
@@ -160,7 +162,7 @@ const graph = graphfi(...);
 const channel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').primaryChannel();
 ```
 
-## Get channel by Id
+### Get channel by Id
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -172,7 +174,7 @@ const channel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528'
 
 ```
 
-## Create a new Channel
+### Create a new Channel
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -183,7 +185,7 @@ const newChannel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82265
 
 ```
 
-## List Messages
+### List Messages
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -194,7 +196,7 @@ const graph = graphfi(...);
 const chatMessages = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').messages();
 ```
 
-## Add chat message to Channel
+### Add chat message to Channel
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -211,7 +213,7 @@ const message = {
 const chatMessage: ChatMessage = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').messages.add(message);
 ```
 
-## Get installed Apps
+### Get installed Apps
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -223,7 +225,7 @@ const installedApps = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82
 
 ```
 
-## Add an App
+### Add an App
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -235,7 +237,7 @@ const addedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 
 ```
 
-## Remove an App
+### Remove an App
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -247,7 +249,7 @@ const removedApp = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82265
 
 ```
 
-## Get Tabs from a Channel
+### Get Tabs from a Channel
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -260,7 +262,7 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs();
 
 ```
 
-## Get Tab by Id
+### Get Tab by Id
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -273,7 +275,7 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getByI
 
 ```
 
-## Add a new Tab
+### Add a new Tab to Channel
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -286,8 +288,91 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.add('T
 
 ```
 
-## Team Membership
+### Update a Tab
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const tab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
+channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getById('Id').update({
+    displayName: "New tab name"
+});
+
+```
+
+### Remove a Tab from channel
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const tab = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').
+channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getById('Id').delete();
+
+```
+
+### Team Membership
 
 Get the members and/or owners of a group.
 
 See [Groups](./groups.md)
+
+
+## Users
+
+
+### Get installed Apps
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const installedApps = await graph.me.installedApps();
+const installedAppsForUsers = await graph.users('user@contoso.com').installedApps();
+
+```
+### Get an App
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const addedApp = await graph.me.installedApps.getById('NWI2NDk4MzQtNzQxMi00Y2NlLTllNjktMTc2ZTk1YTM5NGY1IyNhNmI2MzM2NS0zMWE0LTRmNDMtOTJlYy03MTBiNzE1NTdhZjk')();
+
+```
+
+### Add an App
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const addedApp = await graph.me.installedApps.add('https://graph.microsoft.com/v1.0/appCatalogs/teamsApps/12345678-9abc-def0-123456789a');
+
+```
+
+### Remove an App
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const removedApp = await graph.me.installedApps.getById('NWI2NDk4MzQtNzQxMi00Y2NlLTllNjktMTc2ZTk1YTM5NGY1IyNhNmI2MzM2NS0zMWE0LTRmNDMtOTJlYy03MTBiNzE1NTdhZjk').delete();
+
+```

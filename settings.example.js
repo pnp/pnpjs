@@ -39,6 +39,7 @@ export const settings = {
                 // set your scopes as needed here
                 scopes: ["https://{tenant}.sharepoint.com/.default"]
             },
+            testWebUrl:"{ site collection for testing }"
         },
         // all are optional if using msal
         graph: {

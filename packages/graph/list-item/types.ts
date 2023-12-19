@@ -1,7 +1,6 @@
-import { ListItem as IListItemEntity, ListItemVersion as IListItemVersion } from "@microsoft/microsoft-graph-types";
+import { ListItem as IListItemEntity, ListItemVersion as IListItemVersion, DocumentSetVersion as IDocumentSetVersionEntity } from "@microsoft/microsoft-graph-types";
 import { _GraphCollection, graphInvokableFactory, _GraphInstance, IGraphCollection, GraphCollection, graphPost } from "../graphqueryable.js";
-import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
-import { body } from "@pnp/queryable";
+import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById, addable, IAddable } from "../decorators.js";
 
 /**
  * Represents a list item entity
@@ -17,7 +16,7 @@ export class _ListItem extends _GraphInstance<IListItemEntity> {
         return <any>GraphCollection(this, "versions");
     }
 }
-export interface IListItem extends _ListItem, IDeleteable, IUpdateable { }
+export interface IListItem extends _ListItem, IDeleteable, IUpdateable {}
 export const ListItem = graphInvokableFactory<IListItem>(_ListItem);
 
 /**
@@ -26,24 +25,46 @@ export const ListItem = graphInvokableFactory<IListItem>(_ListItem);
  */
 @defaultPath("items")
 @getById(ListItem)
-export class _ListItems extends _GraphCollection<IListItemEntity[]>{
-    /**
-     * Create a new list item as specified in the request body.
-     *
-     * @param listItem  a JSON representation of a List object.
-     */
-    public async add(listItem: IListItemEntity): Promise<IListItemAddResult> {
-        const data = await graphPost(this, body(listItem));
+@addable()
+export class _ListItems extends _GraphCollection<IListItemEntity[]>{}
 
-        return {
-            data,
-            list: (<any>this).getById(data.id),
-        };
+export interface IListItems extends _ListItems, IGetById<IListItem>, IAddable<IListItemEntity> { }
+export const ListItems = graphInvokableFactory<IListItems>(_ListItems);
+
+/**
+ * Represents a document set version
+ */
+@deleteable()
+export class _DocumentSetVersion extends _GraphInstance<IDocumentSetVersionEntity> {
+    /**
+     * Restore a document set version
+     *
+     */
+    public async restore(): Promise<void> {
+        return graphPost(DocumentSetVersion(this, "restore"));
     }
 }
+export interface IDocumentSetVersion extends _DocumentSetVersion, IDeleteable { }
+export const DocumentSetVersion = graphInvokableFactory<IDocumentSetVersion>(_DocumentSetVersion);
 
-export interface IListItems extends _ListItems, IGetById<IListItem> { }
-export const ListItems = graphInvokableFactory<IListItems>(_ListItems);
+/**
+ * Describes a collection of document set versions
+ *
+ */
+@defaultPath("documentSetVersions")
+@getById(DocumentSetVersion)
+@addable()
+export class _DocumentSetVersions extends _GraphCollection<IDocumentSetVersionEntity[]>{}
+export interface IDocumentSetVersions extends _DocumentSetVersions, IGetById<IDocumentSetVersion>, IAddable<IDocumentSetVersionEntity>  {}
+export const DocumentSetVersions = graphInvokableFactory<IDocumentSetVersions>(_DocumentSetVersions);
+
+/**
+ * IDocumentSetVersionAddResult
+ */
+export interface IDocumentSetVersionAddResult {
+    item: IDocumentSetVersion;
+    data: IDocumentSetVersionEntity;
+}
 
 /**
  * IListAddResult
