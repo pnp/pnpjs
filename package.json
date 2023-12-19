@@ -7,7 +7,7 @@
     "devDependencies": {
         "@azure/identity": "3.3.0",
         "@azure/msal-node": "1.18.3",
-        "@microsoft/microsoft-graph-types": "2.38.0",
+        "@microsoft/microsoft-graph-types": "2.40.0",
         "@pnp/buildsystem": "3.1.0",
         "@types/chai": "4.3.6",
         "@types/chai-as-promised": "7.1.6",
