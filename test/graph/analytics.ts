@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "@pnp/graph/users";
-import "@pnp/graph/drive";
+import "@pnp/graph/files";
 import "@pnp/graph/sites";
 import "@pnp/graph/lists";
 import "@pnp/graph/list-item";
