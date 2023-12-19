@@ -244,6 +244,19 @@ export interface IDeleteableWithETag {
     delete(eTag?: string): Promise<void>;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 type KeysMatching<T, V> = { [K in keyof T]-?: T[K] extends V ? K : never }[keyof T];
 
 enum FilterOperation {
@@ -254,7 +267,8 @@ enum FilterOperation {
     LessThan = "lt",
     LessThanOrEqualTo = "le",
     StartsWith = "startswith",
-    SubstringOf = "substringof"
+    SubstringOf = "substringof",
+    In = "in"
 }
 
 enum FilterJoinOperator {
@@ -298,6 +312,7 @@ function BaseNullableField<T, TType>(field: KeysMatching<T, TType>): INullableFi
 export interface ITextFieldBuilder<T> extends INullableFieldBuilder<T, string> {
     StartsWith(value: string): IFieldCondition<T>;
     Contains(value: string): IFieldCondition<T>;
+    In(values: string[]): IFieldCondition<T>;
 }
 
 function BaseTextField<T>(field: KeysMatching<T, string>): ITextFieldBuilder<T> {
@@ -308,6 +323,9 @@ function BaseTextField<T>(field: KeysMatching<T, string>): ITextFieldBuilder<T> 
         },
         Contains(value: string): IFieldCondition<T> {
             return { toQuery: () => `${FilterOperation.SubstringOf}(${this.toODataValue(value)}, ${field as string})` };
+        },
+        In(values: string[]): IFieldCondition<T> {
+            return Or(...values.map(v => this.Equals(v)));
         }
     };
 }
