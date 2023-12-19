@@ -277,85 +277,94 @@ enum FilterJoinOperator {
 }
 
 
-export interface IFieldCondition<T> {
+export interface IFieldCondition<TBaseInterface> {
     toQuery(): string;
 }
 
-export interface ICondition<T> {
+export interface ICondition<TBaseInterface> {
     toQuery(): string;
 }
 
-export interface INullableFieldBuilder<TBaseType, TObjectType> {
+export interface INullableFieldBuilder<TBaseInterface, TObjectType> {
     toQuery(): string;
     toODataValue(value: TObjectType): string;
-    Equals(value: TObjectType): IFieldCondition<TBaseType>;
-    NotEquals(value: TObjectType): IFieldCondition<TBaseType>;
-    IsNull(): IFieldCondition<TBaseType>;
+    IsNull(): IFieldCondition<TBaseInterface>;
 }
 
-function BaseNullableField<T, TType>(field: KeysMatching<T, TType>): INullableFieldBuilder<T, TType> {
+function BaseNullableField<TBaseInterface, TType>(field: KeysMatching<TBaseInterface, TType>): INullableFieldBuilder<TBaseInterface, TType> {
     return {
         toQuery: () => "",
         toODataValue: val => `'${val}'`,
-        Equals(value: TType): IFieldCondition<T> {
-            return { toQuery: () => `${field as string} ${FilterOperation.Equals} ${this.toODataValue(value)}` };
-        },
-        NotEquals(value: TType): IFieldCondition<T> {
-            return { toQuery: () => `${field as string} ${FilterOperation.NotEquals} ${this.toODataValue(value)}` };
-        },
-        IsNull(): IFieldCondition<T> {
+        IsNull(): IFieldCondition<TBaseInterface> {
             return { toQuery: () => `${field as string} eq null` };
         }
     };
 }
 
-export interface ITextFieldBuilder<T> extends INullableFieldBuilder<T, string> {
-    StartsWith(value: string): IFieldCondition<T>;
-    Contains(value: string): IFieldCondition<T>;
-    In(values: string[]): IFieldCondition<T>;
+interface IComperableField<TBaseInterface, TObjectType> extends INullableFieldBuilder<TBaseInterface, TObjectType> {
+    Equals(value: TObjectType): IFieldCondition<TBaseInterface>;
+    NotEquals(value: TObjectType): IFieldCondition<TBaseInterface>;
 }
 
-function BaseTextField<T>(field: KeysMatching<T, string>): ITextFieldBuilder<T> {
+function BaseComperableField<TBaseInterface, TType>(field: KeysMatching<TBaseInterface, TType>): IComperableField<TBaseInterface, TType> {
     return {
-        ...BaseNullableField<T, string>(field),
-        StartsWith(value: string): IFieldCondition<T> {
+        ...BaseNullableField<TBaseInterface, TType>(field),
+        Equals(value: TType): IFieldCondition<TBaseInterface> {
+            return { toQuery: () => `${field as string} ${FilterOperation.Equals} ${this.toODataValue(value)}` };
+        },
+        NotEquals(value: TType): IFieldCondition<TBaseInterface> {
+            return { toQuery: () => `${field as string} ${FilterOperation.NotEquals} ${this.toODataValue(value)}` };
+        },
+    };
+}
+
+export interface ITextFieldBuilder<TBaseInterface> extends IComperableField<TBaseInterface, string> {
+    StartsWith(value: string): IFieldCondition<TBaseInterface>;
+    Contains(value: string): IFieldCondition<TBaseInterface>;
+    In(...values: string[]): IFieldCondition<TBaseInterface>;
+}
+
+function BaseTextField<TBaseInterface>(field: KeysMatching<TBaseInterface, string>): ITextFieldBuilder<TBaseInterface> {
+    return {
+        ...BaseComperableField<TBaseInterface, string>(field),
+        StartsWith(value: string): IFieldCondition<TBaseInterface> {
             return { toQuery: () => `${FilterOperation.StartsWith}(${field as string}, ${this.toODataValue(value)})` };
         },
-        Contains(value: string): IFieldCondition<T> {
+        Contains(value: string): IFieldCondition<TBaseInterface> {
             return { toQuery: () => `${FilterOperation.SubstringOf}(${this.toODataValue(value)}, ${field as string})` };
         },
-        In(values: string[]): IFieldCondition<T> {
+        In(...values: string[]): IFieldCondition<TBaseInterface> {
             return Or(...values.map(v => this.Equals(v)));
         }
     };
 }
 
-export function TextField<T>(field: KeysMatching<T, string>): ITextFieldBuilder<T> {
-    return BaseTextField<T>(field);
+export function TextField<TBaseInterface>(field: KeysMatching<TBaseInterface, string>): ITextFieldBuilder<TBaseInterface> {
+    return BaseTextField<TBaseInterface>(field);
 }
 
-export function ChoiceField<T>(field: KeysMatching<T, string>): ITextFieldBuilder<T> {
-    return BaseTextField<T>(field);
+export function ChoiceField<TBaseInterface>(field: KeysMatching<TBaseInterface, string>): ITextFieldBuilder<TBaseInterface> {
+    return BaseTextField<TBaseInterface>(field);
 }
 
-export function MultiChoiceField<T>(field: KeysMatching<T, string>): ITextFieldBuilder<T> {
-    return BaseTextField<T>(field);
+export function MultiChoiceField<TBaseInterface>(field: KeysMatching<TBaseInterface, string>): ITextFieldBuilder<TBaseInterface> {
+    return BaseTextField<TBaseInterface>(field);
 }
 
 
 
-interface INumericField<T, TType> extends INullableFieldBuilder<T, TType> {
-    Equals(value: TType): IFieldCondition<T>;
-    GreaterThan(value: TType): IFieldCondition<T>;
-    GreaterThanOrEquals(value: TType): IFieldCondition<T>;
-    LessThan(value: TType): IFieldCondition<T>;
-    LessThanOrEquals(value: TType): IFieldCondition<T>;
+interface INumericField<TBaseInterface, TType> extends INullableFieldBuilder<TBaseInterface, TType> {
+    Equals(value: TType): IFieldCondition<TBaseInterface>;
+    GreaterThan(value: TType): IFieldCondition<TBaseInterface>;
+    GreaterThanOrEquals(value: TType): IFieldCondition<TBaseInterface>;
+    LessThan(value: TType): IFieldCondition<TBaseInterface>;
+    LessThanOrEquals(value: TType): IFieldCondition<TBaseInterface>;
 }
 
 
 function BaseNumericField<T, TType>(field: KeysMatching<T, TType>): INumericField<T, TType> {
     return {
-        ...BaseNullableField<T, TType>(field),
+        ...BaseComperableField<T, TType>(field),
         GreaterThan(value: TType): IFieldCondition<T> {
             return { toQuery: () => `${field as string} ${FilterOperation.GreaterThan} ${this.toODataValue(value)}` };
         },
@@ -378,19 +387,19 @@ export function NumberField<T>(field: KeysMatching<T, number>): INumericField<T,
     };
 }
 
-export interface IDateFieldBuilder<T> extends INumericField<T, Date> {
-    IsToday(): IFieldCondition<T>;
-    IsBetween(start: Date, end: Date): IFieldCondition<T>;
+export interface IDateFieldBuilder<TBaseInterface> extends INumericField<TBaseInterface, Date> {
+    IsToday(): IFieldCondition<TBaseInterface>;
+    IsBetween(start: Date, end: Date): IFieldCondition<TBaseInterface>;
 }
 
-export function DateField<T>(field: KeysMatching<T, Date>): IDateFieldBuilder<T> {
+export function DateField<TBaseInterface>(field: KeysMatching<TBaseInterface, Date>): IDateFieldBuilder<TBaseInterface> {
     return {
-        ...BaseNumericField<T, Date>(field),
+        ...BaseNumericField<TBaseInterface, Date>(field),
         toODataValue: val => `datetime'${val.toISOString()}'`,
-        IsBetween(startDate: Date, endDate: Date): IFieldCondition<T> {
+        IsBetween(startDate: Date, endDate: Date): IFieldCondition<TBaseInterface> {
             return { toQuery: () => `(${field as string} ${FilterOperation.GreaterThanOrEqualTo} ${this.toODataValue(startDate)} ${FilterJoinOperator.And} ${field as string} ${FilterOperation.LessThan} ${this.toODataValue(endDate)})` };
         },
-        IsToday(): IFieldCondition<T> {
+        IsToday(): IFieldCondition<TBaseInterface> {
             const StartToday = new Date(); StartToday.setHours(0, 0, 0, 0);
             const EndToday = new Date(); EndToday.setHours(23, 59, 59, 999);
             return this.IsBetween(StartToday, EndToday);
@@ -403,28 +412,52 @@ export function DateField<T>(field: KeysMatching<T, Date>): IDateFieldBuilder<T>
 
 
 
-export interface IBooleanFieldBuilder<T> extends INullableFieldBuilder<T, boolean> {
-    IsTrue(): IFieldCondition<T>;
-    IsFalse(): IFieldCondition<T>;
-    IsFalseOrNull(): IFieldCondition<T>;
+export interface IBooleanFieldBuilder<TBaseInterface> extends INullableFieldBuilder<TBaseInterface, boolean> {
+    IsTrue(): IFieldCondition<TBaseInterface>;
+    IsFalse(): IFieldCondition<TBaseInterface>;
+    IsFalseOrNull(): IFieldCondition<TBaseInterface>;
 }
 
-export function BooleanField<T>(field: KeysMatching<T, boolean>): IBooleanFieldBuilder<T> {
+export function BooleanField<TBaseInterface>(field: KeysMatching<TBaseInterface, boolean>): IBooleanFieldBuilder<TBaseInterface> {
     return {
-        ...BaseNullableField<T, boolean>(field),
-        toODataValue: val => `${val}`,
-        IsTrue(): IFieldCondition<T> {
+        ...BaseNullableField<TBaseInterface, boolean>(field),
+        toODataValue: val => `${val === null ? null : val ? 1 : 0}`,
+        IsTrue(): IFieldCondition<TBaseInterface> {
             return { toQuery: () => `${field as string} ${FilterOperation.Equals} ${this.toODataValue(true)}` };
         },
-        IsFalse(): IFieldCondition<T> {
+        IsFalse(): IFieldCondition<TBaseInterface> {
             return { toQuery: () => `${field as string} ${FilterOperation.Equals} ${this.toODataValue(false)}` };
         },
-        IsFalseOrNull(): IFieldCondition<T> {
+        IsFalseOrNull(): IFieldCondition<TBaseInterface> {
             return { toQuery: () => `(${field as string} ${FilterOperation.Equals} ${this.toODataValue(false)} ${FilterJoinOperator.Or} ${field as string} eq ${this.toODataValue(null)})` };
         }
     };
 }
 
+export function LookupFieldId<TBaseInterface>(field: KeysMatching<TBaseInterface, number | object>): INumericField<TBaseInterface, number> {
+    const col: string = (field as string).endsWith("Id") ? field as string : `${field as string}Id`;
+    return BaseNumericField<TBaseInterface, number>(col as any as KeysMatching<TBaseInterface, number>);
+}
+
+
+
+interface ILookupValueFieldBuilder<TBaseInterface, TExpandedType> extends INullableFieldBuilder<TBaseInterface, TExpandedType> {
+    Id: (Id: number) => IFieldCondition<TExpandedType>;
+    TextField: (Field: KeysMatching<TExpandedType, string>) => ITextFieldBuilder<TExpandedType>;
+    NumberField: (Field: KeysMatching<TExpandedType, number>) => INumericField<TExpandedType, number>;
+}
+
+export function LookupField<TBaseInterface, TExpandedType>(field: KeysMatching<TBaseInterface, object>): ILookupValueFieldBuilder<TBaseInterface, TExpandedType> {
+    return {
+        toQuery: () => "",
+        toODataValue: val => `${val}`,
+        IsNull: () => ({ toQuery: () => `${field as string} ${FilterOperation.Equals} ${this.toODataValue(null)}` }),
+        Id: Id => NumberField(`${field as string}Id` as any as KeysMatching<TExpandedType, number>).Equals(Id),
+        TextField: lookupField =>  TextField<TExpandedType>(`${field as string}/${lookupField as string}` as any as KeysMatching<TExpandedType, string>),
+        NumberField: lookupField => NumberField<TExpandedType>(`${field as string}/${lookupField as string}` as any as KeysMatching<TExpandedType, number>),
+
+    };
+}
 
 
 
@@ -433,7 +466,7 @@ export function Or<T>(...conditions: Array<INullableFieldBuilder<T, any> | ICond
 }
 
 export function And<T>(...conditions: Array<INullableFieldBuilder<T, any> | ICondition<T>>): ICondition<T> {
-    return buildCondition(FilterJoinOperator.Or, ...conditions);
+    return buildCondition(FilterJoinOperator.And, ...conditions);
 }
 
 function buildCondition<T>(operator: FilterJoinOperator, ...conditions: Array<INullableFieldBuilder<T, any> | ICondition<T>>): ICondition<T> {
