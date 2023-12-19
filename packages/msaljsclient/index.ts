@@ -60,8 +60,7 @@ export function MSAL(options: MSALOptions): (instance: Queryable) => Queryable {
                 // Attempt to get the token silently
                 const tokenResponse = await app.acquireTokenSilent(options.authParams);
                 accessToken = tokenResponse.accessToken;
-            }
-            catch (authError) {
+            }catch (authError) {
                 // If silent token acquisition fails with InteractionRequiredAuthError,
                 // attempt to get the token interactively
                 const loginResponse = await app.loginPopup(options.authParams).catch((loginError) => {
