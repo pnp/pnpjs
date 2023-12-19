@@ -159,7 +159,7 @@ export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
      *
      * @param filter The string representing the filter query
      */
-    public filter<T = any>(filter: string | ICondition<T> | IFieldCondition<T>): this {
+    public filter<T = any>(filter: string | ICondition<T> | IFieldCondition<T> | INullableFieldBuilder<T, T>): this {
         this.query.set("$filter", typeof filter === "string" ? filter : filter.toQuery());
         return this;
     }
@@ -284,14 +284,13 @@ export interface ICondition<TBaseInterface> {
 }
 
 export interface INullableFieldBuilder<TBaseInterface, TObjectType> {
-    toQuery(): string;
+    toQuery?(): string;
     toODataValue(value: TObjectType): string;
     IsNull(): IFieldCondition<TBaseInterface>;
 }
 
 function BaseNullableField<TBaseInterface, TType>(field: KeysMatching<TBaseInterface, TType>): INullableFieldBuilder<TBaseInterface, TType> {
     return {
-        toQuery: () => "",
         toODataValue: val => `'${val}'`,
         IsNull(): IFieldCondition<TBaseInterface> {
             return { toQuery: () => `${field as string} eq null` };
@@ -446,7 +445,6 @@ interface ILookupValueFieldBuilder<TBaseInterface, TExpandedType> extends INulla
 
 export function LookupField<TBaseInterface, TExpandedType>(field: KeysMatching<TBaseInterface, object>): ILookupValueFieldBuilder<TBaseInterface, TExpandedType> {
     return {
-        toQuery: () => "",
         toODataValue: val => `${val}`,
         IsNull: () => ({ toQuery: () => `${field as string} ${FilterOperation.Equals} ${this.toODataValue(null)}` }),
         Id: Id => NumberField(`${field as string}Id` as any as KeysMatching<TExpandedType, number>).Equals(Id),
@@ -469,7 +467,7 @@ export function And<T>(...conditions: Array<INullableFieldBuilder<T, T> | ICondi
 function buildCondition<T>(operator: FilterJoinOperator, ...conditions: Array<INullableFieldBuilder<T, T> | ICondition<T>>): ICondition<T> {
     return {
         toQuery(): string {
-            return `(${conditions.map(c => c.toQuery()).join(` ${operator} `)})`;
+            return `(${conditions.filter(c => c.toQuery != null).map(c => c.toQuery()).join(` ${operator} `)})`;
         },
     };
 }
