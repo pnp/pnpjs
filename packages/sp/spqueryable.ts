@@ -271,7 +271,8 @@ enum FilterJoinOperator {
     OrWithSpace = " or "
 }
 
-class SPOData {
+export class SPOData {
+
     /**
      * Generates a new instance of the SPOData query builder, with the type of T
      */
@@ -289,6 +290,46 @@ class BaseQuery<TBaseInterface> {
     constructor(query: string[]) {
         this.query = query;
     }
+}
+
+export const SPText = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, string>) => {
+    return new QueryableGroups<TBaseInterface>().Text(InternalName);
+}
+
+export const SPChoice = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, string>) => {
+    return new QueryableGroups<TBaseInterface>().Text(InternalName);
+}
+
+export const SPMultiChoice = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, string[]>) => {
+    return new QueryableGroups<TBaseInterface>().Text(InternalName as any as KeysMatching<TBaseInterface, string>);
+}
+
+export const SPNumber = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, number>) => {
+    return new QueryableGroups<TBaseInterface>().Number(InternalName);
+}
+
+export const SPDate = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, Date>) => {
+    return new QueryableGroups<TBaseInterface>().Date(InternalName);
+}
+
+export const SPBoolean = <TBaseInterface>(InternalName: KeysMatching<TBaseInterface, boolean>) => {
+    return new QueryableGroups<TBaseInterface>().Boolean(InternalName);
+}
+
+export const SPLookup = <TBaseInterface, TKey extends KeysMatching<TBaseInterface, object>>(InternalName: TKey) => {
+    return new QueryableGroups<TBaseInterface>().Lookup(InternalName);
+}
+
+export const SPLookupId = <TBaseInterface, TKey extends KeysMatching<TBaseInterface, number | object>>(InternalName: TKey) => {
+    return new QueryableGroups<TBaseInterface>().LookupId(InternalName);
+}
+
+export const SPAnd = <TBaseInterface>(queries: ComparisonResult<TBaseInterface>[]) => {
+    return new QueryableGroups<TBaseInterface>().And(queries);
+}
+
+export const SPOr = <TBaseInterface>(queries: ComparisonResult<TBaseInterface>[]) => {
+    return new QueryableGroups<TBaseInterface>().Or(queries);
 }
 
 /**
@@ -369,7 +410,7 @@ class QueryableGroups<TBaseInterface> extends QueryableFields<TBaseInterface>{
      * @param queries An array of queries to be joined by AND
      */
     public And(queries: ComparisonResult<TBaseInterface>[]): ComparisonResult<TBaseInterface> {
-        const result: string[] = queries.map(x => x.ToString());
+        let result: string[] = queries.map(x => x.ToString());
         return new ComparisonResult<TBaseInterface>([`(${result.join(FilterJoinOperator.AndWithSpace)})`]);
     }
 
@@ -377,7 +418,7 @@ class QueryableGroups<TBaseInterface> extends QueryableFields<TBaseInterface>{
      * @param queries An array of queries to be joined by OR
      */
     public Or(queries: ComparisonResult<TBaseInterface>[] | ((builder: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>)[]): ComparisonResult<TBaseInterface> {
-        const result: string[] = queries.map(x => x.ToString());
+        let result: string[] = queries.map(x => x.ToString());
         return new ComparisonResult<TBaseInterface>([`(${result.join(FilterJoinOperator.OrWithSpace)})`]);
     }
 }
