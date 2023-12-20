@@ -8,6 +8,7 @@ import {
     CopyAssetFiles,
     WritePackageJSON,
     Publish,
+    PublishNightly,
 } from "@pnp/buildsystem";
 import {
     Logger,
@@ -25,6 +26,7 @@ Logger.subscribe(ConsoleListener("", {
 
 const logLevel = LogLevel.Verbose;
 const distFolder = "./dist/packages";
+const commonPublishTags = ["--access", "public", "--provenance"];
 
 function PnPBuild(): (b: BuildTimeline) => BuildTimeline {
 
@@ -118,7 +120,7 @@ export default [<BuildSchema>{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPPackage(), PnPPublish(), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPPackage(), PnPPublish(commonPublishTags), ...commonBehaviors],
 },
 {
     name: "publish-beta",
@@ -126,7 +128,7 @@ export default [<BuildSchema>{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPPackage(), PnPPublish(["--tag", "beta"]), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPPackage(), PnPPublish([...commonPublishTags, "--tag", "beta"]), ...commonBehaviors],
 },
 {
     name: "publish-v3nightly",
@@ -134,7 +136,7 @@ export default [<BuildSchema>{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPPackage(), PnPPublish(["--tag", "v3nightly"]), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v3nightly"), ...commonBehaviors],
 },
 {
     name: "publish-v4nightly",
@@ -142,5 +144,5 @@ export default [<BuildSchema>{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPPackage(), PnPPublish(["--tag", "v4nightly"]), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v4nightly"), ...commonBehaviors],
 }];
