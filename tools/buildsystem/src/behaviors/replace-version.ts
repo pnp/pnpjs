@@ -1,10 +1,10 @@
 import { TimelinePipe } from "@pnp/core";
 import { BuildTimeline } from "../build-timeline.js";
 import { readFile  } from "fs/promises";
-import buildWriteFile from "src/lib/write-file.js";
+import buildWriteFile from "../lib/write-file.js";
 import { resolve } from "path";
 
-export function ReplaceVersion(paths: string[], versionMask = /\$\$Version\$\$/ig): TimelinePipe {
+export function ReplaceVersion(paths: string[], versionMask = /\$\$Version\$\$/img): TimelinePipe {
 
     return (instance: BuildTimeline) => {
 
@@ -16,13 +16,10 @@ export function ReplaceVersion(paths: string[], versionMask = /\$\$Version\$\$/i
 
             paths.forEach(async (path) => {
 
-                const file = await readFile(resolve(path));
-
-                const txt = file.toString();
-
-                txt.replace(versionMask, version);
-
-                await buildWriteFile(path, txt);
+                const resolvedPath = resolve(target.resolvedOutDir, path);
+                this.log(`Resolving path '${path}' to '${resolvedPath}'.`, 0);
+                const file = await readFile(resolve(resolvedPath));
+                await buildWriteFile(resolvedPath, file.toString().replace(versionMask, version));
             });
         });
 

@@ -73,16 +73,29 @@ BuildSystem.prepare({}, function (env) {
             const parsedTSConfig: TSConfig = importJSON(tsconfigPath);
             const resolvedOutDir = resolve(tsconfigRoot, parsedTSConfig.compilerOptions.outDir);
 
-            // we need to resolve some extra data for each package
-            const packages = parsedTSConfig?.references.map(ref => ({
+            const packages = [];
 
-                name: dirname(ref.path).replace(/^\.\//, ""),
-                resolvedPkgSrcTSConfigPath: resolve(tsconfigRoot, ref.path),
-                resolvedPkgSrcRoot: dirname(resolve(tsconfigRoot, ref.path)),
-                resolvedPkgOutRoot: resolve(resolvedOutDir, dirname(ref.path)),
-                resolvedPkgDistRoot: resolve(context.distRoot, dirname(ref.path)),
-            }));
+            if (parsedTSConfig.references) {
+                // we need to resolve some extra data for each package
+                packages.push(...parsedTSConfig.references.map(ref => ({
 
+                    name: dirname(ref.path).replace(/^\.\//, ""),
+                    resolvedPkgSrcTSConfigPath: resolve(tsconfigRoot, ref.path),
+                    resolvedPkgSrcRoot: dirname(resolve(tsconfigRoot, ref.path)),
+                    resolvedPkgOutRoot: resolve(resolvedOutDir, dirname(ref.path)),
+                    resolvedPkgDistRoot: resolve(context.distRoot, dirname(ref.path)),
+                })));
+            } else {
+                // we have a single package (debug for example)
+                packages.push({
+                    name: "root",
+                    resolvedPkgSrcTSConfigPath: tsconfigRoot,
+                    resolvedPkgSrcRoot: tsconfigRoot,
+                    resolvedPkgOutRoot: resolvedOutDir,
+                    resolvedPkgDistRoot: context.distRoot,
+                });
+            }
+            
             return Object.assign({}, context, {
                 target: {
                     tsconfigPath,
