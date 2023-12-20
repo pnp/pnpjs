@@ -1,7 +1,20 @@
+import { TimelinePipe } from "@pnp/core";
+import { BuildObserver } from "./build-timeline.js";
+
 export interface BuildSchema {
     name: string;
     distFolder: string;
     targets: string[];
+    behaviors?: TimelinePipe[];
+    preBuild?: BuildObserver[];
+    build?: BuildObserver[];
+    postBuild?: BuildObserver[];
+    prePackage?: BuildObserver[];
+    package?: BuildObserver[];
+    postPackage?: BuildObserver[];
+    prePublish?: BuildObserver[];
+    publish?: BuildObserver[];
+    postPublish?: BuildObserver[];
 }
 
 export interface TSConfig {

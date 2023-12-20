@@ -2,7 +2,7 @@ import { TimelinePipe } from "@pnp/core";
 import { BuildTimeline } from "src/build-timeline";
 import * as wp from "webpack";
 
-export default function Webpack(config: wp.Configuration): TimelinePipe {
+export function Webpack(config: wp.Configuration): TimelinePipe {
 
     return (instance: BuildTimeline) => {
 
@@ -13,14 +13,14 @@ export default function Webpack(config: wp.Configuration): TimelinePipe {
                 wp(config, (err, stats) => {
 
                     if (err || stats.hasErrors()) {
-                        console.error("Webpack exited with errors");
-                        console.error(stats.toString());
+                        this.log("Webpack exited with errors", 3);
+                        this.log(stats.toString(), 3);
                         return reject(err);
                     }
 
                     if (stats.hasWarnings()) {
-                        console.warn("Webpack exited with warnings");
-                        console.warn(stats.toString());
+                        this.log("Webpack exited with warnings", 2);
+                        this.log(stats.toString(), 2);
                     }
 
                     resolve();

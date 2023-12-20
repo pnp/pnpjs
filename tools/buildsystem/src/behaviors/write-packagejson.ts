@@ -4,7 +4,7 @@ import { BuildTimeline } from "../build-timeline.js";
 import importJSON from "../lib/import-json.js";
 import buildWriteFile from "../lib/write-file.js";
 
-export default function WritePackageJSON(transform?: (p: any) => typeof p): TimelinePipe {
+export function WritePackageJSON(transform?: (p: any) => typeof p): TimelinePipe {
 
     return (instance: BuildTimeline) => {
 
