@@ -45,5 +45,7 @@ export function CopyPackageFiles(source: "src" | "built", pattern: string[]): Ti
                 
             this.log(`Completing CopyPackageFiles with pattern ${stringPattern} on target '${this.context.target.tsconfigPath}'`);
         });
+
+        return instance;
     }
 }

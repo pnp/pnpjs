@@ -27,5 +27,7 @@ export function Webpack(config: wp.Configuration): TimelinePipe {
                 });
             });
         });
+
+        return instance;
     }
 }

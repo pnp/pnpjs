@@ -45,7 +45,7 @@ export function CopyAssetFiles(path: string, pattern: string[]): TimelinePipe {
                 
             this.log(`Completed CopyAssetFiles.`);
         });
+
+        return instance;
     }
-
-
 }

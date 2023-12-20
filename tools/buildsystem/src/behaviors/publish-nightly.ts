@@ -3,7 +3,7 @@ import { BuildTimeline } from "src/build-timeline";
 import { Publish } from "./publish.js";
 import { resolve } from "path";
 import importJSON from "../lib/import-json.js";
-import buildWriteFile from "src/lib/write-file.js";
+import buildWriteFile from "../lib/write-file.js";
 
 /**
  * Does a nightly publish after setting the nightly version and updating deps
@@ -49,5 +49,7 @@ export function PublishNightly(flags: string[], nightlyName: "v3nightly" | "v4ni
 
         // we want to publish
         Publish(flags)(instance);
+
+        return instance;
     }
 }

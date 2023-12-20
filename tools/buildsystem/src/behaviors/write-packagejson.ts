@@ -42,5 +42,7 @@ export function WritePackageJSON(transform?: (p: any) => typeof p): TimelinePipe
 
             await Promise.all(promises);
         });
+        
+        return instance;
     }
 }

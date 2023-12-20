@@ -35,5 +35,7 @@ export function Build(flags?: string[]): TimelinePipe {
                 });
             });
         });
+
+        return instance;
     }
 }
