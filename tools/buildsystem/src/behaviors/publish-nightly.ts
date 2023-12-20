@@ -1,11 +1,18 @@
 import { TimelinePipe } from "@pnp/core";
 import { BuildTimeline } from "src/build-timeline";
-import Publish from "./publish.js";
+import { Publish } from "./publish.js";
 import { resolve } from "path";
 import importJSON from "../lib/import-json.js";
 import buildWriteFile from "src/lib/write-file.js";
 
-export default function PublishNightly(flags: string[], nightlyName: "v3nightly" | "v4nightly"): TimelinePipe {
+/**
+ * Does a nightly publish after setting the nightly version and updating deps
+ * 
+ * @param flags Flags supplied to tsc (--tag is automatically applied)
+ * @param nightlyName Tag and version string used to identify this build
+ * @returns 
+ */
+export function PublishNightly(flags: string[], nightlyName: "v3nightly" | "v4nightly"): TimelinePipe {
 
     flags.push("--tag", nightlyName);
 
@@ -17,15 +24,24 @@ export default function PublishNightly(flags: string[], nightlyName: "v3nightly"
             const { target } = this.context;
             const date = new Date();
 
-            const version = `-${nightlyName}.${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, "0")}${date.getDate().toString().padStart(2, "0")}`;
+            const versionStr = `-${nightlyName}.${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, "0")}${date.getDate().toString().padStart(2, "0")}`;
 
-            this.log(`Updating nightly package.json version to ${version}`);
+            this.log(`Updating nightly package.json version to ${versionStr}`);
 
             await Promise.all(target.packages.map(pkg => {
 
                 const packageJsonPath = resolve(pkg.resolvedPkgDistRoot, "package.json");
                 const packageJson = importJSON(packageJsonPath);
-                packageJson.version = version;
+                packageJson.version += versionStr;
+
+                if (packageJson.dependencies) {
+                    const keys = Object.getOwnPropertyNames(packageJson.dependencies);
+                    for (let i = 0; i < keys.length; i++) {
+                        if (keys[i].startsWith("@pnp")) {
+                            packageJson.dependencies[keys[i]] += versionStr;
+                        }
+                    }
+                }
 
                 return buildWriteFile(packageJsonPath, JSON.stringify(packageJson, null, 4))
             }));

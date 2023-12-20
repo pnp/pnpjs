@@ -3,7 +3,7 @@ import { resolve } from "path";
 import { BuildTimeline } from "src/build-timeline";
 import replace from "replace-in-file";
 
-export default function ReplaceVersion(paths: string[], versionMask = /\$\$Version\$\$/ig): TimelinePipe {
+export function ReplaceVersion(paths: string[], versionMask = /\$\$Version\$\$/ig): TimelinePipe {
 
     return (instance: BuildTimeline) => {
 

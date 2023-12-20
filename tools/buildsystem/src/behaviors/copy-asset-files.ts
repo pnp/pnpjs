@@ -9,7 +9,7 @@ import buildCopyFile from "../lib/copy-file.js";
  * @param pattern glob patterns for files (see https://www.npmjs.com/package/globby)
  * @returns 
  */
-export default function CopyAssetFiles(path: string, pattern: string[]): TimelinePipe {
+export function CopyAssetFiles(path: string, pattern: string[]): TimelinePipe {
 
     const stringPattern = JSON.stringify(pattern);
 
@@ -43,7 +43,7 @@ export default function CopyAssetFiles(path: string, pattern: string[]): Timelin
 
             await Promise.all(files.map(f => buildCopyFile(f.src, f.dest)));
                 
-            this.log(`Completing CopyAssetFiles.`);
+            this.log(`Completed CopyAssetFiles.`);
         });
     }
 

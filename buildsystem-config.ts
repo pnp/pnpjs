@@ -1,146 +1,156 @@
 import { resolve } from "path";
-import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "@pnp/buildsystem";
+import { BuildSchema } from "@pnp/buildsystem";
+// import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "@pnp/buildsystem";
 
-export default <ConfigCollection>[
-    <BuildSchema>{
 
-        name: "build",
+export default [<BuildSchema>{
+    name: "build",
+    distFolder: "./dist/packages",
+    targets: [
+        resolve("./packages/tsconfig.json"),
+    ]
+}];
 
-        role: "build",
+// export default <ConfigCollection>[
+//     <BuildSchema>{
 
-        packageRoot: resolve("./packages/"),
+//         name: "build",
 
-        preBuildTasks: [],
+//         role: "build",
 
-        // these tsconfig files will all be transpiled per the settings in the file
-        buildTargets: [
-            resolve("./packages/tsconfig.json"),
-        ],
+//         packageRoot: resolve("./packages/"),
 
-        postBuildTasks: [
-            // this task replaces the $$Version$$ with the version from the root package.json at build time
-            Tasks.Build.createReplaceVersion([
-                "sp/behaviors/telemetry.js",
-                "graph/behaviors/telemetry.js",
-            ]),
-        ],
-    },
-    <PackageSchema>{
+//         preBuildTasks: [],
 
-        name: "package",
+//         // these tsconfig files will all be transpiled per the settings in the file
+//         buildTargets: [
+//             resolve("./packages/tsconfig.json"),
+//         ],
 
-        role: "package",
+//         postBuildTasks: [
+//             // this task replaces the $$Version$$ with the version from the root package.json at build time
+//             Tasks.Build.createReplaceVersion([
+//                 "sp/behaviors/telemetry.js",
+//                 "graph/behaviors/telemetry.js",
+//             ]),
+//         ],
+//     },
+//     <PackageSchema>{
 
-        prePackageTasks: [],
+//         name: "package",
 
-        packageTargets: [
-            {
-                outDir: resolve("./dist/packages"),
-                target: resolve("./packages/tsconfig.json"),
-                tasks: [
-                    Tasks.Package.createCopyTargetFiles(),
-                    Tasks.Package.copyStaticAssets,
-                    Tasks.Package.createCopyPackageScripts(),
-                    Tasks.Package.createWritePackageFiles((p) => {
-                        return Object.assign({}, p, {
-                            funding: {
-                                type: "individual",
-                                url: "https://github.com/sponsors/patrick-rodgers/",
-                            },
-                            type: "module",
-                            engines: {
-                                node: ">=14.15.1"
-                            },
-                            author: {
-                                name: "Microsoft and other contributors"
-                            },
-                            license: "MIT",
-                            bugs: {
-                                url: "https://github.com/pnp/pnpjs/issues"
-                            },
-                            homepage: "https://github.com/pnp/pnpjs",
-                            repository: {
-                                type: "git",
-                                url: "git:github.com/pnp/pnpjs"
-                            }
-                        });
-                    }),
-                ],
-            },
-        ],
+//         role: "package",
 
-        postPackageTasks: [],
-    },
-    <PublishSchema>{
+//         prePackageTasks: [],
 
-        name: "publish",
+//         packageTargets: [
+//             {
+//                 outDir: resolve("./dist/packages"),
+//                 target: resolve("./packages/tsconfig.json"),
+//                 tasks: [
+//                     Tasks.Package.createCopyTargetFiles(),
+//                     Tasks.Package.copyStaticAssets,
+//                     Tasks.Package.createCopyPackageScripts(),
+//                     Tasks.Package.createWritePackageFiles((p) => {
+//                         return Object.assign({}, p, {
+//                             funding: {
+//                                 type: "individual",
+//                                 url: "https://github.com/sponsors/patrick-rodgers/",
+//                             },
+//                             type: "module",
+//                             engines: {
+//                                 node: ">=14.15.1"
+//                             },
+//                             author: {
+//                                 name: "Microsoft and other contributors"
+//                             },
+//                             license: "MIT",
+//                             bugs: {
+//                                 url: "https://github.com/pnp/pnpjs/issues"
+//                             },
+//                             homepage: "https://github.com/pnp/pnpjs",
+//                             repository: {
+//                                 type: "git",
+//                                 url: "git:github.com/pnp/pnpjs"
+//                             }
+//                         });
+//                     }),
+//                 ],
+//             },
+//         ],
 
-        role: "publish",
+//         postPackageTasks: [],
+//     },
+//     <PublishSchema>{
 
-        packageRoots: [
-            resolve("./dist/packages"),
-        ],
+//         name: "publish",
 
-        prePublishTasks: [],
+//         role: "publish",
 
-        publishTasks: [Tasks.Publish.publishPackage],
+//         packageRoots: [
+//             resolve("./dist/packages"),
+//         ],
 
-        postPublishTasks: [],
-    },
-    <BuildSchema>{
+//         prePublishTasks: [],
 
-        name: "build-debug",
+//         publishTasks: [Tasks.Publish.publishPackage],
 
-        role: "build",
+//         postPublishTasks: [],
+//     },
+//     <BuildSchema>{
 
-        packageRoot: resolve("./debug/"),
+//         name: "build-debug",
 
-        exclude: [],
+//         role: "build",
 
-        preBuildTasks: [],
+//         packageRoot: resolve("./debug/"),
 
-        buildTargets: [
-            resolve("./debug/launch/tsconfig.json"),
-        ],
+//         exclude: [],
 
-        postBuildTasks: [
+//         preBuildTasks: [],
 
-            Tasks.Build.createReplaceVersion([
-                "packages/sp/behaviors/telemetry.js",
-                "packages/graph/behaviors/telemetry.js",
-            ]),
-        ],
-    },
-    <PublishSchema>{
+//         buildTargets: [
+//             resolve("./debug/launch/tsconfig.json"),
+//         ],
 
-        name: "publish-beta",
+//         postBuildTasks: [
 
-        role: "publish",
+//             Tasks.Build.createReplaceVersion([
+//                 "packages/sp/behaviors/telemetry.js",
+//                 "packages/graph/behaviors/telemetry.js",
+//             ]),
+//         ],
+//     },
+//     <PublishSchema>{
 
-        packageRoots: [
-            resolve("./dist/packages"),
-        ],
+//         name: "publish-beta",
 
-        prePublishTasks: [],
+//         role: "publish",
 
-        publishTasks: [Tasks.Publish.publishBetaPackage],
+//         packageRoots: [
+//             resolve("./dist/packages"),
+//         ],
 
-        postPublishTasks: [],
-    },
-    <PublishSchema>{
+//         prePublishTasks: [],
 
-        name: "publish-v3nightly",
+//         publishTasks: [Tasks.Publish.publishBetaPackage],
 
-        role: "publish",
+//         postPublishTasks: [],
+//     },
+//     <PublishSchema>{
 
-        packageRoots: [
-            resolve("./dist/packages"),
-        ],
+//         name: "publish-v3nightly",
 
-        prePublishTasks: [Tasks.Publish.updateV3NightlyVersion],
+//         role: "publish",
 
-        publishTasks: [Tasks.Publish.publishV3Nightly],
+//         packageRoots: [
+//             resolve("./dist/packages"),
+//         ],
 
-        postPublishTasks: [],
-    },
-];
+//         prePublishTasks: [Tasks.Publish.updateV3NightlyVersion],
+
+//         publishTasks: [Tasks.Publish.publishV3Nightly],
+
+//         postPublishTasks: [],
+//     },
+// ];

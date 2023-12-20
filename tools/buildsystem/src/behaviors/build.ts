@@ -5,7 +5,13 @@ import { BuildTimeline } from "src/build-timeline";
 
 const tscPath = resolve("./node_modules/.bin/tsc");
 
-export default function Build(): TimelinePipe {
+/**
+ * Executes a tsc build based on the current context target
+ * @returns 
+ */
+export function Build(flags?: string[]): TimelinePipe {
+
+    const stringFlags = flags?.join(" ") || "";
 
     return (instance: BuildTimeline) => {
 
@@ -17,7 +23,7 @@ export default function Build(): TimelinePipe {
 
             return new Promise<void>((res, reject) => {
 
-                exec(`${tscPath} -b ${tsconfigPath}`, (error, stdout, _stderr) => {
+                exec(`${tscPath} -b ${tsconfigPath} ${stringFlags}`, (error, stdout, _stderr) => {
 
                     if (error === null) {
                         this.log(`Completing Build for target "${tsconfigPath}"`, 1);

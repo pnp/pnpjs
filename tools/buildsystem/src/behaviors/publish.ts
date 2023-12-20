@@ -1,8 +1,8 @@
 import { TimelinePipe } from "@pnp/core";
 import { BuildTimeline } from "src/build-timeline";
-// import { exec } from "child_process";
+import { exec } from "child_process";
 
-export default function Publish(flags?: string[]): TimelinePipe {
+export function Publish(flags?: string[]): TimelinePipe {
 
     const stringFlags = flags?.join(" ") || "";
 
@@ -16,26 +16,23 @@ export default function Publish(flags?: string[]): TimelinePipe {
 
             target.packages.forEach(pkg => {
 
-                promises.push(new Promise((resolve, _reject) => {
+                promises.push(new Promise((resolve, reject) => {
 
                     this.log(`Publishing ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`);
 
-                    this.log("Would publish here.");
-                    resolve();
+                    exec(`npm publish ${stringFlags}`,
+                        {
+                            cwd: pkg.resolvedPkgDistRoot,
+                        }, (error, _stdout, _stderr) => {
 
-                    // exec(`npm publish --access public --provenance ${stringFlags}`,
-                    //     {
-                    //         cwd: pkg.resolvedPkgDistRoot,
-                    //     }, (error, _stdout, _stderr) => {
-
-                    //         if (error === null) {
-                    //             this.log(`Published ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`);
-                    //             resolve();
-                    //         } else {
-                    //             this.log(`${error}`, 3);
-                    //             reject(error);
-                    //         }
-                    //     });
+                            if (error === null) {
+                                this.log(`Published ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`);
+                                resolve();
+                            } else {
+                                this.log(`${error}`, 3);
+                                reject(error);
+                            }
+                        });
                 }));
             });
 

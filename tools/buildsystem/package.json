@@ -1,6 +1,6 @@
 {
     "name": "@pnp/buildsystem",
-    "version": "4.0.0-beta1",
+    "version": "4.0.0-beta2",
     "bin": {
         "pnpbuild": "bin/buildsystem.js"
     },
@@ -10,7 +10,6 @@
     "typings": "./index",
     "dependencies": {
         "@pnp/core": "^3.21.0",
-        "@pnp/logging": "^3.21.0",
         "globby": "^14.0.0",
         "liftoff": "^4.0.0",
         "replace-in-file": "^7.0.2",

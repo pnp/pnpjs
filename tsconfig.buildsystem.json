@@ -11,8 +11,7 @@
         "allowSyntheticDefaultImports": true
     },
     "include": [
-        "buildsystem-config.ts",
-        "buildsystem-config2.ts"
+        "buildsystem-config.ts"
     ],
     "exclude": []
 }

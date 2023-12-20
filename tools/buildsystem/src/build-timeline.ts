@@ -11,7 +11,7 @@ export function asyncReduceVoid<T extends ObserverFunction<void>>(): (observers:
     };
 }
 
-const BuildMoments = {
+export const BuildMoments = {
     preBuild: asyncReduceVoid<BuildObserver>(),
     build: asyncReduceVoid<BuildObserver>(),
     postBuild: asyncReduceVoid<BuildObserver>(),

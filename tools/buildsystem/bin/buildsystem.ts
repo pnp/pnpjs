@@ -6,17 +6,8 @@ import { hideBin } from "yargs/helpers";
 import { dirname, join, resolve } from "path";
 import { cwd } from "process";
 import importJSON from "../src/lib/import-json.js";
-import { BuildTimeline } from "../src/build-timeline.js";
+import { BuildTimeline, BuildMoments } from "../src/build-timeline.js";
 import { IBuildContext, BuildSchema, TSConfig } from "../src/types.js";
-import { Logger, ConsoleListener, LogLevel, PnPLogging } from "@pnp/logging";
-
-
-import Build from "../src/behaviors/build.js";
-import ReplaceVersion from "../src/behaviors/replace-version.js";
-import CopyPackageFiles from "../src/behaviors/copy-package-files.js";
-import CopyAssetFiles from "../src/behaviors/copy-asset-files.js";
-import WritePackageJSON from "../src/behaviors/write-packagejson.js";
-import Publish from "../src/behaviors/publish.js";
 
 const args: any = yargs(hideBin(process.argv)).argv;
 
@@ -25,17 +16,9 @@ const context: Partial<IBuildContext> = {
 };
 
 const BuildSystem = new Liftoff({
-    configName: "buildsystem-config2",
+    configName: "buildsystem-config",
     name: "buildsystem",
 });
-
-// setup console logger
-Logger.subscribe(ConsoleListener("", {
-    color: "skyblue",
-    error: "red",
-    verbose: "lightslategray",
-    warning: "yellow",
-}));
 
 BuildSystem.prepare({}, function (env) {
 
@@ -64,44 +47,24 @@ BuildSystem.prepare({}, function (env) {
             throw Error(`No configuration entry found in ${env.configPath} with name ${name}.`);
         }
 
+        const activeConfig = config[0];
+
         // setup other context values from config
         context.distRoot = config[0].distFolder || "./dist/packages";
 
-        // we setup a baseTimeline to which we attach all the behaviors, then pass it as the base for target timelines
-        const baseTimeline = new BuildTimeline().using(
-            PnPLogging(LogLevel.Verbose),
-            Build(),
-            ReplaceVersion(["sp/behaviors/telemetry.js", "graph/behaviors/telemetry.js"]),
-            CopyPackageFiles("src", ["**/*.cjs"]),
-            CopyAssetFiles(".", ["LICENSE"]),
-            CopyAssetFiles("./packages", ["readme.md"]),
-            CopyPackageFiles("built", ["**/*.d.ts", "**/*.js", "**/*.js.map", "**/*.d.ts.map"]),
-            WritePackageJSON((p) => {
-                return Object.assign({}, p, {
-                    funding: {
-                        type: "individual",
-                        url: "https://github.com/sponsors/patrick-rodgers/",
-                    },
-                    type: "module",
-                    engines: {
-                        node: ">=14.15.1"
-                    },
-                    author: {
-                        name: "Microsoft and other contributors"
-                    },
-                    license: "MIT",
-                    bugs: {
-                        url: "https://github.com/pnp/pnpjs/issues"
-                    },
-                    homepage: "https://github.com/pnp/pnpjs",
-                    repository: {
-                        type: "git",
-                        url: "git:github.com/pnp/pnpjs"
-                    }
-                });
-            }),
-            Publish(),
-        );
+        const baseTimeline = new BuildTimeline();
+
+        // now we apply all our configs
+        if (activeConfig.behaviors) {
+            baseTimeline.using(...activeConfig.behaviors);
+        }
+
+        // read in any moment defined observers
+        for (let key in BuildMoments) {
+            if (activeConfig[key]) {
+                baseTimeline.on[key](...activeConfig[key]);
+            }
+        }
 
         // now we make an array of timelines 1/target
         const timelines = config[0].targets.map(tsconfigPath => {
@@ -110,7 +73,7 @@ BuildSystem.prepare({}, function (env) {
             const parsedTSConfig: TSConfig = importJSON(tsconfigPath);
             const resolvedOutDir = resolve(tsconfigRoot, parsedTSConfig.compilerOptions.outDir);
 
-            // we need to get some extra data for each package
+            // we need to resolve some extra data for each package
             const packages = parsedTSConfig?.references.map(ref => ({
 
                 name: dirname(ref.path).replace(/^\.\//, ""),
