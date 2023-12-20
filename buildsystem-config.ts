@@ -1,9 +1,9 @@
 import { resolve } from "path";
-import * as s from "@pnp/buildsystem";
+import { BuildSchema } from "@pnp/buildsystem";
 // import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "@pnp/buildsystem";
 
 
-export default [{
+export default [<BuildSchema>{
     name: "build",
     distFolder: "./dist/packages",
     targets: [

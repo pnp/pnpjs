@@ -8,7 +8,7 @@
         "@azure/identity": "3.3.0",
         "@azure/msal-node": "1.18.3",
         "@microsoft/microsoft-graph-types": "2.38.0",
-        "@pnp/buildsystem": "4.0.0-beta0",
+        "@pnp/buildsystem": "^4.0.0-beta2",
         "@types/chai": "4.3.6",
         "@types/chai-as-promised": "7.1.6",
         "@types/core-js": "2.5.6",
