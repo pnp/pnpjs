@@ -19,7 +19,7 @@
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
         "noUnusedLocals": true,
-        "noUnusedParameters": false,
+        "noUnusedParameters": true,
         "pretty": true,
         "experimentalDecorators": true,
         "noFallthroughCasesInSwitch": true,
@@ -30,7 +30,7 @@
         "preserveConstEnums": true,
         "importHelpers": true,
         "resolveJsonModule": true,
-        "allowSyntheticDefaultImports": true,
+        "allowSyntheticDefaultImports": true        
     },
     "include": [
         "./index.ts",

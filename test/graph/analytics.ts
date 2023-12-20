@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "@pnp/graph/users";
-import "@pnp/graph/drive";
+import "@pnp/graph/files";
 import "@pnp/graph/sites";
 import "@pnp/graph/lists";
 import "@pnp/graph/list-item";
@@ -10,7 +10,7 @@ import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { IAnalyticsOptions } from "@pnp/graph/analytics";
 import getTestingGraphSPSite from "./utilities/getTestingGraphSPSite.js";
 
-describe.only("Analytics", function () {
+describe("Analytics", function () {
     let testUserName = "";
     let site = null;
     let driveId = null;

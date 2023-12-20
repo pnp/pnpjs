@@ -50,7 +50,7 @@ class TestTimeline extends Timeline<typeof TestingMoments> {
 
 describe("Timeline", function () {
 
-    it("Should process moments", async function () {
+    it("Should process moments", pnpTest("a4ed8b84-d89f-4e3a-8b12-5463e2d2a551", async function () {
 
         const tl = new TestTimeline();
 
@@ -61,7 +61,7 @@ describe("Timeline", function () {
         const h = await tl.go(0);
 
         return expect(h).to.eq(2);
-    });
+    }));
 
     it("Should process moments 2", pnpTest("8267d3af-554d-44d8-8b00-e33ce7d93f1d", async function () {
 

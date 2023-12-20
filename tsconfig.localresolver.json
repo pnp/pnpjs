@@ -2,7 +2,7 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "baseUrl": ".",
-        "outDir": ".",
+        "outDir": "./build/debugging",
         "rootDir": ".",
         "composite": false,
         "declaration": false,
@@ -11,8 +11,7 @@
         "allowSyntheticDefaultImports": true
     },
     "include": [
-        "buildsystem-config.ts",
-        "buildsystem-config2.ts"
+        "./tools/local-module-resolver/**/*.ts"
     ],
     "exclude": []
 }

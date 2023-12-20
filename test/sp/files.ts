@@ -10,6 +10,7 @@ import { IFiles, TemplateFileType } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import findupSync from "findup-sync";
+import { pnpTest } from "../pnp-test.js";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findupSync("package.json")));
@@ -21,7 +22,7 @@ describe("Files", function () {
     let testFileNamePercentPoundServerRelPath = "";
     let files: IFiles = null;
 
-    before(async function () {
+    before(pnpTest("948e4449-4cc4-4353-a584-b35c497acbd4", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
@@ -32,7 +33,7 @@ describe("Files", function () {
         await files.addUsingPath(testFileName, "Test file!", { Overwrite: true });
         const res = await files.addUsingPath(testFileNamePercentPound, "Test file!", { Overwrite: true });
         testFileNamePercentPoundServerRelPath = res.data.ServerRelativeUrl;
-    });
+    }));
 
     it("getByUrl (FileName)", async function () {
 

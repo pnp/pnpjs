@@ -1,4 +1,4 @@
-import { get, op } from "./operations.js";
+import { get, op } from "./queryable.js";
 import { isFunc } from "@pnp/core";
 
 /**
@@ -9,12 +9,6 @@ import { isFunc } from "@pnp/core";
  */
 export function invokable(invokeableAction?: (this: any, init?: RequestInit) => Promise<any>) {
 
-    if (!isFunc(invokeableAction)) {
-        invokeableAction = function (this: any, init?: RequestInit) {
-            return op(this, get, init);
-        };
-    }
-
     return (target: any) => {
 
         return new Proxy(target, {
@@ -23,9 +17,13 @@ export function invokable(invokeableAction?: (this: any, init?: RequestInit) => 
 
                 const invokableInstance = Object.assign(function (init?: RequestInit) {
 
-                    // the "this" for our invoked object will be set by extendable OR we use invokableInstance directly
-                    const localThis = typeof this === "undefined" ? invokableInstance : this;
-                    return Reflect.apply(invokeableAction, localThis, [init]);
+                    if (!isFunc(invokeableAction)) {
+                        invokeableAction = function (this: any, init?: RequestInit) {
+                            return op(this, get, init);
+                        };
+                    }
+
+                    return Reflect.apply(invokeableAction, invokableInstance, [init]);
 
                 }, Reflect.construct(clz, args, newTarget));
 

@@ -89,7 +89,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
         // there could be spaces or not around the boundaries
         let url = this.toUrl().replace(/([( *| *, *| *= *])'!(@.*?)::(.*?)'([ *)| *, *])/ig, (match, frontBoundary, labelName, value, endBoundary) => {
             this.log(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, 0);
-            aliasedParams.set(labelName,`'${value}'`);
+            aliasedParams.set(labelName, `'${value}'`);
             return `${frontBoundary}${labelName}${endBoundary}`;
         });
 
