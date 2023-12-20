@@ -26,7 +26,7 @@ Logger.subscribe(ConsoleListener("", {
 
 const logLevel = LogLevel.Verbose;
 const distFolder = "./dist/packages";
-const commonPublishTags = ["--access", "public", "--provenance"];
+const commonPublishTags = ["--access", "public"];
 
 function PnPBuild(): (b: BuildTimeline) => BuildTimeline {
 
