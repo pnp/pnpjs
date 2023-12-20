@@ -1,6 +1,22 @@
 import { resolve } from "path";
-import { BuildSchema } from "@pnp/buildsystem";
+import { 
+    BuildSchema,
+    BuildTimeline,
+    Build,
+    ReplaceVersion,
+ } from "@pnp/buildsystem";
 // import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "@pnp/buildsystem";
+
+export function PnPBuild(): (b: BuildTimeline) => BuildTimeline {
+
+    return (instance: BuildTimeline) => {
+
+        Build()(instance);
+        ReplaceVersion(["sp/behaviors/telemetry.js", "graph/behaviors/telemetry.js"])(instance);
+
+        return instance;
+    }
+}
 
 
 export default [<BuildSchema>{
@@ -8,7 +24,8 @@ export default [<BuildSchema>{
     distFolder: "./dist/packages",
     targets: [
         resolve("./packages/tsconfig.json"),
-    ]
+    ],
+    behaviors: [PnPBuild()]
 }];
 
 // export default <ConfigCollection>[

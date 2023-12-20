@@ -38,5 +38,7 @@ export function Publish(flags?: string[]): TimelinePipe {
 
             await Promise.all(promises);
         });
+
+        return instance;
     }
 }

@@ -21,5 +21,7 @@ export function ReplaceVersion(paths: string[], versionMask = /\$\$Version\$\$/i
     
             return (<any>replace)(options);
         });
+
+        return instance;
     }
 }
