@@ -1,7 +1,8 @@
 import { TimelinePipe } from "@pnp/core";
+import { BuildTimeline } from "../build-timeline.js";
+import { readFile  } from "fs/promises";
+import buildWriteFile from "src/lib/write-file.js";
 import { resolve } from "path";
-import { BuildTimeline } from "src/build-timeline";
-import replace from "replace-in-file";
 
 export function ReplaceVersion(paths: string[], versionMask = /\$\$Version\$\$/ig): TimelinePipe {
 
@@ -13,13 +14,16 @@ export function ReplaceVersion(paths: string[], versionMask = /\$\$Version\$\$/i
 
             this.log(`Replacing package version for target "${target.tsconfigPath}"`, 1);
 
-            const options = {
-                files: paths.map(p => resolve(target.resolvedOutDir, p)),
-                from: versionMask,
-                to: version,
-            };
-    
-            return (<any>replace)(options);
+            paths.forEach(async (path) => {
+
+                const file = await readFile(resolve(path));
+
+                const txt = file.toString();
+
+                txt.replace(versionMask, version);
+
+                await buildWriteFile(path, txt);
+            });
         });
 
         return instance;

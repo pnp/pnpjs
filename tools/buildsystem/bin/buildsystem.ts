@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import Liftoff from "liftoff";
+import * as Liftoff from "liftoff";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { dirname, join, resolve } from "path";
@@ -15,7 +15,7 @@ const context: Partial<IBuildContext> = {
     resolvedProjectRoot: join(cwd(), "package.json"),
 };
 
-const BuildSystem = new Liftoff({
+const BuildSystem = new (<any>Liftoff).default({
     configName: "buildsystem-config",
     name: "buildsystem",
 });
