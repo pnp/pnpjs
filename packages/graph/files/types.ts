@@ -205,6 +205,10 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
         return DriveItems(this, "children");
     }
 
+    public get items(): IDriveItems {
+        return DriveItems(this, "items");
+    }
+
     /**
      * Method for retrieving thumbnails of the drive items.
      * @returns IGraphCollection

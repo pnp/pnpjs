@@ -16,6 +16,10 @@ export * from "./behaviors/parsers.js";
 export * from "./behaviors/timeout.js";
 export * from "./behaviors/resolvers.js";
 
+
+// testing
+export * from "./behaviors/diagnostics-jwt-decode.js";
+
 /**
  * Adds a property to a target instance
  *

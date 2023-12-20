@@ -9,7 +9,7 @@ import { ITestingSettings } from "../../test/load-settings.js";
 // will allow you to keep all your debugging files locally
 // comment out the example
 // import { Example } from "./sp.js";
-import { Example } from "./graph.js";
+import { Example } from "./app-folder.js";
 
 // setup the connection to SharePoint using the settings file, you can
 // override any of the values as you want here, just be sure not to commit
@@ -19,7 +19,7 @@ import { Example } from "./graph.js";
 // create a settings file using settings.example.js as a template
 import(findup("settings.js")).then((settings: { settings: ITestingSettings }) => {
 
-    Logger.activeLogLevel = LogLevel.Info;
+   Logger.activeLogLevel = LogLevel.Info;
 
     // // setup console logger
     Logger.subscribe(ConsoleListener("Debug", {
@@ -27,7 +27,7 @@ import(findup("settings.js")).then((settings: { settings: ITestingSettings }) =>
         error: "red",
         verbose: "lightslategray",
         warning: "yellow",
-    }));
+    })); 
 
     Example(settings.settings);
 
