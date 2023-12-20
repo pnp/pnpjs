@@ -1,6 +1,6 @@
 {
     "name": "@pnp/buildsystem",
-    "version": "4.0.0-beta3",
+    "version": "4.0.0-beta4",
     "bin": {
         "pnpbuild": "bin/buildsystem.js"
     },
@@ -12,7 +12,6 @@
         "@pnp/core": "^3.21.0",
         "globby": "^14.0.0",
         "liftoff": "^4.0.0",
-        "replace-in-file": "^7.0.2",
         "webpack": "^5.89.0",
         "yargs": "^17.7.2"
     },

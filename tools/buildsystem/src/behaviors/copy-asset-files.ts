@@ -1,6 +1,6 @@
 import { TimelinePipe } from "@pnp/core";
 import { BuildTimeline } from "../build-timeline.js";
-import globby from "globby";
+import { globby } from "globby";
 import { resolve } from "path";
 import buildCopyFile from "../lib/copy-file.js";
 
