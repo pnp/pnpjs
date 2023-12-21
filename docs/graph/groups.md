@@ -132,10 +132,6 @@ const endDate = new Date("2020-03-01");
 const events = graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").getCalendarView(startDate, endDate);
 ```
 
-## Group Photo Operations
-
-See [Photos](./photos.md)
-
 ## Group Membership
 
 Get the members and/or owners of a group.
@@ -162,3 +158,11 @@ const graph = graphfi(...);
 const teamSite = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").sites.root();
 const url = teamSite.webUrl
 ```
+
+## Group Photo Operations
+
+See [Photos](./photos.md)
+
+## Group Conversation Operations
+
+See [Conversations](./conversations.md)

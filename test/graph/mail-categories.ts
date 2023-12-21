@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import "@pnp/graph/users";
-import "@pnp/graph/outlook";
+import "@pnp/graph/mail";
 import { OutlookCategory } from "@microsoft/microsoft-graph-types";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
 
-describe("Outlook", function () {
+describe("Mail: Categories", function () {
 
     let testUserName = "";
     const testCategoryList: string[] = [];
@@ -37,7 +37,7 @@ describe("Outlook", function () {
         return;
     });
 
-    it("outlook", async function () {
+    it("Mail: Categories", async function () {
         const outlookUser = await this.pnp.graph.users.getById(testUserName).outlook();
         return expect(outlookUser).is.not.null;
     });
@@ -56,7 +56,7 @@ describe("Outlook", function () {
             };
 
             const addedCategory = await this.pnp.graph.users.getById(testUserName).outlook.masterCategories.add(testCategory);
-            testCategoryList.push(addedCategory.data.id);
+            testCategoryList.push(addedCategory.id);
 
             return expect(addedCategory).is.not.null;
         });
@@ -68,13 +68,13 @@ describe("Outlook", function () {
             };
 
             const addedCategory = await this.pnp.graph.users.getById(testUserName).outlook.masterCategories.add(testCategory);
-            testCategoryList.push(addedCategory.data.id);
+            testCategoryList.push(addedCategory.id);
 
             const updateCategory: OutlookCategory = {
                 color: "preset3",
             };
 
-            const updatedCategory = this.pnp.graph.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.data.id).update(updateCategory);
+            const updatedCategory = this.pnp.graph.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.id).update(updateCategory);
 
             return expect(updatedCategory).to.eventually.be.fulfilled;
         });
@@ -87,7 +87,7 @@ describe("Outlook", function () {
 
             const addedCategory = await this.pnp.graph.users.getById(testUserName).outlook.masterCategories.add(testCategory);
 
-            const deleteCategory = this.pnp.graph.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.data.id).delete();
+            const deleteCategory = this.pnp.graph.users.getById(testUserName).outlook.masterCategories.getById(addedCategory.id).delete();
 
             return expect(deleteCategory).to.eventually.be.fulfilled;
         });

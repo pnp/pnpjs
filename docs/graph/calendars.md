@@ -268,3 +268,7 @@ const instances2 = await event.instances("2020-01-01", "2020-03-01").select("sub
 // you can specify times along with the dates
 const instance3 = await event.instances("2020-01-01T19:00:00-08:00", "2020-03-01T19:00:00-08:00")(); 
 ```
+
+## Event Attachments
+
+See [Attachments](./attachments.md)
