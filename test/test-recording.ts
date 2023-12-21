@@ -30,8 +30,8 @@ export function initRecording(ctx: Context | Suite, options?: Partial<IRecording
 
     if (ctx.pnp.args.record) {
 
-        console.log("Recording is currently disabled while we work out some bugs.");
-        return;
+        // console.log("Recording is currently disabled while we work out some bugs.");
+        // return;
 
         // if we are recording we want to use the TestProps cache
         ctx.pnp.testProps = new TestProps(resolvedTestSettingsPath);
@@ -48,12 +48,12 @@ export function initRecording(ctx: Context | Suite, options?: Partial<IRecording
 export async function disposeRecording(ctx: Context | Suite): Promise<void> {
 
     // TODO:: we do nothing currently until recording is ready
-    return;
+    // return;
 
-    // if (ctx.pnp.args.record && ctx.pnp.args.recordMode === "write" && typeof (<any>ctx.pnp?.testProps)?.save === "function") {
-    //     // save our updated test props
-    //     return (<TestProps>ctx.pnp.testProps).save();
-    // }
+    if (ctx.pnp.args.record && ctx.pnp.args.recordMode === "write" && typeof (<any>ctx.pnp?.testProps)?.save === "function") {
+        // save our updated test props
+        return (<TestProps>ctx.pnp.testProps).save();
+    }
 }
 
 const counters = new Map<string, number>();
@@ -77,7 +77,7 @@ function incrementCounter(key: string): number {
 }
 
 /**
- * creats a deterministically unique file name to store a request's response
+ * creates a deterministically unique file name to store a request's response
  *
  * @param url request url
  * @param init request init (contains test id)

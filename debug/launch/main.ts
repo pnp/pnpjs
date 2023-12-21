@@ -19,7 +19,7 @@ import { Example } from "./sp.js";
 // create a settings file using settings.example.js as a template
 import(findup("settings.js")).then((settings: { settings: ITestingSettings }) => {
 
-    Logger.activeLogLevel = LogLevel.Info;
+   Logger.activeLogLevel = LogLevel.Info;
 
     // // setup console logger
     Logger.subscribe(ConsoleListener("Debug", {
@@ -27,7 +27,7 @@ import(findup("settings.js")).then((settings: { settings: ITestingSettings }) =>
         error: "red",
         verbose: "lightslategray",
         warning: "yellow",
-    }));
+    })); 
 
     Example(settings.settings);
 

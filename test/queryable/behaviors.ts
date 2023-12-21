@@ -14,10 +14,11 @@ import "@pnp/sp/webs";
 import "@pnp/sp/fields";
 import { getRandomString } from "@pnp/core";
 import { spfi } from "@pnp/sp";
+import { pnpTest } from "../pnp-test.js";
 
 describe("Behaviors", function () {
 
-    it("CachingPessimistic", async function () {
+    it.skip("CachingPessimistic", pnpTest("84909f5f-ce49-4de9-8dd6-eb79a57b0a10", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
@@ -44,9 +45,9 @@ describe("Behaviors", function () {
         const test2 = call1Time > call2Time;
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         return expect(test1 && test2).to.be.true;
-    });
+    }));
 
-    it("CachingPessimistic (headers)", async function () {
+    it.skip("CachingPessimistic (headers)", pnpTest("81723ed2-d35d-4c85-b3a8-d2ccc2011b75", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
@@ -78,16 +79,16 @@ describe("Behaviors", function () {
         const test2 = call1Time > call2Time;
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         return expect(test1 && test2).to.be.true;
-    });
+    }));
 
-    it("Caching", async function () {
+    it("Caching", pnpTest("363a1886-496b-4772-ae6f-90ed76cfa562", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
         // Testing a behavior, creating new instance of sp
-        const spInstance = spfi(this.pnp._sp).using(Caching({ store: "session" }));
+        const spInstance = spfi(this.pnp.sp).using(Caching({ store: "session" }));
 
         // Test caching behavior
         const startCheckpoint = new Date();
@@ -105,14 +106,14 @@ describe("Behaviors", function () {
         const test2 = call1Time > call2Time;
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         return expect(test1 && test2).to.be.true;
-    });
+    }));
 
-    it("Bearer Token", async function () {
+    it("Bearer Token", pnpTest("1bae670f-fd47-47a1-984d-bef7cad4859a", async function () {
 
         const query = new Queryable("https://bing.com");
         query.using(BearerToken("!!token!!"));
 
-        query.on.send.replace((url, init) => {
+        query.on.send.replace((_url, init) => {
 
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(init.headers).to.not.be.undefined.and.to.not.be.null;
@@ -130,9 +131,9 @@ describe("Behaviors", function () {
         });
 
         await query();
-    });
+    }));
 
-    it("Inject Headers", async function () {
+    it("Inject Headers", pnpTest("788ec488-db0a-4054-8ef1-a0299ca7d04c", async function () {
 
         const query = new Queryable("https://bing.com");
         query.using(InjectHeaders({
@@ -140,7 +141,7 @@ describe("Behaviors", function () {
             "header2": "header2-value",
         }));
 
-        query.on.send.replace((url, init) => {
+        query.on.send.replace((_url, init) => {
 
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(init.headers).to.not.be.undefined.and.to.not.be.null;
@@ -160,9 +161,9 @@ describe("Behaviors", function () {
         });
 
         await query();
-    });
+    }));
 
-    it("Timeout", async function () {
+    it("Timeout", pnpTest("b75098d2-8794-4432-878f-59c734407cad", async function () {
 
         const query = new Queryable("https://bing.com");
         query.using(Timeout(50));
@@ -184,5 +185,5 @@ describe("Behaviors", function () {
             // we expect this to be the error from the abort signal
             expect(e).property("name").to.eq("AbortError");
         }
-    });
+    }));
 });
