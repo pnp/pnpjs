@@ -9,7 +9,7 @@
     "type": "module",
     "typings": "./index",
     "dependencies": {
-        "@pnp/core": "^3.21.0",
+        "@pnp/core": "^4.0.0-alpha0-v4nightly.20231227",
         "globby": "^14.0.0",
         "liftoff": "^4.0.0",
         "webpack": "^5.89.0",

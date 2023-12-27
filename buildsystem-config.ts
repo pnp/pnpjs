@@ -28,12 +28,29 @@ const logLevel = LogLevel.Verbose;
 const distFolder = "./dist/packages";
 const commonPublishTags = ["--access", "public"];
 
-function PnPBuild(): (b: BuildTimeline) => BuildTimeline {
+function PnPBuild(buildFlags?: string[]): (b: BuildTimeline) => BuildTimeline {
 
     return (instance: BuildTimeline) => {
 
-        Build()(instance);
+        Build(buildFlags)(instance);
         ReplaceVersion(["sp/behaviors/telemetry.js", "graph/behaviors/telemetry.js"])(instance);
+
+        return instance;
+    }
+}
+
+function PnPBuildCommonJS(buildFlags?: string[]): (b: BuildTimeline) => BuildTimeline {
+
+    if (!buildFlags) {
+        buildFlags = [];
+    }
+
+    buildFlags.push("--module", "commonjs", "--outDir", "./buildcjs")
+
+    return (instance: BuildTimeline) => {
+
+        Build(buildFlags)(instance);
+        ReplaceVersion([resolve("./buildcjs/packages/sp/behaviors/telemetry.js"), resolve("./buildcjs/packages/graph/behaviors/telemetry.js")], { pathsResolved: true })(instance);
 
         return instance;
     }
@@ -90,7 +107,7 @@ const commonBehaviors = [
     PnPLogging(logLevel),
 ]
 
-export default [<BuildSchema>{
+export default <BuildSchema[]>[{
     name: "build",
     distFolder,
     targets: [
@@ -112,7 +129,7 @@ export default [<BuildSchema>{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPPackage(), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPBuildCommonJS(), PnPPackage(), ...commonBehaviors],
 },
 {
     name: "publish",
@@ -120,7 +137,7 @@ export default [<BuildSchema>{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPPackage(), PnPPublish(commonPublishTags), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPBuildCommonJS(), PnPPackage(), PnPPublish(commonPublishTags), ...commonBehaviors],
 },
 {
     name: "publish-beta",
@@ -128,7 +145,7 @@ export default [<BuildSchema>{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPPackage(), PnPPublish([...commonPublishTags, "--tag", "beta"]), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPBuildCommonJS(), PnPPackage(), PnPPublish([...commonPublishTags, "--tag", "beta"]), ...commonBehaviors],
 },
 {
     name: "publish-v3nightly",
@@ -144,5 +161,5 @@ export default [<BuildSchema>{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v4nightly"), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPBuildCommonJS(), PnPPackage(), PublishNightly([...commonPublishTags], "v4nightly"), ...commonBehaviors],
 }];
