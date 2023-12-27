@@ -9,7 +9,7 @@ export interface IReplaceVersionOptions {
     pathsResolved?: boolean;
 }
 
-export function ReplaceVersion(paths: string[], options: IReplaceVersionOptions): TimelinePipe {
+export function ReplaceVersion(paths: string[], options?: IReplaceVersionOptions): TimelinePipe {
 
     options = {
         versionMask: /\$\$Version\$\$/img,

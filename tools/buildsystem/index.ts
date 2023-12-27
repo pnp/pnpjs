@@ -7,6 +7,7 @@ export { Publish } from "./src/behaviors/publish.js";
 export { ReplaceVersion, IReplaceVersionOptions } from "./src/behaviors/replace-version.js";
 export { Webpack } from "./src/behaviors/webpack.js";
 export { WritePackageJSON } from "./src/behaviors/write-packagejson.js";
+export { CreateResolutionPackageFiles } from "./src/behaviors/create-resolution-package-files.js";
 
 export {
     BuildObserver,

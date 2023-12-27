@@ -1,7 +1,7 @@
 import { TimelinePipe } from "@pnp/core";
 import { exec } from "child_process";
 import { resolve } from "path";
-import { BuildTimeline } from "src/build-timeline";
+import { BuildTimeline } from "../build-timeline.js";
 
 const tscPath = resolve("./node_modules/.bin/tsc");
 

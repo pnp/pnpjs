@@ -20,6 +20,7 @@ export interface BuildSchema {
 export interface TSConfig {
     compilerOptions: {
         outDir: string;
+        module: string;
     };
     references?: {
         path: string;
@@ -43,6 +44,7 @@ export interface IBuildContext {
             resolvedPkgSrcRoot: string;
             resolvedPkgOutRoot: string;
             resolvedPkgDistRoot: string;
+            relativePkgDistModulePath: string;
         }[];
     };
 }

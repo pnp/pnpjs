@@ -6,6 +6,7 @@ import buildCopyFile from "../lib/copy-file.js";
 
 /**
  * Copies files from the target's directory based on the supplied patterns to the same directory in the dist folder
+ * @param source 'src' copies files from package src root to dist package root, 'built' copies files from built output to their relative to /packages path within the dist package root (esm/commonjs)
  * @param pattern glob patterns for files (see https://www.npmjs.com/package/globby)
  * @returns 
  */
@@ -31,7 +32,7 @@ export function CopyPackageFiles(source: "src" | "built", pattern: string[]): Ti
 
                     a.push(...temp.map(t => ({
                         src: resolve(fileSourceRoot, t),
-                        dest: resolve(pkg.resolvedPkgDistRoot, t),
+                        dest: resolve(pkg.resolvedPkgDistRoot, source === "built" ? pkg.relativePkgDistModulePath : "", t),
                     })));
 
                     return a;

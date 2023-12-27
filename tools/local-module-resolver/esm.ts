@@ -18,15 +18,22 @@ export function createResolve(innerPath: string): ResolverFunc {
 
     return async function (specifier: string, context: ResolveContext, defaultResolve: ResolverFunc): Promise<ResolvedValue> {
 
-        if (specifier.startsWith("@pnp") && specifier !== "@pnp/buildsystem") {
+        if (specifier.startsWith("@pnp")) {
 
             const modulePath = specifier.substring(4);
+
+            log(`modulePath: ${modulePath}`);
 
             if (cache.has(modulePath)) {
                 return cache.get(modulePath)!;
             }
 
             let candidate = join(projectRoot, innerPath, modulePath);
+
+            // hack to enable debugging the buildsystem
+            if (modulePath === "/buildsystem") {
+                candidate = resolve("./build/build-system")
+            }
 
             if (existsSync(candidate + ".js")) {
 

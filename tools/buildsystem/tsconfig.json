@@ -32,7 +32,6 @@
         "resolveJsonModule": true
     },
     "include": [
-        "./index.ts",
-        "./**/*.*"
+        "./**/*.ts"
     ]
 }
