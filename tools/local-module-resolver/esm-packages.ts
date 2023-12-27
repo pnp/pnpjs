@@ -1,2 +1,2 @@
 import { createResolve} from "./esm.js";
-export const resolve = createResolve("/build/packages");
+export const resolve = createResolve("/build/packages/esm");

@@ -33,7 +33,6 @@ BuildSystem.prepare({}, function (env) {
 
         context.version = pkg.version;
 
-
         let name = <string>(args.n || args.name);
         if (typeof name === "undefined" || name === null || name === "") {
             // default to build if no name is supplied
@@ -84,6 +83,7 @@ BuildSystem.prepare({}, function (env) {
                     resolvedPkgSrcRoot: dirname(resolve(tsconfigRoot, ref.path)),
                     resolvedPkgOutRoot: resolve(resolvedOutDir, dirname(ref.path)),
                     resolvedPkgDistRoot: resolve(context.distRoot, dirname(ref.path)),
+                    relativePkgDistModulePath: resolvedOutDir.replace(dirname(resolvedOutDir), "").replace(/^\\|\//, ""),
                 })));
             } else {
                 // we have a single package (debug for example)
@@ -93,6 +93,7 @@ BuildSystem.prepare({}, function (env) {
                     resolvedPkgSrcRoot: tsconfigRoot,
                     resolvedPkgOutRoot: resolvedOutDir,
                     resolvedPkgDistRoot: context.distRoot,
+                    relativePkgDistModulePath: context.distRoot,                    
                 });
             }
             

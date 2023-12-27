@@ -33,24 +33,7 @@ function PnPBuild(buildFlags?: string[]): (b: BuildTimeline) => BuildTimeline {
     return (instance: BuildTimeline) => {
 
         Build(buildFlags)(instance);
-        ReplaceVersion(["sp/behaviors/telemetry.js", "graph/behaviors/telemetry.js"])(instance);
-
-        return instance;
-    }
-}
-
-function PnPBuildCommonJS(buildFlags?: string[]): (b: BuildTimeline) => BuildTimeline {
-
-    if (!buildFlags) {
-        buildFlags = [];
-    }
-
-    buildFlags.push("--module", "commonjs", "--outDir", "./buildcjs")
-
-    return (instance: BuildTimeline) => {
-
-        Build(buildFlags)(instance);
-        ReplaceVersion([resolve("./buildcjs/packages/sp/behaviors/telemetry.js"), resolve("./buildcjs/packages/graph/behaviors/telemetry.js")], { pathsResolved: true })(instance);
+        ReplaceVersion(["sp/behaviors/telemetry.js", "graph/behaviors/telemetry.js"], {})(instance);
 
         return instance;
     }
@@ -66,13 +49,11 @@ function PnPPackage(): (b: BuildTimeline) => BuildTimeline {
         CopyPackageFiles("built", ["**/*.d.ts", "**/*.js", "**/*.js.map", "**/*.d.ts.map"])(instance);
         WritePackageJSON((p) => {
             return Object.assign({}, p, {
-                funding: {
-                    type: "individual",
-                    url: "https://github.com/sponsors/patrick-rodgers/",
-                },
                 type: "module",
+                main: "./esm/index.js",
+                typings: "./esm/index",
                 engines: {
-                    node: ">=14.15.1"
+                    node: ">=18.12.0"
                 },
                 author: {
                     name: "Microsoft and other contributors"
@@ -85,7 +66,24 @@ function PnPPackage(): (b: BuildTimeline) => BuildTimeline {
                 repository: {
                     type: "git",
                     url: "git:github.com/pnp/pnpjs"
-                }
+                },
+                exports: {
+                    ".": {
+                        "import": {
+                            "types": "./esm/index",
+                            "default": "./esm/index.js"
+                        },
+                        "require": {
+                            "types": "./commonjs/index",
+                            "default": "./commonjs/index.js"
+                        },
+                        "default": "./esm/index.js"
+                    }
+                },
+                funding: {
+                    type: "individual",
+                    url: "https://github.com/sponsors/patrick-rodgers/",
+                },
             });
         })(instance);
 
@@ -112,6 +110,7 @@ export default <BuildSchema[]>[{
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), ...commonBehaviors],
 },
@@ -121,15 +120,16 @@ export default <BuildSchema[]>[{
     targets: [
         resolve("./debug/launch/tsconfig.json"),
     ],
-    behaviors: [Build(), ReplaceVersion(["packages/sp/behaviors/telemetry.js", "packages/graph/behaviors/telemetry.js"]), ...commonBehaviors],
+    behaviors: [Build(), ReplaceVersion(["packages/sp/behaviors/telemetry.js", "packages/graph/behaviors/telemetry.js"], {}), ...commonBehaviors],
 },
 {
     name: "package",
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
-    behaviors: [PnPBuild(), PnPBuildCommonJS(), PnPPackage(), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPPackage(), ...commonBehaviors],
 },
 {
     name: "publish",
@@ -137,7 +137,7 @@ export default <BuildSchema[]>[{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPBuildCommonJS(), PnPPackage(), PnPPublish(commonPublishTags), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPPackage(), PnPPublish(commonPublishTags), ...commonBehaviors],
 },
 {
     name: "publish-beta",
@@ -145,7 +145,7 @@ export default <BuildSchema[]>[{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPBuildCommonJS(), PnPPackage(), PnPPublish([...commonPublishTags, "--tag", "beta"]), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPPackage(), PnPPublish([...commonPublishTags, "--tag", "beta"]), ...commonBehaviors],
 },
 {
     name: "publish-v3nightly",
@@ -161,5 +161,5 @@ export default <BuildSchema[]>[{
     targets: [
         resolve("./packages/tsconfig.json"),
     ],
-    behaviors: [PnPBuild(), PnPBuildCommonJS(), PnPPackage(), PublishNightly([...commonPublishTags], "v4nightly"), ...commonBehaviors],
+    behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v4nightly"), ...commonBehaviors],
 }];
