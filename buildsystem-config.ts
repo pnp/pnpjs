@@ -9,6 +9,7 @@ import {
     WritePackageJSON,
     Publish,
     PublishNightly,
+    CreateResolutionPackageFiles,
 } from "@pnp/buildsystem";
 import {
     Logger,
@@ -24,7 +25,7 @@ Logger.subscribe(ConsoleListener("", {
     warning: "yellow",
 }));
 
-const logLevel = LogLevel.Verbose;
+const logLevel = LogLevel.Info;
 const distFolder = "./dist/packages";
 const commonPublishTags = ["--access", "public"];
 
@@ -47,6 +48,7 @@ function PnPPackage(): (b: BuildTimeline) => BuildTimeline {
         CopyAssetFiles(".", ["LICENSE"])(instance);
         CopyAssetFiles("./packages", ["readme.md"])(instance);
         CopyPackageFiles("built", ["**/*.d.ts", "**/*.js", "**/*.js.map", "**/*.d.ts.map"])(instance);
+        CreateResolutionPackageFiles()(instance),
         WritePackageJSON((p) => {
             return Object.assign({}, p, {
                 type: "module",
@@ -80,6 +82,22 @@ function PnPPackage(): (b: BuildTimeline) => BuildTimeline {
                         "default": "./esm/index.js"
                     }
                 },
+                maintainers: [
+                    {
+                        name: "patrick-rodgers",
+                        email: "patrick.rodgers@microsoft.com"
+                    },
+                    {
+                        name: "juliemturner",
+                        email: "julie.turner@sympraxisconsulting.com",
+                        url: "https://julieturner.net"
+                    },
+                    {
+                        name: "bcameron1231",
+                        email: "beau@beaucameron.net",
+                        url: "https://beaucameron.net"
+                    },
+                ],
                 funding: {
                     type: "individual",
                     url: "https://github.com/sponsors/patrick-rodgers/",
