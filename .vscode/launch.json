@@ -54,7 +54,7 @@
       "program": "${workspaceRoot}/tools/buildsystem/bin/buildsystem.ts",
       "args": [
         "-n",
-        "build"
+        "package"
       ],
       "cwd": "${workspaceRoot}",
       "preLaunchTask": "build-buildsystem",

@@ -18,7 +18,7 @@ export function createResolve(innerPath: string): ResolverFunc {
 
     return async function (specifier: string, context: ResolveContext, defaultResolve: ResolverFunc): Promise<ResolvedValue> {
 
-        if (specifier.startsWith("@pnp")) {
+        if (specifier.startsWith("@pnp") && specifier !== "@pnp/buildsystem") {
 
             const modulePath = specifier.substring(4);
 
