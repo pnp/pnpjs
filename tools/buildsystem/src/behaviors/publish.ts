@@ -10,11 +10,11 @@ export function Publish(flags?: string[]): TimelinePipe {
 
         instance.on.publish(async function (this: BuildTimeline) {
 
-            const { target } = this.context;
+            const { targets } = this.context;
 
             const promises: Promise<void>[] = [];
 
-            target.packages.forEach(pkg => {
+            targets[0].packages.forEach(pkg => {
 
                 promises.push(new Promise((resolve, reject) => {
 

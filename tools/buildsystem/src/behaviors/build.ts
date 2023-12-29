@@ -17,23 +17,26 @@ export function Build(flags?: string[]): TimelinePipe {
 
         instance.on.build(async function (this: BuildTimeline) {
 
-            const { tsconfigPath } = this.context.target;
+            const { targets } = this.context;
 
-            this.log(`Starting Build for target "${tsconfigPath}"`, 1);
+            await Promise.all(targets.map((target) => {
 
-            return new Promise<void>((res, reject) => {
+                this.log(`Starting Build for target "${target.tsconfigPath}"`, 1);
 
-                exec(`${tscPath} -b ${tsconfigPath} ${stringFlags}`, (error, stdout, _stderr) => {
+                return new Promise<void>((res, reject) => {
 
-                    if (error === null) {
-                        this.log(`Completing Build for target "${tsconfigPath}"`, 1);
-                        res();
-                    } else {
-                        this.log(`Error in Build for target "${tsconfigPath}"`, 3);
-                        reject(stdout);
-                    }
+                    exec(`${tscPath} -b ${target.tsconfigPath} ${stringFlags}`, (error, stdout, _stderr) => {
+    
+                        if (error === null) {
+                            this.log(`Completing Build for target "${target.tsconfigPath}"`, 1);
+                            res();
+                        } else {
+                            this.log(`Error in Build for target "${target.tsconfigPath}"`, 3);
+                            reject(stdout);
+                        }
+                    });
                 });
-            });
+            }));
         });
 
         return instance;

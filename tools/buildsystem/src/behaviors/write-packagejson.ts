@@ -10,11 +10,11 @@ export function WritePackageJSON(transform?: (p: any) => typeof p): TimelinePipe
 
         instance.on.postBuild(async function (this: BuildTimeline) {
 
-            const { version, target } = this.context;
+            const { version, targets } = this.context;
 
             const promises = [];
 
-            target.packages.forEach((pkg) => {
+            targets[0].packages.forEach((pkg) => {
 
                 let pkgFile = importJSON(resolve(pkg.resolvedPkgSrcRoot, "package.json"));
 
