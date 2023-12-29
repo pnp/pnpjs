@@ -11,7 +11,7 @@ export {
     RoomList,
     IRoomlist,
     RoomLists,
-    IRoomlists
+    IRoomlists,
 } from "./types.js";
 
 declare module "../fi" {
