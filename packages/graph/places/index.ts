@@ -6,6 +6,12 @@ export {
     IPlaces,
     Place,
     IPlace,
+    Room,
+    IRoom,
+    RoomList,
+    IRoomlist,
+    RoomLists,
+    IRoomlists
 } from "./types.js";
 
 declare module "../fi" {

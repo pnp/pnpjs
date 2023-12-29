@@ -2,7 +2,7 @@
 
 This module allows you to work with Exchange resources such as rooms and roomLists.
 
-## IPlaces, Places, IPlace, Place
+## IPlaces, Places, IPlace, Place, IRoom, Room, IRoomList, RoomList, IRoomLists, RoomLists
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
