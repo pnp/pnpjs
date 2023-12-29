@@ -13,26 +13,29 @@ export function CreateResolutionPackageFiles(): TimelinePipe {
 
     return (instance: BuildTimeline) => {
 
-        instance.on.package(async function (this: BuildTimeline) {            
+        instance.on.package(async function (this: BuildTimeline) {
 
             this.log("Creating Resolution package.json files.", 1);
 
-            const { target } = this.context;
+            const { targets } = this.context;
 
             const promises = [];
 
-            target.packages.forEach((pkg) => {
+            targets.forEach((target) => {
 
-                const filePath = resolve(pkg.resolvedPkgDistRoot, pkg.relativePkgDistModulePath, "package.json");
+                target.packages.forEach((pkg) => {
 
-                let pkgFile = <any>{
-                    name: pkg.name,
-                    type: /commonjs/i.test(target.parsedTSConfig.compilerOptions.module) ? "commonjs" : "module",
-                }
+                    const filePath = resolve(pkg.resolvedPkgDistRoot, pkg.relativePkgDistModulePath, "package.json");
 
-                this.log(`Writing module resolution package.json for ${filePath} as ${pkgFile.type}`, 0);
+                    let pkgFile = <any>{
+                        name: pkg.name,
+                        type: /commonjs/i.test(target.parsedTSConfig.compilerOptions.module) ? "commonjs" : "module",
+                    }
 
-                promises.push(buildWriteFile(filePath, JSON.stringify(pkgFile)));
+                    this.log(`Writing module resolution package.json for ${filePath} as ${pkgFile.type}`, 0);
+
+                    promises.push(buildWriteFile(filePath, JSON.stringify(pkgFile)));
+                });
             });
 
             await Promise.all(promises);

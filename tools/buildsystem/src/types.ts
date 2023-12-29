@@ -33,7 +33,7 @@ export interface IBuildContext {
     version: string;
     configName: string;
     distRoot: string;
-    target: {
+    targets: {
         tsconfigPath: string;
         tsconfigRoot: string;
         parsedTSConfig: TSConfig;
@@ -46,5 +46,5 @@ export interface IBuildContext {
             resolvedPkgDistRoot: string;
             relativePkgDistModulePath: string;
         }[];
-    };
+    }[];
 }

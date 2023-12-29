@@ -21,14 +21,14 @@ export function PublishNightly(flags: string[], nightlyName: "v3nightly" | "v4ni
         // this updates all the package.json versions to the nightly pattern
         instance.on.prePublish(async function (this: BuildTimeline) {
 
-            const { target } = this.context;
+            const { targets } = this.context;
             const date = new Date();
 
             const versionStr = `-${nightlyName}.${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, "0")}${date.getDate().toString().padStart(2, "0")}`;
 
             this.log(`Updating nightly package.json version to ${versionStr}`);
 
-            await Promise.all(target.packages.map(pkg => {
+            await Promise.all(targets[0].packages.map(pkg => {
 
                 const packageJsonPath = resolve(pkg.resolvedPkgDistRoot, "package.json");
                 const packageJson = importJSON(packageJsonPath);

@@ -20,17 +20,20 @@ export function ReplaceVersion(paths: string[], options?: IReplaceVersionOptions
 
         instance.on.postBuild(async function (this: BuildTimeline) {
 
-            const { version, target } = this.context;
+            const { version, targets } = this.context;
 
-            this.log(`Replacing package version for target "${target.tsconfigPath}"`, 1);
+            targets.forEach((target) => {
 
-            paths.forEach(async (path) => {
+                this.log(`Replacing package version for target "${target.tsconfigPath}"`, 1);
 
-                const resolvedPath = options?.pathsResolved ? path : resolve(target.resolvedOutDir, path);
-                this.log(`Resolving path '${path}' to '${resolvedPath}'.`, 0);
-                const file = await readFile(resolve(resolvedPath));
-                await buildWriteFile(resolvedPath, file.toString().replace(options.versionMask, version));
-            });
+                paths.forEach(async (path) => {
+    
+                    const resolvedPath = options?.pathsResolved ? path : resolve(target.resolvedOutDir, path);
+                    this.log(`Resolving path '${path}' to '${resolvedPath}'.`, 0);
+                    const file = await readFile(resolve(resolvedPath));
+                    await buildWriteFile(resolvedPath, file.toString().replace(options.versionMask, version));
+                });
+            });          
         });
 
         return instance;
