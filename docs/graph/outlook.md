@@ -2,7 +2,9 @@
 
 Represents the Outlook services available to a user. Currently, only interacting with categories is supported.
 
-You can learn more  by reading the [Official Microsoft Graph Documentation](https://docs.microsoft.com/en-us/graph/api/resources/outlookuser?view=graph-rest-1.0).
+More information can be found in the official Graph documentation:
+
+- [Outlook Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/outlookuser?view=graph-rest-1.0)
 
 ## IUsers, IUser, IPeople
 

@@ -2,8 +2,9 @@
 
 A profile photo of a user, group or an Outlook contact accessed from Exchange Online or Azure Active Directory (AAD). It's binary data not encoded in base-64.
 
-You can learn more about Microsoft Graph users by reading the [Official Microsoft Graph Documentation](https://docs.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0).
+More information can be found in the official Graph documentation:
 
+- [Photos Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/profilephoto?view=graph-rest-1.0)
 ## IPhoto
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  

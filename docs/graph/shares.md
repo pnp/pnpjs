@@ -2,6 +2,10 @@
 
 The shares module allows you to access shared files, or any file in the tenant using encoded file urls.
 
+More information can be found in the official Graph documentation:
+
+- [Shares Resource Type](https://docs.microsoft.com/en-us/graph/api/shares-get?view=graph-rest-1.0)
+
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
 ## Access a Share by Id

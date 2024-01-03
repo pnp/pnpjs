@@ -3,6 +3,10 @@
 The ability to manage drives and drive items in Onedrive is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
 you can manage drives and drive items in Onedrive.
 
+More information can be found in the official Graph documentation:
+
+- [Drive/Files Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/onedrive?view=graph-rest-1.0)
+
 ## IInvitations
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  

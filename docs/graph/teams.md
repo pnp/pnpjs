@@ -3,6 +3,11 @@
 The ability to manage Team is a capability introduced in the 1.2.7 of @pnp/graph. Through the methods described
 you can add, update and delete items in Teams.
 
+More information can be found in the official Graph documentation:
+
+- [Teams Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/team?view=graph-rest-1.0)
+- [Joined Teams Resource Type](https://docs.microsoft.com/en-us/graph/api/user-list-joinedteams?view=graph-rest-1.0)
+
 ## Teams
 
 ### Teams the user is a member of

@@ -1,5 +1,10 @@
 # @pnp/graph/items
 
+More information can be found in the official Graph documentation:
+
+- [List Item Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/listitem?view=graph-rest-1.0)
+
+## IListItems, IListItem, IListItemAddResult, IDocumentSetVersion, IDocumentSetVersions IDocumentSetVersionAddResult,
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 ### Get list items
