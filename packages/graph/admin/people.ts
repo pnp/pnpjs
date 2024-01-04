@@ -41,7 +41,7 @@ export const ProfileCardProperty = graphInvokableFactory<IProfileCardProperty>(_
 @getById(ProfileCardProperty)
 @addable()
 export class _ProfileCardProperties extends _GraphCollection<IProfileCardPropertyType[]> { }
-export interface IProfileCardProperties extends _ProfileCardProperties, IAddable<IProfileCardPropertyType>, IGetById<IProfileCardProperty> { }
+export interface IProfileCardProperties extends _ProfileCardProperties, IAddable<IProfileCardPropertyType,IProfileCardPropertyType>, IGetById<IProfileCardProperty> { }
 export const ProfileCardProperties = graphInvokableFactory<IProfileCardProperties>(_ProfileCardProperties);
 
 export interface IPronounSettingsType{
