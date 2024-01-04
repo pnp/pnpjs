@@ -61,7 +61,7 @@ export const RoomLists = graphInvokableFactory<IRoomlists>(_RoomLists);
  * Room
  */
 export class _Room extends _GraphInstance<IRoomType> {}
-export interface IRoom extends _Rooms { }
+export interface IRoom extends _Room { }
 export const Room = graphInvokableFactory<IRoom>(_Room);
 
 /**
@@ -69,14 +69,9 @@ export const Room = graphInvokableFactory<IRoom>(_Room);
  */
 @defaultPath("microsoft.graph.room")
 @getById(Room)
-export class _Rooms extends _GraphCollection<IRoom> {}
+export class _Rooms extends _GraphCollection<IRoomType[]> {}
 export interface IRooms extends _Rooms, IGetById<IRoom> { }
 export const Rooms = graphInvokableFactory<IRooms>(_Rooms);
-
-export interface IPlacesType {
-    readonly rooms: IRoomType[];
-    readonly roomLists: IRoomListType[];
-}
 
 export interface IUpdatePlaceProps extends IRoomType, IRoomListType {
     "@odata.type": string;
