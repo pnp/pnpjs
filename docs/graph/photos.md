@@ -61,12 +61,12 @@ await graph.me.photo.setContent(file);
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/users";
+import "@pnp/graph/groups";
 import "@pnp/graph/photos";
 
 const graph = graphfi(...);
 
 const input = <HTMLInputElement>document.getElementById("thefileinput");
 const file = input.files[0];
-await graph.me.photo.setContent(file);
+await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").photo.setContent(file);
 ```
