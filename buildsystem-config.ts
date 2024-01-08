@@ -154,6 +154,7 @@ export default <BuildSchema[]>[{
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), PnPPublish(commonPublishTags), ...commonBehaviors],
 },
@@ -162,22 +163,16 @@ export default <BuildSchema[]>[{
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), PnPPublish([...commonPublishTags, "--tag", "beta"]), ...commonBehaviors],
-},
-{
-    name: "publish-v3nightly",
-    distFolder,
-    targets: [
-        resolve("./packages/tsconfig.json"),
-    ],
-    behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v3nightly"), ...commonBehaviors],
 },
 {
     name: "publish-v4nightly",
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v4nightly"), ...commonBehaviors],
 }];
