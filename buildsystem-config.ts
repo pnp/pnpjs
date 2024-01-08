@@ -27,7 +27,7 @@ Logger.subscribe(ConsoleListener("", {
 
 const logLevel = LogLevel.Info;
 const distFolder = "./dist/packages";
-const commonPublishTags = [".", "--access", "public"];
+const commonPublishTags = ["--access", "public", "--dry-run"];
 
 function PnPBuild(buildFlags?: string[]): (b: BuildTimeline) => BuildTimeline {
 
