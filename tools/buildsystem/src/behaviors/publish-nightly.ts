@@ -26,7 +26,7 @@ export function PublishNightly(flags: string[], nightlyName: "v3nightly" | "v4ni
 
             const versionStr = `-${nightlyName}.${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, "0")}${date.getDate().toString().padStart(2, "0")}`;
 
-            this.log(`Updating nightly package.json version to ${versionStr}`);
+            this.log(`Updating nightly package.json version to ${versionStr}`, 1);
 
             await Promise.all(targets[0].packages.map(pkg => {
 
