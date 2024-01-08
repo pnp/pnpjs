@@ -20,7 +20,7 @@ export function CopyPackageFiles(source: "src" | "built", pattern: string[]): Ti
 
             this.context.targets.forEach(async (target) => {
 
-                this.log(`Starting CopyPackageFiles with pattern ${stringPattern} on target '${target.tsconfigPath}'`);
+                this.log(`Starting CopyPackageFiles with pattern ${stringPattern} on target '${target.tsconfigPath}'`, 1);
 
                 const files = await target.packages.reduce((p, pkg) => {
 
@@ -46,7 +46,7 @@ export function CopyPackageFiles(source: "src" | "built", pattern: string[]): Ti
     
                 await Promise.all(files.map(f => buildCopyFile(f.src, f.dest)));
                     
-                this.log(`Completing CopyPackageFiles with pattern ${stringPattern} on target '${target.tsconfigPath}'`);
+                this.log(`Completing CopyPackageFiles with pattern ${stringPattern} on target '${target.tsconfigPath}'`, 1);
 
             });            
         });

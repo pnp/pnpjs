@@ -18,15 +18,16 @@ export function Publish(flags?: string[]): TimelinePipe {
 
                 promises.push(new Promise((resolve, reject) => {
 
-                    this.log(`Publishing ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`);
+                    this.log(`Publishing ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`, 1);
 
                     exec(`npm publish ${stringFlags}`,
                         {
                             cwd: pkg.resolvedPkgDistRoot,
-                        }, (error, _stdout, _stderr) => {
+                        }, (error, stdout, _stderr) => {
 
                             if (error === null) {
-                                this.log(`Published ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`);
+                                this.log(`Published ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`, 1);
+                                this.log(stdout);
                                 resolve();
                             } else {
                                 this.log(`${error}`, 3);

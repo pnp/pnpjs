@@ -25,7 +25,7 @@ Logger.subscribe(ConsoleListener("", {
     warning: "yellow",
 }));
 
-const logLevel = LogLevel.Info;
+const logLevel = LogLevel.Verbose;
 const distFolder = "./dist/packages";
 const commonPublishTags = ["--access", "public", "--dry-run"];
 

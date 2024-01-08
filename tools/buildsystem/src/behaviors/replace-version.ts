@@ -29,7 +29,7 @@ export function ReplaceVersion(paths: string[], options?: IReplaceVersionOptions
                 paths.forEach(async (path) => {
     
                     const resolvedPath = options?.pathsResolved ? path : resolve(target.resolvedOutDir, path);
-                    this.log(`Resolving path '${path}' to '${resolvedPath}'.`, 0);
+                    this.log(`Resolving path '${path}' to '${resolvedPath}'.`);
                     const file = await readFile(resolve(resolvedPath));
                     await buildWriteFile(resolvedPath, file.toString().replace(options.versionMask, version));
                 });

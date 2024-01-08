@@ -18,6 +18,8 @@ export function WritePackageJSON(transform?: (p: any) => typeof p): TimelinePipe
 
                 let pkgFile = importJSON(resolve(pkg.resolvedPkgSrcRoot, "package.json"));
 
+                this.log(`Updating package version at ${pkgFile} to ${version}`, 1);
+
                 pkgFile.version = version;
 
                 // update our peer dependencies and dependencies placeholder if needed
