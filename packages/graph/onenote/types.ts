@@ -68,7 +68,7 @@ export class _Notebook extends _GraphInstance<INotebookType> {
      * Copy notebook
      * @param props of type ICopyProps. groupId (id of group to copy to. Use only when copying to M365 group), renameAs name of the copy.
      */
-    public async copy(props: ICopyProps): Promise<IOperationType> {
+    public async copy(props: Pick<ICopyProps, "renameAs" | "groupId">): Promise<IOperationType> {
         return graphPost(GraphQueryable(this, "copyNoteBook"), body(props));
     }
 }
@@ -113,17 +113,17 @@ export class _Section extends _GraphInstance<IOnenoteSectionType> {
 
     /**
      * Copy section to notebook
-     * @param props of type ICopySectionProps. groupId (id of group to copy to. Use only when copying to M365 group), id of destination  notebook, renameAs name of the copy.
+     * @param props of type ICopyProps. groupId (id of group to copy to. Use only when copying to M365 group), id of destination  notebook, renameAs name of the copy.
      */
-    public async copyToNotebook(props: ICopySectionProps): Promise<IOperationType> {
+    public async copyToNotebook(props: ICopyProps): Promise<IOperationType> {
         return graphPost(GraphQueryable(this, "copyToNoteBook"), body(props));
     }
 
     /**
      * Copy section group
-     * @param props of type ICopySectionProps. groupId (id of group to copy to. Use only when copying to M365 group), id of destination  notebook, renameAs name of the copy.
+     * @param props of type ICopyProps. groupId (id of group to copy to. Use only when copying to M365 group), id of destination  notebook, renameAs name of the copy.
      */
-    public async copyToSectionGroup(props: ICopySectionProps): Promise<IOperationType> {
+    public async copyToSectionGroup(props: ICopyProps): Promise<IOperationType> {
         return graphPost(GraphQueryable(this, "copyToNoteBook"), body(props));
     }
 }
@@ -192,7 +192,7 @@ export class _Page extends _GraphInstance<IOnenotePageType> {
      * Copy page to section
      * @param props of type ICopyPageProps. groupId (id of group to copy to. Use only when copying to M365 group), id of destination  notebook
      */
-    public async copyToSection(props: ICopyPageProps): Promise<IOperationType> {
+    public async copyToSection(props: Pick<ICopyProps, "id" | "groupId">): Promise<IOperationType> {
         return graphPost(GraphQueryable(this, "copyToSection"), body(props));
     }
 
@@ -258,17 +258,8 @@ export class _Resources extends _GraphInstance {
 export interface IResources extends _Resources { }
 export const Resources = graphInvokableFactory<IResources>(_Resources);
 
-
 export interface ICopyProps {
     groupId?: string;
     renameAs?: string;
-}
-
-export interface ICopySectionProps extends ICopyProps {
-    id: string;
-}
-
-export interface ICopyPageProps {
-    groupId?: string;
     id: string;
 }
