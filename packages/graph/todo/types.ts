@@ -1,5 +1,5 @@
-import { Todo as ITodoType. TodoTaskList as ITodoTaskListType, TodoTask as ITodoTaskType, AttachmentBase as ITodoAttachmentType, AttachmentSession as IAttachmentSessionType, AttachmentInfo as IAttachmentInfoType, ChecklistItem as IChecklistItemType, LinkedResource as ILinkedResourceType } from "@microsoft/microsoft-graph-types";
-import { _GraphInstance, _GraphCollection, graphInvokableFactory, IGraphCollection, GraphCollection, graphPost } from "../graphqueryable.js";
+import { Todo as ITodoType, TodoTaskList as ITodoTaskListType, TodoTask as ITodoTaskType, AttachmentBase as ITodoAttachmentType, AttachmentSession as IAttachmentSessionType, AttachmentInfo as IAttachmentInfoType, ChecklistItem as IChecklistItemType, LinkedResource as ILinkedResourceType } from "@microsoft/microsoft-graph-types";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, IGraphCollection, GraphCollection } from "../graphqueryable.js";
 import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable } from "../decorators.js";
 import { cancelableScope, errorCheck } from "@pnp/queryable";
 
@@ -66,9 +66,8 @@ export const TaskList = graphInvokableFactory<ITaskList>(_TaskList);
 @getById(TaskList)
 @addable()
 export class _TaskLists extends _GraphCollection<ITodoTaskListType[]> { }
-export interface ITaskLists extends _TaskLists, IGetById<ITaskList>, IAddable<ITodoTaskListType>{ }
+export interface ITaskLists extends _TaskLists, IGetById<ITaskList>, IAddable<ITodoTaskListType,ITodoTaskListType>{ }
 export const TaskLists = graphInvokableFactory<ITaskLists>(_TaskLists);
-
 
 /**
  * Task
@@ -86,8 +85,21 @@ export class _Task extends _GraphInstance<ITodoTaskType> {
     }
 
     public get resources(): ILinkedResources{
-        return LinkedResource(this);
+        return LinkedResources(this);
     }
+    //TODO Create Open Extension. Wait for it to be built as part of extensions module
+    //TODO Get Open Extension. Wait for it to be built as part of extensions module
+}
+export interface ITask extends _Task, IUpdateable<ITodoTaskType>, IDeleteable{ }
+export const Task = graphInvokableFactory<ITask>(_Task);
+
+/**
+ * Tasks
+ */
+@defaultPath("tasks")
+@getById(Task)
+@addable()
+export class _Tasks extends _GraphCollection<ITodoTaskType[]> { 
     /**
      * Get changes since optional change token
      * @param token - string (Optional)
@@ -117,20 +129,8 @@ export class _Task extends _GraphInstance<ITodoTaskType> {
 
         return query;
     }
-    //TODO Create Open Extension. Wait for it to be built as part of extensions module
-    //TODO Get Open Extension. Wait for it to be built as part of extensions module
 }
-export interface ITask extends _Tasks, IUpdateable<ITask>, IDeleteable{ }
-export const Task = graphInvokableFactory<ITasks>(_Task);
-
-/**
- * Tasks
- */
-@defaultPath("tasks")
-@getById(Task)
-@addable()
-export class _Tasks extends _GraphCollection<ITodoTaskType[]> { }
-export interface ITasks extends _Tasks, IGetById<ITask>, IAddable<ITask>{ }
+export interface ITasks extends _Tasks, IGetById<ITask>, IAddable<ITodoTaskType,ITodoTaskType>{ }
 export const Tasks = graphInvokableFactory<ITasks>(_Tasks);
 
 /**
@@ -169,15 +169,15 @@ export const Attachments = graphInvokableFactory<IAttachments>(_Attachments);
  */
 @deleteable()
 @updateable()
-export class _Checklist extends _GraphInstance<IChecklistItemType> { }
-export interface IChecklist extends _ChecklistItems, IUpdateable<IChecklistItemType>, IDeleteable{ }
-export const Checklist = graphInvokableFactory<IChecklistItems>(_Checklist);
+export class _ChecklistItem extends _GraphInstance<IChecklistItemType> { }
+export interface IChecklistItem extends _ChecklistItems, IUpdateable<IChecklistItemType>, IDeleteable{ }
+export const ChecklistItem = graphInvokableFactory<IChecklistItem>(_ChecklistItem);
 
 /**
  * ChecklistItems
  */
 @defaultPath("checklistItems")
-@getById(Checklist)
+@getById(ChecklistItem)
 @addable()
 export class _ChecklistItems extends _GraphCollection<IChecklistItemType[]> { }
 export interface IChecklistItems extends _ChecklistItems, IGetById<IChecklistItemType>, IAddable<IChecklistItemType>{ }
