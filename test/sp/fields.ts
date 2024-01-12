@@ -74,13 +74,13 @@ describe("Fields", function () {
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         }));
 
-        it("addImageField", pnpTest("5f3f2ba5-d467-4ebb-8161-3589c35f62c4", async function () {
+        it("addImageField", pnpTest("76b940f7-2113-4adb-adad-230e119b5450", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await this.pnp.sp.web.fields.addImageField(testFieldNameRand, { Group: testFieldGroup});
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
         }));
 
-        it("addNumber", pnpTest("1ebfde07-317d-4107-bd42-addd4846cc0a", async function () {
+        it("addNumber", pnpTest("5f3f2ba5-d467-4ebb-8161-3589c35f62c4", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await this.pnp.sp.web.fields.addNumber(testFieldNameRand, { Group: testFieldGroup });
             return expect(field.data.Title).to.be.equal(testFieldNameRand);
