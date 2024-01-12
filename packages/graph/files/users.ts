@@ -43,7 +43,13 @@ _Drive.prototype.special = function special(specialFolder: SpecialFolder): IDriv
     return DriveItem(this, `special/${specialFolder}`);
 };
 
-export type SpecialFolder = "documents" | "photos" | "cameraroll" | "approot" | "music";
+export enum SpecialFolder {
+    "Documents" = "documents",
+    "Photos" = "photos",
+    "CameraRoll" = "cameraroll",
+    "AppRoot" = "approot",
+    "Music" = "music",
+}
 
 _DriveItem.prototype.restore = function restore(restoreOptions: IItemOptions): Promise<IDriveItem> {
     return graphPost(DriveItem(this, "restore"), body(restoreOptions));

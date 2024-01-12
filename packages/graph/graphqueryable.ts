@@ -239,4 +239,3 @@ export const graphPatch = <T = any>(o: IGraphQueryable<any>, init?: RequestInit)
 export const graphPut = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
     return op(o, put, init);
 };
-
