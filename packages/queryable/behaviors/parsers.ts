@@ -1,5 +1,5 @@
 import { Queryable } from "../queryable.js";
-import { hOP, TimelinePipe } from "@pnp/core";
+import { hOP, TimelinePipe, parseToAtob } from "@pnp/core";
 import { isFunc } from "@pnp/core";
 
 export function DefaultParse(): TimelinePipe {
@@ -25,7 +25,21 @@ export function TextParse(): TimelinePipe {
 
 export function BlobParse(): TimelinePipe {
 
-    return parseBinderWithErrorCheck(r => r.blob());
+    return parseBinderWithErrorCheck( async (response) => {
+        const binaryResponseBody = parseToAtob(await response.clone().text());
+        // handle batch responses for things that are base64, like photos https://github.com/pnp/pnpjs/issues/2825
+        if(binaryResponseBody){
+            // Create an array buffer from the binary string
+            const arrayBuffer = new ArrayBuffer(binaryResponseBody.length);
+            const uint8Array = new Uint8Array(arrayBuffer);
+            for (let i = 0; i < binaryResponseBody.length; i++) {
+                uint8Array[i] = binaryResponseBody.charCodeAt(i);
+            }
+            // Create a Blob from the array buffer
+            return new Blob([arrayBuffer], {type:response.headers.get("Content-Type")});
+        }
+        return response.blob();
+    });
 }
 
 export function JSONParse(): TimelinePipe {

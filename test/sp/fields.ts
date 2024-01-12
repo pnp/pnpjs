@@ -63,43 +63,33 @@ describe("Fields", function () {
         }));
 
         it("add", pnpTest("80e75ef7-3d5a-4880-9b28-67143ce6d058", async function () {
-
-            const { name } = await this.props({
-                name: `${testFieldName}_${getRandomString(10)}`,
-            });
-
-            const field = await this.pnp.sp.web.fields.add(name, FieldTypes.Text, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const field = await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
+            return expect(field.data.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addText", pnpTest("54ce0598-f27c-4787-9d39-3f31cedaacbd", async function () {
-
-            const { name } = await this.props({
-                name: `${testFieldName}_${getRandomString(10)}`,
-            });
-
-            const field = await this.pnp.sp.web.fields.addText(name, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const field = await this.pnp.sp.web.fields.addText(testFieldNameRand, { Group: testFieldGroup });
+            return expect(field.data.Title).to.be.equal(testFieldNameRand);
         }));
 
-        it("addNumber", pnpTest("5f3f2ba5-d467-4ebb-8161-3589c35f62c4", async function () {
+        it("addImageField", pnpTest("5f3f2ba5-d467-4ebb-8161-3589c35f62c4", async function () {
+            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const field = await this.pnp.sp.web.fields.addImageField(testFieldNameRand, { Group: testFieldGroup});
+            return expect(field.data.Title).to.be.equal(testFieldNameRand);
+        }));
 
-            const { name } = await this.props({
-                name: `${testFieldName}_${getRandomString(10)}`,
-            });
-
-            const field = await this.pnp.sp.web.fields.addNumber(name, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+        it("addNumber", pnpTest("1ebfde07-317d-4107-bd42-addd4846cc0a", async function () {
+            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const field = await this.pnp.sp.web.fields.addNumber(testFieldNameRand, { Group: testFieldGroup });
+            return expect(field.data.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addCalculated", pnpTest("4dc773f4-6f65-44e9-8ff6-8a03fe4dcb31", async function () {
-
-            const { name } = await this.props({
-                name: `${testFieldName}_${getRandomString(10)}`,
-            });
-
+            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await this.pnp.sp.web.fields
-                .addCalculated(name, {
+                .addCalculated(testFieldNameRand, {
                     Formula: "=Modified+1",
                     DateFormat: DateTimeFieldFormatType.DateOnly,
                     FieldTypeKind: FieldTypes.Calculated,
