@@ -50,7 +50,7 @@ export function MSAL(options: MSALOptions): (instance: Queryable) => Queryable {
 
             if (!app) {
                 instances.set(name, new PublicClientApplication(options.configuration));
-                app = instances.get(name)!;
+                app = instances.get(name);
                 await app.initialize();
             }
 
