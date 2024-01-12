@@ -6,6 +6,7 @@ import buildCopyFile from "../lib/copy-file.js";
 
 /**
  * Copies files from the target's directory based on the supplied patterns to the same directory in the dist folder
+ * @param source 'src' copies files from package src root to dist package root, 'built' copies files from built output to their relative to /packages path within the dist package root (esm/commonjs)
  * @param pattern glob patterns for files (see https://www.npmjs.com/package/globby)
  * @returns 
  */
@@ -17,33 +18,37 @@ export function CopyPackageFiles(source: "src" | "built", pattern: string[]): Ti
 
         instance.on.package(async function (this: BuildTimeline) {
 
-            this.log(`Starting CopyPackageFiles with pattern ${stringPattern} on target '${this.context.target.tsconfigPath}'`);
+            this.context.targets.forEach(async (target) => {
 
-            const files = await this.context.target.packages.reduce((p, pkg) => {
+                this.log(`Starting CopyPackageFiles with pattern ${stringPattern} on target '${target.tsconfigPath}'`, 1);
 
-                const fileSourceRoot = resolve(source === "src" ? pkg.resolvedPkgSrcRoot : pkg.resolvedPkgOutRoot);
+                const files = await target.packages.reduce((p, pkg) => {
 
-                return p.then(async (a) => {
-
-                    const temp = await (<any>globby)(pattern, {
-                        cwd: fileSourceRoot,
+                    const fileSourceRoot = resolve(source === "src" ? pkg.resolvedPkgSrcRoot : pkg.resolvedPkgOutRoot);
+    
+                    return p.then(async (a) => {
+    
+                        const temp = await (<any>globby)(pattern, {
+                            cwd: fileSourceRoot,
+                        });
+    
+                        a.push(...temp.map(t => ({
+                            src: resolve(fileSourceRoot, t),
+                            dest: resolve(pkg.resolvedPkgDistRoot, source === "built" ? pkg.relativePkgDistModulePath : "", t),
+                        })));
+    
+                        return a;
                     });
+    
+                }, Promise.resolve<{ src: string, dest: string }[]>([]));
+    
+                this.log(`CopyPackageFiles found ${files.length} files for pattern ${stringPattern} in target '${target.tsconfigPath}'`);
+    
+                await Promise.all(files.map(f => buildCopyFile(f.src, f.dest)));
+                    
+                this.log(`Completing CopyPackageFiles with pattern ${stringPattern} on target '${target.tsconfigPath}'`, 1);
 
-                    a.push(...temp.map(t => ({
-                        src: resolve(fileSourceRoot, t),
-                        dest: resolve(pkg.resolvedPkgDistRoot, t),
-                    })));
-
-                    return a;
-                });
-
-            }, Promise.resolve<{ src: string, dest: string }[]>([]));
-
-            this.log(`CopyPackageFiles found ${files.length} files for pattern ${stringPattern} in target '${this.context.target.tsconfigPath}'`);
-
-            await Promise.all(files.map(f => buildCopyFile(f.src, f.dest)));
-                
-            this.log(`Completing CopyPackageFiles with pattern ${stringPattern} on target '${this.context.target.tsconfigPath}'`);
+            });            
         });
 
         return instance;

@@ -33,7 +33,6 @@ BuildSystem.prepare({}, function (env) {
 
         context.version = pkg.version;
 
-
         let name = <string>(args.n || args.name);
         if (typeof name === "undefined" || name === null || name === "") {
             // default to build if no name is supplied
@@ -52,22 +51,8 @@ BuildSystem.prepare({}, function (env) {
         // setup other context values from config
         context.distRoot = config[0].distFolder || "./dist/packages";
 
-        const baseTimeline = new BuildTimeline();
-
-        // now we apply all our configs
-        if (activeConfig.behaviors) {
-            baseTimeline.using(...activeConfig.behaviors);
-        }
-
-        // read in any moment defined observers
-        for (let key in BuildMoments) {
-            if (activeConfig[key]) {
-                baseTimeline.on[key](...activeConfig[key]);
-            }
-        }
-
         // now we make an array of timelines 1/target
-        const timelines = config[0].targets.map(tsconfigPath => {
+        context.targets = config[0].targets.map(tsconfigPath => {
 
             const tsconfigRoot = resolve(dirname(tsconfigPath));
             const parsedTSConfig: TSConfig = importJSON(tsconfigPath);
@@ -84,6 +69,7 @@ BuildSystem.prepare({}, function (env) {
                     resolvedPkgSrcRoot: dirname(resolve(tsconfigRoot, ref.path)),
                     resolvedPkgOutRoot: resolve(resolvedOutDir, dirname(ref.path)),
                     resolvedPkgDistRoot: resolve(context.distRoot, dirname(ref.path)),
+                    relativePkgDistModulePath: resolvedOutDir.replace(dirname(resolvedOutDir), "").replace(/^\\|\//, ""),
                 })));
             } else {
                 // we have a single package (debug for example)
@@ -93,21 +79,34 @@ BuildSystem.prepare({}, function (env) {
                     resolvedPkgSrcRoot: tsconfigRoot,
                     resolvedPkgOutRoot: resolvedOutDir,
                     resolvedPkgDistRoot: context.distRoot,
+                    relativePkgDistModulePath: context.distRoot,
                 });
             }
-            
-            return Object.assign({}, context, {
-                target: {
-                    tsconfigPath,
-                    tsconfigRoot,
-                    parsedTSConfig,
-                    resolvedOutDir,
-                    packages,
-                }
-            });
-        }).map(context => new BuildTimeline(baseTimeline, context));
+
+            return {
+                tsconfigPath,
+                tsconfigRoot,
+                parsedTSConfig,
+                resolvedOutDir,
+                packages,
+            };
+        })
+
+        const timeline = new BuildTimeline(context);
+
+        // now we apply all our configs
+        if (activeConfig.behaviors) {
+            timeline.using(...activeConfig.behaviors);
+        }
+
+        // read in any moment defined observers
+        for (let key in BuildMoments) {
+            if (activeConfig[key]) {
+                timeline.on[key](...activeConfig[key]);
+            }
+        }
 
         // we start one timeline per target
-        await Promise.all(timelines.map(tl => tl.start()));
+        await timeline.start();
     });
 });

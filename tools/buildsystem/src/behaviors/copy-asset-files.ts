@@ -27,7 +27,7 @@ export function CopyAssetFiles(path: string, pattern: string[]): TimelinePipe {
 
             this.log(`CopyAssetFiles found ${temp.length} files for pattern ${stringPattern} in path '${resolvedPath}'`);
 
-            const files = await this.context.target.packages.reduce((p, pkg) => {
+            const files = await this.context.targets[0].packages.reduce((p, pkg) => {
 
                 return p.then(async (a) => {
 

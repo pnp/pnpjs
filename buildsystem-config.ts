@@ -9,6 +9,7 @@ import {
     WritePackageJSON,
     Publish,
     PublishNightly,
+    CreateResolutionPackageFiles,
 } from "@pnp/buildsystem";
 import {
     Logger,
@@ -28,12 +29,12 @@ const logLevel = LogLevel.Verbose;
 const distFolder = "./dist/packages";
 const commonPublishTags = ["--access", "public"];
 
-function PnPBuild(): (b: BuildTimeline) => BuildTimeline {
+function PnPBuild(buildFlags?: string[]): (b: BuildTimeline) => BuildTimeline {
 
     return (instance: BuildTimeline) => {
 
-        Build()(instance);
-        ReplaceVersion(["sp/behaviors/telemetry.js", "graph/behaviors/telemetry.js"])(instance);
+        Build(buildFlags)(instance);
+        ReplaceVersion(["sp/behaviors/telemetry.js", "graph/behaviors/telemetry.js"], {})(instance);
 
         return instance;
     }
@@ -47,15 +48,14 @@ function PnPPackage(): (b: BuildTimeline) => BuildTimeline {
         CopyAssetFiles(".", ["LICENSE"])(instance);
         CopyAssetFiles("./packages", ["readme.md"])(instance);
         CopyPackageFiles("built", ["**/*.d.ts", "**/*.js", "**/*.js.map", "**/*.d.ts.map"])(instance);
+        CreateResolutionPackageFiles()(instance),
         WritePackageJSON((p) => {
             return Object.assign({}, p, {
-                funding: {
-                    type: "individual",
-                    url: "https://github.com/sponsors/patrick-rodgers/",
-                },
                 type: "module",
+                main: "./esm/index.js",
+                typings: "./esm/index",
                 engines: {
-                    node: ">=14.15.1"
+                    node: ">=18.12.0"
                 },
                 author: {
                     name: "Microsoft and other contributors"
@@ -68,7 +68,40 @@ function PnPPackage(): (b: BuildTimeline) => BuildTimeline {
                 repository: {
                     type: "git",
                     url: "git:github.com/pnp/pnpjs"
-                }
+                },
+                exports: {
+                    ".": {
+                        "import": {
+                            "types": "./esm/index",
+                            "default": "./esm/index.js"
+                        },
+                        "require": {
+                            "types": "./commonjs/index",
+                            "default": "./commonjs/index.js"
+                        },
+                        "default": "./esm/index.js"
+                    }
+                },
+                maintainers: [
+                    {
+                        name: "patrick-rodgers",
+                        email: "patrick.rodgers@microsoft.com"
+                    },
+                    {
+                        name: "juliemturner",
+                        email: "julie.turner@sympraxisconsulting.com",
+                        url: "https://julieturner.net"
+                    },
+                    {
+                        name: "bcameron1231",
+                        email: "beau@beaucameron.net",
+                        url: "https://beaucameron.net"
+                    },
+                ],
+                funding: {
+                    type: "individual",
+                    url: "https://github.com/sponsors/patrick-rodgers/",
+                },
             });
         })(instance);
 
@@ -90,11 +123,12 @@ const commonBehaviors = [
     PnPLogging(logLevel),
 ]
 
-export default [<BuildSchema>{
+export default <BuildSchema[]>[{
     name: "build",
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), ...commonBehaviors],
 },
@@ -104,13 +138,14 @@ export default [<BuildSchema>{
     targets: [
         resolve("./debug/launch/tsconfig.json"),
     ],
-    behaviors: [Build(), ReplaceVersion(["packages/sp/behaviors/telemetry.js", "packages/graph/behaviors/telemetry.js"]), ...commonBehaviors],
+    behaviors: [Build(), ReplaceVersion(["packages/sp/behaviors/telemetry.js", "packages/graph/behaviors/telemetry.js"], {}), ...commonBehaviors],
 },
 {
     name: "package",
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), ...commonBehaviors],
 },
@@ -119,6 +154,7 @@ export default [<BuildSchema>{
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), PnPPublish(commonPublishTags), ...commonBehaviors],
 },
@@ -127,22 +163,16 @@ export default [<BuildSchema>{
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), PnPPublish([...commonPublishTags, "--tag", "beta"]), ...commonBehaviors],
-},
-{
-    name: "publish-v3nightly",
-    distFolder,
-    targets: [
-        resolve("./packages/tsconfig.json"),
-    ],
-    behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v3nightly"), ...commonBehaviors],
 },
 {
     name: "publish-v4nightly",
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
+        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v4nightly"), ...commonBehaviors],
 }];

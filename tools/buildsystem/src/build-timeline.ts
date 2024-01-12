@@ -28,13 +28,8 @@ export class BuildTimeline extends Timeline<typeof BuildMoments> {
     protected InternalResolve = Symbol.for("Queryable_Resolve");
     protected InternalReject = Symbol.for("Queryable_Reject");
 
-    constructor(templateTimeline?: BuildTimeline, protected context?: Partial<IBuildContext>) {
+    constructor(protected context?: Partial<IBuildContext>) {
         super(BuildMoments);
-
-        if (typeof templateTimeline !== "undefined") {
-            this.observers = templateTimeline.observers;
-            this._inheritingObservers = true;
-        }
     }
 
     public start(): Promise<void> {

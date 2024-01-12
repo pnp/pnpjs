@@ -10,23 +10,24 @@ export function Publish(flags?: string[]): TimelinePipe {
 
         instance.on.publish(async function (this: BuildTimeline) {
 
-            const { target } = this.context;
+            const { targets } = this.context;
 
             const promises: Promise<void>[] = [];
 
-            target.packages.forEach(pkg => {
+            targets[0].packages.forEach(pkg => {
 
                 promises.push(new Promise((resolve, reject) => {
 
-                    this.log(`Publishing ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`);
+                    this.log(`Publishing ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`, 1);
 
                     exec(`npm publish ${stringFlags}`,
                         {
                             cwd: pkg.resolvedPkgDistRoot,
-                        }, (error, _stdout, _stderr) => {
+                        }, (error, stdout, _stderr) => {
 
                             if (error === null) {
-                                this.log(`Published ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`);
+                                this.log(`Published ${pkg.resolvedPkgDistRoot} with flags ${stringFlags}`, 1);
+                                this.log(stdout);
                                 resolve();
                             } else {
                                 this.log(`${error}`, 3);
