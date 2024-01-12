@@ -1,8 +1,8 @@
 import { _GraphCollection, _GraphInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { OutlookUser as IOutlookType, OutlookCategory as IOutlookCategoryType } from "@microsoft/microsoft-graph-types";
-import { defaultPath, deleteable, getById, IDeleteable, IGetById, IUpdateable, updateable } from "../decorators.js";
-import { graphPost } from "@pnp/graph";
-import { body } from "@pnp/queryable";
+import { addable, defaultPath, deleteable, getById, IAddable, IDeleteable, IGetById, IUpdateable, updateable } from "../decorators.js";
+// import { graphPost } from "@pnp/graph";
+// import { body } from "@pnp/queryable";
 
 /**
  * Outlook
@@ -31,23 +31,9 @@ export const OutlookCategory = graphInvokableFactory<IOutlookCategory>(_OutlookC
  */
 @defaultPath("masterCategories")
 @getById(OutlookCategory)
-export class _MasterCategories extends _GraphCollection<IOutlookCategoryType[]> {
-
-    /**
-     * Adds a new event to the collection
-     *
-     * @param properties The set of properties used to create the event
-     */
-    public async add(properties: IOutlookCategoryType): Promise<IMasterCategoryAddResult> {
-
-        const data = await graphPost(this, body(properties));
-
-        return {
-            data,
-        };
-    }
-}
-export interface IMasterCategories extends _MasterCategories, IGetById<IOutlookCategory> { }
+@addable()
+export class _MasterCategories extends _GraphCollection<IOutlookCategoryType[]> { }
+export interface IMasterCategories extends _MasterCategories, IGetById<IOutlookCategory>, IAddable<IOutlookCategoryType> { }
 export const MasterCategories = graphInvokableFactory<IMasterCategories>(_MasterCategories);
 
 /**

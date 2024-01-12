@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - All GraphQueryable*, _GraphQueryable*, and IGraphQueryable* have been renamed to remove "Queryable" (ex: GraphQueryableCollection is now GraphCollection)
   - @pnp/graph/onedrive renamed to @pnp/graph/files
   - ISites.getByUrl is now async
+  - @pnp/graph/outlook is not in @pnp/graph/mail, included all mail endpoints
+  - mailCategory.add() returns Microsoft Graph types OutlookCategory vs object with data property.
 
 - sp
   - _Items and IItems now supports async iterator pattern

@@ -1,6 +1,4 @@
-# @pnp/graph/outlook
-
-Represents the Outlook services available to a user. Currently, only interacting with categories is supported.
+# Graph Mail Categories
 
 You can learn more  by reading the [Official Microsoft Graph Documentation](https://docs.microsoft.com/en-us/graph/api/resources/outlookuser?view=graph-rest-1.0).
 
