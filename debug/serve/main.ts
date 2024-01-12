@@ -1,4 +1,4 @@
-import { MSAL } from "@pnp/msaljsclient/index.js";
+import { MSAL, MSALOptions } from "@pnp/msaljsclient/index.js";
 import { spfi, SPBrowser } from "@pnp/sp";
 import "@pnp/sp/webs";
 import { settings } from "../../settings.js";
@@ -31,8 +31,8 @@ document.onreadystatechange = async () => {
             // Make sure to add `https://localhost:8080/spa.html` as a Redirect URI in your testing's AAD App Registration
             const sp = spfi().using(
                 SPBrowser({ baseUrl: settings.testing.sp.url}), 
-                MSAL(settings.testing.sp.msal.init, {scopes: settings.testing.sp.msal.scopes})
-            );
+                MSAL({configuration:settings.testing.sp.msal.init, authParams: {scopes: settings.testing.sp.msal.scopes}})
+            );          
 
             const r = await sp.web();
 

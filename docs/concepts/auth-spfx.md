@@ -51,25 +51,26 @@ Each of the following samples reference a MSAL configuration that utilizes an Az
 ```TypeScript
 import { SPFx as graphSPFx, graphfi } from "@pnp/graph";
 import { SPFx as spSPFx, spfi } from "@pnp/sp";
-import { MSAL } from "@pnp/msaljsclient";
-import { Configuration, AuthenticationParameters } from "msal";
+import { MSAL, MSALOptions } from "@pnp/msaljsclient";
+
 import "@pnp/graph/users";
 import "@pnp/sp/webs";
 
-const configuration: Configuration = {
-  auth: {
-    authority: "https://login.microsoftonline.com/{tenant Id}/",
-    clientId: "{AAD Application Id/Client Id}"
+ const configuration: MSALOptions = {
+  configuration:{
+      auth: {
+          authority: "https://login.microsoftonline.com/{tenant Id}/",
+          clientId: "{AAD Application Id/Client Id}"
+        },
+  },         
+  authParams: {
+    scopes: ["https://graph.microsoft.com/.default"] 
   }
 };
 
-const authParams: AuthenticationParameters = {
-  scopes: ["https://graph.microsoft.com/.default"] 
-};
-
 // within a webpart, application customizer, or adaptive card extension where the context object is available
-const graph = graphfi().using(graphSPFx(this.context), MSAL(configuration, authParams));
-const sp = spfi().using(spSPFx(this.context), MSAL(configuration, authParams));
+const graph = graphfi().using(graphSPFx(this.context), MSAL(configuration));
+const sp = spfi().using(spSPFx(this.context), MSAL(configuration));
 
 const meData = await graph.me();
 const webData = await sp.web();
