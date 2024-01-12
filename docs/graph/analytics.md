@@ -2,7 +2,11 @@
 
 The ability to get analytics for OneDrive and SharePoint drive items, SharePoint sites, and SharePoint list items.
 
-## IInvitations
+More information can be found in the official Graph documentation:
+
+- [Analytics Resource Type](https://docs.microsoft.com/en-us/graph/api/itemanalytics-get?view=graph-rest-1.0)
+
+## IAnalyticsOptions
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 

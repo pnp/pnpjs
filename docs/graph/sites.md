@@ -2,6 +2,10 @@
 
 The search module allows you to access the Microsoft Graph Sites API.
 
+More information can be found in the official Graph documentation:
+
+- [Sites Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/site?view=graph-rest-1.0)
+
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 ## sites

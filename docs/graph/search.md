@@ -2,6 +2,11 @@
 
 The search module allows you to access the Microsoft Graph Search API. You can read full details of using the API, for library examples please see below.
 
+More information can be found in the official Graph documentation:
+
+- [Search Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/search-api-overview?view=graph-rest-1.0)
+
+
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 ## Call graph.query

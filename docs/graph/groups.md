@@ -4,7 +4,7 @@ Groups are collections of users and other principals who share access to resourc
 
 Note: Groups can only be created through work or school accounts. Personal Microsoft accounts don't support groups.
 
-You can learn more about Microsoft Graph Groups by reading the [Official Microsoft Graph Documentation](https://docs.microsoft.com/en-us/graph/api/resources/groups-overview).
+You can learn more about Microsoft Graph Groups by reading the [Groups Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/groups-overview).
 
 ## IGroup, IGroups
 
