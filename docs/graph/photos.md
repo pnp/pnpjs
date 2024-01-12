@@ -2,8 +2,9 @@
 
 A profile photo of a user, group or an Outlook contact accessed from Exchange Online or Azure Active Directory (AAD). It's binary data not encoded in base-64.
 
-You can learn more about Microsoft Graph users by reading the [Official Microsoft Graph Documentation](https://docs.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0).
+More information can be found in the official Graph documentation:
 
+- [Photos Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/profilephoto?view=graph-rest-1.0)
 ## IPhoto
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
@@ -60,12 +61,12 @@ await graph.me.photo.setContent(file);
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/users";
+import "@pnp/graph/groups";
 import "@pnp/graph/photos";
 
 const graph = graphfi(...);
 
 const input = <HTMLInputElement>document.getElementById("thefileinput");
 const file = input.files[0];
-await graph.me.photo.setContent(file);
+await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").photo.setContent(file);
 ```

@@ -2,6 +2,11 @@
 
 This module helps you get Insights in form of ***Trending***, ***Used*** and ***Shared***. The results are based on relationships calculated using advanced analytics and machine learning techniques.
 
+More information can be found in the official Graph documentation:
+
+- [Insights Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/officegraphinsights?view=graph-rest-1.0)
+
+
 ## IInsights
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
