@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
 import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, isArray, TimelinePipe, lifecycle, stringIsNullOrEmpty } from "@pnp/core";
 import { IInvokable, invokable } from "./invokable.js";
 

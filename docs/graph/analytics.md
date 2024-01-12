@@ -17,7 +17,7 @@ Using analytics() you get the Item Analytics for a Drive Item
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
-import "@pnp/graph/drive";
+import "@pnp/graph/files";
 import "@pnp/graph/analytics";
 import { IAnalyticsOptions } from "@pnp/graph/analytics";
 
