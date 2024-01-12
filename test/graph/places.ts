@@ -22,7 +22,7 @@ describe("Places", function () {
         return expect(roomLists).to.be.an("array");
     }));
 
-    it("get room in roomlist", pnpTest("25f24e27-420f-4641-b69d-962597528fdd", async function () {
+    it("get room in roomlist", pnpTest("476b8d49-69b5-42e0-857d-f75eb03191ca", async function () {
         const roomLists = await this.pnp.graph.places.roomLists();
         if(roomLists.length > 0){
             const rooms = await this.pnp.graph.places.roomLists.getById(roomLists[0].id).rooms();
