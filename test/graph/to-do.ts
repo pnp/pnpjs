@@ -5,9 +5,9 @@ import { pnpTest } from "../pnp-test.js";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { ChecklistItem } from "@microsoft/microsoft-graph-types";
 import { IDeltaItems } from "@pnp/graph/decorators.js";
-import { ITaskList, ITask } from "@pnp/graph/todo";
+import { ITaskList, ITask } from "@pnp/graph/to-do";
 
-describe("Todo", function () {
+describe("To-do", function () {
     let taskList: ITaskList;
     let todoTask: ITask;
     before(async function () {
@@ -128,6 +128,18 @@ describe("Todo", function () {
     it("fileAttachments", pnpTest("a4fedae2-3116-4488-a743-03253f59a579", async function () {
         const attachments = await todoTask.attachments();
         return expect(attachments).is.an("array");
+    }));
+
+    it("fileAttachments getById", pnpTest("e14085f3-c3a2-498c-a781-c269b565ce73", async function () {
+        const add = await todoTask.attachments.add(
+            {
+                "name": getRandomString(10),
+                "contentBytes": "VGVzdA==",
+                "contentType": "text/plain",
+            }
+        );
+        const attachment = await todoTask.attachments.getById(add.id)();
+        return expect(attachment.id).is.not.null;
     }));
 
     it("fileAttachments add small", pnpTest("1515ae48-15c4-4b0c-81a7-3afd4b83e601", async function () {

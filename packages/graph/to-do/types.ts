@@ -3,12 +3,10 @@ import {
     TodoTaskList as ITodoTaskListType,
     TodoTask as ITodoTaskType,
     AttachmentBase as ITodoAttachmentType,
-    AttachmentInfo as IAttachmentInfo,
-    AttachmentSession as IAttachmentSession,
     ChecklistItem as IChecklistItemType,
     LinkedResource as ILinkedResourceType,
 } from "@microsoft/microsoft-graph-types";
-import { _GraphInstance, _GraphCollection, graphInvokableFactory, graphPost, GraphQueryable } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable, deltaEnabled, IDeltaEnabled } from "../decorators.js";
 import { body } from "@pnp/queryable/index.js";
 
@@ -96,7 +94,7 @@ export class _Attachment extends _GraphInstance<ITodoAttachmentType> {
         return Attachments(this);
     }
 }
-export interface IAttachment extends _Attachments, IDeleteable{ }
+export interface IAttachment extends _Attachment, IDeleteable{ }
 export const Attachment = graphInvokableFactory<IAttachments>(_Attachment);
 
 /**
@@ -105,43 +103,6 @@ export const Attachment = graphInvokableFactory<IAttachments>(_Attachment);
 @defaultPath("attachments")
 @getById(Attachment)
 export class _Attachments extends _GraphCollection<ITodoAttachmentType[]> {
-
-    public async addChunked(attachmentInfo: IAttachmentInfo, contentBytes: string): Promise<ITodoAttachmentType>{
-        const session = graphPost<IAttachmentSession>(GraphQueryable(this, "createUploadSession"), body(attachmentInfo));
-        /*
-        const chunkSize = 4 * 1024 * 1024;
-        const chunks = [];
-        for (let i = 0; i < contentBytes.length; i += chunkSize) {
-            const chunk = contentBytes.slice(i, i + chunkSize);
-            chunks.push(chunk);
-        }
-        let startByte = 0;
-            for (const chunk of chunks) {
-                // Calculate endByte for the Content-Range header
-                const endByte = startByte + chunk.length - 1;
-
-                // Upload the chunk to the upload session
-                const response = await fetch(session.uploadUrl, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/octet-stream",
-                    "Content-Length": chunk.length.toString(),
-                    "Content-Range": `bytes ${startByte}-${endByte}/${binaryFileContent.length}`,
-                },
-                body: chunk,
-                });
-
-                if (!response.ok) {
-                console.error(`Failed to upload chunk for file "${fileName}"`);
-                return;
-                }
-
-                // Update startByte for the next chunk
-                startByte += chunk.length;
-            }
-            */
-
-    }
 
     public async add(attachmentInfo: IAddAttachmentOptions): Promise<ITodoAttachmentType>{
 
