@@ -15,5 +15,5 @@ export {
     ChecklistItems,
     Tasks,
     TaskList,
-    TaskLists, 
+    TaskLists,
 } from "./types.js";

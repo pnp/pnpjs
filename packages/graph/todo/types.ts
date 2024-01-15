@@ -1,7 +1,16 @@
-import { Todo as ITodoType, TodoTaskList as ITodoTaskListType, TodoTask as ITodoTaskType, AttachmentBase as ITodoAttachmentType, AttachmentSession as IAttachmentSessionType, AttachmentInfo as IAttachmentInfoType, ChecklistItem as IChecklistItemType, LinkedResource as ILinkedResourceType } from "@microsoft/microsoft-graph-types";
-import { _GraphInstance, _GraphCollection, graphInvokableFactory, IGraphCollection, GraphCollection } from "../graphqueryable.js";
-import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable } from "../decorators.js";
-import { cancelableScope, errorCheck } from "@pnp/queryable";
+import {
+    Todo as ITodoType,
+    TodoTaskList as ITodoTaskListType,
+    TodoTask as ITodoTaskType,
+    AttachmentBase as ITodoAttachmentType,
+    AttachmentInfo as IAttachmentInfo,
+    AttachmentSession as IAttachmentSession,
+    ChecklistItem as IChecklistItemType,
+    LinkedResource as ILinkedResourceType,
+} from "@microsoft/microsoft-graph-types";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, graphPost, GraphQueryable } from "../graphqueryable.js";
+import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable, deltaEnabled, IDeltaEnabled } from "../decorators.js";
+import { body } from "@pnp/queryable/index.js";
 
 /**
  * Todo
@@ -20,41 +29,13 @@ export const Todo = graphInvokableFactory<ITodo>(_Todo);
  */
 @deleteable()
 @updateable()
-export class _TaskList extends _GraphInstance<ITodoTaskListType> { 
+export class _TaskList extends _GraphInstance<ITodoTaskListType> {
     public get tasks(): ITasks{
         return Tasks(this);
     }
-     /**
-     * Get changes since optional change token
-     * @param token - string (Optional)
-     * change token
-     * @returns IDeltaItems
-     */
-     public delta(token?: string): IGraphCollection<IDeltaItems> {
-        const path = `delta${(token) ? `(token=${token})` : ""}`;
 
-        const query: IGraphCollection<IDeltaItems> = <any>GraphCollection(this, path);
-        query.on.parse.replace(errorCheck);
-        query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
-
-            const json = await response.json();
-            const nextLink = json["@odata.nextLink"];
-            const deltaLink = json["@odata.deltaLink"];
-
-            result = {
-                // TODO:: update docs to show how to load next with async iterator
-                next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
-                delta: () => (deltaLink ? GraphCollection([query, deltaLink])() : null),
-                values: json.value,
-            };
-
-            return [url, response, result];
-        });
-
-        return query;
-    }
-    //TODO Create Open Extension. Wait for it to be built as part of extensions module
-    //TODO Get Open Extension. Wait for it to be built as part of extensions module
+    // TODO Create Open Extension. Wait for it to be built as part of extensions module
+    // TODO Get Open Extension. Wait for it to be built as part of extensions module
 }
 export interface ITaskList extends _TaskList, IUpdateable<ITodoTaskListType>, IDeleteable { }
 export const TaskList = graphInvokableFactory<ITaskList>(_TaskList);
@@ -65,8 +46,9 @@ export const TaskList = graphInvokableFactory<ITaskList>(_TaskList);
 @defaultPath("lists")
 @getById(TaskList)
 @addable()
+@deltaEnabled()
 export class _TaskLists extends _GraphCollection<ITodoTaskListType[]> { }
-export interface ITaskLists extends _TaskLists, IGetById<ITaskList>, IAddable<ITodoTaskListType,ITodoTaskListType>{ }
+export interface ITaskLists extends _TaskLists, IGetById<ITaskList>, IAddable<ITodoTaskListType, ITodoTaskListType>, IDeltaEnabled { }
 export const TaskLists = graphInvokableFactory<ITaskLists>(_TaskLists);
 
 /**
@@ -74,7 +56,7 @@ export const TaskLists = graphInvokableFactory<ITaskLists>(_TaskLists);
  */
 @deleteable()
 @updateable()
-export class _Task extends _GraphInstance<ITodoTaskType> { 
+export class _Task extends _GraphInstance<ITodoTaskType> {
 
     public get attachments(): IAttachments{
         return Attachments(this);
@@ -87,8 +69,8 @@ export class _Task extends _GraphInstance<ITodoTaskType> {
     public get resources(): ILinkedResources{
         return LinkedResources(this);
     }
-    //TODO Create Open Extension. Wait for it to be built as part of extensions module
-    //TODO Get Open Extension. Wait for it to be built as part of extensions module
+    // TODO Create Open Extension. Wait for it to be built as part of extensions module
+    // TODO Get Open Extension. Wait for it to be built as part of extensions module
 }
 export interface ITask extends _Task, IUpdateable<ITodoTaskType>, IDeleteable{ }
 export const Task = graphInvokableFactory<ITask>(_Task);
@@ -99,45 +81,16 @@ export const Task = graphInvokableFactory<ITask>(_Task);
 @defaultPath("tasks")
 @getById(Task)
 @addable()
-export class _Tasks extends _GraphCollection<ITodoTaskType[]> { 
-    /**
-     * Get changes since optional change token
-     * @param token - string (Optional)
-     * change token
-     * @returns IDeltaItems
-     */
-    public delta(token?: string): IGraphCollection<IDeltaItems> {
-        const path = `delta${(token) ? `(token=${token})` : ""}`;
-
-        const query: IGraphCollection<IDeltaItems> = <any>GraphCollection(this, path);
-        query.on.parse.replace(errorCheck);
-        query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
-
-            const json = await response.json();
-            const nextLink = json["@odata.nextLink"];
-            const deltaLink = json["@odata.deltaLink"];
-
-            result = {
-                // TODO:: update docs to show how to load next with async iterator
-                next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
-                delta: () => (deltaLink ? GraphCollection([query, deltaLink])() : null),
-                values: json.value,
-            };
-
-            return [url, response, result];
-        });
-
-        return query;
-    }
-}
-export interface ITasks extends _Tasks, IGetById<ITask>, IAddable<ITodoTaskType,ITodoTaskType>{ }
+@deltaEnabled()
+export class _Tasks extends _GraphCollection<ITodoTaskType[]> { }
+export interface ITasks extends _Tasks, IGetById<ITask>, IAddable<ITodoTaskType>, IDeltaEnabled { }
 export const Tasks = graphInvokableFactory<ITasks>(_Tasks);
 
 /**
  * Attachment
  */
 @deleteable()
-export class _Attachment extends _GraphInstance<ITodoAttachmentType> { 
+export class _Attachment extends _GraphInstance<ITodoAttachmentType> {
 
     public get attachments(): IAttachments{
         return Attachments(this);
@@ -151,17 +104,55 @@ export const Attachment = graphInvokableFactory<IAttachments>(_Attachment);
  */
 @defaultPath("attachments")
 @getById(Attachment)
-@addable()
 export class _Attachments extends _GraphCollection<ITodoAttachmentType[]> {
 
-    // maybe we should fix this so they just pass a file, instead of an attachment info object.
-    @cancelableScope
-    public async addChunked(attachmentInfo: IAttachmentInfoType): Promise<any>{
-       // const response:IAttachmentSessionType = await graphPost(this, body(attachmentInfo));
-        return null;
+    public async addChunked(attachmentInfo: IAttachmentInfo, contentBytes: string): Promise<ITodoAttachmentType>{
+        const session = graphPost<IAttachmentSession>(GraphQueryable(this, "createUploadSession"), body(attachmentInfo));
+        /*
+        const chunkSize = 4 * 1024 * 1024;
+        const chunks = [];
+        for (let i = 0; i < contentBytes.length; i += chunkSize) {
+            const chunk = contentBytes.slice(i, i + chunkSize);
+            chunks.push(chunk);
+        }
+        let startByte = 0;
+            for (const chunk of chunks) {
+                // Calculate endByte for the Content-Range header
+                const endByte = startByte + chunk.length - 1;
+
+                // Upload the chunk to the upload session
+                const response = await fetch(session.uploadUrl, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/octet-stream",
+                    "Content-Length": chunk.length.toString(),
+                    "Content-Range": `bytes ${startByte}-${endByte}/${binaryFileContent.length}`,
+                },
+                body: chunk,
+                });
+
+                if (!response.ok) {
+                console.error(`Failed to upload chunk for file "${fileName}"`);
+                return;
+                }
+
+                // Update startByte for the next chunk
+                startByte += chunk.length;
+            }
+            */
+
     }
- }
-export interface IAttachments extends _Attachments, IGetById<IAttachment>, IAddable<IAttachmentInfoType>{ }
+
+    public async add(attachmentInfo: IAddAttachmentOptions): Promise<ITodoAttachmentType>{
+
+        const postBody = {
+            "@odata.type": "#microsoft.graph.taskFileAttachment",
+            ...attachmentInfo,
+        };
+        return graphPost(this, body(postBody));
+    }
+}
+export interface IAttachments extends _Attachments, IGetById<IAttachment> { }
 export const Attachments = graphInvokableFactory<IAttachments>(_Attachments);
 
 /**
@@ -180,7 +171,7 @@ export const ChecklistItem = graphInvokableFactory<IChecklistItem>(_ChecklistIte
 @getById(ChecklistItem)
 @addable()
 export class _ChecklistItems extends _GraphCollection<IChecklistItemType[]> { }
-export interface IChecklistItems extends _ChecklistItems, IGetById<IChecklistItemType>, IAddable<IChecklistItemType>{ }
+export interface IChecklistItems extends _ChecklistItems, IGetById<IChecklistItem>, IAddable<IChecklistItemType>{ }
 export const ChecklistItems = graphInvokableFactory<IChecklistItems>(_ChecklistItems);
 
 /**
@@ -199,15 +190,13 @@ export const LinkedResource = graphInvokableFactory<ILinkedResource>(_LinkedReso
 @getById(LinkedResource)
 @addable()
 export class _LinkedResources extends _GraphCollection<ILinkedResourceType[]> { }
-export interface ILinkedResources extends _LinkedResources, IGetById<ILinkedResourceType>, IAddable<ILinkedResourceType>{ }
+export interface ILinkedResources extends _LinkedResources, IGetById<ILinkedResource>, IAddable{ }
 export const LinkedResources = graphInvokableFactory<ILinkedResources>(_LinkedResources);
 
 export interface IAddTaskListOptions{
     displayName: string;
 }
 
-export interface IDeltaItems {
-    next: IGraphCollection<IDeltaItems>;
-    delta: IGraphCollection<IDeltaItems>;
-    values: any[];
+export interface IAddAttachmentOptions extends ITodoAttachmentType{
+    contentBytes: string;
 }

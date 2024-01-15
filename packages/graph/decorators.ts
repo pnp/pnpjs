@@ -1,5 +1,5 @@
-import { IGraphQueryable, graphDelete, graphPatch, graphPost } from "./graphqueryable.js";
-import { body, headers } from "@pnp/queryable";
+import { GraphCollection, IGraphCollection, IGraphQueryable, graphDelete, graphPatch, graphPost } from "./graphqueryable.js";
+import { body, errorCheck, headers } from "@pnp/queryable";
 
 /**
  * Decorator used to specify the default path for Queryable objects
@@ -160,4 +160,50 @@ export interface IGetById<R = any, T = string> {
      * @param props properties used to create the new thread
      */
     getById(id: T): R;
+}
+
+export function deltaEnabled() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+
+        return class extends target {
+            public delta(this: IGraphQueryable, token?: string): Promise<IGraphCollection<any>> {
+                const path = `delta${(token) ? `(token=${token})` : ""}`;
+
+                const query: IGraphCollection<any> = <any>GraphCollection(this, path);
+                query.on.parse.replace(errorCheck);
+                query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
+
+                    const json = await response.json();
+                    const nextLink = json["@odata.nextLink"];
+                    const deltaLink = json["@odata.deltaLink"];
+
+                    result = {
+                        // TODO:: update docs to show how to load next with async iterator
+                        next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
+                        delta: () => (deltaLink ? GraphCollection([query, deltaLink])() : null),
+                        values: json.value,
+                    };
+
+                    return [url, response, result];
+                });
+
+                return query();
+            }
+        };
+    };
+}
+
+export interface IDeltaEnabled<T = any> {
+    /**
+     * Gets the delta of the queryable
+     *
+     */
+    delta(): Promise<T>;
+}
+
+export interface IDeltaItems {
+    next: IGraphCollection<IDeltaItems>;
+    delta: IGraphCollection<IDeltaItems>;
+    values: any[];
 }
