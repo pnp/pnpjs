@@ -3,7 +3,7 @@ import "@pnp/graph/teams";
 import "@pnp/graph/appCatalog";
 import { pnpTest } from "../pnp-test.js";
 
-describe.only("AppCatalog", function () {
+describe("AppCatalog", function () {
 
     before(async function () {
 

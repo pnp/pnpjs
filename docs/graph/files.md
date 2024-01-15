@@ -3,6 +3,10 @@
 The ability to manage drives and drive items in Onedrive is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
 you can manage drives and drive items in Onedrive.
 
+More information can be found in the official Graph documentation:
+
+- [Drive/Files Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/onedrive?view=graph-rest-1.0)
+
 ## IInvitations
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
@@ -577,16 +581,6 @@ const delta: IDeltaItems = await graph.users.getById("user@tenant.onmicrosoft.co
 
 // Get the changes for the drive items from token
 const delta: IDeltaItems = await graph.me.drive.root.delta("{token}")();
-
-// consume all the values using async iterator
-for await (const val of delta.next.paged()) {
-  console.log(JSON.stringify(val, null, 2));
-}
-
-// consume all the values using async iterator in pages of 20
-for await (const val of delta.next.top(20).paged()) {
-  console.log(JSON.stringify(val, null, 2));
-}
 ```
 
 ## Get Drive Item Analytics

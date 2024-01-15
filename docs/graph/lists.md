@@ -4,6 +4,7 @@ More information can be found in the official Graph documentation:
 
 - [List Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/list?view=graph-rest-1.0)
 
+## IList, ILists, IListAddResult
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 ## Get Lists

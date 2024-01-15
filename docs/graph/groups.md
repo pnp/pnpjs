@@ -4,7 +4,7 @@ Groups are collections of users and other principals who share access to resourc
 
 Note: Groups can only be created through work or school accounts. Personal Microsoft accounts don't support groups.
 
-You can learn more about Microsoft Graph Groups by reading the [Official Microsoft Graph Documentation](https://docs.microsoft.com/en-us/graph/api/resources/groups-overview).
+You can learn more about Microsoft Graph Groups by reading the [Groups Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/groups-overview).
 
 ## IGroup, IGroups
 
@@ -132,10 +132,6 @@ const endDate = new Date("2020-03-01");
 const events = graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").getCalendarView(startDate, endDate);
 ```
 
-## Group Photo Operations
-
-See [Photos](./photos.md)
-
 ## Group Membership
 
 Get the members and/or owners of a group.
@@ -162,3 +158,11 @@ const graph = graphfi(...);
 const teamSite = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").sites.root();
 const url = teamSite.webUrl
 ```
+
+## Group Photo Operations
+
+See [Photos](./photos.md)
+
+## Group Conversation Operations
+
+See [Conversations](./conversations.md)

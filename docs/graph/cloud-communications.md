@@ -4,7 +4,7 @@ The ability to retrieve information about a user's presence, including their ava
 
 More information can be found in the official Graph documentation:
 
-- [Presence Type](https://docs.microsoft.com/en-us/graph/api/resources/presence?view=graph-rest-1.0)
+- [Cloud Communications Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/presence?view=graph-rest-1.0)
 
 ## IPresence
 
