@@ -3,11 +3,12 @@ import "@pnp/sp/sites";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { IDocumentLibraryInformation, IOpenWebByIdResult, ISiteLogoProperties, Site, SiteLogoAspect, SiteLogoType } from "@pnp/sp/sites";
+import "@pnp/sp/site-users";
+import { IWebEnsureUserResult } from "@pnp/sp/site-users";
 import { IWeb } from "@pnp/sp/webs";
 import { combine, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { IContextInfo } from "@pnp/sp/context-info";
 import "@pnp/sp/context-info";
-
 
 import "@pnp/sp/files";
 import { IFiles } from "@pnp/sp/files";
@@ -34,6 +35,11 @@ describe("Sites", function () {
     it("getRootWeb", async function () {
         const rootWeb: IWeb = await this.pnp.sp.site.getRootWeb();
         return expect(rootWeb).to.haveOwnProperty("_url");
+    });
+
+    it("rootWeb - ensureUser", async function () {
+        const user: IWebEnsureUserResult = await this.pnp.sp.site.rootWeb.ensureUser(this.pnp.settings.testUser);
+        return expect(user.data).to.haveOwnProperty("id");
     });
 
     it("getContextInfo", async function () {
