@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
-import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, isArray, TimelinePipe, lifecycle, stringIsNullOrEmpty } from "@pnp/core";
-import { IInvokable, invokable } from "./invokable.js";
+import { combine, getGUID, Timeline, asyncReduce, reduce, broadcast, request, isArray, TimelinePipe, lifecycle, stringIsNullOrEmpty, isFunc } from "@pnp/core";
 
 export type QueryableConstructObserver = (this: IQueryableInternal, init: QueryableInit, path?: string) => void;
 
@@ -32,6 +30,7 @@ const DefaultMoments = {
 export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 
 @invokable()
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
     // tracks any query parameters which will be appended to the request url
@@ -290,4 +289,42 @@ export function queryableFactory<InstanceType extends IQueryableInternal>(
 
         return instance;
     };
+}
+
+/**
+ * Allows a decorated object to be invoked as a function, optionally providing an implementation for that action
+ *
+ * @param invokeableAction Optional. The logic to execute upon invoking the object as a function.
+ * @returns Decorator which applies the invokable logic to the tagged class
+ */
+export function invokable(invokeableAction?: (this: any, init?: RequestInit) => Promise<any>) {
+
+    return (target: any) => {
+
+        return new Proxy(target, {
+
+            construct(clz, args, newTarget: any) {
+
+                const invokableInstance = Object.assign(function (init?: RequestInit) {
+
+                    if (!isFunc(invokeableAction)) {
+                        invokeableAction = function (this: any, init?: RequestInit) {
+                            return op(this, get, init);
+                        };
+                    }
+
+                    return Reflect.apply(invokeableAction, invokableInstance, [init]);
+
+                }, Reflect.construct(clz, args, newTarget));
+
+                Reflect.setPrototypeOf(invokableInstance, newTarget.prototype);
+
+                return invokableInstance;
+            },
+        });
+    };
+}
+
+export interface IInvokable<R = any> {
+    <T = R>(init?: RequestInit): Promise<T>;
 }

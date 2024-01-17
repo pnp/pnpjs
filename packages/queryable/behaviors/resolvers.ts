@@ -1,4 +1,4 @@
-import { TimelinePipe } from "../../core/timeline.js";
+import { TimelinePipe } from "@pnp/core";
 import { Queryable } from "../queryable.js";
 
 export function ResolveOnData(): TimelinePipe {

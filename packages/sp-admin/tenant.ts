@@ -1,8 +1,7 @@
-// import { body } from "@pnp/queryable";
 import { body, BufferParse } from "@pnp/queryable";
 import { _SPInstance, defaultPath, spInvokableFactory, spPost } from "@pnp/sp";
-import { IRenderListDataParameters } from "@pnp/sp/lists/index.js";
-import { IHubSiteInfo } from "@pnp/sp/hubsites/index.js";
+import { IRenderListDataParameters } from "@pnp/sp/lists";
+import { IHubSiteInfo } from "@pnp/sp/hubsites";
 import {
     IHomeSitesDetails,
     IPortalHealthStatus,
