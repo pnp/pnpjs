@@ -26,7 +26,7 @@ export function TextParse(): TimelinePipe {
 export function BlobParse(): TimelinePipe {
 
     return parseBinderWithErrorCheck( async (response) => {
-        const binaryResponseBody = parseToAtob(await response.clone().text());
+        const binaryResponseBody = parseToAtob(await response.text());
         // handle batch responses for things that are base64, like photos https://github.com/pnp/pnpjs/issues/2825
         if(binaryResponseBody){
             // Create an array buffer from the binary string
@@ -123,7 +123,12 @@ export function parseBinderWithErrorCheck(impl: (r: Response) => Promise<any>): 
         instance.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
 
             if (response.ok && typeof result === "undefined") {
-                result = await impl(response);
+                const respClone = response.clone();
+
+                // https://github.com/node-fetch/node-fetch?tab=readme-ov-file#custom-highwatermark
+                const [implResult, raw] = await Promise.all([impl(response), respClone.text()]);
+                result = implResult;
+                (<any>instance).emit.rawData(raw);
             }
 
             return [url, response, result];
