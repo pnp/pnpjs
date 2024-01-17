@@ -154,7 +154,7 @@ describe("Mail: Messages", function () {
         }
     });
 
-    it.only("Mail: Send Message", async function () {
+    it("Mail: Send Message", async function () {
         const m = JSON.parse(JSON.stringify(draftMessage));
         m.subject = `PnPjs Test Message ${getRandomString(8)}`;
         let success = false;
@@ -167,7 +167,7 @@ describe("Mail: Messages", function () {
         return success;
     });
 
-    it.only("Mail: Create Draft Reply Message", async function () {
+    it("Mail: Create Draft Reply Message", async function () {
         const inboxMessage = await this.pnp.graph.users.getById(testUserName).mailFolders.getById(inboxFolder).messages.top(1)();
         if (inboxMessage.length === 1) {
             const m = JSON.parse(JSON.stringify(draftMessage));
