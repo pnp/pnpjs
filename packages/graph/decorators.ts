@@ -1,5 +1,5 @@
 import { GraphCollection, IGraphCollection, IGraphQueryable, graphDelete, graphPatch, graphPost } from "./graphqueryable.js";
-import { body, errorCheck, headers } from "@pnp/queryable";
+import { InjectHeaders, body, errorCheck, headers } from "@pnp/queryable";
 
 /**
  * Decorator used to specify the default path for Queryable objects
@@ -186,15 +186,23 @@ export interface IGetByName<R = any, T = string> {
 }
 
 
-export function deltaEnabled() {
+export function hasDelta() {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public delta(this: IGraphQueryable, token?: string): Promise<IGraphCollection<any>> {
-                const path = `delta${(token) ? `(token=${token})` : ""}`;
+            public delta(this: IGraphQueryable, properties: IDeltaProps = {}): IGraphCollection<T[] | IDeltaItems<T>> {
+                const querystring = Object.keys(properties)?.map(key => `${key}=${properties[key]}`).join("&") || "";
+                const path = (querystring.length > 0) ? `delta?${querystring}` : "delta";
 
                 const query: IGraphCollection<any> = <any>GraphCollection(this, path);
+
+                if(properties?.maxPageSize){
+                    query.using(InjectHeaders({
+                        "Prefer": `odata.maxpagesize=${properties.maxPageSize}`,
+                    }));
+                }
+
                 query.on.parse.replace(errorCheck);
                 query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
 
@@ -203,7 +211,6 @@ export function deltaEnabled() {
                     const deltaLink = json["@odata.deltaLink"];
 
                     result = {
-                        // TODO:: update docs to show how to load next with async iterator
                         next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
                         delta: () => (deltaLink ? GraphCollection([query, deltaLink])() : null),
                         values: json.value,
@@ -212,22 +219,28 @@ export function deltaEnabled() {
                     return [url, response, result];
                 });
 
-                return query();
+                return query;
             }
         };
     };
 }
 
-export interface IDeltaEnabled<T = any> {
+export interface IHasDelta<T = any, R = any> {
     /**
      * Gets the delta of the queryable
      *
      */
-    delta(): Promise<T>;
+    delta(properties?: T): IGraphCollection<R[] | IDeltaItems<R>>;
 }
 
-export interface IDeltaItems {
+export interface IDeltaItems<R = any> {
     next: IGraphCollection<IDeltaItems>;
     delta: IGraphCollection<IDeltaItems>;
-    values: any[];
+    values: R[];
+}
+
+export interface IDeltaProps {
+    deltatoken?: string;
+    token?: string;
+    maxPageSize?: number;
 }

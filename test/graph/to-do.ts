@@ -1,10 +1,9 @@
 import { expect } from "chai";
 import "@pnp/graph/users";
-import "@pnp/graph/todo";
+import "@pnp/graph/to-do";
 import { pnpTest } from "../pnp-test.js";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { ChecklistItem } from "@microsoft/microsoft-graph-types";
-import { IDeltaItems } from "@pnp/graph/decorators.js";
 import { ITaskList, ITask } from "@pnp/graph/to-do";
 
 describe("To-do", function () {
@@ -75,8 +74,8 @@ describe("To-do", function () {
     }));
 
     it("lists - delta", pnpTest("70cb936e-9ee5-4630-a3c7-6fdf60bbd6fe", async function () {
-        const delta: IDeltaItems = await this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.delta();
-        return expect(delta.values).is.an("array");
+        const delta = await this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.delta()();
+        return expect(delta).haveOwnProperty("values");
     }));
 
     it("tasks", pnpTest("87475a79-f33a-44ff-a998-a5024ad77e13", async function () {
@@ -121,8 +120,8 @@ describe("To-do", function () {
     }));
 
     it("tasks - delta", pnpTest("8167699b-acd8-4e03-b14c-e5a347b0a131", async function () {
-        const delta: IDeltaItems = await taskList.tasks.delta();
-        return expect(delta.values).is.an("array");
+        const delta = await taskList.tasks.delta()();
+        return expect(delta).haveOwnProperty("values");
     }));
 
     it("fileAttachments", pnpTest("a4fedae2-3116-4488-a743-03253f59a579", async function () {

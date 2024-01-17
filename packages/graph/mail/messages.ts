@@ -3,11 +3,10 @@ import {
     MessageRule as IMessageRuleType,
     TimeZoneInformation,
 } from "@microsoft/microsoft-graph-types";
-import { _GraphInstance, _GraphCollection, graphInvokableFactory, graphGet, GraphQueryable, graphPost } from "../graphqueryable.js";
-import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable } from "../decorators.js";
-import { body, InjectHeaders } from "@pnp/queryable/index.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, graphPost } from "../graphqueryable.js";
+import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
+import { body } from "@pnp/queryable/index.js";
 import { mailResponse } from "./funcs.js";
-import { IPagedResult, Paged } from "../behaviors/paged.js";
 
 /**
  * Message
@@ -129,28 +128,10 @@ export const Message = graphInvokableFactory<IMessage>(_Message);
 @defaultPath("messages")
 @getById(Message)
 @addable()
-export class _Messages extends _GraphCollection<IMessageType[]> {
-    /**
-     * Gets the delta for the current set of messages
-     *
-     * @param properties The set of properties used to retrieve specific types of messages
-     */
-    public async delta(properties?: IMessageDelta, maxPageSize?: number): Promise<IPagedResult<IMessage[]>> {
-        properties = properties || {};
-        const querystring = Object.keys(properties)?.map(key => `${key}=${properties[key]}`).join("&") || "";
-        const path = (querystring.length > 0) ? `delta?${querystring}` : "delta";
-        const q = GraphQueryable(this, path);
-        if (maxPageSize) {
-            q.using(InjectHeaders({
-                "Prefer": `odata.maxpagesize=${maxPageSize}`,
-            }));
-        }
-        return await graphGet(q.using(Paged()));
-    }
-}
-export interface IMessages extends _Messages, IGetById<IMessage>, IAddable<IMessageType>, IDeleteable { }
+@hasDelta()
+export class _Messages extends _GraphCollection<IMessageType[]> { }
+export interface IMessages extends _Messages, IGetById<IMessage>, IAddable<IMessageType>, IDeleteable, IHasDelta<IMessageDelta, IMessageType> { }
 export const Messages = graphInvokableFactory<IMessages>(_Messages);
-
 
 /**
  * Message Rule
@@ -171,8 +152,6 @@ export class _MessageRules extends _GraphCollection<IMessageRuleType[]> {}
 export interface IMessageRules extends _MessageRules, IGetById<IMessageRule>, IAddable<IMessageRuleType> { }
 export const MessageRules = graphInvokableFactory<IMessageRules>(_MessageRules);
 
-export interface IMessageDelta {
-    "$skiptoken"?: string;
-    "$deltatoken"?: string;
+export interface IMessageDelta extends Omit<IDeltaProps, "token"> {
     changeType?: string;
 }

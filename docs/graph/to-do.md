@@ -6,6 +6,7 @@ More information can be found in the official Graph documentation:
 
 - [To-do Resource Type](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview?view=graph-rest-1.0)
 
+## IAttachment, IAttachments, IChecklistItem, IChecklistItems, ILinkedResource, ILinkedResources, ITask, ITaskList, ITaskLists, ITodo
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 ## taskLists
@@ -87,7 +88,15 @@ import "@pnp/graph/todo";
 
 const graph = graphfi(...);
 
-const delta: IDeltaItems = await graph.me.todo.lists.delta();
+// retrieve a list of delta changes
+const taskLists = await graph.me.todo.lists.delta()();
+
+//You can also loop through the delta changes using the async iterator
+const tasklists = graph.me.todo.lists.delta();
+for await (const lists of tasklists) {
+    // array of tasklist changes
+    console.log(lists);
+}
 
 ```
 ## Tasks
@@ -164,7 +173,15 @@ import "@pnp/graph/todo";
 
 const graph = graphfi(...);
 
-const delta: IDeltaItems = await graph.me.todo.lists.getById('e650db1d-48c6-4950-89a5-74e504ee91a8').tasks.getById('8914aa93-445d-4413-bfa3-38a84b56cc55').delta();
+//retrieve a list of changes
+const taskChanges = await graph.me.todo.lists.getById('e650db1d-48c6-4950-89a5-74e504ee91a8').tasks.getById('8914aa93-445d-4413-bfa3-38a84b56cc55').delta()();
+
+//You can also loop through the delta changes using the async iterator
+const taskChanges = graph.me.todo.lists.delta();
+for await (const tasks of taskChanges) {
+    // array of task changes
+    console.log(tasks);
+}
 
 ```
 ## File Attachments

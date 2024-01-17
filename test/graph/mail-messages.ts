@@ -63,8 +63,8 @@ describe("Mail: Messages", function () {
     });
 
     it("Mail: Message List (Delta)", async function () {
-        const messagesDelta = await this.pnp.graph.users.getById(testUserName).mailFolders.getById(inboxFolder).messages.delta();
-        return expect(messagesDelta).has.property("deltaLink");
+        const messagesDelta = await this.pnp.graph.users.getById(testUserName).mailFolders.getById(inboxFolder).messages.delta()();
+        return expect(messagesDelta).haveOwnProperty("values");
     });
 
     it("Mail: Create Draft Message", async function () {

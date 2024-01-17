@@ -13,8 +13,8 @@ import {
 } from "../graphqueryable.js";
 import { Drive as IDriveType, DriveItem as IDriveItemType, ItemPreviewInfo as IDriveItemPreviewInfo } from "@microsoft/microsoft-graph-types";
 import { combine } from "@pnp/core";
-import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable } from "../decorators.js";
-import { body, BlobParse, CacheNever, errorCheck, InjectHeaders } from "@pnp/queryable";
+import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
+import { body, BlobParse, CacheNever, InjectHeaders } from "@pnp/queryable";
 import { driveItemUpload } from "./funcs.js";
 
 /**
@@ -115,6 +115,7 @@ export const Drives = graphInvokableFactory<IDrives>(_Drives);
  *
  */
 @defaultPath("root")
+@hasDelta()
 export class _Root extends _GraphInstance<IDriveItemType> {
 
     /**
@@ -143,36 +144,6 @@ export class _Root extends _GraphInstance<IDriveItemType> {
     }
 
     /**
-     * Get changes since optional change token
-     * @param token - string (Optional)
-     * change token
-     * @returns IDeltaItems
-     */
-    public delta(token?: string): IGraphCollection<IDeltaItems> {
-        const path = `delta${(token) ? `(token=${token})` : ""}`;
-
-        const query: IGraphCollection<IDeltaItems> = <any>GraphCollection(this, path);
-        query.on.parse.replace(errorCheck);
-        query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
-
-            const json = await response.json();
-            const nextLink = json["@odata.nextLink"];
-            const deltaLink = json["@odata.deltaLink"];
-
-            result = {
-                // TODO:: update docs to show how to load next with async iterator
-                next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
-                delta: () => (deltaLink ? GraphCollection([query, deltaLink])() : null),
-                values: json.value,
-            };
-
-            return [url, response, result];
-        });
-
-        return query;
-    }
-
-    /**
      * Method for uploading a new file, or updating the contents of an existing file.
      * @param fileOptions - IFileOptions
      * @param content - any
@@ -186,7 +157,7 @@ export class _Root extends _GraphInstance<IDriveItemType> {
         return Reflect.apply(driveItemUpload, this, [fileOptions]);
     }
 }
-export interface IRoot extends _Root { }
+export interface IRoot extends _Root, IHasDelta<Omit<IDeltaProps, "deltatoken">, IDriveItemType> { }
 export const Root = graphInvokableFactory<IRoot>(_Root);
 
 /**
@@ -466,10 +437,4 @@ export interface IFileOptions {
 export interface IPreviewOptions {
     page?: string | number;
     zoom?: number;
-}
-
-export interface IDeltaItems {
-    next: IGraphCollection<IDeltaItems>;
-    delta: IGraphCollection<IDeltaItems>;
-    values: any[];
 }

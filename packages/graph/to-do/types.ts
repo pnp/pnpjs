@@ -7,7 +7,7 @@ import {
     LinkedResource as ILinkedResourceType,
 } from "@microsoft/microsoft-graph-types";
 import { _GraphInstance, _GraphCollection, graphInvokableFactory, graphPost } from "../graphqueryable.js";
-import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable, deltaEnabled, IDeltaEnabled } from "../decorators.js";
+import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
 import { body } from "@pnp/queryable/index.js";
 
 /**
@@ -44,9 +44,9 @@ export const TaskList = graphInvokableFactory<ITaskList>(_TaskList);
 @defaultPath("lists")
 @getById(TaskList)
 @addable()
-@deltaEnabled()
+@hasDelta()
 export class _TaskLists extends _GraphCollection<ITodoTaskListType[]> { }
-export interface ITaskLists extends _TaskLists, IGetById<ITaskList>, IAddable<ITodoTaskListType, ITodoTaskListType>, IDeltaEnabled { }
+export interface ITaskLists extends _TaskLists, IGetById<ITaskList>, IAddable<ITodoTaskListType, ITodoTaskListType>, IHasDelta<Omit<IDeltaProps, "token">, ITodoTaskListType> { }
 export const TaskLists = graphInvokableFactory<ITaskLists>(_TaskLists);
 
 /**
@@ -79,9 +79,9 @@ export const Task = graphInvokableFactory<ITask>(_Task);
 @defaultPath("tasks")
 @getById(Task)
 @addable()
-@deltaEnabled()
+@hasDelta()
 export class _Tasks extends _GraphCollection<ITodoTaskType[]> { }
-export interface ITasks extends _Tasks, IGetById<ITask>, IAddable<ITodoTaskType>, IDeltaEnabled { }
+export interface ITasks extends _Tasks, IGetById<ITask>, IAddable<ITodoTaskType>, IHasDelta<Omit<IDeltaProps, "token">, ITodoTaskType> { }
 export const Tasks = graphInvokableFactory<ITasks>(_Tasks);
 
 /**

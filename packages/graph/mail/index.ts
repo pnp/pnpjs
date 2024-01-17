@@ -32,9 +32,9 @@ export {
 export {
     IMailFolder,
     IMailFolders,
+    IMailFolderDelta,
     MailFolder,
     MailFolders,
-    IMailFolderDelta,
 } from "./folders.js";
 
 
