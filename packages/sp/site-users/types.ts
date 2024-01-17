@@ -37,6 +37,7 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      * Gets a user from the collection by login name
      *
      * @param loginName The login name of the user to retrieve
+     *   e.g. SharePoint Online: 'i:0#.f|membership|user@domain'
      */
     public getByLoginName(loginName: string): ISiteUser {
         return SiteUser(this).concat(`('!@v::${loginName}')`);

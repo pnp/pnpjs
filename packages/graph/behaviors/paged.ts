@@ -3,11 +3,12 @@ import { errorCheck, parseODataJSON } from "@pnp/queryable";
 import { GraphCollection, IGraphQueryable, IGraphCollection } from "../graphqueryable.js";
 import { ConsistencyLevel } from "./consistency-level.js";
 
-export interface IPagedResult {
+export interface IPagedResult<T> {
     count: number;
-    value: any | any[] | null;
+    value: T | T[] | null;
     hasNext: boolean;
     nextLink: string;
+    deltaLink: string;
 }
 
 /**
@@ -23,7 +24,7 @@ export async function Count<T>(col: IGraphCollection<T>): Promise<number> {
     q.query.set("$count", "true");
     q.top(1);
 
-    const y: IPagedResult = await q();
+    const y: IPagedResult<T> = await q();
     return y.count;
 }
 
@@ -32,7 +33,7 @@ export async function Count<T>(col: IGraphCollection<T>): Promise<number> {
  *
  * @returns A TimelinePipe used to configure the queryable
  */
-export function Paged(): TimelinePipe {
+export function Paged(supportsCount = false): TimelinePipe {
 
     return (instance: IGraphQueryable) => {
 
@@ -42,15 +43,18 @@ export function Paged(): TimelinePipe {
             const txt = await response.text();
             const json = txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {};
             const nextLink = json["@odata.nextLink"];
+            const deltaLink = json["@odata.deltaLink"];
 
-            const count = hOP(json, "@odata.count") ? parseInt(json["@odata.count"], 10) : -1;
+            const count = supportsCount && hOP(json, "@odata.count") ? parseInt(json["@odata.count"], 10) : 0;
 
             const hasNext = !stringIsNullOrEmpty(nextLink);
+            const hasDelta = !stringIsNullOrEmpty(deltaLink);
 
             result = {
                 count,
                 hasNext,
                 nextLink: hasNext ? nextLink : null,
+                deltaLink: hasDelta ? deltaLink : null,
                 value: parseODataJSON(json),
             };
 

@@ -194,7 +194,7 @@ export class _GraphCollection<GetType = any[]> extends _GraphQueryable<GetType> 
                     return { done: true, value: undefined };
                 }
 
-                const result: IPagedResult = await this._next();
+                const result: IPagedResult<any> = await this._next();
 
                 if (result.hasNext) {
                     this._next = GraphCollection([this._next, result.nextLink]);
@@ -239,4 +239,3 @@ export const graphPatch = <T = any>(o: IGraphQueryable<any>, init?: RequestInit)
 export const graphPut = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
     return op(o, put, init);
 };
-

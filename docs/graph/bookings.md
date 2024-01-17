@@ -2,7 +2,7 @@
 
 Represents the Bookings services available to a user.
 
-You can learn more  by reading the [Official Microsoft Graph Documentation](https://docs.microsoft.com/en-us/graph/api/resources/booking-api-overview?view=graph-rest-1.0).
+You can learn more  by reading the [Bookings Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/booking-api-overview?view=graph-rest-1.0).
 
 ## IBookingCurrencies, IBookingCurrency, IBookingBusinesses, IBookingBusiness, IBookingAppointments, IBookingAppointment, IBookingCustomers, IBookingCustomer, IBookingServices, IBookingService, IBookingStaffMembers, IBookingStaffMember,  IBookingCustomQuestions, IBookingCustomQuestion
 

@@ -93,7 +93,7 @@ const users = await sp.web.siteUsers;
 await users.add(user.data.LoginName);
 ```
 
-### Get user
+### Get user by Id, Email, or LoginName
 
 ```TypeScript
 import { spfi } from "@pnp/sp";

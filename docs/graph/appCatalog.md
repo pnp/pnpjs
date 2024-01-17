@@ -2,6 +2,10 @@
 
 The ability to use Teams App Catalog
 
+More information can be found in the official Graph documentation:
+
+- [App Catalogs Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/teamsapp?view=graph-rest-1.0)
+
 ## AppCatalog, IAppCatalog
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  

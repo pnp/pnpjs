@@ -24,6 +24,7 @@ const DefaultMoments = {
     parse: asyncReduce<QueryableParseObserver>(),
     post: asyncReduce<QueryablePostObserver>(),
     data: broadcast<QueryableDataObserver>(),
+    rawData: broadcast<QueryableDataObserver>(),
 } as const;
 
 export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
@@ -177,6 +178,10 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
                 log("Emitting send");
                 let response = await this.emit.send(requestUrl, init);
                 log("Emitted send");
+
+                log("Emitting rawData");
+                this.emit.rawData(await response.clone().text());
+                log("Emitted rawData");
 
                 log("Emitting parse");
                 [requestUrl, response, result] = await this.emit.parse(requestUrl, response, result);

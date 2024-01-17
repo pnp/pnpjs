@@ -486,7 +486,7 @@ const FieldTypeClassMapping = {
     [FieldTypes.DateTime]:"SP.FieldDateTime",
     [FieldTypes.GridChoice]:"SP.FieldRatingScale",
     [FieldTypes.Guid]: "SP.FieldGuid",
-    [FieldTypes.Image]:"FieldMultiLineText",
+    [FieldTypes.Image]:"SP.FieldMultiLineText",
     [FieldTypes.Integer]:"SP.FieldNumber",
     [FieldTypes.Location]:"SP.FieldLocation",
     [FieldTypes.Lookup]:"SP.FieldLookup",

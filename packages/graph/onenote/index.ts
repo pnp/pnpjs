@@ -1,16 +1,21 @@
+import "./groups.js";
 import "./users.js";
+import "./sites.js";
 
 export {
     INotebook,
-    INotebookAddResult,
     INotebooks,
     IOneNote,
+    IPages,
+    IResources,
     ISection,
-    ISectionAddResult,
     ISections,
     Notebook,
     Notebooks,
     OneNote,
+    Page,
+    Pages,
+    Resources,
     Section,
     Sections,
 } from "./types.js";

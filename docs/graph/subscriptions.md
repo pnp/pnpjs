@@ -8,6 +8,10 @@ The ability to manage subscriptions is a capability introduced in version 1.2.9 
 * Users and Groups from Azure Active Directory.
 * Alerts from the Microsoft Graph Security API.
 
+More information can be found in the official Graph documentation:
+
+- [Subscriptions Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/subscription?view=graph-rest-1.0)
+
 ## Get all of the Subscriptions
 
 Using the subscriptions(). If successful this method returns a 200 OK response code and a list of subscription objects in the response body.
