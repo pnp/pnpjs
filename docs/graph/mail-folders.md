@@ -54,14 +54,17 @@ import {IMailFolderDelta} from "@pnp/graph/mail"
 const graph = graphfi(...);
 
 const currentUser = graph.me;
-const folders = await currentUser.mailFolders.delta();
 
-const deltatoken = folders.deltaLink.substring(folder.deltaLink.indexOf("deltatoken=") + 11);
-const deltaParameters: IMailFolderDelta = {
-    "$skiptoken": null,
-    "$deltatoken": deltatoken,
+// retrieve a list of mail folder changes
+const folders = await currentUser.mailFolders.delta()();
+
+//You can also loop through the delta changes using the async iterator
+const folders = currentUser.mailFolders.delta();
+for await (const f of folders) {
+    // array of changes
+    console.log(f);
 }
-const deltaFolders = await currentUser.mailFolders.delta(deltaParameters);
+
 ```
 
 ## Add Folder or Search Folder

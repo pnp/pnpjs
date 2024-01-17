@@ -57,8 +57,8 @@ describe("Mail: Folders", function () {
     });
 
     it("Mail: Folder List - Delta", async function () {
-        const folders = await this.pnp.graph.users.getById(testUserName).mailFolders.delta();
-        return expect(folders).has.property("deltaLink");
+        const folders = await this.pnp.graph.users.getById(testUserName).mailFolders.delta()();
+        return expect(folders).haveOwnProperty("values");
     });
 
     it("Mail: Get Folder by Id (Add/Delete)", async function () {

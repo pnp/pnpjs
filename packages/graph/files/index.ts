@@ -28,7 +28,6 @@ export {
     Root,
     ISharingWithMeOptions,
     IItemOptions as IItemReferenceOptions,
-    IDeltaItems,
     IPreviewOptions,
     IFileOptions,
 } from "./types.js";

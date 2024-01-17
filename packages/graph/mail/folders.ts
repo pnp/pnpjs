@@ -2,11 +2,10 @@ import {
     MailFolder as IMailFolderType,
     MailSearchFolder as IMailSearchFolderType,
 } from "@microsoft/microsoft-graph-types";
-import { _GraphInstance, _GraphCollection, graphInvokableFactory, graphGet, GraphQueryable, graphPost } from "../graphqueryable.js";
-import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable } from "../decorators.js";
-import { body, InjectHeaders } from "@pnp/queryable/index.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphQueryable, graphPost } from "../graphqueryable.js";
+import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
+import { body } from "@pnp/queryable/index.js";
 import { IMessageRules, IMessages, MessageRules, Messages } from "./messages.js";
-import { IPagedResult, Paged } from "../behaviors/paged.js";
 
 /**
  * Mail Folder or Mail Search Folder
@@ -65,44 +64,17 @@ export const MailFolder = graphInvokableFactory<IMailFolder>(_MailFolder);
 @defaultPath("mailFolders")
 @getById(MailFolder)
 @addable()
+@hasDelta()
 export class _MailFolders extends _GraphCollection<IMailFolderType[] | IMailSearchFolderType[]> {
     public get includeHidden() {
         const q = GraphQueryable(this);
         q.query.set("includeHiddenFolders", "true");
         return q;
     }
-
-    /**
-     * Gets the delta for the current set of mail folders
-     *
-     * @param properties The set of properties used to retrieve specific types of messages
-     */
-    public async delta(properties?: IMailFolderDelta, maxPageSize?: number): Promise<IPagedResult<IMailFolderType[]>> {
-        properties = properties || {};
-        const querystring = Object.keys(properties)?.map(key => `${key}=${properties[key]}`).join("&") || "";
-        const path = (querystring.length > 0) ? `delta?${querystring}` : "delta";
-        const q = GraphQueryable(this, path);
-        if (maxPageSize) {
-            q.using(InjectHeaders({
-                "Prefer": `odata.maxpagesize=${maxPageSize}`,
-            }));
-        }
-        return await graphGet(q.using(Paged()));
-    }
-
 }
-export interface IMailFolders extends _MailFolders, IGetById<IMailFolder>, IAddable<IMailFolderType | IMailSearchFolderType> { }
+export interface IMailFolders extends _MailFolders, IGetById<IMailFolder>, IAddable<IMailFolderType | IMailSearchFolderType>, IHasDelta<IMailFolderDelta, IMailFolderType> { }
 export const MailFolders = graphInvokableFactory<IMailFolders>(_MailFolders);
 
-// export interface IDelta<T> {
-//     nextLink: string;
-//     deltaLink: string;
-//     values: T[];
-//     valuesCollection: IGraphQueryableCollection<T>;
-// }
-
-
-export interface IMailFolderDelta {
-    "$skiptoken"?: string;
-    "$deltatoken"?: string;
+export interface IMailFolderDelta extends Omit<IDeltaProps, "token"> {
+    changeType?: string;
 }
