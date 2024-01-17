@@ -571,16 +571,20 @@ Track changes in a driveItem and its children over time.
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 import "@pnp/graph/files";
-import { IDeltaItems } from "@pnp/graph/ondrive";
 
 const graph = graphfi(...);
 
 // Get the changes for the drive items from inception
-const delta: IDeltaItems = await graph.me.drive.root.delta()();
-const delta: IDeltaItems = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root.delta()();
+const delta = await graph.me.drive.root.delta()();
+const delta = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root.delta()();
 
-// Get the changes for the drive items from token
-const delta: IDeltaItems = await graph.me.drive.root.delta("{token}")();
+//You can also loop through the delta changes using the async iterator
+const driveItems = graph.me.drive.root.delta();
+for await (const items of driveItems) {
+    // array of changes
+    console.log(item);
+}
+
 ```
 
 ## Get Drive Item Analytics

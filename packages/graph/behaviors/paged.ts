@@ -5,7 +5,7 @@ import { ConsistencyLevel } from "./consistency-level.js";
 
 export interface IPagedResult<T> {
     count: number;
-    value: T | T[] | null;
+    value: T[] | null;
     hasNext: boolean;
     nextLink: string;
     deltaLink: string;

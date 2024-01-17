@@ -32,15 +32,17 @@ import {IMessageDelta} from "@pnp/graph/mail"
 const graph = graphfi(...);
 
 const currentUser = graph.me;
-const messages = await currentUser.messages.delta();
 
-const deltatoken = messages.deltaLink.substring(folder.deltaLink.indexOf("deltatoken=") + 11);
-const deltaParameters: IMessageDelta = {
-    "$skiptoken": null,
-    "$deltatoken": deltatoken,
-    changeType: "created"
+//get a list of messages changes (changeType is an optional parameter. See Graph docs)
+const messages = await currentUser.mailFolders.getById(`{mailFolderId}`).messages.delta({changeType: "updated"})();
+
+//You can also loop through the delta changes using the async iterator.
+const messages = currentUser.mailFolders.getById(`{mailFolderId}`).messages.delta({changeType: "updated"});
+for await (const m of messages) {
+    // array of changes
+    console.log(m);
 }
-const deltaMessages = await currentUser.messages.delta(deltaParameters);
+
 ```
 
 ## Create Draft Message

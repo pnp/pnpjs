@@ -1,5 +1,5 @@
-import { IGraphQueryable, graphDelete, graphPatch, graphPost } from "./graphqueryable.js";
-import { body, headers } from "@pnp/queryable";
+import { GraphCollection, IGraphCollection, IGraphQueryable, graphDelete, graphPatch, graphPost } from "./graphqueryable.js";
+import { InjectHeaders, body, errorCheck, headers } from "@pnp/queryable";
 
 /**
  * Decorator used to specify the default path for Queryable objects
@@ -183,4 +183,64 @@ export interface IGetByName<R = any, T = string> {
      * @param props properties used to create the new thread
      */
     getByName(name: T): R;
+}
+
+
+export function hasDelta() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+
+        return class extends target {
+            public delta(this: IGraphQueryable, properties: IDeltaProps = {}): IGraphCollection<T[] | IDeltaItems<T>> {
+                const querystring = Object.keys(properties)?.map(key => `${key}=${properties[key]}`).join("&") || "";
+                const path = (querystring.length > 0) ? `delta?${querystring}` : "delta";
+
+                const query: IGraphCollection<any> = <any>GraphCollection(this, path);
+
+                if(properties?.maxPageSize){
+                    query.using(InjectHeaders({
+                        "Prefer": `odata.maxpagesize=${properties.maxPageSize}`,
+                    }));
+                }
+
+                query.on.parse.replace(errorCheck);
+                query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
+
+                    const json = await response.json();
+                    const nextLink = json["@odata.nextLink"];
+                    const deltaLink = json["@odata.deltaLink"];
+
+                    result = {
+                        next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
+                        delta: () => (deltaLink ? GraphCollection([query, deltaLink])() : null),
+                        values: json.value,
+                    };
+
+                    return [url, response, result];
+                });
+
+                return query;
+            }
+        };
+    };
+}
+
+export interface IHasDelta<T = any, R = any> {
+    /**
+     * Gets the delta of the queryable
+     *
+     */
+    delta(properties?: T): IGraphCollection<R[] | IDeltaItems<R>>;
+}
+
+export interface IDeltaItems<R = any> {
+    next: IGraphCollection<IDeltaItems>;
+    delta: IGraphCollection<IDeltaItems>;
+    values: R[];
+}
+
+export interface IDeltaProps {
+    deltatoken?: string;
+    token?: string;
+    maxPageSize?: number;
 }
