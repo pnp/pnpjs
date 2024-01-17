@@ -5,7 +5,7 @@ import {
     TeamworkBot as ITeamworkBot } from "@microsoft/microsoft-graph-types";
 import { _GraphCollection, graphInvokableFactory, _GraphInstance, graphPost, graphDelete, graphGet } from "../graphqueryable.js";
 import {  IGetById, defaultPath, getById } from "../decorators.js";
-import { InjectHeaders } from "@pnp/queryable/index.js";
+import { InjectHeaders } from "@pnp/queryable";
 
 /**
  * AppCatalogs

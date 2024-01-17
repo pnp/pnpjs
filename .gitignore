@@ -31,7 +31,6 @@ site
 
 # Optional npm cache directory
 .npm
-
 .idea
 
 # allow folks to add things to the debug /launch and /serve folder, but don't include them in git
@@ -55,3 +54,6 @@ settings.js
 
 # don't save the locally produced .js of the buildsystem config
 buildsystem-config.js
+
+# never accidentally include any .js files that are generated in the main package source tree
+packages/**/*.js
