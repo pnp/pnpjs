@@ -33,7 +33,7 @@ export async function Count<T>(col: IGraphCollection<T>): Promise<number> {
  *
  * @returns A TimelinePipe used to configure the queryable
  */
-export function Paged(): TimelinePipe {
+export function Paged(supportsCount = false): TimelinePipe {
 
     return (instance: IGraphQueryable) => {
 
@@ -45,7 +45,7 @@ export function Paged(): TimelinePipe {
             const nextLink = json["@odata.nextLink"];
             const deltaLink = json["@odata.deltaLink"];
 
-            const count = hOP(json, "@odata.count") ? parseInt(json["@odata.count"], 10) : -1;
+            const count = supportsCount && hOP(json, "@odata.count") ? parseInt(json["@odata.count"], 10) : 0;
 
             const hasNext = !stringIsNullOrEmpty(nextLink);
             const hasDelta = !stringIsNullOrEmpty(deltaLink);

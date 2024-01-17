@@ -385,6 +385,10 @@ export interface IListEnsureResult {
  * Specifies a Collaborative Application Markup Language (CAML) query on a list or joined lists.
  */
 export interface ICamlQuery {
+    /**
+     * Gets or sets a value that indicates whether the query can return incremental results.
+     */
+    AllowIncrementalResults?: boolean;
 
     /**
      * Gets or sets a value that indicates whether the query returns dates in Coordinated Universal Time (UTC) format.
@@ -714,6 +718,11 @@ export interface IListItemFormUpdateValue {
      * Indicates whether there was an error result after validating the value for the field.
      */
     HasException?: boolean;
+
+    /**
+     * The ItemId
+     */
+    ItemId?: number;
 }
 
 /**

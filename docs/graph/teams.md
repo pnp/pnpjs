@@ -280,7 +280,7 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getByI
 
 ```
 
-### Add a new Tab to Channel
+## Add a new Tab to Channel
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -293,7 +293,7 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.add('T
 
 ```
 
-### Update a Tab
+## Update a Tab
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -308,7 +308,7 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getByI
 
 ```
 
-### Remove a Tab from channel
+## Remove a Tab from channel
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -321,7 +321,7 @@ channels.getById('19:65723d632b384ca89c81115c281428a3@thread.skype').tabs.getByI
 
 ```
 
-### Team Membership
+## Team Membership
 
 Get the members and/or owners of a group.
 

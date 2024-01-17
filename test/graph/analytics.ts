@@ -9,7 +9,6 @@ import { List } from "@microsoft/microsoft-graph-types";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { IAnalyticsOptions } from "@pnp/graph/analytics";
 import getTestingGraphSPSite from "./utilities/getTestingGraphSPSite.js";
-import { ListItem } from "@pnp/graph/list-item";
 
 describe("Analytics", function () {
     let testUserName = "";
@@ -109,7 +108,6 @@ describe("Analytics", function () {
             this.skip();
         }
         const options: IAnalyticsOptions = { timeRange: "allTime" };
-        const item: ListItem = await site.lists.getById(listResultId).items.getById(listItemId)();
         const analytics = await site.lists.getById(listResultId).items.getById(listItemId).analytics(options);
         return expect(analytics).to.haveOwnProperty("@odata.context").eq("https://graph.microsoft.com/v1.0/$metadata#microsoft.graph.itemActivityStat");
     });

@@ -34,7 +34,7 @@ describe("Queryable", function () {
 
         q.on.send(async () => {
             tracker.push(4);
-            return null;
+            return new Response({} as BodyInit, {});
         });
 
         q.on.parse(async (url, response, result) => {

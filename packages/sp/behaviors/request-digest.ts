@@ -46,6 +46,7 @@ export function RequestDigest(hook?: (url: string, init: RequestInit) => IDigest
 
                     digest = await spPost(SPQueryable([this, combine(webUrl, "_api/contextinfo")]).using(JSONParse(),BatchNever()), {
                         headers: {
+                            "Accept": "application/json",
                             "X-PnPjs-NoDigest": "1",
                         },
                     }).then(p => ({

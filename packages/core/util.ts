@@ -133,7 +133,23 @@ export function hOP<T extends string>(o: any, p: T): boolean {
     return Object.hasOwnProperty.call(o, p);
 }
 
-
+/**
+ * @returns validates and returns a valid atob conversion
+*/
+export function parseToAtob(str: string): string {
+    const base64Regex = /^[A-Za-z0-9+/]+={0,2}$/;
+    try {
+        // test if str has been JSON.stringified
+        const parsed = JSON.parse(str);
+        if(base64Regex.test(parsed)){
+            return atob(parsed);
+        }
+        return null;
+    } catch (err) {
+        // Not a valid JSON string, check if it's a standalone Base64 string
+        return base64Regex.test(str) ? atob(str) : null;
+    }
+}
 
 /**
  * Generates a ~unique hash code
