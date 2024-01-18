@@ -41,7 +41,7 @@
     "scripts": {
         "build": "npm run pnp-buildsystem-init && pnpbuild -n build",
         "build-localresolver": "npx tsc -p tsconfig.localresolver.json",
-        "buildDebug": "npm run pnp-buildsystem-init && pnpbuild -n build-debug",
+        "buildDebug": "npm run clean && npm run pnp-buildsystem-init && pnpbuild -n build-debug",
         "clean": "del-cli \"./?(dist|site|build|buildsystem-config.js)\"",
         "lint": "eslint ./packages ./test --ext .ts",
         "package": "npm run pnp-buildsystem-init && pnpbuild -n package",
