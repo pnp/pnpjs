@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 
+- queryable
+  - removed [extension](https://pnp.github.io/pnpjs/queryable/extensions/) capabilities from core library
+
 - graph
   - paged method removed from IGraphQueryableCollection
   - ./operations.ts methods moved to ./graphqueryable.ts
@@ -31,6 +34,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - ./operations.ts methods moved to ./spqueryable.ts
 
 ### Changed
+
+- testing
+  - SPA application now has a button to trigger the code vs running on page load
 
 - queryable
   - moved add-props.ts and request-builders.ts to index.ts
