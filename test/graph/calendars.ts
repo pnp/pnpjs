@@ -79,6 +79,28 @@ describe("Calendar", function () {
         return expect(calendar).is.not.null;
     });
 
+    it("Get User's Schedule", async function () {
+        const startDate: Date = new Date();
+        startDate.setDate(startDate.getDate() + 1);
+        const endDate: Date = startDate;
+        endDate.setHours(startDate.getHours() + 10);
+        const schedule = await this.pnp.graph.users.getById(testUserName).calendar.schedule.get(
+            {
+                "schedules": [
+                    testUserName,
+                ],
+                "startTime": {
+                    "dateTime": startDate.toISOString(),
+                    "timeZone": "Pacific Standard Time",
+                },
+                "endTime": {
+                    "dateTime": endDate.toISOString(),
+                    "timeZone": "Pacific Standard Time",
+                },
+            });
+        return expect(schedule).is.not.null;
+    });
+
     it("Get Events From User's Default Calendar", async function () {
         const events = await this.pnp.graph.users.getById(testUserName).calendar.events();
         return expect(events.length).is.greaterThan(0);

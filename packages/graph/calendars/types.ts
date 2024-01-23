@@ -1,5 +1,11 @@
 import { body } from "@pnp/queryable";
-import { Event as IEventType, Calendar as ICalendarType } from "@microsoft/microsoft-graph-types";
+import {
+    Event as IEventType,
+    Calendar as ICalendarType,
+    ScheduleInformation as IScheduleInformation,
+    DateTimeTimeZone as IDateTimeTimeZone,
+    NullableOption,
+} from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById } from "../decorators.js";
 import { graphPost } from "../operations.js";
@@ -12,6 +18,9 @@ export class _Calendar extends _GraphQueryableInstance<ICalendarType> {
 
     public get events(): IEvents {
         return Events(this);
+    }
+    public get schedule(): ISchedule {
+        return Schedule(this);
     }
 
     public calendarView = calendarView;
@@ -70,4 +79,33 @@ export const Events = graphInvokableFactory<IEvents>(_Events);
 export interface IEventAddResult {
     data: IEventType;
     event: IEvent;
+}
+
+
+/**
+ * Schedule
+ */
+@defaultPath("getSchedule")
+export class _Schedule extends _GraphQueryableCollection<IScheduleInformation[]> {
+    /**
+     * Get the free/busy availability information for a collection of users,
+     * distributions lists, or resources (rooms or equipment) for a specified time period.
+     *
+     * @param properties The set of properties used to get the schedule
+     */
+    public async get(properties: IGetScheduleRequest): Promise<IScheduleInformation[]> {
+
+        const data = await graphPost(this, body(properties));
+
+        return  data;
+    }
+}
+export interface ISchedule extends _Schedule { }
+export const Schedule = graphInvokableFactory<ISchedule>(_Schedule);
+
+export interface IGetScheduleRequest {
+    schedules: string[];
+    startTime: IDateTimeTimeZone;
+    endTime: IDateTimeTimeZone;
+    availabilityViewInterval?: NullableOption<string>;
 }
