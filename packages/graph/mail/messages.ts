@@ -138,7 +138,7 @@ export const Messages = graphInvokableFactory<IMessages>(_Messages);
  */
 @updateable()
 @deleteable()
-export class _MessageRule extends _GraphInstance<IMessageRuleType> {}
+export class _MessageRule extends _GraphInstance<IMessageRuleType> { }
 export interface IMessageRule extends _MessageRule, IUpdateable<IMessageRuleType>, IDeleteable { }
 export const MessageRule = graphInvokableFactory<IMessageRule>(_MessageRule);
 
@@ -148,7 +148,7 @@ export const MessageRule = graphInvokableFactory<IMessageRule>(_MessageRule);
 @defaultPath("messageRules")
 @getById(MessageRule)
 @addable()
-export class _MessageRules extends _GraphCollection<IMessageRuleType[]> {}
+export class _MessageRules extends _GraphCollection<IMessageRuleType[]> { }
 export interface IMessageRules extends _MessageRules, IGetById<IMessageRule>, IAddable<IMessageRuleType> { }
 export const MessageRules = graphInvokableFactory<IMessageRules>(_MessageRules);
 
