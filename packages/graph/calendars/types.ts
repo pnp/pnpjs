@@ -104,8 +104,21 @@ export interface ISchedule extends _Schedule { }
 export const Schedule = graphInvokableFactory<ISchedule>(_Schedule);
 
 export interface IGetScheduleRequest {
+    /**
+     * A collection of SMTP addresses of users, distribution lists, or resources to get availability information for.
+     */
     schedules: string[];
+    /**
+     * The date, time, and time zone that the period starts.
+     */
     startTime: IDateTimeTimeZone;
+    /**
+     * The date, time, and time zone that the period ends.
+     */
     endTime: IDateTimeTimeZone;
+    /**
+    * Represents the duration of a time slot in an availabilityView in the response.
+    * The default is 30 minutes, minimum is 5, maximum is 1440. Optional.
+    */
     availabilityViewInterval?: NullableOption<string>;
 }
