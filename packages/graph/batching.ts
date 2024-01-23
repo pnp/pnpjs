@@ -1,4 +1,4 @@
-import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull, isFunc, combine } from "@pnp/core";
+import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull, isFunc, combine, jsS } from "@pnp/core";
 import { parseBinderWithErrorCheck, Queryable, body, InjectHeaders } from "@pnp/queryable";
 import { IGraphQueryable, _GraphQueryable, graphPost } from "./graphqueryable.js";
 import { GraphFI } from "./fi.js";
@@ -47,9 +47,7 @@ interface IGraphBatchResponseFragment {
     statusText?: string;
     method: string;
     url: string;
-    headers?: string[][] | {
-        [key: string]: string;
-    };
+    headers?: [string, string][] | Record<string, string>;
     body?: any;
 }
 
@@ -391,14 +389,15 @@ function parseResponse(graphResponse: IGraphBatchResponse): ParsedGraphResponse 
 
         const contentType = response.headers["Content-Type"];
 
-        const { status, statusText } = response;
+        const { status, statusText, headers, body } = response;
 
-        // this is to handle special cases before we pass to the default logic
+        const init = { status, statusText, headers };
 
+        // this is to handle special cases before we pass to the default parsing logic
         if (status === 204) {
 
             // this handles cases where the response body is empty and has a 204 response status (No Content)
-            parsedResponses[responseId] = new Response(null, { status, statusText });
+            parsedResponses[responseId] = new Response(null, init);
 
         } else if (status === 302) {
 
@@ -406,19 +405,23 @@ function parseResponse(graphResponse: IGraphBatchResponse): ParsedGraphResponse 
             // the url should be in the response's location header, so we transform the response to a 200 with the location in the body as 302 will be an
             // error in the default parser used on the individual request
 
+            init.status = 200;
             // eslint-disable-next-line @typescript-eslint/dot-notation
-            parsedResponses[responseId] = new Response(JSON.stringify({ location: response.headers["Location"] || "" }), { status: 200, statusText });
+            parsedResponses[responseId] = new Response(jsS({ location: headers["Location"] || "" }), init);
 
         } else if (status === 200 && /^image[\\|/]/i.test(contentType)) {
 
             // this handles the case where image content is returned as base 64 data in the batch body, such as /me/photos/$value (https://github.com/pnp/pnpjs/issues/2825)
 
             const encoder = new TextEncoder();
-            parsedResponses[responseId] = new Response(encoder.encode(response.body), { status, statusText });
+            parsedResponses[responseId] = new Response(encoder.encode(body), init);
 
         } else {
 
-            parsedResponses[responseId] = new Response(JSON.stringify(response.body), <any>response);
+            // this is the default case where we have a json body which we remake into a string for the downstream parser to parse again
+            // a bit circular, but this provides consistent behavior for downstream parsers
+
+            parsedResponses[responseId] = new Response(jsS(body), init);
         }
     }
 
