@@ -373,36 +373,53 @@ function formatRequests(requests: RequestRecord[], batchId: string): IGraphBatch
     });
 }
 
-function parseResponse(graphResponse: IGraphBatchResponse): Promise<ParsedGraphResponse> {
+function parseResponse(graphResponse: IGraphBatchResponse): ParsedGraphResponse {
 
-    return new Promise((resolve, reject) => {
+    // we need to see if we have an error and report that
+    if (hOP(graphResponse, "error")) {
+        throw Error(`Error Porcessing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`);
+    }
 
-        // we need to see if we have an error and report that
-        if (hOP(graphResponse, "error")) {
-            return reject(Error(`Error Porcessing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`));
+    const parsedResponses: Response[] = new Array(graphResponse.responses.length).fill(null);
+
+    for (let i = 0; i < graphResponse.responses.length; ++i) {
+
+        const response = graphResponse.responses[i];
+        // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
+        // the array of requests and make it easier to map them by index
+        const responseId = parseInt(response.id, 10) - 1;
+        const contentType = response.headers["Content-Type"];
+        const { status, statusText } = response;
+
+        if (status === 204) {
+
+            // this handles cases where the response body is empty and has a 204 response status (No Content)
+            parsedResponses[responseId] = new Response(null, { status, statusText });
+
+        } else if (status === 302) {
+
+            // this is the case where (probably) a file download was included in the batch and the service has returned a 302 redirect to that file
+            // the url should be in the response's location header, so we transform the response to a 200 with the location in the body as 302 will be an
+            // error in the default parser used on the individual request
+
+            // eslint-disable-next-line @typescript-eslint/dot-notation
+            parsedResponses[responseId] = new Response(JSON.stringify({ location: response.headers["Location"] || "" }), { status: 200, statusText });
+
+        } else if (status === 200 && /^image[\\|/]/i.test(contentType)) {
+
+            // this handles the case where image content is returned as base 64 data in the batch body, such as /me/photos/$value (https://github.com/pnp/pnpjs/issues/2825)
+
+            const encoder = new TextEncoder();
+            parsedResponses[responseId] = new Response(encoder.encode(response.body), { status, statusText });
+
+        } else {
+
+            parsedResponses[responseId] = new Response(JSON.stringify(response.body), <any>response);
         }
+    }
 
-        const parsedResponses: Response[] = new Array(graphResponse.responses.length).fill(null);
-
-        for (let i = 0; i < graphResponse.responses.length; ++i) {
-
-            const response = graphResponse.responses[i];
-            // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
-            // the array of requests and make it easier to map them by index
-            const responseId = parseInt(response.id, 10) - 1;
-
-            if (response.status === 204) {
-
-                parsedResponses[responseId] = new Response();
-            } else {
-
-                parsedResponses[responseId] = new Response(JSON.stringify(response.body), response);
-            }
-        }
-
-        resolve({
-            nextLink: graphResponse.nextLink,
-            responses: parsedResponses,
-        });
-    });
+    return {
+        nextLink: graphResponse.nextLink,
+        responses: parsedResponses,
+    };
 }
