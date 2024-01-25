@@ -84,7 +84,7 @@ describe("Calendar", function () {
         startDate.setDate(startDate.getDate() + 1);
         const endDate: Date = startDate;
         endDate.setHours(startDate.getHours() + 10);
-        const schedule = await this.pnp.graph.users.getById(testUserName).calendar.schedule.get(
+        const schedule = await this.pnp.graph.users.getById(testUserName).calendar.getSchedule(
             {
                 "schedules": [
                     testUserName,
