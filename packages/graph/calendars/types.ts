@@ -2,8 +2,8 @@ import { body } from "@pnp/queryable";
 import {
     Event as IEventType,
     Calendar as ICalendarType,
-    ScheduleInformation as IScheduleInformation,
-    DateTimeTimeZone as IDateTimeTimeZone,
+    ScheduleInformation as IScheduleInformationType,
+    DateTimeTimeZone as IDateTimeTimeZoneType,
     NullableOption,
 } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
@@ -16,14 +16,22 @@ import { calendarView, instances } from "./funcs.js";
  */
 export class _Calendar extends _GraphQueryableInstance<ICalendarType> {
 
+    public calendarView = calendarView;
+
     public get events(): IEvents {
         return Events(this);
     }
-    public get schedule(): ISchedule {
-        return Schedule(this);
+
+    /**
+     * Get the free/busy availability information for a collection of users,
+     * distributions lists, or resources (rooms or equipment) for a specified time period.
+     *
+     * @param properties The set of properties used to get the schedule
+     */
+    public async getSchedule(properties: IGetScheduleRequest): Promise<IScheduleInformationType[]> {
+        return graphPost(Calendar(this, "getSchedule"), body(properties));
     }
 
-    public calendarView = calendarView;
 }
 export interface ICalendar extends _Calendar { }
 export const Calendar = graphInvokableFactory<ICalendar>(_Calendar);
@@ -81,28 +89,6 @@ export interface IEventAddResult {
     event: IEvent;
 }
 
-
-/**
- * Schedule
- */
-@defaultPath("getSchedule")
-export class _Schedule extends _GraphQueryableCollection<IScheduleInformation[]> {
-    /**
-     * Get the free/busy availability information for a collection of users,
-     * distributions lists, or resources (rooms or equipment) for a specified time period.
-     *
-     * @param properties The set of properties used to get the schedule
-     */
-    public async get(properties: IGetScheduleRequest): Promise<IScheduleInformation[]> {
-
-        const data = await graphPost(this, body(properties));
-
-        return  data;
-    }
-}
-export interface ISchedule extends _Schedule { }
-export const Schedule = graphInvokableFactory<ISchedule>(_Schedule);
-
 export interface IGetScheduleRequest {
     /**
      * A collection of SMTP addresses of users, distribution lists, or resources to get availability information for.
@@ -111,11 +97,11 @@ export interface IGetScheduleRequest {
     /**
      * The date, time, and time zone that the period starts.
      */
-    startTime: IDateTimeTimeZone;
+    startTime: IDateTimeTimeZoneType;
     /**
      * The date, time, and time zone that the period ends.
      */
-    endTime: IDateTimeTimeZone;
+    endTime: IDateTimeTimeZoneType;
     /**
     * Represents the duration of a time slot in an availabilityView in the response.
     * The default is 30 minutes, minimum is 5, maximum is 1440. Optional.
