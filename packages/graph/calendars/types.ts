@@ -4,7 +4,6 @@ import {
     Calendar as ICalendarType,
     ScheduleInformation as IScheduleInformationType,
     DateTimeTimeZone as IDateTimeTimeZoneType,
-    NullableOption,
 } from "@microsoft/microsoft-graph-types";
 import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
 import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById } from "../decorators.js";
@@ -106,5 +105,5 @@ export interface IGetScheduleRequest {
     * Represents the duration of a time slot in an availabilityView in the response.
     * The default is 30 minutes, minimum is 5, maximum is 1440. Optional.
     */
-    availabilityViewInterval?: NullableOption<string>;
+    availabilityViewInterval?: number;
 }
