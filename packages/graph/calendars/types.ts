@@ -1,7 +1,7 @@
 import { body } from "@pnp/queryable";
 import { Event as IEventType, Calendar as ICalendarType, ScheduleInformation as IScheduleInformationType, DateTimeTimeZone as IDateTimeTimeZoneType, Recipient, TimeSlot, } from "@microsoft/microsoft-graph-types";
 import {  GraphQueryable, IGraphQueryable, _GraphCollection, _GraphInstance, _GraphQueryable, graphInvokableFactory, graphPost } from "../graphqueryable.js";
-import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById, IAddable, addable, hasDelta, IHasDelta } from "../decorators.js";
+import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById, IAddable, addable } from "../decorators.js";
 import { calendarView, instances } from "./funcs.js";
 
 /**

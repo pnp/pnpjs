@@ -1,5 +1,5 @@
 import { body } from "@pnp/queryable/index.js";
-import { IGraphQueryable, GraphCollection, IGraphCollection, IGraphInstance, graphPost, GraphQueryable } from "../graphqueryable.js";
+import { IGraphQueryable, GraphCollection, IGraphCollection, IGraphInstance, graphPost } from "../graphqueryable.js";
 import { EmailAddress, Event as IEvent, Reminder as IReminder, MeetingTimeSuggestionsResult, LocationConstraint, TimeConstraint} from "@microsoft/microsoft-graph-types";
 import { CalendarView, ICalendarView } from "./types.js";
 
