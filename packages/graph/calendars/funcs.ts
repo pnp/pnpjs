@@ -1,9 +1,21 @@
-import { IGraphQueryable, GraphCollection, IGraphCollection } from "../graphqueryable.js";
-import { EmailAddress, Event as IEvent } from "@microsoft/microsoft-graph-types";
-import { Endpoint } from "../behaviors/endpoint.js";
+import { body } from "@pnp/queryable/index.js";
+import { IGraphQueryable, GraphCollection, IGraphCollection, IGraphInstance, graphPost, GraphQueryable } from "../graphqueryable.js";
+import { EmailAddress, Event as IEvent, Reminder as IReminder, MeetingTimeSuggestionsResult, LocationConstraint, TimeConstraint} from "@microsoft/microsoft-graph-types";
+import { CalendarView, ICalendarView } from "./types.js";
 
 interface IEventWithTag extends IEvent {
     "@odata.etag": string;
+}
+
+export interface IFindMeetingTimesRequest{
+    attendees?: EmailAddress[];
+    locationConstraint?: LocationConstraint;
+    timeConstraint?: TimeConstraint;
+    meetingDuration?: string;
+    maxCandidates?: number;
+    isOrganizerOptional?: boolean;
+    returnSuggestionReasons?: boolean;
+    minimumAttendeePercentage?: number;
 }
 
 /**
@@ -14,26 +26,30 @@ interface IEventWithTag extends IEvent {
  * @param start start time
  * @param end end time
  */
-export function calendarView(this: IGraphQueryable, start: string, end: string): IGraphCollection<ICalendarViewInfo[]> {
-
-    const query = GraphCollection(this, "calendarView");
-    query.query.set("startDateTime", start);
-    query.query.set("endDateTime", end);
-    return query;
+export function calendarView(this: IGraphQueryable, start: string, end: string): ICalendarView {
+    return CalendarView(this, start, end);
 }
 
 export type ICalendarViewInfo = IEventWithTag;
 
 /**
+ * Suggest meeting times and locations based on organizer and attendee availability, and time or location constraints specified as parameters.
+
+ * @param this IGraphQueryable instance
+ * @param properties The body of the meetingTimeSuggestionsRequest resource that contains the parameters for the operation.
+ */
+export async function findMeetingTimes(this: IGraphQueryable, properties?: IFindMeetingTimesRequest): Promise<IGraphInstance<MeetingTimeSuggestionsResult>> {
+    return graphPost(GraphCollection(this,"findMeetingTimes"), body(properties));
+}
+
+/**
  * Get the emailAddress objects that represent all the meeting rooms in the user's tenant or in a specific room list.
- *  - This is a beta graph feature and uses the beta endpoint.
  *
  * @param this IGraphQueryable instance
  * @param roomList The SMTP address associated with the room list.
  */
 export function findRooms(this: IGraphQueryable, roomList?: string): IGraphCollection<EmailAddress[]> {
     const query = GraphCollection(this, roomList ? "findRooms(RoomList=@roomList)" : "findRooms");
-    query.using(Endpoint("beta"));
     if (roomList) {
         query.query.set("@roomList", `'${roomList}'`);
     }
@@ -56,3 +72,20 @@ export function instances(this: IGraphQueryable, start: string, end: string): IG
 }
 
 export type IInstance = IEventWithTag;
+
+/**
+ * Get the list of event remindres defined by a time range,
+ *
+ * @param this IGraphQueryable instance
+ * @param start start time
+ * @param end end time
+ */
+export function reminderView(this: IGraphQueryable, start: string, end: string): IGraphCollection<IReminderInfo[]> {
+
+    const query = GraphCollection(this, "reminderView");
+    query.query.set("startDateTime", start);
+    query.query.set("endDateTime", end);
+    return query;
+}
+
+export type IReminderInfo = IReminder;

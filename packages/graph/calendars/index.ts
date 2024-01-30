@@ -12,7 +12,3 @@ export {
     IEvent,
     IEvents,
 } from "./types.js";
-
-export {
-    ICalendarViewInfo,
-} from "./funcs.js";
