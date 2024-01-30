@@ -111,7 +111,7 @@ class BatchQueryable extends _GraphQueryable {
         // do a fix up on the url once other pre behaviors have had a chance to run
         this.on.pre(async function (this: BatchQueryable, url, init, result) {
 
-            const versRegex = /(https:\/\/.*?[\\|/]v1\.0|beta[\\|/])/i;
+            const versRegex = /(https:\/\/.*?\/(v1.0|beta)\/)/i;
 
             const m = url.match(versRegex);
 
