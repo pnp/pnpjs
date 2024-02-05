@@ -24,7 +24,7 @@ const DefaultMoments = {
     send: request<QueryableSendObserver>(),
     parse: asyncReduce<QueryableParseObserver>(),
     post: asyncReduce<QueryablePostObserver>(),
-    data: broadcast<QueryableDataObserver>()
+    data: broadcast<QueryableDataObserver>(),
 } as const;
 
 export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
