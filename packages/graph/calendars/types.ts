@@ -1,5 +1,5 @@
 import { body } from "@pnp/queryable";
-import { Event as IEventType, Calendar as ICalendarType, ScheduleInformation as IScheduleInformationType, DateTimeTimeZone as IDateTimeTimeZoneType, Recipient, TimeSlot, } from "@microsoft/microsoft-graph-types";
+import { Event as IEventType, Calendar as ICalendarType, CalendarGroup as ICalendarGroupType, CalendarPermission as ICalendarPermissionType, ScheduleInformation as IScheduleInformationType, DateTimeTimeZone as IDateTimeTimeZoneType, Recipient, TimeSlot, } from "@microsoft/microsoft-graph-types";
 import {  GraphQueryable, IGraphQueryable, _GraphCollection, _GraphInstance, _GraphQueryable, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById, IAddable, addable } from "../decorators.js";
 import { calendarView, instances } from "./funcs.js";
@@ -11,10 +11,12 @@ import { calendarView, instances } from "./funcs.js";
 @updateable()
 export class _Calendar extends _GraphInstance<ICalendarType> {
 
+    public get calendarPermissions(): ICalendarPermissions {
+        return CalendarPermissions(this);
+    }
     public get events(): IEvents {
         return Events(this);
     }
-
     /**
      * Get the free/busy availability information for a collection of users,
      * distributions lists, or resources (rooms or equipment) for a specified time period.
@@ -39,7 +41,6 @@ export const Calendar = graphInvokableFactory<ICalendar>(_Calendar);
 @addable()
 export class _Calendars extends _GraphCollection<ICalendarType[]> { 
     constructor(baseUrl: string | _GraphQueryable, start: string, end: string) {
-        debugger;
         super(baseUrl);
         this.query.set("startDateTime", start);
         this.query.set("endDateTime", end);
@@ -108,8 +109,6 @@ export class _Event extends _GraphInstance<IEventType> {
         return graphPost(Event(this, "tentativelyAccept"), body({ comment, sendResponse, proposedNewTime }));
     }
 
-    // TODO:: implement event messages?
-
     public instances = instances;
 }
 export interface IEvent extends _Event, IDeleteable, IUpdateable { }
@@ -124,6 +123,49 @@ export const Event = graphInvokableFactory<IEvent>(_Event);
 export class _Events extends _GraphCollection<IEventType[]> { }
 export interface IEvents extends _Events, IGetById<IEvent>, IAddable<IEventType, IEventType> { }
 export const Events = graphInvokableFactory<IEvents>(_Events);
+
+/**
+ * Event
+ */
+@deleteable()
+@updateable()
+export class _CalendarGroup extends _GraphInstance<ICalendarGroupType> {
+    
+        public get calendars(): ICalendars {
+            return Calendars(this);
+        }
+}
+export interface ICalendarGroup extends _CalendarGroup, IDeleteable, IUpdateable { }
+export const CalendarGroup = graphInvokableFactory<ICalendarGroup>(_CalendarGroup);
+
+/**
+ * CalendarGroups
+ */
+@defaultPath("calendarGroups")
+@getById(Event)
+@addable()
+export class _CalendarGroups extends _GraphCollection<ICalendarGroupType[]> { }
+export interface ICalendarGroups extends _Events, IGetById<ICalendarGroups>, IAddable<ICalendarGroupType, ICalendarGroupType> { }
+export const CalendarGroups = graphInvokableFactory<ICalendarGroups>(_CalendarGroups);
+
+/**
+ * CalendarPermission
+ */
+@updateable()
+@deleteable()
+export class _CalendarPermission extends _GraphInstance<ICalendarPermissionType> { }
+export interface ICalendarPermission extends _CalendarPermission, IUpdateable, IDeleteable { }
+export const CalendarPermission = graphInvokableFactory<ICalendarPermission>(_CalendarPermission);
+
+/**
+ * CalendarPermissions
+ */
+@defaultPath("calendarPermissions")
+@getById(CalendarPermission)
+@addable()
+export class _CalendarPermissions extends _GraphCollection<ICalendarPermissionType[]> { }
+export interface ICalendarPermissions extends _CalendarPermissions, IAddable<ICalendarGroupType, ICalendarPermissionType> { }
+export const CalendarPermissions = graphInvokableFactory<ICalendarPermissions>(_CalendarPermissions);
 
 /**
  * EventAddResult
