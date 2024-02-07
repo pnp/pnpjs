@@ -177,6 +177,33 @@ await graph.users.getById('user@tenant.onmicrosoft.com').events.getById(EVENT_ID
 
 await graph.me.events.getById(EVENT_ID).delete();
 ```
+## Get Schedules
+
+Get the free/busy availability information for a collection of users, distributions lists, or resources (rooms or equipment) for a specified time period.
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import '@pnp/graph/calendars';
+import '@pnp/graph/users';
+
+const graph = graphfi(...);
+
+await graph.users.getById('user@tenant.onmicrosoft.com').calendar.schedule.get(
+{
+  "startTime": {
+      "dateTime": "2017-04-15T12:00:00",
+      "timeZone": "Pacific Standard Time"
+  },
+  "endTime": {
+      "dateTime": "2017-04-15T14:00:00",
+      "timeZone": "Pacific Standard Time"
+  },
+  "schedules": [
+      "user@tenant.onmicrosoft.com"
+  ],
+  "availabilityViewInterval": 30
+});
+```
 
 ## Get Calendar for a Group
 
