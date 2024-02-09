@@ -5,7 +5,7 @@ import { IPlanAdd } from "@pnp/graph/planner";
 import getValidUser from "./utilities/getValidUser.js";
 
 // Tests can't be run until planner support application permissions, incomplete
-describe.only("Planner", function () {
+describe("Planner", function () {
     const planTemplate: IPlanAdd = {
         container: {
             url: "",
