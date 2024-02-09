@@ -75,6 +75,40 @@ export class _TermSet extends _GraphInstance<ITermStoreType.Set> {
     public getTermById(id: string): ITerm {
         return Term(this, `terms/${id}`);
     }
+
+    /**
+     * Gets all the direct children of the current termset as a tree, however is not ordered based on the SP sorting info
+     *
+     * @returns Array of children for this item
+     */
+    public async getAllChildrenAsTree(): Promise<IOrderedTermInfo[]> {
+
+        const visitor = async (source: { children(): Promise<ITermStoreType.Term[]> }, parent: IOrderedTermInfo[]) => {
+
+            const children = await source.children();
+
+            for (let i = 0; i < children.length; i++) {
+
+                const child = children[i];
+
+                const orderedTerm: Partial<IOrderedTermInfo> = {
+                    children: <IOrderedTermInfo[]>[],
+                    defaultLabel: child.labels.find(l => l.isDefault).name,
+                    ...child,
+                };
+
+                parent.push(<any>orderedTerm);
+
+                await visitor(this.getTermById(child.id), <any>orderedTerm.children);
+            }
+        };
+
+        const tree: IOrderedTermInfo[] = [];
+
+        await visitor(this, tree);
+
+        return tree;
+    }
 }
 export interface ITermSet extends _TermSet, IUpdateable<ITermStoreType.Set>, IDeleteable { }
 export const TermSet = graphInvokableFactory<ITermSet>(_TermSet);
@@ -122,3 +156,8 @@ export const Terms = graphInvokableFactory<ITerms>(_Terms);
 export class _Relations extends _GraphCollection<ITermStoreType.Relation[]> { }
 export interface IRelations extends _Relations, IAddable<Omit<ITermStoreType.Relation, "id">> { }
 export const Relations = graphInvokableFactory<IRelations>(_Relations);
+
+export interface IOrderedTermInfo extends ITermStoreType.Term {
+    children: ITermStoreType.Term[];
+    defaultLabel: string;
+}
