@@ -1,11 +1,11 @@
 # @pnp/graph/files
 
-The ability to manage drives and drive items in Onedrive is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
-you can manage drives and drive items in Onedrive.
+The ability to manage drives and drive items in OneDrive is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
+you can manage drives and drive items in OneDrive.
 
 More information can be found in the official Graph documentation:
 
-- [Drive/Files Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/onedrive?view=graph-rest-1.0)
+- [Drives/Files Resource Type](https://learn.microsoft.com/en-us/graph/api/resources/drive?view=graph-rest-1.0)
 
 ## IInvitations
 
@@ -13,7 +13,7 @@ More information can be found in the official Graph documentation:
 
 ## Get the default drive
 
-Using the drive you can get the users default drive from Onedrive, or the groups or sites default document library.
+Using the drive you can get the users default drive from OneDrive, or the groups or sites default document library.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -24,7 +24,7 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const otherUserDrive = await graph.users.getById("user@tenant.onmicrosoft.com").drive();
+const otherUserDrive = await graph.users.getById({user id}).drive();
 
 const currentUserDrive = await graph.me.drive();
 
@@ -35,7 +35,7 @@ const siteDrive = await graph.sites.getById("{site identifier}").drive();
 
 ## Get all of the drives
 
-Using the drives() you can get the users available drives from Onedrive
+Using the drives() you can get the users available drives from OneDrive
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -46,7 +46,7 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const otherUserDrive = await graph.users.getById("user@tenant.onmicrosoft.com").drives();
+const otherUserDrive = await graph.users.getById({user id}).drives();
 
 const currentUserDrive = await graph.me.drives();
 
@@ -67,15 +67,15 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const drive = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}")();
+const drive = await graph.users.getById({user id}).drives.getById({drive id})();
 
-const drive = await graph.me.drives.getById("{drive id}")();
+const drive = await graph.me.drives.getById({drive id})();
 
-const drive = await graph.drives.getById("{drive id}")();
+const drive = await graph.drives.getById({drive id})();
 
 ```
 
-## Get the associated list of a drive
+## Get the associated list of a SharePoint drive
 
 Using the list() you get the associated list information
 
@@ -86,28 +86,8 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const list = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").list();
+const list = await graph.sites.getById("{site identifier}").getById({drive id}).list();
 
-const list = await graph.me.drives.getById("{drive id}").list();
-
-```
-
-Using the getList(), from the lists implementation, you get the associated IList object.
-Form more infomration about acting on the IList object see [@pnpjs/graph/lists](./lists.md)
-
-```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/users";
-import "@pnp/graph/files";
-import "@pnp/graph/lists";
-
-const graph = graphfi(...);
-
-const listObject: IList = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").getList();
-
-const listOBject: IList = await graph.me.drives.getById("{drive id}").getList();
-
-const list = await listObject();
 ```
 
 ## Get the recent files
@@ -121,9 +101,9 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const files = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").recent();
+const files = await graph.users.getById({user id}).drives.getById({drive id}).recent();
 
-const files = await graph.me.drives.getById("{drive id}").recent();
+const files = await graph.me.drives.getById({drive id}).recent();
 
 ```
 
@@ -138,18 +118,18 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const shared = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").sharedWithMe();
+const shared = await graph.users.getById({user id}).drives.getById({drive id}).sharedWithMe();
 
-const shared = await graph.me.drives.getById("{drive id}").sharedWithMe();
+const shared = await graph.me.drives.getById({drive id}).sharedWithMe();
 
 // By default, sharedWithMe return items shared within your own tenant. To include items shared from external tenants include the options object.
 
 const options: ISharingWithMeOptions = {allowExternal: true};
-const shared = await graph.me.drives.getById("{drive id}").sharedWithMe(options);
+const shared = await graph.me.drives.getById({drive id}).sharedWithMe(options);
 
 ```
 
-## Get the following files
+## Get the following drive item
 
 List the items that have been followed by the signed in user.
 
@@ -160,8 +140,26 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const files = await graph.me.drives.getById("{drive id}").following();
+const files = await graph.me.drives.getById({drive id}).following();
 
+```
+
+## Follow/Unfollow a drive item
+
+Follow/Unfollow a drive item
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/files";
+
+const graph = graphfi(...);
+
+const driveItem = await graph.me.drives.getById({drive id}).getItemById({item id}).follow();
+const driveItem = await graph.me.drives.getById({drive id}).getItemById({item id}).unfollow();
+
+const driveItem = await graph.users.getById({user id}).drives.getById({drive id}).getItemById({item id}).follow();
+const driveItem = await graph.users.getById({user id}).drives.getById({drive id}).getItemById({item id}).unfollow();
 ```
 
 ## Get the Root folder
@@ -177,16 +175,16 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const root = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root();
-const root = await graph.users.getById("user@tenant.onmicrosoft.com").drive.root();
+const root = await graph.users.getById({user id}).drives.getById({drive id}).root();
+const root = await graph.users.getById({user id}).drive.root();
 
-const root = await graph.me.drives.getById("{drive id}").root();
+const root = await graph.me.drives.getById({drive id}).root();
 const root = await graph.me.drive.root();
 
-const root = await graph.sites.getById("{site id}").drives.getById("{drive id}").root();
+const root = await graph.sites.getById("{site id}").drives.getById({drive id}).root();
 const root = await graph.sites.getById("{site id}").drive.root();
 
-const root = await graph.groups.getById("{site id}").drives.getById("{drive id}").root();
+const root = await graph.groups.getById("{site id}").drives.getById({drive id}).root();
 const root = await graph.groups.getById("{site id}").drive.root();
 
 ```
@@ -202,13 +200,13 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const rootChildren = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root.children();
+const rootChildren = await graph.users.getById({user id}).drives.getById({drive id}).root.children();
 
-const rootChildren = await graph.me.drives.getById("{drive id}").root.children();
+const rootChildren = await graph.me.drives.getById({drive id}).root.children();
 
-const itemChildren = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").children();
+const itemChildren = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").children();
 
-const itemChildren = await graph.me.drives.getById("{drive id}").root.items.getById("{item id}").children();
+const itemChildren = await graph.me.drives.getById({drive id}).root.items.getById("{item id}").children();
 
 ```
 
@@ -223,13 +221,13 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const item = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getItemsByPath("MyFolder/MySubFolder")();
+const item = await graph.users.getById({user id}).drives.getItemsByPath("MyFolder/MySubFolder")();
 
 const item = await graph.me.drives.getItemsByPath("MyFolder/MySubFolder")();
 
 ```
 
-## Add Item
+## Add Drive Item (File and Folder)
 
 Using the add you can add an item, for more options please user the upload method instead.
 
@@ -237,12 +235,28 @@ Using the add you can add an item, for more options please user the upload metho
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/files";
 import "@pnp/graph/users";
-import {IDriveItemAddResult} from "@pnp/graph/files";
+import {IDriveItemAdd} from "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const add1: IDriveItemAddResult = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root.children.add("test.txt", "My File Content String");
-const add2: IDriveItemAddResult = await graph.me.drives.getById("{drive id}").root.children.add("filename.txt", "My File Content String");
+const fileInfo: IDriveItemAdd = {
+    filename: "Test File.txt",
+    content: "Contents of test file",
+    contentType: "text/plain",
+    conflictBehavior: "replace",
+    driveItem: {},
+};
+
+const folderInfo: IDriveItemAddFolder = {
+    name: "Sub Folder",
+    conflictBehavior: "replace",
+};
+
+const driveRootFile = await graph.users.getById({user Id}).drive.root.children.add(fileInfo);
+const driveRootFolder = await graph.users.getById({user Id}).drive.root.children.addFolder(folderInfo);
+
+const subFolderFile = await graph.users.getById({user Id}).drive.getItemById({folder id}).children.add(fileInfo);
+const subFolderFile = await graph.users.getById({user Id}).drive.getItemById({folder id}).children.addFolder(folderInfo);
 ```
 
 ## Upload/Replace Drive Item Content
@@ -253,22 +267,20 @@ Using the .upload method you can add or update the content of an item.
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/files";
 import "@pnp/graph/users";
-import {IFileOptions, IDriveItemAddResult} from "@pnp/graph/files";
+import {IFileUploadOptions} from "@pnp/graph/files";
 
 const graph = graphfi(...);
 
 // file path is only file name
-const fileOptions: IFileOptions = {
+const fileOptions: IFileUploadOptions = {
     content: "This is some test content",
     filePathName: "pnpTest.txt",
-    contentType: "text/plain;charset=utf-8"
+    contentType: "text/plain;charset=utf-8",
 }
 
-const uDriveRoot: IDriveItemAddResult = await graph.users.getById("user@tenant.onmicrosoft.com").drive.root.upload(fileOptions);
-
-const uFolder: IDriveItemAddResult = await graph.users.getById("user@tenant.onmicrosoft.com").drive.getItemById("{folder id}").upload(fileOptions);
-
-const uDriveIdRoot: IDriveItemAddResult = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root.upload(fileOptions);
+const driveItem = await graph.users.getById({user id}).drive.root.upload(fileOptions);
+const driveItem = await graph.users.getById({user id}).drive.getItemById({folder id}).upload(fileOptions);
+const driveItem = await graph.users.getById({user id}).drives.getById({drive id}).root.upload(fileOptions);
 
 // file path includes folders
 const fileOptions2: IFileOptions = {
@@ -277,24 +289,48 @@ const fileOptions2: IFileOptions = {
     contentType: "text/plain;charset=utf-8"
 }
 
-const uFileOptions: IDriveItemAddResult = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root.upload(fileOptions2);
+const driveItem = await graph.users.getById({user id}).drives.getById({drive id}).root.upload(fileOptions2);
 ```
 
-## Add folder
+## Resumable Upload for Drive Item Content
 
-Using addFolder you can add a folder
+Create an upload session to allow your app to upload files up to the maximum file size. An upload session allows your app to upload ranges of the file in sequential API requests. Upload sessions also allow the transfer to resume if a connection is dropped while the upload is in progress.
 
 ```TypeScript
-import { graph } from "@pnp/graph";
+import * as fs from "fs";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/files";
-import "@pnp/graph/users"
-import {IDriveItemAddResult} from "@pnp/graph/ondrive";
+import "@pnp/graph/users";
+import {IFileUploadOptions} from "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const addFolder1: IDriveItemAddResult = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root.children.addFolder('New Folder');
-const addFolder2: IDriveItemAddResult = await graph.me.drives.getById("{drive id}").root.children.addFolder('New Folder');
+const fileBuff = fs.readFileSync("C:\\MyDocs\\TestDocument.docx");
+const fileUploadOptions: IResumableUploadOptions<DriveItemUploadableProperties> = {
+    item: {
+        name: "TestDocument2.docx",
+        fileSize: fileBuff.byteLength,
+    },
+};
 
+// Create the upload session
+const uploadSession = await graph.users.getById(userId).drive.getItemById(driveRoot.id).createUploadSession(fileUploadOptions);
+// Get the status of the upload session
+const status = await uploadSession.resumableUpload.status();
+
+// Upload the entire file to the upload session
+const upload = await uploadSession.resumableUpload.upload(fileBuff.length, fileBuff);
+
+// Upload a chunk of the file to the upload session
+// Using a fragment size that doesn't divide evenly by 320 KiB results in errors committing some files.
+const chunkSize = 327680;
+let startFrom = 0;
+while (startFrom < fileBuff.length) {
+    const fileChunk = fileBuff.slice(startFrom, startFrom + chunkSize);    
+    const contentLength = `bytes ${startFrom}-${startFrom + chunkSize}/${fileBuff.length}`
+    const uploadChunk = await uploadSession.resumableUpload.upload(chunkSize, fileChunk, contentLength);
+    startFrom += chunkSize;
+}
 ```
 
 ## Search items
@@ -311,9 +347,9 @@ const graph = graphfi(...);
 // Where searchTerm is the query text used to search for items.
 // Values may be matched across several fields including filename, metadata, and file content.
 
-const search = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root.search(searchTerm)();
+const search = await graph.users.getById({user id}).drives.getById({drive id}).root.search(searchTerm)();
 
-const search = await graph.me.drives.getById("{drive id}").root.search(searchTerm)();
+const search = await graph.me.drives.getById({drive id}).root.search(searchTerm)();
 
 ```
 
@@ -328,9 +364,9 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const item = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}")();
+const item = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}")();
 
-const item = await graph.me.drives.getById("{drive id}").items.getById("{item id}")();
+const item = await graph.me.drives.getById({drive id}).items.getById("{item id}")();
 
 ```
 
@@ -345,7 +381,7 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const item = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getItemByPath("MyFolder/MySubFolder/myFile.docx")();
+const item = await graph.users.getById({user id}).drives.getItemByPath("MyFolder/MySubFolder/myFile.docx")();
 
 const item = await graph.me.drives.getItemByPath("MyFolder/MySubFolder/myFile.docx")();
 
@@ -422,15 +458,15 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const thumbs = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").thumbnails();
+const thumbs = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").thumbnails();
 
-const thumbs = await graph.me.drives.getById("{drive id}").items.getById("{item id}").thumbnails();
+const thumbs = await graph.me.drives.getById({drive id}).items.getById("{item id}").thumbnails();
 
 ```
 
-## Delete drive item
+## Delete/Permenently Delete drive item
 
-Using the delete() you delete the current item
+Using the delete() you delete the current item. Using .permanentDelete you can permenently delete the current item.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -439,10 +475,10 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const thumbs = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").delete();
-
-const thumbs = await graph.me.drives.getById("{drive id}").items.getById("{item id}").delete();
-
+await graph.me.drives.getById({drive id}).items.getById({item id}).delete();
+await graph.me.drives.getById({drive id}).items.getById({item id}).permanentDelete();
+await graph.users.getById({user id}).drives.getById({drive id}).items.getById({item id}).delete();
+await graph.users.getById({user id}).drives.getById({drive id}).items.getById({item id}).permanentDelete();
 ```
 
 ## Update drive item metadata
@@ -456,9 +492,9 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const update = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").update({name: "New Name"});
+const update = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").update({name: "New Name"});
 
-const update = await graph.me.drives.getById("{drive id}").items.getById("{item id}").update({name: "New Name"});
+const update = await graph.me.drives.getById({drive id}).items.getById("{item id}").update({name: "New Name"});
 
 ```
 
@@ -482,9 +518,9 @@ const moveOptions: IItemOptions = {
   name?: {newName};
 };
 
-const move = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").move(moveOptions);
+const move = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").move(moveOptions);
 
-const move = await graph.me.drives.getById("{drive id}").items.getById("{item id}").move(moveOptions);
+const move = await graph.me.drives.getById({drive id}).items.getById("{item id}").move(moveOptions);
 
 ```
 
@@ -508,9 +544,9 @@ const copyOptions: IItemOptions = {
   name?: {newName};
 };
 
-const copy = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").copy(copyOptions);
+const copy = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").copy(copyOptions);
 
-const copy = await graph.me.drives.getById("{drive id}").items.getById("{item id}").copy(copyOptions);
+const copy = await graph.me.drives.getById({drive id}).items.getById("{item id}").copy(copyOptions);
 
 ```
 
@@ -550,16 +586,16 @@ import { ItemPreviewInfo } from "@microsoft/microsoft-graph-types"
 
 const graph = graphfi(...);
 
-const preview: ItemPreviewInfo = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").preview();
+const preview: ItemPreviewInfo = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").preview();
 
-const preview: ItemPreviewInfo = await graph.me.drives.getById("{drive id}").items.getById("{item id}").preview();
+const preview: ItemPreviewInfo = await graph.me.drives.getById({drive id}).items.getById("{item id}").preview();
 
 const previewOptions: IPreviewOptions = {
     page: 1,
     zoom: 90
 }
 
-const preview2: ItemPreviewInfo = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").preview(previewOptions);
+const preview2: ItemPreviewInfo = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").preview(previewOptions);
 
 ```
 
@@ -576,7 +612,7 @@ const graph = graphfi(...);
 
 // Get the changes for the drive items from inception
 const delta = await graph.me.drive.root.delta()();
-const delta = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").root.delta()();
+const delta = await graph.users.getById({user id}).drives.getById({drive id}).root.delta()();
 
 //You can also loop through the delta changes using the async iterator
 const driveItems = graph.me.drive.root.delta();
@@ -600,13 +636,16 @@ import { IAnalyticsOptions } from "@pnp/graph/files";
 const graph = graphfi(...);
 
 // Defaults to lastSevenDays
-const analytics = await graph.users.getById("user@tenant.onmicrosoft.com").drives.getById("{drive id}").items.getById("{item id}").analytics()();
+const analytics = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").analytics()();
 
-const analytics = await graph.me.drives.getById("{drive id}").items.getById("{item id}").analytics()();
+const analytics = await graph.me.drives.getById({drive id}).items.getById("{item id}").analytics()();
 
 const analyticOptions: IAnalyticsOptions = {
     timeRange: "allTime"
 };
 
-const analyticsAllTime = await graph.me.drives.getById("{drive id}").items.getById("{item id}").analytics(analyticOptions)();
+const analyticsAllTime = await graph.me.drives.getById({drive id}).items.getById("{item id}").analytics(analyticOptions)();
 ```
+
+For more information on:
+[Sensitivity and Retention Labels (Premium Endpoint)](./files-labels.md)
