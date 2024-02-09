@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - ISite now supports `async rebase()` to ensure any ISite is represented by the url pattern /sites/{site id} regardless of how it was first loaded
   - ISites.getAllSites()
   - support for operations for ISite and IList
+  - completed support for Files
 
 - sp
   - explict error thrown if SPFx context is null or undefined when needed
@@ -26,6 +27,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - graph
   - paged method removed from IGraphQueryableCollection
   - ./operations.ts methods moved to ./graphqueryable.ts
+  - deprecated DriveItem move method.
+  - deprecated DriveItem setContent method.
 
 - sp
   - getPaged method removed from _Items/IItems

@@ -1,7 +1,8 @@
-import { combine } from "@pnp/core";
 import { body, InjectHeaders } from "@pnp/queryable";
 import { graphPost, graphPut } from "../graphqueryable.js";
-import { DriveItem, IDriveItemAddResult, IFileOptions } from "./types.js";
+import { DriveItem, IFileUploadOptions } from "./types.js";
+import { DriveItem as IDriveItemType } from "@microsoft/microsoft-graph-types";
+
 
 export interface ICheckInOptions {
     checkInAs?: string;
@@ -20,7 +21,7 @@ export function encodeSharingUrl(url: string): string {
     return "u!" + Buffer.from(url, "utf8").toString("base64").replace(/=$/i, "").replace("/", "_").replace("+", "-");
 }
 
-export async function driveItemUpload(fileOptions: IFileOptions): Promise<IDriveItemAddResult> {
+export async function driveItemUpload(fileOptions: IFileUploadOptions): Promise<IDriveItemType> {
     let path = "/content";
     if (fileOptions.filePathName) {
         path = `:/${fileOptions.filePathName}:/content`;
@@ -34,11 +35,12 @@ export async function driveItemUpload(fileOptions: IFileOptions): Promise<IDrive
             "Content-Type": fileOptions.contentType,
         }));
     }
+    if(fileOptions.eTag) {
+        const header = {};
+        header[fileOptions.eTagMatch || "If-Match"] = fileOptions.eTag;
+        q.using(InjectHeaders(header));
+    }
 
-    const data = await graphPut(q, { body: fileOptions.content });
-
-    return {
-        data,
-        driveItem: DriveItem([this, `${combine("drives", data.parentReference.driveId, "items", data.id)}`]),
-    };
+    return await graphPut(q, { body: fileOptions.content });
 }
+

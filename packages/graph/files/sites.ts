@@ -1,8 +1,8 @@
 import { addProp } from "@pnp/queryable";
 import { _Site } from "../sites/types.js";
-import { IDrive, Drive, IDrives, Drives, _DriveItem } from "./types.js";
+import { IDrive, Drive, IDrives, Drives, _DriveItem, _Drive } from "./types.js";
 import { checkIn, ICheckInOptions, checkOut } from "./funcs.js";
-
+import { IList, List } from "../lists/types.js";
 
 declare module "../sites/types" {
     interface _Site {
@@ -17,9 +17,17 @@ declare module "../sites/types" {
 
 addProp(_Site, "drive", Drive);
 addProp(_Site, "drives", Drives);
+addProp(_Drive, "list", List);
 
 
 declare module "./types" {
+    interface _Drive {
+        list: IList;
+    }
+    interface IDrive {
+        list: IList;
+    }
+
     interface _DriveItem {
         checkIn(checkInOptions?: ICheckInOptions): Promise<void>;
         checkOut(): Promise<void>;
