@@ -83,7 +83,7 @@ export class _ContentTypes extends _GraphQueryableCollection<IContentTypeEntity[
     public async addCopyFromContentTypeHub(contentTypeId: string): Promise<IContentTypeAddResult> {
         const creator = ContentType(this, "addCopyFromContentTypeHub").using(JSONHeaderParse());
         const data = await graphPost(creator, body({ contentTypeId }));
-        const pendingLocation = data.headers.location || null;
+        const pendingLocation = data?.headers?.location || null;
         return {
             data: data.data,
             contentType: (<any>this).getById(data.id),
