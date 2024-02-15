@@ -1,21 +1,35 @@
 import {
-    GraphInstance,
     GraphCollection,
     _GraphInstance,
-    IGraphInstance,
     IGraphCollection,
     _GraphCollection,
+    IGraphQueryable,
     graphInvokableFactory,
     GraphQueryable,
     graphPatch,
     graphPost,
     graphPut,
+    graphDelete,
+    GraphInstance,
+    IGraphInstance,
 } from "../graphqueryable.js";
-import { Drive as IDriveType, DriveItem as IDriveItemType, ItemPreviewInfo as IDriveItemPreviewInfo } from "@microsoft/microsoft-graph-types";
+import {
+    Drive as IDriveType,
+    DriveItem as IDriveItemType,
+    ItemPreviewInfo as IDriveItemPreviewType,
+    ThumbnailSet as IThumbnailSetType,
+    DriveItemVersion as IDriveItemVersionType,
+    UploadSession as IUploadSessionType,
+    DriveItemUploadableProperties as IDriveItemUploadablePropertiesType,
+    SensitivityLabelAssignmentMethod as ISensitivityLabelAssignmentMethodType,
+    ExtractSensitivityLabelsResult as IExtractSensitivityLabelsResultType,
+    ItemRetentionLabel as IItemRetentionLabelType,
+} from "@microsoft/microsoft-graph-types";
 import { combine } from "@pnp/core";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable, updateable, IUpdateable, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
 import { body, BlobParse, CacheNever, InjectHeaders } from "@pnp/queryable";
 import { driveItemUpload } from "./funcs.js";
+import { IResumableUpload, IResumableUploadOptions, getUploadSession } from "./resumableUpload.js";
 
 /**
  * Describes a Drive instance
@@ -30,14 +44,6 @@ export class _Drive extends _GraphInstance<IDriveType> {
      */
     public get root(): IRoot {
         return Root(this);
-    }
-
-    /**
-     * Method for retrieving the related list resource, for use with SharePoint drives.
-     * @returns IGraphInstance
-     */
-    public get list(): IGraphInstance {
-        return GraphInstance(this, "list");
     }
 
     /**
@@ -139,21 +145,16 @@ export class _Root extends _GraphInstance<IDriveItemType> {
      * Method for retrieving thumbnails of the drive items.
      * @returns IGraphCollection
      */
-    public get thumbnails(): IGraphCollection {
-        return GraphCollection(this, "thumbnails");
+    public get thumbnails(): IGraphInstance<IThumbnailSetType> {
+        return GraphInstance(this, "thumbnails");
     }
 
     /**
      * Method for uploading a new file, or updating the contents of an existing file.
-     * @param fileOptions - IFileOptions
-     * @param content - any
-     * @param filePathName - string (Optional)
-     * e.g. myfile.txt or myfolder/myfile.txt, unneeded for updates
-     * @param contentType - string (Optional)
-     * e.g. "application/json; charset=utf-8" for JSON files
+     * @param fileOptions - IFileOptions object
      * @returns IDriveItem
      */
-    public async upload(fileOptions: IFileOptions): Promise<IDriveItemAddResult> {
+    public async upload(fileOptions: IFileUploadOptions): Promise<IDriveItemType> {
         return Reflect.apply(driveItemUpload, this, [fileOptions]);
     }
 }
@@ -182,28 +183,18 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
 
     /**
      * Method for retrieving thumbnails of the drive items.
-     * @returns IGraphCollection
+     * @returns Microsoft Graph - ThumbnailSet
      */
-    public get thumbnails(): IGraphCollection {
-        return GraphCollection(this, "thumbnails");
+    public get thumbnails(): IGraphCollection<IThumbnailSetType> {
+        return <any>GraphCollection(this, "thumbnails");
     }
 
     /**
      * Method for retrieving the versions of a drive item.
      * @returns IDriveItemVersionInfo
      */
-    public get versions(): IGraphCollection<IDriveItemVersionInfo> {
+    public get versions(): IGraphCollection<IDriveItemVersionType> {
         return <any>GraphCollection(this, "versions");
-    }
-
-    /**
-     * Method for moving a drive item
-     * @param parentReference - { id: string} - reference to destination folder drive item
-     * @param name - string - name of the file in the destination
-     * @deprecated (v3.11.0) use `moveItem`
-     */
-    public move(parentReference: { id: "string" }, name: string): Promise<void> {
-        return graphPatch(this, body({ name, ...parentReference }));
     }
 
     /**
@@ -233,18 +224,6 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
         });
 
         return query();
-    }
-
-    /**
-     * Method for setting the contents of a IDriveItem
-     * @param content - any - content to upload to the drive item
-     * @returns - { id: string; name: string; size: number }
-     * @deprecated (v3.11.0) use `upload`
-     */
-    public setContent(content: any): Promise<{ id: string; name: string; size: number }> {
-        return graphPut(DriveItem(this, "content"), {
-            body: content,
-        });
     }
 
     /**
@@ -295,37 +274,121 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
     }
 
     /**
-     * Method for uploading a new file, or updating the contents of an existing file.
-     * @param fileOptions - IFileOptions object
-     * @param content - any
-     * @param filePathName - string (Optional)
-     * e.g. myfile.txt or myfolder/myfile.txt, unneeded for updates
-     * @param contentType - string (Optional)
-     * e.g. "application/json; charset=utf-8" for JSON files
-     * @returns IDriveItem
+     * Method for getting a temporary preview image of a drive item.
+     * @returns Microsoft Graph - DriveItem
      */
-    public async upload(fileOptions: IFileOptions): Promise<IDriveItemAddResult> {
+    public async follow(): Promise<IDriveItemType> {
+        return await graphPost(DriveItem(this, "follow"), body(null));
+    }
+
+    /**
+     * Method for getting a temporary preview image of a drive item.
+     * @returns void
+     */
+    public async unfollow(): Promise<void> {
+        return await graphPost(DriveItem(this, "unfollow"), body(null));
+    }
+
+    /**
+     * Method for uploading a new file, or updating the contents of an existing file.
+     * @param fileOptions - IFileUploadOptions object
+     * @returns Microsoft Graph - DriveItem
+     */
+    public async upload(fileOptions: IFileUploadOptions): Promise<IDriveItemType> {
         return Reflect.apply(driveItemUpload, this, [fileOptions]);
     }
 
-    // TODO: Upload Session for large files
-    // public uploadSession(fileOptions: IFileOptions): Promise<void> {
-
-    // }
+    /**
+     * Method for uploading a new file, or updating the contents of an existing file.
+     * @param resuableUploadOptions - IResumableUploadOptions object
+     * @returns session: Microsoft Graph - UploadSession, resumableUpload: IResumableUpload
+     */
+    public async createUploadSession(resuableUploadOptions: IResumableUploadOptions<IDriveItemUploadablePropertiesType>):
+    Promise<{ session: IUploadSessionType; resumableUpload: IResumableUpload }> {
+        return Reflect.apply(getUploadSession, this, [resuableUploadOptions]);
+    }
 
     /**
      * Method for getting a temporary preview image of a drive item.
      * @param previewOptions - IPreviewOptions (Optional)
-     * @returns IDriveItemPreviewInfo
+     * @returns Microsoft Graph - DriveItemPreview
      */
-    public async preview(previewOptions?: IPreviewOptions): Promise<IDriveItemPreviewInfo> {
+    public async preview(previewOptions?: IPreviewOptions): Promise<IDriveItemPreviewType> {
         return graphPost(DriveItem(this, "preview"), body(previewOptions));
+    }
+
+    /**
+     * Method for permanently deleting a driveItem by using its ID.
+     * @returns void
+     */
+    public async permanentDelete(): Promise<void> {
+        return graphPost(DriveItem(this, "permanentDelete"), body(null));
+    }
+
+    /**
+     * Method for permanently deleting a driveItem by using its ID.
+     * @param label: ISensitivityLabel
+     * @returns string - long running operation status URL
+     */
+    public async assignSensitivityLabel(label: ISensitivityLabel): Promise<string> {
+        const data: Headers = await graphPost(DriveItem(this, "assignSensitivityLabel"), body(label));
+        let result: string = null;
+        if (data.has("location")) {
+            result = data.get("location");
+        }
+
+        return result;
+    }
+
+    /**
+     * Method for permanently deleting a driveItem by using its ID.
+     * @returns Microsoft Graph - ExtractSensitivityLabelsResult
+     */
+    public async extractSensitivityLabels(): Promise<IExtractSensitivityLabelsResultType> {
+        return graphPost(DriveItem(this, "extractSensitivityLabels"), body(null));
+    }
+
+    /**
+     * Method for retrieving the retention label of the drive item.
+     * @returns Microsoft Graph - ItemRetentionLabel
+     */
+    public retentionLabel(): IGraphQueryable<IItemRetentionLabelType> {
+        return GraphQueryable(this, "retentionLabel");
+    }
+
+    /**
+     * Method for locking/unlocking a record of the drive item.
+     * @returns Microsoft Graph - ItemRetentionLabel
+     */
+    public async recordLocked(locked: boolean): Promise<IItemRetentionLabelType> {
+        const postBody = {
+            retentionSettings: {
+                "isRecordLocked": locked,
+            },
+        };
+        return graphPatch(DriveItem(this, "retentionLabel"), body(postBody));
+    }
+
+    /**
+     * Method for deleting a retention label from a driveItem.
+     * @returns void
+     */
+    public async removeRetentionLabel(): Promise<void> {
+        return graphDelete(DriveItem(this, "retentionLabel"));
+    }
+
+    /**
+     * Method for updating a retention label on a driveItem.
+     * @returns Microsoft Graph - ItemRetentionLabel
+     */
+    public async updateRetentionLabel(name: string): Promise<IItemRetentionLabelType> {
+        const postBody = { name };
+        return graphPatch(DriveItem(this, "retentionLabel"), body(postBody));
     }
 }
 
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }
 export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
-
 
 /**
  * Describes a collection of Drive Item objects
@@ -335,91 +398,87 @@ export const DriveItem = graphInvokableFactory<IDriveItem>(_DriveItem);
 export class _DriveItems extends _GraphCollection<IDriveItemType[]> {
     /**
      * Adds a file to this collection of drive items.
-     * For more upload options please see the .upload method on DriveItem and Root.
-     * @param filename - string - name of new file
-     * @param content - string - contents of file
-     * @param contentType - string - content type for header - default to "application/json"
-     * @returns IDriveItemAddResult - result with file data and chainable drive item object
+     * This method allows more control for conflict behavior and affecting other properties of the DriveItem than the .upload method.
+     * For more upload options please see the .upload method on DriveItem.
+     * @param fileInfo - IDriveItemAdd
+     * @returns Microsoft Graph - DriveItem
      */
-    public async add(filename: string, content: string, contentType = "application/json"): Promise<IDriveItemAddResult> {
+    public async add(fileInfo: IDriveItemAdd): Promise<IDriveItemType> {
         const postBody = {
-            name: filename,
-            file: {},
-            "@microsoft.graph.conflictBehavior": "rename",
+            name: fileInfo.filename,
+            file: fileInfo.driveItem || {},
+            "@microsoft.graph.conflictBehavior": fileInfo.conflictBehavior || "rename",
         };
 
         const driveItem = await graphPost(this, body(postBody));
 
         const q = DriveItem([this, `${combine("drives", driveItem.parentReference.driveId, "items", driveItem.id)}`], "content");
         q.using(InjectHeaders({
-            "Content-Type": contentType,
+            "Content-Type": fileInfo.contentType || "application/json",
         }));
 
-        const data = await graphPut(q, { body: content });
-
-        return {
-            data,
-            driveItem: DriveItem([this, `${combine("drives", driveItem.parentReference.driveId, "items", driveItem.id)}`]),
-        };
+        return await graphPut(q, { body: fileInfo.content });
     }
 
     /**
      * Adds a folder to this collection of drive items.
-     * @param name - string, name of new folder
-     * @param driveItem - DriveItem (Optional) - override default drive item properties
-     * @returns IDriveItemAddResult - result with folder data and chainable drive item object
+     * @param folderInfo - an object of type IDriveItemAddFolder specifying the properties of the new folder
+     * @returns Microsoft Graph - DriveItem
      */
-    public async addFolder(name: string, driveItem?: any): Promise<IDriveItemAddResult> {
-        let postBody = {
-            name,
-            folder: {},
-            "@microsoft.graph.conflictBehavior": "rename",
+    public async addFolder(folderInfo: IDriveItemAddFolder): Promise<IDriveItemType> {
+        const postBody = {
+            name: folderInfo.name,
+            folder: folderInfo.driveItem || {},
+            "@microsoft.graph.conflictBehavior": folderInfo.conflictBehavior || "rename",
         };
 
-        if (driveItem) {
-            if (driveItem.name == null) {
-                driveItem.name = name;
-            }
-            if (driveItem["@microsoft.graph.conflictBehavior"] == null) {
-                driveItem["@microsoft.graph.conflictBehavior"] = "rename";
-            }
-            postBody = driveItem;
-        }
-        const data = await graphPost(this, body(postBody));
-
-        return {
-            data,
-            driveItem: DriveItem([this, `${combine("drives", data.parentReference.driveId, "items", data.id)}`]),
-        };
+        return await graphPost(this, body(postBody));
     }
 }
-export interface IDriveItems extends _DriveItems, IGetById<IDriveItem> { }
+export interface IDriveItems extends _DriveItems, IGetById<IDriveItemType> { }
 export const DriveItems = graphInvokableFactory<IDriveItems>(_DriveItems);
 
 /**
- * IDriveItemAddResult
+ * IDriveItemAdd - for adding a drive item and the corresponding contents
+ * @param filename - string - file name.
+ * @param content - any - file content.
+ * @param contentType - string (Optional) - e.g. "application/json; charset=utf-8" for JSON files
+ * @param driveItem - DriveItem (Optional).
+ * @param conflictBehavior - string (Optional) - "rename" | "replace" | "fail" rename is default
  */
-export interface IDriveItemAddResult {
-    data: any;
-    driveItem: IDriveItem;
+export interface IDriveItemAdd {
+    filename: string;
+    content: string;
+    contentType?: string;
+    driveItem?: IDriveItem;
+    conflictBehavior?: "rename" | "replace" | "fail";
 }
 
-export interface IDriveItemVersionInfo {
-    id: string;
-    lastModifiedBy: {
-        user: {
-            id: string;
-            displayName: string;
-        };
-    };
-    lastModifiedDateTime: string;
-    size: number;
+/**
+ * IDriveItemAddFolder - for adding a folder drive item
+ * @param name - string - folder name.
+ * @param driveItem - DriveItem (Optional).
+ * @param conflictBehavior - string (Optional) - "rename" | "replace" | "fail" rename is default
+ */
+export interface IDriveItemAddFolder {
+    name: string;
+    driveItem?: IDriveItem;
+    conflictBehavior?: "rename" | "replace" | "fail";
 }
 
+/**
+ * ISharingWithMeOptions - Sharing file with me options
+ * @param allowExternal - boolean - To include items shared from external tenants set to true - default false
+ */
 export interface ISharingWithMeOptions {
     allowExternal: boolean;
 }
 
+/**
+ * IItemOptions - for copy/move operations
+ * @param name - string (Optional) - destination file name.
+ * @param parentReference - Parent DriveItem Info (Optional). id of Drive Item and driveId of Drive.
+ */
 export interface IItemOptions {
     parentReference?: {
         id?: string;
@@ -428,13 +487,42 @@ export interface IItemOptions {
     name?: string;
 }
 
-export interface IFileOptions {
+/**
+ * IFileUploadOptions for uploading a file.
+ * @param content - any
+ * @param filePathName - string (Optional)
+ * e.g. myfile.txt or myfolder/myfile.txt, unneeded for updates
+ * @param contentType - string (Optional)
+ * e.g. "application/json; charset=utf-8" for JSON files
+ * @param eTag - string (Optional)
+ * @param eTagMatch - string (Optional) - eTag header "If-Match" or "If-None-Match"
+ */
+export interface IFileUploadOptions {
     content: any;
     filePathName?: string;
     contentType?: string;
+    eTag?: string;
+    eTagMatch?: "If-Match" | "If-None-Match";
 }
 
+/**
+ * IPreviewOptions for getting a file preview image.
+ * @param page - string/number (Optional) - Page number of document to start at, if applicable.
+ * @param zoom - number (Optional) - Zoom level to start at, if applicable.
+ */
 export interface IPreviewOptions {
     page?: string | number;
     zoom?: number;
+}
+
+/**
+ * ISensitivityLabel - for assigning a sensitivity label to a drive item
+ * @param sensitivityLabelId - string - the id of the sensitivity label
+ * @param assignmentMethod - Microsoft Graph SensitivityLabelAssignmentMethod - "standard" | "privileged" | "auto" | "none"
+ * @param justificationText - string - the justification for the sensitivity label
+ */
+export interface ISensitivityLabel {
+    sensitivityLabelId: string;
+    assignmentMethod: ISensitivityLabelAssignmentMethodType;
+    justificationText: string;
 }

@@ -14,22 +14,29 @@ export {
 } from "./funcs.js";
 
 export {
+    ResumableUpload,
+    IResumableUpload,
+    IResumableUploadOptions,
+} from "./resumableUpload.js";
+
+export {
     Drive,
     DriveItem,
     DriveItems,
     Drives,
     IDrive,
     IDriveItem,
-    IDriveItemAddResult,
-    IDriveItemVersionInfo,
+    IDriveItemAdd,
+    IDriveItemAddFolder,
     IDriveItems,
     IDrives,
     IRoot,
     Root,
     ISharingWithMeOptions,
-    IItemOptions as IItemReferenceOptions,
+    IItemOptions,
     IPreviewOptions,
-    IFileOptions,
+    IFileUploadOptions,
+    ISensitivityLabel,
 } from "./types.js";
 
 declare module "../fi" {

@@ -67,7 +67,7 @@ describe("Analytics", function () {
         const fo = JSON.parse(JSON.stringify(fileOptions));
         fo.filePathName = testFileName;
         const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.upload(fo);
-        const analytics = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id).analytics();
+        const analytics = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.id).analytics();
         return expect(analytics).to.haveOwnProperty("@odata.context").eq("https://graph.microsoft.com/v1.0/$metadata#microsoft.graph.itemActivityStat");
     });
 
@@ -98,7 +98,7 @@ describe("Analytics", function () {
         fo.filePathName = testFileName;
         const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.upload(fo);
         const options: IAnalyticsOptions = { timeRange: "allTime" };
-        const analytics = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.data.id).analytics(options);
+        const analytics = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.id).analytics(options);
         return expect(analytics).to.haveOwnProperty("@odata.context").eq("https://graph.microsoft.com/v1.0/$metadata#microsoft.graph.itemActivityStat");
     });
 

@@ -52,6 +52,7 @@ nav:
       - calendars: 'graph/calendars.md'
       - 'directory objects': 'graph/directoryobjects.md'
       - files: 'graph/files.md'
+        - 'Retention/Sensitivity Labels': 'graph/files-labels.md'
       - invitations: 'graph/invitations.md'
       - items: 'graph/items.md'
       - lists: 'graph/lists.md'
