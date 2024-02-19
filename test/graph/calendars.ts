@@ -80,7 +80,7 @@ describe("Calendar", function () {
         const calendar = await this.pnp.graph.users.getById(testUserName).calendar();
         return expect(calendar).is.not.null;
     });
-    
+
     // This can't be tested in an application context
     it.skip("Get Group Calendar", async function () {
         const group = await this.pnp.graph.groups.getById("").calendar();
@@ -210,34 +210,36 @@ describe("Calendar", function () {
     it("Forward Event", async function () {
         return expect(this.pnp.graph.users.getById(testUserName).calendars.getById(defaultCalID).events.getById(testEventID).forward(
             {
-             ToRecipients: [{emailAddress: {address: testUserName, name: "PnP Test User"}}],
-             Comment: "Here is a forward event"
+                ToRecipients: [{ emailAddress: { address: testUserName, name: "PnP Test User" } }],
+                Comment: "Here is a forward event",
             }
         )).eventually.be.fulfilled;
     });
 
-    it.skip("Decline Event", async function () {});
+    it.skip("Decline Event", async function () {
+        return expect(true);
+    });
 
-    it("Cancel Event", async function () {  
+    it("Cancel Event", async function () {
         const startDate: Date = new Date();
         startDate.setDate(startDate.getDate() + 1);
         const endDate: Date = startDate;
         endDate.setHours(startDate.getHours() + 1);
         const event = await this.pnp.graph.users.getById(testUserName).calendar.events.add(
-        {
-            end: {
-                dateTime: startDate.toISOString(),
-                timeZone: "Pacific Standard Time",
-            },
-            location: {
-                displayName: "Test Lunch",
-            },
-            start: {
-                dateTime: endDate.toISOString(),
-                timeZone: "Pacific Standard Time",
-            },
-            subject: "Test Delete Lunch",
-        });
+            {
+                end: {
+                    dateTime: startDate.toISOString(),
+                    timeZone: "Pacific Standard Time",
+                },
+                location: {
+                    displayName: "Test Lunch",
+                },
+                start: {
+                    dateTime: endDate.toISOString(),
+                    timeZone: "Pacific Standard Time",
+                },
+                subject: "Test Delete Lunch",
+            });
 
         return expect(this.pnp.graph.users.getById(testUserName).calendar.events.getById(event.id).cancel()).eventually.be.fulfilled;
     });
@@ -248,7 +250,7 @@ describe("Calendar", function () {
         const endDate: Date = startDate;
         endDate.setHours(startDate.getHours() + 1);
         const event = await this.pnp.graph.users.getById(testUserName).calendar.events.add(
-        {
+            {
                 end: {
                     dateTime: startDate.toISOString(),
                     timeZone: "Pacific Standard Time",
@@ -261,7 +263,7 @@ describe("Calendar", function () {
                     timeZone: "Pacific Standard Time",
                 },
                 subject: "Test Delete Lunch",
-        });
+            });
 
         return expect(this.pnp.graph.users.getById(testUserName).calendar.events.getById(event.id).accept()).eventually.be.fulfilled;
     });
@@ -271,9 +273,9 @@ describe("Calendar", function () {
         startDate.setDate(startDate.getDate() + 1);
         const endDate: Date = startDate;
         endDate.setHours(startDate.getHours() + 1);
-        
+
         const event = await this.pnp.graph.users.getById(testUserName).calendar.events.add(
-        {
+            {
                 end: {
                     dateTime: startDate.toISOString(),
                     timeZone: "Pacific Standard Time",
@@ -286,21 +288,21 @@ describe("Calendar", function () {
                     timeZone: "Pacific Standard Time",
                 },
                 subject: "Test Delete Lunch",
-        });
+            });
 
         return expect(this.pnp.graph.users.getById(testUserName).calendar.events.getById(event.id).tentativelyAccept(
-                "I might be able to make it",
-                true,
-                {
-                    start: { 
-                      dateTime: "2019-12-02T19:00:00", 
-                      timeZone: "Pacific Standard Time" 
-                  }, 
-                  end: { 
-                      dateTime: "2019-12-02T19:00:00", 
-                      timeZone: "Pacific Standard Time" 
-                  }
-                }
+            "I might be able to make it",
+            true,
+            {
+                start: {
+                    dateTime: "2019-12-02T19:00:00",
+                    timeZone: "Pacific Standard Time",
+                },
+                end: {
+                    dateTime: "2019-12-02T19:00:00",
+                    timeZone: "Pacific Standard Time",
+                },
+            }
         )).eventually.be.fulfilled;
     });
 
@@ -310,7 +312,7 @@ describe("Calendar", function () {
         const endDate: Date = startDate;
         endDate.setHours(startDate.getHours() + 1);
         const event = await this.pnp.graph.users.getById(testUserName).calendar.events.add(
-        {
+            {
                 end: {
                     dateTime: startDate.toISOString(),
                     timeZone: "Pacific Standard Time",
@@ -323,7 +325,7 @@ describe("Calendar", function () {
                     timeZone: "Pacific Standard Time",
                 },
                 subject: "Test Delete Lunch",
-        });
+            });
 
         return expect(this.pnp.graph.users.getById(testUserName).calendar.events.getById(event.id).dismissReminder()).eventually.be.fulfilled;
     });
@@ -334,7 +336,7 @@ describe("Calendar", function () {
         const endDate: Date = startDate;
         endDate.setHours(startDate.getHours() + 1);
         const event = await this.pnp.graph.users.getById(testUserName).calendar.events.add(
-        {
+            {
                 end: {
                     dateTime: startDate.toISOString(),
                     timeZone: "Pacific Standard Time",
@@ -347,7 +349,7 @@ describe("Calendar", function () {
                     timeZone: "Pacific Standard Time",
                 },
                 subject: "Test Delete Lunch",
-        });
+            });
 
         endDate.setHours(startDate.getHours() + 10);
         return expect(this.pnp.graph.users.getById(testUserName).calendar.events.getById(event.id).snoozeReminder({
@@ -386,7 +388,7 @@ describe("Calendar", function () {
         return expect(schedule).is.not.null;
     });
 
-    //not available for Application context. Only App Context w/ Shared Calendars.
+    // not available for Application context. Only App Context w/ Shared Calendars.
     it.skip("Find Meeting Times", async function () {
         const startDate: Date = new Date();
         const endDate: Date = new Date();
@@ -396,29 +398,29 @@ describe("Calendar", function () {
                 {
                     type: "required",
                     emailAddress: {
-                      name: "PnP Test User",
-                      address: testUserName
-                    }
-                }
-              ],
-              timeConstraint: {
-                activityDomain:"work",
-                timeSlots: [
-                  {
-                    start: {
-                      dateTime: startDate.toISOString(),
-                      timeZone: "Pacific Standard Time"
+                        name: "PnP Test User",
+                        address: testUserName,
                     },
-                    end: {
-                      dateTime: endDate.toISOString(),
-                      timeZone: "Pacific Standard Time"
-                    }
-                  }
-                ]
-              },
-              meetingDuration: "PT1H",
-              minimumAttendeePercentage: 100
-            }
+                },
+            ],
+            timeConstraint: {
+                activityDomain: "work",
+                timeSlots: [
+                    {
+                        start: {
+                            dateTime: startDate.toISOString(),
+                            timeZone: "Pacific Standard Time",
+                        },
+                        end: {
+                            dateTime: endDate.toISOString(),
+                            timeZone: "Pacific Standard Time",
+                        },
+                    },
+                ],
+            },
+            meetingDuration: "PT1H",
+            minimumAttendeePercentage: 100,
+        }
         );
         return expect(meetingTimes).is.not.null;
     });
@@ -451,13 +453,15 @@ describe("Calendar", function () {
 
     // currently not working
     it.skip("Add Event Attachments", async function () {
-        const attachment = await this.pnp.graph.users.getById(testUserName).events.getById(testEventID).attachments.addFile({name: "Test.txt"}, "base64bWFjIGFuZCBjaGVlc2UgdG9kYXk");
+        const attachment = await this.pnp.graph.users.getById(testUserName).events.getById(testEventID).attachments.addFile(
+            { name: "Test.txt" }, "base64bWFjIGFuZCBjaGVlc2UgdG9kYXk");
         return expect(attachment.id).is.not.null;
     });
 
-     // currently not working
+    // currently not working
     it.skip("Get Event Attachments", async function () {
-        const attachment = await this.pnp.graph.users.getById(testUserName).events.getById(testEventID).attachments.addFile({name: "Test.txt"}, "base64bWFjIGFuZCBjaGVlc2UgdG9kYXk");
+    // const attachment = await this.pnp.graph.users.getById(testUserName).events.getById(testEventID).attachments.addFile(
+    // { name: "Test.txt" }, "base64bWFjIGFuZCBjaGVlc2UgdG9kYXk");
 
         const attachments = await this.pnp.graph.users.getById(testUserName).events.getById(testEventID).attachments();
         return expect(attachments.length).is.greaterThan(0);
@@ -470,19 +474,19 @@ describe("Calendar", function () {
 
     it("Get Calendar Group by ID", async function () {
         const groups = await this.pnp.graph.users.getById(testUserName).calendarGroups();
-        if(groups.length > 0) {
+        if (groups.length > 0) {
             const group = await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(groups[0].id)();
             return expect(group).is.not.null;
         }
     });
 
-    it("Create Calendar Group", async function () { 
+    it("Create Calendar Group", async function () {
         let passed = false;
         const group = await this.pnp.graph.users.getById(testUserName).calendarGroups.add({
-            name: "Test Group"
+            name: "Test Group",
         });
-        
-        if(group.id){
+
+        if (group.id) {
             passed = true;
             await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id).delete();
         }
@@ -492,13 +496,13 @@ describe("Calendar", function () {
     it("Update Calendar Group", async function () {
         let passed = false;
         const group = await this.pnp.graph.users.getById(testUserName).calendarGroups.add({
-            name: "Test Group"
+            name: "Test Group",
         });
         await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id).update({
-            name: "Updated Test Group"
+            name: "Updated Test Group",
         });
         const updatedGroup = await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id)();
-        if(updatedGroup.id && updatedGroup.name === "Updated Test Group"){
+        if (updatedGroup.id && updatedGroup.name === "Updated Test Group") {
             passed = true;
             await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id).delete();
         }
@@ -508,11 +512,11 @@ describe("Calendar", function () {
     it("Delete Calendar Group", async function () {
         let deletedCalendarGroupFound = false;
         const group = await this.pnp.graph.users.getById(testUserName).calendarGroups.add({
-            name: "DeleteGroup" + getRandomString(5)
+            name: "DeleteGroup" + getRandomString(5),
         });
-        await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id).delete();  
+        await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id).delete();
         try {
-            await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id)();          
+            await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id)();
             deletedCalendarGroupFound = true;
         } catch (e) {
             if (e?.isHttpRequestError) {
@@ -528,7 +532,7 @@ describe("Calendar", function () {
 
     it("List Calendar Group Calendars", async function () {
         const groups = await this.pnp.graph.users.getById(testUserName).calendarGroups();
-        if(groups.length > 0) {
+        if (groups.length > 0) {
             const calendars = await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(groups[0].id).calendars();
             return expect(calendars.length).is.greaterThan(0);
         }
@@ -537,13 +541,13 @@ describe("Calendar", function () {
     it("Create Calendar Group Calendar", async function () {
         let passed = false;
         const group = await this.pnp.graph.users.getById(testUserName).calendarGroups.add({
-            name: "CalendarGroup" + getRandomString(5) 
+            name: "CalendarGroup" + getRandomString(5),
         });
         const calendar = await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id).calendars.add({
-            name: "Calendar" + getRandomString(5)
+            name: "Calendar" + getRandomString(5),
         });
 
-        if(calendar.id){
+        if (calendar.id) {
             passed = true;
             await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).delete();
             await this.pnp.graph.users.getById(testUserName).calendarGroups.getById(group.id).delete();
@@ -556,9 +560,9 @@ describe("Calendar", function () {
         return expect(permissions.length).is.greaterThan(0);
     });
 
-    it("Get Calendar Permission by ID", async function () { 
+    it("Get Calendar Permission by ID", async function () {
         const permissions = await this.pnp.graph.users.getById(testUserName).calendars.getById(defaultCalID).calendarPermissions();
-        if(permissions.length > 0){
+        if (permissions.length > 0) {
             const permission = await this.pnp.graph.users.getById(testUserName).calendars.getById(defaultCalID).calendarPermissions.getById(permissions[0].id)();
             return expect(permission.id).is.not.null;
         }
@@ -568,18 +572,18 @@ describe("Calendar", function () {
     it("Create Calendar Permissions", async function () {
         let passed = false;
         const calendar = await this.pnp.graph.users.getById(testUserName).calendars.add({
-            name: "Calendar" + getRandomString(5)
+            name: "Calendar" + getRandomString(5),
         });
         const permission = await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).calendarPermissions.add(
             {
                 emailAddress: {
                     address: testUserName,
-                    name: "PnP Test User"
+                    name: "PnP Test User",
                 },
                 allowedRoles: ["read"],
-                role: "read"
+                role: "read",
             });
-        if(permission.id){
+        if (permission.id) {
             passed = true;
             await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).delete();
         }
@@ -589,45 +593,45 @@ describe("Calendar", function () {
     it("Update Calendar Permissions", async function () {
         let passed = false;
         const calendar = await this.pnp.graph.users.getById(testUserName).calendars.add({
-            name: "Calendar" + getRandomString(5)
+            name: "Calendar" + getRandomString(5),
         });
         const permission = await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).calendarPermissions.add(
             {
                 emailAddress: {
                     address: testUserName,
-                    name: "PnP Test User"
+                    name: "PnP Test User",
                 },
                 role: "read",
-                allowedRoles: ["read", "write"]
+                allowedRoles: ["read", "write"],
             });
 
         await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).calendarPermissions.getById(permission.id).update({
-            role: "write"
+            role: "write",
         });
 
         const updatedPermission = await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).calendarPermissions.getById(permission.id)();
-        if(updatedPermission.id && updatedPermission.role === "write"){
+        if (updatedPermission.id && updatedPermission.role === "write") {
             passed = true;
             await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).delete();
         }
         return expect(passed).is.true;
     });
 
-    it("Delete Calendar Permissions", async function () { 
+    it("Delete Calendar Permissions", async function () {
         let deletePermissionFound = false;
         const permission = await this.pnp.graph.users.getById(testUserName).calendars.getById(defaultCalID).calendarPermissions.add(
-        {
-            emailAddress: {
-                address: testUserName,
-                name: "PnP Test User"
-            },
-            role: "read",
-            allowedRoles: ["read", "write"]
-        });
+            {
+                emailAddress: {
+                    address: testUserName,
+                    name: "PnP Test User",
+                },
+                role: "read",
+                allowedRoles: ["read", "write"],
+            });
         await this.pnp.graph.users.getById(testUserName).calendars.getById(defaultCalID).calendarPermissions.getById(permission.id).delete();
 
         try {
-            await this.pnp.graph.users.getById(testUserName).calendars.getById(defaultCalID).calendarPermissions.getById(permission.id)();         
+            await this.pnp.graph.users.getById(testUserName).calendars.getById(defaultCalID).calendarPermissions.getById(permission.id)();
             deletePermissionFound = true;
         } catch (e) {
             if (e?.isHttpRequestError) {
@@ -639,7 +643,7 @@ describe("Calendar", function () {
             }
         }
         return expect(deletePermissionFound).is.false;
-    });  
+    });
 
     // Remove the test data we created
     after(async function () {

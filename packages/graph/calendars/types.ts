@@ -1,8 +1,17 @@
 import { body } from "@pnp/queryable";
-import { Event as IEventType, Calendar as ICalendarType, CalendarGroup as ICalendarGroupType, CalendarPermission as ICalendarPermissionType, ScheduleInformation as IScheduleInformationType, DateTimeTimeZone as IDateTimeTimeZoneType, Recipient, TimeSlot, } from "@microsoft/microsoft-graph-types";
+import {
+    Event as IEventType,
+    Calendar as ICalendarType,
+    CalendarGroup as ICalendarGroupType,
+    CalendarPermission as ICalendarPermissionType,
+    ScheduleInformation as IScheduleInformationType,
+    DateTimeTimeZone as IDateTimeTimeZoneType,
+    Recipient,
+    TimeSlot,
+} from "@microsoft/microsoft-graph-types";
 import {  GraphQueryable, IGraphQueryable, _GraphCollection, _GraphInstance, _GraphQueryable, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById, IAddable, addable } from "../decorators.js";
-import { calendarView, instances, reminderView } from "./funcs.js";
+import { calendarView, instances } from "./funcs.js";
 
 /**
  * Calendar
@@ -10,6 +19,8 @@ import { calendarView, instances, reminderView } from "./funcs.js";
 @deleteable()
 @updateable()
 export class _Calendar extends _GraphInstance<ICalendarType> {
+
+    public calendarView = calendarView;
 
     public get calendarPermissions(): ICalendarPermissions {
         return CalendarPermissions(this);
@@ -26,9 +37,6 @@ export class _Calendar extends _GraphInstance<ICalendarType> {
     public async getSchedule(properties: IGetScheduleRequest): Promise<IScheduleInformationType[]> {
         return graphPost(Calendar(this, "getSchedule"), body(properties));
     }
-
-    public calendarView = calendarView;
-
 }
 export interface ICalendar extends _Calendar, IUpdateable<ICalendarType>, IDeleteable { }
 export const Calendar = graphInvokableFactory<ICalendar>(_Calendar);
@@ -52,14 +60,13 @@ export class _CalendarView extends _GraphCollection<IEventType[]> {
         this.query.set("startDateTime", start);
         this.query.set("endDateTime", end);
     }
-    
+
     public async delta(token?: string): Promise<IEventType[]> {
         return graphPost(GraphQueryable(this, `delta?${this.query}`), body({ token }));
     }
 }
 export interface ICalendarView extends _CalendarView { }
 export const CalendarView = (baseUrl: string | IGraphQueryable, start: string, end: string): _CalendarView =>  new _CalendarView(baseUrl, start, end);
-//export const CalendarView = graphInvokableFactory<ICalendarView>(_CalendarView);
 
 /**
  * Event
@@ -67,13 +74,14 @@ export const CalendarView = (baseUrl: string | IGraphQueryable, start: string, e
 @deleteable()
 @updateable()
 export class _Event extends _GraphInstance<IEventType> {
+    public instances = instances;
 
     public async accept(comment?: string, sendResponse?: boolean): Promise<void> {
         return graphPost(Event(this, "accept"), body({ comment, sendResponse }));
     }
 
     public async cancel(comment?: string): Promise<void> {
-        return graphPost(Event(this, "cancel"));
+        return graphPost(Event(this, "cancel"), body({ comment }));
     }
 
     public async decline(comment?: string, sendResponse?: boolean, proposedNewTime?: TimeSlot): Promise<void> {
@@ -102,7 +110,6 @@ export class _Event extends _GraphInstance<IEventType> {
         return graphPost(Event(this, "tentativelyAccept"), body({ comment, sendResponse, proposedNewTime }));
     }
 
-    public instances = instances;
 }
 export interface IEvent extends _Event, IDeleteable, IUpdateable { }
 export const Event = graphInvokableFactory<IEvent>(_Event);
@@ -123,10 +130,10 @@ export const Events = graphInvokableFactory<IEvents>(_Events);
 @deleteable()
 @updateable()
 export class _CalendarGroup extends _GraphInstance<ICalendarGroupType> {
-    
-        public get calendars(): ICalendars {
-            return Calendars(this);
-        }
+
+    public get calendars(): ICalendars {
+        return Calendars(this);
+    }
 }
 export interface ICalendarGroup extends _CalendarGroup, IDeleteable, IUpdateable { }
 export const CalendarGroup = graphInvokableFactory<ICalendarGroup>(_CalendarGroup);
