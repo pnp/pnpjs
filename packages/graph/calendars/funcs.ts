@@ -1,6 +1,6 @@
 import { body } from "@pnp/queryable/index.js";
 import { IGraphQueryable, GraphCollection, IGraphCollection, IGraphInstance, graphPost } from "../graphqueryable.js";
-import { EmailAddress, Event as IEvent, Reminder as IReminder, MeetingTimeSuggestionsResult, LocationConstraint, TimeConstraint} from "@microsoft/microsoft-graph-types";
+import { EmailAddress, Event as IEvent, Reminder as IReminder, MeetingTimeSuggestionsResult, LocationConstraint, TimeConstraint, AttendeeBase} from "@microsoft/microsoft-graph-types";
 import { CalendarView, ICalendarView } from "./types.js";
 
 interface IEventWithTag extends IEvent {
@@ -8,7 +8,7 @@ interface IEventWithTag extends IEvent {
 }
 
 export interface IFindMeetingTimesRequest{
-    attendees?: EmailAddress[];
+    attendees?: AttendeeBase[];
     locationConstraint?: LocationConstraint;
     timeConstraint?: TimeConstraint;
     meetingDuration?: string;
@@ -82,9 +82,7 @@ export type IInstance = IEventWithTag;
  */
 export function reminderView(this: IGraphQueryable, start: string, end: string): IGraphCollection<IReminderInfo[]> {
 
-    const query = GraphCollection(this, "reminderView");
-    query.query.set("startDateTime", start);
-    query.query.set("endDateTime", end);
+    const query = GraphCollection(this, `reminderView(startDateTime='${start}',endDateTime='${end}')`);
     return query;
 }
 

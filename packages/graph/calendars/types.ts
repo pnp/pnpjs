@@ -2,7 +2,7 @@ import { body } from "@pnp/queryable";
 import { Event as IEventType, Calendar as ICalendarType, CalendarGroup as ICalendarGroupType, CalendarPermission as ICalendarPermissionType, ScheduleInformation as IScheduleInformationType, DateTimeTimeZone as IDateTimeTimeZoneType, Recipient, TimeSlot, } from "@microsoft/microsoft-graph-types";
 import {  GraphQueryable, IGraphQueryable, _GraphCollection, _GraphInstance, _GraphQueryable, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById, IAddable, addable } from "../decorators.js";
-import { calendarView, instances } from "./funcs.js";
+import { calendarView, instances, reminderView } from "./funcs.js";
 
 /**
  * Calendar
@@ -23,7 +23,7 @@ export class _Calendar extends _GraphInstance<ICalendarType> {
      *
      * @param properties The set of properties used to get the schedule
      */
-    public async getSchedule(properties: IScheduleInformationType): Promise<IScheduleInformationType[]> {
+    public async getSchedule(properties: IGetScheduleRequest): Promise<IScheduleInformationType[]> {
         return graphPost(Calendar(this, "getSchedule"), body(properties));
     }
 
@@ -39,14 +39,7 @@ export const Calendar = graphInvokableFactory<ICalendar>(_Calendar);
 @defaultPath("calendars")
 @getById(Calendar)
 @addable()
-export class _Calendars extends _GraphCollection<ICalendarType[]> { 
-    constructor(baseUrl: string | _GraphQueryable, start: string, end: string) {
-        super(baseUrl);
-        this.query.set("startDateTime", start);
-        this.query.set("endDateTime", end);
-    }
-    
-}
+export class _Calendars extends _GraphCollection<ICalendarType[]> {}
 export interface ICalendars extends _Calendars, IGetById<ICalendar>, IAddable<ICalendarType> { }
 export const Calendars = graphInvokableFactory<ICalendars>(_Calendars);
 
@@ -98,8 +91,8 @@ export class _Event extends _GraphInstance<IEventType> {
         return graphPost(Event(this, "forward"), body({ comment, toRecipients }));
     }
 
-    public async snoozeReminder(newReminderTime: IDateTimeTimeZoneType): Promise<void> {
-        return graphPost(Event(this, "snoozeReminder"), body({ newReminderTime }));
+    public async snoozeReminder(reminderTime: IDateTimeTimeZoneType): Promise<void> {
+        return graphPost(Event(this, "snoozeReminder"), body({ newReminderTime: reminderTime }));
     }
 
     public async tentativelyAccept(comment?: string, sendResponse?: boolean, proposedNewTime?: TimeSlot): Promise<void> {
@@ -142,10 +135,10 @@ export const CalendarGroup = graphInvokableFactory<ICalendarGroup>(_CalendarGrou
  * CalendarGroups
  */
 @defaultPath("calendarGroups")
-@getById(Event)
+@getById(CalendarGroup)
 @addable()
 export class _CalendarGroups extends _GraphCollection<ICalendarGroupType[]> { }
-export interface ICalendarGroups extends _Events, IGetById<ICalendarGroups>, IAddable<ICalendarGroupType, ICalendarGroupType> { }
+export interface ICalendarGroups extends _Events, IGetById<ICalendarGroup>, IAddable<ICalendarGroupType, ICalendarGroupType> { }
 export const CalendarGroups = graphInvokableFactory<ICalendarGroups>(_CalendarGroups);
 
 /**
@@ -164,7 +157,7 @@ export const CalendarPermission = graphInvokableFactory<ICalendarPermission>(_Ca
 @getById(CalendarPermission)
 @addable()
 export class _CalendarPermissions extends _GraphCollection<ICalendarPermissionType[]> { }
-export interface ICalendarPermissions extends _CalendarPermissions, IAddable<ICalendarGroupType, ICalendarPermissionType> { }
+export interface ICalendarPermissions extends _CalendarPermissions, IGetById<ICalendarPermission>, IAddable<ICalendarPermissionType, ICalendarPermissionType> { }
 export const CalendarPermissions = graphInvokableFactory<ICalendarPermissions>(_CalendarPermissions);
 
 /**
