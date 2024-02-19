@@ -87,8 +87,8 @@ export class _Event extends _GraphInstance<IEventType> {
         return graphPost(Event(this, "dismissReminder"));
     }
 
-    public async forward(toRecipients: Recipient[], comment?: string): Promise<void> {
-        return graphPost(Event(this, "forward"), body({ comment, toRecipients }));
+    public async forward(fowardEventInfo: IForwardEvent): Promise<void> {
+        return graphPost(Event(this, "forward"), body(fowardEventInfo));
     }
 
     public async snoozeReminder(reminderTime: IDateTimeTimeZoneType): Promise<void> {
@@ -166,6 +166,11 @@ export const CalendarPermissions = graphInvokableFactory<ICalendarPermissions>(_
 export interface IEventAddResult {
     data: IEventType;
     event: IEvent;
+}
+
+export interface IForwardEvent {
+    Comment?: string;
+    ToRecipients: Recipient[];
 }
 
 export interface IGetScheduleRequest {
