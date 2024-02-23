@@ -133,6 +133,8 @@ const shared = await graph.me.drives.getById({drive id}).sharedWithMe(options);
 
 List the items that have been followed by the signed in user.
 
+![Known Issue Banner](https://img.shields.io/badge/Known%20Issue-important.svg) Testing has shown that this endpoint throws a 500 Internal Server error implying a problem with Microsoft Graph.
+
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
@@ -147,6 +149,8 @@ const files = await graph.me.drives.getById({drive id}).following();
 ## Follow/Unfollow a drive item
 
 Follow/Unfollow a drive item
+
+![Known Issue Banner](https://img.shields.io/badge/Known%20Issue-important.svg) Testing has shown that this endpoint throws a 500 Internal Server error implying a problem with Microsoft Graph.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
