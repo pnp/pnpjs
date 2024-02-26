@@ -20,19 +20,21 @@ export const Attachment = graphInvokableFactory<IAttachment>(_Attachment);
 export class _Attachments extends _GraphCollection<IAttachmentType[]> {
 
     // TODO: Adding attachments is not implemented correctly. I believe it requires updating the parent item but needs further investigation.
+
     /**
      * Add attachment to this collection
      *
-     * @param name Name given to the attachment file
+     * @param attachmentInfo Attachment properties
      * @param bytes File content
      */
-    public addFile(name: string, bytes: string | Blob): Promise<IAttachmentType> {
+    public addFile(attachmentInfo: IAttachmentType, bytes: string | Blob): Promise<IAttachmentType> {
 
         return graphPost(GraphInstance(this), body(type("#microsoft.graph.fileAttachment", {
             contentBytes: bytes,
-            name,
+            ...attachmentInfo,
         })));
     }
+
 }
 export interface IAttachments extends _Attachments, IGetById<IAttachment> {}
 export const Attachments = graphInvokableFactory<IAttachments>(_Attachments);
