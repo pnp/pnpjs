@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import getValidUser from "./utilities/getValidUser.js";
 import "@pnp/graph/users";
+import "@pnp/graph/groups";
 import "@pnp/graph/teams";
 import "@pnp/graph/conversations";
 import { IPostForwardInfo } from "@pnp/graph/conversations";
@@ -24,6 +25,7 @@ describe("Group Conversations", function () {
     };
 
     const postForwardInfo: IPostForwardInfo = {
+        comment: "",
         toRecipients: [
             {
                 emailAddress: {
