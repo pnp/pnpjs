@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute, isArray, objectDefinedNotNull, stringIsNullOrEmpty } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory, op, get, post, patch, del } from "@pnp/queryable";
+import { Queryable, queryableFactory, queryableFactory2, op, get, post, patch, del, IInvokable } from "@pnp/queryable";
 
 export type SPInit = string | ISPQueryable | [ISPQueryable, string];
 
@@ -12,6 +12,20 @@ export type ISPInvokableFactory<R extends ISPQueryable> = (base: SPInit, path?: 
 export const spInvokableFactory = <R extends ISPQueryable>(f: any): ISPInvokableFactory<R> => {
     return queryableFactory<R>(f);
 };
+
+
+
+export type ISPInvokableFactory2<R extends ISPQueryable> = (...args: any[]) => R & IInvokable;
+
+export const spInvokableFactory2 = <R extends ISPQueryable<T>, T extends ISPQueryable>(f: T): ISPInvokableFactory2<R> => {
+
+
+
+
+
+    return queryableFactory2<R>(f);
+};
+
 
 /**
  * SharePointQueryable Base Class
