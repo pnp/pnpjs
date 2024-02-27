@@ -43,7 +43,7 @@ export class BuildTimeline extends Timeline<typeof BuildMoments> {
             throw Error("No observers registered for this request. (https://pnp.github.io/pnpjs/queryable/queryable#no-observers-registered-for-this-request)");
         }
 
-        // // schedule the execution after we return the promise below in the next event loop
+        // schedule the execution after we return the promise below in the next event loop
         setTimeout(async () => {
 
             try {
@@ -72,7 +72,7 @@ export class BuildTimeline extends Timeline<typeof BuildMoments> {
 
         }, 0);
 
-        // // this is the promise that the calling code will recieve and await
+        // this is the promise that the calling code will recieve and await
         let promise = new Promise<void>((resolve, reject) => {
 
             // we overwrite any pre-existing internal events as a

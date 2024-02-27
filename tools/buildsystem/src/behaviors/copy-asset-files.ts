@@ -6,6 +6,7 @@ import buildCopyFile from "../lib/copy-file.js";
 
 /**
  * Copies files from a single location and to each project's dist folder
+ * @param path cwd path for the globby command
  * @param pattern glob patterns for files (see https://www.npmjs.com/package/globby)
  * @returns 
  */
