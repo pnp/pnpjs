@@ -50,7 +50,7 @@ export function CopyPackageFiles(source: "src" | "built", pattern: string[]): Ti
                 this.log(`CopyPackageFiles found ${files.length} files for pattern ${stringPattern} in target '${target.tsconfigPath}'`);
 
                 for (let i = 0; i < files.length; i++) {
-                    this.log(`CopyPackageFiles found ${files[i]}`, 0);
+                    this.log(`CopyPackageFiles found ${files[i].src}`, 0);
                 }
 
                 await Promise.all(files.map(f => buildCopyFile(f.src, f.dest)));
