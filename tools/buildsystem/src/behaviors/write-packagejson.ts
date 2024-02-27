@@ -18,16 +18,9 @@ export function WritePackageJSON(transform?: (p: any) => typeof p): TimelinePipe
 
                 let pkgFile = importJSON(resolve(pkg.resolvedPkgSrcRoot, "package.json"));
 
-                this.log(`Updating package version at ${pkgFile} to ${version}`, 1);
+                this.log(`Updating package version at ${pkg.resolvedPkgSrcRoot} to ${version}`, 1);
 
                 pkgFile.version = version;
-
-                // update our peer dependencies and dependencies placeholder if needed
-                for (const key in pkgFile.peerDependencies) {
-                    if (pkgFile.peerDependencies[key] === "0.0.0-PLACEHOLDER") {
-                        pkgFile.peerDependencies[key] = version;
-                    }
-                }
 
                 for (const key in pkgFile.dependencies) {
                     if (pkgFile.dependencies[key] === "0.0.0-PLACEHOLDER") {

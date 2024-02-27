@@ -231,6 +231,7 @@ export interface Queryable<R = any> extends IInvokable<R> { }
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
     readonly query: URLSearchParams;
+    // new(...params: any[]);
     <T = R>(this: IQueryableInternal, init?: RequestInit): Promise<T>;
     using(...behaviors: TimelinePipe[]): this;
     toRequestUrl(): string;
@@ -268,7 +269,7 @@ export function op<T>(q: IQueryableInternal, operation: Operation, init?: Reques
     return Reflect.apply(operation, q, [init]);
 }
 
-export function queryableFactory<InstanceType extends IQueryableInternal>(
+export function queryableFactory<InstanceType>(
     constructor: { new(init: QueryableInit, path?: string): InstanceType },
 ): (init: QueryableInit, path?: string) => InstanceType {
 
@@ -285,6 +286,24 @@ export function queryableFactory<InstanceType extends IQueryableInternal>(
         return instance;
     };
 }
+
+// // extends IQueryableInternal
+// export function queryableFactory2<InstanceType extends IQueryableInternal>(constructor: InstanceType):
+//  (...args: ConstructorParameters<InstanceType>) => InstanceType & IInvokable {
+
+//     return (...args: ConstructorParameters<InstanceType>) => {
+
+//         // construct the concrete instance
+//         const instance: InstanceType = new constructor(...args);
+
+//         // we emit the construct event from the factory because we need all of the decorators and constructors
+//         // to have fully finished before we emit, which is now true. We type the instance to any to get around
+//         // the protected nature of emit
+//         (<any>instance).emit.construct(...args);
+
+//         return instance;
+//     };
+// }
 
 /**
  * Allows a decorated object to be invoked as a function, optionally providing an implementation for that action
