@@ -1,11 +1,16 @@
-name: Pull Request Testing
-on: pull_request
+name: V3 Pull Request Testing
+on:
+  pull_request:
+    branches:
+        - version-3
 jobs:
   run_pr_tests:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        with:
+          ref: version-3      
       # setup nodejs
       - name: Use Node.js 16
         uses: actions/setup-node@v3
