@@ -24,7 +24,6 @@ const DefaultMoments = {
     parse: asyncReduce<QueryableParseObserver>(),
     post: asyncReduce<QueryablePostObserver>(),
     data: broadcast<QueryableDataObserver>(),
-    rawData: broadcast<QueryableDataObserver>(),
 } as const;
 
 export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
