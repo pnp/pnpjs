@@ -1,0 +1,33 @@
+name: V4 Pull Request Testing
+on:
+  pull_request:
+    branches:
+        - version-4
+jobs:
+  run_pr_tests:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          ref: version-4      
+      # setup nodejs
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+          
+      # Run the npm install          
+      - run: npm ci
+      
+      - name: Run lint
+        run: npm run lint
+      
+      - name: Run package
+        run: npm run package
+      
+      - name: Run tests
+        run: npm test -- --mode pr
