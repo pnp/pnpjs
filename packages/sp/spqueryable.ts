@@ -1,5 +1,5 @@
 import { combine, isUrlAbsolute, isArray, objectDefinedNotNull, stringIsNullOrEmpty } from "@pnp/core";
-import { Queryable, queryableFactory, queryableFactory2, op, get, post, patch, del, IInvokable } from "@pnp/queryable";
+import { Queryable, queryableFactory, op, get, post, patch, del, IInvokable } from "@pnp/queryable";
 
 export type SPInit = string | ISPQueryable | [ISPQueryable, string];
 
@@ -15,16 +15,16 @@ export const spInvokableFactory = <R extends ISPQueryable>(f: any): ISPInvokable
 
 
 
-export type ISPInvokableFactory2<R extends ISPQueryable> = (...args: any[]) => R & IInvokable;
+// export type ISPInvokableFactory2<R extends ISPQueryable> = (...args: any[]) => R & IInvokable;
 
-export const spInvokableFactory2 = <R extends ISPQueryable<T>, T extends ISPQueryable>(f: T): ISPInvokableFactory2<R> => {
-
-
+// export const spInvokableFactory2 = <R extends ISPQueryable<T>, T extends ISPQueryable>(f: T): ISPInvokableFactory2<R> => {
 
 
 
-    return queryableFactory2<R>(f);
-};
+
+
+//     return queryableFactory2<R>(f);
+// };
 
 
 /**
