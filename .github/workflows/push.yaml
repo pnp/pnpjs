@@ -1,5 +1,8 @@
 name: Merge Testing
-on: push
+on:
+  push:
+    branches:
+        - version-3
 env:
   PNPTESTING_MSAL_GRAPH_CONFIG: ${{ secrets.PNPTESTING_MSAL_GRAPH_CONFIG }}
   PNPTESTING_MSAL_GRAPH_SCOPES: ${{ secrets.PNPTESTING_MSAL_GRAPH_SCOPES }}
