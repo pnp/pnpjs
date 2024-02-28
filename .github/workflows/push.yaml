@@ -1,4 +1,4 @@
-name: Merge Testing
+name: V3 Merge Testing
 on: push
 env:
   PNPTESTING_MSAL_GRAPH_CONFIG: ${{ secrets.PNPTESTING_MSAL_GRAPH_CONFIG }}
