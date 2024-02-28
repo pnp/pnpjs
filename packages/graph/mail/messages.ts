@@ -45,12 +45,12 @@ export class _Message extends _GraphInstance<IMessageType> {
      * Create a draft response
      *
      * @param response (optional) The body of the response message
-     *   If using JSON provide either comment: string or message: IMessageType.
+     *   If using JSON, do not provide any payload, you will get an error.
      *   If using MIME format, provide the MIME content with the applicable Internet message headers, all encoded in base64 format.
      * @param timeZone (optional) The time zone to use when creating the draft.
      *   Only use when providing a JSON message.
      */
-    public async createReply(response?: any, timeZone?: TimeZoneInformation): Promise<IMessageType> {
+    public async createReply(response?: string, timeZone?: TimeZoneInformation): Promise<IMessageType> {
         return (await mailResponse(this, "createReply", response, timeZone)) as IMessageType;
     }
 
@@ -71,12 +71,12 @@ export class _Message extends _GraphInstance<IMessageType> {
      * Create a draft response message to all
      *
      * @param response (optional) The body of the response message
-     *   If using JSON provide either comment: string or message: IMessageType.
+     *   If using JSON, do not provide any payload, you will get an error.
      *   If using MIME format, provide the MIME content with the applicable Internet message headers, all encoded in base64 format.
      * @param timeZone (optional) The time zone to use when creating the draft.
      *   Only use when providing a JSON message.
      */
-    public async createReplyAll(response?: any, timeZone?: TimeZoneInformation): Promise<IMessageType> {
+    public async createReplyAll(response?: string, timeZone?: TimeZoneInformation): Promise<IMessageType> {
         return (await mailResponse(this, "createReplyAll", response, timeZone)) as IMessageType;
     }
 

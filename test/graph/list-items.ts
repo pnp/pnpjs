@@ -12,14 +12,16 @@ import { IListItem } from "@pnp/graph/list-item/types.js";
 describe("List-Items", function () {
     let site: ISite;
     let list: IList;
-    let item: IListItem;
+    let itemUpdate: IListItem;
+    let itemDelete: IListItem;
+    let itemDeleteId: string;
 
     const sampleList: List = {
         displayName: "PnPGraphTestList",
-        list: { "template": "ItemTestList-Graph" },
+        list: { template: "genericList" },
     };
 
-    before(async function () {
+    before(pnpTest("b4387653-1d11-49f3-b722-8a305f8f6495", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
@@ -28,20 +30,23 @@ describe("List-Items", function () {
         site = await getTestingGraphSPSite(this);
 
         const props = await this.props({
-            displayName: getRandomString(5) + "Add",
+            displayName: `Add${getRandomString(5)}`,
         });
 
         const listTemplate = JSON.parse(JSON.stringify(sampleList));
         listTemplate.displayName += props.displayName;
-        const list = (await site.lists.add(listTemplate)).list;
+        list = (await site.lists.add(listTemplate)).list;
 
         // add test items. Document set can be added later
         if(list){
-            await list.items.add({Title: `Item ${getRandomString(4)}`} as any);
-            await list.items.add({Title: `Item ${getRandomString(4)}`} as any);
+            const newItem = await list.items.add({Title: `Item ${getRandomString(4)}`} as any);
+            itemUpdate = list.items.getById(newItem.id);
+            const newItem2 = await list.items.add({Title: `Item ${getRandomString(4)}`} as any);
+            itemDeleteId = newItem2.id;
+            itemDelete = list.items.getById(newItem2.id);
         }
 
-    });
+    }));
 
     it("items", pnpTest("3e0e16a0-5683-4c3a-aa3d-f35bb6912de1", async function () {
         const items = await list.items();
@@ -54,57 +59,57 @@ describe("List-Items", function () {
     }));
 
     it("add", pnpTest("587e280b-0342-4515-a166-1b05cee9f242", async function () {
-        // fieldvalueset. ugh. Casting as any.
         const itemAdded = await list.items.add({fields:
             {
-                title: getRandomString(5) + "Add",
+                Title: `Add ${getRandomString(5)}`,
             },
         } as any);
 
-        return expect((itemAdded.id)).is.not.null;
+        return expect((itemAdded.id)).length.is.gt(0);
     }));
 
     it("update", pnpTest("5766613a-51b8-4f88-ba0f-2436d160b86b", async function () {
-        // fieldvalueset. ugh. Casting as any.
-        const itemUpdated = await item.update({fields:
+        const newTitle = `Updated ${getRandomString(5)}`;
+        const itemUpdated = await itemUpdate.update({fields:
             {
-                title: getRandomString(5) + "Update",
+                Title: newTitle,
             },
         } as any);
 
 
-        return expect(itemUpdated).is.not.null;
+        return expect(itemUpdated.fields.Title).is.eq(newTitle);
     }));
 
     it("delete", pnpTest("e55bf53f-1316-4e47-97c1-b0c0cdd860ef", async function () {
-        const item = await list.items.add({fields:
-            {
-                title: getRandomString(5) + "Add",
-            },
-        } as any);
-        const r = await list.items.filter(`Id eq '${item.id}'`)();
-        return expect(r.length).to.eq(0);
+        await itemDelete.delete();
+        let passed = false;
+        try{
+            const r = await list.items.getById(itemDeleteId)();
+        }catch(err){
+            passed = true;
+        }
+        return expect(passed).to.be.true;
     }));
 
     it.skip("documentSetVersions", pnpTest("c2889ca3-0230-4c6e-879d-71cc9cd08e83", async function () {
-        const versions = await item.documentSetVersions();
+        const versions = await itemUpdate.documentSetVersions();
         return expect(versions).to.be.an("array") && expect(versions[0]).to.haveOwnProperty("id");
     }));
 
     it.skip("documentSetVersions - getById()", pnpTest("35226d93-204b-4877-9041-26e04e437914", async function () {
-        const versions = await item.documentSetVersions();
+        const versions = await itemUpdate.documentSetVersions();
 
-        const version = await item.documentSetVersions.getById(versions[0].id);
+        const version = await itemUpdate.documentSetVersions.getById(versions[0].id);
         return expect(version).to.not.be.null && expect(version).to.haveOwnProperty("id");
     }));
 
     it.skip("documentSetVersions - add()", pnpTest("a192e096-fe84-4c2c-adc5-b1b9021c0031", async function () {
-        const documentSetVersion = await item.documentSetVersions.add({comment:"Test Comment"});
+        const documentSetVersion = await itemUpdate.documentSetVersions.add({comment:"Test Comment"});
         return expect(documentSetVersion).to.not.be.null && expect(documentSetVersion).to.haveOwnProperty("id");
     }));
 
     it.skip("documentSetVersions - restore()", pnpTest("8814b247-4087-4c87-9a8f-af997f7d8745", async function () {
-        const restore = await item.documentSetVersions[0].restore();
+        const restore = await itemUpdate.documentSetVersions[0].restore();
         return expect(restore).to.be.fulfilled;
     }));
 

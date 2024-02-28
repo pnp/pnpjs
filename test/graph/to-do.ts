@@ -5,35 +5,46 @@ import { pnpTest } from "../pnp-test.js";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { ChecklistItem } from "@microsoft/microsoft-graph-types";
 import { ITaskList, ITask } from "@pnp/graph/to-do";
+import getValidUser from "./utilities/getValidUser.js";
+import { IUser } from "@pnp/graph/users";
 
 describe("To-do", function () {
+    let user: IUser;
     let taskList: ITaskList;
     let todoTask: ITask;
-    before(async function () {
+
+    before(pnpTest("94d99e35-9891-4b50-a23c-359a43eeadc7", async function () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
         }
 
-        const list = await this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.add({
-            displayName: getRandomString(5),
+        const userInfo = await getValidUser.call(this);
+        user = this.pnp.graph.users.getById(userInfo.userPrincipalName);
+        const props = await this.props({
+            displayName: `ToDoList${getRandomString(5)}`,
+            taskName: "A new task",
         });
 
-        const task = await this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.getById(list.id).tasks.add(
+        const list = await user.todo.lists.add({
+            displayName: props.displayName,
+        });
+
+        const task = await user.todo.lists.getById(list.id).tasks.add(
             {
-                title:"A new task",
+                title: props.taskName,
             },
         );
-        taskList = this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.getById(list.id);
+        taskList = user.todo.lists.getById(list.id);
         todoTask = taskList.tasks.getById(task.id);
 
         if(!list || !task){
             this.skip();
         }
-    });
+    }));
 
     it("lists", pnpTest("8de75582-6257-4e2a-b753-7c8be1cf0a38", async function () {
-        const lists = await this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists();
+        const lists = await user.todo.lists();
         return expect(lists).to.be.an("array") && expect(lists[0]).to.haveOwnProperty("id");
     }));
 
@@ -44,13 +55,13 @@ describe("To-do", function () {
 
     it("lists - add", pnpTest("2548a740-4267-4868-8663-e5bf5ae44ae2", async function () {
         let passed = false;
-        const list = await this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.add({
+        const list = await user.todo.lists.add({
             displayName: "Test" + getRandomString(5),
         });
 
         if(list){
             passed = true;
-            await this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.getById(list.id).delete();
+            await user.todo.lists.getById(list.id).delete();
         }
         return expect(passed).is.true;
     }));
@@ -64,17 +75,17 @@ describe("To-do", function () {
     }));
 
     it("lists - delete", pnpTest("ef561648-4380-4629-89bb-9834934e78d1", async function () {
-        const list = await this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.add({
+        const list = await user.todo.lists.add({
             displayName: "Test" + getRandomString(5),
         });
         if(list){
-            return expect(this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.getById(list.id).delete()).to.eventually.be.fulfilled;
+            return expect(user.todo.lists.getById(list.id).delete()).to.eventually.be.fulfilled;
         }
         this.skip();
     }));
 
     it("lists - delta", pnpTest("70cb936e-9ee5-4630-a3c7-6fdf60bbd6fe", async function () {
-        const delta = await this.pnp.graph.users.getById(this.pnp.settings.testUser).todo.lists.delta()();
+        const delta = await user.todo.lists.delta()();
         return expect(delta).haveOwnProperty("values");
     }));
 
