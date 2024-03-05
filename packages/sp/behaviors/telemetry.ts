@@ -1,4 +1,4 @@
-import { TimelinePipe } from "@pnp/core";
+import { TimelinePipe, stringIsNullOrEmpty } from "@pnp/core";
 import { Queryable } from "@pnp/queryable";
 
 export function Telemetry(): TimelinePipe<Queryable> {
@@ -14,10 +14,10 @@ export function Telemetry(): TimelinePipe<Queryable> {
 
             // remove anything before the _api as that is potentially PII and we don't care, just want to get the called path to the REST API
             // and we want to modify any (*) calls at the end such as items(3) and items(344) so we just track "items()"
-            clientTag += pathname
-                .substring(pathname.indexOf("_api/") + 5)
-                .split("/")
-                .map((value, index, arr) => index === arr.length - 1 ? value.replace(/\(.*?$/i, "()") : value[0]).join(".");
+            clientTag = pathname.split("/")
+                .filter((v) => !stringIsNullOrEmpty(v) && ["_api", "v2.1", "v2.0"].indexOf(v) < 0)
+                .map((value, index, arr) => index === arr.length - 1 ? value.replace(/\(.*?$/i, "()") : value[0])
+                .join(".");
 
             if (clientTag.length > 32) {
                 clientTag = clientTag.substring(0, 32);
