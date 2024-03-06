@@ -738,6 +738,9 @@ function applyChunckedOperationDefaults(props: Partial<IChunkedOperationProps>):
     };
 }
 
+/**
+ * Converts the source into a ReadableStream we can understand
+ */
 function sourceToReadableStream(source: ValidFileContentSource): ReadableStream {
 
     if (isBlob(source)) {
