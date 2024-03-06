@@ -763,7 +763,7 @@ function sourceToReadableStream(source: ValidFileContentSource): ReadableStream 
 
     } else {
 
-        return source;
+        return <any>source;
     }
 }
 
