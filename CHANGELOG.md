@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - sp
   - explict error thrown if SPFx context is null or undefined when needed
+  - getStream method on all readable files
+  - addChunked updated to accept stream as content, new signature with props object
 
 ### Removed
 
@@ -35,6 +37,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - PagedItemCollection removed from library
   - removed /items/get-all import, unneeded, use async iterator patterns
   - ./operations.ts methods moved to ./spqueryable.ts
+  - startUpload, continueUpload, finishUpload File protected methods removed
+
+- nodejs
+  - removed stream extensions, moved into sp
 
 ### Changed
 
@@ -55,3 +61,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - sp
   - _Items and IItems now supports async iterator pattern
+  - chunked upload/add progress object shape changed to : { uploadId: string; stage: "starting" | "continue" | "finishing"; offset: number; }
