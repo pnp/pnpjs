@@ -12,6 +12,7 @@ nav:
     - '2020': 'news/2020-year-in-review.md'
   - 'Library Usage Tips':
     - 'Authentication': 'concepts/authentication.md'
+    - 'Async Paging': 'concepts/async-paging.md'
     - 'In SPFx': 'concepts/auth-spfx.md'
     - 'In Browser': 'concepts/auth-browser.md'
     - 'In NodeJS': 'concepts/auth-nodejs.md'

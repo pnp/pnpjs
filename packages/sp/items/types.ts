@@ -62,14 +62,14 @@ export class _Items<GetType = any[]> extends _SPCollection<GetType> {
 
     public [Symbol.asyncIterator]() {
 
-        const q = SPCollection(this).using(parseBinderWithErrorCheck(async (r) => {
+        const nextInit = SPCollection(this).using(parseBinderWithErrorCheck(async (r) => {
 
             const json = await r.json();
-            const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
+            const nextLink = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
 
             return <IPagedResult<GetType>>{
-                hasNext: typeof nextUrl === "string" && nextUrl.length > 0,
-                nextLink: nextUrl,
+                hasNext: typeof nextLink === "string" && nextLink.length > 0,
+                nextLink,
                 value: parseODataJSON(json),
             };
         }));
@@ -79,13 +79,13 @@ export class _Items<GetType = any[]> extends _SPCollection<GetType> {
         for (let i = 0; i < queryParams.length; i++) {
             const param = this.query.get(queryParams[i]);
             if (objectDefinedNotNull(param)) {
-                q.query.set(queryParams[i], param);
+                nextInit.query.set(queryParams[i], param);
             }
         }
 
         return <AsyncIterator<GetType>>{
 
-            _next: q,
+            _next: nextInit,
 
             async next() {
 
