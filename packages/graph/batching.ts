@@ -152,11 +152,11 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
     const completePromises: Promise<void>[] = [];
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
-    const batchQuery = new BatchQueryable(base);
     const refQuery = new BatchQueryable(base);
+    const batchQuery = new BatchQueryable(base);
 
     const { maxRequests } = {
-        maxRequests: 30,
+        maxRequests: 20,
         ...props,
     };
 
