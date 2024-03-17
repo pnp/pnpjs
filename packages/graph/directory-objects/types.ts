@@ -79,7 +79,7 @@ export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphQ
         return AsPaged(this, true)();
     }
 }
-export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObjectType> { }
+export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObject> { }
 export const DirectoryObjects = graphInvokableFactory<IDirectoryObjects>(_DirectoryObjects);
 
 /**

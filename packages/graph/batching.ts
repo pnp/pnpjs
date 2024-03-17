@@ -152,11 +152,11 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
     const completePromises: Promise<void>[] = [];
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
-    const batchQuery = new BatchQueryable(base);
     const refQuery = new BatchQueryable(base);
+    const batchQuery = new BatchQueryable(base);
 
     const { maxRequests } = {
-        maxRequests: 30,
+        maxRequests: 20,
         ...props,
     };
 
@@ -172,6 +172,7 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         const requestsWorkingCopy = requests.slice();
 
         // this is the root of our promise chain
+        let chunkIndex = 0;
         while (requestsWorkingCopy.length > 0) {
 
             const requestsChunk = requestsWorkingCopy.splice(0, maxRequests);
@@ -182,30 +183,17 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
 
             const response: ParsedGraphResponse = await graphPost(batchQuery, body(batchRequest));
 
-            return new Promise<void>((res, rej) => {
-
+            for (let index = 0; index < response.responses.length; index++) {
+                const [, , , resolve, reject] = requests[index + chunkIndex];
                 try {
-
-                    for (let index = 0; index < response.responses.length; index++) {
-                        const [, , , resolve, reject] = requests[index];
-                        try {
-                            resolve(response.responses[index]);
-                        } catch (e) {
-                            reject(e);
-                        }
-                    }
-
-                    // this small delay allows the promises to resolve correctly in order by dropping this resolve behind
-                    // the other work in the event loop. Feels hacky, but it works so 🤷
-                    setTimeout(res, 0);
-
+                    resolve(response.responses[index]);
                 } catch (e) {
-
-                    setTimeout(() => rej(e), 0);
+                    reject(e);
                 }
-
-            }).then(() => Promise.all(completePromises)).then(() => void (0));
+            }
+            chunkIndex += requestsChunk.length;
         }
+        await Promise.all(completePromises).then(() => void (0));
     };
 
     const register = (instance: Queryable) => {
