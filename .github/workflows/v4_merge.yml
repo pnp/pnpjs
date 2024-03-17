@@ -1,4 +1,4 @@
-name: V4 Merge Testing
+name: Merge Testing
 on:
   push:
     branches:
