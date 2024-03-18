@@ -1,7 +1,8 @@
 import { expect } from "chai";
+import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import "@pnp/graph/groups";
 import "@pnp/sp/groupsitemanager";
-import { stringIsNullOrEmpty } from "@pnp/core/util";
+import { GroupType } from "@pnp/graph/groups";
 
 describe.skip("GroupSiteManager (without group context)", function () {
     // skip because app only tests.
@@ -55,33 +56,39 @@ describe.skip("GroupSiteManager (without group context)", function () {
 });
 
 describe("GroupSiteManager (group context)", function () {
+    let groupId = "";
 
     before(async function () {
-        if (stringIsNullOrEmpty(this.pnp.settings.testGroupId)) {
-            this.skip();
-        }
+        const props = await this.props({
+            groupName: `TestGroup_${getRandomString(4)}`,
+        });
+
+        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
+        groupId = groupAddResult.data.id;
     });
 
     it("create", async function () {
-        const grpSite = await this.pnp.sp.groupSiteManager.create(this.pnp.settings.testGroupId);
+        if (stringIsNullOrEmpty(groupId)) {
+            this.skip();
+        }
+        const grpSite = await this.pnp.sp.groupSiteManager.create(groupId);
         return expect(grpSite.SiteStatus).to.eq(2);
     });
 
     it("getSiteStatus", async function () {
-        const parentGrp = await this.pnp.sp.groupSiteManager.getSiteStatus(this.pnp.settings.testGroupId);
+        const parentGrp = await this.pnp.sp.groupSiteManager.getSiteStatus(groupId);
         return expect(parentGrp.SiteStatus).to.to.eq(2);
     });
 
     it("notebook", async function () {
-        const grpNotebook = await this.pnp.sp.groupSiteManager.notebook(this.pnp.settings.testGroupId);
-        console.log(grpNotebook);
+        const grpNotebook = await this.pnp.sp.groupSiteManager.notebook(groupId);
         return expect(grpNotebook).to.contain("SiteAssets");
     });
 
     // Remove the test data we created
     after(async function () {
-        if (!stringIsNullOrEmpty(this.pnp.settings.testGroupId)) {
-            await this.pnp.graph.groups.getById(this.pnp.settings.testGroupId).delete();
+        if (!stringIsNullOrEmpty(groupId)) {
+            await this.pnp.graph.groups.getById(groupId).delete();
         }
         return;
     });

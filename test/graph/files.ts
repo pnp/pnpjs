@@ -11,7 +11,7 @@ import { IDriveItemAdd, IDriveItemAddFolder, IFileUploadOptions, IItemOptions } 
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
 
-describe.only("Drive", function () {
+describe("Drive", function () {
     let testUserName = "";
     let driveId = null;
     const fileOptions: IFileUploadOptions = {

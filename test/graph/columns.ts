@@ -43,25 +43,32 @@ describe("Columns", function () {
         });
 
         site = await getTestingGraphSPSite(this);
+        const ctName = "PnPTestContentType";
+        const currentCT = await site.contentTypes();
+        const exists = currentCT.filter(ct => ct.name === ctName);
+        if (exists.length < 1) {
 
-        const ctTemplate = JSON.parse(JSON.stringify({
-            name: "PnPTestContentType",
-            description: "PnPTestContentType Description",
-            base: {
-                name: "Item",
-                id: "0x01",
-            },
-            group: "PnPTest Content Types",
-            id: "0x0100CDB27E23CEF44850904C80BD666FA645",
-        }));
+            const ctTemplate = JSON.parse(JSON.stringify({
+                name: ctName,
+                description: "PnPTestContentType Description",
+                base: {
+                    name: "Item",
+                    id: "0x01",
+                },
+                group: "PnPTest Content Types",
+                id: "0x0100CDB27E23CEF44850904C80BD666FA645",
+            }));
 
-        ctTemplate.name += props.templateName;
+            ctTemplate.name += props.templateName;
 
-        const addCT = await site.contentTypes.add(ctTemplate);
-        contentType = addCT.contentType;
+            const addCT = await site.contentTypes.add(ctTemplate);
+            contentType = addCT.contentType;
+        } else {
+            contentType = site.contentTypes.getById(exists[0].id);
+        }
 
         const addList = await site.lists.add({
-            displayName: "PnPGraphTestColumns",
+            displayName: `PnPGraphTestColumns_${getRandomString(5)}`,
             list: { "template": "genericList" },
         });
 
