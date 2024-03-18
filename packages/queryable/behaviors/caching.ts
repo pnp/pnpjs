@@ -97,16 +97,14 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
                 if (cached === null) {
 
                     // if we don't have a cached result we need to get it after the request is sent. Get the raw value (un-parsed) to store into cache
-                    instance.on.rawData(noInherit(async function (response) {
-                        setCachedValue(response);
+                    this.on.post(noInherit(async function (url: URL, result: any) {
+                        setCachedValue(result);
+                        return [url, result];
                     }));
 
                 } else {
-                    // if we find it in cache, override send request, and continue flow through timeline and parsers.
-                    this.on.auth.clear();
-                    this.on.send.replace(async function (this: Queryable) {
-                        return new Response(cached, {});
-                    });
+
+                    result = cached;
                 }
             }
 

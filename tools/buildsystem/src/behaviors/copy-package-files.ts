@@ -32,9 +32,14 @@ export function CopyPackageFiles(source: "src" | "built", pattern: string[]): Ti
                             cwd: fileSourceRoot,
                         });
     
+                        // a.push(...temp.map(t => ({
+                        //     src: resolve(fileSourceRoot, t),
+                        //     dest: resolve(pkg.resolvedPkgDistRoot, source === "built" ? pkg.relativePkgDistModulePath : "", t),
+                        // })));
+
                         a.push(...temp.map(t => ({
                             src: resolve(fileSourceRoot, t),
-                            dest: resolve(pkg.resolvedPkgDistRoot, source === "built" ? pkg.relativePkgDistModulePath : "", t),
+                            dest: resolve(pkg.resolvedPkgDistRoot, t),
                         })));
     
                         return a;
@@ -43,7 +48,11 @@ export function CopyPackageFiles(source: "src" | "built", pattern: string[]): Ti
                 }, Promise.resolve<{ src: string, dest: string }[]>([]));
     
                 this.log(`CopyPackageFiles found ${files.length} files for pattern ${stringPattern} in target '${target.tsconfigPath}'`);
-    
+
+                for (let i = 0; i < files.length; i++) {
+                    this.log(`CopyPackageFiles found ${files[i].src}`, 0);
+                }
+
                 await Promise.all(files.map(f => buildCopyFile(f.src, f.dest)));
                     
                 this.log(`Completing CopyPackageFiles with pattern ${stringPattern} on target '${target.tsconfigPath}'`, 1);

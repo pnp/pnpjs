@@ -1,8 +1,8 @@
-name: V3 Merge Testing
+name: V4 Merge Testing
 on:
   push:
     branches:
-        - version-3
+        - version-4
 env:
   PNPTESTING_MSAL_GRAPH_CONFIG: ${{ secrets.PNPTESTING_MSAL_GRAPH_CONFIG }}
   PNPTESTING_MSAL_GRAPH_SCOPES: ${{ secrets.PNPTESTING_MSAL_GRAPH_SCOPES }}
@@ -15,12 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3  
-      # setup nodejs
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
         with:
-          node-version: 16
+          ref: version-4
+      # setup nodejs
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
           registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
           cache-dependency-path: package-lock.json

@@ -9,7 +9,6 @@ import {
     WritePackageJSON,
     Publish,
     PublishNightly,
-    CreateResolutionPackageFiles,
 } from "@pnp/buildsystem";
 import {
     Logger,
@@ -48,12 +47,11 @@ function PnPPackage(): (b: BuildTimeline) => BuildTimeline {
         CopyAssetFiles(".", ["LICENSE"])(instance);
         CopyAssetFiles("./packages", ["readme.md"])(instance);
         CopyPackageFiles("built", ["**/*.d.ts", "**/*.js", "**/*.js.map", "**/*.d.ts.map"])(instance);
-        CreateResolutionPackageFiles()(instance),
         WritePackageJSON((p) => {
             return Object.assign({}, p, {
                 type: "module",
-                main: "./esm/index.js",
-                typings: "./esm/index",
+                main: "./index.js",
+                typings: "./index",
                 engines: {
                     node: ">=18.12.0"
                 },
@@ -68,19 +66,6 @@ function PnPPackage(): (b: BuildTimeline) => BuildTimeline {
                 repository: {
                     type: "git",
                     url: "git:github.com/pnp/pnpjs"
-                },
-                exports: {
-                    ".": {
-                        "import": {
-                            "types": "./esm/index",
-                            "default": "./esm/index.js"
-                        },
-                        "require": {
-                            "types": "./commonjs/index",
-                            "default": "./commonjs/index.js"
-                        },
-                        "default": "./esm/index.js"
-                    }
                 },
                 maintainers: [
                     {
@@ -121,14 +106,13 @@ function PnPPublish(flags?: string[]): (b: BuildTimeline) => BuildTimeline {
 
 const commonBehaviors = [
     PnPLogging(logLevel),
-]
+];
 
 export default <BuildSchema[]>[{
     name: "build",
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
-        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), ...commonBehaviors],
 },
@@ -145,7 +129,6 @@ export default <BuildSchema[]>[{
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
-        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), ...commonBehaviors],
 },
@@ -154,7 +137,6 @@ export default <BuildSchema[]>[{
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
-        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), PnPPublish(commonPublishTags), ...commonBehaviors],
 },
@@ -163,7 +145,6 @@ export default <BuildSchema[]>[{
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
-        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), PnPPublish([...commonPublishTags, "--tag", "beta"]), ...commonBehaviors],
 },
@@ -172,7 +153,6 @@ export default <BuildSchema[]>[{
     distFolder,
     targets: [
         resolve("./packages/tsconfig.json"),
-        resolve("./packages/tsconfig-commonjs.json"),
     ],
     behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v4nightly"), ...commonBehaviors],
 }];

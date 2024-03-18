@@ -108,13 +108,7 @@ export function parseBinderWithErrorCheck(impl: (r: Response) => Promise<any>): 
         instance.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
 
             if (response.ok && typeof result === "undefined") {
-
-                const respClone = response.clone();
-
-                // https://github.com/node-fetch/node-fetch?tab=readme-ov-file#custom-highwatermark
-                const [implResult, raw] = await Promise.all([impl(response), respClone.text()]);
-                result = implResult;
-                (<any>instance).emit.rawData(raw);
+                result = await impl(response);
             }
 
             return [url, response, result];
