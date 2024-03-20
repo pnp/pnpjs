@@ -16,16 +16,13 @@ declare module "../users/types" {
 
 addProp(_User, "drive", Drive);
 addProp(_User, "drives", Drives);
-addProp(_Drive, "bundles", DriveItems);
 addProp(_Drive, "following", DriveItems);
 
 declare module "./types" {
     interface _Drive {
-        bundles: IDriveItems;
         special(specialFolder: SpecialFolder): IDriveItem;
     }
     interface IDrive {
-        bundles: IDriveItems;
         special(specialFolder: SpecialFolder): IDriveItem;
     }
     interface _DriveItem {

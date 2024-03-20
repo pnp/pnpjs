@@ -438,6 +438,7 @@ export class _DriveItems extends _GraphCollection<IDriveItemType[]> {
 export interface IDriveItems extends _DriveItems, IGetById<IDriveItemType> { }
 export const DriveItems = graphInvokableFactory<IDriveItems>(_DriveItems);
 
+
 /**
  * IDriveItemAdd - for adding a drive item and the corresponding contents
  * @param filename - string - file name.

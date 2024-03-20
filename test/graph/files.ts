@@ -4,9 +4,8 @@ import * as fs from "fs";
 import findupSync from "findup-sync";
 import "@pnp/graph/users";
 import "@pnp/graph/files";
-import "@pnp/graph/files/sites";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
-import { IDriveItemAdd, IDriveItemAddFolder, IFileUploadOptions, IItemOptions } from "@pnp/graph/files/types";
+import { IDriveItemAdd, IDriveItemAddFolder, IFileUploadOptions, IItemOptions } from "@pnp/graph/files";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = path.resolve(path.dirname(findupSync("package.json")));
@@ -66,6 +65,7 @@ describe("Drive", function () {
     });
 
 
+    // TODO: Failing with Timeout
     it("Get Recent Drive Items", async function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
@@ -200,7 +200,7 @@ describe("Drive", function () {
         }
         let driveItems;
         const testFolderName = `TestFolder_${getRandomString(4)}`;
-        const folder = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.addFolder({name: testFolderName});
+        const folder = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.addFolder({ name: testFolderName });
         if (folder != null) {
             const testFileName = `${getRandomString(4)}.txt`;
             const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(folder.id)
@@ -326,11 +326,11 @@ describe("Drive", function () {
         }
         const testFileName = `${getRandomString(4)}.txt`;
         const testFileName2 = `${getRandomString(4)}.txt`;
-        const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.add({filename: testFileName, content: "My File Content String"});
+        const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.add({ filename: testFileName, content: "My File Content String" });
         let driveItemUpdate;
         if (children != null) {
             const testFolderName = `TestFolder_${getRandomString(4)}`;
-            const folder = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.addFolder({name: testFolderName});
+            const folder = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.addFolder({ name: testFolderName });
             if (folder != null) {
                 const moveOptions: IItemOptions = {
                     parentReference: { driveId: folder.parentReference.driveId, id: folder.id },
@@ -349,6 +349,7 @@ describe("Drive", function () {
         return expect(driveItemUpdate.name).to.eq(testFileName2);
     });
 
+    // TODO: Failing timeout
     it("Convert Drive Item", async function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
@@ -419,10 +420,10 @@ describe("Drive", function () {
         if (children != null) {
             // Set up test file
             await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.id).follow();
-            try{
+            try {
                 await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.id).unfollow();
                 unfollowDriveItem = true;
-            }catch(err){
+            } catch (err) {
                 unfollowDriveItem = false;
             }
             // Clean up test file
@@ -430,4 +431,35 @@ describe("Drive", function () {
         }
         return expect(unfollowDriveItem).to.be.true;
     });
+
+    // it("Create Sharing Link", async function () {
+    //     if (stringIsNullOrEmpty(driveId)) {
+    //         this.skip();
+    //     }
+    //     const testFileName = `TestFile_${getRandomString(4)}.json`;
+    //     const fo = JSON.parse(JSON.stringify(fileOptions));
+    //     fo.filePathName = testFileName;
+    //     const driveItemAdd: IDriveItemAdd = {
+    //         filename: testFileName,
+    //         content: fileOptions.content,
+    //         contentType: fileOptions.contentType,
+    //     };
+    //     const children = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.children.add(driveItemAdd);
+    //     let sharingLink = null;
+    //     if (children != null) {
+    //         // Create Sharing Link
+    //         const sharingLinkInfo: ISharingLinkInfo = {
+    //             type: "view",
+    //             scope: "anonymous",
+    //         };
+    //         sharingLink = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.id).createSharingLink(sharingLinkInfo);
+    //         // Clean up test file
+    //         await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(children.id).delete();
+    //     }
+    //     return expect(sharingLink).to.haveOwnProperty("id");
+    // });
+
+    /* Testing for Bundles is not possible as it is only supported in Personal OneDrive */
+    // describe.skip("Bundles", function () {});
 });
+

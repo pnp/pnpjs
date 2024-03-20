@@ -20,6 +20,14 @@ export {
 } from "./resumableUpload.js";
 
 export {
+    Bundle,
+    IBundle,
+    Bundles,
+    IBundles,
+    IBundleDef,
+} from "./bundles.js";
+
+export {
     Drive,
     DriveItem,
     DriveItems,
@@ -52,3 +60,4 @@ Reflect.defineProperty(GraphFI.prototype, "drives", {
         return this.create(Drives);
     },
 });
+

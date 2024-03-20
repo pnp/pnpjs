@@ -95,7 +95,7 @@ describe("Files", function () {
 
         const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
         const content = readFileSync(resolve(projectRoot, "./test/sp/assets/sample_file.jpg"));
-        const far = await files.addChunked(name, <any>content, null, true, 1000000);
+        const far = await files.addChunked(name, <any>content, null);
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(far).to.not.be.null;
         return expect(far.file()).to.eventually.be.fulfilled;

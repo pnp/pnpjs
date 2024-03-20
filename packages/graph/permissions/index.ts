@@ -1,4 +1,5 @@
 import "./site.js";
+import "./drive-item.js";
 
 export {
     IPermission,
@@ -6,3 +7,7 @@ export {
     Permission,
     Permissions,
 } from "./types.js";
+
+export {
+    IPermissionsInviteInfo,
+} from "./drive-item.js";

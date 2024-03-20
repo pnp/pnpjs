@@ -129,7 +129,7 @@ const shared = await graph.me.drives.getById({drive id}).sharedWithMe(options);
 
 ```
 
-## Get the following drive item
+## Get the drive item being followed
 
 List the items that have been followed by the signed in user.
 
@@ -208,9 +208,9 @@ const rootChildren = await graph.users.getById({user id}).drives.getById({drive 
 
 const rootChildren = await graph.me.drives.getById({drive id}).root.children();
 
-const itemChildren = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").children();
+const itemChildren = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").children();
 
-const itemChildren = await graph.me.drives.getById({drive id}).root.items.getById("{item id}").children();
+const itemChildren = await graph.me.drives.getById({drive id}).root.getItemById("{item id}").children();
 
 ```
 
@@ -368,9 +368,9 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const item = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}")();
+const item = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}")();
 
-const item = await graph.me.drives.getById({drive id}).items.getById("{item id}")();
+const item = await graph.me.drives.getById({drive id}).getItemById("{item id}")();
 
 ```
 
@@ -462,9 +462,9 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const thumbs = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").thumbnails();
+const thumbs = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").thumbnails();
 
-const thumbs = await graph.me.drives.getById({drive id}).items.getById("{item id}").thumbnails();
+const thumbs = await graph.me.drives.getById({drive id}).getItemById("{item id}").thumbnails();
 
 ```
 
@@ -479,10 +479,10 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-await graph.me.drives.getById({drive id}).items.getById({item id}).delete();
-await graph.me.drives.getById({drive id}).items.getById({item id}).permanentDelete();
-await graph.users.getById({user id}).drives.getById({drive id}).items.getById({item id}).delete();
-await graph.users.getById({user id}).drives.getById({drive id}).items.getById({item id}).permanentDelete();
+await graph.me.drives.getById({drive id}).getItemById({item id}).delete();
+await graph.me.drives.getById({drive id}).getItemById({item id}).permanentDelete();
+await graph.users.getById({user id}).drives.getById({drive id}).getItemById({item id}).delete();
+await graph.users.getById({user id}).drives.getById({drive id}).getItemById({item id}).permanentDelete();
 ```
 
 ## Update drive item metadata
@@ -496,9 +496,9 @@ import "@pnp/graph/files";
 
 const graph = graphfi(...);
 
-const update = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").update({name: "New Name"});
+const update = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").update({name: "New Name"});
 
-const update = await graph.me.drives.getById({drive id}).items.getById("{item id}").update({name: "New Name"});
+const update = await graph.me.drives.getById({drive id}).getItemById("{item id}").update({name: "New Name"});
 
 ```
 
@@ -522,9 +522,9 @@ const moveOptions: IItemOptions = {
   name?: {newName};
 };
 
-const move = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").move(moveOptions);
+const move = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").move(moveOptions);
 
-const move = await graph.me.drives.getById({drive id}).items.getById("{item id}").move(moveOptions);
+const move = await graph.me.drives.getById({drive id}).getItemById("{item id}").move(moveOptions);
 
 ```
 
@@ -548,9 +548,9 @@ const copyOptions: IItemOptions = {
   name?: {newName};
 };
 
-const copy = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").copy(copyOptions);
+const copy = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").copy(copyOptions);
 
-const copy = await graph.me.drives.getById({drive id}).items.getById("{item id}").copy(copyOptions);
+const copy = await graph.me.drives.getById({drive id}).getItemById("{item id}").copy(copyOptions);
 
 ```
 
@@ -590,16 +590,16 @@ import { ItemPreviewInfo } from "@microsoft/microsoft-graph-types"
 
 const graph = graphfi(...);
 
-const preview: ItemPreviewInfo = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").preview();
+const preview: ItemPreviewInfo = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").preview();
 
-const preview: ItemPreviewInfo = await graph.me.drives.getById({drive id}).items.getById("{item id}").preview();
+const preview: ItemPreviewInfo = await graph.me.drives.getById({drive id}).getItemById("{item id}").preview();
 
 const previewOptions: IPreviewOptions = {
     page: 1,
     zoom: 90
 }
 
-const preview2: ItemPreviewInfo = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").preview(previewOptions);
+const preview2: ItemPreviewInfo = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").preview(previewOptions);
 
 ```
 
@@ -640,16 +640,57 @@ import { IAnalyticsOptions } from "@pnp/graph/files";
 const graph = graphfi(...);
 
 // Defaults to lastSevenDays
-const analytics = await graph.users.getById({user id}).drives.getById({drive id}).items.getById("{item id}").analytics()();
+const analytics = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").analytics()();
 
-const analytics = await graph.me.drives.getById({drive id}).items.getById("{item id}").analytics()();
+const analytics = await graph.me.drives.getById({drive id}).getItemById("{item id}").analytics()();
 
 const analyticOptions: IAnalyticsOptions = {
     timeRange: "allTime"
 };
 
-const analyticsAllTime = await graph.me.drives.getById({drive id}).items.getById("{item id}").analytics(analyticOptions)();
+const analyticsAllTime = await graph.me.drives.getById({drive id}).getItemById("{item id}").analytics(analyticOptions)();
 ```
 
 For more information on:
 [Sensitivity and Retention Labels (Premium Endpoint)](./files-labels.md)
+
+## Permissions
+
+### List/Get/Add/Update/Delete Drive Item Permissions
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/files";
+import "@pnp/graph/permissions/drive-item";
+import {IPermissionsInviteInfo} from "@pnp/graph/permissions/drive-item";
+
+const graph = graphfi(...);
+
+const newPermissions: IPermissionsInviteInfo = {
+    recipients: [{email: "user@contoso.com"}],
+    requireSignIn: true,
+    sendInvitation: true,
+    roles: ["read"]
+};
+
+// List permissions
+const permissions = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").permissions();
+
+// Add permissions
+const permissions = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").addPermissions(newPermissions);
+
+// Get permissions
+const itemPermissions = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").permissions.getById(permissions.id)();
+
+// Update permissions
+const updatedPermissions = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").permissions.getById(permissions.id).update({roles: ["write"]});
+
+// Delete permissions
+await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").permissions.getById(permissions.id).delete();
+
+```
+
+## Sharing
+
+[Shares](./shares.md)
