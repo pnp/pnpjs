@@ -46,8 +46,10 @@ const graph = graphfi(...);
 const permissions = await graph.sites.getById("{site id}").permissions.add({
   roles: ["fullcontrol"],
   grantedToIdentities: [{
-    id: "89ea5c94-7736-4e25-95ad-3fa95f62b66e",
-    displayName: "Contoso Time Manager App",
+    application: {
+      id: "89ea5c94-7736-4e25-95ad-3fa95f62b66e",
+      displayName: "Contoso Time Manager App",
+    }
   }],
 });
 ```

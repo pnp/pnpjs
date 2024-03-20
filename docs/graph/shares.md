@@ -46,3 +46,74 @@ const graph = graphfi(...);
 
 const driveItemInfo = await graph.shares.getById("{shareId}").driveItem();
 ```
+
+## Convert sharing URL to a sharing token
+
+To use a sharing URL with this API, your app needs to transform the URL into a sharing token.
+
+```TS
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/shares";
+import {IShareLinkInfo} from "@pnp/graph/shares";
+
+const graph = graphfi(...);
+
+// Use ShareId
+const shareLinkInfo: IShareLinkInfo = {
+    shareId: shareId,
+    redeemSharingLink: false,
+};
+const sharedDriveItem = await graph.shares.useSharingLink(shareLinkInfo);
+
+// Use Encoded Sharing Link
+const shareLink: string = graph.shares.encodeSharingLink("https://{tenant}.sharepoint.com/sites/dev/Shared%20Documents/new.pptx");
+const shareLinkInfo = {
+    encodedSharingUrl: shareLink,
+    redeemSharingLink: false
+};
+const sharedDriveItem = await graph.shares.useSharingLink(shareLinkInfo);
+```
+
+## Create Sharing Link
+
+You can use createLink action to share a DriveItem via a sharing link.
+
+The createLink action will create a new sharing link if the specified link type doesn't already exist for the calling application. If a sharing link of the specified type already exists for the app, the existing sharing link will be returned.
+
+```TS
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/shares";
+import "@pnp/graph/users";
+import "@pnp/graph/files";
+
+const graph = graphfi(...);
+
+const sharingLinkInfo: ICreateShareLinkInfo = {
+    type: "view",
+    scope: "anonymous",
+};
+const sharingLink = await graph.users.getById({userId}).drives.getById({driveId}).getItemById({itemId}).createSharingLink(sharingLinkInfo);
+
+```
+
+## Grant Sharing Link Access
+
+Grant users access to a link represented by a permission.
+
+```TS
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/shares";
+
+const graph = graphfi(...);
+
+const shareLink: string = graph.shares.encodeSharingLink("https://{tenant}.sharepoint.com/sites/dev/Shared%20Documents/new.pptx");
+const sharingLinkAccess = {
+    encodedSharingUrl: shareLink,
+    recipients: [{email: "user@contoso.com"}],
+    roles: ["read"]
+};
+
+// 
+const permissions = await graph.shares.grantSharingLinkAccess(sharingLinkAccess);
+
+```

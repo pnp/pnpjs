@@ -86,7 +86,7 @@ describe("Sites", function () {
         const files: IFiles = this.pnp.sp.web.defaultDocumentLibrary.rootFolder.files;
         const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
         const content = readFileSync(resolve(projectRoot, "./test/sp/assets/sample_file.jpg"));
-        const far = await files.addChunked(name, <any>content, null, true, 1000000);
+        const far = await files.addChunked(name, <any>content, null);
         const path = far.data.ServerRelativeUrl;
         const logoProperties: ISiteLogoProperties = {relativeLogoUrl: path, aspect: SiteLogoAspect.Square, type: SiteLogoType.WebLogo};
         await this.pnp.sp.site.setSiteLogo(logoProperties);

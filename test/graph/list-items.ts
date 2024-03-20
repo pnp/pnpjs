@@ -84,6 +84,7 @@ describe("List-Items", function () {
         await itemDelete.delete();
         let passed = false;
         try{
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const r = await list.items.getById(itemDeleteId)();
         }catch(err){
             passed = true;

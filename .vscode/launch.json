@@ -37,7 +37,7 @@
       "args": [
         "--verbose",
         "--logging",
-        "Error",
+        "verbose",
         "--record",
         "write"
       ],
