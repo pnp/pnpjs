@@ -26,7 +26,7 @@ const options: MSALOptions = {
             clientId: "{client id}",
         },
         cache: {
-            cacheLocation: "localStorage" // in order to avoid re-login after page refresh
+            claimsBasedCachingEnabled: true // in order to avoid network call to refresh a token every time claims are requested
         }
     },
     authParams: {
