@@ -1,5 +1,5 @@
 import { TimelinePipe } from "@pnp/core";
-import { BlobParse, BufferParse, CacheNever, JSONParse, TextParse } from "@pnp/queryable/index.js";
+import { BlobParse, BufferParse, CacheNever, JSONParse, TextParse } from "@pnp/queryable";
 import { _SPInstance, SPQueryable } from "../spqueryable.js";
 
 export class ReadableFile<T = any> extends _SPInstance<T> {
