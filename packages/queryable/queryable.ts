@@ -28,12 +28,41 @@ const DefaultMoments = {
 
 export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 
+export type QueryParams = {
+
+    // new(init?: string[][] | Record<string, string> | string | QueryParams): QueryParams;
+
+    /**
+     * Sets the value associated to a given search parameter to the given value. If there were several values, delete the others.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/URLSearchParams/set)
+     */
+    set(name: string, value: string): void;
+
+    /**
+     * Returns the first value associated to the given search parameter.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/URLSearchParams/get)
+     */
+    get(name: string): string | null;
+
+    /**
+    * Returns a Boolean indicating if such a search parameter exists.
+    *
+    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/URLSearchParams/has)
+    */
+    has(name: string, value?: string): boolean;
+
+    /** Returns a string containing a query string suitable for use in a URL. Does not include the question mark. */
+    toString(): string;
+};
+
 @invokable()
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
     // tracks any query parameters which will be appended to the request url
-    private _query: URLSearchParams;
+    protected _query: QueryParams;
 
     // tracks the current url for a given Queryable
     protected _url: string;
@@ -49,6 +78,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         super(DefaultMoments);
 
+        // default to use the included URL search params to parse the query string
         this._query = new URLSearchParams();
 
         // add an internal moment with specific implementation for promise creation
@@ -114,7 +144,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
     /**
      * Querystring key, value pairs which will be included in the request
      */
-    public get query(): URLSearchParams {
+    public get query(): QueryParams {
         return this._query;
     }
 
@@ -230,7 +260,7 @@ export interface Queryable<R = any> extends IInvokable<R> { }
 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
-    readonly query: URLSearchParams;
+    readonly query: QueryParams;
     // new(...params: any[]);
     <T = R>(this: IQueryableInternal, init?: RequestInit): Promise<T>;
     using(...behaviors: TimelinePipe[]): this;

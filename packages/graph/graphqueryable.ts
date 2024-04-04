@@ -1,5 +1,5 @@
 import { isArray, objectDefinedNotNull } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory, op, get, post, patch, del, put } from "@pnp/queryable";
+import { IInvokable, QueryParams, Queryable, queryableFactory, op, get, post, patch, del, put } from "@pnp/queryable";
 import { ConsistencyLevel } from "./behaviors/consistency-level.js";
 import { IPagedResult, Paged } from "./behaviors/paged.js";
 
@@ -33,6 +33,9 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
     constructor(base: GraphInit, path?: string) {
 
         super(base, path);
+
+        // we need to use the graph implementation to handle our special encoding
+        this._query = new GraphQueryParams();
 
         if (typeof base === "string") {
 
@@ -239,3 +242,28 @@ export const graphPatch = <T = any>(o: IGraphQueryable<any>, init?: RequestInit)
 export const graphPut = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
     return op(o, put, init);
 };
+
+class GraphQueryParams extends Map<string, string> {
+
+    public toString(): string {
+
+        const params = new URLSearchParams();
+        const literals: string[] = [];
+
+        for (const item of this) {
+
+            // and here is where we add some "enhanced" parsing as we get issues.
+            if (/\/any\(.*?\)/i.test(item[1])) {
+                literals.push(`${item[0]}=${item[1]}`);
+            } else {
+                params.append(item[0], item[1]);
+            }
+        }
+
+        if (params.size > 0) {
+            literals.push(params.toString());
+        }
+
+        return literals.join("&");
+    }
+}
