@@ -165,15 +165,6 @@ export class _GraphCollection<GetType = any[]> extends _GraphQueryable<GetType> 
         return this;
     }
 
-    /**
-     * 	Retrieves the total count of matching resources
-     *  If the resource doesn't support count, this value will always be zero
-     */
-    public async count(): Promise<number> {
-        // TODO::do we want to do this, or just attach count to the collections that support it? we could use a decorator for countable on the few collections that support count.
-        return -1;
-    }
-
     public [Symbol.asyncIterator]() {
 
         const q = GraphCollection(this).using(Paged(), ConsistencyLevel());

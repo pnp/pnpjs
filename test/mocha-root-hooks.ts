@@ -70,7 +70,7 @@ export const mochaHooks = {
                 },
             };
 
-            if (this.pnp.args.logging > LogLevel.Off) {
+            if (this.pnp.args.logging < LogLevel.Off) {
                 // add a listener for logging if we are enabled at any level
                 Logger.subscribe(ConsoleListener());
             }
