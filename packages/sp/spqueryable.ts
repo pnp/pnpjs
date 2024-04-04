@@ -92,7 +92,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      */
     public toRequestUrl(): string {
 
-        const aliasedParams = new URLSearchParams(this.query);
+        const aliasedParams = new URLSearchParams(<any>this.query);
 
         // this regex is designed to locate aliased parameters within url paths. These may have the form:
         // /something(!@p1::value)
