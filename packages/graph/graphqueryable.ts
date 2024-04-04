@@ -1,5 +1,5 @@
 import { isArray, objectDefinedNotNull } from "@pnp/core";
-import { IInvokable, QueryParams, Queryable, queryableFactory, op, get, post, patch, del, put } from "@pnp/queryable";
+import { IInvokable, Queryable, queryableFactory, op, get, post, patch, del, put } from "@pnp/queryable";
 import { ConsistencyLevel } from "./behaviors/consistency-level.js";
 import { IPagedResult, Paged } from "./behaviors/paged.js";
 
@@ -260,9 +260,7 @@ class GraphQueryParams extends Map<string, string> {
             }
         }
 
-        if (params.size > 0) {
-            literals.push(params.toString());
-        }
+        literals.push(params.toString());
 
         return literals.join("&");
     }
