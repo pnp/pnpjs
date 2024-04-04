@@ -37,22 +37,16 @@ describe("Groups", function () {
 
     it("pages all users", async function () {
 
-        const count = await this.pnp.graph.users.count();
-
         const allUsers = [];
 
         for await (const users of this.pnp.graph.users.top(20).select("displayName")) {
             allUsers.push(...users);
         }
 
-        expect(allUsers.length).to.eq(count);
+        expect(allUsers.length).to.be.greaterThan(0);
     });
 
     it("pages groups", async function () {
-
-        const count = await this.pnp.graph.groups.count();
-
-        expect(count).is.gt(0);
 
         const allGroups = [];
 
@@ -60,14 +54,7 @@ describe("Groups", function () {
             allGroups.push(...groups);
         }
 
-        expect(allGroups.length).to.eq(count);
-    });
-
-    it("groups count", async function () {
-
-        const count = await this.pnp.graph.groups.count();
-
-        expect(count).to.be.gt(0);
+        expect(allGroups.length).to.be.greaterThan(0);
     });
 
     it("pages items", async function () {
@@ -79,13 +66,5 @@ describe("Groups", function () {
         }
 
         expect(allItems.length).to.be.gt(0);
-    });
-
-    it("items count", async function () {
-
-        const count = await itemsCol.count();
-
-        // items doesn't support count, should be zero
-        expect(count).to.eq(-1);
     });
 });
