@@ -14,7 +14,7 @@ export type QueryablePostObserver = (this: IQueryableInternal, url: URL, result:
 
 export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: T) => void;
 
-type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
+type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => [Promise<any>];
 
 const DefaultMoments = {
     construct: lifecycle<QueryableConstructObserver>(),
@@ -29,9 +29,6 @@ const DefaultMoments = {
 export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 
 export type QueryParams = {
-
-    // new(init?: string[][] | Record<string, string> | string | QueryParams): QueryParams;
-
     /**
      * Sets the value associated to a given search parameter to the given value. If there were several values, delete the others.
      *
@@ -234,20 +231,15 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         }, 0);
 
-        // this is the promise that the calling code will recieve and await
-        let promise = new Promise<void>((resolve, reject) => {
+        // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
+        // cancelable to work as envisioned, but may have other users. Meant for internal use in the library accessed via behaviors.
+        return this.emit[this.InternalPromise](new Promise<void>((resolve, reject) => {
 
             // we overwrite any pre-existing internal events as a
             // given queryable only processes a single request at a time
             this.on[this.InternalResolve].replace(resolve);
             this.on[this.InternalReject].replace(reject);
-        });
-
-        // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
-        // cancelable to work as envisioned, but may have other users. Meant for internal use in the library accessed via behaviors.
-        [promise] = this.emit[this.InternalPromise](promise);
-
-        return promise;
+        }))[0];
     }
 }
 
@@ -316,24 +308,6 @@ export function queryableFactory<InstanceType>(
         return instance;
     };
 }
-
-// // extends IQueryableInternal
-// export function queryableFactory2<InstanceType extends IQueryableInternal>(constructor: InstanceType):
-//  (...args: ConstructorParameters<InstanceType>) => InstanceType & IInvokable {
-
-//     return (...args: ConstructorParameters<InstanceType>) => {
-
-//         // construct the concrete instance
-//         const instance: InstanceType = new constructor(...args);
-
-//         // we emit the construct event from the factory because we need all of the decorators and constructors
-//         // to have fully finished before we emit, which is now true. We type the instance to any to get around
-//         // the protected nature of emit
-//         (<any>instance).emit.construct(...args);
-
-//         return instance;
-//     };
-// }
 
 /**
  * Allows a decorated object to be invoked as a function, optionally providing an implementation for that action

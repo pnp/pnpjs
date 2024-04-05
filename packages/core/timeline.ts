@@ -9,6 +9,11 @@ export type ObserverAction = (this: Timeline<any>, ...args: any[]) => void;
 /**
  * Represents an observer with side effects within the timeline
  */
+export type ObserverSyncFunction<R = any> = (this: Timeline<any>, ...args: any[]) => R;
+
+/**
+ * Represents an observer with side effects within the timeline
+ */
 export type ObserverFunction<R = any> = (this: Timeline<any>, ...args: any[]) => Promise<R>;
 
 /**

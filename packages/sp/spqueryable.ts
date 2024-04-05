@@ -1,4 +1,4 @@
-import { combine, isUrlAbsolute, isArray, objectDefinedNotNull, stringIsNullOrEmpty } from "@pnp/core";
+import { combine, isUrlAbsolute, isArray, stringIsNullOrEmpty } from "@pnp/core";
 import { Queryable, queryableFactory, op, get, post, patch, del, IInvokable } from "@pnp/queryable";
 
 export type SPInit = string | ISPQueryable | [ISPQueryable, string];
@@ -12,20 +12,6 @@ export type ISPInvokableFactory<R extends ISPQueryable> = (base: SPInit, path?: 
 export const spInvokableFactory = <R extends ISPQueryable>(f: any): ISPInvokableFactory<R> => {
     return queryableFactory<R>(f);
 };
-
-
-
-// export type ISPInvokableFactory2<R extends ISPQueryable> = (...args: any[]) => R & IInvokable;
-
-// export const spInvokableFactory2 = <R extends ISPQueryable<T>, T extends ISPQueryable>(f: T): ISPInvokableFactory2<R> => {
-
-
-
-
-
-//     return queryableFactory2<R>(f);
-// };
-
 
 /**
  * SharePointQueryable Base Class
@@ -79,11 +65,6 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
 
             const q: Queryable<any> = isArray(base) ? base[0] : base;
             this.parentUrl = isArray(base) ? base[1] : q.toUrl();
-
-            const target = q.query.get("@target");
-            if (objectDefinedNotNull(target)) {
-                this.query.set("@target", target);
-            }
         }
     }
 
@@ -149,14 +130,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
         path?: string,
         base: string = this.parentUrl): T {
 
-        const parent = factory([this, base], path);
-
-        const t = "@target";
-        if (this.query.has(t)) {
-            parent.query.set(t, this.query.get(t));
-        }
-
-        return parent;
+        return factory([this, base], path);
     }
 }
 export interface ISPQueryable<GetType = any> extends _SPQueryable<GetType> { }

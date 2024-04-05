@@ -1,4 +1,4 @@
-import { ObserverAction, ObserverFunction, Timeline } from "./timeline.js";
+import { ObserverAction, ObserverFunction, ObserverSyncFunction, Timeline } from "./timeline.js";
 import { isArray } from "./util.js";
 
 /**
@@ -49,7 +49,7 @@ export function asyncBroadcast<T extends ObserverFunction<void>>(): (observers: 
  *
  * @returns The final set of arguments
  */
-export function reduce<T extends ObserverFunction<[...Parameters<T>]>>(): (observers: T[], ...args: [...Parameters<T>]) => [...Parameters<T>] {
+export function reduce<T extends ObserverSyncFunction<[...Parameters<T>]>>(): (observers: T[], ...args: [...Parameters<T>]) => [...Parameters<T>] {
 
     return function (this: Timeline<any>, observers: T[], ...args: [...Parameters<T>]): [...Parameters<T>] {
 

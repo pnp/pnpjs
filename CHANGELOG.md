@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - removed /items/get-all import, unneeded, use async iterator patterns
   - ./operations.ts methods moved to ./spqueryable.ts
   - startUpload, continueUpload, finishUpload File protected methods removed
+  - removed legacy support for @target query param
 
 - nodejs
   - removed stream extensions, moved into sp
@@ -49,6 +50,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - queryable
   - moved add-props.ts and request-builders.ts to index.ts
+  - Changed interface for `query` property
 
 - graph
   - IGraphQueryableCollection now supports async iterator pattern
@@ -58,6 +60,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - ISites.getByUrl is now async
   - @pnp/graph/outlook is not in @pnp/graph/mail, included all mail endpoints
   - mailCategory.add() returns Microsoft Graph types OutlookCategory vs object with data property.
+  - Changed how query params are parsed to custom logic
 
 - sp
   - _Items and IItems now supports async iterator pattern
