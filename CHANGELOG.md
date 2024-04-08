@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - ./operations.ts methods moved to ./spqueryable.ts
   - startUpload, continueUpload, finishUpload File protected methods removed
   - removed legacy support for @target query param
+  - removed "favorites", please use graph favorites
 
 - nodejs
   - removed stream extensions, moved into sp
