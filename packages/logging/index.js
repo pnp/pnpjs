@@ -1,15 +1,4 @@
 export * from "./listeners.js";
-/**
- * A set of logging levels
- */
-export var LogLevel;
-(function (LogLevel) {
-    LogLevel[LogLevel["Verbose"] = 0] = "Verbose";
-    LogLevel[LogLevel["Info"] = 1] = "Info";
-    LogLevel[LogLevel["Warning"] = 2] = "Warning";
-    LogLevel[LogLevel["Error"] = 3] = "Error";
-    LogLevel[LogLevel["Off"] = 99] = "Off";
-})(LogLevel || (LogLevel = {}));
 const _subscribers = [];
 let _activeLogLevel = 2 /* Warning */;
 /**

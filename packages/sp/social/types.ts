@@ -174,7 +174,7 @@ export interface ISocialActorInfo {
  * Social actor type
  *
  */
-export const enum SocialActorType {
+export enum SocialActorType {
     User,
     Document,
     Site,
@@ -186,7 +186,7 @@ export const enum SocialActorType {
  *
  */
 /* eslint-disable no-bitwise */
-export const enum SocialActorTypes {
+export enum SocialActorTypes {
     None = 0,
     User = 1 << SocialActorType.User,
     Document = 1 << SocialActorType.Document,
@@ -211,7 +211,7 @@ export const enum SocialActorTypes {
  * Result from following
  *
  */
-export const enum SocialFollowResult {
+export enum SocialFollowResult {
     Ok = 0,
     AlreadyFollowing = 1,
     LimitReached = 2,
@@ -221,7 +221,7 @@ export const enum SocialFollowResult {
 /**
  * Specifies an exception or status code.
  */
-export const enum SocialStatusCode {
+export enum SocialStatusCode {
     /**
    * The operation completed successfully
    */
