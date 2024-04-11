@@ -16,7 +16,7 @@ import { createBatch } from "../batching.js";
 /**
  * Page promotion state
  */
-export const enum PromotedState {
+export enum PromotedState {
     /**
      * Regular client side page
      */

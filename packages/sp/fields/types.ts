@@ -442,7 +442,7 @@ export type AddMultiChoiceProps = {
 /**
  * Specifies the type of the field.
  */
-export const enum FieldTypes {
+export enum FieldTypes {
     Invalid = 0,
     Integer = 1,
     Text = 2,
@@ -519,7 +519,7 @@ export enum DateTimeFieldFriendlyFormatType {
 /**
  * Specifies the control settings while adding a field.
  */
-export const enum AddFieldOptions {
+export enum AddFieldOptions {
     /**
    *  Specify that a new field added to the list must also be added to the default content type in the site collection
    */
@@ -555,7 +555,7 @@ export interface IXmlSchemaFieldCreationInformation {
     SchemaXml: string;
 }
 
-export const enum CalendarType {
+export enum CalendarType {
     Gregorian = 1,
     Japan = 3,
     Taiwan = 4,

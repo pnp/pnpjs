@@ -495,7 +495,7 @@ export interface IPeoplePickerEntityData {
 /**
  * Specifies the originating zone of a request received.
  */
-export const enum UrlZone {
+export enum UrlZone {
     /**
      * Specifies the default zone used for requests unless another zone is specified.
      */
