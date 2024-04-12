@@ -1,23 +1,21 @@
 import "./user.js";
 
 export {
-    IAttachment,
-    IAttachments,
+    ITodoAttachment,
+    ITodoAttachments,
     IChecklistItem,
     IChecklistItems,
     ILinkedResource,
     ILinkedResources,
-    ITask,
+    ITodoTask,
     ITaskList,
     ITaskLists,
     ITodo,
-    Attachment,
-    Attachments,
     ChecklistItem,
     ChecklistItems,
     LinkedResource,
     LinkedResources,
-    Tasks,
+    ITodoTasks,
     TaskList,
     TaskLists,
 } from "./types.js";
