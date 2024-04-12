@@ -59,9 +59,9 @@ describe("GroupSiteManager (group context)", function () {
     let groupId = "";
 
     before(async function () {
-        const props = await this.props({
+        const props = {
             groupName: `TestGroup_${getRandomString(4)}`,
-        });
+        };
 
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
         groupId = groupAddResult.id;
