@@ -124,6 +124,12 @@ export const noInherit = addFlag(ObserverLifecycleFlags.noInherit);
  */
 export const once = addFlag(ObserverLifecycleFlags.once);
 
+const enum ObserverAddBehavior {
+    Add = 1,
+    Prepend = 2,
+    Replace = 3,
+}
+
 /**
  * Timeline represents a set of operations executed in order of definition,
  * with each moment's behavior controlled by the implementing function
@@ -170,7 +176,7 @@ export abstract class Timeline<T extends Moments> {
                 get: (target: any, p: string) => Object.assign((handler: ValidObserver) => {
 
                     target.cloneObserversOnChange();
-                    addObserver(target.observers, p, handler, "add");
+                    addObserver(target.observers, p, handler, ObserverAddBehavior.Add);
                     return target;
 
                 }, {
@@ -180,13 +186,13 @@ export abstract class Timeline<T extends Moments> {
                     replace: (handler: ValidObserver) => {
 
                         target.cloneObserversOnChange();
-                        addObserver(target.observers, p, handler, "replace");
+                        addObserver(target.observers, p, handler, ObserverAddBehavior.Replace);
                         return target;
                     },
                     prepend: (handler: ValidObserver) => {
 
                         target.cloneObserversOnChange();
-                        addObserver(target.observers, p, handler, "prepend");
+                        addObserver(target.observers, p, handler, ObserverAddBehavior.Prepend);
                         return target;
                     },
                     clear: (): boolean => {
@@ -309,9 +315,7 @@ export abstract class Timeline<T extends Moments> {
             } catch (e) {
 
                 // shouldn't happen, but possible dispose throws - which may be missed as the usercode await will have resolved.
-                const e2 = Object.assign(Error("Error in dispose."), {
-                    innerException: e,
-                });
+                const e2 = Object.assign(Error("Error in dispose."), { innerException: e });
 
                 this.error(e2);
             }
@@ -349,7 +353,7 @@ export abstract class Timeline<T extends Moments> {
  * @param addBehavior Determines how the observer is added to the collection
  *
  */
-function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: "add" | "replace" | "prepend"): any[] {
+function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: ObserverAddBehavior): any[] {
 
     if (!isFunc(observer)) {
         throw Error("Observers must be functions.");
@@ -363,13 +367,13 @@ function addObserver(target: Record<string, any>, moment: string, observer: Vali
 
         // if we have an existing property then we follow the specified behavior
         switch (addBehavior) {
-            case "add":
+            case ObserverAddBehavior.Add:
                 target[moment].push(observer);
                 break;
-            case "prepend":
+            case ObserverAddBehavior.Prepend:
                 target[moment].unshift(observer);
                 break;
-            case "replace":
+            case ObserverAddBehavior.Replace:
                 target[moment].length = 0;
                 target[moment].push(observer);
                 break;
@@ -383,7 +387,6 @@ export function cloneObserverCollection(source: ObserverCollection): ObserverCol
 
     return Reflect.ownKeys(source).reduce((clone: ObserverCollection, key: string) => {
 
-        // eslint-disable-next-line no-bitwise
         clone[key] = [...source[key].filter(byFlag(ObserverLifecycleFlags.noInherit))];
 
         return clone;
