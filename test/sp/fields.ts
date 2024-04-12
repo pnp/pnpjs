@@ -96,7 +96,7 @@ describe("Fields", function () {
                     Group: testFieldGroup,
                 });
 
-            return expect(field.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addDateTime", pnpTest("8c6ef065-4ead-40ba-b240-43c4c750ceb2", async function () {

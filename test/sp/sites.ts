@@ -39,7 +39,7 @@ describe("Sites", function () {
 
     it("rootWeb - ensureUser", async function () {
         const user: ISiteUserInfo = await this.pnp.sp.site.rootWeb.ensureUser(this.pnp.settings.testUser);
-        return expect(user).to.haveOwnProperty("id");
+        return expect(user).to.haveOwnProperty("Id");
     });
 
     it("getContextInfo", async function () {
