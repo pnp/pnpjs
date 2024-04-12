@@ -20,7 +20,7 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
     */
     public getByName(name: string): IAttachment {
         const f = Attachment(this);
-        f.concat(`('${name}')`);
+        f.concat(`('${encodePath(name)}')`);
         return f;
     }
 
