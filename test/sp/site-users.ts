@@ -86,7 +86,7 @@ describe("Site Users", function () {
             const _props: ISiteUserProps = await this.pnp.sp.web.currentUser();
             _props.Title = "Changed Title";
             await this.pnp.sp.web.currentUser.update(_props);
-            const _newProps = await this.pnp.sp.web.currentUser()
+            const _newProps = await this.pnp.sp.web.currentUser();
             return expect(_newProps.Title).to.be.eq("Changed Title");
         });
     });

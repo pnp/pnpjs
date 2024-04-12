@@ -134,7 +134,7 @@ describe("SiteScripts", function () {
     it("getSiteScript (list)", async function () {
         const listTitle = `sc_list_${getRandomString(8)}`;
         const listResult = await _rootSite.web.lists.add(listTitle);
-        const list = _rootSite.web.lists.getById(listResult.Id)
+        const list = _rootSite.web.lists.getById(listResult.Id);
         createdLists.push(list);
 
         return expect(list.getSiteScript(),

@@ -110,8 +110,8 @@ export const SiteUser = spInvokableFactory<ISiteUser>(_SiteUser);
 
 export interface ISiteUserInfo {
 
-    Id: number,
-    IsHiddenInUI: boolean,
+    Id: number;
+    IsHiddenInUI: boolean;
     LoginName: string;
     Title: string;
     PrincipalType: number;

@@ -42,7 +42,7 @@ type DistributeOn<T extends Moments, R extends Moments = T> =
         prepend(handler: Parameters<T[Prop]>[0][number]): Timeline<R>;
         clear(): boolean;
     }
-};
+    };
 
 /**
  * A type used to represent the proxied Timeline.emit property

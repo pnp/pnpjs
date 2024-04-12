@@ -9,5 +9,5 @@ export {
     IDocumentSetVersion,
     DocumentSetVersion,
     DocumentSetVersions,
-    IDocumentSetVersions
+    IDocumentSetVersions,
 } from "./types.js";

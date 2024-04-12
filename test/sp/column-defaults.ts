@@ -225,7 +225,7 @@ describe("DefaultColumnValues", function () {
             name: "MultiChoiceField",
             value: ["Item 1", "Item 2"],
         }]);
-        
+
         const defaults = await folder.getDefaultColumnValues();
 
         expect(defaults.length).to.be.eq(3);

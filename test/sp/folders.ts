@@ -50,14 +50,14 @@ describe("Folder", function () {
     ));
 
     it("getItem", async function () {
-        var folderName = `test${getRandomString(4)}`;
+        const folderName = `test${getRandomString(4)}`;
         const far = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
         const x = await  this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(far.Name).getItem();
         return expect(x).to.haveOwnProperty("Id");
     });
 
     it("getItem - call list", async function () {
-        var folderName = `test${getRandomString(4)}`;
+        const folderName = `test${getRandomString(4)}`;
         const far = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
         const x = await  this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(far.Name).getItem();
         const y = await x.list();
@@ -219,7 +219,7 @@ describe("Folder", function () {
         const user = await this.pnp.sp.web.ensureUser("everyone except external users");
         const login = user.LoginName;
         const folderName = `folder_${getRandomString(4)}`; const folders = this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders;
-        const far = await folders.addUsingPath(folderName);  
+        const far = await folders.addUsingPath(folderName);
         return expect(folders.getByUrl(far.Name).shareWith(login)).to.eventually.be.fulfilled;
     });
 
