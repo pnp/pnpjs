@@ -6,7 +6,7 @@ import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
 import { getRandomString, combine } from "@pnp/core";
-import { IFiles, TemplateFileType, fileFromPath, fileFromServerRelativePath } from "@pnp/sp/files";
+import { IFiles, TemplateFileType } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import findupSync from "findup-sync";

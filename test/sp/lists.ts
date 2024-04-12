@@ -280,7 +280,7 @@ describe("List", function () {
     it("renderListFormData", async function () {
 
         const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing renderListFormData");
-
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
         await list.items.add({
             Title: "Item 1",
         });
