@@ -49,7 +49,7 @@ extendFactory(Web, {
 
         if (r.created) {
             const [batchedWeb, execute] = this.batched();
-            const list = batchedWeb.lists.getById(r.data.Id);
+            const list = batchedWeb.lists.getById(r.Id);
             list.fields.addText("TextField");
             list.fields.addUrl("UrlField", { DisplayFormat: UrlFieldFormatType.Hyperlink });
             await execute();

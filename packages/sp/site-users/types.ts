@@ -98,24 +98,28 @@ export class _SiteUser extends _SPInstance<ISiteUserInfo> {
      *
      * @param props Group properties to update
      */
-    public async update(props: Partial<ISiteUserInfo>): Promise<IUserUpdateResult> {
+    public async update(props: Partial<ISiteUserInfo>): Promise<void> {
 
-        const data = await spPostMerge(this, body(props));
+        return spPostMerge(this, body(props));
 
-        return {
-            data,
-            user: this,
-        };
     }
 
 }
 export interface ISiteUser extends _SiteUser, IDeleteable { }
 export const SiteUser = spInvokableFactory<ISiteUser>(_SiteUser);
 
-export interface ISiteUserInfo extends ISiteUserProps {
+export interface ISiteUserInfo {
 
+    Id: number,
+    IsHiddenInUI: boolean,
+    LoginName: string;
+    Title: string;
+    PrincipalType: number;
+    Email: string;
     Expiration: string;
     IsEmailAuthenticationGuestUser: boolean;
+    IsShareByEmailGuestUser: boolean;
+    IsSiteAdmin: boolean;
     UserId: {
         NameId: string;
         NameIdIssuer: string;
@@ -176,22 +180,4 @@ export interface ISiteUserProps {
      *
      */
     Title: string;
-}
-
-/**
- * Properties that provide both a getter, and a setter.
- *
- */
-export interface IUserUpdateResult {
-    user: ISiteUser;
-    data: any;
-}
-
-/**
- * Result from ensuring a user
- *
- */
-export interface IWebEnsureUserResult {
-    data: ISiteUserProps;
-    user: ISiteUser;
 }

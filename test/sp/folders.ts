@@ -50,14 +50,16 @@ describe("Folder", function () {
     ));
 
     it("getItem", async function () {
-        const far = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(`test${getRandomString(4)}`);
-        const x = await far.folder.getItem();
+        var folderName = `test${getRandomString(4)}`;
+        const far = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+        const x = await  this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(far.Name).getItem();
         return expect(x).to.haveOwnProperty("Id");
     });
 
     it("getItem - call list", async function () {
-        const far = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(`test${getRandomString(4)}`);
-        const x = await far.folder.getItem();
+        var folderName = `test${getRandomString(4)}`;
+        const far = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.addUsingPath(folderName);
+        const x = await  this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(far.Name).getItem();
         const y = await x.list();
         return expect(y).to.haveOwnProperty("odata.metadata").contains("$metadata#SP.ApiData.Lists");
     });
@@ -215,10 +217,10 @@ describe("Folder", function () {
 
     it("shareWith", async function () {
         const user = await this.pnp.sp.web.ensureUser("everyone except external users");
-        const login = user.data.LoginName;
+        const login = user.LoginName;
         const folderName = `folder_${getRandomString(4)}`; const folders = this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders;
-        const far = await folders.addUsingPath(folderName);
-        return expect(far.folder.shareWith(login)).to.eventually.be.fulfilled;
+        const far = await folders.addUsingPath(folderName);  
+        return expect(folders.getByUrl(far.Name).shareWith(login)).to.eventually.be.fulfilled;
     });
 
     it("getFolderById", async function () {
@@ -235,7 +237,7 @@ describe("Folder", function () {
 
         const folderName2 = `test_${getRandomString(5)}`;
 
-        const folder = await result1.folder.addSubFolderUsingPath(folderName2);
+        const folder = await this.pnp.sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl(result1.Name).addSubFolderUsingPath(folderName2);
 
         return expect(folder()).to.eventually.be.fulfilled;
     });

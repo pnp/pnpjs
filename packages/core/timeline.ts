@@ -42,7 +42,7 @@ type DistributeOn<T extends Moments, R extends Moments = T> =
         prepend(handler: Parameters<T[Prop]>[0][number]): Timeline<R>;
         clear(): boolean;
     }
-    };
+};
 
 /**
  * A type used to represent the proxied Timeline.emit property
@@ -354,7 +354,6 @@ function addObserver(target: Record<string, any>, moment: string, observer: Vali
     if (!isFunc(observer)) {
         throw Error("Observers must be functions.");
     }
-
     if (!Reflect.has(target, moment)) {
 
         // if we don't have a registration for this moment, then we just add a new prop

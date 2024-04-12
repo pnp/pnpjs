@@ -35,7 +35,7 @@ const sp = spfi(...);
 
 // ensure we have a list
 const ler = await sp.web.lists.ensure("SecurityTestingList");
-const list: IList = ler.list;
+const list: IList = sp.web.lists.getById(ler.Id);
 
 // role assignments (see section below)
 await list.roleAssignments();
@@ -97,7 +97,7 @@ const sp = spfi(...);
 
 // ensure we have a list
 const ler = await sp.web.lists.ensure("SecurityTestingList");
-const list: IList = ler.list;
+const list: IList = sp.web.lists.getById(ler.Id);
 
 // list role assignments
 const assignments = await list.roleAssignments();

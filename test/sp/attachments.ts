@@ -23,7 +23,7 @@ describe("Attachments", function () {
 
         // we need to add a list and some attachments.
         const listData = await this.pnp.sp.web.lists.ensure(props.listTitle);
-        list = listData.list;
+        list = this.pnp.sp.web.lists.getById(listData.Id);
     }));
 
     it("attachmentFiles", pnpTest("9bc6dba6-6690-4453-8d13-4f42e051a245", async function () {
@@ -38,11 +38,11 @@ describe("Attachments", function () {
         const r = await list.items.add({
             Title: props.itemTitle,
         });
+        const item = list.items.getById(r.Id);
+        await item.attachmentFiles.add(props.attachmentFile1Name, "Some Content");
+        await item.attachmentFiles.add(props.attachmentFile2Name, "Some Content");
 
-        await r.item.attachmentFiles.add(props.attachmentFile1Name, "Some Content");
-        await r.item.attachmentFiles.add(props.attachmentFile2Name, "Some Content");
-
-        return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
+        return expect(item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
     }));
 
     it("getByName", pnpTest("25d87865-8e83-4d97-88ad-afeca7f217e1", async function () {
@@ -57,10 +57,11 @@ describe("Attachments", function () {
         const r = await list.items.add({
             Title: props.itemTitle,
         });
+        const item = list.items.getById(r.Id);
 
-        await r.item.attachmentFiles.add(props.attachmentFileName, props.content);
+        await item.attachmentFiles.add(props.attachmentFileName, props.content);
 
-        const info = await r.item.attachmentFiles.getByName(props.attachmentFileName)();
+        const info = await item.attachmentFiles.getByName(props.attachmentFileName)();
 
         return expect(info.FileName).to.eq(props.attachmentFileName);
     }));
@@ -77,9 +78,10 @@ describe("Attachments", function () {
         const r = await list.items.add({
             Title: props.itemTitle,
         });
+        const item = list.items.getById(r.Id);
 
-        await r.item.attachmentFiles.add(props.attachmentFileName, props.content);
-        const text = await r.item.attachmentFiles.getByName(props.attachmentFileName).getText();
+        await item.attachmentFiles.add(props.attachmentFileName, props.content);
+        const text = await item.attachmentFiles.getByName(props.attachmentFileName).getText();
         expect(text).to.eq(props.content);
     }));
 
@@ -96,15 +98,15 @@ describe("Attachments", function () {
         const r = await list.items.add({
             Title: props.itemTitle,
         });
+        const item = list.items.getById(r.Id);
+        await item.attachmentFiles.add(props.attachmentFileName, props.content);
 
-        await r.item.attachmentFiles.add(props.attachmentFileName, props.content);
-
-        const text = await r.item.attachmentFiles.getByName(props.attachmentFileName).getText();
+        const text = await item.attachmentFiles.getByName(props.attachmentFileName).getText();
 
         expect(text).to.eq(props.content);
 
-        await r.item.attachmentFiles.getByName(props.attachmentFileName).setContent(props.content2);
-        const text2 = await r.item.attachmentFiles.getByName(props.attachmentFileName).getText();
+        await item.attachmentFiles.getByName(props.attachmentFileName).setContent(props.content2);
+        const text2 = await item.attachmentFiles.getByName(props.attachmentFileName).getText();
         expect(text2).to.eq(props.content2);
     }));
 
@@ -120,15 +122,15 @@ describe("Attachments", function () {
         const r = await list.items.add({
             Title: props.itemTitle,
         });
+        const item = list.items.getById(r.Id);
+        await item.attachmentFiles.add(props.attachmentFileName, props.content);
 
-        await r.item.attachmentFiles.add(props.attachmentFileName, props.content);
-
-        const attachmentInfo = await r.item.attachmentFiles();
+        const attachmentInfo = await item.attachmentFiles();
 
         expect(attachmentInfo).to.be.an("Array").and.have.length(1);
 
-        await r.item.attachmentFiles.getByName(props.attachmentFileName).recycle();
+        await item.attachmentFiles.getByName(props.attachmentFileName).recycle();
 
-        return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
+        return expect(item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(0);
     }));
 });

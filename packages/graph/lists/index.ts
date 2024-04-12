@@ -5,6 +5,5 @@ export {
     Lists,
     ILists,
     List,
-    IList,
-    IListAddResult,
+    IList
 } from "./types.js";

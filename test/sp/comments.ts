@@ -154,9 +154,9 @@ describe("Comments", function () {
 
         before(pnpTest("679261d7-d620-4480-afa1-eb2fa2d9d1cf", async function () {
             const ler = await this.pnp.sp.web.lists.ensure(listTitle, "Used to test item comment operations");
-            list = ler.list;
+            list = this.pnp.sp.web.lists.getById(ler.Id);
 
-            if (ler.created) {
+            if (ler.Created){
                 const itemData = await list.items.add({ Title: `Item ${getRandomString(4)}` });
                 item = itemData.item;
             }

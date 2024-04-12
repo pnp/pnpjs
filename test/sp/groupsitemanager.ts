@@ -64,7 +64,7 @@ describe("GroupSiteManager (group context)", function () {
         });
 
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
-        groupId = groupAddResult.data.id;
+        groupId = groupAddResult.id;
     });
 
     it("create", async function () {

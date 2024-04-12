@@ -90,7 +90,7 @@ export class _Groups extends _DirectoryObjects<IGroupType[]> {
      * @param groupType Type of group being created
      * @param additionalProperties A plain object collection of additional properties you want to set on the new group
      */
-    public async add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: Record<string, any> = {}): Promise<IGroupAddResult> {
+    public async add(name: string, mailNickname: string, groupType: GroupType, additionalProperties: Record<string, any> = {}): Promise<IGroupType> {
 
         let postBody = {
             displayName: name,
@@ -109,21 +109,9 @@ export class _Groups extends _DirectoryObjects<IGroupType[]> {
             };
         }
 
-        const data = await graphPost(this, body(postBody));
+        return graphPost(this, body(postBody));
 
-        return {
-            data,
-            group: (<any>this).getById(data.id),
-        };
     }
 }
 export interface IGroups extends _Groups, IGetById<IGroup> { }
 export const Groups = graphInvokableFactory<IGroups>(_Groups);
-
-/**
- * IGroupAddResult
- */
-export interface IGroupAddResult {
-    group: IGroup;
-    data: any;
-}

@@ -21,7 +21,7 @@ describe("Security", function () {
         }
 
         const ler = await this.pnp.sp.web.lists.ensure("SecurityTestingList");
-        list = ler.list;
+        list = this.pnp.sp.web.lists.getById(ler.Id);
 
         // Capture the parent web for use in role definition tests.
         parentWeb = await this.pnp.sp.web.getParentWeb();

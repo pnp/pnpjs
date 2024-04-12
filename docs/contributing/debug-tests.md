@@ -30,7 +30,7 @@ describe("Items", () => {
 
             // execute a request to ensure we have a list
             const ler = await sp.web.lists.ensure("ItemTestList", "Used to test item operations");
-            list = ler.list;
+            list = sp.web.lists.getById(ler.Id);
 
             // in this case we want to have some items in the list for testing so we add those
             // only if the list was just created

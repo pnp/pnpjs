@@ -27,15 +27,15 @@ describe("Batching", function () {
             listTitle: `BatchingTest_${getRandomString(4)}`,
         });
 
-        const { data, created } = await this.pnp.sp.web.lists.ensure(props.listTitle);
+        const createList = await this.pnp.sp.web.lists.ensure(props.listTitle);
 
-        listId = data.Id;
+        listId = createList.Id;
 
-        if (created) {
+        if (createList.Id) {
 
             const [batch, execute] = this.pnp.sp.web.batched();
 
-            const list = batch.lists.getById(data.Id);
+            const list = batch.lists.getById(createList.Id);
 
             list.items.add({
                 Title: "Item 1",
@@ -125,7 +125,7 @@ describe("Batching", function () {
 
         const ler = await this.pnp.sp.web.lists.ensure(props.listTitle);
 
-        if (ler.data) {
+        if (ler) {
             const [batchedSP, execute] = this.pnp.sp.batched();
 
             batchedSP.web.lists.getByTitle(props.listTitle).items.add({ Title: "Hello 1" }).then(function () {
@@ -193,9 +193,9 @@ describe("Batching", function () {
         const ler = await this.pnp.sp.web.lists.ensure(props.listTitle, "", 101);
 
         // ensure we have a file
-        const far = await ler.list.rootFolder.files.addUsingPath(props.fileName, props.content);
+        const far = await this.pnp.sp.web.lists.getById(ler.Id).rootFolder.files.addUsingPath(props.fileName, props.content);
 
-        const item = await far.file.getItem();
+        const item = await this.pnp.sp.web.lists.getById(ler.Id).rootFolder.files.getByUrl(far.Name).getItem();
 
         const [batchedSP, execute] = this.pnp.sp.batched();
 
@@ -307,15 +307,16 @@ describe("Batching", function () {
         const res: IItem[] = [];
         const ids: number[] = [];
 
-        const { list } = await this.pnp.sp.web.lists.ensure(props.listName);
+        const ensureList  = await this.pnp.sp.web.lists.ensure(props.listName);
+        const list = this.pnp.sp.web.lists.getById(ensureList.Id);
 
         const [batchedBehavior, execute] = createBatch(list);
         list.using(batchedBehavior);
 
         for (let i = 0; i < 3; i++) {
             list.items.add({ Title: props.titles[i] }).then(r => {
-                ids.push(r.data.Id);
-                res.push(r.item);
+                ids.push(r.Id);
+                res.push(list.items.getById(r.id));
             });
         }
 

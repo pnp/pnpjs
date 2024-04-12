@@ -9,7 +9,7 @@ import "@pnp/sp/items/list";
 import "@pnp/sp/subscriptions/list";
 import "@pnp/sp/user-custom-actions/list";
 import "@pnp/sp/batching";
-import { IList, IRenderListDataParameters, ControlMode, IListEnsureResult, ICamlQuery, IChangeLogItemQuery, RenderListDataOptions } from "@pnp/sp/lists";
+import { IList, IRenderListDataParameters, ControlMode, ICamlQuery, IChangeLogItemQuery, RenderListDataOptions } from "@pnp/sp/lists";
 import { getRandomString } from "@pnp/core";
 import testSPInvokables from "../test-invokable-props.js";
 import { Context } from "mocha";
@@ -110,34 +110,40 @@ describe("List", function () {
     });
 
     it("effectiveBasePermissions", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing effectiveBasePermissions");
-        return expect(listEnsure.list.effectiveBasePermissions()).to.eventually.be.fulfilled;
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing effectiveBasePermissions");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
+        return expect(list.effectiveBasePermissions()).to.eventually.be.fulfilled;
     });
 
     it("eventReceivers", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing eventReceivers");
-        return expect(listEnsure.list.eventReceivers()).to.eventually.be.fulfilled;
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing eventReceivers");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
+        return expect(list.eventReceivers()).to.eventually.be.fulfilled;
     });
 
     it("relatedFields", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing relatedFields");
-        return expect(listEnsure.list.relatedFields()).to.eventually.be.fulfilled;
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing relatedFields");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
+        return expect(list.relatedFields()).to.eventually.be.fulfilled;
     });
 
     it("informationRightsManagementSettings", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing informationRightsManagementSettings");
-        return expect(listEnsure.list.informationRightsManagementSettings()).to.eventually.be.fulfilled;
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing informationRightsManagementSettings");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
+        return expect(list.informationRightsManagementSettings()).to.eventually.be.fulfilled;
     });
 
     it("update", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing update");
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing update");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
         const newTitle = "New title after update";
-        return expect(listEnsure.list.update({ Title: newTitle })).to.eventually.be.fulfilled;
+        return expect(list.update({ Title: newTitle })).to.eventually.be.fulfilled;
     });
 
     it("getChanges", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing getChanges");
-        return expect(listEnsure.list.getChanges({
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing getChanges");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
+        return expect(list.getChanges({
             Add: true,
             DeleteObject: true,
             Restore: true,
@@ -145,64 +151,68 @@ describe("List", function () {
     });
 
     it("getItemsByCAMLQuery", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing getItemsByCAMLQuery");
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing getItemsByCAMLQuery");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
         const caml: ICamlQuery = {
             ViewXml: "<View><ViewFields><FieldRef Name='Title' /><FieldRef Name='RoleAssignments' /></ViewFields><RowLimit>5</RowLimit></View>",
         };
-        return expect(listEnsure.list.getItemsByCAMLQuery(caml, "RoleAssignments")).to.eventually.be.fulfilled;
+        return expect(list.getItemsByCAMLQuery(caml, "RoleAssignments")).to.eventually.be.fulfilled;
     });
 
     it("getListItemChangesSinceToken", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing getListItemChangesSinceToken");
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing getListItemChangesSinceToken");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
         const query: IChangeLogItemQuery = {
             Contains: "<Contains><FieldRef Name=\"Title\"/><Value Type=\"Text\">Testing</Value></Contains>",
             // eslint-disable-next-line max-len
             QueryOptions: "<QueryOptions><IncludeMandatoryColumns>FALSE</IncludeMandatoryColumns><DateInUtc>False</DateInUtc><IncludePermissions>TRUE</IncludePermissions><IncludeAttachmentUrls>FALSE</IncludeAttachmentUrls><Folder>Shared Documents/Test1</Folder></QueryOptions>",
         };
-        return expect(listEnsure.list.getListItemChangesSinceToken(query)).to.eventually.be.fulfilled;
+        return expect(list.getListItemChangesSinceToken(query)).to.eventually.be.fulfilled;
     });
 
     it("recycle", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing recycle");
-        const recycleResponse = await listEnsure.list.recycle();
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing recycle");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
+        const recycleResponse = await list.recycle();
         if (typeof recycleResponse !== "string") {
             throw Error("Expected a string returned from recycle.");
         }
-        return expect(listEnsure.list.select("Title")()).to.eventually.be.rejected;
+        return expect(list.select("Title")()).to.eventually.be.rejected;
     });
 
     it("renderListData", async function () {
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing renderListData");
-        await listEnsure.list.items.add({
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing renderListData");
+        const list = this.pnp.sp.web.lists.getById(listEnsure.Id);
+        await list.items.add({
             Title: "Item 1",
         });
-        await listEnsure.list.items.add({
+        await list.items.add({
             Title: "Item 2",
         });
-        await listEnsure.list.items.add({
+        await list.items.add({
             Title: "Item 3",
         });
 
-        return expect(listEnsure.list.renderListData("<View><RowLimit>5</RowLimit></View>")).to.eventually.have.property("Row").that.is.not.empty;
+        return expect(list.renderListData("<View><RowLimit>5</RowLimit></View>")).to.eventually.have.property("Row").that.is.not.empty;
     });
 
     const setupRenderListDataAsStream = async function (this: Context): Promise<IList> {
 
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing renderListDataAsStream");
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing renderListDataAsStream");
 
-        if (listEnsure.created) {
-            await listEnsure.list.items.add({
+        if (listEnsure.Created) {
+            await list.items.add({
                 Title: "Item 1",
             });
-            await listEnsure.list.items.add({
+            await list.items.add({
                 Title: "Item 2",
             });
-            await listEnsure.list.items.add({
+            await list.items.add({
                 Title: "Item 3",
             });
         }
 
-        return listEnsure.list;
+        return list;
     };
 
     it("renderListDataAsStream", async function () {
@@ -269,13 +279,13 @@ describe("List", function () {
 
     it("renderListFormData", async function () {
 
-        const listEnsure: IListEnsureResult = await this.pnp.sp.web.lists.ensure("pnp testing renderListFormData");
+        const listEnsure = await this.pnp.sp.web.lists.ensure("pnp testing renderListFormData");
 
-        await listEnsure.list.items.add({
+        await list.items.add({
             Title: "Item 1",
         });
 
-        return expect(listEnsure.list.renderListFormData(1, "editform", ControlMode.Edit)).to.be.eventually.fulfilled;
+        return expect(list.renderListFormData(1, "editform", ControlMode.Edit)).to.be.eventually.fulfilled;
     });
 
     it("reserveListItemId", function () {
@@ -314,6 +324,7 @@ describe("List", function () {
 
     it("delete", async function () {
         const result = await this.pnp.sp.web.lists.add("pnp testing delete");
-        return expect(result.list.delete()).to.eventually.be.fulfilled;
+        const list = this.pnp.sp.web.lists.getById(result.Id);
+        return expect(list.delete()).to.eventually.be.fulfilled;
     });
 });

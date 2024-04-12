@@ -33,7 +33,7 @@ export class _Contacts extends _GraphCollection<IContactType[]> {
         surName: string,
         emailAddresses: IEmailAddressType[],
         businessPhones: string[],
-        additionalProperties: Record<string, any> = {}): Promise<IContactAddResult> {
+        additionalProperties: Record<string, any> = {}): Promise<IContactType> {
 
         const postBody = {
             businessPhones,
@@ -43,12 +43,7 @@ export class _Contacts extends _GraphCollection<IContactType[]> {
             ...additionalProperties,
         };
 
-        const data = await graphPost(this, body(postBody));
-
-        return {
-            contact: (<any>this).getById(data.id),
-            data,
-        };
+        return graphPost(this, body(postBody));
     }
 }
 export interface IContacts extends _Contacts, IGetById<IContact> { }
@@ -90,36 +85,15 @@ export class _ContactFolders extends _GraphCollection<IContactFolderType[]> {
      * @param displayName The folder's display name.
      * @param parentFolderId The ID of the folder's parent folder.
      */
-    public async add(displayName: string, parentFolderId?: string): Promise<IContactFolderAddResult> {
+    public async add(displayName: string, parentFolderId?: string): Promise<IContactFolderType> {
 
         const postBody = {
             displayName: displayName,
             parentFolderId: parentFolderId,
         };
 
-        const data = await graphPost(this, body(postBody));
-
-        return {
-            contactFolder: (<any>this).getById(data.id),
-            data,
-        };
+        return graphPost(this, body(postBody));
     }
 }
 export interface IContactFolders extends _ContactFolders, IGetById<IContactFolder> { }
 export const ContactFolders = graphInvokableFactory<IContactFolders>(_ContactFolders);
-
-/**
- * IContactFolderAddResult
- */
-export interface IContactFolderAddResult {
-    data: IContactFolderType;
-    contactFolder: IContactFolder;
-}
-
-/**
- * IContactAddResult
- */
-export interface IContactAddResult {
-    data: IContactType;
-    contact: IContact;
-}

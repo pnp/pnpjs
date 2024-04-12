@@ -2,15 +2,17 @@ import { addProp, body } from "@pnp/queryable";
 import { graphPost } from "../graphqueryable.js";
 import { _ContentType } from "../content-types/types.js";
 import { Columns, IColumns,IColumn, _Columns } from "./types.js";
-import { IColumnAddResult } from "./addColumns.js";
+import {
+    ColumnDefinition as IColumnDefinition,
+} from "@microsoft/microsoft-graph-types";
 
 declare module "./types" {
     interface _Columns {
-        addRef(siteColumn: IColumn): Promise<IColumnAddResult>;
+        addRef(siteColumn: IColumn): Promise<IColumnDefinition>;
     }
 
     interface IColumns {
-        addRef(siteColumn: IColumn): Promise<IColumnAddResult>;
+        addRef(siteColumn: IColumn): Promise<IColumnDefinition>;
     }
 }
 
@@ -20,14 +22,9 @@ declare module "./types" {
  *
  * @param siteColumn the site column to add.
  */
-_Columns.prototype.addRef = async function(siteColumn: IColumn): Promise<IColumnAddResult> {
+_Columns.prototype.addRef = async function(siteColumn: IColumn): Promise<IColumnDefinition> {
     const postBody = { "sourceColumn@odata.bind": `https://graph.microsoft.com/v1.0/${siteColumn.toUrl()}`};
-    const data = await graphPost(this, body(postBody));
-
-    return {
-        data,
-        column: (<any>this).getById(data.id),
-    };
+    return graphPost(this, body(postBody));
 };
 
 declare module "../content-types/types" {

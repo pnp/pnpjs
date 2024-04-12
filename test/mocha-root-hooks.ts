@@ -110,7 +110,7 @@ export const mochaHooks = {
                 const testWebResult = await rootSP.web.webs.add(`PnP-JS-Core Testing ${d.toDateString()}`, g);
 
                 // set the testing web url so our tests have access if needed
-                this.pnp.settings.sp.testWebUrl = testWebResult.data.Url;
+                this.pnp.settings.sp.testWebUrl = testWebResult.Url;
 
                 // create a new testing site
                 this.pnp._sp = spfi([rootSP.web, this.pnp.settings.sp.testWebUrl]);

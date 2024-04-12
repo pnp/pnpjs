@@ -53,7 +53,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param parameters Additional parameters to control method behavior
      */
     @cancelableScope
-    public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileAddResult> {
+    public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileInfo> {
 
         const path = [`AddUsingPath(decodedurl='${encodePath(url)}'`];
 
@@ -74,12 +74,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
 
         path.push(")");
 
-        const resp: IFileInfo = await spPost(Files(this, path.join("")), { body: content });
-
-        return {
-            data: resp,
-            file: fileFromServerRelativePath(this, resp.ServerRelativeUrl),
-        };
+        return spPost(Files(this, path.join("")), { body: content });
     }
 
     /**
@@ -91,12 +86,12 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @returns The new File and the raw response.
      */
     @cancelableScope
-    public async addChunked(url: string, content: ValidFileContentSource, props?: Partial<IChunkedOperationProps> & Partial<IAddUsingPathProps>): Promise<IFileAddResult> {
+    public async addChunked(url: string, content: ValidFileContentSource, props?: Partial<IChunkedOperationProps> & Partial<IAddUsingPathProps>): Promise<IFileInfo> {
 
         // add an empty stub
         const response = await this.addUsingPath(url, null, props);
 
-        const file = fileFromServerRelativePath(this, response.data.ServerRelativeUrl);
+        const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
 
         file.using(CancelAction(() => {
             return File(file).delete();
@@ -113,12 +108,8 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @returns The template file that was added and the raw response.
      */
     @cancelableScope
-    public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult> {
-        const response: IFileInfo = await spPost(Files(this, `addTemplateFile(urloffile='${encodePath(fileUrl)}',templatefiletype=${templateFileType})`));
-        return {
-            data: response,
-            file: fileFromServerRelativePath(this, response.ServerRelativeUrl),
-        };
+    public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileInfo> {
+        return spPost(Files(this, `addTemplateFile(urloffile='${encodePath(fileUrl)}',templatefiletype=${templateFileType})`));
     }
 }
 export interface IFiles extends _Files { }
@@ -404,7 +395,7 @@ export class _File extends ReadableFile<IFileInfo> {
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      */
     @cancelableScope
-    public async setContentChunked(file: ValidFileContentSource, props: Partial<IChunkedOperationProps>): Promise<IFileAddResult> {
+    public async setContentChunked(file: ValidFileContentSource, props: Partial<IChunkedOperationProps>): Promise<IFileInfo> {
 
         const { progress } = applyChunckedOperationDefaults(props);
 
@@ -425,12 +416,7 @@ export class _File extends ReadableFile<IFileInfo> {
             if (chunk.done) {
 
                 progress({ offset, stage: "finishing", uploadId });
-                const data = await spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunk?.value || "" });
-
-                return {
-                    data,
-                    file: fileFromServerRelativePath(this, data.ServerRelativeUrl),
-                };
+                return spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunk?.value || "" });
 
             } else if (first) {
 
@@ -604,14 +590,6 @@ export enum CheckinType {
     Major = 1,
     Overwrite = 2,
 }
-/**
- * Describes file and result
- */
-export interface IFileAddResult {
-    file: IFile;
-    data: IFileInfo;
-}
-
 /**
  * File move opertions
  */

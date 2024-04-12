@@ -6,10 +6,8 @@ export {
     IListItems,
     ListItem,
     IListItem,
-    IListItemAddResult,
     IDocumentSetVersion,
     DocumentSetVersion,
     DocumentSetVersions,
-    IDocumentSetVersions,
-    IDocumentSetVersionAddResult,
+    IDocumentSetVersions
 } from "./types.js";

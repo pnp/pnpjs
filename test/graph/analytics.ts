@@ -48,12 +48,12 @@ describe("Analytics", function () {
             });
 
             const listResult = await site.lists.add(sampleList);
-            listResultId = listResult.data.id;
+            listResultId = listResult.id;
             const listItemProps: any = {
                 title: props.title,
             };
             const listItem = await site.lists.getById(listResultId).items.add(listItemProps);
-            listItemId = listItem.data.id;
+            listItemId = listItem.id;
         } catch (err) {
             console.log("Could not create a sample list and item.");
         }

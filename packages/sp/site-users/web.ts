@@ -1,14 +1,13 @@
 import { addProp, body } from "@pnp/queryable";
 import { _Web, Web } from "../webs/types.js";
-import { ISiteUsers, SiteUsers, ISiteUser, SiteUser, IWebEnsureUserResult } from "./types.js";
-import { odataUrlFrom } from "../utils/odata-url-from.js";
+import { ISiteUsers, SiteUsers, ISiteUser, SiteUser, ISiteUserInfo } from "./types.js";
 import { spPost } from "../spqueryable.js";
 
 declare module "../webs/types" {
     interface _Web {
         readonly siteUsers: ISiteUsers;
         readonly currentUser: ISiteUser;
-        ensureUser(loginName: string): Promise<IWebEnsureUserResult>;
+        ensureUser(loginName: string): Promise<ISiteUserInfo>;
         getUserById(id: number): ISiteUser;
     }
     interface IWeb {
@@ -28,7 +27,7 @@ declare module "../webs/types" {
         *
         * @param loginName The login name of the user (ex: i:0#.f|membership|user@domain.onmicrosoft.com)
         */
-        ensureUser(loginName: string): Promise<IWebEnsureUserResult>;
+        ensureUser(loginName: string): Promise<ISiteUserInfo>;
 
         /**
          * Returns the user corresponding to the specified member identifier for the current site
@@ -42,13 +41,9 @@ declare module "../webs/types" {
 addProp(_Web, "siteUsers", SiteUsers);
 addProp(_Web, "currentUser", SiteUser);
 
-_Web.prototype.ensureUser = async function (this: _Web, logonName: string): Promise<IWebEnsureUserResult> {
+_Web.prototype.ensureUser = async function (this: _Web, logonName: string): Promise<ISiteUserInfo> {
 
-    const data = await spPost(Web(this, "ensureuser"), body({ logonName }));
-    return {
-        data,
-        user: SiteUser([this, odataUrlFrom(data)]),
-    };
+    return spPost(Web(this, "ensureuser"), body({ logonName }));
 };
 
 _Web.prototype.getUserById = function (id: number): ISiteUser {

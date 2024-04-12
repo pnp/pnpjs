@@ -26,7 +26,7 @@ describe("Groups", function () {
             list: { "template": "genericList" },
         });
 
-        itemsCol = GraphCollection(site.lists.getById(listInfo.data.id), "items");
+        itemsCol = GraphCollection(site.lists.getById(listInfo.id), "items");
 
         for (let i = 0; i < 11; i++) {
             await graphPost(itemsCol, body({

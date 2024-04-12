@@ -29,18 +29,18 @@ describe("Related Items", function () {
 
         webUrl = await this.pnp.sp.web.select("ServerRelativeUrl")().then(r => r.ServerRelativeUrl);
 
-        sourceList = ler1.list;
-        targetList = ler2.list;
+        sourceList = this.pnp.sp.web.lists.getById(ler1.Id);
+        targetList = this.pnp.sp.web.lists.getById(ler2.Id);
 
-        sourceListName = ler1.data.Id;
-        targetListName = ler2.data.Id;
+        sourceListName = ler1.Id;
+        targetListName = ler2.Id;
     });
 
     it("addSingleLink", async function () {
 
         const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` });
         const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
-        const p = this.pnp.sp.web.relatedItems.addSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl);
+        const p = this.pnp.sp.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
         return expect(p).to.eventually.be.fulfilled;
     });
 
@@ -50,27 +50,27 @@ describe("Related Items", function () {
             .addUsingPath(`test${getRandomString(4)}.txt`, "Test File", { Overwrite: true });
         const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
 
-        return expect(this.pnp.sp.web.relatedItems.addSingleLinkToUrl(targetListName, targetItem.data.Id, file.data.ServerRelativeUrl)).to.eventually.be.fulfilled;
+        return expect(this.pnp.sp.web.relatedItems.addSingleLinkToUrl(targetListName, targetItem.Id, file.ServerRelativeUrl)).to.eventually.be.fulfilled;
     });
 
     it("deleteSingleLink", async function () {
 
         const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` });
         const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
-        await this.pnp.sp.web.relatedItems.addSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl);
+        await this.pnp.sp.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
 
-        const promise = this.pnp.sp.web.relatedItems.deleteSingleLink(sourceListName, sourceItem.data.Id, webUrl, targetListName, targetItem.data.Id, webUrl);
+        const promise = this.pnp.sp.web.relatedItems.deleteSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
 
         return expect(promise).to.eventually.be.fulfilled;
     });
 
     it("getRelatedItems", async function () {
 
-        const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-        const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
+        const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` });
+        const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
         await this.pnp.sp.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
 
-        const targetItem2 = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
+        const targetItem2 = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
         await this.pnp.sp.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem2.Id, webUrl);
 
         const items = await this.pnp.sp.web.relatedItems.getRelatedItems(sourceListName, sourceItem.Id);
@@ -80,11 +80,11 @@ describe("Related Items", function () {
 
     it("getPageOneRelatedItems", async function () {
 
-        const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
-        const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
+        const sourceItem = await sourceList.items.add({ Title: `Item ${getRandomString(4)}` });
+        const targetItem = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
         await this.pnp.sp.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem.Id, webUrl);
 
-        const targetItem2 = await targetList.items.add({ Title: `Item ${getRandomString(4)}` }).then(r => r.data);
+        const targetItem2 = await targetList.items.add({ Title: `Item ${getRandomString(4)}` });
         await this.pnp.sp.web.relatedItems.addSingleLink(sourceListName, sourceItem.Id, webUrl, targetListName, targetItem2.Id, webUrl);
 
         const items = await this.pnp.sp.web.relatedItems.getPageOneRelatedItems(sourceListName, sourceItem.Id);

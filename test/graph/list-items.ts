@@ -35,7 +35,8 @@ describe("List-Items", function () {
 
         const listTemplate = JSON.parse(JSON.stringify(sampleList));
         listTemplate.displayName += props.displayName;
-        list = (await site.lists.add(listTemplate)).list;
+        const listAdd = (await site.lists.add(listTemplate));
+        list = site.lists.getById(listAdd.id);
 
         // add test items. Document set can be added later
         if(list){
