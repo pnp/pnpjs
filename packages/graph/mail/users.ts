@@ -5,6 +5,7 @@ import { IOutlook, Outlook } from "./categories.js";
 import { FocusedInboxOverrides, IFocusedInboxOverrides, IMailboxSettings, MailboxSettings } from "./mailbox.js";
 import { addProp, body } from "@pnp/queryable";
 import { graphPost } from "../graphqueryable.js";
+import { Message as IMessageType } from "@microsoft/microsoft-graph-types";
 
 declare module "../users/types" {
     interface _User {
@@ -22,7 +23,7 @@ declare module "../users/types" {
         readonly mailFolders: IMailFolders;
         readonly outlook: IOutlook;
         readonly focusedInboxOverrides: IFocusedInboxOverrides;
-        sendMail(message: IMessage): Promise<void>;
+        sendMail(message: IMessageType): Promise<void>;
         translateExchangeIds(translateExchangeIds: ITranslateExchangeIds): Promise<ITranslateExchangeIdsResponse[]>;
     }
 }
