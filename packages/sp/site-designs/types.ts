@@ -296,7 +296,7 @@ export interface ISiteDesignUpdateInfo extends Partial<ISiteDesignCreationInfo> 
     Id: string;
 }
 
-export const enum TemplateDesignType {
+export enum TemplateDesignType {
     /// <summary>
     /// Represents the Site design type.
     /// </summary>
@@ -307,7 +307,7 @@ export const enum TemplateDesignType {
     List = 1
 }
 
-export const enum ListDesignColor {
+export enum ListDesignColor {
     DarkRed = 0,
     Red = 1,
     Orange = 2,
@@ -322,7 +322,7 @@ export const enum ListDesignColor {
     Pink = 11
 }
 
-export const enum ListDesignIcon {
+export enum ListDesignIcon {
     Bug = 0,
     Calendar = 1,
     BullseyeTarget = 2,

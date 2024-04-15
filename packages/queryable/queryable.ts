@@ -14,7 +14,7 @@ export type QueryablePostObserver = (this: IQueryableInternal, url: URL, result:
 
 export type QueryableDataObserver<T = any> = (this: IQueryableInternal, result: T) => void;
 
-type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => Promise<[Promise<any>]>;
+type QueryablePromiseObserver = (this: IQueryableInternal, promise: Promise<any>) => [Promise<any>];
 
 const DefaultMoments = {
     construct: lifecycle<QueryableConstructObserver>(),
@@ -28,12 +28,38 @@ const DefaultMoments = {
 
 export type QueryableInit = Queryable<any> | string | [Queryable<any>, string];
 
+export type QueryParams = {
+    /**
+     * Sets the value associated to a given search parameter to the given value. If there were several values, delete the others.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/URLSearchParams/set)
+     */
+    set(name: string, value: string): void;
+
+    /**
+     * Returns the first value associated to the given search parameter.
+     *
+     * [MDN Reference](https://developer.mozilla.org/docs/Web/API/URLSearchParams/get)
+     */
+    get(name: string): string | null;
+
+    /**
+    * Returns a Boolean indicating if such a search parameter exists.
+    *
+    * [MDN Reference](https://developer.mozilla.org/docs/Web/API/URLSearchParams/has)
+    */
+    has(name: string, value?: string): boolean;
+
+    /** Returns a string containing a query string suitable for use in a URL. Does not include the question mark. */
+    toString(): string;
+};
+
 @invokable()
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQueryableInternal<R> {
 
     // tracks any query parameters which will be appended to the request url
-    private _query: URLSearchParams;
+    protected _query: QueryParams;
 
     // tracks the current url for a given Queryable
     protected _url: string;
@@ -49,6 +75,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         super(DefaultMoments);
 
+        // default to use the included URL search params to parse the query string
         this._query = new URLSearchParams();
 
         // add an internal moment with specific implementation for promise creation
@@ -114,7 +141,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
     /**
      * Querystring key, value pairs which will be included in the request
      */
-    public get query(): URLSearchParams {
+    public get query(): QueryParams {
         return this._query;
     }
 
@@ -204,20 +231,15 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
 
         }, 0);
 
-        // this is the promise that the calling code will recieve and await
-        let promise = new Promise<void>((resolve, reject) => {
+        // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
+        // cancelable to work as envisioned, but may have other users. Meant for internal use in the library accessed via behaviors.
+        return this.emit[this.InternalPromise](new Promise<void>((resolve, reject) => {
 
             // we overwrite any pre-existing internal events as a
             // given queryable only processes a single request at a time
             this.on[this.InternalResolve].replace(resolve);
             this.on[this.InternalReject].replace(reject);
-        });
-
-        // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
-        // cancelable to work as envisioned, but may have other users. Meant for internal use in the library accessed via behaviors.
-        [promise] = this.emit[this.InternalPromise](promise);
-
-        return promise;
+        }))[0];
     }
 }
 
@@ -230,7 +252,7 @@ export interface Queryable<R = any> extends IInvokable<R> { }
 
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
-    readonly query: URLSearchParams;
+    readonly query: QueryParams;
     // new(...params: any[]);
     <T = R>(this: IQueryableInternal, init?: RequestInit): Promise<T>;
     using(...behaviors: TimelinePipe[]): this;
@@ -286,24 +308,6 @@ export function queryableFactory<InstanceType>(
         return instance;
     };
 }
-
-// // extends IQueryableInternal
-// export function queryableFactory2<InstanceType extends IQueryableInternal>(constructor: InstanceType):
-//  (...args: ConstructorParameters<InstanceType>) => InstanceType & IInvokable {
-
-//     return (...args: ConstructorParameters<InstanceType>) => {
-
-//         // construct the concrete instance
-//         const instance: InstanceType = new constructor(...args);
-
-//         // we emit the construct event from the factory because we need all of the decorators and constructors
-//         // to have fully finished before we emit, which is now true. We type the instance to any to get around
-//         // the protected nature of emit
-//         (<any>instance).emit.construct(...args);
-
-//         return instance;
-//     };
-// }
 
 /**
  * Allows a decorated object to be invoked as a function, optionally providing an implementation for that action
