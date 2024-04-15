@@ -22,11 +22,11 @@ describe("Analytics", function () {
 
     const fileOptions = {
         content: "This is some test content",
-        filePathName: "pnpTest.txt",
+        filePathName: `pnpTest${getRandomString(5)}.txt`,
         contentType: "text/plain;charset=utf-8",
     };
     const sampleList: List = {
-        displayName: "PnPGraphTestListItemAnalytics",
+        displayName: `PnPGraphTestListItemAnalytics${getRandomString(5)}`,
         list: { "template": "genericList" },
     };
 

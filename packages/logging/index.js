@@ -1,6 +1,17 @@
 export * from "./listeners.js";
+/**
+ * A set of logging levels
+ */
+export var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["Verbose"] = 0] = "Verbose";
+    LogLevel[LogLevel["Info"] = 1] = "Info";
+    LogLevel[LogLevel["Warning"] = 2] = "Warning";
+    LogLevel[LogLevel["Error"] = 3] = "Error";
+    LogLevel[LogLevel["Off"] = 99] = "Off";
+})(LogLevel || (LogLevel = {}));
 const _subscribers = [];
-let _activeLogLevel = 2 /* Warning */;
+let _activeLogLevel = LogLevel.Warning;
 /**
  * Class used to subscribe ILogListener and log messages throughout an application
  *
@@ -43,7 +54,7 @@ export class Logger {
    * @param message The message to write
    * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
    */
-    static write(message, level = 1 /* Info */) {
+    static write(message, level = LogLevel.Info) {
         Logger.log({ level: level, message: message });
     }
     /**
@@ -52,7 +63,7 @@ export class Logger {
    * @param json The json object to stringify and write
    * @param level [Optional] if supplied will be used as the level of the entry (Default: LogLevel.Info)
    */
-    static writeJSON(json, level = 1 /* Info */) {
+    static writeJSON(json, level = LogLevel.Info) {
         Logger.write(JSON.stringify(json), level);
     }
     /**
@@ -71,7 +82,7 @@ export class Logger {
    * @param err The error object
    */
     static error(err) {
-        Logger.log({ data: err, level: 3 /* Error */, message: err.message });
+        Logger.log({ data: err, level: LogLevel.Error, message: err.message });
     }
 }
 export function PnPLogging(activeLevel) {

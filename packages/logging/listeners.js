@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+import { LogLevel } from "./index.js";
 export function ConsoleListener(prefix, colors) {
     return new _ConsoleListener(prefix, colors);
 }
@@ -55,16 +57,16 @@ class _ConsoleListener {
     log(entry) {
         let logMethod = console.log;
         switch (entry.level) {
-            case 3 /* Error */:
+            case LogLevel.Error:
                 logMethod = console.error;
                 break;
-            case 2 /* Warning */:
+            case LogLevel.Warning:
                 logMethod = console.warn;
                 break;
-            case 0 /* Verbose */:
+            case LogLevel.Verbose:
                 logMethod = console.debug;
                 break;
-            case 1 /* Info */:
+            case LogLevel.Info:
                 logMethod = console.info;
                 break;
             default:
