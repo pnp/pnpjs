@@ -22,11 +22,11 @@ describe("Analytics", function () {
 
     const fileOptions = {
         content: "This is some test content",
-        filePathName: "pnpTest.txt",
+        filePathName: `pnpTest${getRandomString(5)}.txt`,
         contentType: "text/plain;charset=utf-8",
     };
     const sampleList: List = {
-        displayName: "PnPGraphTestListItemAnalytics",
+        displayName: `PnPGraphTestListItemAnalytics${getRandomString(5)}`,
         list: { "template": "genericList" },
     };
 
@@ -48,12 +48,12 @@ describe("Analytics", function () {
             });
 
             const listResult = await site.lists.add(sampleList);
-            listResultId = listResult.data.id;
+            listResultId = listResult.id;
             const listItemProps: any = {
                 title: props.title,
             };
             const listItem = await site.lists.getById(listResultId).items.add(listItemProps);
-            listItemId = listItem.data.id;
+            listItemId = listItem.id;
         } catch (err) {
             console.log("Could not create a sample list and item.");
         }

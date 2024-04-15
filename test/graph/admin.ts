@@ -5,7 +5,7 @@ import "@pnp/graph/admin";
 
 describe("Admin", function () {
     const customUserProperty = "CustomAttribute1";
-    let propertyId = "";
+    // let propertyId = "";
 
     // Ensure we have the data to test against
     before(async function  () {
@@ -15,23 +15,24 @@ describe("Admin", function () {
         }
 
         // Get a sample property
-        try {
-            const property = await this.pnp.graph.admin.people.profileCardProperties.add({
-                directoryPropertyName: customUserProperty,
-                annotations: [{
-                    displayName: "Cost Center",
-                    localizations: [
-                        {
-                            languageTag: "ru-RU",
-                            displayName: "центр затрат",
-                        },
-                    ],
-                }],
-            });
-            propertyId = property.id;
-        } catch (err) {
-            console.log("Could not set test values for Admin");
-        }
+        // This only works with delegated permissions as of 4/15/24
+        // try {
+        //     const property = await this.pnp.graph.admin.people.profileCardProperties.add({
+        //         directoryPropertyName: customUserProperty,
+        //         annotations: [{
+        //             displayName: "Cost Center",
+        //             localizations: [
+        //                 {
+        //                     languageTag: "ru-RU",
+        //                     displayName: "центр затрат",
+        //                 },
+        //             ],
+        //         }],
+        //     });
+        //     propertyId = property.id;
+        // } catch (err) {
+        //     console.log("Could not set test values for Admin");
+        // }
     });
 
     describe("SharePoint", function () {
@@ -167,15 +168,16 @@ describe("Admin", function () {
 
     after(async function  () {
 
-        if (!stringIsNullOrEmpty(propertyId)) {
-            try {
+        // Only needed when profile card properties can be created with application permissions
+        // if (!stringIsNullOrEmpty(propertyId)) {
+        //     try {
 
-                await this.pnp.graph.admin.people.profileCardProperties.getById(propertyId).delete();
+        //         await this.pnp.graph.admin.people.profileCardProperties.getById(propertyId).delete();
 
-            } catch (err) {
-                console.error(`Cannot clean up test property: ${propertyId}`);
-            }
-        }
+        //     } catch (err) {
+        //         console.error(`Cannot clean up test property: ${propertyId}`);
+        //     }
+        // }
         return;
     });
 });
