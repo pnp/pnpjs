@@ -22,14 +22,14 @@ import "../onenote/index.js";
 import "../operations/index.js";
 import "../permissions/index.js";
 import "../photos/index.js";
-import "../places/index.js"
+import "../places/index.js";
 import "../planner/index.js";
 import "../search/index.js";
 import "../shares/index.js";
 import "../sites/index.js";
 import "../subscriptions/index.js";
 import "../taxonomy/index.js";
-import "../to-do/index.js"
+import "../to-do/index.js";
 import "../users/index.js";
 
 export * from  "../admin/index.js";
