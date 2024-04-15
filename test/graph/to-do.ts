@@ -4,14 +4,14 @@ import "@pnp/graph/to-do";
 import { pnpTest } from "../pnp-test.js";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { ChecklistItem } from "@microsoft/microsoft-graph-types";
-import { ITaskList, ITask } from "@pnp/graph/to-do";
+import { ITaskList, ITodoTask } from "@pnp/graph/to-do";
 import getValidUser from "./utilities/getValidUser.js";
 import { IUser } from "@pnp/graph/users";
 
 describe("To-do", function () {
     let user: IUser;
     let taskList: ITaskList;
-    let todoTask: ITask;
+    let todoTask: ITodoTask;
 
     before(pnpTest("94d99e35-9891-4b50-a23c-359a43eeadc7", async function () {
 

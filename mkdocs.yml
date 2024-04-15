@@ -67,6 +67,7 @@ nav:
         - 'mailbox': 'graph/mail-mailbox.md'
         - 'messages': 'graph/mail-messages.md'
         - 'rules': 'graph/mail-rules.md'
+      - members: 'graph/members.md'
       - onenote: 'graph\onenote.md'
       - outlook: 'graph/outlook.md'
       - operations: 'graph/operations.md'
