@@ -6,7 +6,7 @@ More information can be found in the official Graph documentation:
 
 - [To-do Resource Type](https://learn.microsoft.com/en-us/graph/api/resources/todo-overview?view=graph-rest-1.0)
 
-## IAttachment, IAttachments, IChecklistItem, IChecklistItems, ILinkedResource, ILinkedResources, ITask, ITaskList, ITaskLists, ITodo
+## ITodoAttachment, ITodoAttachments, IChecklistItem, IChecklistItems, ILinkedResource, ILinkedResources, ITodoTask, ITaskList, ITaskLists, ITodo
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
 ## taskLists
