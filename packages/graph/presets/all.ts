@@ -56,7 +56,7 @@ export * from  "../onenote/index.js";
 export * from  "../operations/index.js";
 export * from  "../permissions/index.js";
 export * from  "../photos/index.js";
-export * from  "../places/index.js"
+export * from  "../places/index.js";
 export * from  "../planner/index.js";
 export * from  "../search/index.js";
 export * from  "../shares/index.js";
