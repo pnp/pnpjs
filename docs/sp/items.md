@@ -592,6 +592,7 @@ Gets information about an item, including details about the parent list, parent 
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
+import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
 const sp = spfi(...);
@@ -599,3 +600,48 @@ const sp = spfi(...);
 const item: any = await sp.web.lists.getByTitle("My List").items.getById(1)();
 await item.getParentInfos();
 ```  
+
+### Get Version History
+
+Get's the version history information for a list item
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+
+const itemVersions: any = await sp.web.lists.getByTitle("My List").items.getById({item id}).versions();
+```
+
+### Get Version History Item by Id
+
+Get's the specific version information for a list item
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+
+const itemVersion: any = await sp.web.lists.getByTitle("My List").items.getById({item id}).versions.getById({version id})();
+```
+
+### Delete Version History Item by Id
+
+Get's the specific version information for a list item
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+
+await sp.web.lists.getByTitle("My List").items.getById({item id}).versions.getById({version id}).delete({eTag});
+```

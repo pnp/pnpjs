@@ -132,20 +132,6 @@ const endDate = new Date("2020-03-01");
 const events = graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").getCalendarView(startDate, endDate);
 ```
 
-## Group Membership
-
-Get the members and/or owners of a group.
-
-```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/groups";
-import "@pnp/graph/members";
-
-const graph = graphfi(...);
-const members = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").members();
-const owners = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").owners();
-```
-
 ## Get the Team Site for a Group
 
 ```TypeScript
@@ -158,6 +144,9 @@ const graph = graphfi(...);
 const teamSite = await graph.groups.getById("7d2b9355-0891-47d3-84c8-bf2cd9c62177").sites.root();
 const url = teamSite.webUrl
 ```
+## Group Membership (Members and Owners)
+
+See [Members](./members.md)
 
 ## Group Photo Operations
 

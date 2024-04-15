@@ -28,8 +28,8 @@ export const Todo = graphInvokableFactory<ITodo>(_Todo);
 @deleteable()
 @updateable()
 export class _TaskList extends _GraphInstance<ITodoTaskListType> {
-    public get tasks(): ITasks{
-        return Tasks(this);
+    public get tasks(): ITodoTasks{
+        return TodoTasks(this);
     }
 
     // TODO Create Open Extension. Wait for it to be built as part of extensions module
@@ -50,14 +50,14 @@ export interface ITaskLists extends _TaskLists, IGetById<ITaskList>, IAddable<IT
 export const TaskLists = graphInvokableFactory<ITaskLists>(_TaskLists);
 
 /**
- * Task
+ * TodoTask
  */
 @deleteable()
 @updateable()
-export class _Task extends _GraphInstance<ITodoTaskType> {
+export class _TodoTask extends _GraphInstance<ITodoTaskType> {
 
-    public get attachments(): IAttachments{
-        return Attachments(this);
+    public get attachments(): ITodoAttachments{
+        return TodoAttachments(this);
     }
 
     public get checklistItems(): IChecklistItems{
@@ -70,51 +70,51 @@ export class _Task extends _GraphInstance<ITodoTaskType> {
     // TODO Create Open Extension. Wait for it to be built as part of extensions module
     // TODO Get Open Extension. Wait for it to be built as part of extensions module
 }
-export interface ITask extends _Task, IUpdateable<ITodoTaskType>, IDeleteable{ }
-export const Task = graphInvokableFactory<ITask>(_Task);
+export interface ITodoTask extends _TodoTask, IUpdateable<ITodoTaskType>, IDeleteable{ }
+export const TodoTask = graphInvokableFactory<ITodoTask>(_TodoTask);
 
 /**
- * Tasks
+ * TodoTasks
  */
 @defaultPath("tasks")
-@getById(Task)
+@getById(TodoTask)
 @addable()
 @hasDelta()
-export class _Tasks extends _GraphCollection<ITodoTaskType[]> { }
-export interface ITasks extends _Tasks, IGetById<ITask>, IAddable<ITodoTaskType>, IHasDelta<Omit<IDeltaProps, "token">, ITodoTaskType> { }
-export const Tasks = graphInvokableFactory<ITasks>(_Tasks);
+export class _TodoTasks extends _GraphCollection<ITodoTaskType[]> { }
+export interface ITodoTasks extends _TodoTasks, IGetById<ITodoTask>, IAddable<ITodoTaskType>, IHasDelta<Omit<IDeltaProps, "token">, ITodoTaskType> { }
+export const TodoTasks = graphInvokableFactory<ITodoTasks>(_TodoTasks);
 
 /**
- * Attachment
+ * TodoAttachment
  */
 @deleteable()
-export class _Attachment extends _GraphInstance<ITodoAttachmentType> {
+export class _TodoAttachment extends _GraphInstance<ITodoAttachmentType> {
 
-    public get attachments(): IAttachments{
-        return Attachments(this);
+    public get TodoAttachments(): ITodoAttachments{
+        return TodoAttachments(this);
     }
 }
-export interface IAttachment extends _Attachment, IDeleteable{ }
-export const Attachment = graphInvokableFactory<IAttachments>(_Attachment);
+export interface ITodoAttachment extends _TodoAttachment, IDeleteable{ }
+export const TodoAttachment = graphInvokableFactory<ITodoAttachments>(_TodoAttachment);
 
 /**
- * Attachments
+ * TodoAttachments
  */
 @defaultPath("attachments")
-@getById(Attachment)
-export class _Attachments extends _GraphCollection<ITodoAttachmentType[]> {
+@getById(TodoAttachment)
+export class _TodoAttachments extends _GraphCollection<ITodoAttachmentType[]> {
 
-    public async add(attachmentInfo: IAddAttachmentOptions): Promise<ITodoAttachmentType>{
+    public async add(TodoAttachmentInfo: IAddTodoAttachmentOptions): Promise<ITodoAttachmentType>{
 
         const postBody = {
             "@odata.type": "#microsoft.graph.taskFileAttachment",
-            ...attachmentInfo,
+            ...TodoAttachmentInfo,
         };
         return graphPost(this, body(postBody));
     }
 }
-export interface IAttachments extends _Attachments, IGetById<IAttachment> { }
-export const Attachments = graphInvokableFactory<IAttachments>(_Attachments);
+export interface ITodoAttachments extends _TodoAttachments, IGetById<ITodoAttachment> { }
+export const TodoAttachments = graphInvokableFactory<ITodoAttachments>(_TodoAttachments);
 
 /**
  * Checklist
@@ -158,6 +158,6 @@ export interface IAddTaskListOptions{
     displayName: string;
 }
 
-export interface IAddAttachmentOptions extends ITodoAttachmentType{
+export interface IAddTodoAttachmentOptions extends ITodoAttachmentType{
     contentBytes: string;
 }
