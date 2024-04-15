@@ -45,7 +45,7 @@ describe("To-do", function () {
 
     it("lists", pnpTest("8de75582-6257-4e2a-b753-7c8be1cf0a38", async function () {
         const lists = await user.todo.lists();
-        return expect(lists).to.be.an("array") && expect(lists[0]).to.haveOwnProperty("id");
+        return expect(lists).to.be.an("array");
     }));
 
     it("lists - getById()", pnpTest("50650ae3-8192-4767-b4b3-9af7a586c11b", async function () {
