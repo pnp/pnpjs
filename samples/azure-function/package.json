@@ -1,0 +1,28 @@
+{
+  "name": "azfuncnode",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/functions": "4.4.0",
+    "@pnp/azidjsclient": "4.0.0",
+    "@pnp/graph": "4.0.0",
+    "@pnp/nodejs": "4.0.0",
+    "@pnp/sp": "4.0.0",
+    "applicationinsights": "2.9.5"
+  },
+  "devDependencies": {
+    "@types/node": "^18.x",
+    "typescript": "^5.0.0",
+    "rimraf": "^5.0.0"
+  },
+  "main": "dist/src/functions/*.js"
+}

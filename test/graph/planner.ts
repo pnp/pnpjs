@@ -444,7 +444,14 @@ describe("Planner", function () {
     after(async function () {
         if (PlanIds.length > 0) {
             PlanIds.forEach(async (id) => {
-                await this.pnp.graph.planner.plans.getById(id).delete();
+                try{
+                    const plan = await this.pnp.graph.planner.plans.getById(id)();
+                    if(plan != null){
+                        await this.pnp.graph.planner.plans.getById(id).delete();
+                    }
+                }catch(err){
+                    // ignore
+                }
             });
         }
     });

@@ -1,5 +1,5 @@
 import { _User, User } from "../users/types.js";
-import { IMessages, Messages, IMessage } from "./messages.js";
+import { IMessages, Messages } from "./messages.js";
 import { IMailFolders, MailFolders } from "./folders.js";
 import { IOutlook, Outlook } from "./categories.js";
 import { FocusedInboxOverrides, IFocusedInboxOverrides, IMailboxSettings, MailboxSettings } from "./mailbox.js";
@@ -23,7 +23,7 @@ declare module "../users/types" {
         readonly mailFolders: IMailFolders;
         readonly outlook: IOutlook;
         readonly focusedInboxOverrides: IFocusedInboxOverrides;
-        sendMail(message: IMessage): Promise<void>;
+        sendMail(message: IMessageType): Promise<void>;
         translateExchangeIds(translateExchangeIds: ITranslateExchangeIds): Promise<ITranslateExchangeIdsResponse[]>;
     }
 }
