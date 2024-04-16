@@ -8,7 +8,8 @@ import { ITaskList, ITodoTask } from "@pnp/graph/to-do";
 import getValidUser from "./utilities/getValidUser.js";
 import { IUser } from "@pnp/graph/users";
 
-describe("To-do", function () {
+// skipping all of together. We can create content, but can't delete. So it would create alot of unnecessary data
+describe.skip("To-do", function () {
     let user: IUser;
     let taskList: ITaskList;
     let todoTask: ITodoTask;
@@ -66,7 +67,7 @@ describe("To-do", function () {
         return expect(passed).is.true;
     }));
 
-    it("lists - update", pnpTest("9017c7b8-fb00-4a00-9ef0-51af695679a6", async function () {
+    it.skip("lists - update", pnpTest("9017c7b8-fb00-4a00-9ef0-51af695679a6", async function () {
         const displayName = "Test " + getRandomString(5);
         const updated = await taskList.update({
             displayName: displayName,
@@ -74,7 +75,7 @@ describe("To-do", function () {
         return expect(updated.id).is.not.null && expect(updated.displayName).equal(displayName);
     }));
 
-    it("lists - delete", pnpTest("ef561648-4380-4629-89bb-9834934e78d1", async function () {
+    it.skip("lists - delete", pnpTest("ef561648-4380-4629-89bb-9834934e78d1", async function () {
         const list = await user.todo.lists.add({
             displayName: "Test" + getRandomString(5),
         });
@@ -99,7 +100,7 @@ describe("To-do", function () {
         return expect(task.id).is.not.null;
     }));
 
-    it("tasks - add", pnpTest("71958133-bd13-4bde-83c3-b8ea8871a466", async function () {
+    it.skip("tasks - add", pnpTest("71958133-bd13-4bde-83c3-b8ea8871a466", async function () {
         let passed = false;
         const task = await taskList.tasks.add({
             title: "Test" + getRandomString(5),
@@ -112,7 +113,7 @@ describe("To-do", function () {
         return expect(passed).is.true;
     }));
 
-    it("tasks - update", pnpTest("c2071fbb-55d0-4837-a0d8-9a8bc6640f60", async function () {
+    it.skip("tasks - update", pnpTest("c2071fbb-55d0-4837-a0d8-9a8bc6640f60", async function () {
         const title = "Test " + getRandomString(5);
         const updated = await todoTask.update({
             title: title,
@@ -120,7 +121,7 @@ describe("To-do", function () {
         return expect(updated.id).is.not.null && expect(updated.title).equal(title);
     }));
 
-    it("tasks - delete", pnpTest("104adde8-6514-4b84-b711-ae360e971519", async function () {
+    it.skip("tasks - delete", pnpTest("104adde8-6514-4b84-b711-ae360e971519", async function () {
         const task = await taskList.tasks.add({
             title: "Test" + getRandomString(5),
         });
@@ -152,7 +153,7 @@ describe("To-do", function () {
         return expect(attachment.id).is.not.null;
     }));
 
-    it("fileAttachments add small", pnpTest("1515ae48-15c4-4b0c-81a7-3afd4b83e601", async function () {
+    it.skip("fileAttachments add small", pnpTest("1515ae48-15c4-4b0c-81a7-3afd4b83e601", async function () {
         const attachment = await todoTask.attachments.add(
             {
                 "name": getRandomString(10),
@@ -163,7 +164,7 @@ describe("To-do", function () {
         return expect(attachment.id).is.not.null;
     }));
 
-    it("fileAttachments delete", pnpTest("6ab1d551-c0ef-4b6c-a444-ce3f49b777e6", async function () {
+    it.skip("fileAttachments delete", pnpTest("6ab1d551-c0ef-4b6c-a444-ce3f49b777e6", async function () {
         const attachment = await todoTask.attachments.add(
             {
                 "name": getRandomString(10),
@@ -190,7 +191,7 @@ describe("To-do", function () {
         return expect(item.id).is.not.null;
     }));
 
-    it("checklistItems - add", pnpTest("be7b039f-2de9-446a-8a3c-e3b8ea5ec237", async function () {
+    it.skip("checklistItems - add", pnpTest("be7b039f-2de9-446a-8a3c-e3b8ea5ec237", async function () {
         let passed = false;
         const newItem = await todoTask.checklistItems.add({
             displayName:getRandomString(10),
@@ -203,7 +204,7 @@ describe("To-do", function () {
         return expect(passed).is.true;
     }));
 
-    it("checklistItems - update", pnpTest("9568305d-afea-43b1-89ad-5c3f5273383f", async function () {
+    it.skip("checklistItems - update", pnpTest("9568305d-afea-43b1-89ad-5c3f5273383f", async function () {
         const title = "Test " + getRandomString(5);
         const newItem = await todoTask.checklistItems.add({
             displayName:getRandomString(10),
@@ -215,7 +216,7 @@ describe("To-do", function () {
         return expect(updated.id).is.not.null && expect(updated.displayName).equal(title);
     }));
 
-    it("checklistItems - delete", pnpTest("ff66aa6c-72e9-402e-9937-3a59fd61257f", async function () {
+    it.skip("checklistItems - delete", pnpTest("ff66aa6c-72e9-402e-9937-3a59fd61257f", async function () {
         const newItem = await todoTask.checklistItems.add({
             displayName:getRandomString(10),
         });
@@ -224,12 +225,12 @@ describe("To-do", function () {
         }
         this.skip();
     }));
-    it("linkedResources", pnpTest("200bb895-b956-4120-b3c5-a111d074285f", async function () {
+    it.skip("linkedResources", pnpTest("200bb895-b956-4120-b3c5-a111d074285f", async function () {
         const resources = await todoTask.resources();
         return expect(resources).to.be.an("array");
     }));
 
-    it("linkedResources - getById()", pnpTest("88a91401-5851-4aea-a3d8-81adf37cabab", async function () {
+    it.skip("linkedResources - getById()", pnpTest("88a91401-5851-4aea-a3d8-81adf37cabab", async function () {
         const resource = await todoTask.resources.add({
             displayName:getRandomString(10),
             applicationName: "PnPjs" +  getRandomString(5),
@@ -238,7 +239,7 @@ describe("To-do", function () {
         return expect(item.id).is.not.null;
     }));
 
-    it("linkedResources - add", pnpTest("e7656849-41f0-4d8c-87a2-69591585ad73", async function () {
+    it.skip("linkedResources - add", pnpTest("e7656849-41f0-4d8c-87a2-69591585ad73", async function () {
         let passed = false;
         const task = await taskList.tasks.add({title: getRandomString(5)});
         const resource = await taskList.tasks.getById(task.id).resources.add({
@@ -253,7 +254,7 @@ describe("To-do", function () {
         return expect(passed).is.true;
     }));
 
-    it("linkedResources - update", pnpTest("106acffe-5b35-408b-8879-8d420bbf30c3", async function () {
+    it.skip("linkedResources - update", pnpTest("106acffe-5b35-408b-8879-8d420bbf30c3", async function () {
         const title = "Test " + getRandomString(5);
         const task = await taskList.tasks.add({title: getRandomString(5)});
         const resource = await taskList.tasks.getById(task.id).resources.add({
@@ -267,7 +268,7 @@ describe("To-do", function () {
         return expect(updated.id).is.not.null && expect(updated.displayName).equal(title);
     }));
 
-    it("linkedResources - delete", pnpTest("f5be23bd-972b-4c87-86f7-98de738c1257", async function () {
+    it.skip("linkedResources - delete", pnpTest("f5be23bd-972b-4c87-86f7-98de738c1257", async function () {
         const task = await taskList.tasks.add({title: getRandomString(5)});
         const resource = await taskList.tasks.getById(task.id).resources.add({
             applicationName: "PnPjs" + getRandomString(10),
