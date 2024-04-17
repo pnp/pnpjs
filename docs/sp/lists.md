@@ -63,7 +63,7 @@ const sp = spfi(...);
 const listAddResult = await sp.web.lists.add("My new list");
 
 // we can work with the list created using the IListAddResult.list property:
-const r = await listAddResult.list.select("Title")();
+const r = await sp.web.lists.getByTitle(listAddResult.list.select("Title")();
 
 // log newly created list title to console
 console.log(r.Title);
@@ -457,7 +457,7 @@ import "@pnp/sp/lists";
 
 const sp = spfi(...);
 const fld = await sp.site.rootWeb.fields.addText("MyField");
-await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.data.SchemaXml);
+await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.SchemaXml);
 ```
 
 ### folders

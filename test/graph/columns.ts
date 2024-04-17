@@ -72,7 +72,7 @@ describe("Columns", function () {
             list: { "template": "genericList" },
         });
 
-        list = addList.list;
+        list = site.lists.getById(addList.id);
     }));
 
     after(async function () {
@@ -114,8 +114,8 @@ describe("Columns", function () {
             columnTemplate.name += "Add";
             columnTemplate.displayName += props.displayName;
             const c = await site.columns.add(columnTemplate);
-            await site.columns.getById(c.data.id).delete();
-            return expect((c.data.name === columnTemplate.name)).to.be.true;
+            await site.columns.getById(c.id).delete();
+            return expect((c.name === columnTemplate.name)).to.be.true;
         }));
 
         it("update", pnpTest("8ce610b0-3139-4e2b-9d90-47ad43247250", async function () {
@@ -130,9 +130,9 @@ describe("Columns", function () {
             columnTemplate.displayName += props.displayName;
             const newColumnName = `${columnTemplate.displayName}-CHANGED`;
             const c = await site.columns.add(columnTemplate);
-            await site.columns.getById(c.data.id).update({ displayName: newColumnName });
-            const updateColumn = await site.columns.getById(c.data.id)();
-            await site.columns.getById(c.data.id).delete();
+            await site.columns.getById(c.id).update({ displayName: newColumnName });
+            const updateColumn = await site.columns.getById(c.id)();
+            await site.columns.getById(c.id).delete();
             return expect((updateColumn.displayName === newColumnName)).to.be.true;
         }));
 
@@ -147,10 +147,10 @@ describe("Columns", function () {
             columnTemplate.name += props.name;
             columnTemplate.displayName += props.displayName;
             const c = await site.columns.add(columnTemplate);
-            await site.columns.getById(c.data.id).delete();
+            await site.columns.getById(c.id).delete();
             let deletedColumn: ColumnDefinition = null;
             try {
-                deletedColumn = await site.columns.getById(c.data.id)();
+                deletedColumn = await site.columns.getById(c.id)();
             } catch (err) {
                 // do nothing
             }
@@ -177,7 +177,7 @@ describe("Columns", function () {
             columnTemplate.name = columnTemplateName;
             columnTemplate.displayName = columnTemplateName;
             const addSiteCT = await site.columns.add(columnTemplate);
-            siteColumn = addSiteCT.column;
+            siteColumn = site.columns.getById(addSiteCT.id);
         }));
 
         after(async function () {
@@ -203,24 +203,24 @@ describe("Columns", function () {
 
         it("addRef", pnpTest("9dd8c09e-9e07-42e2-ac2d-5685966d2aa0", async function () {
             const c = await contentType.columns.addRef(siteColumn);
-            await contentType.columns.getById(c.data.id).delete();
-            return expect((c.data.name === columnTemplateName)).to.be.true;
+            await contentType.columns.getById(c.id).delete();
+            return expect((c.name === columnTemplateName)).to.be.true;
         }));
 
         // Site column properties cannot be updated in content type.
         it.skip("update", pnpTest("c3afb14e-3f42-48e8-9ea6-43be8d231762", async function () {
             const c = await contentType.columns.addRef(siteColumn);
-            const updateColumnResults = await contentType.columns.getById(c.data.id).update({ propagateChanges: true });
-            await contentType.columns.getById(c.data.id).delete();
+            const updateColumnResults = await contentType.columns.getById(c.id).update({ propagateChanges: true });
+            await contentType.columns.getById(c.id).delete();
             return expect((updateColumnResults.propagateChanges)).to.be.true;
         }));
 
         it("delete", pnpTest("4d6e18c1-abe7-4cd4-a90e-1c1715d5e1ce", async function () {
             const c = await contentType.columns.addRef(siteColumn);
-            await contentType.columns.getById(c.data.id).delete();
+            await contentType.columns.getById(c.id).delete();
             let deletedColumn: ColumnDefinition = null;
             try {
-                deletedColumn = await contentType.columns.getById(c.data.id)();
+                deletedColumn = await contentType.columns.getById(c.id)();
             } catch (err) {
                 // do nothing
             }
@@ -254,8 +254,8 @@ describe("Columns", function () {
             columnTemplate.name += "Add";
             columnTemplate.displayName += props.displayName;
             const c = await list.columns.add(columnTemplate);
-            await list.columns.getById(c.data.id).delete();
-            return expect((c.data.name === columnTemplate.name)).to.be.true;
+            await list.columns.getById(c.id).delete();
+            return expect((c.name === columnTemplate.name)).to.be.true;
         }));
 
         it("update", pnpTest("3827a66a-2f8b-4cd7-addb-b49eac258f45", async function () {
@@ -270,9 +270,9 @@ describe("Columns", function () {
             columnTemplate.displayName += props.displayName;
             const newColumnName = `${columnTemplate.displayName}-CHANGED`;
             const c = await list.columns.add(columnTemplate);
-            await list.columns.getById(c.data.id).update({ displayName: newColumnName });
-            const updateColumn = await list.columns.getById(c.data.id)();
-            await list.columns.getById(c.data.id).delete();
+            await list.columns.getById(c.id).update({ displayName: newColumnName });
+            const updateColumn = await list.columns.getById(c.id)();
+            await list.columns.getById(c.id).delete();
             return expect((updateColumn.displayName === newColumnName)).to.be.true;
         }));
 
@@ -287,10 +287,10 @@ describe("Columns", function () {
             columnTemplate.name += props.name;
             columnTemplate.displayName += props.displayName;
             const c = await list.columns.add(columnTemplate);
-            await list.columns.getById(c.data.id).delete();
+            await list.columns.getById(c.id).delete();
             let deletedColumn: ColumnDefinition = null;
             try {
-                deletedColumn = await list.columns.getById(c.data.id)();
+                deletedColumn = await list.columns.getById(c.id)();
             } catch (err) {
                 // do nothing
             }

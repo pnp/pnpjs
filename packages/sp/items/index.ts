@@ -9,9 +9,6 @@ export {
     ItemVersions,
     IItemVersion,
     IItemVersions,
-    IItemAddResult,
-    IItemUpdateResult,
-    IItemUpdateResultData,
     IItemDeleteParams,
     IItemParentInfos,
 } from "./types.js";

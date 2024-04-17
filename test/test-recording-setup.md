@@ -42,10 +42,10 @@ it("attachmentFiles", async function () {
         Title: `Test_${getRandomString(4)}`,
     });
 
-    await r.item.attachmentFiles.add(`att_${getRandomString(4)}.txt`, "Some Content");
-    await r.item.attachmentFiles.add(`att_${getRandomString(4)}.txt`, "Some Content");
+    await r.attachmentFiles.add(`att_${getRandomString(4)}.txt`, "Some Content");
+    await r.attachmentFiles.add(`att_${getRandomString(4)}.txt`, "Some Content");
 
-    return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
+    return expect(list.items.getById(r.Id).attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
 });
 ```
 
@@ -78,10 +78,10 @@ it("attachmentFiles", pnpTest("9bc6dba6-6690-4453-8d13-4f42e051a245", async func
         Title: props.itemTitle,
     });
 
-    await r.item.attachmentFiles.add(props.attachmentFile1Name, "Some Content");
-    await r.item.attachmentFiles.add(props.attachmentFile2Name, "Some Content");
+    await r.attachmentFiles.add(props.attachmentFile1Name, "Some Content");
+    await r.attachmentFiles.add(props.attachmentFile2Name, "Some Content");
 
-    return expect(r.item.attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
+    return expect(list.items.getById(r.Id).attachmentFiles()).to.eventually.be.fulfilled.and.to.be.an("Array").and.have.length(2);
 }));
 ```
 

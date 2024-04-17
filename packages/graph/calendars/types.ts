@@ -167,14 +167,6 @@ export class _CalendarPermissions extends _GraphCollection<ICalendarPermissionTy
 export interface ICalendarPermissions extends _CalendarPermissions, IGetById<ICalendarPermission>, IAddable<ICalendarPermissionType, ICalendarPermissionType> { }
 export const CalendarPermissions = graphInvokableFactory<ICalendarPermissions>(_CalendarPermissions);
 
-/**
- * EventAddResult
- */
-export interface IEventAddResult {
-    data: IEventType;
-    event: IEvent;
-}
-
 export interface IForwardEvent {
     Comment?: string;
     ToRecipients: Recipient[];

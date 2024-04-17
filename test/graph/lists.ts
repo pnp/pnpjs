@@ -47,8 +47,8 @@ describe("Lists", function () {
         const listTemplate = JSON.parse(JSON.stringify(sampleList));
         listTemplate.displayName += props.displayName;
         const list = await site.lists.add(listTemplate);
-        await site.lists.getById(list.data.id).delete();
-        return expect((list.data.displayName === listTemplate.displayName)).to.be.true;
+        await site.lists.getById(list.id).delete();
+        return expect((list.displayName === listTemplate.displayName)).to.be.true;
     }));
 
     it("update", pnpTest("a386a85a-03ce-4846-8ca8-2472075694f5", async function () {
@@ -61,9 +61,9 @@ describe("Lists", function () {
         listTemplate.displayName += props.displayName;
         const newListName = `${listTemplate.displayName}-CHANGED`;
         const list = await site.lists.add(listTemplate);
-        await site.lists.getById(list.data.id).update({ displayName: newListName });
-        const updateList = await site.lists.getById(list.data.id)();
-        await site.lists.getById(list.data.id).delete();
+        await site.lists.getById(list.id).update({ displayName: newListName });
+        const updateList = await site.lists.getById(list.id)();
+        await site.lists.getById(list.id).delete();
         return expect((updateList.displayName === newListName)).to.be.true;
     }));
 
@@ -76,10 +76,10 @@ describe("Lists", function () {
         const listTemplate = JSON.parse(JSON.stringify(sampleList));
         listTemplate.displayName += props.displayName;
         const list = await site.lists.add(listTemplate);
-        await site.lists.getById(list.data.id).delete();
+        await site.lists.getById(list.id).delete();
         let deletedList: List = null;
         try {
-            deletedList = await site.lists.getById(list.data.id)();
+            deletedList = await site.lists.getById(list.id)();
         } catch (err) {
             // do nothing
         }

@@ -6,8 +6,6 @@ export {
     Fields,
     IField,
     Field,
-    IFieldAddResult,
-    IFieldUpdateResult,
     AddFieldOptions,
     CalendarType,
     ChoiceFieldFormatType,

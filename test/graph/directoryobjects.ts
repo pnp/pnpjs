@@ -46,7 +46,7 @@ describe("Directory Objects", function () {
                 "https://graph.microsoft.com/v1.0/users/" + props.userId,
             ],
         });
-        testChildGroupID = result.data.id;
+        testChildGroupID = result.id;
 
         result = await this.pnp.graph.groups.add(props.groupName2, props.groupName2, GroupType.Security, {
             "members@odata.bind": [
@@ -57,7 +57,7 @@ describe("Directory Objects", function () {
                 "https://graph.microsoft.com/v1.0/users/" + props.userId,
             ],
         });
-        testParentGroupID = result.data.id;
+        testParentGroupID = result.id;
     }));
 
     it("delete", pnpTest("e1d8a9b8-43c1-4c02-85b3-92ef980d0ee2", async function () {
@@ -74,7 +74,7 @@ describe("Directory Objects", function () {
                 "https://graph.microsoft.com/v1.0/users/" + userId,
             ],
         });
-        const testDeleteGroupID = result.data.id;
+        const testDeleteGroupID = result.id;
         return expect(this.pnp.graph.groups.getById(testDeleteGroupID).delete()).eventually.be.fulfilled;
     }));
 

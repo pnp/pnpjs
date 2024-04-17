@@ -129,10 +129,11 @@ describe("Items", function () {
 
     it("recycle", async function () {
 
-        const item = await list.items.add({
+        const r = await list.items.add({
             Title: "Recycle Me",
         });
-        return expect(item.item.recycle()).to.eventually.be.fulfilled;
+        const item = list.items.getById(r.Id);
+        return expect(item.recycle()).to.eventually.be.fulfilled;
     });
 
     /**
@@ -142,11 +143,12 @@ describe("Items", function () {
 
         const title = `test_delparams_${getRandomString(4)}`;
 
-        const item = await list.items.add({
+        const itemAdd = await list.items.add({
             Title: title,
         });
+        const item = list.items.getById(itemAdd.Id);
 
-        await item.item.deleteWithParams({
+        await item.deleteWithParams({
             BypassSharedLock: false,
         });
 

@@ -5,7 +5,6 @@ import { AppCatalog, IAppCatalog } from "./types.js";
 import "./web.js";
 
 export {
-    IAppAddResult,
     IApp,
     IAppCatalog,
     App,
