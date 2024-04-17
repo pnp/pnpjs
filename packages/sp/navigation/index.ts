@@ -7,7 +7,6 @@ export {
     INavNodeUpdateResult,
     INavigation,
     INavigationNode,
-    INavigationNodeAddResult,
     INavigationNodes,
     INavigationService,
     Navigation,

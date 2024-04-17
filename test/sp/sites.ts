@@ -4,17 +4,17 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { IDocumentLibraryInformation, IOpenWebByIdResult, ISiteLogoProperties, Site, SiteLogoAspect, SiteLogoType } from "@pnp/sp/sites";
 import "@pnp/sp/site-users";
-import { IWebEnsureUserResult } from "@pnp/sp/site-users";
 import { IWeb } from "@pnp/sp/webs";
 import { combine, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { IContextInfo } from "@pnp/sp/context-info";
 import "@pnp/sp/context-info";
-
+import { ISiteUserInfo } from "@pnp/sp/site-users";
 import "@pnp/sp/files";
 import { IFiles } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import findupSync from "findup-sync";
+
 
 // get a single reference to the projectRoot
 const projectRoot = resolve(dirname(findupSync("package.json")));
@@ -38,8 +38,8 @@ describe("Sites", function () {
     });
 
     it("rootWeb - ensureUser", async function () {
-        const user: IWebEnsureUserResult = await this.pnp.sp.site.rootWeb.ensureUser(this.pnp.settings.testUser);
-        return expect(user.data).to.haveOwnProperty("id");
+        const user: ISiteUserInfo = await this.pnp.sp.site.rootWeb.ensureUser(this.pnp.settings.testUser);
+        return expect(user).to.haveOwnProperty("Id");
     });
 
     it("getContextInfo", async function () {
@@ -87,7 +87,7 @@ describe("Sites", function () {
         const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
         const content = readFileSync(resolve(projectRoot, "./test/sp/assets/sample_file.jpg"));
         const far = await files.addChunked(name, <any>content, null);
-        const path = far.data.ServerRelativeUrl;
+        const path = far.ServerRelativeUrl;
         const logoProperties: ISiteLogoProperties = {relativeLogoUrl: path, aspect: SiteLogoAspect.Square, type: SiteLogoType.WebLogo};
         await this.pnp.sp.site.setSiteLogo(logoProperties);
     });

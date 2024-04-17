@@ -7,7 +7,6 @@ export {
     IFile,
     Files,
     IFiles,
-    IFileAddResult,
     IFileUploadProgressData,
     CheckinType,
     MoveOperations,

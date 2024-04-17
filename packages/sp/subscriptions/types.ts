@@ -29,7 +29,7 @@ export class _Subscriptions extends _SPCollection {
      * @param expirationDate The date and time to expire the subscription in the form YYYY-MM-ddTHH:mm:ss+00:00 (maximum of 6 months)
      * @param clientState A client specific string (optional)
      */
-    public async add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<ISubscriptionAddResult> {
+    public async add(notificationUrl: string, expirationDate: string, clientState?: string): Promise<any> {
 
         const postBody: any = {
             "expirationDateTime": expirationDate,
@@ -41,9 +41,7 @@ export class _Subscriptions extends _SPCollection {
             postBody.clientState = clientState;
         }
 
-        const data = await spPost(this, body(postBody));
-
-        return { data, subscription: this.getById(data.id) };
+        return spPost(this, body(postBody));
     }
 }
 export interface ISubscriptions extends _Subscriptions { }
@@ -58,7 +56,7 @@ export class _Subscription extends _SPInstance {
      * @param notificationUrl The url to receive the notifications (optional)
      * @param clientState A client specific string (optional)
      */
-    public async update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<ISubscriptionUpdateResult> {
+    public async update(expirationDate?: string, notificationUrl?: string, clientState?: string): Promise<any> {
 
         const postBody: any = {};
 
@@ -74,9 +72,7 @@ export class _Subscription extends _SPInstance {
             postBody.clientState = clientState;
         }
 
-        const data = await spPatch(this, body(postBody));
-
-        return { data, subscription: this };
+        return spPatch(this, body(postBody));
     }
 
     /**
@@ -89,21 +85,3 @@ export class _Subscription extends _SPInstance {
 }
 export interface ISubscription extends _Subscription { }
 export const Subscription = spInvokableFactory<ISubscription>(_Subscription);
-
-/**
- * Result from adding a new subscription
- *
- */
-export interface ISubscriptionAddResult {
-    subscription: ISubscription;
-    data: any;
-}
-
-/**
- * Result from updating a subscription
- *
- */
-export interface ISubscriptionUpdateResult {
-    subscription: ISubscription;
-    data: any;
-}

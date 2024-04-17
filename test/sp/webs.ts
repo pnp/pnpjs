@@ -20,6 +20,7 @@ import "@pnp/sp/security";
 import { INavNodeInfo } from "@pnp/sp/navigation/types.js";
 import testSPInvokables from "../test-invokable-props.js";
 import { Web } from "@pnp/sp/webs";
+import { odataUrlFrom } from "@pnp/sp/index.js";
 
 describe("Webs", function () {
 
@@ -170,7 +171,8 @@ describe("Web", function () {
     it("delete", async function () {
         const url = getRandomString(4);
         const result = await this.pnp.sp.web.webs.add("Better be deleted!", url);
-        return expect(result.web.delete()).to.eventually.be.fulfilled;
+        const web = Web([this.pnp.sp.web, odataUrlFrom(result).replace(/_api\/web\/?/i, "")]);
+        return expect(web.delete()).to.eventually.be.fulfilled;
     });
 
     describe("client-side-pages", function () {

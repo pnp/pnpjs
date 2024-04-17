@@ -65,25 +65,25 @@ describe("Fields", function () {
         it("add", pnpTest("80e75ef7-3d5a-4880-9b28-67143ce6d058", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(testFieldNameRand);
+            return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addText", pnpTest("54ce0598-f27c-4787-9d39-3f31cedaacbd", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await this.pnp.sp.web.fields.addText(testFieldNameRand, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(testFieldNameRand);
+            return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addImageField", pnpTest("76b940f7-2113-4adb-adad-230e119b5450", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await this.pnp.sp.web.fields.addImageField(testFieldNameRand, { Group: testFieldGroup});
-            return expect(field.data.Title).to.be.equal(testFieldNameRand);
+            return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addNumber", pnpTest("5f3f2ba5-d467-4ebb-8161-3589c35f62c4", async function () {
             const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
             const field = await this.pnp.sp.web.fields.addNumber(testFieldNameRand, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(testFieldNameRand);
+            return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addCalculated", pnpTest("4dc773f4-6f65-44e9-8ff6-8a03fe4dcb31", async function () {
@@ -96,7 +96,7 @@ describe("Fields", function () {
                     Group: testFieldGroup,
                 });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addDateTime", pnpTest("8c6ef065-4ead-40ba-b240-43c4c750ceb2", async function () {
@@ -115,7 +115,7 @@ describe("Fields", function () {
                     }
                 );
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addCurrency", pnpTest("673c2821-b07d-4c52-ae70-e5afe2a786bb", async function () {
@@ -125,7 +125,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.fields.addCurrency(name, { MinimumValue: 0, MaximumValue: 100, CurrencyLocaleId: 1033, Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addMultilineText", pnpTest("a6e8d8be-4db2-4e2a-a65b-0af3cfe6ff0e", async function () {
@@ -144,7 +144,7 @@ describe("Fields", function () {
                     Group: testFieldGroup,
                 });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addUrl", pnpTest("c0754452-3817-415c-96d4-89e47d5cb7c2", async function () {
@@ -155,7 +155,7 @@ describe("Fields", function () {
 
             const field = await this.pnp.sp.web.fields.addUrl(name, { DisplayFormat: UrlFieldFormatType.Hyperlink, Group: testFieldGroup });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addUser", pnpTest("93b6e6b4-d9b2-464f-8846-9c0353b9515f", async function () {
@@ -166,7 +166,7 @@ describe("Fields", function () {
 
             const field = await this.pnp.sp.web.fields.addUser(name, { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: testFieldGroup });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addLookup", pnpTest("578da2cd-0a42-42a0-84e7-0e0de0315610", async function () {
@@ -178,12 +178,12 @@ describe("Fields", function () {
 
             const list = await this.pnp.sp.web.lists.add(lookupListName, testFieldDescription, 100, false);
 
-            const field = await this.pnp.sp.web.fields.addLookup(name, { LookupListId: list.data.Id, LookupFieldName: "Title" });
-            await field.field.update({
+            const field = await this.pnp.sp.web.fields.addLookup(name, { LookupListId: list.Id, LookupFieldName: "Title" });
+            await this.pnp.sp.web.fields.getById(field.Id).update({
                 Group: testFieldGroup,
             });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addChoice", pnpTest("deff0f4a-5a4d-4607-b882-cb9c1b972d47", async function () {
@@ -200,7 +200,7 @@ describe("Fields", function () {
                 Group: testFieldGroup,
             });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addMultiChoice", pnpTest("011f8908-35b1-4a41-84d6-fbf5ce8d892a", async function () {
@@ -211,7 +211,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.fields.addMultiChoice(name, { Choices: choices, FillInChoice: false, Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addBoolean", pnpTest("b5d13907-d9dc-48c5-a3d4-cfcfbfed9c99", async function () {
@@ -221,7 +221,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.fields.addBoolean(name, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addDependentLookupField", pnpTest("16a58810-c90c-4eb3-af0b-60a34d9f5a36", async function () {
@@ -234,11 +234,11 @@ describe("Fields", function () {
 
             const list = await this.pnp.sp.web.lists.add(lookupListName, testFieldDescription, 100, false);
 
-            const field = await this.pnp.sp.web.fields.addLookup(primary, { LookupListId: list.data.Id, LookupFieldName: "Title" });
+            const field = await this.pnp.sp.web.fields.addLookup(primary, { LookupListId: list.Id, LookupFieldName: "Title" });
 
-            const fieldDep = await this.pnp.sp.web.fields.addDependentLookupField(secondary, field.data.Id, "Description");
+            const fieldDep = await this.pnp.sp.web.fields.addDependentLookupField(secondary, field.Id, "Description");
 
-            return expect(fieldDep.data.Title).to.be.equal(secondary);
+            return expect(fieldDep.Title).to.be.equal(secondary);
         }));
 
         it("addLocation", pnpTest("76f5fd29-9fda-4eef-aed4-c29feec3ccfa", async function () {
@@ -249,7 +249,7 @@ describe("Fields", function () {
 
             const field = await this.pnp.sp.web.fields.addLocation(name, { Group: testFieldGroup });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("update", pnpTest("83525af1-10dc-4da1-a3a6-056c806bcdcc", async function () {
@@ -307,7 +307,7 @@ describe("Fields", function () {
 
             const f = await this.pnp.sp.web.fields.add(name, FieldTypes.Text, { Group: testFieldGroup });
 
-            return expect(f.field.delete()).to.eventually.be.fulfilled;
+            return expect(this.pnp.sp.web.fields.getById(f.Id).delete()).to.eventually.be.fulfilled;
         }));
     });
 
@@ -344,7 +344,7 @@ describe("Fields", function () {
 
             const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.createFieldAsXml(testFieldSchema);
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("add", pnpTest("6a1cb77e-97fb-4ce3-8d73-fdd4f4a7c239", async function () {
@@ -354,7 +354,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.add(name, FieldTypes.Text, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addText", pnpTest("81840f7d-ae56-4c0d-9650-1b759dbd774a", async function () {
@@ -364,7 +364,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.addText(name, { MaxLength: 255, Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addNumber", pnpTest("d3bc8f38-ee7d-40a5-8b40-61f9d05f68a9", async function () {
@@ -374,7 +374,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.fields.addNumber(name, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addCalculated", pnpTest("cb328457-cb39-4b1c-98de-5d085431803b", async function () {
@@ -390,7 +390,7 @@ describe("Fields", function () {
                 Group: testFieldGroup,
             });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addDateTime", pnpTest("dfa18a6f-9957-4a75-aea6-a8a6a30a0d3e", async function () {
@@ -406,7 +406,7 @@ describe("Fields", function () {
                 Group: testFieldGroup,
             });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addCurrency", async function () {
@@ -422,7 +422,7 @@ describe("Fields", function () {
                 Group: testFieldGroup,
             });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         });
 
         it("addMultilineText", pnpTest("52e64708-f16a-4fbc-81c1-a4387c786621", async function () {
@@ -440,7 +440,7 @@ describe("Fields", function () {
                 Group: testFieldGroup,
             });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addUrl", pnpTest("895c46bc-1feb-4b7c-8136-c54a93fc5ea0", async function () {
@@ -450,7 +450,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.fields.addUrl(name, { DisplayFormat: UrlFieldFormatType.Hyperlink, Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addUser", pnpTest("89eda1be-52bd-4be1-9ea4-bcdc31fd984f", async function () {
@@ -463,7 +463,7 @@ describe("Fields", function () {
                 SelectionMode: FieldUserSelectionMode.PeopleOnly,
                 Group: testFieldGroup,
             });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addLookup", pnpTest("b977c6d0-c6b4-44e4-bb7d-c62e942949cb", async function () {
@@ -474,9 +474,9 @@ describe("Fields", function () {
             });
 
             const list = await this.pnp.sp.web.lists.add(lookupListName, testFieldDescription, 100, false);
-            const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.addLookup(name, { LookupListId: list.data.Id, LookupFieldName: "Title" });
+            const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.addLookup(name, { LookupListId: list.Id, LookupFieldName: "Title" });
 
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addChoice", pnpTest("feffd849-9f80-4f57-aa84-9a56f308fbce", async function () {
@@ -492,7 +492,7 @@ describe("Fields", function () {
                 FillInChoice: false,
                 Group: testFieldGroup,
             });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addMultiChoice", pnpTest("96cd525d-7541-4b05-a867-01b019826b91", async function () {
@@ -503,7 +503,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.addMultiChoice(name, { Choices: choices, FillInChoice: false, Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addBoolean", pnpTest("4c48b3fc-659d-4b35-95f9-da847ed8c5b5", async function () {
@@ -513,7 +513,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.addBoolean(name, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("addLocation", pnpTest("bc663610-bbe2-47b8-85fe-4576b02684b2", async function () {
@@ -523,7 +523,7 @@ describe("Fields", function () {
             });
 
             const field = await this.pnp.sp.web.lists.getByTitle(listName).fields.addLocation(name, { Group: testFieldGroup });
-            return expect(field.data.Title).to.be.equal(name);
+            return expect(field.Title).to.be.equal(name);
         }));
 
         it("update", pnpTest("7c560353-590a-4785-b44a-09b6c9934ba4", async function () {
@@ -578,7 +578,7 @@ describe("Fields", function () {
             });
 
             const f = await this.pnp.sp.web.lists.getByTitle(listName).fields.add(name, FieldTypes.Text, { Group: testFieldGroup });
-            return expect(f.field.delete()).to.eventually.be.fulfilled;
+            return expect(this.pnp.sp.web.lists.getByTitle(listName).fields.getById(f.Id).delete()).to.eventually.be.fulfilled;
         });
     });
 });

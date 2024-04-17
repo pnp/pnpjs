@@ -365,8 +365,8 @@ describe("Clientside Pages", function () {
             pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
 
             const ensureTestUser = await this.pnp.sp.web.ensureUser(this.pnp.settings.testUser);
-            userId = ensureTestUser.data.Id;
-            userPrincipalName = ensureTestUser.data.Email;
+            userId = ensureTestUser.Id;
+            userPrincipalName = ensureTestUser.Email;
         }));
 
         it("setAuthorById()", pnpTest("d57adc36-191a-43bc-9992-b6f236ae1db7", async function () {

@@ -7,8 +7,6 @@ export {
     View,
     ViewFields,
     Views,
-    IViewAddResult,
-    IViewUpdateResult,
     IViewInfo,
     ViewScope,
 } from "./types.js";

@@ -57,19 +57,3 @@ export const DocumentSetVersion = graphInvokableFactory<IDocumentSetVersion>(_Do
 export class _DocumentSetVersions extends _GraphCollection<IDocumentSetVersionEntity[]>{}
 export interface IDocumentSetVersions extends _DocumentSetVersions, IGetById<IDocumentSetVersion>, IAddable<IDocumentSetVersionEntity>  {}
 export const DocumentSetVersions = graphInvokableFactory<IDocumentSetVersions>(_DocumentSetVersions);
-
-/**
- * IDocumentSetVersionAddResult
- */
-export interface IDocumentSetVersionAddResult {
-    item: IDocumentSetVersion;
-    data: IDocumentSetVersionEntity;
-}
-
-/**
- * IListAddResult
- */
-export interface IListItemAddResult {
-    list: IListItem;
-    data: IListItemEntity;
-}

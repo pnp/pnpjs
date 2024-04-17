@@ -21,18 +21,13 @@ export class _Views extends _SPCollection<IViewInfo[]> {
      * @param personalView True if this is a personal view, otherwise false, default = false
      * @param additionalSettings Will be passed as part of the view creation body
      */
-    public async add(Title: string, PersonalView = false, additionalSettings: Record<string, any> = {}): Promise<IViewAddResult> {
+    public async add(Title: string, PersonalView = false, additionalSettings: Record<string, any> = {}): Promise<IViewInfo> {
 
-        const data = await spPost(this, body({
+        return spPost(this, body({
             PersonalView,
             Title,
             ...additionalSettings,
         }));
-
-        return {
-            data,
-            view: this.getById(data.Id),
-        };
     }
 
     /**
@@ -69,14 +64,10 @@ export class _View extends _SPInstance<IViewInfo> {
      *
      * @param properties A plain object hash of values to update for the view
      */
-    public async update(props: Partial<IViewInfo>): Promise<IViewUpdateResult> {
+    public async update(props: Partial<IViewInfo>): Promise<IViewInfo> {
 
-        const data = await spPostMerge(this, body(props));
+        return await spPostMerge(this, body(props));
 
-        return {
-            data,
-            view: this,
-        };
     }
 
     // : any = this._update<IViewUpdateResult, ITypedHash<any>>("SP.View", data => ({ data, view: <any>this }));
@@ -148,16 +139,6 @@ export class _ViewFields extends _SPCollection<{ Items: string[]; SchemaXml: str
 }
 export interface IViewFields extends _ViewFields { }
 export const ViewFields = spInvokableFactory<IViewFields>(_ViewFields);
-
-export interface IViewAddResult {
-    view: IView;
-    data: IViewInfo;
-}
-
-export interface IViewUpdateResult {
-    view: IView;
-    data: IViewInfo;
-}
 
 export enum ViewScope {
     DefaultValue,

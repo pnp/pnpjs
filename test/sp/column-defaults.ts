@@ -24,7 +24,7 @@ describe("DefaultColumnValues", function () {
         }
 
         const ler = await this.pnp.sp.web.lists.ensure(listName, "", 101);
-        list = ler.list;
+        list =  ler.list;
 
         if (ler.created) {
             const [batchSP, execute] = this.pnp.sp.batched();
@@ -74,8 +74,9 @@ describe("DefaultColumnValues", function () {
         });
 
         const far = await list.rootFolder.folders.addUsingPath(props.folderName);
+        const folder = await list.rootFolder.folders.getByUrl(far.Name);
 
-        await far.folder.setDefaultColumnValues([{
+        await folder.setDefaultColumnValues([{
             name: "TextField",
             value: "#PnPjs",
         }, {
@@ -86,7 +87,7 @@ describe("DefaultColumnValues", function () {
             value: ["Item 1", "Item 2"],
         }]);
 
-        const defaults = await far.folder.getDefaultColumnValues();
+        const defaults = await folder.getDefaultColumnValues();
 
         expect(defaults.length).to.eq(3);
 
@@ -212,8 +213,9 @@ describe("DefaultColumnValues", function () {
             subFolderName: `fld_${getRandomString(4)}`,
         });
         const far = await list.rootFolder.folders.addUsingPath(props.subFolderName);
+        const folder = list.rootFolder.folders.getByUrl(far.Name);
 
-        await far.folder.setDefaultColumnValues([{
+        await folder.setDefaultColumnValues([{
             name: "TextField",
             value: "#PnPjs Rocks!",
         }, {
@@ -224,13 +226,13 @@ describe("DefaultColumnValues", function () {
             value: ["Item 1", "Item 2"],
         }]);
 
-        const defaults = await far.folder.getDefaultColumnValues();
+        const defaults = await folder.getDefaultColumnValues();
 
         expect(defaults.length).to.be.eq(3);
 
-        await far.folder.clearDefaultColumnValues();
+        await folder.clearDefaultColumnValues();
 
-        const defaults2 = await far.folder.getDefaultColumnValues();
+        const defaults2 = await folder.getDefaultColumnValues();
 
         expect(defaults2.length).to.eq(0);
     }));

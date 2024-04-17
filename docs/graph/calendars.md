@@ -5,7 +5,7 @@ More information can be found in the official Graph documentation:
 - [Calendar Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/calendar?view=graph-rest-1.0)
 - [Event Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/event?view=graph-rest-1.0)
 
-## ICalendar, ICalendars, ICalendarGroup, ICalendarGroups, ICalendarPermission, ICalendarPermissions, ICalendarView, IEvent, IEvents, IEventAddResult, IForwardEvent, IGetScheduleRequest
+## ICalendar, ICalendars, ICalendarGroup, ICalendarGroups, ICalendarPermission, ICalendarPermissions, ICalendarView, IEvent, IEvents, IForwardEvent, IGetScheduleRequest
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 

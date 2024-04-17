@@ -1,7 +1,8 @@
 import { _ClientsidePage } from "../clientside-pages/types.js";
 import { ICommentInfo, IComment, ILikedByInformation } from "./types.js";
-import { IItemUpdateResult, Item } from "../items/index.js";
+import { Item } from "../items/index.js";
 import { SPQueryable, spPost } from "../spqueryable.js";
+import { IItemUpdateResultData } from "../items/types.js";
 
 declare module "../clientside-pages/types" {
     interface _ClientsidePage {
@@ -12,9 +13,9 @@ declare module "../clientside-pages/types" {
         like(): Promise<void>;
         unlike(): Promise<void>;
         getLikedByInformation(): Promise<ILikedByInformation>;
-        enableComments(): Promise<IItemUpdateResult>;
-        disableComments(): Promise<IItemUpdateResult>;
-        setCommentsOn(on: boolean): Promise<IItemUpdateResult>;
+        enableComments(): Promise<IItemUpdateResultData>;
+        disableComments(): Promise<IItemUpdateResultData>;
+        setCommentsOn(on: boolean): Promise<IItemUpdateResultData>;
     }
     interface IClientsidePage {
         /**
@@ -51,11 +52,11 @@ declare module "../clientside-pages/types" {
         /**
          * Enables comments for this page
          */
-        enableComments(): Promise<IItemUpdateResult>;
+        enableComments(): Promise<IItemUpdateResultData>;
         /**
          * Disables comments for this page
          */
-        disableComments(): Promise<IItemUpdateResult>;
+        disableComments(): Promise<IItemUpdateResultData>;
     }
 }
 
@@ -99,21 +100,21 @@ _ClientsidePage.prototype.getLikedByInformation = async function (this: _Clients
     return item.getLikedByInformation();
 };
 
-_ClientsidePage.prototype.enableComments = async function (this: _ClientsidePage): Promise<IItemUpdateResult> {
+_ClientsidePage.prototype.enableComments = async function (this: _ClientsidePage): Promise<IItemUpdateResultData> {
     return this.setCommentsOn(true).then(r => {
         this.commentsDisabled = false;
         return r;
     });
 };
 
-_ClientsidePage.prototype.disableComments = async function (this: _ClientsidePage): Promise<IItemUpdateResult> {
+_ClientsidePage.prototype.disableComments = async function (this: _ClientsidePage): Promise<IItemUpdateResultData> {
     return this.setCommentsOn(false).then(r => {
         this.commentsDisabled = true;
         return r;
     });
 };
 
-_ClientsidePage.prototype.setCommentsOn = async function (this: _ClientsidePage, on: boolean): Promise<IItemUpdateResult> {
+_ClientsidePage.prototype.setCommentsOn = async function (this: _ClientsidePage, on: boolean): Promise<IItemUpdateResultData> {
     const item = await this.getItem();
     return Item(item, `SetCommentsDisabled(${!on})`).update({});
 };

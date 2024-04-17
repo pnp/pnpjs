@@ -1,4 +1,3 @@
-import { IColumn } from "./types.js";
 import { graphPost } from "../graphqueryable.js";
 import { body } from "@pnp/queryable";
 import {
@@ -10,19 +9,6 @@ import {
  *
  * @param column  a JSON representation of a Column object.
  */
-export const addColumn = async function(column: IColumnDefinition): Promise<IColumnAddResult> {
-    const data = await graphPost(this, body(column));
-
-    return {
-        data,
-        column: (<any>this).getById(data.id),
-    };
+export const addColumn = async function(column: IColumnDefinition): Promise<IColumnDefinition> {
+    return graphPost(this, body(column));
 };
-
-/**
-* IColumnAddResult
-*/
-export interface IColumnAddResult {
-    column: IColumn;
-    data: IColumnDefinition;
-}

@@ -26,14 +26,9 @@ export class _SiteGroups extends _SPCollection<ISiteGroupInfo[]> {
      *
      * @param properties The group properties object of property names and values to be set for the group
      */
-    public async add(properties: Partial<ISiteGroupInfo>): Promise<IGroupAddResult> {
+    public async add(properties: Partial<ISiteGroupInfo>): Promise<ISiteGroupInfo> {
 
-        const data = await spPost(this, body(properties));
-
-        return {
-            data,
-            group: this.getById(data.Id),
-        };
+        return spPost(this, body(properties));
     }
 
     /**
@@ -79,14 +74,9 @@ export class _SiteGroup extends _SPInstance<ISiteGroupInfo> {
     /**
     * @param props Group properties to update
     */
-    public async update(props: Partial<ISiteGroupInfo>): Promise<IGroupUpdateResult> {
+    public async update(props: Partial<ISiteGroupInfo>): Promise<ISiteGroupInfo> {
 
-        const data = await spPostMerge(this, body(props));
-
-        return {
-            data,
-            group: this,
-        };
+        return spPostMerge(this, body(props));
     }
 
     /**
@@ -99,24 +89,6 @@ export class _SiteGroup extends _SPInstance<ISiteGroupInfo> {
 }
 export interface ISiteGroup extends _SiteGroup { }
 export const SiteGroup = spInvokableFactory<ISiteGroup>(_SiteGroup);
-
-/**
- * Result from updating a group
- *
- */
-export interface IGroupUpdateResult {
-    group: ISiteGroup;
-    data: any;
-}
-
-/**
- * Results from adding a group
- *
- */
-export interface IGroupAddResult {
-    group: ISiteGroup;
-    data: any;
-}
 
 export interface ISiteGroupInfo {
     AllowMembersEditMembership: boolean;

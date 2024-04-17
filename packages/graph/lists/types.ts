@@ -1,7 +1,6 @@
 import { List as IListEntity } from "@microsoft/microsoft-graph-types";
-import { _GraphCollection, graphInvokableFactory, _GraphInstance, graphPost } from "../graphqueryable.js";
-import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
-import { body } from "@pnp/queryable";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance } from "../graphqueryable.js";
+import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById, addable, IAddable } from "../decorators.js";
 
 /**
  * Represents a list entity
@@ -18,29 +17,8 @@ export const List = graphInvokableFactory<IList>(_List);
  */
 @defaultPath("lists")
 @getById(List)
-export class _Lists extends _GraphCollection<IListEntity[]>{
-    /**
-     * Create a new list as specified in the request body.
-     *
-     * @param list  a JSON representation of a List object.
-     */
-    public async add(list: IListEntity): Promise<IListAddResult> {
-        const data = await graphPost(this, body(list));
+@addable()
+export class _Lists extends _GraphCollection<IListEntity[]>{ }
 
-        return {
-            data,
-            list: (<any>this).getById(data.id),
-        };
-    }
-}
-
-export interface ILists extends _Lists, IGetById<IList> { }
+export interface ILists extends _Lists, IGetById<IList>, IAddable<IListEntity, IListEntity> { }
 export const Lists = graphInvokableFactory<ILists>(_Lists);
-
-/**
- * IListAddResult
- */
-export interface IListAddResult {
-    list: IList;
-    data: IListEntity;
-}
