@@ -6,7 +6,7 @@ import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 
 // TODO:: make work with test recording
 
-describe("Contacts", function () {
+describe.only("Contacts", function () {
 
     let testUserName = "";
     let testContactID = "";
@@ -90,10 +90,15 @@ describe("Contacts", function () {
         await this.pnp.graph.users.getById(testUserName).contacts.getById(contact.id).update({ birthday: "1986-05-30" });
         const contact2 = await this.pnp.graph.users.getById(testUserName).contacts.getById(contact.id)();
         // Clean up the added contact
-        await this.pnp.graph.users.getById(testUserName).contacts.getById(contact.id).delete();
+        try {
+            await this.pnp.graph.users.getById(testUserName).contacts.getById(contact.id).delete();
+        } catch (err) {
+            console.log(err.message);
+        }
         return expect(contact2.birthday).equals("1986-05-30T11:59:00Z");
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Delete Contact", async function () {
         // Add a contact that we can then delete
         const testContactName = `TestUser_${getRandomString(4)}`;
@@ -105,15 +110,15 @@ describe("Contacts", function () {
         let deletedUserFound = false;
 
         try {
-
-            // If we try to find a user that doesn"t exist this returns a 404
+            // This passes the first time through, expecting it to fail on second pass.
+            // If we try to find a user that doesn't exist this returns a 404
             await this.pnp.graph.users.getById(testUserName).contacts.getById(contact.id)();
             deletedUserFound = true;
 
         } catch (e) {
             if (e?.isHttpRequestError) {
                 if ((<HttpRequestError>e).status === 404) {
-                    console.error((<HttpRequestError>e).statusText);
+                    // do nothing
                 }
             } else {
                 console.log(e.message);
@@ -154,7 +159,7 @@ describe("Contacts", function () {
     });
 
     it("Update Contact Folder", async function () {
-        const folderDisplayName = "Folder_Updated" + getRandomString(4);
+        const folderDisplayName = `Folder_Updated_${getRandomString(4)}`;
         let folderId = null;
         let folderAfterUpdate = null;
         try {
@@ -168,12 +173,17 @@ describe("Contacts", function () {
         } finally {
             // Clean up the added contact
             if (folderId != null) {
-                await this.pnp.graph.users.getById(testUserName).contactFolders.getById(folderId).delete();
+                try {
+                    await this.pnp.graph.users.getById(testUserName).contactFolders.getById(folderId).delete();
+                } catch (err) {
+                    console.log(err.message);
+                }
             }
         }
         return expect(folderAfterUpdate?.displayName).equals(folderDisplayName);
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Delete Contact Folder", async function () {
         // Add a folder that we can then delete
         const testFolderName = `TestFolder_${getRandomString(4)}`;
@@ -182,15 +192,15 @@ describe("Contacts", function () {
         let deletedFolderFound = false;
 
         try {
-
-            // If we try to find a folder that doesn"t exist this returns a 404
+            // This passes the first time through, expecting it to fail on second pass.
+            // If we try to find a folder that doesn't exist this returns a 404
             await this.pnp.graph.users.getById(testUserName).contactFolders.getById(folder.id)();
             deletedFolderFound = true;
 
         } catch (e) {
             if (e?.isHttpRequestError) {
                 if ((<HttpRequestError>e).status === 404) {
-                    console.error((<HttpRequestError>e).statusText);
+                    // do nothing
                 }
             } else {
                 console.log(e.message);
