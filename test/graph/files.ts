@@ -64,8 +64,6 @@ describe("Drive", function () {
         return expect(list).is.not.null;
     });
 
-
-    // TODO: Failing with Timeout
     it("Get Recent Drive Items", async function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
@@ -233,6 +231,7 @@ describe("Drive", function () {
         return expect(thumbnails).is.not.null;
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Delete Drive Item", async function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
@@ -254,6 +253,7 @@ describe("Drive", function () {
         return expect(driveItemId).to.be.null;
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Permanently Delete Drive Item", async function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
@@ -349,7 +349,6 @@ describe("Drive", function () {
         return expect(driveItemUpdate.name).to.eq(testFileName2);
     });
 
-    // TODO: Failing timeout
     it("Convert Drive Item", async function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();

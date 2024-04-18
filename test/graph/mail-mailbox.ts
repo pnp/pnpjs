@@ -134,6 +134,7 @@ describe("Mail: Mailbox", function () {
         return expect(success).to.be.true;
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Mailbox: Delete Focused Inbox Override", async function () {
         const f: InferenceClassificationOverride = JSON.parse(JSON.stringify(override));
         f.senderEmailAddress.name = `${testName} ${getRandomString(8)}`;

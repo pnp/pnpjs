@@ -75,6 +75,7 @@ describe("Batching", function () {
         return expect(order.toString()).to.eql(expected.toString());
     }));
 
+    // This logs to the console when it passes, ignore those messages
     it("Should work with the same Queryable when properly cloned (Advanced)", pnpTest("76fbb5bf-dfc5-4230-a9df-ef1ecc2ee7a4", async function () {
 
         const users = this.pnp.graph.users;
@@ -87,9 +88,16 @@ describe("Batching", function () {
         this.pnp.graph.users.using(batchedBehavior)();
         this.pnp.graph.users.using(batchedBehavior)();
 
-        return expect(execute()).to.eventually.be.fulfilled;
+        let success = true;
+        try {
+            await execute();
+        } catch (err) {
+            success = false;
+        }
+        return expect(success).to.be.true;
     }));
 
+    // This logs to the console when it passes, ignore those messages
     it("Should work with the same Queryable when properly cloned by factory (Advanced)", pnpTest("d0ba8747-a776-4f4e-be09-6a6126dc1e06", async function () {
 
         const users = this.pnp.graph.users;
@@ -101,9 +109,16 @@ describe("Batching", function () {
         Users(users).using(batchedBehavior)();
         Users(users).using(batchedBehavior)();
 
-        return expect(execute()).to.eventually.be.fulfilled;
+        let success = true;
+        try {
+            await execute();
+        } catch (err) {
+            success = false;
+        }
+        return expect(success).to.be.true;
     }));
 
+    // This logs to the console when it passes, ignore those messages
     it("Should fail with the same Queryable (Advanced)", pnpTest("ca3ae3bb-1729-47d9-abea-e531cd7817dc", async function () {
 
         const users = this.pnp.graph.users;
@@ -113,15 +128,24 @@ describe("Batching", function () {
 
         users();
 
-        const p = users();
+        let pSuccess = false;
+        try {
+            await users();
+            pSuccess = true;
+        } catch (err) {
+            // do nothing
+        }
 
-        const p2 = execute();
+        let p2Success = true;
+        try {
+            await execute();
+        } catch (err) {
+            // do nothing
+            p2Success = false;
+        }
+        const success = (!pSuccess && p2Success);
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        expect(p).to.eventually.be.rejected;
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        expect(p2).to.eventually.be.fulfilled;
+        return expect(success).to.be.true;
     }));
 
 });

@@ -47,6 +47,7 @@ import "@pnp/graph/cloud-communications";
 
 const graph = graphfi(...);
 
+// Session ID is the Application's client id
 const presenceMe = await graph.me.presence.setPresence(
     availability: "Busy",
     activity:"InACall",
