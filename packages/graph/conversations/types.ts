@@ -98,8 +98,8 @@ export class _Post extends _GraphInstance<IPostType> {
     public reply(post: IPostType): Promise<void> {
         const params = {
             post: {
-                ...post
-            }
+                ...post,
+            },
         };
         return graphPost(Post(this, "reply"), body(params));
     }
