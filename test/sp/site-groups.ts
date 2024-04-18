@@ -43,13 +43,20 @@ describe("SiteGroups", function () {
         });
 
         // requires Custom Scripts to be enabled. Set-PnPSite -Identity <SiteURL> -NoScriptSite $false
-        it("createDefaultAssociatedGroups()", async function () {
+        // Skipping as "custom scripts" feature disabled as of March 2024
+        it.skip("createDefaultAssociatedGroups()", async function () {
             await this.pnp.sp.web.ensureUser(this.pnp.settings.testUser);
             const groupName = `TestGroup_${getRandomString(4)}`;
-            return expect(this.pnp.sp.web.createDefaultAssociatedGroups(groupName,
-                this.pnp.settings.testUser,
-                false,
-                false)).to.be.eventually.fulfilled;
+            let sucess = true;
+            try {
+                await this.pnp.sp.web.createDefaultAssociatedGroups(groupName,
+                    this.pnp.settings.testUser,
+                    false,
+                    false);
+            } catch (err) {
+                sucess = false;
+            }
+            return expect(sucess).to.be.true;
         });
     });
 
@@ -57,9 +64,10 @@ describe("SiteGroups", function () {
         return expect(this.pnp.sp.web.siteGroups.getById(newGroup.Id)());
     });
 
-    it("add()", function () {
+    it("add()", async function () {
         const newGroupTitle = `test_add_new_sitegroup_${getRandomString(8)}`;
-        return expect(this.pnp.sp.web.siteGroups.add({ "Title": newGroupTitle })).to.be.eventually.fulfilled;
+        const newGroup = await this.pnp.sp.web.siteGroups.add({ "Title": newGroupTitle });
+        return expect(newGroup.Title).to.equal(newGroupTitle);
     });
 
     it("getByName()", function () {

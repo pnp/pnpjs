@@ -89,6 +89,7 @@ describe("Mail: Rules", function () {
         return expect(success).to.be.true;
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Mail: Rule Delete", async function () {
         const r = JSON.parse(JSON.stringify(draftRule));
         r.displayName = `PnPjs Test Rule ${getRandomString(8)}`;

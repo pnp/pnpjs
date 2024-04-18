@@ -97,6 +97,7 @@ describe("Mail: Messages", function () {
         return expect(success).to.be.true;
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Mail: Delete Message", async function () {
         const m = JSON.parse(JSON.stringify(draftMessage));
         const draft = await user.messages.add(m);
@@ -162,7 +163,7 @@ describe("Mail: Messages", function () {
         m.subject = `PnPjs Test Message ${getRandomString(8)}`;
         let success = false;
         try{
-            await user.sendMail(m);
+            await user.sendMail(m, false);
             success = true;
         }catch(err){
             // do nothing
@@ -170,7 +171,8 @@ describe("Mail: Messages", function () {
         return success;
     });
 
-    it("Mail: Create Draft Reply Message", async function () {
+    // Cannot guarantee that there is email message in the inbox suitable to reply to
+    it.skip("Mail: Create Draft Reply Message", async function () {
         const inboxMessage = await user.mailFolders.getById(inboxFolder).messages.top(1)();
         if (inboxMessage.length === 1) {
             let success = false;
@@ -189,7 +191,8 @@ describe("Mail: Messages", function () {
         // Skipping because it would possibly send an email to someone who didn't expect it
     });
 
-    it("Mail: Create Draft Reply-All Message", async function () {
+    // Cannot guarantee that there is email message in the inbox suitable to reply to
+    it.skip("Mail: Create Draft Reply-All Message", async function () {
         const inboxMessage = await user.mailFolders.getById(inboxFolder).messages.top(1)();
         if (inboxMessage.length === 1) {
             let success = false;

@@ -6,7 +6,7 @@ import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 
 // TODO:: make work with test recording
 
-describe.only("Contacts", function () {
+describe("Contacts", function () {
 
     let testUserName = "";
     let testContactID = "";

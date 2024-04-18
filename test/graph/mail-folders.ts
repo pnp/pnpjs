@@ -113,6 +113,7 @@ describe("Mail: Folders", function () {
         return expect(success).to.be.true;
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Mail: Folder Delete", async function () {
         const f: IMailFolder = JSON.parse(JSON.stringify(draftFolder));
         f.displayName = `${testFolderName} ${getRandomString(8)}`;

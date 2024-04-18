@@ -14,7 +14,7 @@ declare module "../users/types" {
         readonly mailFolders: IMailFolders;
         readonly outlook: IOutlook;
         readonly focusedInboxOverrides: IFocusedInboxOverrides;
-        sendMail(message: IMessageType): Promise<void>;
+        sendMail(message: IMessageType, saveToSentItems?: boolean): Promise<void>;
         translateExchangeIds(translateExchangeIds: ITranslateExchangeIds): Promise<ITranslateExchangeIdsResponse[]>;
     }
     interface IUser {
@@ -23,7 +23,7 @@ declare module "../users/types" {
         readonly mailFolders: IMailFolders;
         readonly outlook: IOutlook;
         readonly focusedInboxOverrides: IFocusedInboxOverrides;
-        sendMail(message: IMessageType): Promise<void>;
+        sendMail(message: IMessageType, saveToSentItems?: boolean): Promise<void>;
         translateExchangeIds(translateExchangeIds: ITranslateExchangeIds): Promise<ITranslateExchangeIdsResponse[]>;
     }
 }
@@ -34,8 +34,8 @@ addProp(_User, "mailFolders", MailFolders);
 addProp(_User, "outlook", Outlook);
 addProp(_User, "focusedInboxOverrides", FocusedInboxOverrides, "inferenceClassification/overrides");
 
-_User.prototype.sendMail = function (this: _User, message: IMessageType): Promise<void> {
-    return graphPost(User(this, "sendMail"), body(message));
+_User.prototype.sendMail = function (this: _User, message: IMessageType, saveToSentItems = true): Promise<void> {
+    return graphPost(User(this, "sendMail"), body({message, saveToSentItems}));
 };
 
 /**
