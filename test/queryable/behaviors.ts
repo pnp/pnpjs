@@ -58,7 +58,7 @@ describe("Behaviors", function () {
         // Add a text field, which augments header, to validate that CachingPessimisticRefresh execute function honors header
         const testFieldNameRand = `CachingPessimisticRefreshField_${getRandomString(10)}`;
         const f = await spInstance.web.fields.addText(testFieldNameRand);
-        await f.field.delete();
+        await spInstance.web.fields.getById(f.Id).delete();
 
         // Test caching behavior
         const startCheckpoint = new Date();

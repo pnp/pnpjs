@@ -251,7 +251,7 @@ let newItems: IItem[] = [];
 
 for(let i=0; i<res.length; i++){
     //This line will correctly resolve
-    const newItem = await res[i].item.select("Title")<{Title: string}>();
+    const newItem = await res[i].select("Title")<{Title: string}>();
     newItems.push(newItem);
 }
 ```

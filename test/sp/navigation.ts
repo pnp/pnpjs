@@ -108,7 +108,7 @@ describe("navigation", function () {
 
                 const title = `Testing - ${getRandomString(4)}`;
                 const result = await nav.add(title, url, true);
-                const nodeData = await result.node();
+                const nodeData = await nav.getById(result.Id)();
                 expect(nodeData.Title).to.eq(title);
             });
 
@@ -116,8 +116,9 @@ describe("navigation", function () {
 
                 const node1result = await nav.add(`Testing - ${getRandomString(4)} (1)`, url, true);
                 const node2result = await nav.add(`Testing - ${getRandomString(4)} (2)`, url, true);
-                const node1 = await node1result.node();
-                const node2 = await node2result.node();
+
+                const node1 = await nav.getById(node1result.Id)();
+                const node2 = await nav.getById(node2result.Id)();
 
                 await nav.moveAfter(node1.Id, node2.Id);
             });
@@ -126,12 +127,12 @@ describe("navigation", function () {
                 const node1result = await nav.add(`Testing - ${getRandomString(4)}`, url, true);
                 let nodes = await nav();
                 // check we added a node
-                expect(nodes.findIndex(n => n.Id === node1result.data.Id)).to.be.greaterThan(-1);
+                expect(nodes.findIndex(n => n.Id === node1result.Id)).to.be.greaterThan(-1);
 
-                await nav.getById(node1result.data.Id).delete();
+                await nav.getById(node1result.Id).delete();
 
                 nodes = await nav();
-                expect(nodes.findIndex(n => n.Id === node1result.data.Id)).to.be.eq(-1);
+                expect(nodes.findIndex(n => n.Id === node1result.Id)).to.be.eq(-1);
             });
 
             it("node: update", async function () {
@@ -143,7 +144,7 @@ describe("navigation", function () {
                 expect(nodes.findIndex(n => n.Title === title1)).to.be.greaterThan(-1);
 
 
-                await nav.getById(node1result.data.Id).update({
+                await nav.getById(node1result.Id).update({
                     Title: title2,
                 });
 
@@ -154,11 +155,11 @@ describe("navigation", function () {
             it("node: children", async function () {
 
                 const node1result = await nav.add(`Testing - ${getRandomString(4)}`, url, true);
+                const node = nav.getById(node1result.Id);
+                await node.children.add(`Testing - ${getRandomString(4)}`, url, true);
+                await node.children.add(`Testing - ${getRandomString(4)}`, url, true);
 
-                await node1result.node.children.add(`Testing - ${getRandomString(4)}`, url, true);
-                await node1result.node.children.add(`Testing - ${getRandomString(4)}`, url, true);
-
-                const children = await node1result.node.children();
+                const children = await node.children();
 
                 expect(children.length).to.eq(2);
             });

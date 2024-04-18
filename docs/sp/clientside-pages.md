@@ -927,7 +927,7 @@ const far = await sp.web.getFolderByServerRelativePath("/sites/dev/Shared Docume
 const page = await sp.web.addClientsidePage("MyPage", "Page Title");
 
 // set the banner image
-page.setBannerImage(far.data.ServerRelativeUrl);
+page.setBannerImage(far.ServerRelativeUrl);
 
 // publish the page
 await page.save();

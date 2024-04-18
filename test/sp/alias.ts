@@ -23,9 +23,10 @@ describe("Alias Parameters", function () {
         webRelativeUrl = webInfo.ServerRelativeUrl;
 
         const ler = await this.pnp.sp.web.lists.ensure("AliasTestLib", "Used to test alias parameters", 101);
+        const list = ler.list;
 
-        await ler.list.rootFolder.folders.addUsingPath("MyTestFolder");
-        await ler.list.rootFolder.files.addUsingPath("text.txt", "Some file content!");
+        await list.rootFolder.folders.addUsingPath("MyTestFolder");
+        await list.rootFolder.files.addUsingPath("text.txt", "Some file content!");
     });
 
     it("Folders", function () {

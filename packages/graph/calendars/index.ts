@@ -20,7 +20,6 @@ export {
     ICalendarView,
     IEvent,
     IEvents,
-    IEventAddResult,
     IForwardEvent,
     IGetScheduleRequest,
 } from "./types.js";

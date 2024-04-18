@@ -27,8 +27,8 @@ describe("Groups", function () {
         });
 
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
-        const group = await groupAddResult.group();
-        groupID = groupAddResult.data.id;
+        const group = await this.pnp.graph.groups.getById(groupAddResult.id)();
+        groupID = groupAddResult.id;
         return expect(group.displayName).is.not.undefined;
     }));
 
@@ -42,12 +42,12 @@ describe("Groups", function () {
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
         // Delete the group
         // Potential Bug. Delete is only available off of getByID
-        await this.pnp.graph.groups.getById(groupAddResult.data.id).delete();
+        await this.pnp.graph.groups.getById(groupAddResult.id).delete();
         // Check to see if the group exists
         const groups = await this.pnp.graph.groups();
         let groupExists = false;
         groups.forEach(element => {
-            if (element.id === groupAddResult.data.id) {
+            if (element.id === groupAddResult.id) {
                 groupExists = true;
                 return groupExists === true;
             }
@@ -64,7 +64,7 @@ describe("Groups", function () {
         // Create a new group
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
         // Get the group by ID
-        const group = await this.pnp.graph.groups.getById(groupAddResult.data.id);
+        const group = await this.pnp.graph.groups.getById(groupAddResult.id)();
         return expect(group).is.not.undefined;
     }));
 
@@ -76,10 +76,10 @@ describe("Groups", function () {
 
         // Create a new group
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
-        groupID = groupAddResult.data.id;
+        groupID = groupAddResult.id;
 
         // Update the display name of the group
-        const newName = '"Updated_' + groupAddResult.data.displayName + '"';
+        const newName = '"Updated_' + groupAddResult.displayName + '"';
         // Potential Bug. Update is only available off of getByID
         await this.pnp.graph.groups.getById(groupID).update({ displayName: newName });
 

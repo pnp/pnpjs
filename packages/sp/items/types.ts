@@ -112,12 +112,8 @@ export class _Items<GetType = any[]> extends _SPCollection<GetType> {
      * @param properties The new items's properties
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    public async add(properties: Record<string, any> = {}): Promise<IItemAddResult> {
-
-        return spPost<{ Id: number }>(this, body(properties)).then((data) => ({
-            data: data,
-            item: this.getById(data.Id),
-        }));
+    public async add(properties: Record<string, any> = {}): Promise<any> {
+        return spPost(this, body(properties));
     }
 }
 export interface IItems extends _Items { }
@@ -191,19 +187,15 @@ export class _Item extends _SPInstance {
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    public async update(properties: Record<string, any>, eTag = "*"): Promise<IItemUpdateResult> {
+    public async update(properties: Record<string, any>, eTag = "*"): Promise<any> {
 
         const postBody = body(properties, headers({
             "IF-Match": eTag,
             "X-HTTP-Method": "MERGE",
         }));
 
-        const data = await spPost(Item(this).using(ItemUpdatedParser()), postBody);
+        return spPost(Item(this).using(ItemUpdatedParser()), postBody);
 
-        return {
-            data,
-            item: this,
-        };
     }
 
     /**
@@ -360,16 +352,6 @@ function ItemUpdatedParser() {
     return parseBinderWithErrorCheck(async (r) => (<IItemUpdateResultData>{
         etag: r.headers.get("etag"),
     }));
-}
-
-export interface IItemAddResult {
-    item: IItem;
-    data: any;
-}
-
-export interface IItemUpdateResult {
-    item: IItem;
-    data: IItemUpdateResultData;
 }
 
 export interface IItemUpdateResultData {

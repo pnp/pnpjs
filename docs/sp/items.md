@@ -480,7 +480,7 @@ const newItem = await sp.web.lists.getByTitle("TestList").items.add({
 const updateVal = {};
 updateVal[fields[0].InternalName] = "-1;#New Term|bb046161-49cc-41bd-a459-5667175920d4;#-1;#New 2|0069972e-67f1-4c5e-99b6-24ac5c90b7c9";
 // execute the update call
-await newItem.item.update(updateVal);
+await sp.web.lists.getByTitle("TestList").items.getById(newItem.Id).update(updateVal);
 ```
 
 ### Update BCS Field

@@ -98,10 +98,6 @@ import "@pnp/sp/navigation";
 
 const result = await nav.add("Node Title", "/sites/dev/pages/mypage.aspx", true);
 
-const nodeDataRaw = result.data;
-
-// request the data from the created node
-const nodeData = result.node();
 ```
 
 ### moveAfter
@@ -113,10 +109,8 @@ import "@pnp/sp/navigation";
 
 const node1result = await nav.add(`Testing - ${getRandomString(4)} (1)`, url, true);
 const node2result = await nav.add(`Testing - ${getRandomString(4)} (2)`, url, true);
-const node1 = await node1result.node();
-const node2 = await node2result.node();
 
-await nav.moveAfter(node1.Id, node2.Id);
+await nav.moveAfter(node1result.Id, node2result.Id);
 ```
 
 ### Delete
@@ -129,14 +123,14 @@ import "@pnp/sp/navigation";
 const node1result = await nav.add(`Testing - ${getRandomString(4)}`, url, true);
 let nodes = await nav();
 // check we added a node
-let index = nodes.findIndex(n => n.Id === node1result.data.Id)
+let index = nodes.findIndex(n => n.Id === node1result.Id)
 // index >= 0
 
 // delete a node
-await nav.getById(node1result.data.Id).delete();
+await nav.getById(node1result.Id).delete();
 
 nodes = await nav();
-index = nodes.findIndex(n => n.Id === node1result.data.Id)
+index = nodes.findIndex(n => n.Id === node1result.Id)
 // index = -1
 ```
 

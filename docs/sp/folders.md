@@ -476,7 +476,7 @@ import "@pnp/sp/lists";
 const sp = spfi(...);
 
 const newFolderResult = await sp.web.rootFolder.folders.getByUrl("Shared Documents").folders.addUsingPath("My New Folder");
-const item = await newFolderResult.folder.listItemAllFields();
+const item = await sp.web.rootFolder.folders.getByUrl("Shared Documents").folders.getByUrl(newFolderResult.Name).listItemAllFields();
 
 await sp.web.lists.getByTitle("Documents").items.getById(item.ID).update({
     ContentTypeId: "0x0120001E76ED75A3E3F3408811F0BF56C4CDDD",

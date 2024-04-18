@@ -41,7 +41,7 @@ describe("ContentTypes", function () {
             list: { "template": "genericList" },
         });
 
-        list = site.lists.getById(listTmp.data.id);
+        list = site.lists.getById(listTmp.id);
     }));
 
     after(async function () {

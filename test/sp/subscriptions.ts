@@ -30,7 +30,7 @@ describe("Subscriptions", function () {
     it("add", async function () {
 
         const r = await this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.add(notificationUrl, after120Days, "pnp client state");
-        const subID = r.data.id;
+        const subID = r.id;
 
         return expect(subID, `A new webhook with id :${subID} should be created`).to.not.be.null.and.not.be.empty.and.be.an.instanceOf(Number);
     });
@@ -39,7 +39,7 @@ describe("Subscriptions", function () {
 
         const res = await this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.add(notificationUrl, after120Days);
 
-        const p = this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.getById(res.data.id)();
+        const p = this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.getById(res.id)();
 
         return expect(p, "Get the details of a webhook with the given id").to.be.eventually.fulfilled;
     });
@@ -48,7 +48,7 @@ describe("Subscriptions", function () {
 
         const res = await this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.add(notificationUrl, after120Days, "pnp client state");
 
-        const p = this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.getById(res.data.id).update(after180Days, notificationUrl, "pnp client state");
+        const p = this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.getById(res.id).update(after180Days, notificationUrl, "pnp client state");
 
         return expect(p, "The webhook should have been updated with the new expiry date").to.be.eventually.fulfilled;
     });
@@ -57,7 +57,7 @@ describe("Subscriptions", function () {
 
         const res = await this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.add(notificationUrl, after120Days, "pnp client state");
 
-        const p = this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.getById(res.data.id).delete();
+        const p = this.pnp.sp.web.lists.getByTitle(listTitle).subscriptions.getById(res.id).delete();
 
         return expect(p, "The webhook should have been deleted").to.be.eventually.fulfilled;
     });

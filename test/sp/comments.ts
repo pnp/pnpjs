@@ -156,9 +156,9 @@ describe("Comments", function () {
             const ler = await this.pnp.sp.web.lists.ensure(listTitle, "Used to test item comment operations");
             list = ler.list;
 
-            if (ler.created) {
+            if (ler.created){
                 const itemData = await list.items.add({ Title: `Item ${getRandomString(4)}` });
-                item = itemData.item;
+                item = list.items.getById(itemData.Id);
             }
         }));
 
@@ -184,7 +184,7 @@ describe("Comments", function () {
 
         it("clear", pnpTest("82b74a1d-14cb-4412-8d63-e5cda4c58754", async function () {
             const itemData = await list.items.add({ Title: `Item ${getRandomString(4)}` });
-            const newItem = itemData.item;
+            const newItem = list.items.getById(itemData.Id);
 
             await newItem.comments.add("A test comment");
             await newItem.comments.add("A test comment");

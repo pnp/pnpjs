@@ -195,7 +195,7 @@ describe("Batching", function () {
         // ensure we have a file
         const far = await ler.list.rootFolder.files.addUsingPath(props.fileName, props.content);
 
-        const item = await far.file.getItem();
+        const item = await ler.list.rootFolder.files.getByUrl(far.Name).getItem();
 
         const [batchedSP, execute] = this.pnp.sp.batched();
 
@@ -314,8 +314,8 @@ describe("Batching", function () {
 
         for (let i = 0; i < 3; i++) {
             list.items.add({ Title: props.titles[i] }).then(r => {
-                ids.push(r.data.Id);
-                res.push(r.item);
+                ids.push(r.Id);
+                res.push(list.items.getById(r.Id));
             });
         }
 
@@ -335,8 +335,8 @@ describe("Batching", function () {
         for (let i = 0; i < 3; i++) {
             updateList.items.getById(ids[i]).update({
                 Title: props.titles2[i],
-            }).then(r => {
-                res.push(r.item);
+            }).then(() => {
+                res.push(updateList.items.getById(ids[i]));
             });
         }
 
