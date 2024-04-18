@@ -509,6 +509,7 @@ describe("Calendar", function () {
         return expect(passed).is.true;
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Delete Calendar Group", async function () {
         let deletedCalendarGroupFound = false;
         const group = await this.pnp.graph.users.getById(testUserName).calendarGroups.add({
@@ -521,7 +522,7 @@ describe("Calendar", function () {
         } catch (e) {
             if (e?.isHttpRequestError) {
                 if ((<HttpRequestError>e).status === 404) {
-                    console.error((<HttpRequestError>e).statusText);
+                    // do nothing
                 }
             } else {
                 console.log(e.message);
@@ -617,6 +618,7 @@ describe("Calendar", function () {
         return expect(passed).is.true;
     });
 
+    // This logs to the console when it passes, ignore those messages
     it("Delete Calendar Permissions", async function () {
         let deletePermissionFound = false;
         const permission = await this.pnp.graph.users.getById(testUserName).calendars.getById(defaultCalID).calendarPermissions.add(
@@ -636,7 +638,7 @@ describe("Calendar", function () {
         } catch (e) {
             if (e?.isHttpRequestError) {
                 if ((<HttpRequestError>e).status === 404) {
-                    console.error((<HttpRequestError>e).statusText);
+                    // do nothing
                 }
             } else {
                 console.log(e.message);

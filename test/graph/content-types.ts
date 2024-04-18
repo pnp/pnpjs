@@ -155,6 +155,7 @@ describe("ContentTypes", function () {
             return expect((updateContentType.name === newContentTypeName)).to.be.true;
         }));
 
+        // This logs to the console when it passes, ignore those messages
         it("delete", pnpTest("50a499b1-b6b9-47f7-b14e-567c03ac77a2", async function () {
 
             const props = await this.props({
@@ -233,6 +234,7 @@ describe("ContentTypes", function () {
             return expect((updateContentType.name === newContentTypeName)).to.be.true;
         }));
 
+        // This logs to the console when it passes, ignore those messages
         it("delete", pnpTest("5d8dc8f0-5220-400b-b990-0bcdfcd08594", async function () {
 
             const props = await this.props({
