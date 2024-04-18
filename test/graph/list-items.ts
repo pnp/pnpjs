@@ -81,6 +81,7 @@ describe("List-Items", function () {
         return expect(itemUpdated.fields.Title).is.eq(newTitle);
     }));
 
+    // This logs to the console when it passes, ignore those messages
     it("delete", pnpTest("e55bf53f-1316-4e47-97c1-b0c0cdd860ef", async function () {
         await itemDelete.delete();
         let passed = false;

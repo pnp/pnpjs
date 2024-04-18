@@ -73,6 +73,7 @@ describe("Planner", function () {
             return expect(planUpdate.title).is.equal(newPlanName);
         });
 
+        // This logs to the console when it passes, ignore those messages
         it("Delete", async function () {
             const planName = `TestPlan_${getRandomString(4)}`;
             const newPlan = JSON.parse(JSON.stringify(planTemplate));
@@ -174,6 +175,7 @@ describe("Planner", function () {
             return expect(bucket.name).is.equal(newBucketName);
         });
 
+        // This logs to the console when it passes, ignore those messages
         it("Delete", async function () {
             const bucketName = `TestBucket_${getRandomString(4)}`;
             const newBucket = JSON.parse(JSON.stringify(bucketTemplate));
@@ -260,6 +262,7 @@ describe("Planner", function () {
             return expect(task.title).is.equal(newTaskName);
         });
 
+        // This logs to the console when it passes, ignore those messages
         it("Delete", async function () {
             const taskName = `TestTask_${getRandomString(4)}`;
             const newTask = JSON.parse(JSON.stringify(taskTemplate));
@@ -441,6 +444,7 @@ describe("Planner", function () {
         });
     });
 
+    // This logs to the console when it passes, ignore those messages
     after(async function () {
         if (PlanIds.length > 0) {
             PlanIds.forEach(async (id) => {

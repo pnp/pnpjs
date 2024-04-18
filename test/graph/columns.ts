@@ -136,6 +136,7 @@ describe("Columns", function () {
             return expect((updateColumn.displayName === newColumnName)).to.be.true;
         }));
 
+        // This logs to the console when it passes, ignore those messages
         it("delete", pnpTest("bcb9bafc-4d9c-40d3-a335-b6ff9650e25c", async function () {
 
             const props = await this.props({
@@ -215,6 +216,7 @@ describe("Columns", function () {
             return expect((updateColumnResults.propagateChanges)).to.be.true;
         }));
 
+        // This logs to the console when it passes, ignore those messages
         it("delete", pnpTest("4d6e18c1-abe7-4cd4-a90e-1c1715d5e1ce", async function () {
             const c = await contentType.columns.addRef(siteColumn);
             await contentType.columns.getById(c.id).delete();
@@ -276,6 +278,7 @@ describe("Columns", function () {
             return expect((updateColumn.displayName === newColumnName)).to.be.true;
         }));
 
+        // This logs to the console when it passes, ignore those messages
         it("delete", pnpTest("16650b92-045a-4bfe-8f37-a8a8856385f2", async function () {
 
             const props = await this.props({

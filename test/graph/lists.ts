@@ -67,6 +67,7 @@ describe("Lists", function () {
         return expect((updateList.displayName === newListName)).to.be.true;
     }));
 
+    // This logs to the console when it passes, ignore those messages
     it("delete", pnpTest("3d070839-0713-4a3e-a718-f89bb378cbe1", async function () {
 
         const props = await this.props({
