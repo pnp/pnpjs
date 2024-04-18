@@ -154,7 +154,7 @@ describe("Contacts", function () {
     });
 
     it("Update Contact Folder", async function () {
-        const folderDisplayName = "Folder_Updated";
+        const folderDisplayName = "Folder_Updated" + getRandomString(4);
         let folderId = null;
         let folderAfterUpdate = null;
         try {
