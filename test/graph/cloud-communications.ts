@@ -3,7 +3,6 @@ import "@pnp/graph/users";
 import "@pnp/graph/cloud-communications";
 import { stringIsNullOrEmpty } from "@pnp/core";
 
-
 describe("Cloud-Communications", function () {
     let testUserId = "";
     let sessionId = "";
@@ -13,59 +12,87 @@ describe("Cloud-Communications", function () {
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
         }
-        testUserId =  (await this.pnp.graph.users.getById(this.pnp.settings.testUser.substring(this.pnp.settings.testUser.lastIndexOf("|") + 1))()).id;
-        sessionId = this.pnp.settings.graph.id;
+        testUserId = (await this.pnp.graph.users.getById(this.pnp.settings.testUser.substring(this.pnp.settings.testUser.lastIndexOf("|") + 1))()).id;
+        sessionId = this.pnp.settings.graph.msal.init.auth.clientId;
     });
 
-    it.skip("Get User Presence", async function () {
+    it("Get User Presence", async function () {
         const presence = await this.pnp.graph.users.getById(testUserId).presence();
         return expect(presence).is.not.null;
     });
 
-    it.skip("Get Presence for Multiple Users", async function () {
-        const presence = await this.pnp.graph.communications.getPresencesByUserId([testUserId,testUserId]);
-        return expect(presence.length).is.equals(2);
+    it("Get Presence for Multiple Users", async function () {
+        const presence = await this.pnp.graph.communications.getPresencesByUserId([testUserId]);
+        return expect(presence.length).is.equals(1);
     });
 
     it("Set User Presence", async function () {
-        return expect(this.pnp.graph.users.getById(testUserId).presence.setPresence({
-            availability: "Busy",
-            activity:"InACall",
-            sessionId: sessionId,
-            expirationDuration: "PT5M",
-        })).eventually.be.fulfilled;
+        let success = true;
+        try {
+            await this.pnp.graph.users.getById(testUserId).presence.setPresence({
+                availability: "Busy",
+                activity: "InACall",
+                sessionId: sessionId,
+                expirationDuration: "PT5M",
+            });
+        } catch (err) {
+            success = false;
+        }
+        return expect(success).to.be.true;
     });
 
     it("Clear User Presence", async function () {
-        return expect(this.pnp.graph.users.getById(testUserId).presence.clearPresence(sessionId)).eventually.be.fulfilled;
+        let success = true;
+        try {
+            await this.pnp.graph.users.getById(testUserId).presence.clearPresence(sessionId);
+        } catch (err) {
+            success = false;
+        }
+        return expect(success).to.be.true;
     });
 
     it("Set User Preferred Presence", async function () {
-        return expect(this.pnp.graph.users.getById(testUserId).presence.setPreferredPresence({
-            availability: "Available",
-            activity:"Available",
-            expirationDuration: "PT5M",
-        })).eventually.be.fulfilled;
+        let success = true;
+        try {
+            await this.pnp.graph.users.getById(testUserId).presence.setPreferredPresence({
+                availability: "Available",
+                activity: "Available",
+                expirationDuration: "PT5M",
+            });
+        } catch (err) {
+            success = false;
+        }
+        return expect(success).to.be.true;
     });
 
     it("Clear User Preferred Presence", async function () {
-        return expect(this.pnp.graph.users.getById(testUserId).presence.clearPreferredPresence()).eventually.be.fulfilled;
+        let success = true;
+        try {
+            await this.pnp.graph.users.getById(testUserId).presence.clearPreferredPresence();
+        } catch (err) {
+            success = false;
+        }
+        return expect(success).to.be.true;
     });
 
     it("Set User Status Message", async function () {
-        const date: Date = new Date();
-        date.setDate(date.getDate() + 1);
-
-        return expect(this.pnp.graph.users.getById(testUserId).presence.setStatusMessage({
-            message:{
-                content: "Test Sample Message",
-                contentType: "text",
-            },
-            expiryDateTime:{
-                dateTime: date.toISOString(),
-                timeZone: "Pacific Standard Time",
-            },
-        })).eventually.be.fulfilled;
+        let success = true;
+        try {
+            const date: Date = new Date();
+            date.setDate(date.getDate() + 1);
+            await this.pnp.graph.users.getById(testUserId).presence.setStatusMessage({
+                message: {
+                    content: "Test Sample Message",
+                    contentType: "text",
+                },
+                expiryDateTime: {
+                    dateTime: date.toISOString(),
+                    timeZone: "Pacific Standard Time",
+                },
+            });
+        } catch (err) {
+            success = false;
+        }
+        return expect(success).to.be.true;
     });
-
 });
