@@ -22,9 +22,9 @@ import { ISiteUserProps } from "../site-users/types.js";
 import { encodePath } from "../utils/encode-path-str.js";
 import { IMoveCopyOptions } from "../types.js";
 import { ReadableFile } from "./readable-file.js";
-import "../context-info/index.js";
 import { BatchNever } from "../batching.js";
 import { PassThrough, Stream } from "stream";
+import "../context-info/index.js";
 
 /**
  * Describes a collection of File objects
@@ -707,7 +707,7 @@ export interface IChunkedOperationProps {
     progress: (data: IFileUploadProgressData) => void;
 }
 
-export type ValidFileContentSource = Blob | ReadableStream | TransformStream | Stream | PassThrough;
+export type ValidFileContentSource = Blob | ReadableStream | TransformStream | Stream | PassThrough | ArrayBuffer;
 
 function applyChunckedOperationDefaults(props: Partial<IChunkedOperationProps>): IChunkedOperationProps {
     return {
@@ -725,8 +725,7 @@ function sourceToReadableStream(source: ValidFileContentSource): ReadableStream 
 
         return <any>source.stream();
 
-        // eslint-disable-next-line @typescript-eslint/dot-notation
-    } else if (isPassThrough(source)) {
+    } else if (hasOn(source)) {
 
         // we probably have a passthrough stream from NodeFetch or some other type that supports "on(data)"
         return new ReadableStream({
@@ -742,23 +741,37 @@ function sourceToReadableStream(source: ValidFileContentSource): ReadableStream 
             },
         });
 
+    } else if (isBuffer(source)) {
+
+        // we think we have a buffer
+        return new ReadableStream({
+            start(controller) {
+
+                controller.enqueue(source);
+                controller.close();
+            },
+        });
+
+    } else if (isTransform(source)) {
+
+        return source.readable;
+
     } else {
 
-        return <any>source;
+        return source;
     }
 }
 
 const NAME = Symbol.toStringTag;
 
-function isPassThrough(object): object is PassThrough {
+function hasOn(object): object is PassThrough | Stream {
     // eslint-disable-next-line @typescript-eslint/dot-notation
     return typeof object["on"] === "function";
 }
 
 // FROM: node-fetch source code
 function isBlob(object): object is Blob {
-    return (
-        typeof object === "object" &&
+    return typeof object === "object" &&
         typeof object.arrayBuffer === "function" &&
         typeof object.type === "string" &&
         typeof object.stream === "function" &&
@@ -766,6 +779,13 @@ function isBlob(object): object is Blob {
         (
             /^(Blob|File)$/.test(object[NAME]) ||
             /^(Blob|File)$/.test(object.constructor.name)
-        )
-    );
+        );
+}
+
+function isBuffer(object): object is ArrayBuffer {
+    return typeof object === "object" && typeof object.length === "number";
+}
+
+function isTransform(object): object is TransformStream {
+    return typeof object === "object" && typeof object.readable === "object";
 }
