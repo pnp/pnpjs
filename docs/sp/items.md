@@ -31,7 +31,7 @@ console.log(items2);
 
 ### Get Paged Items
 
-Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the getPaged method on the Items class to assist. Note that there isn't a way to move backwards in the collection, this is by design. The pattern you should use to support backwards navigation in the results is to cache the results into a local array and use the standard array operators to get previous pages. Alternatively you can append the results to the UI, but this can have performance impact for large result sets.
+Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the new Async Iterator functionality on the Items class to assist. 
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -41,35 +41,18 @@ import "@pnp/sp/items";
 
 const sp = spfi(...);
 
-// basic case to get paged items form a list
-const items = await sp.web.lists.getByTitle("BigList").items.getPaged();
-
-// you can also provide a type for the returned values instead of any
-const items = await sp.web.lists.getByTitle("BigList").items.getPaged<{Title: string}[]>();
-
-// the query also works with select to choose certain fields and top to set the page size
-const items = await sp.web.lists.getByTitle("BigList").items.select("Title", "Description").top(50).getPaged<{Title: string}[]>();
-
-// the results object will have two properties and one method:
-
-// the results property will be an array of the items returned
-if (items.results.length > 0) {
-    console.log("We got results!");
-
-    for (let i = 0; i < items.results.length; i++) {
-        // type checking works here if we specify the return type
-        console.log(items.results[i].Title);
-    }
+// Using async iterator to loop through pages of items in a large list
+for await (const items of sp.web.lists.getByTitle("BigList").items()) {
+  console.log(items);
+  break; // closes the iterator, returns
 }
 
-// the hasNext property is used with the getNext method to handle paging
-// hasNext will be true so long as there are additional results
-if (items.hasNext) {
+//using async iterator in combination with top() to get pages of items in chunks of 10
+for await (const items of sp.web.lists.getByTitle("BigList").items.top(10)) {
+  console.log(items);
+  break; // closes the iterator, returns
+} 
 
-    // this will carry over the type specified in the original query for the results array
-    items = await items.getNext();
-    console.log(items.results.length);
-}
 ```
 
 ### getListItemChangesSinceToken
