@@ -31,7 +31,7 @@ console.log(items2);
 
 ### Get Paged Items
 
-Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the new Async Iterator functionality on the Items class to assist. 
+Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the Async Iterator functionality on the Items class to assist. For advanced paging techniques using the Async Iterator, please review [Async Paging]('../concepts/async-paging.md')
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -49,7 +49,7 @@ for await (const items of sp.web.lists.getByTitle("BigList").items()) {
 
 //using async iterator in combination with top() to get pages of items in chunks of 10
 for await (const items of sp.web.lists.getByTitle("BigList").items.top(10)) {
-  console.log(items);
+  console.log(items); //array of 10 items
   break; // closes the iterator, returns
 } 
 
