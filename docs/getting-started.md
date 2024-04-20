@@ -6,7 +6,7 @@ If you need to support older browsers, SharePoint on premises servers, or older 
 
 ## Minimal Requirements
 
-    - NodeJs: >= 14
+    - NodeJs: >= 18
     - TypeScript: 4.x
     - Node Modules Supported: ESM Only
 
@@ -39,13 +39,19 @@ We've created two Getting Started samples. The first uses the more traditional R
 
 In addition, we have converted the sample project from React Component to React Hooks. This version can be found in [react-pnp-js-hooks](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-hooks). This sample will help those struggling to establish context correctly while using the hooks conventions.
 
-The SharePoint Framework supports different versions of TypeScript natively and as of 1.14 release still doesn't natively support TypeScript 4.x. Sadly, this means that to use Version 3 of PnPjs you will need to take a few additional configuration steps to get them to work together.
+The SharePoint Framework supports different versions of NodeJS and TypeScript natively. Because of dependency updates we've made to PnPjs Version 4 is only compatible with NodeJS v18.x and therefore is not supported on SPFx version before 1.18.x. 
 
-### SPFx Version 1.15.0 & later
+### SPFx Version 1.18.0 & later
 
 No additional steps required
 
+### SPFx Version 1.15.0 => 1.17.4
+
+Version 4 is not supported, you must use Version 3 because of V4 reliance requirement of NodeJS v18.x.
+
 ### SPFx Version 1.12.1 => 1.14.0
+
+Version 4 is not supported, you must use Version 3. In addition because as of SPFx 1.14.x release it still doesn't natively support TypeScript 4.x, this means that to use Version 3 of PnPjs you will need to take a few additional configuration steps to get them to work together.
 
 1. Update the [rush stack](https://rushstack.io/) compiler to 4.2. This is covered in this [great article by Elio](https://www.eliostruyf.com/define-the-typescript-version-you-want-to-use-in-sharepoint-framework/), but the steps are listed below.
     - Uninstall existing rush stack compiler (replace the ? with the version that is currently referenced in your package.json):
