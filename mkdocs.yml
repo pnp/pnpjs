@@ -5,7 +5,7 @@ docs_dir: 'docs'
 nav:
   - Home: 'index.md'
   - 'Getting Started': 'getting-started.md'
-  - 'V2->V3 Transition': 'transition-guide.md'
+  - 'V3->V4 Transition': 'transition-guide.md'
   - 'Year in Review':
     - '2022': 'news/2022-year-in-review.md'
     - '2021': 'news/2021-year-in-review.md'
@@ -162,6 +162,7 @@ nav:
   - Legacy Docs:
     - V1: 'v1/index.html'
     - V2: 'v2/index.html'
+    - V3: 'v3/index.html'
 
 theme:
   name: 'material'
