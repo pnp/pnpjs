@@ -91,7 +91,6 @@ describe("Files", function () {
         expect(file.Name).to.eq(name);
     });
 
-    // TODO: This is an ArrayBuffer but the addChunked method doesn't seem to support that when getting a readable stream, needs work.
     it("addChunked", async function () {
 
         const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
