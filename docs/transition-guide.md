@@ -34,3 +34,5 @@ As an updated pattern we are recommending you move to an async iterator pattern 
 With that in mind we've removed the `/items/get-all` endpoint. In addition we've updated the @pnp/sp package's `IItems` and `_Items` collections as well as the @pnp/graph `IGraphQueryableCollection` to support the async iterator pattern.
 
 Check out this example for more information on this pattern: [Get Paged Items](./sp/items.md#get-paged-items).
+
+For advanced async patterns: [Async Paging](./concepts/async-paging.md).
