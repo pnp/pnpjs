@@ -8,25 +8,27 @@
       
       
       
-        <link rel="canonical" href="https://pnp.github.io/pnpjs/">
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/concepts/error-handling/">
       
       
+        <link rel="prev" href="../custom-bundle/">
       
-        <link rel="next" href="getting-started/">
       
-      <link rel="icon" href="assets/images/favicon.png">
+        <link rel="next" href="../project-preset/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
     
     
       
-        <title>PnP/PnPjs</title>
+        <title>Error-Handling - PnP/PnPjs</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.26e3688c.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ecc896b0.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
       
       
 
@@ -42,11 +44,11 @@
       
     
     
-      <link rel="stylesheet" href="css/extra.css">
+      <link rel="stylesheet" href="../../css/extra.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
-    <img src="https://m365-visitor-stats.azurewebsites.net/@pnp/pnpjs/ghpages/pnpjs/" alt="spacer" width="1" height="1" />
+    <img src="https://m365-visitor-stats.azurewebsites.net/@pnp/pnpjs/ghpages/pnpjs/concepts/error-handling/" alt="spacer" width="1" height="1" />
 
     
     
@@ -68,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#packages" class="md-skip">
+        <a href="#error-handling" class="md-skip">
           Skip to content
         </a>
       
@@ -84,9 +86,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="PnP/PnPjs" class="md-header__button md-logo" aria-label="PnP/PnPjs" data-md-component="logo">
+    <a href="../.." title="PnP/PnPjs" class="md-header__button md-logo" aria-label="PnP/PnPjs" data-md-component="logo">
       
-  <img src="img/Logo.png" alt="logo">
+  <img src="../../img/Logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -102,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Error-Handling
             
           </span>
         </div>
@@ -183,9 +185,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="PnP/PnPjs" class="md-nav__button md-logo" aria-label="PnP/PnPjs" data-md-component="logo">
+    <a href="../.." title="PnP/PnPjs" class="md-nav__button md-logo" aria-label="PnP/PnPjs" data-md-component="logo">
       
-  <img src="img/Logo.png" alt="logo">
+  <img src="../../img/Logo.png" alt="logo">
 
     </a>
     PnP/PnPjs
@@ -211,96 +213,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Home
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         Home
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#packages" class="md-nav__link">
-    Packages
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#authentication" class="md-nav__link">
-    Authentication
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#issues-questions-ideas" class="md-nav__link">
-    Issues, Questions, Ideas
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#changelog" class="md-nav__link">
-    Changelog
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-of-conduct" class="md-nav__link">
-    Code of Conduct
-  </a>
-  
-    <nav class="md-nav" aria-label="Code of Conduct">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#sharing-is-caring" class="md-nav__link">
-    "Sharing is Caring"
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#disclaimer" class="md-nav__link">
-    Disclaimer
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -313,7 +230,7 @@
   
   
     <li class="md-nav__item">
-      <a href="getting-started/" class="md-nav__link">
+      <a href="../../getting-started/" class="md-nav__link">
         Getting Started
       </a>
     </li>
@@ -328,7 +245,7 @@
   
   
     <li class="md-nav__item">
-      <a href="transition-guide/" class="md-nav__link">
+      <a href="../../transition-guide/" class="md-nav__link">
         V2->V3 Transition
       </a>
     </li>
@@ -370,7 +287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="news/2022-year-in-review/" class="md-nav__link">
+      <a href="../../news/2022-year-in-review/" class="md-nav__link">
         2022
       </a>
     </li>
@@ -384,7 +301,7 @@
   
   
     <li class="md-nav__item">
-      <a href="news/2021-year-in-review/" class="md-nav__link">
+      <a href="../../news/2021-year-in-review/" class="md-nav__link">
         2021
       </a>
     </li>
@@ -398,7 +315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="news/2020-year-in-review/" class="md-nav__link">
+      <a href="../../news/2020-year-in-review/" class="md-nav__link">
         2020
       </a>
     </li>
@@ -418,14 +335,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
       
       
       
@@ -434,7 +353,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Library Usage Tips
@@ -447,7 +366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/authentication/" class="md-nav__link">
+      <a href="../authentication/" class="md-nav__link">
         Authentication
       </a>
     </li>
@@ -461,7 +380,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/auth-spfx/" class="md-nav__link">
+      <a href="../auth-spfx/" class="md-nav__link">
         In SPFx
       </a>
     </li>
@@ -475,7 +394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/auth-browser/" class="md-nav__link">
+      <a href="../auth-browser/" class="md-nav__link">
         In Browser
       </a>
     </li>
@@ -489,7 +408,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/auth-nodejs/" class="md-nav__link">
+      <a href="../auth-nodejs/" class="md-nav__link">
         In NodeJS
       </a>
     </li>
@@ -503,7 +422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/batching/" class="md-nav__link">
+      <a href="../batching/" class="md-nav__link">
         Batching
       </a>
     </li>
@@ -517,7 +436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/batching-caching/" class="md-nav__link">
+      <a href="../batching-caching/" class="md-nav__link">
         Batching & Caching
       </a>
     </li>
@@ -531,7 +450,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/calling-other-endpoints" class="md-nav__link">
+      <a href="../calling-other-endpoints" class="md-nav__link">
         Calling Other Endpoints
       </a>
     </li>
@@ -545,7 +464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/custom-bundle/" class="md-nav__link">
+      <a href="../custom-bundle/" class="md-nav__link">
         Custom Bundling
       </a>
     </li>
@@ -557,11 +476,114 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="concepts/error-handling/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Error-Handling
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Error-Handling
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-httprequesterror" class="md-nav__link">
+    The HttpRequestError
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-handling" class="md-nav__link">
+    Basic Handling
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-the-response" class="md-nav__link">
+    Reading the Response
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logging-errors" class="md-nav__link">
+    Logging errors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-all-together" class="md-nav__link">
+    Putting it All Together
+  </a>
+  
+    <nav class="md-nav" aria-label="Putting it All Together">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#errorhandlerts" class="md-nav__link">
+    errorhandler.ts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#web-requestts" class="md-nav__link">
+    web-request.ts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#web-request2ts" class="md-nav__link">
+    web-request2.ts
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-a-custom-error-handler" class="md-nav__link">
+    Building a Custom Error Handler
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -573,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/project-preset/" class="md-nav__link">
+      <a href="../project-preset/" class="md-nav__link">
         Project Config/Services Setup
       </a>
     </li>
@@ -587,7 +609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/selective-imports/" class="md-nav__link">
+      <a href="../selective-imports/" class="md-nav__link">
         Selective Imports
       </a>
     </li>
@@ -601,7 +623,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/typings/" class="md-nav__link">
+      <a href="../typings/" class="md-nav__link">
         Typings
       </a>
     </li>
@@ -615,7 +637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/behaviors/" class="md-nav__link">
+      <a href="../../core/behaviors/" class="md-nav__link">
         Using Behaviors
       </a>
     </li>
@@ -629,7 +651,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/nightly-builds/" class="md-nav__link">
+      <a href="../nightly-builds/" class="md-nav__link">
         Nightly Builds
       </a>
     </li>
@@ -678,7 +700,7 @@
   
   
     <li class="md-nav__item">
-      <a href="packages/" class="md-nav__link">
+      <a href="../../packages/" class="md-nav__link">
         Packages
       </a>
     </li>
@@ -719,7 +741,7 @@
   
   
     <li class="md-nav__item">
-      <a href="azidjsclient/" class="md-nav__link">
+      <a href="../../azidjsclient/" class="md-nav__link">
         azidjsclient
       </a>
     </li>
@@ -767,7 +789,7 @@
   
   
     <li class="md-nav__item">
-      <a href="packages/#core" class="md-nav__link">
+      <a href="../../packages/#core" class="md-nav__link">
         core
       </a>
     </li>
@@ -781,7 +803,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/behaviors/" class="md-nav__link">
+      <a href="../../core/behaviors/" class="md-nav__link">
         behaviors
       </a>
     </li>
@@ -795,7 +817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/observers/" class="md-nav__link">
+      <a href="../../core/observers/" class="md-nav__link">
         observers
       </a>
     </li>
@@ -809,7 +831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/moments/" class="md-nav__link">
+      <a href="../../core/moments/" class="md-nav__link">
         moments
       </a>
     </li>
@@ -823,7 +845,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/timeline/" class="md-nav__link">
+      <a href="../../core/timeline/" class="md-nav__link">
         timeline
       </a>
     </li>
@@ -837,7 +859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/storage/" class="md-nav__link">
+      <a href="../../core/storage/" class="md-nav__link">
         storage
       </a>
     </li>
@@ -851,7 +873,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/util/" class="md-nav__link">
+      <a href="../../core/util/" class="md-nav__link">
         util
       </a>
     </li>
@@ -899,7 +921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="packages/#graph" class="md-nav__link">
+      <a href="../../packages/#graph" class="md-nav__link">
         graph
       </a>
     </li>
@@ -913,7 +935,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/behaviors/" class="md-nav__link">
+      <a href="../../graph/behaviors/" class="md-nav__link">
         behaviors
       </a>
     </li>
@@ -927,7 +949,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/bookings/" class="md-nav__link">
+      <a href="../../graph/bookings/" class="md-nav__link">
         bookings
       </a>
     </li>
@@ -941,7 +963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/columns/" class="md-nav__link">
+      <a href="../../graph/columns/" class="md-nav__link">
         columns
       </a>
     </li>
@@ -955,7 +977,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/content-types/" class="md-nav__link">
+      <a href="../../graph/content-types/" class="md-nav__link">
         content types
       </a>
     </li>
@@ -969,7 +991,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/groups/" class="md-nav__link">
+      <a href="../../graph/groups/" class="md-nav__link">
         groups
       </a>
     </li>
@@ -983,7 +1005,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/insights/" class="md-nav__link">
+      <a href="../../graph/insights/" class="md-nav__link">
         insights
       </a>
     </li>
@@ -997,7 +1019,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/contacts/" class="md-nav__link">
+      <a href="../../graph/contacts/" class="md-nav__link">
         contacts
       </a>
     </li>
@@ -1011,7 +1033,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/cloud-communications/" class="md-nav__link">
+      <a href="../../graph/cloud-communications/" class="md-nav__link">
         cloud communications
       </a>
     </li>
@@ -1025,7 +1047,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/calendars/" class="md-nav__link">
+      <a href="../../graph/calendars/" class="md-nav__link">
         calendars
       </a>
     </li>
@@ -1039,7 +1061,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/directoryobjects/" class="md-nav__link">
+      <a href="../../graph/directoryobjects/" class="md-nav__link">
         directory objects
       </a>
     </li>
@@ -1053,7 +1075,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/invitations/" class="md-nav__link">
+      <a href="../../graph/invitations/" class="md-nav__link">
         invitations
       </a>
     </li>
@@ -1067,7 +1089,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/items/" class="md-nav__link">
+      <a href="../../graph/items/" class="md-nav__link">
         items
       </a>
     </li>
@@ -1081,7 +1103,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/lists/" class="md-nav__link">
+      <a href="../../graph/lists/" class="md-nav__link">
         lists
       </a>
     </li>
@@ -1095,7 +1117,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/messages/" class="md-nav__link">
+      <a href="../../graph/messages/" class="md-nav__link">
         messages
       </a>
     </li>
@@ -1109,7 +1131,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/onedrive/" class="md-nav__link">
+      <a href="../../graph/onedrive/" class="md-nav__link">
         onedrive
       </a>
     </li>
@@ -1123,7 +1145,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/outlook/" class="md-nav__link">
+      <a href="../../graph/outlook/" class="md-nav__link">
         outlook
       </a>
     </li>
@@ -1137,7 +1159,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/photos/" class="md-nav__link">
+      <a href="../../graph/photos/" class="md-nav__link">
         photos
       </a>
     </li>
@@ -1151,7 +1173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/planner/" class="md-nav__link">
+      <a href="../../graph/planner/" class="md-nav__link">
         planner
       </a>
     </li>
@@ -1165,7 +1187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/search/" class="md-nav__link">
+      <a href="../../graph/search/" class="md-nav__link">
         search
       </a>
     </li>
@@ -1179,7 +1201,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/shares/" class="md-nav__link">
+      <a href="../../graph/shares/" class="md-nav__link">
         shares
       </a>
     </li>
@@ -1193,7 +1215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/sites/" class="md-nav__link">
+      <a href="../../graph/sites/" class="md-nav__link">
         sites
       </a>
     </li>
@@ -1207,7 +1229,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/subscriptions/" class="md-nav__link">
+      <a href="../../graph/subscriptions/" class="md-nav__link">
         subscriptions
       </a>
     </li>
@@ -1221,7 +1243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/teams/" class="md-nav__link">
+      <a href="../../graph/teams/" class="md-nav__link">
         teams
       </a>
     </li>
@@ -1235,7 +1257,7 @@
   
   
     <li class="md-nav__item">
-      <a href="graph/users/" class="md-nav__link">
+      <a href="../../graph/users/" class="md-nav__link">
         users
       </a>
     </li>
@@ -1283,7 +1305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="logging/" class="md-nav__link">
+      <a href="../../logging/" class="md-nav__link">
         logging
       </a>
     </li>
@@ -1331,7 +1353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="msaljsclient/" class="md-nav__link">
+      <a href="../../msaljsclient/" class="md-nav__link">
         msaljsclient
       </a>
     </li>
@@ -1379,7 +1401,7 @@
   
   
     <li class="md-nav__item">
-      <a href="packages/#nodejs" class="md-nav__link">
+      <a href="../../packages/#nodejs" class="md-nav__link">
         nodejs
       </a>
     </li>
@@ -1393,7 +1415,7 @@
   
   
     <li class="md-nav__item">
-      <a href="nodejs/behaviors/" class="md-nav__link">
+      <a href="../../nodejs/behaviors/" class="md-nav__link">
         behaviors
       </a>
     </li>
@@ -1407,7 +1429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="nodejs/sp-extensions/" class="md-nav__link">
+      <a href="../../nodejs/sp-extensions/" class="md-nav__link">
         sp Extensions
       </a>
     </li>
@@ -1455,7 +1477,7 @@
   
   
     <li class="md-nav__item">
-      <a href="packages/#queryable" class="md-nav__link">
+      <a href="../../packages/#queryable" class="md-nav__link">
         queryable
       </a>
     </li>
@@ -1469,7 +1491,7 @@
   
   
     <li class="md-nav__item">
-      <a href="queryable/behaviors/" class="md-nav__link">
+      <a href="../../queryable/behaviors/" class="md-nav__link">
         behaviors
       </a>
     </li>
@@ -1483,7 +1505,7 @@
   
   
     <li class="md-nav__item">
-      <a href="queryable/extensions/" class="md-nav__link">
+      <a href="../../queryable/extensions/" class="md-nav__link">
         extensions
       </a>
     </li>
@@ -1497,7 +1519,7 @@
   
   
     <li class="md-nav__item">
-      <a href="queryable/queryable/" class="md-nav__link">
+      <a href="../../queryable/queryable/" class="md-nav__link">
         queryable
       </a>
     </li>
@@ -1545,7 +1567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="packages/#sp" class="md-nav__link">
+      <a href="../../packages/#sp" class="md-nav__link">
         sp
       </a>
     </li>
@@ -1559,7 +1581,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/behaviors/" class="md-nav__link">
+      <a href="../../sp/behaviors/" class="md-nav__link">
         behaviors
       </a>
     </li>
@@ -1573,7 +1595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/alias-parameters/" class="md-nav__link">
+      <a href="../../sp/alias-parameters/" class="md-nav__link">
         alias parameters
       </a>
     </li>
@@ -1587,7 +1609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/alm/" class="md-nav__link">
+      <a href="../../sp/alm/" class="md-nav__link">
         ALM api
       </a>
     </li>
@@ -1601,7 +1623,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/attachments/" class="md-nav__link">
+      <a href="../../sp/attachments/" class="md-nav__link">
         attachments
       </a>
     </li>
@@ -1615,7 +1637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/clientside-pages/" class="md-nav__link">
+      <a href="../../sp/clientside-pages/" class="md-nav__link">
         client-side pages
       </a>
     </li>
@@ -1629,7 +1651,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/column-defaults/" class="md-nav__link">
+      <a href="../../sp/column-defaults/" class="md-nav__link">
         column defaults
       </a>
     </li>
@@ -1643,7 +1665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/comments-likes/" class="md-nav__link">
+      <a href="../../sp/comments-likes/" class="md-nav__link">
         comments and likes
       </a>
     </li>
@@ -1657,7 +1679,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/content-types/" class="md-nav__link">
+      <a href="../../sp/content-types/" class="md-nav__link">
         content types
       </a>
     </li>
@@ -1671,7 +1693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/context-info/" class="md-nav__link">
+      <a href="../../sp/context-info/" class="md-nav__link">
         context info
       </a>
     </li>
@@ -1685,7 +1707,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/favorites/" class="md-nav__link">
+      <a href="../../sp/favorites/" class="md-nav__link">
         Favorites
       </a>
     </li>
@@ -1699,7 +1721,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/features/" class="md-nav__link">
+      <a href="../../sp/features/" class="md-nav__link">
         Features
       </a>
     </li>
@@ -1713,7 +1735,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/fields/" class="md-nav__link">
+      <a href="../../sp/fields/" class="md-nav__link">
         Fields
       </a>
     </li>
@@ -1727,7 +1749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/files/" class="md-nav__link">
+      <a href="../../sp/files/" class="md-nav__link">
         Files
       </a>
     </li>
@@ -1741,7 +1763,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/folders/" class="md-nav__link">
+      <a href="../../sp/folders/" class="md-nav__link">
         Folders
       </a>
     </li>
@@ -1755,7 +1777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/forms/" class="md-nav__link">
+      <a href="../../sp/forms/" class="md-nav__link">
         Forms
       </a>
     </li>
@@ -1769,7 +1791,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/groupSiteManager/" class="md-nav__link">
+      <a href="../../sp/groupSiteManager/" class="md-nav__link">
         GroupSiteManager
       </a>
     </li>
@@ -1783,7 +1805,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/hubsites/" class="md-nav__link">
+      <a href="../../sp/hubsites/" class="md-nav__link">
         Hubsites
       </a>
     </li>
@@ -1797,7 +1819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/items/" class="md-nav__link">
+      <a href="../../sp/items/" class="md-nav__link">
         List Items
       </a>
     </li>
@@ -1811,7 +1833,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/lists/" class="md-nav__link">
+      <a href="../../sp/lists/" class="md-nav__link">
         Lists
       </a>
     </li>
@@ -1825,7 +1847,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/navigation/" class="md-nav__link">
+      <a href="../../sp/navigation/" class="md-nav__link">
         Navigation
       </a>
     </li>
@@ -1839,7 +1861,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/permissions/" class="md-nav__link">
+      <a href="../../sp/permissions/" class="md-nav__link">
         Permissions
       </a>
     </li>
@@ -1853,7 +1875,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/profiles/" class="md-nav__link">
+      <a href="../../sp/profiles/" class="md-nav__link">
         Profiles
       </a>
     </li>
@@ -1867,7 +1889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/recycle-bin/" class="md-nav__link">
+      <a href="../../sp/recycle-bin/" class="md-nav__link">
         Recycle Bin
       </a>
     </li>
@@ -1881,7 +1903,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/regional-settings/" class="md-nav__link">
+      <a href="../../sp/regional-settings/" class="md-nav__link">
         Regional Settings
       </a>
     </li>
@@ -1895,7 +1917,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/related-items/" class="md-nav__link">
+      <a href="../../sp/related-items/" class="md-nav__link">
         Related Items
       </a>
     </li>
@@ -1909,7 +1931,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/search/" class="md-nav__link">
+      <a href="../../sp/search/" class="md-nav__link">
         Search
       </a>
     </li>
@@ -1923,7 +1945,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/security/" class="md-nav__link">
+      <a href="../../sp/security/" class="md-nav__link">
         Security
       </a>
     </li>
@@ -1937,7 +1959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/sharing/" class="md-nav__link">
+      <a href="../../sp/sharing/" class="md-nav__link">
         Sharing
       </a>
     </li>
@@ -1951,7 +1973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/site-designs/" class="md-nav__link">
+      <a href="../../sp/site-designs/" class="md-nav__link">
         Site Designs
       </a>
     </li>
@@ -1965,7 +1987,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/site-groups/" class="md-nav__link">
+      <a href="../../sp/site-groups/" class="md-nav__link">
         Site Groups
       </a>
     </li>
@@ -1979,7 +2001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/site-scripts/" class="md-nav__link">
+      <a href="../../sp/site-scripts/" class="md-nav__link">
         Site Scripts
       </a>
     </li>
@@ -1993,7 +2015,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/site-users/" class="md-nav__link">
+      <a href="../../sp/site-users/" class="md-nav__link">
         Site Users
       </a>
     </li>
@@ -2007,7 +2029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/sites/" class="md-nav__link">
+      <a href="../../sp/sites/" class="md-nav__link">
         Sites
       </a>
     </li>
@@ -2021,7 +2043,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/social/" class="md-nav__link">
+      <a href="../../sp/social/" class="md-nav__link">
         Social
       </a>
     </li>
@@ -2035,7 +2057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/publishing-sitepageservice/" class="md-nav__link">
+      <a href="../../sp/publishing-sitepageservice/" class="md-nav__link">
         SP.Publishing.SitePageService
       </a>
     </li>
@@ -2049,7 +2071,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/sp-utilities-utility/" class="md-nav__link">
+      <a href="../../sp/sp-utilities-utility/" class="md-nav__link">
         SP.Utilities.Utility
       </a>
     </li>
@@ -2063,7 +2085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/subscriptions/" class="md-nav__link">
+      <a href="../../sp/subscriptions/" class="md-nav__link">
         Subscriptions
       </a>
     </li>
@@ -2077,7 +2099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/taxonomy/" class="md-nav__link">
+      <a href="../../sp/taxonomy/" class="md-nav__link">
         Taxonomy
       </a>
     </li>
@@ -2091,7 +2113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/tenant-properties/" class="md-nav__link">
+      <a href="../../sp/tenant-properties/" class="md-nav__link">
         Tenant Properties
       </a>
     </li>
@@ -2105,7 +2127,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/user-custom-actions/" class="md-nav__link">
+      <a href="../../sp/user-custom-actions/" class="md-nav__link">
         User custom actions
       </a>
     </li>
@@ -2119,7 +2141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/views/" class="md-nav__link">
+      <a href="../../sp/views/" class="md-nav__link">
         Views
       </a>
     </li>
@@ -2133,7 +2155,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp/webs/" class="md-nav__link">
+      <a href="../../sp/webs/" class="md-nav__link">
         Webs
       </a>
     </li>
@@ -2181,7 +2203,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sp-admin/" class="md-nav__link">
+      <a href="../../sp-admin/" class="md-nav__link">
         sp-admin
       </a>
     </li>
@@ -2237,7 +2259,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/custom-bundle/" class="md-nav__link">
+      <a href="../custom-bundle/" class="md-nav__link">
         Custom Bundle
       </a>
     </li>
@@ -2251,7 +2273,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/invokable/" class="md-nav__link">
+      <a href="../invokable/" class="md-nav__link">
         Custom Call/Path
       </a>
     </li>
@@ -2265,7 +2287,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/behaviors/" class="md-nav__link">
+      <a href="../../core/behaviors/" class="md-nav__link">
         Behaviors
       </a>
     </li>
@@ -2279,7 +2301,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/behavior-recipes/" class="md-nav__link">
+      <a href="../../core/behavior-recipes/" class="md-nav__link">
         Behavior Recipes
       </a>
     </li>
@@ -2293,7 +2315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/timeline/" class="md-nav__link">
+      <a href="../../core/timeline/" class="md-nav__link">
         Timeline/Moments
       </a>
     </li>
@@ -2307,7 +2329,7 @@
   
   
     <li class="md-nav__item">
-      <a href="concepts/adv-clientside-pages/" class="md-nav__link">
+      <a href="../adv-clientside-pages/" class="md-nav__link">
         Client-Side Pages
       </a>
     </li>
@@ -2356,7 +2378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="../../contributing/" class="md-nav__link">
         Contributing
       </a>
     </li>
@@ -2370,7 +2392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/setup-dev-machine/" class="md-nav__link">
+      <a href="../../contributing/setup-dev-machine/" class="md-nav__link">
         Set Up Dev Machine
       </a>
     </li>
@@ -2384,7 +2406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/settings/" class="md-nav__link">
+      <a href="../../contributing/settings/" class="md-nav__link">
         Settings
       </a>
     </li>
@@ -2398,7 +2420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="core/timeline/" class="md-nav__link">
+      <a href="../../core/timeline/" class="md-nav__link">
         Understanding Library Internals
       </a>
     </li>
@@ -2412,7 +2434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/extending-the-library/" class="md-nav__link">
+      <a href="../../contributing/extending-the-library/" class="md-nav__link">
         Expanding the Library
       </a>
     </li>
@@ -2426,7 +2448,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/npm-scripts/" class="md-nav__link">
+      <a href="../../contributing/npm-scripts/" class="md-nav__link">
         Npm Scripts
       </a>
     </li>
@@ -2440,7 +2462,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/local-debug-configuration/" class="md-nav__link">
+      <a href="../../contributing/local-debug-configuration/" class="md-nav__link">
         Local Debug Config
       </a>
     </li>
@@ -2454,7 +2476,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/debugging/" class="md-nav__link">
+      <a href="../../contributing/debugging/" class="md-nav__link">
         Debugging
       </a>
     </li>
@@ -2468,7 +2490,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/debug-tests/" class="md-nav__link">
+      <a href="../../contributing/debug-tests/" class="md-nav__link">
         Tests
       </a>
     </li>
@@ -2482,7 +2504,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/documentation/" class="md-nav__link">
+      <a href="../../contributing/documentation/" class="md-nav__link">
         Documentation
       </a>
     </li>
@@ -2496,7 +2518,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/pull-requests/" class="md-nav__link">
+      <a href="../../contributing/pull-requests/" class="md-nav__link">
         Pull Requests
       </a>
     </li>
@@ -2545,7 +2567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="v1/" class="md-nav__link">
+      <a href="../../v1/" class="md-nav__link">
         V1
       </a>
     </li>
@@ -2559,7 +2581,7 @@
   
   
     <li class="md-nav__item">
-      <a href="v2/" class="md-nav__link">
+      <a href="../../v2/" class="md-nav__link">
         V2
       </a>
     </li>
@@ -2590,6 +2612,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -2598,57 +2622,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#packages" class="md-nav__link">
-    Packages
+  <a href="#the-httprequesterror" class="md-nav__link">
+    The HttpRequestError
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#authentication" class="md-nav__link">
-    Authentication
+  <a href="#basic-handling" class="md-nav__link">
+    Basic Handling
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#issues-questions-ideas" class="md-nav__link">
-    Issues, Questions, Ideas
+  <a href="#reading-the-response" class="md-nav__link">
+    Reading the Response
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#changelog" class="md-nav__link">
-    Changelog
+  <a href="#logging-errors" class="md-nav__link">
+    Logging errors
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#code-of-conduct" class="md-nav__link">
-    Code of Conduct
+  <a href="#putting-it-all-together" class="md-nav__link">
+    Putting it All Together
   </a>
   
-    <nav class="md-nav" aria-label="Code of Conduct">
+    <nav class="md-nav" aria-label="Putting it All Together">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sharing-is-caring" class="md-nav__link">
-    "Sharing is Caring"
+  <a href="#errorhandlerts" class="md-nav__link">
+    errorhandler.ts
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#disclaimer" class="md-nav__link">
-    Disclaimer
+  <a href="#web-requestts" class="md-nav__link">
+    web-request.ts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#web-request2ts" class="md-nav__link">
+    web-request2.ts
   </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-a-custom-error-handler" class="md-nav__link">
+    Building a Custom Error Handler
+  </a>
   
 </li>
       
@@ -2670,94 +2708,243 @@
   
 
 
-  <h1>Home</h1>
-
-<p><img alt="SharePoint Patterns and Practices Logo" src="https://raw.githubusercontent.com/pnp/media/master/pnp-logos-sp/png/1x/SharePoint_PnP_mark_fullcolor.png" /></p>
-<p>PnPjs is a collection of fluent libraries for consuming SharePoint, Graph, and Office 365 REST APIs in a type-safe way. You can use it within SharePoint Framework, Nodejs, or any JavaScript project. This an open source initiative and we encourage contributions and constructive feedback from the community.</p>
-<p>These articles provide general guidance for working with the libraries. If you are migrating from V2 please review the <a href="transition-guide/">transition guide</a>.</p>
-<ul>
-<li><strong><a href="getting-started/">Getting Started</a></strong></li>
-<li><a href="concepts/authentication/">Authentication</a></li>
-<li><a href="contributing/">Get Started Contributing</a></li>
-</ul>
-<p><img alt="Fluent API in action" src="img/PnPJS_FluentAPI.gif" /></p>
-<p><em>Animation of the library in use, note intellisense help in building your queries</em></p>
-<h2 id="packages">Packages<a class="headerlink" href="#packages" title="Permanent link">&para;</a></h2>
-<p>Patterns and Practices client side libraries (PnPjs) are comprised of the packages listed below. All of the packages are published as a set and depend on their peers within the @pnp scope.</p>
-<p>The latest published version is <a href="https://badge.fury.io/js/%40pnp%2Fcore"><img alt="npm version" src="https://badge.fury.io/js/%40pnp%2Fcore.svg" /></a>.</p>
+<h1 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h1>
+<p>This article describes the most common types of errors generated by the library. It provides context on the error object, and ways to handle the errors. As always you should tailor your error handling to what your application needs. These are ideas that can be applied to many different patterns.</p>
+<blockquote>
+<p>For 429, 503, and 504 errors we include retry logic within the library</p>
+</blockquote>
+<h2 id="the-httprequesterror">The HttpRequestError<a class="headerlink" href="#the-httprequesterror" title="Permanent link">&para;</a></h2>
+<p>All errors resulting from executed web requests will be returned as an <code>HttpRequestError</code> object which extends the base <code>Error</code>. In addition to the standard Error properties it has some other properties to help you figure out what went wrong. We used a custom error to attempt to normalize what can be a wide assortment of http related errors, while also seeking to provide as much information to library consumers as possible.</p>
 <table>
 <thead>
 <tr>
-<th></th>
-<th></th>
-<th></th>
+<th>Property Name</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>@pnp/</td>
-<td></td>
-<td></td>
+<td>name</td>
+<td>Standard Error.name property. Always 'Error'</td>
 </tr>
 <tr>
-<td></td>
-<td><a href="./concepts/auth-nodejs">azidjsclient</a></td>
-<td>Provides an Azure Identity wrapper suitable for use with PnPjs</td>
+<td>message</td>
+<td>Normalized string containing the status, status text, and the full response text</td>
 </tr>
 <tr>
-<td></td>
-<td><a href="./packages#core">core</a></td>
-<td>Provides shared functionality across all pnp libraries</td>
+<td>stack</td>
+<td>The callstack producing the error</td>
 </tr>
 <tr>
-<td></td>
-<td><a href="./packages#graph">graph</a></td>
-<td>Provides a fluent api for working with Microsoft Graph</td>
+<td>isHttpRequestError</td>
+<td>Always true, allows you to reliably determine if you have an HttpRequestError instance</td>
 </tr>
 <tr>
-<td></td>
-<td><a href="./packages#logging">logging</a></td>
-<td>Light-weight, subscribable logging framework</td>
+<td>response</td>
+<td>Unread copy of the Response object resulting in the thrown error</td>
 </tr>
 <tr>
-<td></td>
-<td><a href="./concepts/authentication">msaljsclient</a></td>
-<td>Provides an msal wrapper suitable for use with PnPjs</td>
+<td>status</td>
+<td>The Response.status value (such as 404)</td>
 </tr>
 <tr>
-<td></td>
-<td><a href="./packages#nodejs">nodejs</a></td>
-<td>Provides functionality enabling the @pnp libraries within nodejs</td>
-</tr>
-<tr>
-<td></td>
-<td><a href="./packages#queryable">queryable</a></td>
-<td>Provides shared query functionality and base classes</td>
-</tr>
-<tr>
-<td></td>
-<td><a href="./packages#sp">sp</a></td>
-<td>Provides a fluent api for working with SharePoint REST</td>
-</tr>
-<tr>
-<td></td>
-<td><a href="./packages#sp-admin">sp-admin</a></td>
-<td>Provides a fluent api for working with M365 Tenant admin methods</td>
+<td>statusText</td>
+<td>The Response.statusText value (such as 'Not Found')</td>
 </tr>
 </tbody>
 </table>
-<h2 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h2>
-<p>We have a new section dedicated to helping you <a href="concepts/authentication/">figure out the best way to handle authentication</a> in your application, check it out!</p>
-<h2 id="issues-questions-ideas">Issues, Questions, Ideas<a class="headerlink" href="#issues-questions-ideas" title="Permanent link">&para;</a></h2>
-<p>Please <a href="https://github.com/pnp/pnpjs/issues">log an issue</a> using our template as a guide. This will let us track your request and ensure we respond. We appreciate any constructive feedback, questions, ideas, or bug reports with our thanks for giving back to the project.</p>
-<h2 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h2>
-<p>Please review the <a href="https://github.com/pnp/pnpjs/blob/main/CHANGELOG.md">CHANGELOG</a> for release details on all library changes.</p>
-<h2 id="code-of-conduct">Code of Conduct<a class="headerlink" href="#code-of-conduct" title="Permanent link">&para;</a></h2>
-<p>This project has adopted the <a href="https://opensource.microsoft.com/codeofconduct/">Microsoft Open Source Code of Conduct</a>. For more information see the <a href="https://opensource.microsoft.com/codeofconduct/faq/">Code of Conduct FAQ</a> or contact <a href="mailto:opencode@microsoft.com">opencode@microsoft.com</a> with any additional questions or comments.</p>
-<h3 id="sharing-is-caring">"Sharing is Caring"<a class="headerlink" href="#sharing-is-caring" title="Permanent link">&para;</a></h3>
-<p>Please use <a href="http://aka.ms/community/home">http://aka.ms/community/home</a> for the latest updates around the whole <em>Microsoft 365 and Power Platform Community(PnP)</em> initiative.</p>
-<h3 id="disclaimer">Disclaimer<a class="headerlink" href="#disclaimer" title="Permanent link">&para;</a></h3>
-<p><strong>THIS CODE IS PROVIDED <em>AS IS</em> WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.</strong></p>
+<h2 id="basic-handling">Basic Handling<a class="headerlink" href="#basic-handling" title="Permanent link">&para;</a></h2>
+<p>For all operations involving a web request you should account for the possibility they might fail. That failure might be transient or permanent - you won't know until they happen 😉. The most basic type of error handling involves a simple try-catch when using the <a href="https://javascript.info/async-await">async/await promises pattern</a>.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists/web&quot;;
+
+try {
+
+  // get a list that doesn't exist
+  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();
+
+} catch (e) {
+
+  console.error(e);
+}
+</code></pre>
+<p>This will produce output like:</p>
+<pre><code class="language-console">Error making HttpClient request in queryable [404] Not Found ::&gt; {&quot;odata.error&quot;:{&quot;code&quot;:&quot;-1, System.ArgumentException&quot;,&quot;message&quot;:{&quot;lang&quot;:&quot;en-US&quot;,&quot;value&quot;:&quot;List 'no' does not exist at site with URL 'https://tenant.sharepoint.com/sites/dev'.&quot;}}} Data: {&quot;response&quot;:{&quot;size&quot;:0,&quot;timeout&quot;:0},&quot;status&quot;:404,&quot;statusText&quot;:&quot;Not Found&quot;,&quot;isHttpRequestError&quot;:true}
+</code></pre>
+<p>This is very descriptive and provides full details as to what happened, but you might want to handle things a little more cleanly.</p>
+<h2 id="reading-the-response">Reading the Response<a class="headerlink" href="#reading-the-response" title="Permanent link">&para;</a></h2>
+<p>In some cases the response body will have additional details such as a localized error messages which can be nicer to display rather than our normalized string. You can read the response directly and process it however you desire:</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists/web&quot;;
+import { HttpRequestError } from &quot;@pnp/queryable&quot;;
+
+try {
+
+  // get a list that doesn't exist
+  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();
+
+} catch (e) {
+
+  // are we dealing with an HttpRequestError?
+  if (e?.isHttpRequestError) {
+
+    // we can read the json from the response
+    const json = await (&lt;HttpRequestError&gt;e).response.json();
+
+    // if we have a value property we can show it
+    console.log(typeof json[&quot;odata.error&quot;] === &quot;object&quot; ? json[&quot;odata.error&quot;].message.value : e.message);
+
+    // add of course you have access to the other properties and can make choices on how to act
+    if ((&lt;HttpRequestError&gt;e).status === 404) {
+       console.error((&lt;HttpRequestError&gt;e).statusText);
+      // maybe create the resource, or redirect, or fallback to a secondary data source
+      // just ideas, handle any of the status codes uniquely as needed
+    }
+
+  } else {
+    // not an HttpRequestError so we just log message
+    console.log(e.message);
+  }
+}
+</code></pre>
+<h2 id="logging-errors">Logging errors<a class="headerlink" href="#logging-errors" title="Permanent link">&para;</a></h2>
+<p>Using the <a href="../../logging/">PnPjs Logging Framework</a> you can directly pass the error object and the normalized message will be logged. These techniques can be applied to any logging framework.</p>
+<pre><code class="language-TypeScript">import { Logger } from &quot;@pnp/logging&quot;;
+import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists/web&quot;;
+
+try {
+  // get a list that doesn't exist
+  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();  
+} catch (e) {
+
+  Logger.error(e);
+}
+</code></pre>
+<p>You may want to read the response and customize the message as described above:</p>
+<pre><code class="language-TypeScript">import { Logger } from &quot;@pnp/logging&quot;;
+import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists/web&quot;;
+import { HttpRequestError } from &quot;@pnp/queryable&quot;;
+
+try {
+  // get a list that doesn't exist
+  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();  
+} catch (e) {
+
+  if (e?.isHttpRequestError) {
+
+    // we can read the json from the response
+    const data = await (&lt;HttpRequestError&gt;e).response.json();
+
+    // parse this however you want
+    const message = typeof data[&quot;odata.error&quot;] === &quot;object&quot; ? data[&quot;odata.error&quot;].message.value : e.message;
+
+    // we use the status to determine a custom logging level
+    const level: LogLevel = (&lt;HttpRequestError&gt;e).status === 404 ? LogLevel.Warning : LogLevel.Info;
+
+    // create a custom log entry
+    Logger.log({
+      data,
+      level,
+      message,
+    });
+
+  } else {
+    // not an HttpRequestError so we just log message
+    Logger.error(e);
+  }
+}
+</code></pre>
+<h2 id="putting-it-all-together">Putting it All Together<a class="headerlink" href="#putting-it-all-together" title="Permanent link">&para;</a></h2>
+<p>After reviewing the above section you might have thought it seems like a lot of work to include all that logic for every error. One approach is to establish a single function you use application wide to process errors. This allows all the error handling logic to be easily updated and consistent across the application.</p>
+<h3 id="errorhandlerts">errorhandler.ts<a class="headerlink" href="#errorhandlerts" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { Logger } from &quot;@pnp/logging&quot;;
+import { HttpRequestError } from &quot;@pnp/queryable&quot;;
+import { hOP } from &quot;@pnp/core&quot;;
+
+export async function handleError(e: Error | HttpRequestError): Promise&lt;void&gt; {
+
+  if (hOP(e, &quot;isHttpRequestError&quot;)) {
+
+    // we can read the json from the response
+    const data = await (&lt;HttpRequestError&gt;e).response.json();
+
+    // parse this however you want
+    const message = typeof data[&quot;odata.error&quot;] === &quot;object&quot; ? data[&quot;odata.error&quot;].message.value : e.message;
+
+    // we use the status to determine a custom logging level
+    const level: LogLevel = (&lt;HttpRequestError&gt;e).status === 404 ? LogLevel.Warning : LogLevel.Info;
+
+    // create a custom log entry
+    Logger.log({
+      data,
+      level,
+      message,
+    });
+
+  } else {
+    // not an HttpRequestError so we just log message
+    Logger.error(e);
+  }
+}
+</code></pre>
+<h3 id="web-requestts">web-request.ts<a class="headerlink" href="#web-requestts" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists/web&quot;;
+import { handleError } from &quot;./errorhandler&quot;;
+
+try {
+
+  const w = await sp.web.lists.getByTitle(&quot;no&quot;)();
+
+} catch (e) {
+
+  await handleError(e);
+}
+</code></pre>
+<h3 id="web-request2ts">web-request2.ts<a class="headerlink" href="#web-request2ts" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists/web&quot;;
+import { handleError } from &quot;./errorhandler&quot;;
+
+try {
+
+  const w = await sp.web.lists();
+
+} catch (e) {
+
+  await handleError(e);
+}
+</code></pre>
+<h2 id="building-a-custom-error-handler">Building a Custom Error Handler<a class="headerlink" href="#building-a-custom-error-handler" title="Permanent link">&para;</a></h2>
+<p>In Version 3 the library introduced the concept of a Timeline object and moments. One of the broadcast moments is error. To create your own custom error handler you can define a special handler for the error moment something like the following:</p>
+<pre><code class="language-TypeScript">
+//Custom Error Behavior
+export function CustomError(): TimelinePipe&lt;Queryable&gt; {
+
+    return (instance: Queryable) =&gt; {
+
+        instance.on.error((err) =&gt; {
+            if (logging) {
+                console.log(`🛑 PnPjs Testing Error - ${err.toString()}`);
+            }
+        });
+
+        return instance;
+    };
+}
+
+//Adding our CustomError behavior to our timline
+
+const sp = spfi().using(SPDefault(this.context)).using(CustomError());
+</code></pre>
 
 
 
@@ -2832,10 +3019,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.a51614de.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a51614de.min.js"></script>
       
     
   </body>
