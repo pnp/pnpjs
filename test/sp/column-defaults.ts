@@ -9,7 +9,7 @@ import { getRandomString } from "@pnp/core";
 import "@pnp/sp/fields/list";
 import "@pnp/sp/column-defaults";
 import "@pnp/sp/batching";
-
+import { pnpTest } from "../pnp-test.js";
 import { IList } from "@pnp/sp/lists";
 
 describe("DefaultColumnValues", function () {
@@ -17,14 +17,14 @@ describe("DefaultColumnValues", function () {
     const listName = "DefaultColumnValuesTests";
     let list: IList = null;
 
-    before(async function () {
+    before(pnpTest("621744c1-278a-40d2-a438-d9c9aab12fde", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
         const ler = await this.pnp.sp.web.lists.ensure(listName, "", 101);
-        list = ler.list;
+        list =  ler.list;
 
         if (ler.created) {
             const [batchSP, execute] = this.pnp.sp.batched();
@@ -34,9 +34,9 @@ describe("DefaultColumnValues", function () {
             fields.addMultiChoice("MultiChoiceField", { Choices: ["Item 1", "Item 2", "Item 3"] });
             await execute();
         }
-    });
+    }));
 
-    it("set root folder default values", async function () {
+    it("set root folder default values", pnpTest("54426d5a-cd3a-4831-8982-56f01bce62da", async function () {
 
         await list.rootFolder.setDefaultColumnValues([{
             name: "TextField",
@@ -65,13 +65,18 @@ describe("DefaultColumnValues", function () {
                     break;
             }
         });
-    });
+    }));
 
-    it("set sub folder default values", async function () {
+    it("set sub folder default values", pnpTest("93384a59-d765-4fb0-87da-6a53f15ac736", async function () {
 
-        const far = await list.rootFolder.folders.addUsingPath(`fld_${getRandomString(4)}`);
+        const props = await this.props({
+            folderName: `fld_${getRandomString(4)}`,
+        });
 
-        await far.folder.setDefaultColumnValues([{
+        const far = await list.rootFolder.folders.addUsingPath(props.folderName);
+        const folder = await list.rootFolder.folders.getByUrl(far.Name);
+
+        await folder.setDefaultColumnValues([{
             name: "TextField",
             value: "#PnPjs",
         }, {
@@ -82,7 +87,7 @@ describe("DefaultColumnValues", function () {
             value: ["Item 1", "Item 2"],
         }]);
 
-        const defaults = await far.folder.getDefaultColumnValues();
+        const defaults = await folder.getDefaultColumnValues();
 
         expect(defaults.length).to.eq(3);
 
@@ -100,12 +105,15 @@ describe("DefaultColumnValues", function () {
                     break;
             }
         });
-    });
+    }));
 
-    it("set list values", async function () {
+    it("set list values", pnpTest("c72ae16f-c4c2-483e-96a3-dd2a13c85dbb", async function () {
 
-        const subFolderName = `fld_${getRandomString(4)}`;
-        await list.rootFolder.folders.addUsingPath(subFolderName);
+        const props = await this.props({
+            subFolderName: `fld_${getRandomString(4)}`,
+        });
+
+        await list.rootFolder.folders.addUsingPath(props.subFolderName);
 
         await list.setDefaultColumnValues([{
             name: "TextField",
@@ -121,11 +129,11 @@ describe("DefaultColumnValues", function () {
             value: ["Item 1", "Item 2"],
         }, {
             name: "TextField",
-            path: `/sites/dev/${listName}/${subFolderName}`,
+            path: `/sites/dev/${listName}/${props.subFolderName}`,
             value: "#PnPjs Rocks in subfolders too!",
         }, {
             name: "MultiChoiceField",
-            path: `/sites/dev/${listName}/${subFolderName}`,
+            path: `/sites/dev/${listName}/${props.subFolderName}`,
             value: ["Item 1"],
         }]);
 
@@ -145,7 +153,7 @@ describe("DefaultColumnValues", function () {
                         expect(f).property("value", "Item 1;Item 2", "MultiChoiceField should match");
                         break;
                 }
-            } else if (f.path === `/sites/dev/${listName}/${subFolderName}`) {
+            } else if (f.path === `/sites/dev/${listName}/${props.subFolderName}`) {
                 switch (f.name) {
                     case "TextField":
                         expect(f).property("value", "#PnPjs Rocks in subfolders too!", "TextField should match");
@@ -156,12 +164,15 @@ describe("DefaultColumnValues", function () {
                 }
             }
         });
-    });
+    }));
 
-    it("clear all defaults", async function () {
+    it("clear all defaults", pnpTest("daf5f8db-3627-41d7-ac3b-d903395a4b2d", async function () {
 
-        const subFolderName = `fld_${getRandomString(4)}`;
-        await list.rootFolder.folders.addUsingPath(subFolderName);
+        const props = await this.props({
+            subFolderName: `fld_${getRandomString(4)}`,
+        });
+
+        await list.rootFolder.folders.addUsingPath(props.subFolderName);
 
         await list.setDefaultColumnValues([{
             name: "TextField",
@@ -177,11 +188,11 @@ describe("DefaultColumnValues", function () {
             value: ["Item 1", "Item 2"],
         }, {
             name: "TextField",
-            path: `/sites/dev/${listName}/${subFolderName}`,
+            path: `/sites/dev/${listName}/${props.subFolderName}`,
             value: "#PnPjs Rocks in subfolders too!",
         }, {
             name: "MultiChoiceField",
-            path: `/sites/dev/${listName}/${subFolderName}`,
+            path: `/sites/dev/${listName}/${props.subFolderName}`,
             value: ["Item 1"],
         }]);
 
@@ -194,14 +205,17 @@ describe("DefaultColumnValues", function () {
         const defaults2 = await list.getDefaultColumnValues();
 
         expect(defaults2.length).to.eq(0);
-    });
+    }));
 
-    it("clear folder defaults", async function () {
+    it("clear folder defaults", pnpTest("18788370-0be6-41a6-a9a6-7184f2260745",  async function () {
 
-        const subFolderName = `fld_${getRandomString(4)}`;
-        const far = await list.rootFolder.folders.addUsingPath(subFolderName);
+        const props = await this.props({
+            subFolderName: `fld_${getRandomString(4)}`,
+        });
+        const far = await list.rootFolder.folders.addUsingPath(props.subFolderName);
+        const folder = list.rootFolder.folders.getByUrl(far.Name);
 
-        await far.folder.setDefaultColumnValues([{
+        await folder.setDefaultColumnValues([{
             name: "TextField",
             value: "#PnPjs Rocks!",
         }, {
@@ -212,14 +226,14 @@ describe("DefaultColumnValues", function () {
             value: ["Item 1", "Item 2"],
         }]);
 
-        const defaults = await far.folder.getDefaultColumnValues();
+        const defaults = await folder.getDefaultColumnValues();
 
         expect(defaults.length).to.be.eq(3);
 
-        await far.folder.clearDefaultColumnValues();
+        await folder.clearDefaultColumnValues();
 
-        const defaults2 = await far.folder.getDefaultColumnValues();
+        const defaults2 = await folder.getDefaultColumnValues();
 
         expect(defaults2.length).to.eq(0);
-    });
+    }));
 });

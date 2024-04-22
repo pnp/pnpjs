@@ -1,5 +1,6 @@
 import { Timeline, asyncReduce } from "@pnp/core";
 import { expect } from "chai";
+import { pnpTest } from "../pnp-test.js";
 
 const TestingMoments = {
     first: asyncReduce<(a: number) => Promise<[number]>>(),
@@ -49,7 +50,7 @@ class TestTimeline extends Timeline<typeof TestingMoments> {
 
 describe("Timeline", function () {
 
-    it("Should process moments", async function () {
+    it("Should process moments", pnpTest("a4ed8b84-d89f-4e3a-8b12-5463e2d2a551", async function () {
 
         const tl = new TestTimeline();
 
@@ -60,9 +61,9 @@ describe("Timeline", function () {
         const h = await tl.go(0);
 
         return expect(h).to.eq(2);
-    });
+    }));
 
-    it("Should process moments 2", async function () {
+    it("Should process moments 2", pnpTest("8267d3af-554d-44d8-8b00-e33ce7d93f1d", async function () {
 
         const tl = new TestTimeline();
 
@@ -78,9 +79,9 @@ describe("Timeline", function () {
         const h = await tl.go(0);
 
         return expect(h).to.eq(7);
-    });
+    }));
 
-    it("Prepend works as expected", function () {
+    it("Prepend works as expected", pnpTest("890664f0-0e7f-4aa5-bc73-55fa4b05b27b", function () {
 
         const tl = new TestTimeline();
 
@@ -97,9 +98,9 @@ describe("Timeline", function () {
         expect(observers[0]).to.eq(f3);
         expect(observers[1]).to.eq(f1);
         expect(observers[2]).to.eq(f2);
-    });
+    }));
 
-    it("Clear works as expected", function () {
+    it("Clear works as expected", pnpTest("66b43d34-7e34-4506-abc9-4d12b8286937", function () {
 
         const tl = new TestTimeline();
 
@@ -120,9 +121,9 @@ describe("Timeline", function () {
         const observers2 = tl.on.first.toArray();
 
         expect(observers2).length(0);
-    });
+    }));
 
-    it("Replace works as expected", function () {
+    it("Replace works as expected", pnpTest("b162d48e-2ddd-4b36-8fee-fc3c9ef18838", function () {
 
         const tl = new TestTimeline();
 
@@ -144,9 +145,9 @@ describe("Timeline", function () {
 
         expect(observers2).length(1);
         expect(observers2[0]).to.eq(f1);
-    });
+    }));
 
-    it("Logging works as expected", function () {
+    it("Logging works as expected", pnpTest("0506ad5a-7d00-4f0e-b436-46c90faadd9d", function () {
 
         const tl = new TestTimeline();
 
@@ -161,9 +162,9 @@ describe("Timeline", function () {
         tl.log("Test 2", 0);
 
         expect(messages.length).to.eq(2);
-    });
+    }));
 
-    it("Lifecycle works as expected", async function () {
+    it("Lifecycle works as expected", pnpTest("a7dda9ad-cb00-4ad8-b717-4de294e02ad2", async function () {
 
         const tl = new TestTimeline();
 
@@ -201,5 +202,5 @@ describe("Timeline", function () {
         expect(tracker[1]).to.eq(2);
         expect(tracker[2]).to.eq(3);
         expect(tracker[3]).to.eq(4);
-    });
+    }));
 });

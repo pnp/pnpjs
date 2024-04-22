@@ -6,10 +6,11 @@ import "@pnp/sp/sharing";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/files";
 import { getRandomString, combine } from "@pnp/core";
-import { IFiles, TemplateFileType } from "@pnp/sp/files";
+import { IFiles, TemplateFileType, fileFromServerRelativePath } from "@pnp/sp/files";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import findupSync from "findup-sync";
+import { pnpTest } from "../pnp-test.js";
 
 // give ourselves a single reference to the projectRoot
 const projectRoot = resolve(dirname(findupSync("package.json")));
@@ -21,7 +22,7 @@ describe("Files", function () {
     let testFileNamePercentPoundServerRelPath = "";
     let files: IFiles = null;
 
-    before(async function () {
+    before(pnpTest("948e4449-4cc4-4353-a584-b35c497acbd4", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
@@ -31,8 +32,8 @@ describe("Files", function () {
         // ensure we have at least one file to get
         await files.addUsingPath(testFileName, "Test file!", { Overwrite: true });
         const res = await files.addUsingPath(testFileNamePercentPound, "Test file!", { Overwrite: true });
-        testFileNamePercentPoundServerRelPath = res.data.ServerRelativeUrl;
-    });
+        testFileNamePercentPoundServerRelPath = res.ServerRelativeUrl;
+    }));
 
     it("getByUrl (FileName)", async function () {
 
@@ -79,14 +80,14 @@ describe("Files", function () {
     it("addUsingPath (result invokable)", async function () {
         const name = `Testing Add - ${getRandomString(4)}.txt`;
         const file = await files.addUsingPath(name, "Some test text content.");
-        return expect(file.file.getText()).to.eventually.be.fulfilled;
+        return expect(files.getByUrl(file.Name).getText()).to.eventually.be.fulfilled;
     });
 
     it("addUsingPath (silly chars)", async function () {
 
         const name = `Testing Add & = + - ${getRandomString(4)}.txt`;
         const res = await files.addUsingPath(name, "Some test text content.");
-        const file = await this.pnp.sp.web.getFileByServerRelativePath(res.data.ServerRelativeUrl)();
+        const file = await this.pnp.sp.web.getFileByServerRelativePath(res.ServerRelativeUrl)();
         expect(file.Name).to.eq(name);
     });
 
@@ -94,10 +95,10 @@ describe("Files", function () {
 
         const name = `Testing Chunked - ${getRandomString(4)}.jpg`;
         const content = readFileSync(resolve(projectRoot, "./test/sp/assets/sample_file.jpg"));
-        const far = await files.addChunked(name, <any>content, null, true, 1000000);
+        const far = await files.addChunked(name, <any>content, null);
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(far).to.not.be.null;
-        return expect(far.file()).to.eventually.be.fulfilled;
+        return expect(files.getByUrl(name)()).to.eventually.be.fulfilled;
     });
 
     it("addTemplateFile", async function () {
@@ -105,15 +106,15 @@ describe("Files", function () {
         const webData = await this.pnp.sp.web.select("ServerRelativeUrl")();
         const path = combine("/", webData.ServerRelativeUrl, `/SitePages/Testing template file - ${getRandomString(4)}.aspx`);
         const far = await files.addTemplateFile(path, TemplateFileType.StandardPage);
-        return expect(far.file()).to.eventually.be.fulfilled;
+        return expect(fileFromServerRelativePath(files, far.ServerRelativeUrl)()).to.eventually.be.fulfilled;
     });
 
     it("getFileById", async function () {
 
         const name = `Testing getFileById - ${getRandomString(4)}.txt`;
         const far = await files.addUsingPath(name, "Some test text content.");
-        const fileById = await this.pnp.sp.web.getFileById(far.data.UniqueId).select("UniqueId")();
-        return expect(far.data.UniqueId).to.eq(fileById.UniqueId);
+        const fileById = await this.pnp.sp.web.getFileById(far.UniqueId).select("UniqueId")();
+        return expect(far.UniqueId).to.eq(fileById.UniqueId);
     });
 
     it("filter (silly chars)", async function () {

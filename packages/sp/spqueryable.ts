@@ -1,6 +1,5 @@
-import { combine, isUrlAbsolute, isArray, objectDefinedNotNull, stringIsNullOrEmpty } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
-import { spPostDelete, spPostDeleteETag } from "./operations.js";
+import { combine, isUrlAbsolute, isArray, stringIsNullOrEmpty } from "@pnp/core";
+import { Queryable, queryableFactory, op, get, post, patch, del, IInvokable } from "@pnp/queryable";
 
 export type SPInit = string | ISPQueryable | [ISPQueryable, string];
 
@@ -66,11 +65,6 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
 
             const q: Queryable<any> = isArray(base) ? base[0] : base;
             this.parentUrl = isArray(base) ? base[1] : q.toUrl();
-
-            const target = q.query.get("@target");
-            if (objectDefinedNotNull(target)) {
-                this.query.set("@target", target);
-            }
         }
     }
 
@@ -79,7 +73,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      */
     public toRequestUrl(): string {
 
-        const aliasedParams = new URLSearchParams(this.query);
+        const aliasedParams = new URLSearchParams(<any>this.query);
 
         // this regex is designed to locate aliased parameters within url paths. These may have the form:
         // /something(!@p1::value)
@@ -90,7 +84,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
         // there could be spaces or not around the boundaries
         let url = this.toUrl().replace(/([( *| *, *| *= *])'!(@.*?)::(.*?)'([ *)| *, *])/ig, (match, frontBoundary, labelName, value, endBoundary) => {
             this.log(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, 0);
-            aliasedParams.set(labelName,`'${value}'`);
+            aliasedParams.set(labelName, `'${value}'`);
             return `${frontBoundary}${labelName}${endBoundary}`;
         });
 
@@ -136,14 +130,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
         path?: string,
         base: string = this.parentUrl): T {
 
-        const parent = factory([this, base], path);
-
-        const t = "@target";
-        if (this.query.has(t)) {
-            parent.query.set(t, this.query.get(t));
-        }
-
-        return parent;
+        return factory([this, base], path);
     }
 }
 export interface ISPQueryable<GetType = any> extends _SPQueryable<GetType> { }
@@ -242,3 +229,34 @@ export interface IDeleteableWithETag {
      */
     delete(eTag?: string): Promise<void>;
 }
+
+export const spGet = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, get, init);
+};
+
+export const spPost = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, post, init);
+
+export const spPostMerge = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
+    init = init || {};
+    init.headers = { ...init.headers, "X-HTTP-Method": "MERGE" };
+
+    return spPost<T>(o, init);
+};
+
+export const spPostDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
+    init = init || {};
+    init.headers = { ...init.headers || {}, "X-HTTP-Method": "DELETE" };
+
+    return spPost<T>(o, init);
+};
+
+export const spPostDeleteETag = <T = any>(o: ISPQueryable<any>, init?: RequestInit, eTag = "*"): Promise<T> => {
+    init = init || {};
+    init.headers = { ...init.headers || {}, "IF-Match": eTag };
+
+    return spPostDelete<T>(o, init);
+};
+
+export const spDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, del, init);
+
+export const spPatch = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, patch, init);

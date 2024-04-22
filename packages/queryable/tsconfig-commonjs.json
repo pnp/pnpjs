@@ -1,0 +1,11 @@
+{
+    "extends": "../tsconfig-commonjs.json",
+    "include": [
+        "./**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../core/tsconfig-commonjs.json"
+        }
+    ]
+}

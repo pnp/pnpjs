@@ -85,7 +85,7 @@ Create a new field by defining an XML schema that assigns all the properties for
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { IField, IFieldAddResult } from "@pnp/sp/fields/types";
+import { IField, IFieldInfo } from "@pnp/sp/fields/types";
 
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -97,15 +97,13 @@ const sp = spfi(...);
 const fieldSchema = `<Field ID="{03b09ff4-d99d-45ed-841d-3855f77a2483}" StaticName="MyField" Name="MyField" DisplayName="My New Field" FriendlyDisplayFormat="Disabled" Format="DateOnly" Type="DateTime" Group="My Group"><Default>[today]</Default></Field>`;
 
 // create the new field in the web
-const field: IFieldAddResult = await sp.web.fields.createFieldAsXml(fieldSchema);
+const field:IFieldInfo = await sp.web.fields.createFieldAsXml(fieldSchema);
 // create the new field in the list 'My List'
-const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(fieldSchema);
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(fieldSchema);
 
-// we can use this 'field' variable to run more queries on the list:
-const r = await field.field.select("Id")();
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a New Field
@@ -114,7 +112,7 @@ Use the add method to create a new field where you define the field type
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { IField, IFieldAddResult, FieldTypes } from "@pnp/sp/fields/types";
+import { IField, FieldTypes, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -122,15 +120,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
+const field:IFieldInfo = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
 // create a new field called 'My Field' in the list 'My List'
-const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Site Field to a List
@@ -139,7 +134,7 @@ Use the createFieldAsXml method to add a site field to a list.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { IFieldAddResult, FieldTypes } from "@pnp/sp/fields/types";
+import { FieldTypes, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -147,12 +142,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
+const field:IFieldInfo = await sp.web.fields.add("My Field", FieldTypes.Text, { FieldTypeKind: 3, Group: "My Group" });
 // add the site field 'My Field' to the list 'My List'
-const r = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(field.data.SchemaXml as string);
+const r:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(field.SchemaXml as string);
 
 // log the field Id to console
-console.log(r.data.Id);
+console.log(r.Id);
 ```
 
 ### Add a Text Field
@@ -161,7 +156,7 @@ Use the addText method to create a new text field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { IFieldAddResult, FieldTypes } from "@pnp/sp/fields/types";
+import { FieldTypes, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -169,15 +164,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new text field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.addText("My Field", { MaxLength: 255, Group: "My Group" });
+const field:IFieldInfo = await sp.web.fields.addText("My Field", { MaxLength: 255, Group: "My Group" });
 // create a new text field called 'My Field' in the list 'My List'.
-const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.addText("My Field", { MaxLength: 255, Group: "My Group" });
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.addText("My Field", { MaxLength: 255, Group: "My Group" });
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Calculated Field
@@ -186,7 +178,7 @@ Use the addCalculated method to create a new calculated field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { DateTimeFieldFormatType, FieldTypes } from "@pnp/sp/fields/types";
+import { DateTimeFieldFormatType, FieldTypes, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -194,15 +186,13 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new calculated field called 'My Field' in web
-const field = await sp.web.fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
+const field:IFieldInfo = await sp.web.fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat: DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
 // create a new calculated field called 'My Field' in the list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat:  DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.addCalculated("My Field", { Formula: "=Modified+1", DateFormat:  DateTimeFieldFormatType.DateOnly, FieldTypeKind: FieldTypes.Calculated, Group: "MyGroup" });
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Date/Time Field
@@ -211,7 +201,7 @@ Use the addDateTime method to create a new date/time field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { DateTimeFieldFormatType, CalendarType, DateTimeFieldFriendlyFormatType } from "@pnp/sp/fields/types";
+import { DateTimeFieldFormatType, CalendarType, DateTimeFieldFriendlyFormatType, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -219,15 +209,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new date/time field called 'My Field' in web
-const field = await sp.web.fields.addDateTime("My Field", { DisplayFormat: DateTimeFieldFormatType.DateOnly, DateTimeCalendarType: CalendarType.Gregorian, FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled,  Group: "My Group" });
+const field:IFieldInfo = await sp.web.fields.addDateTime("My Field", { DisplayFormat: DateTimeFieldFormatType.DateOnly, DateTimeCalendarType: CalendarType.Gregorian, FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled,  Group: "My Group" });
 // create a new date/time field called 'My Field' in the list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addDateTime("My Field", { DisplayFormat: DateTimeFieldFormatType.DateOnly, DateTimeCalendarType: CalendarType.Gregorian, FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled, Group: "My Group" });
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.addDateTime("My Field", { DisplayFormat: DateTimeFieldFormatType.DateOnly, DateTimeCalendarType: CalendarType.Gregorian, FriendlyDisplayFormat: DateTimeFieldFriendlyFormatType.Disabled, Group: "My Group" });
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Currency Field
@@ -236,6 +223,7 @@ Use the addCurrency method to create a new currency field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
+import { IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -243,15 +231,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new currency field called 'My Field' in web
-const field = await sp.web.fields.addCurrency("My Field", { MinimumValue: 0, MaximumValue: 100, CurrencyLocaleId: 1033, Group: "My Group" });
+const field:IFieldInfo = await sp.web.fields.addCurrency("My Field", { MinimumValue: 0, MaximumValue: 100, CurrencyLocaleId: 1033, Group: "My Group" });
 // create a new currency field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addCurrency("My Field", { MinimumValue: 0, MaximumValue: 100, CurrencyLocaleId: 1033, Group: "My Group" });
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.addCurrency("My Field", { MinimumValue: 0, MaximumValue: 100, CurrencyLocaleId: 1033, Group: "My Group" });
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add an Image Field
@@ -260,7 +245,7 @@ Use the addImageField method to create a new image field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { IFieldAddResult, FieldTypes } from "@pnp/sp/fields/types";
+import { FieldTypes, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -268,15 +253,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new image field called 'My Field' in web.
-const field: IFieldAddResult = await sp.web.fields.addImageField("My Field");
+const field:IFieldInfo = await sp.web.fields.addImageField("My Field");
 // create a new image field called 'My Field' in the list 'My List'.
-const field2: IFieldAddResult = await sp.web.lists.getByTitle("My List").fields.addImageField("My Field");
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.addImageField("My Field");
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Multi-line Text Field
@@ -286,6 +268,7 @@ Use the addMultilineText method to create a new multi-line text field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
+import { FieldTypes, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -293,15 +276,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new multi-line text field called 'My Field' in web
-const field = await sp.web.fields.addMultilineText("My Field", { NumberOfLines: 6, RichText: true, RestrictedMode: false, AppendOnly: false, AllowHyperlink: true, Group: "My Group" });
+const field:IFieldInfo = await sp.web.fields.addMultilineText("My Field", { NumberOfLines: 6, RichText: true, RestrictedMode: false, AppendOnly: false, AllowHyperlink: true, Group: "My Group" });
 // create a new multi-line text field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addMultilineText("My Field", { NumberOfLines: 6, RichText: true, RestrictedMode: false, AppendOnly: false, AllowHyperlink: true, Group: "My Group" });
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.addMultilineText("My Field", { NumberOfLines: 6, RichText: true, RestrictedMode: false, AppendOnly: false, AllowHyperlink: true, Group: "My Group" });
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Multi-line Text Field with Enhanced Rich Text
@@ -310,6 +290,7 @@ The REST endpoint doesn't support setting the `RichTextMode` field therefore you
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
+import { FieldTypes, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -317,15 +298,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 //Create a new multi-line text field called 'My Field' in web
-const field = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(
+const field:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.createFieldAsXml(
     `<Field Type="Note" Name="MyField" DisplayName="My Field" Required="FALSE" RichText="TRUE" RichTextMode="FullHtml" />`
 );
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
-
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Number Field
@@ -334,6 +312,7 @@ Use the addNumber method to create a new number field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
+import { FieldTypes, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -341,15 +320,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new number field called 'My Field' in web
-const field = await sp.web.fields.addNumber("My Field", { MinimumValue: 1, MaximumValue: 100, Group: "My Group" });
+const field:IFieldInfo = await sp.web.fields.addNumber("My Field", { MinimumValue: 1, MaximumValue: 100, Group: "My Group" });
 // create a new number field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addNumber("My Field", { MinimumValue: 1, MaximumValue: 100, Group: "My Group" });
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.addNumber("My Field", { MinimumValue: 1, MaximumValue: 100, Group: "My Group" });
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a URL Field
@@ -358,7 +334,7 @@ Use the addUrl method to create a new url field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { UrlFieldFormatType } from "@pnp/sp/fields/types";
+import { UrlFieldFormatType, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -366,15 +342,12 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new url field called 'My Field' in web
-const field = await sp.web.fields.addUrl("My Field", { DisplayFormat: UrlFieldFormatType.Hyperlink, Group: "My Group" });
+const field:IFieldInfo = await sp.web.fields.addUrl("My Field", { DisplayFormat: UrlFieldFormatType.Hyperlink, Group: "My Group" });
 // create a new url field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addUrl("My Field", { DisplayFormat: UrlFieldFormatType.Hyperlink, Group: "My Group" });
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.addUrl("My Field", { DisplayFormat: UrlFieldFormatType.Hyperlink, Group: "My Group" });
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field);
 ```
 
 ### Add a User Field
@@ -383,7 +356,7 @@ Use the addUser method to create a new user field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { FieldUserSelectionMode } from "@pnp/sp/fields/types";
+import { FieldUserSelectionMode, IFieldInfo } from "@pnp/sp/fields/types";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
@@ -391,20 +364,17 @@ import "@pnp/sp/fields";
 const sp = spfi(...);
 
 // create a new user field called 'My Field' in web
-const field = await sp.web.fields.addUser("My Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
+const field:IFieldInfo = await sp.web.fields.addUser("My Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
 // create a new user field called 'My Field' in list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addUser("My Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2:IFieldInfo = await sp.web.lists.getByTitle("My List").fields.addUser("My Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly, Group: "My Group" });
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 
 // **
 // Adding a lookup that supports multiple values takes two calls:
-const fieldAddResult = await sp.web.fields.addUser("Multi User Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly });
-await fieldAddResult.field.update({ AllowMultipleValues: true }, "SP.FieldUser");
+const fieldAdd = await sp.web.fields.addUser("Multi User Field", { SelectionMode: FieldUserSelectionMode.PeopleOnly });
+await sp.web.fields.getById(fieldAdd.Id).update({ AllowMultipleValues: true }, "SP.FieldUser");
 ```
 
 ### Add a Lookup Field
@@ -413,7 +383,7 @@ Use the addLookup method to create a new lookup field.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
-import { FieldTypes } from "@pnp/sp/fields/types";
+import { FieldTypes, IFieldInfo } from "@pnp/sp/fields/types";
 
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
@@ -423,20 +393,17 @@ const sp = spfi(...);
 
 const list = await sp.web.lists.getByTitle("My Lookup List")();
 // create a new lookup field called 'My Field' based on an existing list 'My Lookup List' showing 'Title' field in web.
-const field = await sp.web.fields.addLookup("My Field", { LookupListId: list.data.Id, LookupFieldName: "Title" });
+const field = await sp.web.fields.addLookup("My Field", { LookupListId: list.Id, LookupFieldName: "Title" });
 // create a new lookup field called 'My Field' based on an existing list 'My Lookup List' showing 'Title' field in list 'My List'
-const field2 = await sp.web.lists.getByTitle("My List").fields.addLookup("My Field", {LookupListId: list.data.Id, LookupFieldName: "Title"});
-
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
+const field2 = await sp.web.lists.getByTitle("My List").fields.addLookup("My Field", {LookupListId: list.Id, LookupFieldName: "Title"});
 
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 
 // **
 // Adding a lookup that supports multiple values takes two calls:
-const fieldAddResult = await sp.web.fields.addLookup("Multi Lookup Field", { LookupListId: list.data.Id, LookupFieldName: "Title" });
-await fieldAddResult.field.update({ AllowMultipleValues: true }, "SP.FieldLookup");
+const fieldAdd = await sp.web.fields.addLookup("Multi Lookup Field", { LookupListId: list.Id, LookupFieldName: "Title" });
+await sp.web.fields.getById(fieldAdd.Id).update({ AllowMultipleValues: true }, "SP.FieldLookup");
 ```
 
 ### Add a Choice Field
@@ -458,11 +425,8 @@ const field = await sp.web.fields.addChoice("My Field", { Choices: choices, Edit
 // create a new choice field called 'My Field' in list 'My List'
 const field2 = await sp.web.lists.getByTitle("My List").fields.addChoice("My Field", { Choices: choices, EditFormat: ChoiceFieldFormatType.Dropdown, FillInChoice: false, Group: "My Group" });
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
-
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Multi-Choice Field
@@ -484,11 +448,8 @@ const field = await sp.web.fields.addMultiChoice("My Field", { Choices: choices,
 // create a new multi-choice field called 'My Field' in list 'My List'
 const field2 = await sp.web.lists.getByTitle("My List").fields.addMultiChoice("My Field", { Choices: choices, FillInChoice: false, Group: "My Group" });
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
-
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Boolean Field
@@ -508,11 +469,8 @@ const field = await sp.web.fields.addBoolean("My Field", { Group: "My Group" });
 // create a new boolean field called 'My Field' in list 'My List'
 const field2 = await sp.web.lists.getByTitle("My List").fields.addBoolean("My Field", { Group: "My Group" });
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
-
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Add a Dependent Lookup Field
@@ -529,16 +487,13 @@ const sp = spfi(...);
 
 const field = await sp.web.fields.addLookup("My Field", { LookupListId: list.Id, LookupFieldName: "Title" });
 // create a new dependent lookup field called 'My Dep Field' showing 'Description' based on an existing 'My Field' lookup field in web.
-const fieldDep = await sp.web.fields.addDependentLookupField("My Dep Field", field.data.Id as string, "Description");
+const fieldDep = await sp.web.fields.addDependentLookupField("My Dep Field", field.Id as string, "Description");
 // create a new dependent lookup field called 'My Dep Field' showing 'Description' based on an existing 'My Field' lookup field in list 'My List'
 const field2 = await sp.web.lists.getByTitle("My List").fields.addLookup("My Field", { LookupListId: list.Id, LookupFieldName: "Title" });
-const fieldDep2 = await sp.web.lists.getByTitle("My List").fields.addDependentLookupField("My Dep Field", field2.data.Id as string, "Description");
+const fieldDep2 = await sp.web.lists.getByTitle("My List").fields.addDependentLookupField("My Dep Field", field2.Id as string, "Description");
 
-// we can use this 'fieldDep' variable to run more queries on the field:
-const r = await fieldDep.field.select("Id")();
-
-// log the field Id to console
-console.log(r.Id);
+// log the fieldDep Id to console
+console.log(fieldDep.Id);
 ```
 
 ### Add a Location Field
@@ -558,11 +513,8 @@ const field = await sp.web.fields.addLocation("My Field", { Group: "My Group" })
 // create a new location field called 'My Field' in list 'My List'
 const field2 = await sp.web.lists.getByTitle("My List").fields.addLocation("My Field", { Group: "My Group" });
 
-// we can use this 'field' variable to run more queries on the field:
-const r = await field.field.select("Id")();
-
 // log the field Id to console
-console.log(r.Id);
+console.log(field.Id);
 ```
 
 ### Delete a Field
@@ -603,9 +555,9 @@ import "@pnp/sp/fields";
 
 const sp = spfi(...);
 
-// update the field called 'My Field' with a description in web, returns FieldUpdateResult
+// update the field called 'My Field' with a description in web, returns IFieldInfo
 const fieldUpdate = await sp.web.fields.getByTitle("My Field").update({ Description: "My Description" });
-// update the field called 'My Field' with a description in list 'My List', returns FieldUpdateResult
+// update the field called 'My Field' with a description in list 'My List', returns IFieldInfo
 const fieldUpdate2 = await sp.web.lists.getByTitle("My List").fields.getByTitle("My Field").update({ Description: "My Description" });
 
 // if you need to update a field with properties for a specific field type you can optionally include the field type as a second param

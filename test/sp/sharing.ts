@@ -33,6 +33,7 @@ describe("Sharing", function () {
 
         // we need a doc lib with a file and folder in it
         const ler = await this.pnp.sp.web.lists.ensure(testSharingLib, "Used to test sharing", 101);
+        const list = ler.list;
 
         // we need a user to share to
         if (this.pnp.settings.testUser?.length > 0) {
@@ -40,8 +41,8 @@ describe("Sharing", function () {
         }
 
         // add a file and folder
-        await ler.list.rootFolder.folders.addUsingPath(testSharingFolder);
-        await ler.list.rootFolder.files.addUsingPath(testSharingFile, "Some file content!");
+        await list.rootFolder.folders.addUsingPath(testSharingFolder);
+        await list.rootFolder.files.addUsingPath(testSharingFile, "Some file content!");
     });
 
     after(async function () {

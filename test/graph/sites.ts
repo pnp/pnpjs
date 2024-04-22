@@ -30,8 +30,9 @@ describe("Sites", function () {
         site = await getTestingGraphSPSite(this);
         const tetssite = await site();
         const url = new URL(tetssite.webUrl);
-        const siteByUrl = await this.pnp.graph.sites.getByUrl(url.hostname, url.pathname)();
-        passed = (siteByUrl.webUrl.toLowerCase() === tetssite.webUrl.toLowerCase());
+        const siteByUrl = await this.pnp.graph.sites.getByUrl(url.hostname, url.pathname);
+        const siteInfo = await siteByUrl();
+        passed = (siteInfo.webUrl.toLowerCase() === tetssite.webUrl.toLowerCase());
         return expect(passed).is.true;
     });
 

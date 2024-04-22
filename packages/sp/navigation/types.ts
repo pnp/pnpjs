@@ -6,10 +6,11 @@ import {
     _SPQueryable,
     IDeleteable,
     ISPQueryable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { extractWebUrl } from "../index.js";
 import { combine } from "@pnp/core";
 
@@ -35,7 +36,7 @@ export class _NavigationNodes extends _SPCollection<INavNodeInfo[]> {
      * @param url The url of the node
      * @param visible If true the node is visible, otherwise it is hidden (default: true)
      */
-    public async add(title: string, url: string, visible = true): Promise<INavigationNodeAddResult> {
+    public async add(title: string, url: string, visible = true): Promise<INavNodeInfo> {
 
         const postBody = body({
             IsVisible: visible,
@@ -43,12 +44,7 @@ export class _NavigationNodes extends _SPCollection<INavNodeInfo[]> {
             Url: url,
         });
 
-        const data = await spPost(NavigationNodes(this, null), postBody);
-
-        return {
-            data,
-            node: this.getById(data.Id),
-        };
+        return spPost(NavigationNodes(this, null), postBody);
     }
 
     /**
@@ -217,15 +213,6 @@ export interface ISerializableNavigationNode {
     ListTemplateType: number;
     AudienceIds: string[];
     Children: ISerializableNavigationNode[];
-}
-
-/**
- * Result from adding a navigation node
- *
- */
-export interface INavigationNodeAddResult {
-    data: INavNodeInfo;
-    node: INavigationNode;
 }
 
 /**

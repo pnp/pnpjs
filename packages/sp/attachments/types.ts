@@ -1,13 +1,13 @@
 import { headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
 import { ReadableFile } from "../files/readable-file.js";
-import { spPost } from "../operations.js";
 import { encodePath } from "../utils/encode-path-str.js";
 import {
     IDeleteableWithETag,
     _SPCollection,
     spInvokableFactory,
     deleteableWithETag,
+    spPost,
 } from "../spqueryable.js";
 
 @defaultPath("AttachmentFiles")
@@ -20,7 +20,7 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
     */
     public getByName(name: string): IAttachment {
         const f = Attachment(this);
-        f.concat(`('${name}')`);
+        f.concat(`('${encodePath(name)}')`);
         return f;
     }
 

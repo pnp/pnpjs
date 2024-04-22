@@ -4,8 +4,6 @@ import "./web.js";
 
 export {
     Folder,
-    IFolderAddResult,
-    IFolderUpdateResult,
     Folders,
     IFolder,
     IFolders,

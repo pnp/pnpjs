@@ -1,0 +1,17 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "outDir": "./build/debugging",
+        "rootDir": ".",
+        "composite": false,
+        "declaration": false,
+        "declarationMap": false,
+        "sourceMap": false,
+        "allowSyntheticDefaultImports": true
+    },
+    "include": [
+        "./tools/local-module-resolver/**/*.ts"
+    ],
+    "exclude": []
+}

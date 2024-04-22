@@ -1,0 +1,20 @@
+{
+    "extends": "../tsconfig-commonjs.json",
+    "include": [
+        "./**/*.ts",
+        "../core/**/*.ts",
+        "../queryable/**/*.ts",
+        "./presets/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../core/tsconfig-commonjs.json"
+        },
+        {
+            "path": "../queryable/tsconfig-commonjs.json"
+        },
+        {
+            "path": "../sp/tsconfig-commonjs.json"
+        }
+    ]
+}

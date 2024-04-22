@@ -1,6 +1,5 @@
 import { hOP } from "@pnp/core";
-import { spPost } from "../operations.js";
-import { SPQueryable, _SPQueryable } from "../spqueryable.js";
+import { SPQueryable, _SPQueryable, spPost } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 
 declare module "../spqueryable" {

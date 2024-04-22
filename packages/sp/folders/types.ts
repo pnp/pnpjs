@@ -9,11 +9,12 @@ import {
     ISPInstance,
     IDeleteableWithETag,
     ISPQueryable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { IItem, Item } from "../items/types.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath, IResourcePath } from "../utils/to-resource-path.js";
 import { encodePath } from "../utils/encode-path-str.js";
@@ -39,14 +40,10 @@ export class _Folders extends _SPCollection<IFolderInfo[]> {
      * @param serverRelativeUrl The server relative url of the new folder to create
      * @param overwrite True to overwrite an existing folder, default false
      */
-    public async addUsingPath(serverRelativeUrl: string, overwrite = false): Promise<IFolderAddResult> {
+    public async addUsingPath(serverRelativeUrl: string, overwrite = false): Promise<IFolderInfo> {
 
-        const data: IFolderInfo = await spPost(Folders(this, `addUsingPath(DecodedUrl='${encodePath(serverRelativeUrl)}',overwrite=${overwrite})`));
+        return spPost(Folders(this, `addUsingPath(DecodedUrl='${encodePath(serverRelativeUrl)}',overwrite=${overwrite})`));
 
-        return {
-            data,
-            folder: folderFromServerRelativePath(this, data.ServerRelativeUrl),
-        };
     }
 }
 export interface IFolders extends _Folders { }
@@ -101,14 +98,9 @@ export class _Folder extends _SPInstance<IFolderInfo> {
      * Updates folder's properties
      * @param props Folder's properties to update
      */
-    public async update(props: Partial<IFolderInfo>): Promise<IFolderUpdateResult> {
+    public async update(props: Partial<IFolderInfo>): Promise<IFolderInfo> {
 
-        const data = await spPostMerge(this, body(props));
-
-        return {
-            data,
-            folder: this,
-        };
+        return spPostMerge(this, body(props));
     }
 
     /**
@@ -336,38 +328,6 @@ export async function folderFromAbsolutePath(base: ISPQueryable, absoluteFolderP
  */
 export async function folderFromPath(base: ISPQueryable, path: string): Promise<IFolder> {
     return (isUrlAbsolute(path) ? folderFromAbsolutePath : folderFromServerRelativePath)(base, path);
-}
-
-/**
- * Describes result of adding a folder
- */
-export interface IFolderAddResult {
-
-    /**
-     * A folder's instance
-     */
-    folder: IFolder;
-
-    /**
-     * Additional data from the server
-     */
-    data: any;
-}
-
-/**
- * Describes result of updating a folder
- */
-export interface IFolderUpdateResult {
-
-    /**
-     * A folder's instance
-     */
-    folder: IFolder;
-
-    /**
-     * Additional data from the server
-     */
-    data: any;
 }
 
 export interface IFolderInfo {

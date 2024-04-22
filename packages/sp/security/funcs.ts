@@ -1,6 +1,5 @@
 import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types.js";
-import { SPInstance, SPQueryable } from "../spqueryable.js";
-import { spPost } from "../operations.js";
+import { SPInstance, SPQueryable, spPost } from "../spqueryable.js";
 
 /**
 * Gets the effective permissions for the user supplied

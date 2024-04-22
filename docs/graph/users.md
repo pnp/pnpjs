@@ -2,7 +2,9 @@
 
 Users are Azure Active Directory objects representing users in the organizations. They represent the single identity for a person across Microsoft 365 services.  
 
-You can learn more about Microsoft Graph users by reading the [Official Microsoft Graph Documentation](https://docs.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0).
+More information can be found in the official Graph documentation:
+
+- [Teams Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.)
 
 ## IUsers, IUser, IPeople
 
@@ -127,8 +129,8 @@ See [Cloud Communications](./cloud-communications.md)
 
 ## User Messages (Mail)
 
-See [Messages](./messages.md)
+See [Messages](./mail-messages.md)
 
 ## User OneDrive
 
-See [OneDrive](./onedrive.md)
+See [Files](./files.md)

@@ -8,7 +8,7 @@ These articles provide general guidance for working with the libraries. If you a
 * [Authentication](concepts/authentication.md)
 * [Get Started Contributing](contributing/index.md)
 
-![Fluent API in action](img/PnPJS_FluentAPI.gif)
+![Fluent API in action](img/PnPjsFluentAPI.gif)
 
 _Animation of the library in use, note intellisense help in building your queries_
 

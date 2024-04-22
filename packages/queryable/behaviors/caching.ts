@@ -103,6 +103,7 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
                     }));
 
                 } else {
+
                     result = cached;
                 }
             }

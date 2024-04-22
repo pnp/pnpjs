@@ -27,7 +27,7 @@
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "strictNullChecks": false,
-        "preserveConstEnums": true,
+        "preserveConstEnums": false,
         "importHelpers": true,
         "resolveJsonModule": true,
         "paths": {

@@ -1,7 +1,6 @@
 import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull, isFunc, combine, jsS } from "@pnp/core";
 import { parseBinderWithErrorCheck, Queryable, body, InjectHeaders } from "@pnp/queryable";
-import { IGraphQueryable, _GraphQueryable } from "./graphqueryable.js";
-import { graphPost } from "./operations.js";
+import { IGraphQueryable, _GraphQueryable, graphPost } from "./graphqueryable.js";
 import { GraphFI } from "./fi.js";
 
 declare module "./fi" {
@@ -112,7 +111,7 @@ class BatchQueryable extends _GraphQueryable {
         // do a fix up on the url once other pre behaviors have had a chance to run
         this.on.pre(async function (this: BatchQueryable, url, init, result) {
 
-            const versRegex = /(https:\/\/.*?[\\|/]v1\.0|beta[\\|/])/i;
+            const versRegex = /(https:\/\/.*?\/(v1.0|beta)\/)/i;
 
             const m = url.match(versRegex);
 
@@ -371,13 +370,16 @@ function parseResponse(graphResponse: IGraphBatchResponse): ParsedGraphResponse 
     for (let i = 0; i < graphResponse.responses.length; ++i) {
 
         const response = graphResponse.responses[i];
+
         // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
         // the array of requests and make it easier to map them by index
         const responseId = parseInt(response.id, 10) - 1;
-        const contentType = response.headers["Content-Type"];
-        const { status, statusText, headers, body } = response;
-        const init = { status, statusText, headers };
 
+        const contentType = response.headers["Content-Type"];
+
+        const { status, statusText, headers, body } = response;
+
+        const init = { status, statusText, headers };
 
         // this is to handle special cases before we pass to the default parsing logic
         if (status === 204) {

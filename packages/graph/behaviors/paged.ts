@@ -1,46 +1,31 @@
-import { hOP, objectDefinedNotNull, stringIsNullOrEmpty, TimelinePipe } from "@pnp/core";
+import { hOP, stringIsNullOrEmpty, TimelinePipe } from "@pnp/core";
 import { errorCheck, parseODataJSON } from "@pnp/queryable";
-import { GraphQueryableCollection, IGraphQueryable, IGraphQueryableCollection } from "../graphqueryable.js";
+import { GraphCollection, IGraphQueryable, IGraphCollection } from "../graphqueryable.js";
 import { ConsistencyLevel } from "./consistency-level.js";
 
-export interface IPagedResult {
+export interface IPagedResult<T> {
     count: number;
-    value: any[] | null;
+    value: T[] | null;
     hasNext: boolean;
-    next(): Promise<IPagedResult>;
+    nextLink: string;
+    deltaLink: string;
 }
 
 /**
- * Configures a collection query to returned paged results
+ * A function that will take a collection defining IGraphCollection and return the count of items
+ * in that collection. Not all Graph collections support Count.
  *
- * @param col Collection forming the basis of the paged collection, this param is NOT modified
- * @returns A duplicate collection which will return paged results
+ * @param col The collection to count
+ * @returns number representing the count
  */
-export function AsPaged(col: IGraphQueryableCollection, supportsCount = false): IGraphQueryableCollection {
+export async function Count<T>(col: IGraphCollection<T>): Promise<number> {
 
-    const q = GraphQueryableCollection(col).using(Paged(supportsCount), ConsistencyLevel());
+    const q = GraphCollection(col).using(Paged(), ConsistencyLevel());
+    q.query.set("$count", "true");
+    q.top(1);
 
-    const queryParams = ["$search", "$top", "$select", "$expand", "$filter", "$orderby"];
-
-    if (supportsCount) {
-
-        // we might be constructing our query with a next url that will already contain $count so we need
-        // to ensure we don't add it again, likewise if it is already in our query collection we don't add it again
-        if (!q.query.has("$count") && !/\$count=true/i.test(q.toUrl())) {
-            q.query.set("$count", "true");
-        }
-
-        queryParams.push("$count");
-    }
-
-    for (let i = 0; i < queryParams.length; i++) {
-        const param = col.query.get(queryParams[i]);
-        if (objectDefinedNotNull(param)) {
-            q.query.set(queryParams[i], param);
-        }
-    }
-
-    return q;
+    const y: IPagedResult<T> = await q();
+    return y.count;
 }
 
 /**
@@ -58,15 +43,18 @@ export function Paged(supportsCount = false): TimelinePipe {
             const txt = await response.text();
             const json = txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {};
             const nextLink = json["@odata.nextLink"];
+            const deltaLink = json["@odata.deltaLink"];
 
             const count = supportsCount && hOP(json, "@odata.count") ? parseInt(json["@odata.count"], 10) : 0;
 
             const hasNext = !stringIsNullOrEmpty(nextLink);
+            const hasDelta = !stringIsNullOrEmpty(deltaLink);
 
             result = {
                 count,
                 hasNext,
-                next: () => (hasNext ? AsPaged(GraphQueryableCollection([instance, nextLink]), supportsCount)() : null),
+                nextLink: hasNext ? nextLink : null,
+                deltaLink: hasDelta ? deltaLink : null,
                 value: parseODataJSON(json),
             };
 

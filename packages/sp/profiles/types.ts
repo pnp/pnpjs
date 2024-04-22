@@ -6,11 +6,11 @@ import {
     ISPInstance,
     spInvokableFactory,
     _SPQueryable,
+    spPost,
 } from "../spqueryable.js";
 import { body } from "@pnp/queryable";
 import { PrincipalType, PrincipalSource } from "../types.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
 import { AssignFrom } from "@pnp/core";
 
 export class _Profiles extends _SPInstance {
@@ -495,7 +495,7 @@ export interface IPeoplePickerEntityData {
 /**
  * Specifies the originating zone of a request received.
  */
-export const enum UrlZone {
+export enum UrlZone {
     /**
      * Specifies the default zone used for requests unless another zone is specified.
      */

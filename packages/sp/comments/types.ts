@@ -3,10 +3,11 @@ import {
     _SPCollection,
     spInvokableFactory,
     _SPInstance,
+    spDelete,
+    spPost,
 } from "../spqueryable.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { body } from "@pnp/queryable";
-import { spDelete, spPost } from "../operations.js";
 
 @defaultPath("comments")
 export class _Comments extends _SPCollection<ICommentInfo[]> {

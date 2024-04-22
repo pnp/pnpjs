@@ -1,6 +1,6 @@
 import { addProp } from "@pnp/queryable";
 import { _List } from "../lists/types.js";
-import { addColumn, IColumnAddResult } from "./addColumns.js";
+import { addColumn } from "./addColumns.js";
 import { Columns, IColumns, _Columns } from "./types.js";
 import {
     ColumnDefinition as IColumnDefinition,
@@ -9,11 +9,11 @@ import {
 
 declare module "./types" {
     interface _Columns {
-        add(column: IColumnDefinition): Promise<IColumnAddResult>;
+        add(column: IColumnDefinition): Promise<IColumnDefinition>;
     }
 
     interface IColumns {
-        add(column: IColumnDefinition): Promise<IColumnAddResult>;
+        add(column: IColumnDefinition): Promise<IColumnDefinition>;
     }
 }
 

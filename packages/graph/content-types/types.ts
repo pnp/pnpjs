@@ -2,9 +2,8 @@ import {
     ContentType as IContentTypeEntity,
     ItemReference as IItemReference,
 } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, graphInvokableFactory, _GraphQueryableInstance } from "../graphqueryable.js";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance, graphGet, graphPost } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
-import { graphGet, graphPost } from "../operations.js";
 import { body } from "@pnp/queryable";
 import { JSONHeaderParse } from "@pnp/queryable";
 
@@ -13,7 +12,7 @@ import { JSONHeaderParse } from "@pnp/queryable";
  */
 @deleteable()
 @updateable()
-export class _ContentType extends _GraphQueryableInstance<IContentTypeEntity> {
+export class _ContentType extends _GraphInstance<IContentTypeEntity> {
 
     /**
       * Check the publishing status of a contentType in a content type hub site.
@@ -74,7 +73,7 @@ export const ContentType = graphInvokableFactory<IContentType>(_ContentType);
  */
 @defaultPath("contenttypes")
 @getById(ContentType)
-export class _ContentTypes extends _GraphQueryableCollection<IContentTypeEntity[]>{
+export class _ContentTypes extends _GraphCollection<IContentTypeEntity[]>{
     /**
      * Add or sync a copy of a published content type from the content type hub to a target site or a list.
      *

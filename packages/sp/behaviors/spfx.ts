@@ -22,7 +22,22 @@ export interface ISPFXContext {
     };
 }
 
+class SPFxTokenNullOrUndefinedError extends Error {
+
+    constructor(behaviorName: string) {
+        super(`SPFx Context supplied to ${behaviorName} Behavior is null or undefined.`);
+    }
+
+    public static check(behaviorName: string, context?: ISPFXContext): void {
+        if (typeof context === "undefined" || context === null) {
+            throw new SPFxTokenNullOrUndefinedError(behaviorName);
+        }
+    }
+}
+
 export function SPFxToken(context: ISPFXContext): TimelinePipe<Queryable> {
+
+    SPFxTokenNullOrUndefinedError.check("SPFxToken", context);
 
     return (instance: Queryable) => {
 
@@ -42,6 +57,8 @@ export function SPFxToken(context: ISPFXContext): TimelinePipe<Queryable> {
 }
 
 export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
+
+    SPFxTokenNullOrUndefinedError.check("SPFx", context);
 
     return (instance: Queryable) => {
 

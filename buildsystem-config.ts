@@ -1,146 +1,158 @@
 import { resolve } from "path";
-import { ConfigCollection, BuildSchema, Tasks, PackageSchema, PublishSchema } from "@pnp/buildsystem";
+import {
+    BuildSchema,
+    BuildTimeline,
+    Build,
+    ReplaceVersion,
+    CopyPackageFiles,
+    CopyAssetFiles,
+    WritePackageJSON,
+    Publish,
+    PublishNightly,
+} from "@pnp/buildsystem";
+import {
+    Logger,
+    ConsoleListener,
+    LogLevel,
+    PnPLogging,
+} from "@pnp/logging";
 
-export default <ConfigCollection>[
-    <BuildSchema>{
+Logger.subscribe(ConsoleListener("", {
+    color: "skyblue",
+    error: "red",
+    verbose: "lightslategray",
+    warning: "yellow",
+}));
 
-        name: "build",
+const logLevel = LogLevel.Verbose;
+const distFolder = "./dist/packages";
+const commonPublishTags = ["--access", "public"];
 
-        role: "build",
+function PnPBuild(buildFlags?: string[]): (b: BuildTimeline) => BuildTimeline {
 
-        packageRoot: resolve("./packages/"),
+    return (instance: BuildTimeline) => {
 
-        preBuildTasks: [],
+        Build(buildFlags)(instance);
+        ReplaceVersion(["sp/behaviors/telemetry.js", "graph/behaviors/telemetry.js"], {})(instance);
 
-        // these tsconfig files will all be transpiled per the settings in the file
-        buildTargets: [
-            resolve("./packages/tsconfig.json"),
-        ],
+        return instance;
+    }
+}
 
-        postBuildTasks: [
-            // this task replaces the $$Version$$ with the version from the root package.json at build time
-            Tasks.Build.createReplaceVersion([
-                "sp/behaviors/telemetry.js",
-                "graph/behaviors/telemetry.js",
-            ]),
-        ],
-    },
-    <PackageSchema>{
+function PnPPackage(): (b: BuildTimeline) => BuildTimeline {
 
-        name: "package",
+    return (instance: BuildTimeline) => {
 
-        role: "package",
-
-        prePackageTasks: [],
-
-        packageTargets: [
-            {
-                outDir: resolve("./dist/packages"),
-                target: resolve("./packages/tsconfig.json"),
-                tasks: [
-                    Tasks.Package.createCopyTargetFiles(),
-                    Tasks.Package.copyStaticAssets,
-                    Tasks.Package.createCopyPackageScripts(),
-                    Tasks.Package.createWritePackageFiles((p) => {
-                        return Object.assign({}, p, {
-                            funding: {
-                                type: "individual",
-                                url: "https://github.com/sponsors/patrick-rodgers/",
-                            },
-                            type: "module",
-                            engines: {
-                                node: ">=14.15.1"
-                            },
-                            author: {
-                                name: "Microsoft and other contributors"
-                            },
-                            license: "MIT",
-                            bugs: {
-                                url: "https://github.com/pnp/pnpjs/issues"
-                            },
-                            homepage: "https://github.com/pnp/pnpjs",
-                            repository: {
-                                type: "git",
-                                url: "git:github.com/pnp/pnpjs"
-                            }
-                        });
-                    }),
+        CopyPackageFiles("src", ["**/*.cjs"])(instance);
+        CopyAssetFiles(".", ["LICENSE"])(instance);
+        CopyAssetFiles("./packages", ["readme.md"])(instance);
+        CopyPackageFiles("built", ["**/*.d.ts", "**/*.js", "**/*.js.map", "**/*.d.ts.map"])(instance);
+        WritePackageJSON((p) => {
+            return Object.assign({}, p, {
+                type: "module",
+                main: "./index.js",
+                typings: "./index",
+                engines: {
+                    node: ">=18.12.0"
+                },
+                author: {
+                    name: "Microsoft and other contributors"
+                },
+                license: "MIT",
+                bugs: {
+                    url: "https://github.com/pnp/pnpjs/issues"
+                },
+                homepage: "https://github.com/pnp/pnpjs",
+                repository: {
+                    type: "git",
+                    url: "git:github.com/pnp/pnpjs"
+                },
+                maintainers: [
+                    {
+                        name: "patrick-rodgers",
+                        email: "patrick.rodgers@microsoft.com"
+                    },
+                    {
+                        name: "juliemturner",
+                        email: "julie.turner@sympraxisconsulting.com",
+                        url: "https://julieturner.net"
+                    },
+                    {
+                        name: "bcameron1231",
+                        email: "beau@beaucameron.net",
+                        url: "https://beaucameron.net"
+                    },
                 ],
-            },
-        ],
+                funding: {
+                    type: "individual",
+                    url: "https://github.com/sponsors/patrick-rodgers/",
+                },
+            });
+        })(instance);
 
-        postPackageTasks: [],
-    },
-    <PublishSchema>{
+        return instance;
+    }
+}
 
-        name: "publish",
+function PnPPublish(flags?: string[]): (b: BuildTimeline) => BuildTimeline {
 
-        role: "publish",
+    return (instance: BuildTimeline) => {
 
-        packageRoots: [
-            resolve("./dist/packages"),
-        ],
+        Publish(flags)(instance);
 
-        prePublishTasks: [],
+        return instance;
+    }
+}
 
-        publishTasks: [Tasks.Publish.publishPackage],
-
-        postPublishTasks: [],
-    },
-    <BuildSchema>{
-
-        name: "build-debug",
-
-        role: "build",
-
-        packageRoot: resolve("./debug/"),
-
-        exclude: [],
-
-        preBuildTasks: [],
-
-        buildTargets: [
-            resolve("./debug/launch/tsconfig.json"),
-        ],
-
-        postBuildTasks: [
-
-            Tasks.Build.createReplaceVersion([
-                "packages/sp/behaviors/telemetry.js",
-                "packages/graph/behaviors/telemetry.js",
-            ]),
-        ],
-    },
-    <PublishSchema>{
-
-        name: "publish-beta",
-
-        role: "publish",
-
-        packageRoots: [
-            resolve("./dist/packages"),
-        ],
-
-        prePublishTasks: [],
-
-        publishTasks: [Tasks.Publish.publishBetaPackage],
-
-        postPublishTasks: [],
-    },
-    <PublishSchema>{
-
-        name: "publish-v3nightly",
-
-        role: "publish",
-
-        packageRoots: [
-            resolve("./dist/packages"),
-        ],
-
-        prePublishTasks: [Tasks.Publish.updateV3NightlyVersion],
-
-        publishTasks: [Tasks.Publish.publishV3Nightly],
-
-        postPublishTasks: [],
-    },
+const commonBehaviors = [
+    PnPLogging(logLevel),
 ];
+
+export default <BuildSchema[]>[{
+    name: "build",
+    distFolder,
+    targets: [
+        resolve("./packages/tsconfig.json"),
+    ],
+    behaviors: [PnPBuild(), ...commonBehaviors],
+},
+{
+    name: "build-debug",
+    distFolder,
+    targets: [
+        resolve("./debug/launch/tsconfig.json"),
+    ],
+    behaviors: [Build(), ReplaceVersion(["packages/sp/behaviors/telemetry.js", "packages/graph/behaviors/telemetry.js"], {}), ...commonBehaviors],
+},
+{
+    name: "package",
+    distFolder,
+    targets: [
+        resolve("./packages/tsconfig.json"),
+    ],
+    behaviors: [PnPBuild(), PnPPackage(), ...commonBehaviors],
+},
+{
+    name: "publish",
+    distFolder,
+    targets: [
+        resolve("./packages/tsconfig.json"),
+    ],
+    behaviors: [PnPBuild(), PnPPackage(), PnPPublish(commonPublishTags), ...commonBehaviors],
+},
+{
+    name: "publish-beta",
+    distFolder,
+    targets: [
+        resolve("./packages/tsconfig.json"),
+    ],
+    behaviors: [PnPBuild(), PnPPackage(), PnPPublish([...commonPublishTags, "--tag", "beta"]), ...commonBehaviors],
+},
+{
+    name: "publish-v4nightly",
+    distFolder,
+    targets: [
+        resolve("./packages/tsconfig.json"),
+    ],
+    behaviors: [PnPBuild(), PnPPackage(), PublishNightly([...commonPublishTags], "v4nightly"), ...commonBehaviors],
+}];

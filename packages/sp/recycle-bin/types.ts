@@ -3,9 +3,9 @@ import {
     spInvokableFactory,
     SPQueryable,
     _SPInstance,
+    spPost,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
 
 /**
  * Describes a recycle bin item
