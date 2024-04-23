@@ -2,7 +2,7 @@
     "name": "@pnp/monorepo",
     "private": true,
     "type": "module",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "description": "A JavaScript library for SharePoint & Graph development.",
     "devDependencies": {
         "@azure/identity": "4.1.0",
