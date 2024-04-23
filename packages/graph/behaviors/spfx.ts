@@ -26,7 +26,7 @@ class SPFxTokenNullOrUndefinedError extends Error {
 
 export function SPFxToken(context: ISPFXContext): TimelinePipe<Queryable> {
 
-    SPFxTokenNullOrUndefinedError.check("SPFxToken");
+    SPFxTokenNullOrUndefinedError.check("SPFxToken", context);
 
     return (instance: Queryable) => {
 
@@ -47,7 +47,7 @@ export function SPFxToken(context: ISPFXContext): TimelinePipe<Queryable> {
 
 export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
 
-    SPFxTokenNullOrUndefinedError.check("SPFx");
+    SPFxTokenNullOrUndefinedError.check("SPFx", context);
 
     return (instance: Queryable) => {
 
