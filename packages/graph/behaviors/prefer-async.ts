@@ -1,6 +1,6 @@
 import { TimelinePipe } from "@pnp/core";
 import { InjectHeaders } from "@pnp/queryable";
-import { GraphQueryable, _GraphQueryable, graphGet } from "../graphqueryable";
+import { GraphQueryable, _GraphQueryable, graphGet } from "../graphqueryable.js";
 import { RichLongRunningOperation } from "@microsoft/microsoft-graph-types";
 
 export function PreferAsync(pollIntervalMs: number = 25000, maxPolls: number = 4): TimelinePipe {
