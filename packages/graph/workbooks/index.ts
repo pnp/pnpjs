@@ -6,4 +6,6 @@ export {
     ITables,
     ITableRow,
     ITableRows,
+    ITableColumn,
+    ITableColumns
 } from "./types.js";
