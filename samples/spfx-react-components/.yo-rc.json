@@ -1,0 +1,21 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.18.2",
+    "libraryName": "pnpjs",
+    "libraryId": "44a7bfd5-a98a-4efc-9536-6a18af1b8477",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "pnpjs",
+    "solutionShortDescription": "pnpjs description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart",
+    "nodeVersion": "18.17.1",
+    "sdkVersions": {
+      "@microsoft/teams-js": "2.12.0",
+      "@microsoft/microsoft-graph-client": "3.0.2"
+    }
+  }
+}
