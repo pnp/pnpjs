@@ -466,6 +466,43 @@ updateVal[fields[0].InternalName] = "-1;#New Term|bb046161-49cc-41bd-a459-566717
 await sp.web.lists.getByTitle("TestList").items.getById(newItem.Id).update(updateVal);
 ```
 
+#### File List Item
+To update a multi-value taxonomy field on a file item, a different serialization is needed.
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/files";
+
+const sp = spfi(...);
+
+const multiValueTaxonomy = {
+  field: "MetaDataColumn",
+  values: [
+    {
+      label: "Demo 1",
+      guid: "bb046161-49cc-41bd-a459-5667175920d4"
+    }, 
+    {
+      label: "Demo 2", 
+      guid: "0069972e-67f1-4c5e-99b6-24ac5c90b7c9"
+    }
+  ]
+}
+
+// serialize values for field "MetaDataColumn"
+// it needs to be serialized as {field label}|{field guid} joined by ;
+const newFieldValue = multiValueTaxonomy
+  .map((val) => (`${val.label}|${val.guid}`)).join(";")
+// this will result to "Demo 1|bb046161-49cc-41bd-a459-5667175920d4;Demo 2|0069972e-67f1-4c5e-99b6-24ac5c90b7c9"
+
+await (await sp.web.getFileByServerRelativePath("/sites/demo/DemoLibrary/File.txt").getItem()).validateUpdateListItem([{
+    FieldName: multiValueTaxonomy.field,
+    FieldValue: multiValueTaxonomy.guid, //Label|TermGuid;Label 2|TermGuid 2
+}]);
+```
+
 ### Update BCS Field
 
 Please see [the issue](https://github.com/pnp/pnpjs/issues/2143) for full details.
