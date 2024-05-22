@@ -18,10 +18,11 @@
     "@microsoft/sp-office-ui-fabric-core": "1.18.2",
     "@microsoft/sp-property-pane": "1.18.2",
     "@microsoft/sp-webpart-base": "1.18.2",
-    "@pnp/core": "^4.0.0-alpha0-v4nightly.20240412",
-    "@pnp/graph": "^4.0.0-alpha0-v4nightly.20240412",
-    "@pnp/logging": "^4.0.0-alpha0-v4nightly.20240412",
-    "@pnp/sp": "^4.0.0-alpha0-v4nightly.20240412",
+    "@pnp/core": "^4.0.1",
+    "@pnp/graph": "^4.0.1",
+    "@pnp/logging": "^4.0.1",
+    "@pnp/sp": "^4.0.1",
+    "@pnp/sp-admin": "^4.0.1",
     "tslib": "2.3.1"
   },
   "devDependencies": {
