@@ -9,3 +9,5 @@ export * from "./behaviors/graphbrowser.js";
 export * from "./behaviors/paged.js";
 export * from "./behaviors/telemetry.js";
 export * from "./behaviors/spfx.js";
+
+export const DEFAULT_GRAPH_URL = "https://graph.microsoft.com/v1.0";
