@@ -31,9 +31,17 @@ Next we can import and use the functionality within our application. Below is a 
 
 ## Getting Started with SharePoint Framework
 
+### Quick References (v3 and v4 are the same for getting started)
+
+- [Code Sample: SharePoint Framework 1.19.0 with PnPjs v4](https://github.com/pnp/pnpjs/tree/version-4/samples/spfx-react-components/README.md)
+- [Code Sample: SharePoint Framework 1.15.2 with PnPjs v3 utilizing ReactJS Hooks](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-hooks)
+- [Getting started with PnPjs 3.0: 5-part series](https://youtube.com/playlist?list=PLR9nK3mnD-OWvmtj9TKE6tM7ZrUosV_vB)
+
+### More Details
+
 The @pnp/sp and @pnp/graph libraries are designed to work seamlessly within SharePoint Framework projects with a small amount of upfront configuration. If you are running in 2016 or 2019 on-premises you will need to use [version 2](./v2/SPFx-on-premises/index.html) of the library. If you are targeting SharePoint online you may need to take the additional steps outlined below based on the version of the SharePoint Framework you are targeting.
 
-We've created two Getting Started samples. The first uses the more traditional React Component classes and can be found in the [spfx-react-components](../samples/spfx-react-components/README.md) sample project, utilizing SPFx 1.18.2 and PnPjs V4. 
+We've created two Getting Started samples. The first uses the more traditional React Component classes and can be found in the [spfx-react-components](https://github.com/pnp/pnpjs/tree/version-4/samples/spfx-react-components/README.md) sample project, utilizing SPFx 1.18.2 and PnPjs V4.
 
 Although original created for V3, this 5 part video series is similar enough to v4 to give good direction for getting started with PnPjs:
 

@@ -2,7 +2,7 @@
   "@microsoft/generator-sharepoint": {
     "plusBeta": false,
     "isCreatingSolution": true,
-    "version": "1.18.2",
+    "version": "1.19.0",
     "libraryName": "pnpjs",
     "libraryId": "44a7bfd5-a98a-4efc-9536-6a18af1b8477",
     "environment": "spo",
