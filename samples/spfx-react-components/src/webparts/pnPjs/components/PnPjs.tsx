@@ -53,7 +53,8 @@ export default class pnpjs extends React.PureComponent<IpnpjsProps, IpnpjsState>
   }
 
   public componentDidMount(): void {
-    this._readAllFilesSize();
+    /*eslint no-void: ["error", { "allowAsStatement": true }]*/
+    void this._readAllFilesSize();
   }
 
   private _readAllFilesSize = async (): Promise<void> => {
@@ -94,7 +95,8 @@ export default class pnpjs extends React.PureComponent<IpnpjsProps, IpnpjsState>
           .items
           .getById(items[i].Id)
           .update({ Title: `${items[i].Name}-Updated` })
-          .then(r => res.push(r));
+          .then(r => res.push(r))
+          .catch(e => console.log(`Error: ${e}`));
       }
 
       await execute();
@@ -171,7 +173,7 @@ export default class pnpjs extends React.PureComponent<IpnpjsProps, IpnpjsState>
       );
     } catch (err) {
       Logger.write(`${this.LOG_SOURCE} (render) - ${JSON.stringify(err)}`, LogLevel.Error);
-      return null;
+      return <></>;
     }
   }
 }

@@ -43,6 +43,25 @@ console.log(results3.RowCount);
 console.log(results3.PrimarySearchResults);
 ```
 
+## People Search Example
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/search";
+import { SearchQueryInit, SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+
+const sp = spfi(...);
+
+// Where source id is the built in Search Source for People and is the same for every tenant.
+const q: SearchQueryInit = SearchQueryBuilder(`Joe`)
+        .sourceId("B09A7990-05EA-4AF9-81EF-EDFAB16C4E31")
+        .rowLimit(500)
+        .rowsPerPage(500)
+        .selectProperties("SipAddress", "PreferredName", "AccountName", "Department", "JobTitle")
+        .trimDuplicates;
+const people: SearchResults = await this._sp.search(q);
+```
+
 ## Search Result Caching
 
 Starting with v3 you can use any of the caching behaviors with search and the results will be cached. Please see here [for more details on caching options](https://pnp.github.io/pnpjs/queryable/behaviors/#caching).
