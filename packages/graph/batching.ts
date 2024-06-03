@@ -375,8 +375,6 @@ function parseResponse(graphResponse: IGraphBatchResponse): ParsedGraphResponse 
         // the array of requests and make it easier to map them by index
         const responseId = parseInt(response.id, 10) - 1;
 
-        const contentType = response.headers["Content-Type"];
-
         const { status, statusText, headers, body } = response;
 
         const init = { status, statusText, headers };
@@ -397,7 +395,7 @@ function parseResponse(graphResponse: IGraphBatchResponse): ParsedGraphResponse 
             // eslint-disable-next-line @typescript-eslint/dot-notation
             parsedResponses[responseId] = new Response(jsS({ location: headers["Location"] || "" }), init);
 
-        } else if (status === 200 && /^image[\\|/]/i.test(contentType)) {
+        } else if (status === 200 && /^image[\\|/]/i.test(headers["Content-Type"] || "")) {
 
             // this handles the case where image content is returned as base 64 data in the batch body, such as /me/photos/$value (https://github.com/pnp/pnpjs/issues/2825)
 
