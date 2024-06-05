@@ -194,17 +194,16 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
-import { IItemAddResult } from "@pnp/sp/items";
 
 const sp = spfi(...);
 
 // add an item to the list
-const iar: IItemAddResult = await sp.web.lists.getByTitle("My List").items.add({
+const item = await sp.web.lists.getByTitle("My List").items.add({
   Title: "Title",
   Description: "Description"
 });
 
-console.log(iar);
+console.log(item);
 ```
 
 ### Content Type
