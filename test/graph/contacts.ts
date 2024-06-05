@@ -194,9 +194,8 @@ describe("Contacts", function () {
         try {
             // This passes the first time through, expecting it to fail on second pass.
             // If we try to find a folder that doesn't exist this returns a 404
-            await this.pnp.graph.users.getById(testUserName).contactFolders.getById(folder.id)();
-            deletedFolderFound = true;
-
+            const deletedFolder = await this.pnp.graph.users.getById(testUserName).contactFolders.getById(folder.id)();
+            deletedFolderFound = (deletedFolder?.id.length> 0);
         } catch (e) {
             if (e?.isHttpRequestError) {
                 if ((<HttpRequestError>e).status === 404) {
