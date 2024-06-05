@@ -322,7 +322,7 @@ export function folderFromServerRelativePath(base: ISPQueryable, serverRelativeP
  */
 export async function folderFromAbsolutePath(base: ISPQueryable, absoluteFolderPath: string): Promise<IFolder> {
 
-    const { WebFullUrl } = await Folder(this).using(BatchNever()).getContextInfo(absoluteFolderPath);
+    const { WebFullUrl } = await Folder(base).using(BatchNever()).getContextInfo(absoluteFolderPath);
     const { pathname } = new URL(absoluteFolderPath);
     return folderFromServerRelativePath(Folder([base, combine(WebFullUrl, "_api/web")]), decodeURIComponent(pathname));
 }
