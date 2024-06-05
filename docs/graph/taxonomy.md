@@ -33,36 +33,6 @@ const graph = graphfi(...);
 const info: ITermStoreInfo = await graph.sites.getById("contoso.sharepoint.com,91dd2418-8fb9-4e0e-919d-c1b31e938386,285cc5a1-cf50-4e4d-8d93-5ba5a8e76e01").termStore();
 
 ```
-### SearchTerm
-
-Search for terms starting with provided label under entire termStore or a termSet or a parent term.
-
-The following properties are valid for the supplied query: `label: string`, `setId?: string`, `parentTermId?: string`, `languageTag?: string`, `stringMatchOption?: "ExactMatch" | "StartsWith"`.
-
-```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/taxonomy";
-
-const graph = graphfi(...);
-
-// minimally requires the label
-const results1 = await graph.termStore.searchTerm({
-  label: "test",
-});
-
-// other properties can be included as needed
-const results2 = await graph.termStore.searchTerm({
-  label: "test",
-  setId: "{guid}",
-});
-
-// other properties can be included as needed
-const results3 = await graph.termStore.searchTerm({
-  label: "test",
-  setId: "{guid}",
-  stringMatchOption: "ExactMatch",
-});
-```
 
 ### Update
 
@@ -403,8 +373,6 @@ const termInfo2 = await graph.termStore.groups.getById("338666a8-1111-2222-3333-
 ```
 
 ### Delete
-
-_Added in 3.10.0_
 
 ```TypeScript
 import { graphfi, SPFxToken, SPFx } from "@pnp/graph";
