@@ -51,7 +51,7 @@ debug/serve/*
 !debug/serve/plumbing
 
 # project settings
-settings.js
+settings*.js
 
 # don't save the locally produced .js of the buildsystem config
 buildsystem-config.js
