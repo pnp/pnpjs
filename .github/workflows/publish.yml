@@ -12,8 +12,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-        with:
-          ref: main    
       # setup nodejs
       - name: Use Node.js 16
         uses: actions/setup-node@v3
@@ -35,6 +33,5 @@ jobs:
         run: |
           npm run clean
           npm run package
-          npm run just-publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
