@@ -11,12 +11,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-        with:
-          ref: main    
+      - uses: actions/checkout@v4  
       # setup nodejs
       - name: Use Node.js 18
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
@@ -31,6 +29,6 @@ jobs:
         run: |
           npm run clean
           npm run package
-          npm run just-publish
+          npm run just-publish      
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 4.1.1 - 2024-June-05
+
+### Fixed
+
+- graph
+  - Fixed batching issues that fails when batched call returns 204
+
 ## 4.1.0 - 2024-May-24
 
 ### Fixed

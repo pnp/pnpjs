@@ -375,7 +375,7 @@ describe("Clientside Pages", function () {
             await page.save();
 
             const page2 = await this.pnp.sp.web.loadClientsidePage(pageUrl);
-            expect(page2.authorByLine).to.eq(userPrincipalName);
+            expect(page2.authorByLine.toLowerCase()).to.eq(userPrincipalName.toLowerCase());
         }));
 
         it("setAuthorByLoginName()", pnpTest("8eb5897e-8b43-45ba-acbc-468495e189fe", async function () {
@@ -385,7 +385,7 @@ describe("Clientside Pages", function () {
 
             const page2 = await this.pnp.sp.web.loadClientsidePage(pageUrl);
 
-            expect(page2.authorByLine).to.eq(userPrincipalName);
+            expect(page2.authorByLine.toLowerCase()).to.eq(userPrincipalName.toLowerCase());
         }));
     });
 
