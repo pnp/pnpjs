@@ -59,6 +59,9 @@ export class _Files extends _SPCollection<IFileInfo[]> {
             if (parameters.Overwrite) {
                 path.push(",Overwrite=true");
             }
+            if (parameters.EnsureUniqueFileName) {
+                path.push(`,EnsureUniqueFileName=${parameters.EnsureUniqueFileName}`);
+            }
             if (parameters.AutoCheckoutOnInvalidData) {
                 path.push(",AutoCheckoutOnInvalidData=true");
             }
@@ -540,7 +543,7 @@ export function fileFromServerRelativePath(base: ISPQueryable, serverRelativePat
  */
 export async function fileFromAbsolutePath(base: ISPQueryable, absoluteFilePath: string): Promise<IFile> {
 
-    const { WebFullUrl } = await File(this).using(BatchNever()).getContextInfo(absoluteFilePath);
+    const { WebFullUrl } = await File(base).using(BatchNever()).getContextInfo(absoluteFilePath);
     const { pathname } = new URL(absoluteFilePath);
     return fileFromServerRelativePath(File([base, combine(WebFullUrl, "_api/web")]), decodeURIComponent(pathname));
 }
@@ -703,7 +706,7 @@ export interface IAddUsingPathProps {
     /**
      * Overwrite the file if it exists
      */
-    Overwrite: boolean;
+    Overwrite?: boolean;
     /**
      * specifies whether to auto checkout on invalid Data. It'll be useful if the list contains validation whose requirements upload will not be able to meet.
      */
@@ -712,6 +715,10 @@ export interface IAddUsingPathProps {
      * Specifies a XOR hash of the file data which should be used to ensure end-2-end data integrity, base64 representation
      */
     XorHash?: string;
+    /**
+     * Specifies whether to force unique file name. When using this, omit the Overwrite parameter.
+     */
+    EnsureUniqueFileName?: boolean;
 }
 
 export interface IFileInfo {

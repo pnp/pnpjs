@@ -5,39 +5,33 @@ import { ConsistencyLevel } from "./consistency-level.js";
 
 export interface IPagedResult {
     count: number;
-    value: any | any[] | null;
+    value: any[] | null;
     hasNext: boolean;
-    nextLink: string;
+    next(): Promise<IPagedResult>;
 }
 
 /**
- * A function that will take a collection defining IGraphQueryableCollection and return the count of items
- * in that collection. Not all Graph collections support Count.
- *
- * @param col The collection to count
- * @returns number representing the count
- */
-export async function Count<T>(col: IGraphQueryableCollection<T>): Promise<number> {
-
-    const q = GraphQueryableCollection(col).using(Paged(), ConsistencyLevel());
-    q.query.set("$count", "true");
-    q.top(1);
-
-    const y: IPagedResult = await q();
-    return y.count;
-}
-
-/**
- * Configures a collection query to returned paged results via async iteration
+ * Configures a collection query to returned paged results
  *
  * @param col Collection forming the basis of the paged collection, this param is NOT modified
  * @returns A duplicate collection which will return paged results
  */
-export function AsAsyncIterable<T>(col: IGraphQueryableCollection<T>): AsyncIterable<T> {
+export function AsPaged(col: IGraphQueryableCollection, supportsCount = false): IGraphQueryableCollection {
 
-    const q = GraphQueryableCollection(col).using(Paged(), ConsistencyLevel());
+    const q = GraphQueryableCollection(col).using(Paged(supportsCount), ConsistencyLevel());
 
     const queryParams = ["$search", "$top", "$select", "$expand", "$filter", "$orderby"];
+
+    if (supportsCount) {
+
+        // we might be constructing our query with a next url that will already contain $count so we need
+        // to ensure we don't add it again, likewise if it is already in our query collection we don't add it again
+        if (!q.query.has("$count") && !/\$count=true/i.test(q.toUrl())) {
+            q.query.set("$count", "true");
+        }
+
+        queryParams.push("$count");
+    }
 
     for (let i = 0; i < queryParams.length; i++) {
         const param = col.query.get(queryParams[i]);
@@ -46,32 +40,7 @@ export function AsAsyncIterable<T>(col: IGraphQueryableCollection<T>): AsyncIter
         }
     }
 
-    return {
-
-        [Symbol.asyncIterator]() {
-            return <AsyncIterator<T>>{
-
-                _next: q,
-
-                async next() {
-
-                    if (this._next === null) {
-                        return { done: true, value: undefined };
-                    }
-
-                    const result: IPagedResult = await this._next();
-
-                    if (result.hasNext) {
-                        this._next = GraphQueryableCollection([this._next, result.nextLink]);
-                        return { done: false, value: result.value };
-                    } else {
-                        this._next = null;
-                        return { done: false, value: result.value };
-                    }
-                },
-            };
-        },
-    };
+    return q;
 }
 
 /**
@@ -79,7 +48,7 @@ export function AsAsyncIterable<T>(col: IGraphQueryableCollection<T>): AsyncIter
  *
  * @returns A TimelinePipe used to configure the queryable
  */
-export function Paged(): TimelinePipe {
+export function Paged(supportsCount = false): TimelinePipe {
 
     return (instance: IGraphQueryable) => {
 
@@ -90,14 +59,14 @@ export function Paged(): TimelinePipe {
             const json = txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {};
             const nextLink = json["@odata.nextLink"];
 
-            const count = hOP(json, "@odata.count") ? parseInt(json["@odata.count"], 10) : -1;
+            const count = supportsCount && hOP(json, "@odata.count") ? parseInt(json["@odata.count"], 10) : 0;
 
             const hasNext = !stringIsNullOrEmpty(nextLink);
 
             result = {
                 count,
                 hasNext,
-                nextLink: hasNext ? nextLink : null,
+                next: () => (hasNext ? AsPaged(GraphQueryableCollection([instance, nextLink]), supportsCount)() : null),
                 value: parseODataJSON(json),
             };
 

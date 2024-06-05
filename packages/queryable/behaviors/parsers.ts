@@ -55,8 +55,7 @@ export function JSONHeaderParse(): TimelinePipe {
         // patch to handle cases of 200 response with no or whitespace only bodies (#487 & #545)
         const txt = await response.text();
         const json = txt.replace(/\s/ig, "").length > 0 ? JSON.parse(txt) : {};
-        const all = { data: { ...parseODataJSON(json) }, headers: { ...response.headers } };
-        return all;
+        return { data: { ...parseODataJSON(json) }, headers: { ...response.headers } };
     });
 }
 

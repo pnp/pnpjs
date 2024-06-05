@@ -134,6 +134,10 @@ Likewise you can add files using one of two methods, addUsingPath or addChunked.
 
 The addUsingPath method, supports the percent or pound characters in file names.
 
+When using EnsureUniqueFileName property, you must omit the Overwrite parameter.
+
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";

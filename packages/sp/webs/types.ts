@@ -71,7 +71,7 @@ function rebaseWebUrl(candidate: string, path: string | undefined): string {
     // - test if `candidate` already has an api path
     // - ensure that we append the correct one as sometimes a web is not defined
     //   by _api/web, in the case of _api/site/rootweb for example
-    const matches = /(_api[/|\\](site|web))/i.exec(candidate);
+    const matches = /(_api[/|\\](site\/rootweb|site|web))/i.exec(candidate);
     if (matches?.length > 0) {
         // we want just the base url part (before the _api)
         candidate = extractWebUrl(candidate);

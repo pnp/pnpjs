@@ -175,19 +175,16 @@ export function Caching(props?: ICachingProps): TimelinePipe<Queryable> {
 
                 const cached = getCachedValue();
 
-                // we need to ensure that result stays "undefined" unless we mean to set null as the result
-                if (cached === null) {
+                 // we need to ensure that result stays "undefined" unless we mean to set null as the result
+                 if (cached === null) {
 
-                    // if we don't have a cached result we need to get it after the request is sent and parsed
+                    // if we don't have a cached result we need to get it after the request is sent. Get the raw value (un-parsed) to store into cache
                     this.on.post(async function (url: URL, result: any) {
-
                         setCachedValue(result);
-
                         return [url, result];
                     });
 
                 } else {
-
                     result = cached;
                 }
             }

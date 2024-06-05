@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.24.0 - 2024-Mar-17
+
+- graph
+  - Addresses #2960 - Fix DirectoryObject GetById Type
+  - Updated Batching - Support Chunked Batch Size
+
+## 3.23.0 - 2024-Feb-19
+
+- graph
+  - Addresses #2911 - fixed Photos endpoint bug
+  - Add getSchedule to Calendar
+
+- queryable
+  - Addresses #2890 - fixed node clone bug - reverts new rawData emit to fix bug introduced that broke batching/cashing
+
+## 3.22.0 - 2024-Jan-15
+
+- sp
+  - fromAbsolutePath methods reference undefined this.
+  - Update request-digest.ts to still make call when injected headers include odata=verbose
+
+- queryable
+  - Addressing #2890 - Node Clone - Fix
+
+## 3.21.0 - 2023-Dec-11
+
+- graph
+  - Adding Photos with Dimension support
+  - Addressing #2836 - Rework Caching and Pagination Logic
+
+- sp
+  - Addresses #2847 - Add missing ItemId to IListItemFormUpdateValue
+  - Addressing #2840 - Add missing parameter to AddUsingPath
+
+## 3.20.1 - 2023-Nov-20
+
+- graph
+  - Addresses #2833 - Revert of a previous PR #2730 that was meant for V4.
+
+## 3.20.0 - 2023-Nov-14
+
+- graph
+  - Addresses #2811 - Fixes the parameter object for the Chat Message Add method.
+  - Addresses #2825 - New utility method for converting to atob with stringification checks Updated Parser for Blobs
+
 ## 3.19.0 - 2023-Oct-16
 
 - sp
