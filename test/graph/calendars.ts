@@ -6,6 +6,7 @@ import "@pnp/graph/attachments";
 import { HttpRequestError } from "@pnp/queryable";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
+import { fail } from "assert";
 // TODO:: test recording setup
 describe("Calendar", function () {
 
@@ -460,8 +461,8 @@ describe("Calendar", function () {
 
     // currently not working
     it.skip("Get Event Attachments", async function () {
-    // const attachment = await this.pnp.graph.users.getById(testUserName).events.getById(testEventID).attachments.addFile(
-    // { name: "Test.txt" }, "base64bWFjIGFuZCBjaGVlc2UgdG9kYXk");
+        // const attachment = await this.pnp.graph.users.getById(testUserName).events.getById(testEventID).attachments.addFile(
+        // { name: "Test.txt" }, "base64bWFjIGFuZCBjaGVlc2UgdG9kYXk");
 
         const attachments = await this.pnp.graph.users.getById(testUserName).events.getById(testEventID).attachments();
         return expect(attachments.length).is.greaterThan(0);
@@ -606,16 +607,20 @@ describe("Calendar", function () {
                 allowedRoles: ["read", "write"],
             });
 
-        await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).calendarPermissions.getById(permission.id).update({
-            role: "write",
-        });
+        if (permission.id) {
+            await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).calendarPermissions.getById(permission.id).update({
+                role: "write",
+            });
 
-        const updatedPermission = await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).calendarPermissions.getById(permission.id)();
-        if (updatedPermission.id && updatedPermission.role === "write") {
-            passed = true;
-            await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).delete();
+            const updatedPermission = await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).calendarPermissions.getById(permission.id)();
+            if (updatedPermission.id && updatedPermission.role === "write") {
+                passed = true;
+                await this.pnp.graph.users.getById(testUserName).calendars.getById(calendar.id).delete();
+            }
+            return expect(passed).is.true;
+        } else {
+            return fail("Permissions could not be created on the calendar object, test could not be completed.");
         }
-        return expect(passed).is.true;
     });
 
     // This logs to the console when it passes, ignore those messages
