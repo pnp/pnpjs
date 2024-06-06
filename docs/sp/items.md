@@ -42,7 +42,7 @@ import "@pnp/sp/items";
 const sp = spfi(...);
 
 // Using async iterator to loop through pages of items in a large list
-for await (const items of sp.web.lists.getByTitle("BigList").items()) {
+for await (const items of sp.web.lists.getByTitle("BigList").items) {
   console.log(items);
   break; // closes the iterator, returns
 }
