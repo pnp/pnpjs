@@ -384,27 +384,3 @@ const termInfo = await graph.termStore.sets.getById("338666a8-1111-2222-3333-f72
 
 const termInfo2 = await graph.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72").delete();
 ```
-
-## Get Term Parent
-
-The server API changed again, resulting in the removal of the "parent" property from ITerm as it is not longer supported as a path property. You now must use "expand" to load a term's parent information. The side affect of this is that the parent is no longer chainable, meaning you need to load a new term instance to work with the parent term. An approach for this is shown below.
-
-```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/taxonomy";
-
-const graph = graphfi(...);
-
-// get a ref to the set
-const set = graph.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72");
-
-// get a term's information and expand parent to get the parent info as well
-const w = await set.getTermById("338666a8-1111-2222-3333-f72471314e72").expand("parent")();
-
-// get a ref to the parent term
-const parent = set.getTermById(w.parent.id);
-
-// make a request for the parent term's info - this data currently match the results in the expand call above, but this
-// is to demonstrate how to gain a ref to the parent and select its data
-const parentInfo = await parent.select("Id", "Descriptions")();
-```
