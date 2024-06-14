@@ -31,7 +31,7 @@ console.log(items2);
 
 ### Get Paged Items
 
-Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the Async Iterator functionality on the Items class to assist. For advanced paging techniques using the Async Iterator, please review [Async Paging]('../concepts/async-paging.md')
+Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the Async Iterator functionality on the Items class to assist. For advanced paging techniques using the Async Iterator, please review [Async Paging]('/concepts/async-paging.md')
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
