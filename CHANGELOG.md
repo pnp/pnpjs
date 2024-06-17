@@ -70,6 +70,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - sp
   - getPaged method removed from _Items/IItems
+  - getAll method removed from _Items/IItems
   - PagedItemCollection removed from library
   - removed /items/get-all import, unneeded, use async iterator patterns
   - ./operations.ts methods moved to ./spqueryable.ts
