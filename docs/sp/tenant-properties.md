@@ -28,7 +28,6 @@ This method can be used from any web to retrieve values previously set.
 
 ```TypeScript
 import { spfi, SPFx } from "@pnp/sp";
-import "@pnp/sp/appcatalog";
 import "@pnp/sp/webs";
 import { IStorageEntity } from "@pnp/sp/webs"; 
 

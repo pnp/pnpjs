@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 4.2.0 - 2024-June-17
+
+- Only documentation and package updates
+
 ## 4.1.1 - 2024-June-05
 
 ### Fixed
@@ -70,6 +74,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - sp
   - getPaged method removed from _Items/IItems
+  - getAll method removed from _Items/IItems
   - PagedItemCollection removed from library
   - removed /items/get-all import, unneeded, use async iterator patterns
   - ./operations.ts methods moved to ./spqueryable.ts
