@@ -60,10 +60,6 @@ export class _TermSet extends _GraphInstance<ITermStoreType.Set> {
         return Terms(this);
     }
 
-    public get parentGroup(): ITermGroup {
-        return TermGroup(this, "parentGroup");
-    }
-
     public get children(): IChildren {
         return Children(this);
     }

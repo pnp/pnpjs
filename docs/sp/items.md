@@ -31,7 +31,7 @@ console.log(items2);
 
 ### Get Paged Items
 
-Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the Async Iterator functionality on the Items class to assist. For advanced paging techniques using the Async Iterator, please review [Async Paging]('../concepts/async-paging.md')
+Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the Async Iterator functionality on the Items class to assist. For advanced paging techniques using the Async Iterator, please review [Async Paging]('/concepts/async-paging.md')
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -41,18 +41,17 @@ import "@pnp/sp/items";
 
 const sp = spfi(...);
 
-// Using async iterator to loop through pages of items in a large list
-for await (const items of sp.web.lists.getByTitle("BigList").items()) {
-  console.log(items);
-  break; // closes the iterator, returns
-}
-
-//using async iterator in combination with top() to get pages of items in chunks of 10
+//using async iterator in combination with top() to get pages of items in chunks of up to 5000, if left off returns 100 items per loop.
 for await (const items of sp.web.lists.getByTitle("BigList").items.top(10)) {
   console.log(items); //array of 10 items
-  break; // closes the iterator, returns
+  break; // closes the iterator, returns -- stops retrieving pages
 } 
 
+// One example of how to type "items"
+let items: IMyItem;
+for await (items of sp.web.lists.getByTitle("BigList").items()) {
+  //...process item batch...
+}
 ```
 
 ### getListItemChangesSinceToken
@@ -77,38 +76,6 @@ const changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSince
 // Get everything. Using null with ChangeToken gets everything
 const changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({ChangeToken: null});
 
-```
-
-### Get All Items
-
-Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should be used.
-
-> In v3 there is a separate import for get-all to include the functionality. This is to remove the code from bundles for folks who do not need it.
-
-```TypeScript
-import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/lists";
-import "@pnp/sp/items";
-import "@pnp/sp/items/get-all";
-
-const sp = spfi(...);
-
-// basic usage
-const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.getAll();
-console.log(allItems.length);
-
-// set page size
-const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.getAll(4000);
-console.log(allItems.length);
-
-// use select and top. top will set page size and override the any value passed to getAll
-const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.select("Title").top(4000).getAll();
-console.log(allItems.length);
-
-// we can also use filter as a supported odata operation, but this will likely fail on large lists
-const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.select("Title").filter("Title eq 'Test'").getAll();
-console.log(allItems.length);
 ```
 
 ### Retrieving Lookup Fields

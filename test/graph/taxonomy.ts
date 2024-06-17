@@ -94,12 +94,6 @@ describe("Taxonomy", function () {
             return expect(terms).to.be.an("Array");
         });
 
-        // TODO: parentGroup gives API not found error on termset... need to remove/or fix.
-        it.skip(".parentGroup", async function () {
-            const parentGroup = await termset.parentGroup();
-            return expect(parentGroup).has.property("id");
-        });
-
         it("children", async function () {
             const children = await termset.children();
             return expect(children).to.be.an("Array");
