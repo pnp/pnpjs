@@ -73,6 +73,15 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
         await spPost(this, body({ LoginName: loginName }));
         return this.getByLoginName(loginName);
     }
+
+    /**
+     * Add a user to the collection by id
+     *
+     * @param id The id of the user to add
+     */
+    public addById(id: number): Promise<any> {
+        return spPost(SiteUsers(this, `addUserById(${id})`));
+    }
 }
 export interface ISiteUsers extends _SiteUsers { }
 export const SiteUsers = spInvokableFactory<ISiteUsers>(_SiteUsers);

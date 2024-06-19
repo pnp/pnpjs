@@ -90,7 +90,11 @@ const sp = spfi(...);
 const user = await sp.web.ensureUser("userLoginname")
 const users = await sp.web.siteUsers;
   
+// Add user object by LoginName
 await users.add(user.LoginName);
+
+// Add user object by id
+await users.addById(user.Id);
 ```
 
 ### Get user by Id, Email, or LoginName
