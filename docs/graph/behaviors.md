@@ -194,3 +194,18 @@ const graph = graphfi().using(ConsistencyLevel("{level value}"));
 
 await graph.users();
 ```
+
+## AdvancedQuery
+
+Using this behaviour, you can enable [advanced query capabilities](https://learn.microsoft.com/en-us/graph/aad-advanced-queries?tabs=http) when filtering supported collections.
+
+This sets the consistency level to eventual and enables the `$count` query parameter.
+
+```TypeScript
+import { graphfi, AdvancedQuery } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(AdvancedQuery());
+
+await graph.users.filter("companyName ne null and NOT(companyName eq 'Microsoft')")();
+```
