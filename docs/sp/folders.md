@@ -42,10 +42,15 @@ import { folderFromServerRelativePath } from "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const url = "/sites/dev/documents/folder4";
 
-// file is an IFile and supports all the file operations
-const folder = folderFromServerRelativePath(sp.web, url);
+// folder is an IFolder and supports all the folder operations
+const folder: IFolder = folderFromServerRelativePath(sp.web, url);
+
+// for example
+const folderInfo = await folder();
+const files = await folder.files();
 ```
 
 ### folderFromAbsolutePath
@@ -65,11 +70,13 @@ const sp = spfi(...);
 
 const url = "https://tenant.sharepoint.com/sites/dev/documents/folder";
 
-// file is an IFile and supports all the file operations
-const folder = folderFromAbsolutePath(sp.web, url);
+// folder is an IFolder and supports all the folder operations
+// Unlike folderFromServerRelativePath, this method must be await'd to resolve folder from absolute Url.
+const folder: IFolder = await folderFromAbsolutePath(sp.web, url);
 
 // for example
 const folderInfo = await folder();
+const files = await folder.files();
 ```
 
 ### folderFromPath
@@ -89,7 +96,7 @@ const sp = spfi(...);
 
 const url = "https://tenant.sharepoint.com/sites/dev/documents/folder";
 
-// file is an IFile and supports all the file operations
+// folder is an IFolder and supports all the folder operations
 const folder = folderFromPath(sp.web, url);
 
 // for example
@@ -97,7 +104,7 @@ const folderInfo = await folder();
 
 const url2 = "/sites/dev/documents/folder";
 
-// file is an IFile and supports all the file operations
+// folder is an IFolder and supports all the folder operations
 const folder2 = folderFromPath(sp.web, url2);
 
 // for example
@@ -115,13 +122,18 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
-// creates a new folder for web with specified url
-const folderAddResult = await sp.web.folders.addUsingPath("folder url");
+// URL CANNOT BE ENCODED
+const url = "/sites/dev/Shared Documents/MyFolder"
+
+// creates a new folder for web with specified server relative url
+const folderAddResult = await sp.web.folders.addUsingPath(url);
 ```
 
 ### getByUrl
 
-Gets a folder instance from a collection by folder's name
+Gets a folder instance from a collection by folder's name.
+This call is the equivalent of getting the document libraries root folder.
+e.g. `const listFolders = await sp.web.lists.getByTitle("Documents").rootFolder();`
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -130,7 +142,8 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
-const folder = await sp.web.folders.getByUrl("folder name")();
+// pass the name of the document library, cannot include relative paths for subfolders.
+const folder = await sp.web.folders.getByUrl("Shared Documents")();
 ```
 
 ## IFolder  
@@ -187,10 +200,13 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
-const metrics = await sp.web.getFolderByServerRelativePath("/sites/dev/shared documents/target").storageMetrics();
+// URL CANNOT BE ENCODED
+const url = "/sites/dev/shared documents/target";
+
+const metrics = await sp.web.getFolderByServerRelativePath(url).storageMetrics();
 
 // you can also select specific metrics if desired:
-const metrics2 = await sp.web.getFolderByServerRelativePath("/sites/dev/shared documents/target").storageMetrics.select("TotalSize")();
+const metrics2 = await sp.web.getFolderByServerRelativePath(url).storageMetrics.select("TotalSize")();
 ```
 
 ### move by path
@@ -206,6 +222,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED - will get "Access is denied" error.
 // destination is a server-relative url of a new folder
 const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
 
@@ -223,6 +240,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED - will get "Access is denied" error.
 // destination is a server-relative url of a new file
 const destinationUrl = `/sites/dev2/SiteAssets/folder`;
 
@@ -244,6 +262,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED - will get "Access is denied" error.
 // destination is a server-relative url of a new folder
 const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
 
@@ -261,6 +280,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED - will get "Access is denied" error.
 // destination is a server-relative url of a new file
 const destinationUrl = `/sites/dev2/SiteAssets/folder`;
 
@@ -282,7 +302,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
-await sp.web.rootFolder.folders.getByUrl("My Folder").delete();
+await sp.web.rootFolder.folders.getByUrl("Shared Documents").delete();
 ```  
 
 ### delete with params
@@ -296,7 +316,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
-await sp.web.rootFolder.folders.getByUrl("My Folder").deleteWithParams({
+await sp.web.rootFolder.folders.getByUrl("Shared Documents").deleteWithParams({
                 BypassSharedLock: true,
                 DeleteIfEmpty: true,
             });
@@ -313,7 +333,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
-await sp.web.rootFolder.folders.getByUrl("My Folder").recycle();
+await sp.web.rootFolder.folders.getByUrl("Shared Documents").recycle();
 ```  
 
 ### serverRelativeUrl
@@ -386,6 +406,7 @@ import "@pnp/sp/files/folder";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const files = await sp.web.getFolderByServerRelativePath("Shared Documents").files();
 ```
 
@@ -400,6 +421,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const itemFields = await sp.web.getFolderByServerRelativePath("Shared Documents/My Folder").listItemAllFields();
 ```
 
@@ -414,6 +436,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const parentFolder = await sp.web.getFolderByServerRelativePath("Shared Documents/My Folder").parentFolder();
 ```
 
@@ -428,6 +451,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const properties = await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").properties();
 ```
 
@@ -442,6 +466,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const contentTypeOrder = await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").select('uniqueContentTypeOrder')();
 ```
 
@@ -456,6 +481,7 @@ import "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const folder = sp.web.getFolderByServerRelativePath("Shared Documents/My Folder");
 
 const item = await folder.getItem();
@@ -475,6 +501,7 @@ import "@pnp/sp/lists";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const newFolderResult = await sp.web.rootFolder.folders.getByUrl("Shared Documents").folders.addUsingPath("My New Folder");
 const item = await sp.web.rootFolder.folders.getByUrl("Shared Documents").folders.getByUrl(newFolderResult.Name).listItemAllFields();
 
@@ -497,8 +524,10 @@ import { IFolder } from "@pnp/sp/folders";
 
 const sp = spfi(...);
 
+// URL CANNOT BE ENCODED and cannot include sub-paths.
+const url = "Folder Name";
 // add a folder to site assets
-const folder: IFolder = await sp.web.rootFolder.folders.getByUrl("SiteAssets").addSubFolderUsingPath("folder name");
+const folder: IFolder = await sp.web.rootFolder.folders.getByUrl("SiteAssets").addSubFolderUsingPath(url);
 ```
 
 ### getFolderById
