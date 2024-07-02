@@ -42,7 +42,7 @@ import { folderFromServerRelativePath } from "@pnp/sp/folders";
 
 const sp = spfi(...);
 
-// URL CANNOT BE ENCODED
+// URL CANNOT BE ENCODED, URL CANNOT END IN "/"
 const url = "/sites/dev/documents/folder4";
 
 // folder is an IFolder and supports all the folder operations
