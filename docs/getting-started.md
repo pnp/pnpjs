@@ -415,6 +415,10 @@ The new factory function allows you to create a connection to a different web ma
     const web = Web([sp.web, {Other Web URL}]);
     ```
 
+## Multi-Geo / Cross tenant calls in SharePoint Framework (SPFx)
+
+If you are working in a multi-geo tenant or trying to work across tenants (essentially the same thing) then the [normal configuration](#using-pnpsp-spfi-factory-interface-in-spfx) in SPFx will not work. To connect cross tenants in the browser you will need to us the [@pnp/msaljsclient](./msaljsclient/index.md) to make the connection to the other tenant or geo.
+
 ## Next Steps
 
 For more complicated authentication scenarios please [review the article describing all of the available authentication methods](./concepts/authentication.md).
