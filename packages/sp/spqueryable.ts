@@ -75,17 +75,11 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
 
         const aliasedParams = new URLSearchParams(<any>this.query);
 
-        // this regex is designed to locate aliased parameters within url paths. These may have the form:
-        // /something(!@p1::value)
-        // /something(!@p1::value, param=value)
-        // /something(param=value,!@p1::value)
-        // /something(param=value,!@p1::value,param=value)
-        // /something(param=!@p1::value)
-        // there could be spaces or not around the boundaries
-        let url = this.toUrl().replace(/([( *| *, *| *= *])'!(@.*?)::(.*?)'([ *)| *, *])/ig, (match, frontBoundary, labelName, value, endBoundary) => {
+        // this regex is designed to locate aliased parameters within url paths
+        let url = this.toUrl().replace(/'!(@.+?)::((?:[^']|'')+)'/ig, (match, labelName, value) => {
             this.log(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, 0);
             aliasedParams.set(labelName, `'${value}'`);
-            return `${frontBoundary}${labelName}${endBoundary}`;
+            return labelName;
         });
 
         const query = aliasedParams.toString();
