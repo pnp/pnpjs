@@ -29,7 +29,7 @@ describe("Alias Parameters", function () {
         await ler.list.rootFolder.files.addUsingPath("text.txt", "Some file content!");
     });
 
-    it('Parameter parsing', function() {
+    it("Parameter parsing", function() {
         /** Values to test */
         const values = [
             "value",
@@ -46,16 +46,16 @@ describe("Alias Parameters", function () {
             // Escape apostrophe in value
             value = value.replace(/'/g, "''");
 
-            obj[`something('!@p1::${value}')`] = {'@p1': `'${value}'`};
-            obj[`something('!@p1::${value}','!@p2::${value}2')`] = {'@p1': `'${value}'`, '@p2': `'${value}2'`};
-            obj[`something('!@p1::${value}', param=value)`] = {'@p1': `'${value}'`};
-            obj[`something('!@p1::${value}', param=value, '!@p2::${value}2')`] = {'@p1': `'${value}'`, '@p2': `'${value}2'`};
-            obj[`something(param=value,'!@p1::${value}')`] = {'@p1': `'${value}'`};
-            obj[`something(param=value,'!@p1::${value}','!@p2::${value}2')`] = {'@p1': `'${value}'`, '@p2': `'${value}2'`};
-            obj[`something(param=value,'!@p1::${value}',param=value)`] = {'@p1': `'${value}'`};
-            obj[`something(param=value,'!@p1::${value}',param=value,'!@p2::${value}2')`] = {'@p1': `'${value}'`, '@p2': `'${value}2'`};
-            obj[`something(param='!@p1::${value}')`] = {'@p1': `'${value}'`};
-            obj[`something(param='!@p1::${value}',param2='!@p2::${value}2')`] = {'@p1': `'${value}'`, '@p2': `'${value}2'`};
+            obj[`something('!@p1::${value}')`] = {"@p1": `'${value}'`};
+            obj[`something('!@p1::${value}','!@p2::${value}2')`] = {"@p1": `'${value}'`, "@p2": `'${value}2'`};
+            obj[`something('!@p1::${value}', param=value)`] = {"@p1": `'${value}'`};
+            obj[`something('!@p1::${value}', param=value, '!@p2::${value}2')`] = {"@p1": `'${value}'`, "@p2": `'${value}2'`};
+            obj[`something(param=value,'!@p1::${value}')`] = {"@p1": `'${value}'`};
+            obj[`something(param=value,'!@p1::${value}','!@p2::${value}2')`] = {"@p1": `'${value}'`, "@p2": `'${value}2'`};
+            obj[`something(param=value,'!@p1::${value}',param=value)`] = {"@p1": `'${value}'`};
+            obj[`something(param=value,'!@p1::${value}',param=value,'!@p2::${value}2')`] = {"@p1": `'${value}'`, "@p2": `'${value}2'`};
+            obj[`something(param='!@p1::${value}')`] = {"@p1": `'${value}'`};
+            obj[`something(param='!@p1::${value}',param2='!@p2::${value}2')`] = {"@p1": `'${value}'`, "@p2": `'${value}2'`};
             return obj;
         }, {});
 
@@ -64,6 +64,7 @@ describe("Alias Parameters", function () {
             const requestUrl = SPQueryable(this.pnp.sp.web, alias).toRequestUrl();
             const searchParams = Object.fromEntries(new URL(requestUrl).searchParams.entries());
 
+            // eslint-disable-next-line guard-for-in
             for(const param in params) {
                 expect(searchParams, `Failed to parse "${alias}"`).to.have.property(param);
                 expect(searchParams[param], `Failed to parse "${alias}"`).to.equal(params[param]);
