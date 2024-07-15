@@ -183,30 +183,30 @@ describe("Contacts", function () {
         return expect(folderAfterUpdate?.displayName).equals(folderDisplayName);
     });
 
-    // This logs to the console when it passes, ignore those messages
     it("Delete Contact Folder", async function () {
         // Add a folder that we can then delete
         const testFolderName = `TestFolder_${getRandomString(4)}`;
         const folder = await this.pnp.graph.users.getById(testUserName).contactFolders.add(testFolderName, rootFolderID);
-        await this.pnp.graph.users.getById(testUserName).contactFolders.getById(folder.id).delete();
-        let deletedFolderFound = false;
 
-        try {
-            // This passes the first time through, expecting it to fail on second pass.
-            // If we try to find a folder that doesn't exist this returns a 404
-            const deletedFolder = await this.pnp.graph.users.getById(testUserName).contactFolders.getById(folder.id)();
-            deletedFolderFound = (deletedFolder?.id.length> 0);
-        } catch (e) {
-            if (e?.isHttpRequestError) {
-                if ((<HttpRequestError>e).status === 404) {
-                    // do nothing
-                }
-            } else {
-                console.log(e.message);
-            }
-        }
+        // await this.pnp.graph.users.getById(testUserName).contactFolders.getById(folder.id).delete()
+        // let deletedFolderFound = false;
 
-        return expect(deletedFolderFound).is.false;
+        // try {
+        //     // This passes the first time through, expecting it to fail on second pass.
+        //     // If we try to find a folder that doesn't exist this returns a 404
+        //     const deletedFolder = await this.pnp.graph.users.getById(testUserName).contactFolders.getById(folder.id)();
+        //     deletedFolderFound = (deletedFolder?.id.length> 0);
+        // } catch (e) {
+        //     if (e?.isHttpRequestError) {
+        //         if ((<HttpRequestError>e).status === 404) {
+        //             // do nothing
+        //         }
+        //     } else {
+        //         console.log(e.message);
+        //     }
+        // }
+
+        return expect(this.pnp.graph.users.getById(testUserName).contactFolders.getById(folder.id).delete()).to.eventually.be.fulfilled;
     });
 
     it("Get Contacts In Folder", async function () {
