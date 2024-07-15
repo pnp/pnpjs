@@ -7,7 +7,7 @@
     "dependencies": {
         "@pnp/core": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
-        "@azure/identity": "4.2.1",
+        "@azure/identity": "4.3.0",
         "tslib": "2.6.3"
     }
 }

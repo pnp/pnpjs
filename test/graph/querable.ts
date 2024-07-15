@@ -45,10 +45,10 @@ describe("Queryable", function () {
         const drives = await this.pnp.graph.users.getById(testUserName).drives.orderBy("lastModifiedBy/user/displayName")();
         const drivesClone: Drive[] = JSON.parse(JSON.stringify(drives));
         const drivesResort: Drive[] = drivesClone.sort((a, b) => {
-            if (a.lastModifiedBy.user.displayName.toUpperCase() < b.lastModifiedBy.user.displayName.toUpperCase()) {
+            if (a.lastModifiedBy?.user?.displayName?.toUpperCase() < b.lastModifiedBy?.user?.displayName?.toUpperCase()) {
                 return -1;
             }
-            if (a.lastModifiedBy.user.displayName.toUpperCase() > b.lastModifiedBy.user.displayName.toUpperCase()) {
+            if (a.lastModifiedBy?.user?.displayName?.toUpperCase() > b.lastModifiedBy?.user?.displayName?.toUpperCase()) {
                 return 1;
             }
             return 0;
