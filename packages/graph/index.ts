@@ -2,6 +2,7 @@ export { graphfi as graphfi, GraphFI as GraphFI } from "./fi.js";
 
 export * from "./graphqueryable.js";
 
+export * from "./behaviors/advanced-query.js";
 export * from "./behaviors/consistency-level.js";
 export * from "./behaviors/defaults.js";
 export * from "./behaviors/endpoint.js";
