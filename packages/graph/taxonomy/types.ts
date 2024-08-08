@@ -77,16 +77,14 @@ export class _TermSet extends _GraphInstance<ITermStoreType.Set> {
      *
      * @returns Array of children for this item
      */
-    public async getAllChildrenAsTree(): Promise<IOrderedTermInfo[]> {
+    public async getAllChildrenAsTree(props?: {retrieveProperties?: boolean}): Promise<IOrderedTermInfo[]> {
 
-        const visitor = async (source: { children(): Promise<ITermStoreType.Term[]> }, parent: IOrderedTermInfo[]) => {
-
-            const children = await source.children();
+        const visitor = async (source: ITerm | ITermSet, parent: IOrderedTermInfo[]) => {
+            const children = await source.children.select(...selects)();
 
             for (let i = 0; i < children.length; i++) {
 
                 const child = children[i];
-
                 const orderedTerm: Partial<IOrderedTermInfo> = {
                     children: <IOrderedTermInfo[]>[],
                     defaultLabel: child.labels.find(l => l.isDefault).name,
@@ -99,9 +97,15 @@ export class _TermSet extends _GraphInstance<ITermStoreType.Set> {
             }
         };
 
+        let selects = ["*"];
+        if(props?.retrieveProperties){
+            // graph does not let us wildcard + select properties
+            selects=["id", "labels", "createdDateTime", "lastModifiedDateTime", "labels", "descriptions", "properties"];
+        }
+
         const tree: IOrderedTermInfo[] = [];
 
-        await visitor(this, tree);
+        await visitor(<any>this, tree);
 
         return tree;
     }
