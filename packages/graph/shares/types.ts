@@ -45,7 +45,7 @@ export class _Shares extends _GraphCollection<IPermissionType[]> {
      * @param share: string - Share Id or Encoded Sharing Url
      * @returns Microsoft Graph - SharingLink
      */
-    public async useSharingLink(shareLink: IShareLinkInfo): Promise<ISharedDriveItemType> {
+    public async useSharingLink(shareLink: IShareLinkInfo): Promise<Pick<ISharedDriveItemType, "id"|"name">> {
         const q = Shares(this, shareLink.shareId || shareLink.encodedSharingUrl);
         if (shareLink.redeemSharingLink) {
             q.using(InjectHeaders({
@@ -60,7 +60,7 @@ export class _Shares extends _GraphCollection<IPermissionType[]> {
         return graphPost(q, body(shareLinkAccess));
     }
 }
-export interface IShares extends _Shares, IGetById<ISharedDriveItemType> { }
+export interface IShares extends _Shares, IGetById<IShare> { }
 export const Shares = graphInvokableFactory<IShares>(_Shares);
 
 

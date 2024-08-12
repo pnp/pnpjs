@@ -203,7 +203,6 @@ This method will get all of a set's child terms in an ordered array. It is a cos
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/taxonomy";
-import { ITermInfo } from "@pnp/graph/taxonomy";
 import { dateAdd, PnPClientStorage } from "@pnp/core";
 
 const graph = graphfi(...);
@@ -276,12 +275,11 @@ Access term set information
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/taxonomy";
-import { ITermInfo } from "@pnp/graph/taxonomy";
-
+import { TermStore } from '@microsoft/microsoft-graph-types';
 const graph = graphfi(...);
 
 // list all the terms that are direct children of this set
-const infos: ITermInfo[] = await graph.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").children();
+const infos: TermStore.Term[] = await graph.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").children();
 ```
 
 ### List (terms)
@@ -291,15 +289,15 @@ You can use the terms property to get a flat list of all terms in the set. These
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/taxonomy";
-import { ITermInfo } from "@pnp/graph/taxonomy";
+import { TermStore } from '@microsoft/microsoft-graph-types';
 
 const graph = graphfi(...);
 
 // list all the terms available in this term set by group id then by term set id
-const infos: ITermInfo[] = await graph.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").terms();
+const infos: TermStore.Term[] = await graph.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").terms();
 
 // list all the terms available in this term set by term set id
-const infosByTermSetId: ITermInfo[] = await graph.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").terms();
+const infosByTermSetId: TermStore.Term[] = await graph.termStore.sets.getById("338666a8-1111-2222-3333-f72471314e72").terms();
 ```
 
 ### Get By Id
@@ -307,12 +305,12 @@ const infosByTermSetId: ITermInfo[] = await graph.termStore.sets.getById("338666
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/taxonomy";
-import { ITermInfo } from "@pnp/graph/taxonomy";
+import { TermStore } from '@microsoft/microsoft-graph-types';
 
 const graph = graphfi(...);
 
 // get term set data
-const info: ITermInfo = await graph.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72")();
+const info: TermStore.Term = await graph.termStore.groups.getById("338666a8-1111-2222-3333-f72471314e72").sets.getById("338666a8-1111-2222-3333-f72471314e72").getTermById("338666a8-1111-2222-3333-f72471314e72")();
 ```
 
 ### Add
@@ -320,7 +318,6 @@ const info: ITermInfo = await graph.termStore.groups.getById("338666a8-1111-2222
 ```TypeScript
 import { graphfi, SPFxToken, SPFx } from "@pnp/graph";
 import "@pnp/graph/taxonomy";
-import { ITermInfo } from "@pnp/graph/taxonomy";
 
 const graph = graphfi(...);
 
