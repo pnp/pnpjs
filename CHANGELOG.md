@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 4.4.0 - 2024-Aug-12
+
+- sp
+  - Addresses #3091 - Update return types from Shares
+  - Addresses #3104 - Replaces an in-function await to just return the promise.
+
+- graph
+  - Addresses #3083 - Adds the ability to pass in retrieveProperties to getAllChildrenAsTree. V2 and V3 had this functionality. Only supports Shared Custom Properties, not Local Custom Properties.
+
+
 ## 4.3.0 - 2024-July-15
 
 - sp

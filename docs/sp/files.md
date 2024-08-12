@@ -156,9 +156,11 @@ if (file.size <= 10485760) {
     result = await sp.web.getFolderByServerRelativePath("Shared Documents").files.addUsingPath(fileNamePath, file, { Overwrite: true });
 } else {
     // large upload
-    result = await sp.web.getFolderByServerRelativePath("Shared Documents").files.addChunked(fileNamePath, file, data => {
-    console.log(`progress`);
-    }, true);
+    result = await sp.web.getFolderByServerRelativePath("Shared Documents").files.addChunked(fileNamePath, file, 
+        { progress: data => { console.log(`progress`); }, 
+          Overwrite: true 
+        }
+    );
 }
 
 console.log(`Result of file upload: ${JSON.stringify(result)}`);
@@ -186,7 +188,7 @@ const stream = createReadStream("c:/temp/file.txt");
 // now add the stream as a new file
 const sp = spfi(...);
 
-const fr = await sp.web.lists.getByTitle("Documents").rootFolder.files.addChunked( "new.txt", stream, undefined, true );
+const fileInfo = await sp.web.lists.getByTitle("Documents").rootFolder.files.addChunked("new.txt", stream, { progress: data => { console.log(`progress`); }, Overwrite: true });
 ```
 
 ### Setting Associated Item Values
@@ -200,7 +202,7 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
 const sp = spfi(...);
-const file = await sp.web.getFolderByServerRelativePath("/sites/dev/Shared%20Documents/test/").files.addUsingPath("file.name", "content", {Overwrite: true});
+const fileInfo = await sp.web.getFolderByServerRelativePath("/sites/dev/Shared%20Documents/test/").files.addUsingPath("file.name", "content", {Overwrite: true});
 const item = await file.file.getItem();
 await item.update({
   Title: "A Title",
@@ -560,4 +562,3 @@ import "@pnp/sp/files";
 const sp = spfi(...);
 const user = await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("name.txt").getLockedByUser();
 ```
-
