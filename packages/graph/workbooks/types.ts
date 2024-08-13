@@ -2,14 +2,21 @@ import { updateable, IUpdateable, addable, getById, IAddable, IGetById, deleteab
 import { _GraphCollection, graphInvokableFactory, _GraphInstance, GraphQueryable } from "../graphqueryable.js";
 import {
     Workbook as WorkbookType, 
+    WorkbookWorksheet as WorksheetType,
     WorkbookTable as WorkbookTableType, 
     WorkbookTableRow as WorkbookTableRowType,
-    WorkbookTableColumn as WorkbookTableColumnType
+    WorkbookTableColumn as WorkbookTableColumnType,
+    WorkbookRange as WorkbookRangeType
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
+import { getRange, IGetRange } from "./decorators.js";
 
 @defaultPath("workbook")
 export class _Workbook extends _GraphInstance<WorkbookType> {
+    public get worksheets(): IWorksheets {
+        return Worksheets(this);
+    }
+
     public get tables(): ITables {
         return Tables(this);
     }
@@ -31,6 +38,42 @@ export const WorkbookWithSession = graphInvokableFactory<IWorkbookWithSession>(_
 
 @updateable()
 @deleteable()
+export class _Range extends _GraphInstance<WorkbookRangeType> {
+}
+export interface IRange extends _Range, IUpdateable, IDeleteable {}
+export const Range = graphInvokableFactory<IRange>(_Range);
+
+@updateable()
+@deleteable()
+export class _Worksheet extends _GraphInstance<WorksheetType> {
+    /**
+     * Get a range of cells within the worksheet.
+     *
+     * @param address (Optional) An A1-notation address of a range within this worksheet. 
+     * If omitted, a range containing the entire worksheet is returned.
+     */
+    public getRange(address?: string): IRange {
+        if (address) {
+            return Range(this, `range(address='${address}')`);
+        } else {
+            return Range(this, "range");
+        }
+    }
+}
+export interface IWorksheet extends _Worksheet, IUpdateable, IDeleteable {}
+export const Worksheet = graphInvokableFactory<IWorksheet>(_Worksheet);
+
+@defaultPath("worksheets")
+@addable()
+@getById(Worksheet)
+export class _Worksheets extends _GraphCollection<WorksheetType[]> {
+}
+export interface IWorksheets extends _Worksheets, IAddable, IGetById<IWorksheet> {}
+export const Worksheets = graphInvokableFactory<IWorksheets>(_Worksheets);
+
+@getRange()
+@updateable()
+@deleteable()
 export class _Table extends _GraphInstance<WorkbookTableType> {
     public get rows(): ITableRows {
         return TableRows(this);
@@ -38,8 +81,12 @@ export class _Table extends _GraphInstance<WorkbookTableType> {
     public get columns(): ITableColumns {
         return TableColumns(this);
     }
+
+    public clearFilters() {
+        return graphPost(GraphQueryable(this, "clearFilters"));
+    }
 }
-export interface ITable extends _Table, IUpdateable, IDeleteable {}
+export interface ITable extends _Table, IUpdateable, IDeleteable, IGetRange {}
 export const Table = graphInvokableFactory<ITable>(_Table);
 
 @defaultPath("tables")
@@ -53,12 +100,13 @@ export class _Tables extends _GraphCollection<WorkbookTableType[]> {
 export interface ITables extends _Tables, IAddable, IGetById<ITable> {}
 export const Tables = graphInvokableFactory<ITables>(_Tables);
 
+@getRange()
 @deleteable()
 @updateable()
 export class _TableRow extends _GraphInstance<WorkbookTableRowType> {
 
 }
-export interface ITableRow extends _TableRow, IUpdateable, IDeleteable {}
+export interface ITableRow extends _TableRow, IUpdateable, IDeleteable, IGetRange {}
 export const TableRow = graphInvokableFactory<ITableRow>(_TableRow);
 
 @defaultPath("rows")
@@ -76,12 +124,13 @@ export class _TableRows extends _GraphCollection<WorkbookTableRowType[]> {
 export interface ITableRows extends _TableRows, IAddable, IGetItemAt<ITableRow> {}
 export const TableRows = graphInvokableFactory<ITableRows>(_TableRows);
 
+@getRange()
 @deleteable()
 @updateable()
 export class _TableColumn extends _GraphInstance<WorkbookTableColumnType> {
 
 }
-export interface ITableColumn extends _TableColumn, IUpdateable, IDeleteable {}
+export interface ITableColumn extends _TableColumn, IUpdateable, IDeleteable, IGetRange {}
 export const TableColumn = graphInvokableFactory<ITableColumn>(_TableColumn);
 
 @defaultPath("columns")

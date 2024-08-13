@@ -2,6 +2,9 @@ import "./driveitem.js";
 
 export { 
     IWorkbook,
+    IWorksheet,
+    IWorksheets,
+    IRange,
     ITable,
     ITables,
     ITableRow,
