@@ -5,8 +5,8 @@
     "main": "./index.js",
     "typings": "./index",
     "dependencies": {
-        "@azure/msal-browser": "3.20.0",
+        "@azure/msal-browser": "3.23.0",
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
-        "tslib": "2.6.3"
+        "tslib": "2.7.0"
     }
 }
