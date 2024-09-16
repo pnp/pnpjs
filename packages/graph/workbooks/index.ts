@@ -10,5 +10,11 @@ export {
     ITableRow,
     ITableRows,
     ITableColumn,
-    ITableColumns
+    ITableColumns,
+    IRangeFormat,
+    IRangeBorder,
+    IRangeBorders,
+    IRangeFill,
+    IRangeFont,
+    IRangeFormatProtection
 } from "./types.js";
