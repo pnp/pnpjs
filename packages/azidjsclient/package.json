@@ -8,6 +8,6 @@
         "@pnp/core": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
         "@azure/identity": "4.4.1",
-        "tslib": "2.6.3"
+        "tslib": "2.7.0"
     }
 }

@@ -380,6 +380,10 @@ describe("Clientside Pages", function () {
 
         it("setAuthorByLoginName()", pnpTest("8eb5897e-8b43-45ba-acbc-468495e189fe", async function () {
 
+            if (stringIsNullOrEmpty(this.pnp.settings.testUser)) {
+                this.skip();
+            }
+
             await page.setAuthorByLoginName(this.pnp.settings.testUser);
             await page.save();
 
