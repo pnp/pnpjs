@@ -43,7 +43,12 @@ import "@pnp/graph/sites";
 const graph = graphfi(...);
 const sharepointHostName = "contoso.sharepoint.com";
 const serverRelativeUrl = "/sites/teamsite1";
-const siteInfo = await graph.sites.getByUrl(sharepointHostName, serverRelativeUrl)();
+// Will be converted to a ISite object that can then be called, must be awaited.
+const site: ISite = await graph.sites.getByUrl(sharepointHostName, serverRelativeUrl);
+// Now use the ISite object to get drives
+const drives = await site.drives();
+// Now use the ISite object to get the site information
+const siteInfo = await site();
 ```
 
 ### getAllSites
