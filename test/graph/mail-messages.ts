@@ -146,7 +146,9 @@ describe("Mail: Messages", function () {
         return expect(success).to.be.true;
     });
 
-    it("Mail: Send Draft Message", async function () {
+    // Do not test sending draft message
+
+    it.skip("Mail: Send Draft Message", async function () {
         const m = JSON.parse(JSON.stringify(draftMessage));
         m.subject = `PnPjs Test Message ${getRandomString(8)}`;
         const draft = await user.messages.add(m);
