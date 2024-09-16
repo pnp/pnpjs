@@ -5,7 +5,7 @@
     "main": "./index.js",
     "typings": "./index",
     "dependencies": {
-        "tslib": "2.6.3",
+        "tslib": "2.7.0",
         "@pnp/core": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
         "@pnp/sp": "0.0.0-PLACEHOLDER"
