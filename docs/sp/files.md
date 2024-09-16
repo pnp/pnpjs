@@ -333,18 +333,15 @@ Both the addChunked and setContentChunked methods support options beyond just su
 
 A method that is called each time a chunk is uploaded and provides enough information to report progress or update a progress bar easily. The method has the signature:
 
-`(data: ChunkedFileUploadProgressData) => void`
+`(data: IFileUploadProgressData) => void`
 
 The data interface is:
 
 ```typescript
-export interface ChunkedFileUploadProgressData {
+export interface IFileUploadProgressData {
+    uploadId: string;
     stage: "starting" | "continue" | "finishing";
-    blockNumber: number;
-    totalBlocks: number;
-    chunkSize: number;
-    currentPointer: number;
-    fileSize: number;
+    offset: number;
 }
 ```
 
