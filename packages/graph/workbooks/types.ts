@@ -11,10 +11,13 @@ import {
     WorkbookRangeBorder as WorkbookRangeBorderType,
     WorkbookRangeFont as WorkbookRangeFontType,
     WorkbookRangeFill as WorkbookRangeFillType,
-    WorkbookFormatProtection as WorkbookFormatProtectionType
+    WorkbookFormatProtection as WorkbookFormatProtectionType,
+    WorkbookTableSort as WorkbookTableSortType,
+    WorkbookSortField
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
 import { getRange, IGetRange } from "./decorators.js";
+import { body } from "@pnp/queryable/index.js";
 
 @defaultPath("workbook")
 export class _Workbook extends _GraphInstance<WorkbookType> {
@@ -155,6 +158,10 @@ export class _Worksheet extends _GraphInstance<WorksheetType> {
             return Range(this, "range");
         }
     }
+
+    public get tables(): ITables {
+        return Tables(this);
+    }
 }
 export interface IWorksheet extends _Worksheet, IUpdateable, IDeleteable { }
 export const Worksheet = graphInvokableFactory<IWorksheet>(_Worksheet);
@@ -174,26 +181,62 @@ export class _Table extends _GraphInstance<WorkbookTableType> {
     public get rows(): ITableRows {
         return TableRows(this);
     }
+
     public get columns(): ITableColumns {
         return TableColumns(this);
     }
 
+    public get worksheet(): IWorksheet {
+        return Worksheet(this, "worksheet");
+    }
+
+    public get range(): IRange {
+        return Range(this, "range");
+    }
+
+    public get headerRowRange(): IRange {
+        return Range(this, "headerRowRange");
+    }
+
+    public get dataBodyRange(): IRange {
+        return Range(this, "dataBodyRange");
+    }
+
+    public get totalRowRange(): IRange {
+        return Range(this, "totalRowRange");
+    }
+
+    public get sort(): ITableSort {
+        return TableSort(this);
+    }
+
     public clearFilters() {
         return graphPost(GraphQueryable(this, "clearFilters"));
+    }
+
+    public reapplyFilters() {
+        return graphPost(GraphQueryable(this, "reapplyFilters"));
+    }
+
+    public convertToRange(): Promise<WorkbookRangeType> {
+        return graphPost(GraphQueryable(this, "convertToRange"));
     }
 }
 export interface ITable extends _Table, IUpdateable, IDeleteable, IGetRange { }
 export const Table = graphInvokableFactory<ITable>(_Table);
 
 @defaultPath("tables")
-@addable()
 @getById(Table)
 export class _Tables extends _GraphCollection<WorkbookTableType[]> {
     public getByName(name: string): ITable {
         return Table(this, name);
     }
+
+    public async add(address: string, hasHeaders: boolean): Promise<WorkbookTableType> {
+        return graphPost(GraphQueryable(this, "add"), body({ address, hasHeaders }));
+    }
 }
-export interface ITables extends _Tables, IAddable, IGetById<ITable> { }
+export interface ITables extends _Tables, IGetById<ITable> { }
 export const Tables = graphInvokableFactory<ITables>(_Tables);
 
 @getRange()
@@ -239,3 +282,21 @@ export class _TableColumns extends _GraphCollection<WorkbookTableColumnType[]> {
 }
 export interface ITableColumns extends _TableColumns, IAddable { }
 export const TableColumns = graphInvokableFactory<ITableColumns>(_TableColumns);
+
+@defaultPath("sort")
+export class _TableSort extends _GraphInstance<WorkbookTableSortType> {
+    public apply(fields: WorkbookSortField[], matchCase?: boolean, method?: string): Promise<void> {
+        return graphPost(GraphQueryable(this, "apply"), body({ fields, matchCase, method }));
+    }
+
+    public clear(): Promise<void> {
+        return graphPost(GraphQueryable(this, "clear"));
+    }
+
+    public reapply(): Promise<void> {
+        return graphPost(GraphQueryable(this, "reapply"));
+    }
+}
+
+export interface ITableSort extends _TableSort {}
+export const TableSort = graphInvokableFactory<ITableSort>(_TableSort);
