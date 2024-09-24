@@ -367,11 +367,13 @@ await execute();
 
 console.log("Done");
 ```
+
 ### Update Taxonomy field
 
 Note: Updating Taxonomy field for a File item should be handled differently. Instead of using update(), use validateUpdateListItem(). Please see below
 
-List Item
+#### List Item
+
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -385,7 +387,9 @@ await sp.web.lists.getByTitle("Demo").items.getById(1).update({
 });
 
 ```
-File List Item
+
+#### File List Item
+
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -406,6 +410,8 @@ await (await sp.web.getFileByServerRelativePath("/sites/demo/DemoLibrary/File.tx
 _Based on [this excellent article](https://www.aerieconsulting.com/blog/update-using-rest-to-update-a-multi-value-taxonomy-field-in-sharepoint) from Beau Cameron._
 
 As he says you must update a hidden field to get this to work via REST. My meta data field accepting multiple values is called "MultiMetaData".
+
+#### List Item
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -433,7 +439,9 @@ await sp.web.lists.getByTitle("TestList").items.getById(newItem.Id).update(updat
 ```
 
 #### File List Item
+
 To update a multi-value taxonomy field on a file item, a different serialization is needed.
+
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -480,6 +488,30 @@ const update = await sp.web.lists.getByTitle("Price").items.getById(7).select('*
       {FieldName:"External",FieldValue:"Fauntleroy Circus"},
       {FieldName:"Customers_ID", FieldValue:"__bk410024003500240054006500"}
     ]); 
+```
+
+### Update Location Field
+
+This code shows how to update a location field's coordinates.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+const coordinates = {
+  Latitude: 47.672082,
+  Longitude: -122.1409983
+}
+
+const projectId = 1;
+const project = sp.web.lists.getByTitle("My List").items.getById(projectId).select("Id, ProjectLocation")()
+const projectLocation = JSON.parse(project.ProjectLocation);
+projectLocation.Coordinates = coordinates;
+const ProjectLocation = JSON.stringify(projectLocation);
+const update = await sp.web.lists.getByTitle("My List").items.getById(projectId).update({ ProjectLocation });
 ```
 
 ## Recycle
