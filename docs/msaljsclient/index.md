@@ -22,7 +22,7 @@ import "@pnp/sp/site-users/web";
 const options: MSALOptions = {
     configuration: {
         auth: {
-            authority: "https://login.microsoftonline.com/{tanent_id}/",
+            authority: "https://login.microsoftonline.com/{tenant_id}/",
             clientId: "{client id}",
         },
         cache: {
