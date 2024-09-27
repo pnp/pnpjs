@@ -15,6 +15,11 @@ import "../comments/item.js";
 import { createBatch } from "../batching.js";
 
 /**
+ * Id of the Banner Web Part
+ */
+const BannerWebPartId = "cbe7b0a9-3504-44dd-a3a3-0e5cacd07788";
+
+/**
  * Page promotion state
  */
 export const enum PromotedState {
@@ -109,6 +114,28 @@ export class _ClientsidePage extends _SPQueryable {
         };
     }
 
+    /**
+     * Returns either the old this._layoutPart or the first banner webpart on the page
+     */
+    private get _bannerWrapper() {
+        const bannerWebPart = this.findControl(control => control.data.webPartId === BannerWebPartId);
+        if (bannerWebPart) {
+            return bannerWebPart.data as ILayoutPartsContent;
+        }
+        return this._layoutPart;
+    }
+
+    /**
+     * Returns either the old this._layoutPart.properties or the first banner webpart properties on the page
+     */
+    private get _bannerWrapperProperties() {
+        const bannerWebPart = this.findControl(control => control.data.webPartId === BannerWebPartId);
+        if (bannerWebPart) {
+            return bannerWebPart.data.webPartData.properties as ILayoutPartsContent["properties"];
+        }
+        return this._layoutPart.properties;
+    }
+
     public get pageLayout(): ClientsidePageLayoutType {
         return this.json.PageLayoutType;
     }
@@ -141,7 +168,7 @@ export class _ClientsidePage extends _SPQueryable {
 
     public set topicHeader(value: string) {
         this.json.TopicHeader = value;
-        this._layoutPart.properties.topicHeader = value;
+        this._bannerWrapperProperties.topicHeader = value;
         if (stringIsNullOrEmpty(value)) {
             this.showTopicHeader = false;
         }
@@ -153,15 +180,15 @@ export class _ClientsidePage extends _SPQueryable {
 
     public set title(value: string) {
         this.json.Title = value;
-        this._layoutPart.properties.title = value;
+        this._bannerWrapperProperties.title = value;
     }
 
     public get reservedHeight(): number {
-        return this._layoutPart.reservedHeight;
+        return this._bannerWrapper.reservedHeight;
     }
 
     public set reservedHeight(value: number) {
-        this._layoutPart.reservedHeight = value;
+        this._bannerWrapper.reservedHeight = value;
     }
 
     public get description(): string {
@@ -185,35 +212,35 @@ export class _ClientsidePage extends _SPQueryable {
     }
 
     public get layoutType(): LayoutType {
-        return this._layoutPart.properties.layoutType;
+        return this._bannerWrapperProperties.layoutType;
     }
 
     public set layoutType(value: LayoutType) {
-        this._layoutPart.properties.layoutType = value;
+        this._bannerWrapperProperties.layoutType = value;
     }
 
     public get headerTextAlignment(): TextAlignment {
-        return this._layoutPart.properties.textAlignment;
+        return this._bannerWrapperProperties.textAlignment;
     }
 
     public set headerTextAlignment(value: TextAlignment) {
-        this._layoutPart.properties.textAlignment = value;
+        this._bannerWrapperProperties.textAlignment = value;
     }
 
     public get showTopicHeader(): boolean {
-        return this._layoutPart.properties.showTopicHeader;
+        return this._bannerWrapperProperties.showTopicHeader;
     }
 
     public set showTopicHeader(value: boolean) {
-        this._layoutPart.properties.showTopicHeader = value;
+        this._bannerWrapperProperties.showTopicHeader = value;
     }
 
     public get showPublishDate(): boolean {
-        return this._layoutPart.properties.showPublishDate;
+        return this._bannerWrapperProperties.showPublishDate;
     }
 
     public set showPublishDate(value: boolean) {
-        this._layoutPart.properties.showPublishDate = value;
+        this._bannerWrapperProperties.showPublishDate = value;
     }
 
     public get hasVerticalSection(): boolean {
@@ -221,8 +248,8 @@ export class _ClientsidePage extends _SPQueryable {
     }
 
     public get authorByLine(): string | null {
-        if (isArray(this._layoutPart.properties.authorByline) && this._layoutPart.properties.authorByline.length > 0) {
-            return this._layoutPart.properties.authorByline[0];
+        if (isArray(this._bannerWrapperProperties.authorByline) && this._bannerWrapperProperties.authorByline.length > 0) {
+            return this._bannerWrapperProperties.authorByline[0];
         }
 
         return null;
@@ -331,26 +358,26 @@ export class _ClientsidePage extends _SPQueryable {
             f.query.set("guidFile", `${imgInfo.UniqueId}`);
             this.bannerImageUrl = f.toRequestUrl();
 
-            if (!objectDefinedNotNull(this._layoutPart.serverProcessedContent)) {
-                this._layoutPart.serverProcessedContent = <any>{};
+            if (!objectDefinedNotNull(this._bannerWrapper.serverProcessedContent)) {
+                this._bannerWrapper.serverProcessedContent = <any>{};
             }
 
-            this._layoutPart.serverProcessedContent.imageSources = { imageSource: serverRelativePath };
+            this._bannerWrapper.serverProcessedContent.imageSources = { imageSource: serverRelativePath };
 
-            if (!objectDefinedNotNull(this._layoutPart.serverProcessedContent.customMetadata)) {
-                this._layoutPart.serverProcessedContent.customMetadata = <any>{};
+            if (!objectDefinedNotNull(this._bannerWrapper.serverProcessedContent.customMetadata)) {
+                this._bannerWrapper.serverProcessedContent.customMetadata = <any>{};
             }
 
-            this._layoutPart.serverProcessedContent.customMetadata.imageSource = {
+            this._bannerWrapper.serverProcessedContent.customMetadata.imageSource = {
                 listId: imgInfo.ListId,
                 siteId: imgInfo.SiteId,
                 uniqueId: imgInfo.UniqueId,
                 webId: imgInfo.WebId,
             };
-            this._layoutPart.properties.webId = imgInfo.WebId;
-            this._layoutPart.properties.siteId = imgInfo.SiteId;
-            this._layoutPart.properties.listId = imgInfo.ListId;
-            this._layoutPart.properties.uniqueId = imgInfo.UniqueId;
+            this._bannerWrapperProperties.webId = imgInfo.WebId;
+            this._bannerWrapperProperties.siteId = imgInfo.SiteId;
+            this._bannerWrapperProperties.listId = imgInfo.ListId;
+            this._bannerWrapperProperties.uniqueId = imgInfo.UniqueId;
         }
 
         // we try and check out the page for the user
@@ -485,34 +512,34 @@ export class _ClientsidePage extends _SPQueryable {
         (<any>page).setControls(this.getControls());
 
         // copy page properties
-        if (this._layoutPart.properties) {
+        if (this._bannerWrapperProperties) {
 
-            if (hOP(this._layoutPart.properties, "topicHeader")) {
-                page.topicHeader = this._layoutPart.properties.topicHeader;
+            if (hOP(this._bannerWrapperProperties, "topicHeader")) {
+                page.topicHeader = this._bannerWrapperProperties.topicHeader;
             }
 
-            if (hOP(this._layoutPart.properties, "imageSourceType")) {
-                page._layoutPart.properties.imageSourceType = this._layoutPart.properties.imageSourceType;
+            if (hOP(this._bannerWrapperProperties, "imageSourceType")) {
+                page._layoutPart.properties.imageSourceType = this._bannerWrapperProperties.imageSourceType;
             }
 
-            if (hOP(this._layoutPart.properties, "layoutType")) {
-                page._layoutPart.properties.layoutType = this._layoutPart.properties.layoutType;
+            if (hOP(this._bannerWrapperProperties, "layoutType")) {
+                page._layoutPart.properties.layoutType = this._bannerWrapperProperties.layoutType;
             }
 
-            if (hOP(this._layoutPart.properties, "textAlignment")) {
-                page._layoutPart.properties.textAlignment = this._layoutPart.properties.textAlignment;
+            if (hOP(this._bannerWrapperProperties, "textAlignment")) {
+                page._layoutPart.properties.textAlignment = this._bannerWrapperProperties.textAlignment;
             }
 
-            if (hOP(this._layoutPart.properties, "showTopicHeader")) {
-                page._layoutPart.properties.showTopicHeader = this._layoutPart.properties.showTopicHeader;
+            if (hOP(this._bannerWrapperProperties, "showTopicHeader")) {
+                page._layoutPart.properties.showTopicHeader = this._bannerWrapperProperties.showTopicHeader;
             }
 
-            if (hOP(this._layoutPart.properties, "showPublishDate")) {
-                page._layoutPart.properties.showPublishDate = this._layoutPart.properties.showPublishDate;
+            if (hOP(this._bannerWrapperProperties, "showPublishDate")) {
+                page._layoutPart.properties.showPublishDate = this._bannerWrapperProperties.showPublishDate;
             }
 
-            if (hOP(this._layoutPart.properties, "enableGradientEffect")) {
-                page._layoutPart.properties.enableGradientEffect = this._layoutPart.properties.enableGradientEffect;
+            if (hOP(this._bannerWrapperProperties, "enableGradientEffect")) {
+                page._layoutPart.properties.enableGradientEffect = this._bannerWrapperProperties.enableGradientEffect;
             }
         }
 
@@ -541,25 +568,25 @@ export class _ClientsidePage extends _SPQueryable {
                     const file = await openWeb.web.getFileById(guidFile).select("ServerRelativeUrl")();
 
                     const props: any = {};
-                    if (this._layoutPart.properties) {
+                    if (this._bannerWrapperProperties) {
 
-                        if (hOP(this._layoutPart.properties, "translateX")) {
-                            props.translateX = this._layoutPart.properties.translateX;
+                        if (hOP(this._bannerWrapperProperties, "translateX")) {
+                            props.translateX = this._bannerWrapperProperties.translateX;
                         }
 
 
-                        if (hOP(this._layoutPart.properties, "translateY")) {
-                            props.translateY = this._layoutPart.properties.translateY;
+                        if (hOP(this._bannerWrapperProperties, "translateY")) {
+                            props.translateY = this._bannerWrapperProperties.translateY;
                         }
 
 
-                        if (hOP(this._layoutPart.properties, "imageSourceType")) {
-                            props.imageSourceType = this._layoutPart.properties.imageSourceType;
+                        if (hOP(this._bannerWrapperProperties, "imageSourceType")) {
+                            props.imageSourceType = this._bannerWrapperProperties.imageSourceType;
                         }
 
 
-                        if (hOP(this._layoutPart.properties, "altText")) {
-                            props.altText = this._layoutPart.properties.altText;
+                        if (hOP(this._bannerWrapperProperties, "altText")) {
+                            props.altText = this._bannerWrapperProperties.altText;
                         }
                     }
 
@@ -589,7 +616,7 @@ export class _ClientsidePage extends _SPQueryable {
 
         this.json.BannerImageUrl = url;
         // update serverProcessedContent (page behavior change 2021-Oct-13)
-        this._layoutPart.serverProcessedContent = { imageSources: { imageSource: url } };
+        this._bannerWrapper.serverProcessedContent = { imageSources: { imageSource: url } };
         this._bannerImageDirty = true;
         /*
             setting the banner image resets the thumbnail image (matching UI functionality)
@@ -603,20 +630,20 @@ export class _ClientsidePage extends _SPQueryable {
         }
 
         // this seems to always be true, so default
-        this._layoutPart.properties.imageSourceType = 2;
+        this._bannerWrapperProperties.imageSourceType = 2;
 
         if (objectDefinedNotNull(props)) {
             if (hOP(props, "translateX")) {
-                this._layoutPart.properties.translateX = props.translateX;
+                this._bannerWrapperProperties.translateX = props.translateX;
             }
             if (hOP(props, "translateY")) {
-                this._layoutPart.properties.translateY = props.translateY;
+                this._bannerWrapperProperties.translateY = props.translateY;
             }
             if (hOP(props, "imageSourceType")) {
-                this._layoutPart.properties.imageSourceType = props.imageSourceType;
+                this._bannerWrapperProperties.imageSourceType = props.imageSourceType;
             }
             if (hOP(props, "altText")) {
-                this._layoutPart.properties.altText = props.altText;
+                this._bannerWrapperProperties.altText = props.altText;
             }
         }
     }
@@ -683,8 +710,8 @@ export class _ClientsidePage extends _SPQueryable {
         }
 
         this.json.AuthorByline = [userLoginData[0].UserPrincipalName];
-        this._layoutPart.properties.authorByline = [userLoginData[0].UserPrincipalName];
-        this._layoutPart.properties.authors = [{
+        this._bannerWrapperProperties.authorByline = [userLoginData[0].UserPrincipalName];
+        this._bannerWrapperProperties.authors = [{
             id: authorLoginName,
             name: userLoginData[0].Title,
             role: "",
@@ -767,6 +794,12 @@ export class _ClientsidePage extends _SPQueryable {
     }
 
     protected getLayoutWebpartsContent(): string {
+        // If there is a banner webpart on page, we should return an empty array, as LayoutWebpartsContent seems to be unused
+        // Otherwise this will save both the new banner and the old banner and we get two banners on a page
+        const bannerWebPart = this.findControl(control => control.data.webPartId === BannerWebPartId);
+        if (bannerWebPart) {
+            return JSON.stringify([]);
+        }
         if (this._layoutPart) {
             return JSON.stringify([this._layoutPart]);
         } else {
