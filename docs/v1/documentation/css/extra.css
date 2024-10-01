@@ -4,15 +4,15 @@
     padding: 0 0.25 0.5 !important;
 }
 
-.md-header{
+.md-header {
     height: 75px;
 }
 
-.md-container{
+.md-container {
     padding-top: 70px;
 }
 
-.md-sidebar[data-md-state="lock"]{
+.md-sidebar[data-md-state="lock"] {
     padding-top: 75px;
 }
 
@@ -27,7 +27,36 @@
 }
 
 @media only screen and (max-width: 76.1875em) {
- .md-nav--primary .md-nav__title--site .md-nav__button {
-     width: 150px;
- }
+    .md-nav--primary .md-nav__title--site .md-nav__button {
+        width: 150px;
+    }
+}
+
+body {
+    min-height: 100vh;
+    min-width: 100vw;
+    margin: 0;
+    background-color: light-dark(whitesmoke, black);
+
+    &:before {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        content: "V1 \A Deprecated";
+        white-space: pre-wrap;
+        display: block;
+        box-sizing: border-box;
+        padding: 20vh;
+        font-size: clamp(4rem, 20vh, 10rem);
+        height: 100vh;
+        width: 100vw;
+        text-align: center;
+        z-index: -1;
+        color: silver;
+        font-weight: 900;
+        font-family: sans-serif;
+        text-transform: uppercase;
+    }
 }
