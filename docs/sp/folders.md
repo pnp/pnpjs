@@ -532,7 +532,7 @@ const folder: IFolder = await sp.web.rootFolder.folders.getByUrl("SiteAssets").a
 
 ### getFolderById
 
-You can get a folder by Id from a web.
+You can get a folder by UniqueId from a web.
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -542,7 +542,8 @@ import { IFolder } from "@pnp/sp/folders";
 
 const sp = spfi(...);
 
-const folder: IFolder = sp.web.getFolderById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
+const folderItem = sp.web.lists.getByTitle("My List").items.getById(1).select("UniqueId")()
+const folder: IFolder = sp.web.getFolderById(folderItem.UniqueId);
 ```
 
 ### getParentInfos
