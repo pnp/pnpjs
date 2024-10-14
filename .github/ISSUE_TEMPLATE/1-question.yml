@@ -16,10 +16,10 @@ body:
     label: What version of PnPjs library you are using
     options:
       - 4.x
-      - 3.x
+      - 3.x (No longer supported)
       - 2.x (No longer supported)
       - 1.x (No longer supported)
-    default: 1
+    default: 0
   validations:
     required: true
 - type: input
