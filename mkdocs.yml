@@ -78,6 +78,7 @@ nav:
       - search: 'graph/search.md'
       - shares: 'graph/shares.md'
       - sites: 'graph/sites.md'
+      - 'site openextensions': 'graph/site-openextensions.md'
       - subscriptions: 'graph/subscriptions.md'
       - taxonomy: 'graph/taxonomy.md'
       - teams: 'graph/teams.md'

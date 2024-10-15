@@ -491,3 +491,40 @@ setTimeout(() => {
 // this is awaiting the results of the request
 await p;
 ```
+
+### DebugHeaders
+
+Adds logging for the request id and timestamp of the request, helpful when contacting Microsoft Support. It works for both Graph and SP libraries.
+
+```TypeScript
+import { DebugHeaders } from "@pnp/queryable";
+import { spfi } from "@pnp/sp";
+
+const sp = spfi().using(DebugHeaders());
+
+sp.some_action();
+
+// output to log:
+// Server Request Id: {guid}
+// Server Date: {date}
+```
+
+You can also supply additional headers to log from the response:
+
+
+```TypeScript
+import { DebugHeaders } from "@pnp/queryable";
+import { spfi } from "@pnp/sp";
+
+const sp = spfi().using(DebugHeaders(["X-MyHeader", "client-request-id"]));
+
+sp.some_action();
+
+// output to log:
+// Server Request Id: {guid}
+// Server Date: {date}
+// X-MyHeader: {value}
+// client-request-id: {guid}
+```
+
+

@@ -147,8 +147,8 @@ export function getById<R>(factory: (...args: any[]) => R) {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public getById(this: IGraphQueryable, id: string): R {
-                return factory(this, id);
+            public getById(this: IGraphQueryable, id: any): R {
+                return factory(this, `${id}`);
             }
         };
     };
