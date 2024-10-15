@@ -71,7 +71,9 @@ const shareLinkInfo = {
     encodedSharingUrl: shareLink,
     redeemSharingLink: false
 };
+// default shared drive item response (id, name)
 const sharedDriveItem = await graph.shares.useSharingLink(shareLinkInfo);
+
 ```
 
 ## Create Sharing Link

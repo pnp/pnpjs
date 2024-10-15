@@ -305,8 +305,7 @@ import * as fs from "fs";
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/files";
 import "@pnp/graph/users";
-import {IFileUploadOptions} from "@pnp/graph/files";
-
+import { DriveItem as DriveItemType } from "@microsoft/microsoft-graph-types";
 const graph = graphfi(...);
 
 const fileBuff = fs.readFileSync("C:\\MyDocs\\TestDocument.docx");
@@ -317,7 +316,7 @@ const fileUploadOptions: IResumableUploadOptions<DriveItemUploadableProperties> 
     },
 };
 
-// Create the upload session
+// Create the upload session, must get the drive root folder id to call createUploadSession
 const uploadSession = await graph.users.getById(userId).drive.getItemById(driveRoot.id).createUploadSession(fileUploadOptions);
 // Get the status of the upload session
 const status = await uploadSession.resumableUpload.status();
@@ -327,12 +326,14 @@ const upload = await uploadSession.resumableUpload.upload(fileBuff.length, fileB
 
 // Upload a chunk of the file to the upload session
 // Using a fragment size that doesn't divide evenly by 320 KiB results in errors committing some files.
-const chunkSize = 327680;
+const chunkFactor = 1;
+const chunkSize = 327680 * chunkFactor;
 let startFrom = 0;
+let driveItem: DriveItemType = null;
 while (startFrom < fileBuff.length) {
-    const fileChunk = fileBuff.slice(startFrom, startFrom + chunkSize);    
-    const contentLength = `bytes ${startFrom}-${startFrom + chunkSize}/${fileBuff.length}`
-    const uploadChunk = await uploadSession.resumableUpload.upload(chunkSize, fileChunk, contentLength);
+    const fileChunk = Uint8Array.prototype.slice.call(fileBuff, startFrom, startFrom + chunkSize);
+    const range = `bytes ${startFrom}-${(startFrom + fileChunk.length) - 1}/${fileBuff.length}`;
+    driveItem = await uploadSession.resumableUpload.upload(fileChunk.length, fileChunk, range);
     startFrom += chunkSize;
 }
 ```
