@@ -80,17 +80,12 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      *
      * @param factory The contructor for the class to create
      */
-    protected getParent<T extends _GraphQueryable>(
-        factory: IGraphConstructor<T>,
-        base: GraphInit = this.parentUrl,
-        path?: string): T {
+    protected getParent<T extends IGraphQueryable>(
+        factory: IGraphInvokableFactory<any>,
+        path?: string,
+        base: string = this.parentUrl): T {
 
-        if (typeof base === "string") {
-            // we need to ensure the parent has observers, even if we are rebasing the url (#2435)
-            base = [this, base];
-        }
-
-        return new factory(base, path);
+        return factory([this, base], path);
     }
 }
 

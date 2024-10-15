@@ -3,17 +3,19 @@ import { SPDefault, GraphDefault } from "@pnp/nodejs";
 import { spfi, SPFI } from "@pnp/sp";
 import { GraphFI, graphfi } from "@pnp/graph";
 import { LogLevel, PnPLogging } from "@pnp/logging";
-import { Queryable } from "@pnp/queryable";
+import { Queryable, DebugHeaders } from "@pnp/queryable";
 
 export function spSetup(settings: ITestingSettings): SPFI {
 
-    const sp = spfi(settings.testing.sp.url).using(SPDefault({
-        msal: {
-            config: settings.testing.sp.msal.init,
-            scopes: settings.testing.sp.msal.scopes,
-        },
-    })).using(
+    const sp = spfi(settings.testing.sp.url).using(
+        SPDefault({
+            msal: {
+                config: settings.testing.sp.msal.init,
+                scopes: settings.testing.sp.msal.scopes,
+            },
+        }),
         PnPLogging(LogLevel.Verbose),
+        DebugHeaders(),
         function (instance: Queryable) {
 
             instance.on.pre(async (url, init, result) => {
@@ -29,13 +31,15 @@ export function spSetup(settings: ITestingSettings): SPFI {
 
 export function graphSetup(settings: ITestingSettings): GraphFI {
 
-    const graph = graphfi().using(GraphDefault({
-        msal: {
-            config: settings.testing.graph.msal.init,
-            scopes: settings.testing.graph.msal.scopes,
-        },
-    })).using(
+    const graph = graphfi().using(
+        GraphDefault({
+            msal: {
+                config: settings.testing.graph.msal.init,
+                scopes: settings.testing.graph.msal.scopes,
+            },
+        }),
         PnPLogging(LogLevel.Verbose),
+        DebugHeaders(),
         function (instance: Queryable) {
 
             instance.on.pre(async (url, init, result) => {
