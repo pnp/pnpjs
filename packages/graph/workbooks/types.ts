@@ -46,13 +46,37 @@ export interface IWorkbookWithSession extends _WorkbookWithSession { }
 export const WorkbookWithSession = graphInvokableFactory<IWorkbookWithSession>(_WorkbookWithSession);
 
 @updateable()
-@deleteable()
 export class _Range extends _GraphInstance<WorkbookRangeType> {
     public get format(): IRangeFormat {
         return RangeFormat(this);
     }
+
+    public getCell(row: number, column: number): IRange {
+        return Range(this, `cell(row=${row},column=${column})`);
+    }
+
+    public getColumn(column: number): IRange {
+        return Range(this, `column(column=${column})`);
+    }
+
+    public boundingRect(anotherRange: string): IRange {
+        /**
+         * NOTE: At the time of writing, the docs for this method are incorrect.
+         * They state that anotherRange should be in the request body,
+         * but the API actually wants them in the path.
+         */
+        return Range(this, `boundingRect(anotherRange='${anotherRange}')`);
+    }
+
+    public clear(applyTo: "All" | "Formats" | "Contents"): Promise<void> {
+        return graphPost(GraphQueryable(this, "clear"), body({ applyTo }));
+    }
+
+    public delete(shift: "Up" | "Left"): Promise<void> {
+        return graphPost(GraphQueryable(this, "delete"), body({ shift }));
+    }
 }
-export interface IRange extends _Range, IUpdateable, IDeleteable { }
+export interface IRange extends _Range, IUpdateable { }
 export const Range = graphInvokableFactory<IRange>(_Range);
 
 @updateable()
@@ -140,8 +164,6 @@ export const RangeBorders = graphInvokableFactory<IRangeBorders>(_RangeBorders);
 export type RangeBorderSideIndex = 'EdgeTop' | 'EdgeBottom' | 'EdgeLeft' | 'EdgeRight' |
     'InsideVertical' | 'InsideHorizontal' | 'DiagonalDown' |
     'DiagonalUp';
-
-
 
 @updateable()
 @deleteable()
