@@ -13,6 +13,7 @@ import {
     WorkbookRangeFill as WorkbookRangeFillType,
     WorkbookFormatProtection as WorkbookFormatProtectionType,
     WorkbookTableSort as WorkbookTableSortType,
+    WorkbookFilter as WorkbookFilterType,
     WorkbookSortField
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
@@ -267,7 +268,21 @@ export const TableRows = graphInvokableFactory<ITableRows>(_TableRows);
 @deleteable()
 @updateable()
 export class _TableColumn extends _GraphInstance<WorkbookTableColumnType> {
+    public get filter(): IWorkbookFilter {
+        return WorkbookFilter(this);
+    }
 
+    public get headerRowRange(): IRange {
+        return Range(this, "headerRowRange");
+    }
+
+    public get dataBodyRange(): IRange {
+        return Range(this, "dataBodyRange");
+    }
+
+    public get totalRowRange(): IRange {
+        return Range(this, "totalRowRange");
+    }
 }
 export interface ITableColumn extends _TableColumn, IUpdateable, IDeleteable, IGetRange { }
 export const TableColumn = graphInvokableFactory<ITableColumn>(_TableColumn);
@@ -282,6 +297,27 @@ export class _TableColumns extends _GraphCollection<WorkbookTableColumnType[]> {
 }
 export interface ITableColumns extends _TableColumns, IAddable { }
 export const TableColumns = graphInvokableFactory<ITableColumns>(_TableColumns);
+
+@defaultPath("filter")
+export class _WorkbookFilter extends _GraphInstance<WorkbookFilterType> {
+    public apply(filter: WorkbookFilterType): Promise<void> {
+        /**
+         * NOTE: The "criterion" object you pass here MUST have a
+         * "filterOn" property, otherwise you get a 500.
+         * The docs aren't clear on what you need to set this to.
+         * Excel seems to set it to "Custom", which works in my testing.
+         * We could do this for users here, though there could be
+         * scenarios in which you might want it to be something else.
+         */
+        return graphPost(GraphQueryable(this, "apply"), body(filter));
+    }
+
+    public clear(): Promise<void> {
+        return graphPost(GraphQueryable(this, "clear"));
+    }
+}
+export interface IWorkbookFilter extends _WorkbookFilter {}
+export const WorkbookFilter = graphInvokableFactory<IWorkbookFilter>(_WorkbookFilter);
 
 @defaultPath("sort")
 export class _TableSort extends _GraphInstance<WorkbookTableSortType> {
