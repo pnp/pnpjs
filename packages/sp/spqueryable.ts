@@ -329,17 +329,13 @@ class QueryableFields<TBaseInterface> extends BaseQuery<TBaseInterface> {
         return new BooleanField<TBaseInterface>([...this.query, (InternalName as string)]);
     }
 
-    // public LookupField<TKey extends KeysMatching<TBaseInterface, NonDateKeys<object>>>(InternalName: TKey): LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]> {
-    //     return new LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]>([...this.query], InternalName as string);
-    // }
+    public LookupField<TKey extends KeysMatchingObjects<TBaseInterface>>(InternalName: TKey): LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]> {
+        return new LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]>([...this.query], InternalName as string);
+    }
 
     public LookupIdField<TKey extends KeysMatching<TBaseInterface, number>>(InternalName: TKey): NumberField<TBaseInterface> {
         const col: string = (InternalName as string).endsWith("Id") ? InternalName as string : `${InternalName as string}Id`;
         return new NumberField<TBaseInterface>([...this.query, col]);
-    }
-
-    public LookupField<TKey extends KeysMatchingObjects<TBaseInterface>>(InternalName: TKey): LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]> {
-        return new LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]>([...this.query], InternalName as string);
     }
 }
 
@@ -364,8 +360,8 @@ class LookupQueryableFields<TBaseInterface, TExpandedType> extends BaseQuery<TEx
 
     // Support has been announced, but is not yet available in SharePoint Online
     // https://www.microsoft.com/en-ww/microsoft-365/roadmap?filters=&searchterms=100503
-    // public BooleanField(InternalName: KeysMatching<tExpandedType, boolean>): BooleanField<tBaseObjectType> {
-    //     return new BooleanField<tBaseObjectType>([...this.query, `${this.LookupField}/${InternalName as string}`]);
+    // public BooleanField(InternalName: KeysMatching<TExpandedType, boolean>): BooleanField<TBaseInterface> {
+    //     return new BooleanField<TBaseInterface>([...this.query, `${this.LookupField}/${InternalName as string}`]);
     // }
 }
 
