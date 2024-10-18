@@ -370,7 +370,7 @@ class QueryableGroups<TBaseInterface> extends QueryableFields<TBaseInterface> {
         super([]);
     }
 
-    public All(queries: ComparisonResult<TBaseInterface>[] | ((f: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>)[]): ComparisonResult<TBaseInterface> {
+    public All(queries: (ComparisonResult<TBaseInterface> | ((f: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
         const query: ComparisonResult<TBaseInterface>[] = [];
 
         for (const q of queries) {
@@ -383,7 +383,7 @@ class QueryableGroups<TBaseInterface> extends QueryableFields<TBaseInterface> {
         return new ComparisonResult<TBaseInterface>([`(${query.map(x => x.ToString()).join(FilterJoinOperator.AndWithSpace)})`]);
     }
 
-    public Some(queries: ComparisonResult<TBaseInterface>[] | ((f: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>)[]): ComparisonResult<TBaseInterface> {
+    public Some(queries: (ComparisonResult<TBaseInterface> | ((f: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
         const query: ComparisonResult<TBaseInterface>[] = [];
 
         for (const q of queries) {
