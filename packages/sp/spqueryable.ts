@@ -263,7 +263,8 @@ export interface IDeleteableWithETag {
 
 
 
-type KeysMatching<T, V> = { [K in keyof T]-?: T[K] extends V ? K : never }[keyof T];
+type KeysMatching<T, V> = { [K in keyof T]: T[K] extends V ? K : never }[keyof T];
+type KeysMatchingObjects<T> = { [K in keyof T]: T[K] extends object ? (T[K] extends Date ? never : K) : never }[keyof T];
 
 enum FilterOperation {
     Equals = "eq",
@@ -284,11 +285,12 @@ enum FilterJoinOperator {
 }
 
 export class SPOData {
-    static Where<T = any>() {
+    public static Where<T = any>() {
         return new QueryableGroups<T>();
     }
 }
 
+// Linting complains that TBaseInterface is unused, but without it all the intellisense is lost since it's carrying it through the chain
 class BaseQuery<TBaseInterface> {
     protected query: string[] = [];
 
@@ -327,13 +329,17 @@ class QueryableFields<TBaseInterface> extends BaseQuery<TBaseInterface> {
         return new BooleanField<TBaseInterface>([...this.query, (InternalName as string)]);
     }
 
-    public LookupField<TKey extends KeysMatching<TBaseInterface, object>>(InternalName: TKey): LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]> {
-        return new LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]>([...this.query], InternalName as string);
-    }
+    // public LookupField<TKey extends KeysMatching<TBaseInterface, NonDateKeys<object>>>(InternalName: TKey): LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]> {
+    //     return new LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]>([...this.query], InternalName as string);
+    // }
 
     public LookupIdField<TKey extends KeysMatching<TBaseInterface, number>>(InternalName: TKey): NumberField<TBaseInterface> {
         const col: string = (InternalName as string).endsWith("Id") ? InternalName as string : `${InternalName as string}Id`;
         return new NumberField<TBaseInterface>([...this.query, col]);
+    }
+
+    public LookupField<TKey extends KeysMatchingObjects<TBaseInterface>>(InternalName: TKey): LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]> {
+        return new LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]>([...this.query], InternalName as string);
     }
 }
 
@@ -369,7 +375,7 @@ class QueryableGroups<TBaseInterface> extends QueryableFields<TBaseInterface> {
     }
 
     public All(queries: ComparisonResult<TBaseInterface>[] | ((f: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>)[]): ComparisonResult<TBaseInterface> {
-        let query: ComparisonResult<TBaseInterface>[] = [];
+        const query: ComparisonResult<TBaseInterface>[] = [];
 
         for (const q of queries) {
             if (typeof q === "function") {
@@ -382,7 +388,7 @@ class QueryableGroups<TBaseInterface> extends QueryableFields<TBaseInterface> {
     }
 
     public Some(queries: ComparisonResult<TBaseInterface>[] | ((f: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>)[]): ComparisonResult<TBaseInterface> {
-        let query: ComparisonResult<TBaseInterface>[] = [];
+        const query: ComparisonResult<TBaseInterface>[] = [];
 
         for (const q of queries) {
             if (typeof q === "function") {
@@ -405,7 +411,7 @@ class NullableField<TBaseInterface, TInputValueType> extends BaseQuery<TBaseInte
 
     constructor(q: string[]) {
         super(q);
-        this.LastIndex = q.length - 1
+        this.LastIndex = q.length - 1;
         this.InternalName = q[this.LastIndex];
     }
 
@@ -476,7 +482,15 @@ class BooleanField<TBaseInterface> extends NullableField<TBaseInterface, boolean
     }
 
     public IsFalseOrNull(): ComparisonResult<TBaseInterface> {
-        const filter = `(${[this.InternalName, FilterOperation.Equals, this.ToODataValue(null), FilterJoinOperator.Or, this.InternalName, FilterOperation.Equals, this.ToODataValue(false)].join(" ")})`;
+        const filter = `(${[
+            this.InternalName,
+            FilterOperation.Equals,
+            this.ToODataValue(null),
+            FilterJoinOperator.Or,
+            this.InternalName,
+            FilterOperation.Equals,
+            this.ToODataValue(false),
+        ].join(" ")})`;
         this.query[this.LastIndex] = filter;
         return new ComparisonResult<TBaseInterface>([...this.query]);
     }
@@ -521,11 +535,19 @@ class DateField<TBaseInterface> extends NumericField<TBaseInterface, Date> {
     }
 
     protected override ToODataValue(value: Date): string {
-        return `'${value.toISOString()}'`
+        return `'${value.toISOString()}'`;
     }
 
     public IsBetween(startDate: Date, endDate: Date): ComparisonResult<TBaseInterface> {
-        const filter = `(${[this.InternalName, FilterOperation.GreaterThan, this.ToODataValue(startDate), FilterJoinOperator.And, this.InternalName, FilterOperation.LessThan, this.ToODataValue(endDate)].join(" ")})`;
+        const filter = `(${[
+            this.InternalName,
+            FilterOperation.GreaterThan,
+            this.ToODataValue(startDate),
+            FilterJoinOperator.And,
+            this.InternalName,
+            FilterOperation.LessThan,
+            this.ToODataValue(endDate),
+        ].join(" ")})`;
         this.query[this.LastIndex] = filter;
         return new ComparisonResult<TBaseInterface>([...this.query]);
     }
