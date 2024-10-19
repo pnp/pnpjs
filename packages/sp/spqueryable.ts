@@ -338,7 +338,7 @@ class QueryableFields<TBaseInterface> extends BaseQuery<TBaseInterface> {
         return new NumberField<TBaseInterface>([...this.query, col]);
     }
 
-    public All(queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
+    public All(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
         const query: ComparisonResult<TBaseInterface>[] = [];
 
         for (const q of queries) {
@@ -351,7 +351,7 @@ class QueryableFields<TBaseInterface> extends BaseQuery<TBaseInterface> {
         return new ComparisonResult<TBaseInterface>([...this.query, `(${query.map(x => x.ToString()).join(FilterJoinOperator.AndWithSpace)})`]);
     }
 
-    public Some(queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
+    public Some(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
         const query: ComparisonResult<TBaseInterface>[] = [];
 
         for (const q of queries) {
@@ -428,7 +428,7 @@ class ComparableField<TBaseInterface, TInputValueType> extends NullableField<TBa
     }
 
     public In(values: TInputValueType[]): ComparisonResult<TBaseInterface> {
-        return SPOData.Where<TBaseInterface>().Some(values.map(x => this.EqualTo(x)));
+        return SPOData.Where<TBaseInterface>().Some(...values.map(x => this.EqualTo(x)));
     }
 }
 
