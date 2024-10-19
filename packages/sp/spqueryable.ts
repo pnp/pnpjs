@@ -159,7 +159,7 @@ export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
      *
      * @param filter The string representing the filter query
      */
-    public filter<T = any>(filter: string | ComparisonResult<T> | ((f: QueryableGroups<T>) => ComparisonResult<T>)): this {
+    public filter<T = any>(filter: string | ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>)): this {
         if (typeof filter === "object") {
             this.query.set("$filter", filter.ToString());
             return this;
@@ -286,7 +286,7 @@ enum FilterJoinOperator {
 
 export class SPOData {
     public static Where<T = any>() {
-        return new QueryableGroups<T>();
+        return new QueryableFields<T>([]);
     }
 }
 
@@ -337,6 +337,32 @@ class QueryableFields<TBaseInterface> extends BaseQuery<TBaseInterface> {
         const col: string = (InternalName as string).endsWith("Id") ? InternalName as string : `${InternalName as string}Id`;
         return new NumberField<TBaseInterface>([...this.query, col]);
     }
+
+    public All(queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
+        const query: ComparisonResult<TBaseInterface>[] = [];
+
+        for (const q of queries) {
+            if (typeof q === "function") {
+                query.push(q(SPOData.Where<TBaseInterface>()));
+            } else {
+                query.push(q);
+            }
+        }
+        return new ComparisonResult<TBaseInterface>([...this.query, `(${query.map(x => x.ToString()).join(FilterJoinOperator.AndWithSpace)})`]);
+    }
+
+    public Some(queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
+        const query: ComparisonResult<TBaseInterface>[] = [];
+
+        for (const q of queries) {
+            if (typeof q === "function") {
+                query.push(q(SPOData.Where<TBaseInterface>()));
+            } else {
+                query.push(q);
+            }
+        }
+        return new ComparisonResult<TBaseInterface>([...this.query, `(${query.map(x => x.ToString()).join(FilterJoinOperator.OrWithSpace)})`]);
+    }
 }
 
 class LookupQueryableFields<TBaseInterface, TExpandedType> extends BaseQuery<TExpandedType> {
@@ -364,42 +390,6 @@ class LookupQueryableFields<TBaseInterface, TExpandedType> extends BaseQuery<TEx
     //     return new BooleanField<TBaseInterface>([...this.query, `${this.LookupField}/${InternalName as string}`]);
     // }
 }
-
-class QueryableGroups<TBaseInterface> extends QueryableFields<TBaseInterface> {
-    constructor() {
-        super([]);
-    }
-
-    public All(queries: (ComparisonResult<TBaseInterface> | ((f: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
-        const query: ComparisonResult<TBaseInterface>[] = [];
-
-        for (const q of queries) {
-            if (typeof q === "function") {
-                query.push(q(SPOData.Where<TBaseInterface>()));
-            } else {
-                query.push(q);
-            }
-        }
-        return new ComparisonResult<TBaseInterface>([`(${query.map(x => x.ToString()).join(FilterJoinOperator.AndWithSpace)})`]);
-    }
-
-    public Some(queries: (ComparisonResult<TBaseInterface> | ((f: QueryableGroups<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
-        const query: ComparisonResult<TBaseInterface>[] = [];
-
-        for (const q of queries) {
-            if (typeof q === "function") {
-                query.push(q(SPOData.Where<TBaseInterface>()));
-            } else {
-                query.push(q);
-            }
-        }
-        return new ComparisonResult<TBaseInterface>([`(${query.map(x => x.ToString()).join(FilterJoinOperator.OrWithSpace)})`]);
-    }
-}
-
-
-
-
 
 class NullableField<TBaseInterface, TInputValueType> extends BaseQuery<TBaseInterface> {
     protected LastIndex: number;
