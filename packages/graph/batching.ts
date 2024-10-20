@@ -1,7 +1,6 @@
-import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull, isFunc, combine } from "@pnp/core";
+import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull, isFunc, combine, jsS } from "@pnp/core";
 import { parseBinderWithErrorCheck, Queryable, body, InjectHeaders } from "@pnp/queryable";
-import { IGraphQueryable, _GraphQueryable } from "./graphqueryable.js";
-import { graphPost } from "./operations.js";
+import { IGraphQueryable, _GraphQueryable, graphPost } from "./graphqueryable.js";
 import { GraphFI } from "./fi.js";
 
 declare module "./fi" {
@@ -48,9 +47,7 @@ interface IGraphBatchResponseFragment {
     statusText?: string;
     method: string;
     url: string;
-    headers?: string[][] | {
-        [key: string]: string;
-    };
+    headers?: [string, string][] | Record<string, string>;
     body?: any;
 }
 
@@ -114,7 +111,7 @@ class BatchQueryable extends _GraphQueryable {
         // do a fix up on the url once other pre behaviors have had a chance to run
         this.on.pre(async function (this: BatchQueryable, url, init, result) {
 
-            const versRegex = /(https:\/\/.*?[\\|/]v1\.0|beta[\\|/])/i;
+            const versRegex = /(https:\/\/.*?\/(v1.0|beta)\/)/i;
 
             const m = url.match(versRegex);
 
@@ -154,11 +151,11 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
     const completePromises: Promise<void>[] = [];
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
-    const batchQuery = new BatchQueryable(base);
     const refQuery = new BatchQueryable(base);
+    const batchQuery = new BatchQueryable(base);
 
     const { maxRequests } = {
-        maxRequests: 30,
+        maxRequests: 20,
         ...props,
     };
 
@@ -174,6 +171,7 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         const requestsWorkingCopy = requests.slice();
 
         // this is the root of our promise chain
+        let chunkIndex = 0;
         while (requestsWorkingCopy.length > 0) {
 
             const requestsChunk = requestsWorkingCopy.splice(0, maxRequests);
@@ -184,30 +182,17 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
 
             const response: ParsedGraphResponse = await graphPost(batchQuery, body(batchRequest));
 
-            return new Promise<void>((res, rej) => {
-
+            for (let index = 0; index < response.responses.length; index++) {
+                const [, , , resolve, reject] = requests[index + chunkIndex];
                 try {
-
-                    for (let index = 0; index < response.responses.length; index++) {
-                        const [, , , resolve, reject] = requests[index];
-                        try {
-                            resolve(response.responses[index]);
-                        } catch (e) {
-                            reject(e);
-                        }
-                    }
-
-                    // this small delay allows the promises to resolve correctly in order by dropping this resolve behind
-                    // the other work in the event loop. Feels hacky, but it works so 🤷
-                    setTimeout(res, 0);
-
+                    resolve(response.responses[index]);
                 } catch (e) {
-
-                    setTimeout(() => rej(e), 0);
+                    reject(e);
                 }
-
-            }).then(() => Promise.all(completePromises)).then(() => void (0));
+            }
+            chunkIndex += requestsChunk.length;
         }
+        await Promise.all(completePromises).then(() => void (0));
     };
 
     const register = (instance: Queryable) => {
@@ -373,36 +358,61 @@ function formatRequests(requests: RequestRecord[], batchId: string): IGraphBatch
     });
 }
 
-function parseResponse(graphResponse: IGraphBatchResponse): Promise<ParsedGraphResponse> {
+function parseResponse(graphResponse: IGraphBatchResponse): ParsedGraphResponse {
 
-    return new Promise((resolve, reject) => {
+    // we need to see if we have an error and report that
+    if (hOP(graphResponse, "error")) {
+        throw Error(`Error Porcessing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`);
+    }
 
-        // we need to see if we have an error and report that
-        if (hOP(graphResponse, "error")) {
-            return reject(Error(`Error Porcessing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`));
+    const parsedResponses: Response[] = new Array(graphResponse.responses.length).fill(null);
+
+    for (let i = 0; i < graphResponse.responses.length; ++i) {
+
+        const response = graphResponse.responses[i];
+
+        // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
+        // the array of requests and make it easier to map them by index
+        const responseId = parseInt(response.id, 10) - 1;
+
+        const { status, statusText, headers, body } = response;
+
+        const init = { status, statusText, headers };
+
+        // this is to handle special cases before we pass to the default parsing logic
+        if (status === 204) {
+
+            // this handles cases where the response body is empty and has a 204 response status (No Content)
+            parsedResponses[responseId] = new Response(null, init);
+
+        } else if (status === 302) {
+
+            // this is the case where (probably) a file download was included in the batch and the service has returned a 302 redirect to that file
+            // the url should be in the response's location header, so we transform the response to a 200 with the location in the body as 302 will be an
+            // error in the default parser used on the individual request
+
+            init.status = 200;
+            // eslint-disable-next-line @typescript-eslint/dot-notation
+            parsedResponses[responseId] = new Response(jsS({ location: headers["Location"] || "" }), init);
+
+        } else if (status === 200 && /^image[\\|/]/i.test(headers["Content-Type"] || "")) {
+
+            // this handles the case where image content is returned as base 64 data in the batch body, such as /me/photos/$value (https://github.com/pnp/pnpjs/issues/2825)
+
+            const encoder = new TextEncoder();
+            parsedResponses[responseId] = new Response(encoder.encode(body), init);
+
+        } else {
+
+            // this is the default case where we have a json body which we remake into a string for the downstream parser to parse again
+            // a bit circular, but this provides consistent behavior for downstream parsers
+
+            parsedResponses[responseId] = new Response(jsS(body), init);
         }
+    }
 
-        const parsedResponses: Response[] = new Array(graphResponse.responses.length).fill(null);
-
-        for (let i = 0; i < graphResponse.responses.length; ++i) {
-
-            const response = graphResponse.responses[i];
-            // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
-            // the array of requests and make it easier to map them by index
-            const responseId = parseInt(response.id, 10) - 1;
-
-            if (response.status === 204) {
-
-                parsedResponses[responseId] = new Response();
-            } else {
-
-                parsedResponses[responseId] = new Response(JSON.stringify(response.body), response);
-            }
-        }
-
-        resolve({
-            nextLink: graphResponse.nextLink,
-            responses: parsedResponses,
-        });
-    });
+    return {
+        nextLink: graphResponse.nextLink,
+        responses: parsedResponses,
+    };
 }

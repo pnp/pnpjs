@@ -13,5 +13,5 @@ declare module "../groups/types" {
     }
 }
 
-addProp(_Group, "owners", Members);
+addProp(_Group, "owners", Members, "owners");
 addProp(_Group, "members", Members);

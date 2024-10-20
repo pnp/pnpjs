@@ -1,6 +1,5 @@
 import { SecurableQueryable, IBasePermissions, PermissionKind } from "./types.js";
-import { SPInstance, SPQueryable } from "../spqueryable.js";
-import { spPost } from "../operations.js";
+import { SPInstance, SPQueryable, spPost } from "../spqueryable.js";
 
 /**
 * Gets the effective permissions for the user supplied
@@ -29,7 +28,7 @@ export async function getCurrentUserEffectivePermissions(this: SecurableQueryabl
  * @param clearSubscopes Optional. true to make all child securable objects inherit role assignments from the current object
  */
 export async function breakRoleInheritance(this: SecurableQueryable, copyRoleAssignments = false, clearSubscopes = false): Promise<void> {
-    await spPost(SPQueryable(this, `breakroleinheritance(copyroleassignments=${copyRoleAssignments}, clearsubscopes=${clearSubscopes})`));
+    return spPost(SPQueryable(this, `breakroleinheritance(copyroleassignments=${copyRoleAssignments}, clearsubscopes=${clearSubscopes})`));
 }
 
 /**
@@ -37,7 +36,7 @@ export async function breakRoleInheritance(this: SecurableQueryable, copyRoleAss
  *
  */
 export async function resetRoleInheritance(this: SecurableQueryable): Promise<void> {
-    await spPost(SPQueryable(this, "resetroleinheritance"));
+    return spPost(SPQueryable(this, "resetroleinheritance"));
 }
 
 /**

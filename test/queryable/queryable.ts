@@ -7,10 +7,11 @@ import {
     ResolveOnData,
     RejectOnError,
 } from "@pnp/queryable";
+import { pnpTest } from "../pnp-test.js";
 
 describe("Queryable", function () {
 
-    it("Lifecycle works as expected", async function () {
+    it("Lifecycle works as expected", pnpTest("721e2be1-6dd2-478e-9090-64575d36859d", async function () {
 
         const tracker = [];
 
@@ -33,7 +34,7 @@ describe("Queryable", function () {
 
         q.on.send(async () => {
             tracker.push(4);
-            return null;
+            return new Response({} as BodyInit, {});
         });
 
         q.on.parse(async (url, response, result) => {
@@ -60,9 +61,9 @@ describe("Queryable", function () {
         expect(tracker[4]).to.eq(5);
         expect(tracker[5]).to.eq(6);
         expect(tracker[6]).to.eq(7);
-    });
+    }));
 
-    it("Observer inhertance", function () {
+    it("Observer inhertance", pnpTest("2ed992fb-4830-4e99-9989-3b6738acb666", function () {
 
         const q = new Queryable("https://bing.com");
 
@@ -87,9 +88,9 @@ describe("Queryable", function () {
 
         // ref to parent is broken due to edit of child
         expect((<any>q2).observers).to.not.be.equal((<any>q).observers);
-    });
+    }));
 
-    it("Url manipulation", function () {
+    it("Url manipulation", pnpTest("3f3439e5-d980-4f2e-b403-82efec217727", function () {
 
         const q = new Queryable("https://bing.com");
 
@@ -114,5 +115,5 @@ describe("Queryable", function () {
         q.query.set("key2", "value2?");
 
         expect(q.toRequestUrl()).to.be.eq("https://bing.com?key=value&key2=value2%3F");
-    });
+    }));
 });

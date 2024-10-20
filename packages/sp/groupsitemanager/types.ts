@@ -1,5 +1,6 @@
 import { body, BufferParse } from "@pnp/queryable";
-import { _SPInstance, defaultPath, spPost, spInvokableFactory, ISPQueryable, spGet } from "@pnp/sp";
+import { _SPInstance, spPost, spInvokableFactory, ISPQueryable, spGet } from "../spqueryable.js";
+import { defaultPath } from "../decorators.js";
 
 @defaultPath("_api/groupsitemanager")
 class _GroupSiteManager extends _SPInstance<Record<string, never>> {

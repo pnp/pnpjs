@@ -5,11 +5,13 @@ import {
     PlannerTaskDetails as IPlannerTaskDetailsType,
     PlannerBucket as IPlannerBucketType,
     Planner as IPlannerType,
+    PlannerPlanContainer as IPlannerPlanContainerType,
+    PlannerAssignedToTaskBoardTaskFormat as IPlannerAssignedToTaskBoardTaskFormatType,
+    PlannerBucketTaskBoardTaskFormat as IPlannerBucketTaskBoardTaskFormatType,
+    PlannerProgressTaskBoardTaskFormat as IPlannerProgressTaskBoardTaskFormatType,
 } from "@microsoft/microsoft-graph-types";
-import { body } from "@pnp/queryable";
 import { _GraphInstance, _GraphCollection, graphInvokableFactory } from "../graphqueryable.js";
-import { getById, IGetById, deleteableWithETag, IDeleteableWithETag, updateableWithETag, IUpdateableWithETag } from "../decorators.js";
-import { graphPost } from "../operations.js";
+import { getById, IGetById, deleteableWithETag, IDeleteableWithETag, updateableWithETag, IUpdateableWithETag, addable, IAddable } from "../decorators.js";
 import { defaultPath } from "../decorators.js";
 
 /**
@@ -43,7 +45,7 @@ export const Planner = graphInvokableFactory<IPlanner>(_Planner);
 @updateableWithETag()
 export class _PlanDetails extends _GraphInstance<IPlannerPlanDetailsType> { }
 export interface IPlanDetails extends _PlanDetails, IUpdateableWithETag<IPlannerPlanDetailsType> { }
-export const PlanDetails = graphInvokableFactory<ITaskDetails>(_PlanDetails);
+export const PlanDetails = graphInvokableFactory<IPlanDetails>(_PlanDetails);
 
 /**
  * Plan
@@ -69,24 +71,9 @@ export const Plan = graphInvokableFactory<IPlan>(_Plan);
 
 @defaultPath("plans")
 @getById(Plan)
-export class _Plans extends _GraphCollection<IPlannerPlanType[]> {
-    /**
-     * Create a new Planner Plan.
-     *
-     * @param owner Id of Group object.
-     * @param title The Title of the Plan.
-     */
-    public async add(owner: string, title: string): Promise<IPlanAddResult> {
-
-        const data = await graphPost(this, body({ owner, title }));
-
-        return {
-            data,
-            plan: (<any>this).getById(data.id),
-        };
-    }
-}
-export interface IPlans extends _Plans, IGetById<IPlan> { }
+@addable()
+export class _Plans extends _GraphCollection<IPlannerPlanType[]> {}
+export interface IPlans extends _Plans, IGetById<IPlan>, IAddable<IPlanAdd, IPlannerPlanType> { }
 export const Plans = graphInvokableFactory<IPlans>(_Plans);
 
 /**
@@ -99,6 +86,33 @@ export interface ITaskDetails extends _TaskDetails, IUpdateableWithETag<IPlanner
 export const TaskDetails = graphInvokableFactory<ITaskDetails>(_TaskDetails);
 
 /**
+ * AssignedToTaskBoardFormat
+ */
+@defaultPath("assignedToTaskBoardFormat")
+@updateableWithETag()
+export class _AssignedToTaskBoardFormat extends _GraphInstance<IPlannerAssignedToTaskBoardTaskFormatType> { }
+export interface IAssignedToTaskBoardFormat extends _AssignedToTaskBoardFormat, IUpdateableWithETag<IPlannerAssignedToTaskBoardTaskFormatType> { }
+export const AssignedToTaskBoardFormat = graphInvokableFactory<IAssignedToTaskBoardFormat>(_AssignedToTaskBoardFormat);
+
+/**
+ * BucketTaskBoardFormat
+ */
+@defaultPath("bucketTaskBoardFormat")
+@updateableWithETag()
+export class _BucketTaskBoardFormat extends _GraphInstance<IPlannerBucketTaskBoardTaskFormatType> { }
+export interface IBucketTaskBoardFormat extends _BucketTaskBoardFormat, IUpdateableWithETag<IPlannerBucketTaskBoardTaskFormatType> { }
+export const BucketTaskBoardFormat = graphInvokableFactory<IBucketTaskBoardFormat>(_BucketTaskBoardFormat);
+
+/**
+ * ProgressTaskBoardFormat
+ */
+@defaultPath("progressTaskBoardFormat")
+@updateableWithETag()
+export class _ProgressTaskBoardFormat extends _GraphInstance<IPlannerProgressTaskBoardTaskFormatType> { }
+export interface IProgressTaskBoardFormat extends _ProgressTaskBoardFormat, IUpdateableWithETag<IPlannerProgressTaskBoardTaskFormatType> { }
+export const ProgressTaskBoardFormat = graphInvokableFactory<IProgressTaskBoardFormat>(_ProgressTaskBoardFormat);
+
+/**
  * Task
  */
 @updateableWithETag()
@@ -106,6 +120,18 @@ export const TaskDetails = graphInvokableFactory<ITaskDetails>(_TaskDetails);
 export class _Task extends _GraphInstance<IPlannerTaskType> {
     public get details(): ITaskDetails {
         return TaskDetails(this);
+    }
+
+    public get assignedToTaskBoardFormat(): IAssignedToTaskBoardFormat {
+        return AssignedToTaskBoardFormat(this);
+    }
+
+    public get bucketTaskBoardFormat(): IBucketTaskBoardFormat {
+        return BucketTaskBoardFormat(this);
+    }
+
+    public get progressTaskBoardFormat(): IProgressTaskBoardFormat {
+        return ProgressTaskBoardFormat(this);
     }
 }
 export interface ITask extends _Task, IUpdateableWithETag<IPlannerTaskType>, IDeleteableWithETag { }
@@ -116,39 +142,9 @@ export const Task = graphInvokableFactory<ITask>(_Task);
  */
 @defaultPath("tasks")
 @getById(Task)
-export class _Tasks extends _GraphCollection<IPlannerTaskType[]> {
-    /**
-     * Create a new Planner Task.
-     *
-     * @param planId Id of Plan.
-     * @param title The Title of the Task.
-     * @param assignments Assign the task
-     * @param bucketId Id of Bucket
-     */
-    public async add(planId: string, title: string, assignments?: Record<string, any>, bucketId?: string): Promise<ITaskAddResult> {
-
-        let postBody = {
-            planId,
-            title,
-            ...assignments,
-        };
-
-        if (bucketId) {
-            postBody = <any>{
-                ...postBody,
-                bucketId,
-            };
-        }
-
-        const data = await graphPost(this, body(postBody));
-
-        return {
-            data,
-            task: (<any>this).getById(data.id),
-        };
-    }
-}
-export interface ITasks extends _Tasks, IGetById<ITask> { }
+@addable()
+export class _Tasks extends _GraphCollection<IPlannerTaskType[]> {}
+export interface ITasks extends _Tasks, IGetById<ITask>, IAddable<IPlannerTaskType, IPlannerTaskType> { }
 export const Tasks = graphInvokableFactory<ITasks>(_Tasks);
 
 /**
@@ -170,44 +166,13 @@ export const Bucket = graphInvokableFactory<IBucket>(_Bucket);
  */
 @defaultPath("buckets")
 @getById(Bucket)
-export class _Buckets extends _GraphCollection<IPlannerBucketType[]> {
-    /**
-     * Create a new Bucket.
-     *
-     * @param name Name of Bucket object.
-     * @param planId The Id of the Plan.
-     * @param oderHint Hint used to order items of this type in a list view.
-     */
-    public async add(name: string, planId: string, orderHint?: string): Promise<IBucketAddResult> {
-
-        const postBody = {
-            name: name,
-            orderHint: orderHint ? orderHint : "",
-            planId: planId,
-        };
-
-        const data = await graphPost(this, body(postBody));
-
-        return {
-            bucket: (<any>this).getById(data.id),
-            data,
-        };
-    }
-}
-export interface IBuckets extends _Buckets, IGetById<IBucket> { }
+@addable()
+export class _Buckets extends _GraphCollection<IPlannerBucketType[]> {}
+export interface IBuckets extends _Buckets, IGetById<IBucket>, IAddable<IPlannerBucketType, IPlannerBucketType> { }
 export const Buckets = graphInvokableFactory<IBuckets>(_Buckets);
 
-export interface IBucketAddResult {
-    data: IPlannerBucketType;
-    bucket: IBucket;
+export interface IPlanAdd {
+    container: IPlannerPlanContainerType;
+    title: string;
 }
 
-export interface IPlanAddResult {
-    data: IPlannerPlanType;
-    plan: IPlan;
-}
-
-export interface ITaskAddResult {
-    data: IPlannerTaskType;
-    task: ITask;
-}

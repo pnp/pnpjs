@@ -31,7 +31,7 @@ console.log(items2);
 
 ### Get Paged Items
 
-Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the getPaged method on the Items class to assist. Note that there isn't a way to move backwards in the collection, this is by design. The pattern you should use to support backwards navigation in the results is to cache the results into a local array and use the standard array operators to get previous pages. Alternatively you can append the results to the UI, but this can have performance impact for large result sets.
+Working with paging can be a challenge as it is based on skip tokens and item ids, something that is hard to guess at runtime. To simplify things you can use the Async Iterator functionality on the Items class to assist. For advanced paging techniques using the Async Iterator, please review [Async Paging]('../concepts/async-paging.md')
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -41,34 +41,16 @@ import "@pnp/sp/items";
 
 const sp = spfi(...);
 
-// basic case to get paged items form a list
-const items = await sp.web.lists.getByTitle("BigList").items.getPaged();
+//using async iterator in combination with top() to get pages of items in chunks of up to 5000, if left off returns 100 items per loop.
+for await (const items of sp.web.lists.getByTitle("BigList").items.top(10)) {
+  console.log(items); //array of 10 items
+  break; // closes the iterator, returns -- stops retrieving pages
+} 
 
-// you can also provide a type for the returned values instead of any
-const items = await sp.web.lists.getByTitle("BigList").items.getPaged<{Title: string}[]>();
-
-// the query also works with select to choose certain fields and top to set the page size
-const items = await sp.web.lists.getByTitle("BigList").items.select("Title", "Description").top(50).getPaged<{Title: string}[]>();
-
-// the results object will have two properties and one method:
-
-// the results property will be an array of the items returned
-if (items.results.length > 0) {
-    console.log("We got results!");
-
-    for (let i = 0; i < items.results.length; i++) {
-        // type checking works here if we specify the return type
-        console.log(items.results[i].Title);
-    }
-}
-
-// the hasNext property is used with the getNext method to handle paging
-// hasNext will be true so long as there are additional results
-if (items.hasNext) {
-
-    // this will carry over the type specified in the original query for the results array
-    items = await items.getNext();
-    console.log(items.results.length);
+// One example of how to type "items"
+let items: IMyItem;
+for await (items of sp.web.lists.getByTitle("BigList").items()) {
+  //...process item batch...
 }
 ```
 
@@ -94,38 +76,6 @@ const changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSince
 // Get everything. Using null with ChangeToken gets everything
 const changes = await sp.web.lists.getByTitle("BigList").getListItemChangesSinceToken({ChangeToken: null});
 
-```
-
-### Get All Items
-
-Using the items collection's getAll method you can get all of the items in a list regardless of the size of the list. Sample usage is shown below. Only the odata operations top, select, and filter are supported. usingCaching and inBatch are ignored - you will need to handle caching the results on your own. This method will write a warning to the Logger and should not frequently be used. Instead the standard paging operations should be used.
-
-> In v3 there is a separate import for get-all to include the functionality. This is to remove the code from bundles for folks who do not need it.
-
-```TypeScript
-import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/lists";
-import "@pnp/sp/items";
-import "@pnp/sp/items/get-all";
-
-const sp = spfi(...);
-
-// basic usage
-const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.getAll();
-console.log(allItems.length);
-
-// set page size
-const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.getAll(4000);
-console.log(allItems.length);
-
-// use select and top. top will set page size and override the any value passed to getAll
-const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.select("Title").top(4000).getAll();
-console.log(allItems.length);
-
-// we can also use filter as a supported odata operation, but this will likely fail on large lists
-const allItems: any[] = await sp.web.lists.getByTitle("BigList").items.select("Title").filter("Title eq 'Test'").getAll();
-console.log(allItems.length);
 ```
 
 ### Retrieving Lookup Fields
@@ -211,17 +161,16 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
-import { IItemAddResult } from "@pnp/sp/items";
 
 const sp = spfi(...);
 
 // add an item to the list
-const iar: IItemAddResult = await sp.web.lists.getByTitle("My List").items.add({
+const item = await sp.web.lists.getByTitle("My List").items.add({
   Title: "Title",
   Description: "Description"
 });
 
-console.log(iar);
+console.log(item);
 ```
 
 ### Content Type
@@ -418,11 +367,13 @@ await execute();
 
 console.log("Done");
 ```
+
 ### Update Taxonomy field
 
 Note: Updating Taxonomy field for a File item should be handled differently. Instead of using update(), use validateUpdateListItem(). Please see below
 
-List Item
+#### List Item
+
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -436,7 +387,9 @@ await sp.web.lists.getByTitle("Demo").items.getById(1).update({
 });
 
 ```
-File List Item
+
+#### File List Item
+
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -457,6 +410,8 @@ await (await sp.web.getFileByServerRelativePath("/sites/demo/DemoLibrary/File.tx
 _Based on [this excellent article](https://www.aerieconsulting.com/blog/update-using-rest-to-update-a-multi-value-taxonomy-field-in-sharepoint) from Beau Cameron._
 
 As he says you must update a hidden field to get this to work via REST. My meta data field accepting multiple values is called "MultiMetaData".
+
+#### List Item
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -480,7 +435,46 @@ const newItem = await sp.web.lists.getByTitle("TestList").items.add({
 const updateVal = {};
 updateVal[fields[0].InternalName] = "-1;#New Term|bb046161-49cc-41bd-a459-5667175920d4;#-1;#New 2|0069972e-67f1-4c5e-99b6-24ac5c90b7c9";
 // execute the update call
-await newItem.item.update(updateVal);
+await sp.web.lists.getByTitle("TestList").items.getById(newItem.Id).update(updateVal);
+```
+
+#### File List Item
+
+To update a multi-value taxonomy field on a file item, a different serialization is needed.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/files";
+
+const sp = spfi(...);
+
+const multiValueTaxonomy = {
+  field: "MetaDataColumn",
+  values: [
+    {
+      label: "Demo 1",
+      guid: "bb046161-49cc-41bd-a459-5667175920d4"
+    }, 
+    {
+      label: "Demo 2", 
+      guid: "0069972e-67f1-4c5e-99b6-24ac5c90b7c9"
+    }
+  ]
+}
+
+// serialize values for field "MetaDataColumn"
+// it needs to be serialized as {field label}|{field guid} joined by ;
+const newFieldValue = multiValueTaxonomy
+  .map((val) => (`${val.label}|${val.guid}`)).join(";")
+// this will result to "Demo 1|bb046161-49cc-41bd-a459-5667175920d4;Demo 2|0069972e-67f1-4c5e-99b6-24ac5c90b7c9"
+
+await (await sp.web.getFileByServerRelativePath("/sites/demo/DemoLibrary/File.txt").getItem()).validateUpdateListItem([{
+    FieldName: multiValueTaxonomy.field,
+    FieldValue: multiValueTaxonomy.guid, //Label|TermGuid;Label 2|TermGuid 2
+}]);
 ```
 
 ### Update BCS Field
@@ -494,6 +488,30 @@ const update = await sp.web.lists.getByTitle("Price").items.getById(7).select('*
       {FieldName:"External",FieldValue:"Fauntleroy Circus"},
       {FieldName:"Customers_ID", FieldValue:"__bk410024003500240054006500"}
     ]); 
+```
+
+### Update Location Field
+
+This code shows how to update a location field's coordinates.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+const coordinates = {
+  Latitude: 47.672082,
+  Longitude: -122.1409983
+}
+
+const projectId = 1;
+const project = sp.web.lists.getByTitle("My List").items.getById(projectId).select("Id, ProjectLocation")()
+const projectLocation = JSON.parse(project.ProjectLocation);
+projectLocation.Coordinates = coordinates;
+const ProjectLocation = JSON.stringify(projectLocation);
+const update = await sp.web.lists.getByTitle("My List").items.getById(projectId).update({ ProjectLocation });
 ```
 
 ## Recycle
@@ -592,6 +610,7 @@ Gets information about an item, including details about the parent list, parent 
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
+import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
 const sp = spfi(...);
@@ -599,3 +618,48 @@ const sp = spfi(...);
 const item: any = await sp.web.lists.getByTitle("My List").items.getById(1)();
 await item.getParentInfos();
 ```  
+
+### Get Version History
+
+Get's the version history information for a list item
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+
+const itemVersions: any = await sp.web.lists.getByTitle("My List").items.getById({item id}).versions();
+```
+
+### Get Version History Item by Id
+
+Get's the specific version information for a list item
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+
+const itemVersion: any = await sp.web.lists.getByTitle("My List").items.getById({item id}).versions.getById({version id})();
+```
+
+### Delete Version History Item by Id
+
+Get's the specific version information for a list item
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+
+await sp.web.lists.getByTitle("My List").items.getById({item id}).versions.getById({version id}).delete({eTag});
+```

@@ -1,7 +1,6 @@
-import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphInstance } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphInstance, graphPost } from "../graphqueryable.js";
 import { body, HeaderParse } from "@pnp/queryable";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
-import { graphPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
 import {
     Team as ITeamType,
@@ -174,33 +173,27 @@ export interface IChannels extends _Channels, IGetById<IChannel> { }
 export const Channels = graphInvokableFactory<IChannels>(_Channels);
 
 /**
- * Channel
+ * Message
  */
 export class _Message extends _GraphInstance<IChatMessage> { }
 export interface IMessage extends _Message { }
 export const Message = graphInvokableFactory<IMessage>(_Message);
 
 /**
- * Channels
+ * Messages
  */
 @defaultPath("messages")
 @getById(Message)
 export class _Messages extends _GraphCollection<IChatMessage[]> {
 
     /**
-     * Creates a new Channel in the Team
-     * @param displayName The display name of the new channel
-     * @param description Optional description of the channel
+     * Adds a message
+     * @param message ChatMessage object that defines the message
      *
      */
-    public async add(displayName: string, description = ""): Promise<IMessageCreateResult> {
+    public async add(message: IChatMessage): Promise<IMessageCreateResult> {
 
-        const postBody = {
-            description,
-            displayName,
-        };
-
-        const data = await graphPost(this, body(postBody));
+        const data = await graphPost(this, body(message));
 
         return {
             message: (<any>this).getById(data.id),

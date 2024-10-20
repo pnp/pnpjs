@@ -33,6 +33,7 @@ describe("Sharing", function () {
 
         // we need a doc lib with a file and folder in it
         const ler = await this.pnp.sp.web.lists.ensure(testSharingLib, "Used to test sharing", 101);
+        const list = ler.list;
 
         // we need a user to share to
         if (this.pnp.settings.testUser?.length > 0) {
@@ -40,8 +41,8 @@ describe("Sharing", function () {
         }
 
         // add a file and folder
-        await ler.list.rootFolder.folders.addUsingPath(testSharingFolder);
-        await ler.list.rootFolder.files.addUsingPath(testSharingFile, "Some file content!");
+        await list.rootFolder.folders.addUsingPath(testSharingFolder);
+        await list.rootFolder.files.addUsingPath(testSharingFile, "Some file content!");
     });
 
     after(async function () {
@@ -69,18 +70,14 @@ describe("Sharing", function () {
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        it("getShareLink (AnonymousView)", function () {
-            return expect(folder.getShareLink(SharingLinkKind.AnonymousView))
-                .to.eventually.be.fulfilled
-                .and.have.property("sharingLinkInfo")
-                .and.have.deep.property("Url").that.is.not.null;
+        it("getShareLink (AnonymousView)", async function () {
+            const sharing = await folder.getShareLink(SharingLinkKind.AnonymousView);
+            return expect(sharing).to.have.property("sharingLinkInfo").and.have.deep.property("Url").that.is.not.null;
         });
 
-        it("getShareLink (ExpirationDate)", function () {
-            return expect(folder.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5)))
-                .to.eventually.be.fulfilled
-                .and.have.property("sharingLinkInfo")
-                .and.have.deep.property("Url").that.is.not.null;
+        it("getShareLink (ExpirationDate)", async function () {
+            const sharing = await folder.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5));
+            return expect(sharing).to.have.property("sharingLinkInfo").and.have.deep.property("Url").that.is.not.null;
         });
 
         it(".shareWith (Edit)", function () {
@@ -234,18 +231,14 @@ describe("Sharing", function () {
                 .and.have.deep.property("Url").that.is.not.null;
         });
 
-        it("getShareLink (AnonymousView)", function () {
-            return expect(item.getShareLink(SharingLinkKind.AnonymousView))
-                .to.eventually.be.fulfilled
-                .and.have.property("sharingLinkInfo")
-                .and.have.deep.property("Url").that.is.not.null;
+        it("getShareLink (AnonymousView)", async function () {
+            const sharing = await item.getShareLink(SharingLinkKind.AnonymousView);
+            return expect(sharing).to.have.property("sharingLinkInfo").and.have.deep.property("Url").that.is.not.null;
         });
 
-        it("getShareLink (ExpirationDate)", function () {
-            return expect(item.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5)))
-                .to.eventually.be.fulfilled
-                .and.have.property("sharingLinkInfo")
-                .and.have.deep.property("Url").that.is.not.null;
+        it("getShareLink (ExpirationDate)", async function () {
+            const sharing = await item.getShareLink(SharingLinkKind.AnonymousView, dateAdd(new Date(), "day", 5));
+            return expect(sharing).to.have.property("sharingLinkInfo").and.have.deep.property("Url").that.is.not.null;
         });
 
         it(".shareWith (Edit)", async function () {

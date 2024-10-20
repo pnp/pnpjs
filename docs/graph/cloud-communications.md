@@ -4,7 +4,7 @@ The ability to retrieve information about a user's presence, including their ava
 
 More information can be found in the official Graph documentation:
 
-- [Presence Type](https://docs.microsoft.com/en-us/graph/api/resources/presence?view=graph-rest-1.0)
+- [Cloud Communications Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/presence?view=graph-rest-1.0)
 
 ## IPresence
 
@@ -12,7 +12,7 @@ More information can be found in the official Graph documentation:
 
 ## Get users presence
 
-Gets a list of all the contacts for the user.
+Gets a user's presence
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -36,5 +36,87 @@ import "@pnp/graph/cloud-communications";
 const graph = graphfi(...);
 
 const presenceList = await graph.communications.getPresencesByUserId(["99999999-9999-9999-9999-999999999999"]);
+
+```
+
+## Set presence for a User
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/cloud-communications";
+
+const graph = graphfi(...);
+
+// Session ID is the Application's client id
+const presenceMe = await graph.me.presence.setPresence(
+    availability: "Busy",
+    activity:"InACall",
+    sessionId:"b8d08156-5ba4-4c5d-bee8-f2634901d491",
+    expirationDuration: "PT1H"
+);
+
+const presenceThem = await graph.users.getById("99999999-9999-9999-9999-999999999999").setPresence(
+    availability: "Busy",
+    activity:"InACall",
+    sessionId:"b8d08156-5ba4-4c5d-bee8-f2634901d491",
+    expirationDuration: "PT1H"
+);
+
+```
+
+## Clear presence for a User
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/cloud-communications";
+
+const graph = graphfi(...);
+
+// clear my presence
+await graph.me.presence.clearPreferredPresence();
+
+// clear user presence
+await graph.users.getById("99999999-9999-9999-9999-999999999999").clearPreferredPresence();
+
+```
+
+## Set presence preference for a User
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/cloud-communications";
+
+const graph = graphfi(...);
+
+// set my preferred presence
+await graph.me.presence.setPreferredPresence({
+    availability:"Available",
+    activity:"Available",
+    expirationDuration:"PT1H"
+});
+
+
+// set user preferred presence
+await graph.users.getById("99999999-9999-9999-9999-999999999999").presence.setPreferredPresence({
+    availability:"Available",
+    activity:"Available",
+    expirationDuration:"PT1H"
+});
+
+```
+
+## Clear presence preference for a User
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/cloud-communications";
+
+const graph = graphfi(...);
+
+// set my presence preference
+await graph.me.presence.clearPreferredPresence();
+
+// clear user presence preference
+await graph.users.getById("99999999-9999-9999-9999-999999999999").clearPreferredPresence();
 
 ```

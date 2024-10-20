@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "@pnp/graph/sites/group";
 import "@pnp/graph/users";
-import "@pnp/graph/onedrive";
+import "@pnp/graph/files";
 import { Drive, Group } from "@microsoft/microsoft-graph-types";
 import { hOP, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
@@ -45,10 +45,10 @@ describe("Queryable", function () {
         const drives = await this.pnp.graph.users.getById(testUserName).drives.orderBy("lastModifiedBy/user/displayName")();
         const drivesClone: Drive[] = JSON.parse(JSON.stringify(drives));
         const drivesResort: Drive[] = drivesClone.sort((a, b) => {
-            if (a.lastModifiedBy.user.displayName.toUpperCase() < b.lastModifiedBy.user.displayName.toUpperCase()) {
+            if (a.lastModifiedBy?.user?.displayName?.toUpperCase() < b.lastModifiedBy?.user?.displayName?.toUpperCase()) {
                 return -1;
             }
-            if (a.lastModifiedBy.user.displayName.toUpperCase() > b.lastModifiedBy.user.displayName.toUpperCase()) {
+            if (a.lastModifiedBy?.user?.displayName?.toUpperCase() > b.lastModifiedBy?.user?.displayName?.toUpperCase()) {
                 return 1;
             }
             return 0;

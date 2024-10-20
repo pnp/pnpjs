@@ -4,15 +4,22 @@ import "./users.js";
 export {
     Calendar,
     Calendars,
+    CalendarGroup,
+    CalendarGroups,
+    CalendarPermission,
+    CalendarPermissions,
+    CalendarView,
     Event,
-    IEventAddResult,
     Events,
     ICalendar,
     ICalendars,
+    ICalendarGroup,
+    ICalendarGroups,
+    ICalendarPermission,
+    ICalendarPermissions,
+    ICalendarView,
     IEvent,
     IEvents,
+    IForwardEvent,
+    IGetScheduleRequest,
 } from "./types.js";
-
-export {
-    ICalendarViewInfo,
-} from "./funcs.js";

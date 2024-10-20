@@ -1,9 +1,7 @@
-import { ISPQueryable, _SPQueryable } from "../spqueryable.js";
+import { ISPQueryable, _SPQueryable, spPost } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { headers, body } from "@pnp/queryable";
-import { spPost } from "../operations.js";
 import { combine, hOP } from "@pnp/core";
-
 
 export class _SiteDesigns extends _SPQueryable {
 
@@ -298,7 +296,7 @@ export interface ISiteDesignUpdateInfo extends Partial<ISiteDesignCreationInfo> 
     Id: string;
 }
 
-export const enum TemplateDesignType {
+export enum TemplateDesignType {
     /// <summary>
     /// Represents the Site design type.
     /// </summary>
@@ -309,7 +307,7 @@ export const enum TemplateDesignType {
     List = 1
 }
 
-export const enum ListDesignColor {
+export enum ListDesignColor {
     DarkRed = 0,
     Red = 1,
     Orange = 2,
@@ -324,7 +322,7 @@ export const enum ListDesignColor {
     Pink = 11
 }
 
-export const enum ListDesignIcon {
+export enum ListDesignIcon {
     Bug = 0,
     Calendar = 1,
     BullseyeTarget = 2,

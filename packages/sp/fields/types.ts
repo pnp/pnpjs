@@ -5,9 +5,10 @@ import {
     deleteable,
     spInvokableFactory,
     IDeleteable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { metadata } from "../utils/metadata.js";
 
 @defaultPath("fields")
@@ -18,18 +19,14 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      *
      * @param xml A string or XmlSchemaFieldCreationInformation instance descrbing the field to create
      */
-    public async createFieldAsXml(xml: string | IXmlSchemaFieldCreationInformation): Promise<IFieldAddResult> {
+    public async createFieldAsXml(xml: string | IXmlSchemaFieldCreationInformation): Promise<Partial<IFieldInfo>> {
 
         if (typeof xml === "string") {
             xml = { SchemaXml: xml };
         }
 
-        const data = await spPost<{ Id: string }>(Fields(this, "createfieldasxml"), body({ parameters: xml }));
+        return spPost<{ Id: string }>(Fields(this, "createfieldasxml"), body({ parameters: xml }));
 
-        return {
-            data,
-            field: this.getById(data.Id),
-        };
     }
 
     /**
@@ -65,9 +62,9 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public async add(title: string, fieldTypeKind: number, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
+    public async add(title: string, fieldTypeKind: number, properties?: IFieldCreationProperties): Promise<Partial<IFieldInfo>> {
 
-        const data = await spPost<{Id: string }>(Fields(this,null), body(Object.assign(metadata(mapFieldTypeEnumToString(fieldTypeKind)),{
+        return spPost(Fields(this,null), body(Object.assign(metadata(mapFieldTypeEnumToString(fieldTypeKind)),{
             Title: title,
             FieldTypeKind: fieldTypeKind,
             ...properties,
@@ -75,11 +72,6 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
             "Accept":"application/json;odata=verbose",
             "Content-Type":"application/json;odata=verbose",
         })));
-
-        return {
-            data,
-            field:this.getById(data.Id),
-        };
     }
 
     /**
@@ -88,20 +80,15 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public async addField(title: string, fieldTypeKind: number, properties?: IAddFieldProperties): Promise<IFieldAddResult> {
+    public async addField(title: string, fieldTypeKind: number, properties?: IAddFieldProperties): Promise<Partial<IFieldInfo>> {
 
-        const data = await spPost<{ Id: string }>(Fields(this, "AddField"), body({
+        return spPost<{ Id: string }>(Fields(this, "AddField"), body({
             parameters: {
                 Title: title,
                 FieldTypeKind: fieldTypeKind,
                 ...properties,
             },
         }));
-
-        return {
-            data,
-            field: this.getById(data.Id),
-        };
     }
 
     /**
@@ -110,7 +97,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public addText(title: string, properties?: IFieldCreationProperties & AddTextProps): Promise<IFieldAddResult> {
+    public addText(title: string, properties?: IFieldCreationProperties & AddTextProps): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 2, {
             MaxLength: 255,
@@ -124,7 +111,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public addCalculated(title: string, properties?: IFieldCreationProperties & AddCalculatedProps): Promise<IFieldAddResult> {
+    public addCalculated(title: string, properties?: IFieldCreationProperties & AddCalculatedProps): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 17, {
             OutputType: FieldTypes.Text,
@@ -138,7 +125,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public addDateTime(title: string, properties?: IFieldCreationProperties & AddDateTimeProps): Promise<IFieldAddResult> {
+    public addDateTime(title: string, properties?: IFieldCreationProperties & AddDateTimeProps): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 4, {
             DateTimeCalendarType: CalendarType.Gregorian,
@@ -154,7 +141,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public addNumber(title: string, properties?: IFieldCreationProperties & AddNumberProps): Promise<IFieldAddResult> {
+    public addNumber(title: string, properties?: IFieldCreationProperties & AddNumberProps): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 9, properties);
     }
@@ -165,7 +152,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public addCurrency(title: string, properties?: IFieldCreationProperties & AddCurrencyProps): Promise<IFieldAddResult> {
+    public addCurrency(title: string, properties?: IFieldCreationProperties & AddCurrencyProps): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 10, {
             CurrencyLocaleId: 1033,
@@ -180,7 +167,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      *
      */
-    public addMultilineText(title: string, properties?: IFieldCreationProperties & AddMultilineTextProps): Promise<IFieldAddResult> {
+    public addMultilineText(title: string, properties?: IFieldCreationProperties & AddMultilineTextProps): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 3, {
             AllowHyperlink: true,
@@ -197,7 +184,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      *
      * @param title The field title
      */
-    public addUrl(title: string, properties?: IFieldCreationProperties & AddUrlProps): Promise<IFieldAddResult> {
+    public addUrl(title: string, properties?: IFieldCreationProperties & AddUrlProps): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 11, {
             DisplayFormat: UrlFieldFormatType.Hyperlink,
@@ -210,7 +197,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties
      */
-    public addUser(title: string, properties?: IFieldCreationProperties & AddUserProps): Promise<IFieldAddResult> {
+    public addUser(title: string, properties?: IFieldCreationProperties & AddUserProps): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 20, {
             SelectionMode: FieldUserSelectionMode.PeopleAndGroups,
@@ -224,7 +211,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The new field's title
      * @param properties Set of additional properties to set on the new field
      */
-    public async addLookup(title: string, properties?: IAddFieldProperties): Promise<IFieldAddResult> {
+    public async addLookup(title: string, properties?: IAddFieldProperties): Promise<Partial<IFieldInfo>> {
 
         return this.addField(title, 7, properties);
     }
@@ -235,7 +222,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public addChoice(title: string, properties?: IFieldCreationProperties & AddChoiceProps): Promise<IFieldAddResult> {
+    public addChoice(title: string, properties?: IFieldCreationProperties & AddChoiceProps): Promise<Partial<IFieldInfo>> {
 
         const props = {
             ...properties,
@@ -253,7 +240,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public addMultiChoice(title: string, properties?: IFieldCreationProperties & AddMultiChoiceProps): Promise<IFieldAddResult> {
+    public addMultiChoice(title: string, properties?: IFieldCreationProperties & AddMultiChoiceProps): Promise<Partial<IFieldInfo>> {
 
         const props = {
             ...properties,
@@ -271,7 +258,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
    * @param title The field title.
    * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
    */
-    public addBoolean(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
+    public addBoolean(title: string, properties?: IFieldCreationProperties): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 8, properties);
     }
@@ -283,16 +270,11 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
   * @param primaryLookupFieldId The guid of the primary Lookup Field.
   * @param showField Which field to show from the lookup list.
   */
-    public async addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<IFieldAddResult> {
+    public async addDependentLookupField(displayName: string, primaryLookupFieldId: string, showField: string): Promise<Partial<IFieldInfo>> {
 
         const path = `adddependentlookupfield(displayName='${displayName}', primarylookupfieldid='${primaryLookupFieldId}', showfield='${showField}')`;
 
-        const data = await spPost(Fields(this, path));
-
-        return {
-            data,
-            field: this.getById(data.Id),
-        };
+        return spPost(Fields(this, path));
     }
 
     /**
@@ -301,7 +283,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
    * @param title The field title.
    * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
    */
-    public addLocation(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
+    public addLocation(title: string, properties?: IFieldCreationProperties): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 33, properties);
     }
@@ -312,7 +294,7 @@ export class _Fields extends _SPCollection<IFieldInfo[]> {
      * @param title The field title.
      * @param properties Differ by type of field being created (see: https://msdn.microsoft.com/en-us/library/office/dn600182.aspx)
      */
-    public addImageField(title: string, properties?: IFieldCreationProperties): Promise<IFieldAddResult> {
+    public addImageField(title: string, properties?: IFieldCreationProperties): Promise<Partial<IFieldInfo>> {
 
         return this.add(title, 34, properties);
     }
@@ -330,19 +312,14 @@ export class _Field extends _SPInstance<IFieldInfo> {
    * @param properties A plain object hash of values to update for the list
    * @param fieldType The type value such as SP.FieldLookup. Optional, looked up from the field if not provided
    */
-    public async update(properties: any, fieldType?: string): Promise<IFieldUpdateResult> {
+    public async update(properties: any, fieldType?: string): Promise<Partial<IFieldInfo>> {
 
         if (typeof fieldType === "undefined" || fieldType === null) {
             const info = await Field(this).select("FieldTypeKind")();
             fieldType = info["odata.type"];
         }
 
-        const data = await spPostMerge(this, body(properties));
-
-        return {
-            data,
-            field: <any>this,
-        };
+        return spPostMerge(this, body(properties));
     }
 
     /**
@@ -368,22 +345,6 @@ export class _Field extends _SPInstance<IFieldInfo> {
 }
 export interface IField extends _Field, IDeleteable { }
 export const Field = spInvokableFactory<IField>(_Field);
-
-/**
- * This interface defines the result of adding a field
- */
-export interface IFieldAddResult {
-    data: Partial<IFieldInfo>;
-    field: IField;
-}
-
-/**
- * This interface defines the result of updating a field
- */
-export interface IFieldUpdateResult {
-    data: Partial<IFieldInfo>;
-    field: IField;
-}
 
 export type AddTextProps = {
     MaxLength?: number;
@@ -441,7 +402,7 @@ export type AddMultiChoiceProps = {
 /**
  * Specifies the type of the field.
  */
-export const enum FieldTypes {
+export enum FieldTypes {
     Invalid = 0,
     Integer = 1,
     Text = 2,
@@ -485,7 +446,7 @@ const FieldTypeClassMapping = {
     [FieldTypes.DateTime]:"SP.FieldDateTime",
     [FieldTypes.GridChoice]:"SP.FieldRatingScale",
     [FieldTypes.Guid]: "SP.FieldGuid",
-    [FieldTypes.Image]:"FieldMultiLineText",
+    [FieldTypes.Image]:"SP.FieldMultiLineText",
     [FieldTypes.Integer]:"SP.FieldNumber",
     [FieldTypes.Location]:"SP.FieldLocation",
     [FieldTypes.Lookup]:"SP.FieldLookup",
@@ -518,7 +479,7 @@ export enum DateTimeFieldFriendlyFormatType {
 /**
  * Specifies the control settings while adding a field.
  */
-export const enum AddFieldOptions {
+export enum AddFieldOptions {
     /**
    *  Specify that a new field added to the list must also be added to the default content type in the site collection
    */
@@ -554,7 +515,7 @@ export interface IXmlSchemaFieldCreationInformation {
     SchemaXml: string;
 }
 
-export const enum CalendarType {
+export enum CalendarType {
     Gregorian = 1,
     Japan = 3,
     Taiwan = 4,

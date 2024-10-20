@@ -2,9 +2,8 @@ import {
     ContentType as IContentTypeEntity,
     ItemReference as IItemReference,
 } from "@microsoft/microsoft-graph-types";
-import { _GraphCollection, graphInvokableFactory, _GraphInstance } from "../graphqueryable.js";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance, graphGet, graphPost } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
-import { graphGet, graphPost } from "../operations.js";
 import { body } from "@pnp/queryable";
 import { JSONHeaderParse } from "@pnp/queryable";
 
@@ -83,7 +82,7 @@ export class _ContentTypes extends _GraphCollection<IContentTypeEntity[]>{
     public async addCopyFromContentTypeHub(contentTypeId: string): Promise<IContentTypeAddResult> {
         const creator = ContentType(this, "addCopyFromContentTypeHub").using(JSONHeaderParse());
         const data = await graphPost(creator, body({ contentTypeId }));
-        const pendingLocation = data.headers.location || null;
+        const pendingLocation = data?.headers?.location || null;
         return {
             data: data.data,
             contentType: (<any>this).getById(data.id),

@@ -1,6 +1,25 @@
 import { TimelinePipe } from "@pnp/core";
-import { BlobParse, BufferParse, CacheNever, JSONParse, TextParse } from "@pnp/queryable/index.js";
+import {
+    BlobParse,
+    BufferParse,
+    CacheNever,
+    JSONParse,
+    Queryable,
+    TextParse,
+    headers,
+    parseBinderWithErrorCheck,
+} from "@pnp/queryable";
 import { _SPInstance, SPQueryable } from "../spqueryable.js";
+
+export interface IResponseBodyStream {
+    body: ReadableStream;
+    knownLength: number;
+}
+
+export function StreamParse(): TimelinePipe<Queryable> {
+
+    return parseBinderWithErrorCheck(async r => ({ body: r.body, knownLength: parseInt(r?.headers?.get("content-length") || "-1", 10) }));
+}
 
 export class ReadableFile<T = any> extends _SPInstance<T> {
 
@@ -32,6 +51,14 @@ export class ReadableFile<T = any> extends _SPInstance<T> {
      */
     public getJSON(): Promise<any> {
         return this.getParsed(JSONParse());
+    }
+
+    /**
+     * Gets the content of a file as a ReadableStream
+     *
+     */
+    public getStream(): Promise<IResponseBodyStream> {
+        return SPQueryable(this, "$value").using(StreamParse(), CacheNever())(headers({ "binaryStringResponseBody": "true" }));
     }
 
     private getParsed<T>(parser: TimelinePipe): Promise<T> {

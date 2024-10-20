@@ -134,9 +134,10 @@ describe("SiteScripts", function () {
     it("getSiteScript (list)", async function () {
         const listTitle = `sc_list_${getRandomString(8)}`;
         const listResult = await _rootSite.web.lists.add(listTitle);
-        createdLists.push(listResult.list);
+        const list = _rootSite.web.lists.getById(listResult.Id);
+        createdLists.push(list);
 
-        return expect(listResult.list.getSiteScript(),
+        return expect(list.getSiteScript(),
             "the lists site script should've been fetched").to.eventually.be.fulfilled;
     });
 

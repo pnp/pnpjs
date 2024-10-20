@@ -4,11 +4,9 @@ import {
     _SPInstance,
     ISPQueryable,
     SPCollection,
+    spPost,
 } from "../spqueryable.js";
-import { spPost } from "../operations.js";
-import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
-import { File, IFile } from "../files/types.js";
 import { combine } from "@pnp/core";
 import { defaultPath } from "../decorators.js";
 
@@ -84,21 +82,16 @@ export class _AppCatalog extends _SPCollection {
      * @param shouldOverWrite Should an app with the same name in the same location be overwritten? (default: true)
      * @returns Promise<IAppAddResult>
      */
-    public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
+    public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<any> {
 
         // you don't add to the availableapps collection
         const adder = AppCatalog(this, getAppCatalogPath(this.toUrl(), `add(overwrite=${shouldOverWrite},url='${filename}')`));
 
-        const r = await spPost(adder, {
+        return spPost(adder, {
             body: content, headers: {
                 "binaryStringRequestBody": "true",
             },
         });
-
-        return {
-            data: r,
-            file: File([this, odataUrlFrom(r)]),
-        };
     }
 }
 export interface IAppCatalog extends _AppCatalog { }
@@ -160,17 +153,3 @@ export class _App extends _SPInstance {
 }
 export interface IApp extends _App { }
 export const App = spInvokableFactory<IApp>(_App);
-
-/**
- * Result object after adding an app
- */
-export interface IAppAddResult {
-    /**
-     * Contains metadata of the added app
-     */
-    data: any;
-    /**
-     * A File instance to the item in SharePoint
-     */
-    file: IFile;
-}

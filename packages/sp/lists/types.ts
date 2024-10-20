@@ -10,11 +10,12 @@ import {
     ISPCollection,
     SPCollection,
     IDeleteableWithETag,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { IChangeQuery } from "../types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { IBasePermissions } from "../security/types.js";
 import { IFieldInfo } from "../fields/types.js";
 import { IFormInfo } from "../forms/types.js";
@@ -54,7 +55,7 @@ export class _Lists extends _SPCollection<IListInfo[]> {
      * @param enableContentTypes If true content types will be allowed and enabled, otherwise they will be disallowed and not enabled
      * @param additionalSettings Will be passed as part of the list creation body
      */
-    public async add(title: string, desc = "", template = 100, enableContentTypes = false, additionalSettings: Partial<IListInfo> = {}): Promise<IListAddResult> {
+    public async add(title: string, desc = "", template = 100, enableContentTypes = false, additionalSettings: Partial<IListInfo> = {}): Promise<IListInfo> {
 
         const addSettings = {
             "AllowContentTypes": enableContentTypes,
@@ -65,9 +66,8 @@ export class _Lists extends _SPCollection<IListInfo[]> {
             ...additionalSettings,
         };
 
-        const data = await spPost(this, body(addSettings));
+        return spPost(this, body(addSettings));
 
-        return { data, list: this.getByTitle(addSettings.Title) };
     }
 
     /**
@@ -94,13 +94,13 @@ export class _Lists extends _SPCollection<IListInfo[]> {
 
             await list.select("Title")();
 
-            const data = await list.update(addOrUpdateSettings).then(r => r.data);
+            const data = await list.update(addOrUpdateSettings);
 
             return { created: false, data, list: this.getByTitle(addOrUpdateSettings.Title) };
 
         } catch (e) {
 
-            const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings).then(r => r.data);
+            const data = await this.add(title, desc, template, enableContentTypes, addOrUpdateSettings);
             return { created: true, data, list: this.getByTitle(addOrUpdateSettings.Title) };
         }
     }
@@ -166,16 +166,10 @@ export class _List extends _SPInstance<IListInfo> {
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    public async update(properties: Partial<IListInfo>, eTag = "*"): Promise<IListUpdateResult> {
+    public async update(properties: Partial<IListInfo>, eTag = "*"): Promise<IListInfo> {
 
         const data = await spPostMerge(this, body(properties, headers({ "IF-Match": eTag })));
-
-        const list: IList = hOP(properties, "Title") ? this.getParent(List, `getByTitle('${properties.Title}')`) : List(this);
-
-        return {
-            data,
-            list,
-        };
+        return data;
     }
 
     /**
@@ -356,22 +350,6 @@ export interface IList extends _List, IDeleteableWithETag { }
 export const List = spInvokableFactory<IList>(_List);
 
 /**
- * Represents the output of the add method
- */
-export interface IListAddResult {
-    list: IList;
-    data: IListInfo;
-}
-
-/**
- * Represents the output of the update method
- */
-export interface IListUpdateResult {
-    list: IList;
-    data: IListInfo;
-}
-
-/**
  * Represents the output of the ensure method
  */
 export interface IListEnsureResult {
@@ -384,6 +362,10 @@ export interface IListEnsureResult {
  * Specifies a Collaborative Application Markup Language (CAML) query on a list or joined lists.
  */
 export interface ICamlQuery {
+    /**
+     * Gets or sets a value that indicates whether the query can return incremental results.
+     */
+    AllowIncrementalResults?: boolean;
 
     /**
      * Gets or sets a value that indicates whether the query returns dates in Coordinated Universal Time (UTC) format.
@@ -713,6 +695,11 @@ export interface IListItemFormUpdateValue {
      * Indicates whether there was an error result after validating the value for the field.
      */
     HasException?: boolean;
+
+    /**
+     * The ItemId
+     */
+    ItemId?: number;
 }
 
 /**

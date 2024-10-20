@@ -1,6 +1,5 @@
 import { body } from "@pnp/queryable";
-import { spPost } from "../operations.js";
-import { ISPQueryable, _SPQueryable } from "../spqueryable.js";
+import { ISPQueryable, _SPQueryable, spPost } from "../spqueryable.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { combine } from "@pnp/core";
 import { encodePath } from "../utils/encode-path-str.js";

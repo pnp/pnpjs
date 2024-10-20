@@ -43,7 +43,7 @@ describe.skip("AppCatalog", function () {
             return app.file.delete();
         });
 
-        return expect(app.data.Name).to.eq(appName);
+        return expect(app.Name).to.eq(appName);
     });
 
     it("getAppById", async function () {

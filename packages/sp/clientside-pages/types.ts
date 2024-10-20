@@ -2,13 +2,12 @@ import { body, headers } from "@pnp/queryable";
 import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
-import { _SPQueryable, SPQueryable, SPCollection, SPInit } from "../spqueryable.js";
+import { _SPQueryable, SPQueryable, SPCollection, SPInit, spPost } from "../spqueryable.js";
 import { List } from "../lists/types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { Web, IWeb } from "../webs/types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { Site } from "../sites/types.js";
-import { spPost } from "../operations.js";
 import { getNextOrder, reindex } from "./funcs.js";
 import "../files/web.js";
 import "../comments/item.js";
@@ -17,7 +16,7 @@ import { createBatch } from "../batching.js";
 /**
  * Page promotion state
  */
-export const enum PromotedState {
+export enum PromotedState {
     /**
      * Regular client side page
      */

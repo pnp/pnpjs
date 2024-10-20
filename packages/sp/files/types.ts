@@ -1,5 +1,5 @@
 import { body, cancelableScope, CancelAction } from "@pnp/queryable";
-import { getGUID, isFunc, stringIsNullOrEmpty, isUrlAbsolute, combine, noInherit } from "@pnp/core";
+import { getGUID, stringIsNullOrEmpty, isUrlAbsolute, combine, noInherit } from "@pnp/core";
 import {
     _SPCollection,
     spInvokableFactory,
@@ -10,19 +10,21 @@ import {
     ISPQueryable,
     deleteable,
     IDeleteable,
+    spPost,
+    spGet,
 } from "../spqueryable.js";
 import { Item, IItem } from "../items/index.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spGet } from "../operations.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath } from "../utils/to-resource-path.js";
 import { ISiteUserProps } from "../site-users/types.js";
 import { encodePath } from "../utils/encode-path-str.js";
 import { IMoveCopyOptions } from "../types.js";
 import { ReadableFile } from "./readable-file.js";
-import "../context-info/index.js";
 import { BatchNever } from "../batching.js";
+import { PassThrough, Stream } from "stream";
+import "../context-info/index.js";
 
 /**
  * Describes a collection of File objects
@@ -51,13 +53,16 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @param parameters Additional parameters to control method behavior
      */
     @cancelableScope
-    public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileAddResult> {
+    public async addUsingPath(url: string, content: string | ArrayBuffer | Blob, parameters: IAddUsingPathProps = { Overwrite: false }): Promise<IFileInfo> {
 
         const path = [`AddUsingPath(decodedurl='${encodePath(url)}'`];
 
         if (parameters) {
             if (parameters.Overwrite) {
                 path.push(",Overwrite=true");
+            }
+            if (parameters.EnsureUniqueFileName) {
+                path.push(`,EnsureUniqueFileName=${parameters.EnsureUniqueFileName}`);
             }
             if (parameters.AutoCheckoutOnInvalidData) {
                 path.push(",AutoCheckoutOnInvalidData=true");
@@ -69,12 +74,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
 
         path.push(")");
 
-        const resp: IFileInfo = await spPost(Files(this, path.join("")), { body: content });
-
-        return {
-            data: resp,
-            file: fileFromServerRelativePath(this, resp.ServerRelativeUrl),
-        };
+        return spPost(Files(this, path.join("")), { body: content });
     }
 
     /**
@@ -82,15 +82,14 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      *
      * @param url The folder-relative url of the file.
      * @param content The Blob file content to add
-     * @param progress A callback function which can be used to track the progress of the upload
-     * @param shouldOverWrite Should a file with the same name in the same location be overwritten? (default: true)
-     * @param chunkSize The size of each file slice, in bytes (default: 10485760)
+     * @param props Set of optional values that control the behavior of the underlying addUsingPath and chunkedUpload feature
      * @returns The new File and the raw response.
      */
     @cancelableScope
-    public async addChunked(url: string, content: Blob, progress?: (data: IFileUploadProgressData) => void, shouldOverWrite = true, chunkSize = 10485760): Promise<IFileAddResult> {
+    public async addChunked(url: string, content: ValidFileContentSource, props?: Partial<IChunkedOperationProps> & Partial<IAddUsingPathProps>): Promise<IFileInfo> {
 
-        const response = await spPost(Files(this, `add(overwrite=${shouldOverWrite},url='${encodePath(url)}')`));
+        // add an empty stub
+        const response = await this.addUsingPath(url, null, props);
 
         const file = fileFromServerRelativePath(this, response.ServerRelativeUrl);
 
@@ -98,7 +97,7 @@ export class _Files extends _SPCollection<IFileInfo[]> {
             return File(file).delete();
         }));
 
-        return file.setContentChunked(content, progress, chunkSize);
+        return file.setContentChunked(content, props);
     }
 
     /**
@@ -109,12 +108,8 @@ export class _Files extends _SPCollection<IFileInfo[]> {
      * @returns The template file that was added and the raw response.
      */
     @cancelableScope
-    public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileAddResult> {
-        const response: IFileInfo = await spPost(Files(this, `addTemplateFile(urloffile='${encodePath(fileUrl)}',templatefiletype=${templateFileType})`));
-        return {
-            data: response,
-            file: fileFromServerRelativePath(this, response.ServerRelativeUrl),
-        };
+    public async addTemplateFile(fileUrl: string, templateFileType: TemplateFileType): Promise<IFileInfo> {
+        return spPost(Files(this, `addTemplateFile(urloffile='${encodePath(fileUrl)}',templatefiletype=${templateFileType})`));
     }
 }
 export interface IFiles extends _Files { }
@@ -400,95 +395,41 @@ export class _File extends ReadableFile<IFileInfo> {
      * @param chunkSize The size of each file slice, in bytes (default: 10485760)
      */
     @cancelableScope
-    public async setContentChunked(file: Blob, progress?: (data: IFileUploadProgressData) => void, chunkSize = 10485760): Promise<IFileAddResult> {
+    public async setContentChunked(file: ValidFileContentSource, props: Partial<IChunkedOperationProps>): Promise<IFileInfo> {
 
-        if (!isFunc(progress)) {
-            progress = () => null;
-        }
+        const { progress } = applyChunckedOperationDefaults(props);
 
-        const fileSize = file?.size || (<any>file).length;
-        const totalBlocks = parseInt((fileSize / chunkSize).toString(), 10) + ((fileSize % chunkSize === 0) ? 1 : 0);
         const uploadId = getGUID();
+        let first = true;
+        let chunk: { done: boolean; value?: any };
+        let offset = 0;
 
         const fileRef = File(this).using(CancelAction(() => {
             return File(fileRef).cancelUpload(uploadId);
         }));
 
-        // report that we are starting
-        progress({ uploadId, blockNumber: 1, chunkSize, currentPointer: 0, fileSize, stage: "starting", totalBlocks });
-        let currentPointer = await fileRef.startUpload(uploadId, file.slice(0, chunkSize));
+        const contentStream = sourceToReadableStream(file);
+        const reader = contentStream.getReader();
 
-        // skip the first and last blocks
-        for (let i = 2; i < totalBlocks; i++) {
-            progress({ uploadId, blockNumber: i, chunkSize, currentPointer, fileSize, stage: "continue", totalBlocks });
-            currentPointer = await fileRef.continueUpload(uploadId, currentPointer, file.slice(currentPointer, currentPointer + chunkSize));
+        while ((chunk = await reader.read())) {
+
+            if (chunk.done) {
+
+                progress({ offset, stage: "finishing", uploadId });
+                return spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunk?.value || "" });
+
+            } else if (first) {
+
+                progress({ offset, stage: "starting", uploadId });
+                offset = await spPost(File(fileRef, `startUpload(uploadId=guid'${uploadId}')`), { body: chunk.value });
+                first = false;
+
+            } else {
+
+                progress({ offset, stage: "continue", uploadId });
+                offset = await spPost(File(fileRef, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunk.value });
+            }
         }
-
-        progress({ uploadId, blockNumber: totalBlocks, chunkSize, currentPointer, fileSize, stage: "finishing", totalBlocks });
-        return fileRef.finishUpload(uploadId, currentPointer, file.slice(currentPointer));
-    }
-
-    /**
-     * Starts a new chunk upload session and uploads the first fragment.
-     * The current file content is not changed when this method completes.
-     * The method is idempotent (and therefore does not change the result) as long as you use the same values for uploadId and stream.
-     * The upload session ends either when you use the CancelUpload method or when you successfully
-     * complete the upload session by passing the rest of the file contents through the ContinueUpload and FinishUpload methods.
-     * The StartUpload and ContinueUpload methods return the size of the running total of uploaded data in bytes,
-     * so you can pass those return values to subsequent uses of ContinueUpload and FinishUpload.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     * @param fragment The file contents.
-     * @returns The size of the total uploaded data in bytes.
-     */
-    protected async startUpload(uploadId: string, fragment: ArrayBuffer | Blob): Promise<number> {
-        let n = await spPost(File(this, `startUpload(uploadId=guid'${uploadId}')`), { body: fragment });
-        if (typeof n === "object") {
-            // When OData=verbose the payload has the following shape:
-            // { StartUpload: "10485760" }
-            n = (n as any).StartUpload;
-        }
-        return parseFloat(n);
-    }
-
-    /**
-     * Continues the chunk upload session with an additional fragment.
-     * The current file content is not changed.
-     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     * @param fileOffset The size of the offset into the file where the fragment starts.
-     * @param fragment The file contents.
-     * @returns The size of the total uploaded data in bytes.
-     */
-    protected async continueUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<number> {
-        let n = await spPost(File(this, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`), { body: fragment });
-        if (typeof n === "object") {
-            // When OData=verbose the payload has the following shape:
-            // { ContinueUpload: "20971520" }
-            n = (n as any).ContinueUpload;
-        }
-        return parseFloat(n);
-    }
-
-    /**
-     * Uploads the last file fragment and commits the file. The current file content is changed when this method completes.
-     * Use the uploadId value that was passed to the StartUpload method that started the upload session.
-     * This method is currently available only on Office 365.
-     *
-     * @param uploadId The unique identifier of the upload session.
-     * @param fileOffset The size of the offset into the file where the fragment starts.
-     * @param fragment The file contents.
-     * @returns The newly uploaded file.
-     */
-    protected async finishUpload(uploadId: string, fileOffset: number, fragment: ArrayBuffer | Blob): Promise<IFileAddResult> {
-        const response: IFileInfo = await spPost(File(this, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${fileOffset})`), { body: fragment });
-        return {
-            data: response,
-            file: fileFromServerRelativePath(this, response.ServerRelativeUrl),
-        };
     }
 
     protected moveCopyImpl(destUrl: string, options: Partial<IMoveCopyOptions>, overwrite: boolean, methodName: string): Promise<IFile> {
@@ -540,7 +481,7 @@ export function fileFromServerRelativePath(base: ISPQueryable, serverRelativePat
  */
 export async function fileFromAbsolutePath(base: ISPQueryable, absoluteFilePath: string): Promise<IFile> {
 
-    const { WebFullUrl } = await File(this).using(BatchNever()).getContextInfo(absoluteFilePath);
+    const { WebFullUrl } = await File(base).using(BatchNever()).getContextInfo(absoluteFilePath);
     const { pathname } = new URL(absoluteFilePath);
     return fileFromServerRelativePath(File([base, combine(WebFullUrl, "_api/web")]), decodeURIComponent(pathname));
 }
@@ -650,14 +591,6 @@ export enum CheckinType {
     Overwrite = 2,
 }
 /**
- * Describes file and result
- */
-export interface IFileAddResult {
-    file: IFile;
-    data: IFileInfo;
-}
-
-/**
  * File move opertions
  */
 export enum MoveOperations {
@@ -692,18 +625,14 @@ export enum TemplateFileType {
 export interface IFileUploadProgressData {
     uploadId: string;
     stage: "starting" | "continue" | "finishing";
-    blockNumber: number;
-    totalBlocks: number;
-    chunkSize: number;
-    currentPointer: number;
-    fileSize: number;
+    offset: number;
 }
 
 export interface IAddUsingPathProps {
     /**
      * Overwrite the file if it exists
      */
-    Overwrite: boolean;
+    Overwrite?: boolean;
     /**
      * specifies whether to auto checkout on invalid Data. It'll be useful if the list contains validation whose requirements upload will not be able to meet.
      */
@@ -712,6 +641,10 @@ export interface IAddUsingPathProps {
      * Specifies a XOR hash of the file data which should be used to ensure end-2-end data integrity, base64 representation
      */
     XorHash?: string;
+    /**
+     * Specifies whether to force unique file name. When using this, omit the Overwrite parameter.
+     */
+    EnsureUniqueFileName?: boolean;
 }
 
 export interface IFileInfo {
@@ -768,4 +701,91 @@ export interface IFileDeleteParams {
      * to target a file with a matching value. Use null to unconditionally delete the file.
      */
     ETagMatch: string;
+}
+
+export interface IChunkedOperationProps {
+    progress: (data: IFileUploadProgressData) => void;
+}
+
+export type ValidFileContentSource = Blob | ReadableStream | TransformStream | Stream | PassThrough | ArrayBuffer;
+
+function applyChunckedOperationDefaults(props: Partial<IChunkedOperationProps>): IChunkedOperationProps {
+    return {
+        progress: () => null,
+        ...props,
+    };
+}
+
+/**
+ * Converts the source into a ReadableStream we can understand
+ */
+function sourceToReadableStream(source: ValidFileContentSource): ReadableStream {
+
+    if (isBlob(source)) {
+
+        return <any>source.stream();
+
+    } else if (hasOn(source)) {
+
+        // we probably have a passthrough stream from NodeFetch or some other type that supports "on(data)"
+        return new ReadableStream({
+            start(controller) {
+
+                source.on("data", (chunk) => {
+                    controller.enqueue(chunk);
+                });
+
+                source.on("end", () => {
+                    controller.close();
+                });
+            },
+        });
+
+    } else if (isBuffer(source)) {
+
+        // we think we have a buffer
+        return new ReadableStream({
+            start(controller) {
+
+                controller.enqueue(source);
+                controller.close();
+            },
+        });
+
+    } else if (isTransform(source)) {
+
+        return source.readable;
+
+    } else {
+
+        return source;
+    }
+}
+
+const NAME = Symbol.toStringTag;
+
+function hasOn(object): object is PassThrough | Stream {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    return typeof object["on"] === "function";
+}
+
+// FROM: node-fetch source code
+function isBlob(object): object is Blob {
+    return typeof object === "object" &&
+        typeof object.arrayBuffer === "function" &&
+        typeof object.type === "string" &&
+        typeof object.stream === "function" &&
+        typeof object.constructor === "function" &&
+        (
+            /^(Blob|File)$/.test(object[NAME]) ||
+            /^(Blob|File)$/.test(object.constructor.name)
+        );
+}
+
+function isBuffer(object): object is ArrayBuffer {
+    return typeof object === "object" && typeof object.length === "number";
+}
+
+function isTransform(object): object is TransformStream {
+    return typeof object === "object" && typeof object.readable === "object";
 }

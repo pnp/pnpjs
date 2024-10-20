@@ -1,8 +1,7 @@
 import { combine, dateAdd, hOP, isFunc, objectDefinedNotNull, TimelinePipe } from "@pnp/core";
 import { JSONParse, Queryable } from "@pnp/queryable";
 import { extractWebUrl } from "../utils/extract-web-url.js";
-import { ISPQueryable, SPQueryable } from "../spqueryable.js";
-import { spPost } from "../operations.js";
+import { ISPQueryable, SPQueryable, spPost } from "../spqueryable.js";
 import { BatchNever } from "../batching.js";
 
 interface IDigestInfo {
@@ -47,6 +46,7 @@ export function RequestDigest(hook?: (url: string, init: RequestInit) => IDigest
 
                     digest = await spPost(SPQueryable([this, combine(webUrl, "_api/contextinfo")]).using(JSONParse(),BatchNever()), {
                         headers: {
+                            "Accept": "application/json",
                             "X-PnPjs-NoDigest": "1",
                         },
                     }).then(p => ({

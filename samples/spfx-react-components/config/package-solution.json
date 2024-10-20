@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "pnpjs-demo",
+    "id": "44a7bfd5-a98a-4efc-9536-6a18af1b8477",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.14.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "pnpjs demo description"
+      },
+      "longDescription": {
+        "default": "pnpjs demo description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "pnpjs demo Feature",
+        "description": "The feature that activates elements of the pnpjs solution.",
+        "id": "87a44f39-cd46-4c9f-8cf7-1181206a26dd",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/pnpjs-demo.sppkg"
+  }
+}

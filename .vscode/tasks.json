@@ -51,8 +51,14 @@
         {
             "label": "build-buildsystem",
             "type": "shell",
-            "command": "tsc -p ./tools/buildsystem",
-            "args": [],
+            "command": "npx",
+            "args": [
+                "tsc",
+                "-p",
+                "./tools/buildsystem",
+                "--outDir",
+                "./build/build-system"
+            ],
             "isBackground": false,
             "problemMatcher": [
                 "$tsc",

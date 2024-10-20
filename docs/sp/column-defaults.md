@@ -216,23 +216,16 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 import "@pnp/sp/column-defaults";
-import "@pnp/sp/taxonomy";
 
 const sp = spfi(...);
-
-// get the term's info we want to use as the default
-const term = await sp.termStore.sets.getById("ea6fc521-d293-4f3d-9e84-f3a5bc0936ce").getTermById("775c9cf6-c3cd-4db9-8cfa-fc0aeefad93a")();
-
-// get the default term label
-const defLabel = term.labels.find(v => v.isDefault);
 
 // set the default value using -1, the term id, and the term's default label name
 await sp.web.lists.getByTitle("MetaDataDocLib").rootFolder.setDefaultColumnValues([{
   name: "MetaDataColumnInternalName",
   value: {
       wssId: "-1",
-      termId: term.id,
-      termName: defLabel.name,
+      termId: "{term Id}",
+      termName: "{term Label}",
   }
 }])
 

@@ -3,7 +3,7 @@ import { existsSync } from "fs";
 import findup from "findup-sync";
 
 // give ourselves a single reference to the projectRoot
-const projectRoot = resolve(dirname(findup("package.json")));
+const projectRoot = resolve(dirname(findup("package.json")!));
 
 function log(_message: string) {
     // console.log(`PnP Node Local Module Loader: ${message}`);
@@ -22,11 +22,18 @@ export function createResolve(innerPath: string): ResolverFunc {
 
             const modulePath = specifier.substring(4);
 
+            log(`modulePath: ${modulePath}`);
+
             if (cache.has(modulePath)) {
-                return cache.get(modulePath);
+                return cache.get(modulePath)!;
             }
 
             let candidate = join(projectRoot, innerPath, modulePath);
+
+            // hack to enable debugging the buildsystem
+            if (modulePath === "/buildsystem") {
+                candidate = resolve("./build/build-system")
+            }
 
             if (existsSync(candidate + ".js")) {
 

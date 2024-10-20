@@ -9,6 +9,7 @@ import {
     SPInstance,
     ISPInstance,
     SPCollection,
+    spPost,
 } from "../spqueryable.js";
 import { hOP, objectDefinedNotNull } from "@pnp/core";
 import { extractWebUrl } from "@pnp/sp";
@@ -16,7 +17,6 @@ import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { body, headers, parseBinderWithErrorCheck, parseODataJSON } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
 import { IResourcePath } from "../utils/to-resource-path.js";
 
 /**
@@ -62,14 +62,14 @@ export class _Items<GetType = any[]> extends _SPCollection<GetType> {
 
     public [Symbol.asyncIterator]() {
 
-        const q = SPCollection(this).using(parseBinderWithErrorCheck(async (r) => {
+        const nextInit = SPCollection(this).using(parseBinderWithErrorCheck(async (r) => {
 
             const json = await r.json();
-            const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
+            const nextLink = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
 
             return <IPagedResult<GetType>>{
-                hasNext: typeof nextUrl === "string" && nextUrl.length > 0,
-                nextLink: nextUrl,
+                hasNext: typeof nextLink === "string" && nextLink.length > 0,
+                nextLink,
                 value: parseODataJSON(json),
             };
         }));
@@ -79,13 +79,13 @@ export class _Items<GetType = any[]> extends _SPCollection<GetType> {
         for (let i = 0; i < queryParams.length; i++) {
             const param = this.query.get(queryParams[i]);
             if (objectDefinedNotNull(param)) {
-                q.query.set(queryParams[i], param);
+                nextInit.query.set(queryParams[i], param);
             }
         }
 
         return <AsyncIterator<GetType>>{
 
-            _next: q,
+            _next: nextInit,
 
             async next() {
 
@@ -112,12 +112,8 @@ export class _Items<GetType = any[]> extends _SPCollection<GetType> {
      * @param properties The new items's properties
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    public async add(properties: Record<string, any> = {}): Promise<IItemAddResult> {
-
-        return spPost<{ Id: number }>(this, body(properties)).then((data) => ({
-            data: data,
-            item: this.getById(data.Id),
-        }));
+    public async add(properties: Record<string, any> = {}): Promise<any> {
+        return spPost(this, body(properties));
     }
 }
 export interface IItems extends _Items { }
@@ -191,19 +187,15 @@ export class _Item extends _SPInstance {
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    public async update(properties: Record<string, any>, eTag = "*"): Promise<IItemUpdateResult> {
+    public async update(properties: Record<string, any>, eTag = "*"): Promise<any> {
 
         const postBody = body(properties, headers({
             "IF-Match": eTag,
             "X-HTTP-Method": "MERGE",
         }));
 
-        const data = await spPost(Item(this).using(ItemUpdatedParser()), postBody);
+        return spPost(Item(this).using(ItemUpdatedParser()), postBody);
 
-        return {
-            data,
-            item: this,
-        };
     }
 
     /**
@@ -360,16 +352,6 @@ function ItemUpdatedParser() {
     return parseBinderWithErrorCheck(async (r) => (<IItemUpdateResultData>{
         etag: r.headers.get("etag"),
     }));
-}
-
-export interface IItemAddResult {
-    item: IItem;
-    data: any;
-}
-
-export interface IItemUpdateResult {
-    item: IItem;
-    data: IItemUpdateResultData;
 }
 
 export interface IItemUpdateResultData {

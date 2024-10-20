@@ -63,14 +63,14 @@ const sp = spfi(...);
 const listAddResult = await sp.web.lists.add("My new list");
 
 // we can work with the list created using the IListAddResult.list property:
-const r = await listAddResult.list.select("Title")();
+const r = await sp.web.lists.getByTitle(listAddResult.list.select("Title")();
 
 // log newly created list title to console
 console.log(r.Title);
 });
 ```
 
-You can also provide other (optional) parameters like description, template and enableContentTypes. If that is not enough for you, you can use the parameter named 'additionalSettings' which is just a TypedHash, meaning you can sent whatever properties you'd like in the body (provided that the property is supported by the SharePoint API). You can find a [listing of list template codes](https://docs.microsoft.com/en-us/dotnet/api/microsoft.sharepoint.splisttemplatetype?view=sharepoint-server) in the official docs.
+You can also provide other (optional) parameters like description, template and enableContentTypes. If that is not enough for you, you can use the parameter named 'additionalSettings' which is just a TypedHash, meaning you can sent whatever properties you'd like in the body (provided that the property is supported by the SharePoint API). You can find a [listing of list template codes](https://learn.microsoft.com/en-us/openspecs/sharepoint_protocols/ms-wssts/8bf797af-288c-4a1d-a14b-cf5394e636cf) in the official docs.
 
 ```TypeScript
 // this will create a list with template 101 (Document library), content types enabled and show it on the quick launch (using additionalSettings)
@@ -457,7 +457,7 @@ import "@pnp/sp/lists";
 
 const sp = spfi(...);
 const fld = await sp.site.rootWeb.fields.addText("MyField");
-await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.data.SchemaXml);
+await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.SchemaXml);
 ```
 
 ### folders

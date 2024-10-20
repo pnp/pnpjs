@@ -1,7 +1,7 @@
 import { isArray, objectDefinedNotNull } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
+import { IInvokable, Queryable, queryableFactory, op, get, post, patch, del, put } from "@pnp/queryable";
 import { ConsistencyLevel } from "./behaviors/consistency-level.js";
-import { Paged } from "./behaviors/paged.js";
+import { IPagedResult, Paged } from "./behaviors/paged.js";
 
 export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];
 
@@ -33,6 +33,9 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
     constructor(base: GraphInit, path?: string) {
 
         super(base, path);
+
+        // we need to use the graph implementation to handle our special encoding
+        this._query = new GraphQueryParams();
 
         if (typeof base === "string") {
 
@@ -162,15 +165,6 @@ export class _GraphCollection<GetType = any[]> extends _GraphQueryable<GetType> 
         return this;
     }
 
-    /**
-     * 	Retrieves the total count of matching resources
-     *  If the resource doesn't support count, this value will always be zero
-     */
-    public async count(): Promise<number> {
-        // TODO::do we want to do this, or just attach count to the collections that support it? we could use a decorator for countable on the few collections that support count.
-        return -1;
-    }
-
     public [Symbol.asyncIterator]() {
 
         const q = GraphCollection(this).using(Paged(), ConsistencyLevel());
@@ -194,7 +188,7 @@ export class _GraphCollection<GetType = any[]> extends _GraphQueryable<GetType> 
                     return { done: true, value: undefined };
                 }
 
-                const result: IPagedResult = await this._next();
+                const result: IPagedResult<any> = await this._next();
 
                 if (result.hasNext) {
                     this._next = GraphCollection([this._next, result.nextLink]);
@@ -220,9 +214,45 @@ export class _GraphInstance<GetType = any> extends _GraphQueryable<GetType> { }
 export interface IGraphInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> { }
 export const GraphInstance = graphInvokableFactory<IGraphInstance>(_GraphInstance);
 
-export interface IPagedResult {
-    count: number;
-    value: any | any[] | null;
-    hasNext: boolean;
-    nextLink: string;
+export const graphGet = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, get, init);
+};
+
+export const graphPost = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, post, init);
+};
+
+export const graphDelete = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, del, init);
+};
+
+export const graphPatch = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, patch, init);
+};
+
+export const graphPut = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, put, init);
+};
+
+class GraphQueryParams extends Map<string, string> {
+
+    public toString(): string {
+
+        const params = new URLSearchParams();
+        const literals: string[] = [];
+
+        for (const item of this) {
+
+            // and here is where we add some "enhanced" parsing as we get issues.
+            if (/\/any\(.*?\)/i.test(item[1])) {
+                literals.push(`${item[0]}=${item[1]}`);
+            } else {
+                params.append(item[0], item[1]);
+            }
+        }
+
+        literals.push(params.toString());
+
+        return literals.join("&");
+    }
 }

@@ -37,7 +37,7 @@
       "args": [
         "--verbose",
         "--logging",
-        "Error",
+        "verbose",
         "--record",
         "write"
       ],
@@ -60,7 +60,9 @@
       "preLaunchTask": "build-buildsystem",
       "runtimeExecutable": null,
       "runtimeArgs": [
-        "--nolazy"
+        "--nolazy",
+        "--experimental-loader",
+        "file://${workspaceRoot}/build/debugging/tools/local-module-resolver/esm-packages.js"
       ],
       "env": {
         "NODE_ENV": "development"
@@ -69,7 +71,7 @@
       "internalConsoleOptions": "openOnSessionStart",
       "sourceMaps": true,
       "outFiles": [
-        "${workspaceRoot}/tools/buildsystem/**/*.js"
+        "${workspaceRoot}/build/build-system/**/*.js"
       ],
       "skipFiles": [
         "<node_internals>/**"

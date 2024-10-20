@@ -90,10 +90,10 @@ const sp = spfi(...);
 const user = await sp.web.ensureUser("userLoginname")
 const users = await sp.web.siteUsers;
   
-await users.add(user.data.LoginName);
+await users.add(user.LoginName);
 ```
 
-### Get user
+### Get user by Id, Email, or LoginName
 
 ```TypeScript
 import { spfi } from "@pnp/sp";

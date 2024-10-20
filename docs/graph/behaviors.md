@@ -30,77 +30,6 @@ await graph.users();
 
 > DefaultInit and DefaultHeaders are separated to make it easier to create your own default headers or init behavior. You should include both if composing your own default behavior.
 
-## Paged
-
-_Added in 3.4.0_
-
-The Paged behavior allows you to access the information in a collection through a series of pages. While you can use it directly, you will likely use the `paged` method of the collections which handles things for you.
-
-> Note that not all entity types support `count` and where it is unsupported it will return 0.
-
-Basic example, read all users:
-
-```TypeScript
-import { graphfi, DefaultHeaders } from "@pnp/graph";
-import "@pnp/graph/users";
-
-const graph = graphfi().using(DefaultHeaders());
-
-const allUsers = [];
-let users = await graph.users.top(300).paged();
-
-allUsers.push(...users.value);
-
-while (users.hasNext) {
-  users = await users.next();
-  allUsers.push(...users.value);
-}
-
-console.log(`All users: ${JSON.stringify(allUsers)}`);
-```
-
-Beyond the basics other query operations are supported such as filter and select.
-
-```TypeScript
-import { graphfi, DefaultHeaders } from "@pnp/graph";
-import "@pnp/graph/users";
-
-const graph = graphfi().using(DefaultHeaders());
-
-const allUsers = [];
-let users = await graph.users.top(50).select("userPrincipalName", "displayName").filter("startswith(displayName, 'A')").paged();
-
-allUsers.push(...users.value);
-
-while (users.hasNext) {
-  users = await users.next();
-  allUsers.push(...users.value);
-}
-
-console.log(`All users: ${JSON.stringify(allUsers)}`);
-```
-
-And similarly for groups, showing the same pattern for different types of collections
-
-```TypeScript
-import { graphfi, DefaultHeaders } from "@pnp/graph";
-import "@pnp/graph/groups";
-
-const graph = graphfi().using(DefaultHeaders());
-
-const allGroups = [];
-let groups = await graph.groups.paged();
-
-allGroups.push(...groups.value);
-
-while (groups.hasNext) {
-  groups = await groups.next();
-  allGroups.push(...groups.value);
-}
-
-console.log(`All groups: ${JSON.stringify(allGroups)}`);
-```
-
 ## Endpoint
 
 This behavior is used to change the endpoint to which requests are made, either "beta" or "v1.0". This allows you to easily switch back and forth between the endpoints as needed.
@@ -264,4 +193,19 @@ import "@pnp/graph/users";
 const graph = graphfi().using(ConsistencyLevel("{level value}"));
 
 await graph.users();
+```
+
+## AdvancedQuery
+
+Using this behaviour, you can enable [advanced query capabilities](https://learn.microsoft.com/en-us/graph/aad-advanced-queries?tabs=http) when filtering supported collections.
+
+This sets the consistency level to eventual and enables the `$count` query parameter.
+
+```TypeScript
+import { graphfi, AdvancedQuery } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(AdvancedQuery());
+
+await graph.users.filter("companyName ne null and NOT(companyName eq 'Microsoft')")();
 ```

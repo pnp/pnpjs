@@ -10,9 +10,10 @@ import {
     _GraphCollection,
     _GraphInstance,
     graphInvokableFactory,
+    graphPost,
+    graphDelete,
 } from "../graphqueryable.js";
 import { defaultPath, updateable, IUpdateable, deleteable, IDeleteable, addable, IAddable, getById, IGetById } from "../decorators.js";
-import { graphPost, graphDelete } from "../operations.js";
 
 /**
  * Conversation
@@ -95,7 +96,12 @@ export class _Post extends _GraphInstance<IPostType> {
      * @param post Contents of the post
      */
     public reply(post: IPostType): Promise<void> {
-        return graphPost(Post(this, "reply"), body(post));
+        const params = {
+            post: {
+                ...post,
+            },
+        };
+        return graphPost(Post(this, "reply"), body(params));
     }
 }
 export interface IPost extends _Post, IDeleteable { }

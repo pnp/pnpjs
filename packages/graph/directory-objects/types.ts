@@ -1,8 +1,7 @@
-import { _GraphCollection, _GraphInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphCollection, _GraphInstance, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { DirectoryObject as IDirectoryObjectType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
 import { body } from "@pnp/queryable";
-import { graphPost } from "../operations.js";
 import { Count } from "../behaviors/paged.js";
 
 /**
@@ -68,7 +67,7 @@ export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphC
         return Count(this);
     }
 }
-export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObjectType> { }
+export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObject> { }
 export const DirectoryObjects = graphInvokableFactory<IDirectoryObjects>(_DirectoryObjects);
 
 /**

@@ -4,11 +4,12 @@ import {
     _SPInstance,
     IDeleteable,
     deleteable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { SiteGroups, ISiteGroups } from "../site-groups/types.js";
 import { body } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { PrincipalType } from "../types.js";
 
 @defaultPath("siteusers")
@@ -36,6 +37,7 @@ export class _SiteUsers extends _SPCollection<ISiteUserInfo[]> {
      * Gets a user from the collection by login name
      *
      * @param loginName The login name of the user to retrieve
+     *   e.g. SharePoint Online: 'i:0#.f|membership|user@domain'
      */
     public getByLoginName(loginName: string): ISiteUser {
         return SiteUser(this).concat(`('!@v::${loginName}')`);
@@ -96,24 +98,28 @@ export class _SiteUser extends _SPInstance<ISiteUserInfo> {
      *
      * @param props Group properties to update
      */
-    public async update(props: Partial<ISiteUserInfo>): Promise<IUserUpdateResult> {
+    public async update(props: Partial<ISiteUserInfo>): Promise<void> {
 
-        const data = await spPostMerge(this, body(props));
+        return spPostMerge(this, body(props));
 
-        return {
-            data,
-            user: this,
-        };
     }
 
 }
 export interface ISiteUser extends _SiteUser, IDeleteable { }
 export const SiteUser = spInvokableFactory<ISiteUser>(_SiteUser);
 
-export interface ISiteUserInfo extends ISiteUserProps {
+export interface ISiteUserInfo {
 
+    Id: number;
+    IsHiddenInUI: boolean;
+    LoginName: string;
+    Title: string;
+    PrincipalType: number;
+    Email: string;
     Expiration: string;
     IsEmailAuthenticationGuestUser: boolean;
+    IsShareByEmailGuestUser: boolean;
+    IsSiteAdmin: boolean;
     UserId: {
         NameId: string;
         NameIdIssuer: string;
@@ -174,22 +180,4 @@ export interface ISiteUserProps {
      *
      */
     Title: string;
-}
-
-/**
- * Properties that provide both a getter, and a setter.
- *
- */
-export interface IUserUpdateResult {
-    user: ISiteUser;
-    data: any;
-}
-
-/**
- * Result from ensuring a user
- *
- */
-export interface IWebEnsureUserResult {
-    data: ISiteUserProps;
-    user: ISiteUser;
 }

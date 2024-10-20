@@ -14,4 +14,11 @@
     "typescript.validate.enable": true,
     "typescript.tsdk": "./node_modules/typescript/lib",
     "editor.tabSize": 4,
+    "cSpell.words": [
+        "deleteable",
+        "graphfi",
+        "graphqueryable",
+        "Invokable",
+        "queryables"
+    ],
 }

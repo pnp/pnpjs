@@ -134,6 +134,10 @@ Likewise you can add files using one of two methods, addUsingPath or addChunked.
 
 The addUsingPath method, supports the percent or pound characters in file names.
 
+When using EnsureUniqueFileName property, you must omit the Overwrite parameter.
+
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
@@ -152,9 +156,11 @@ if (file.size <= 10485760) {
     result = await sp.web.getFolderByServerRelativePath("Shared Documents").files.addUsingPath(fileNamePath, file, { Overwrite: true });
 } else {
     // large upload
-    result = await sp.web.getFolderByServerRelativePath("Shared Documents").files.addChunked(fileNamePath, file, data => {
-    console.log(`progress`);
-    }, true);
+    result = await sp.web.getFolderByServerRelativePath("Shared Documents").files.addChunked(fileNamePath, file, 
+        { progress: data => { console.log(`progress`); }, 
+          Overwrite: true 
+        }
+    );
 }
 
 console.log(`Result of file upload: ${JSON.stringify(result)}`);
@@ -182,7 +188,7 @@ const stream = createReadStream("c:/temp/file.txt");
 // now add the stream as a new file
 const sp = spfi(...);
 
-const fr = await sp.web.lists.getByTitle("Documents").rootFolder.files.addChunked( "new.txt", stream, undefined, true );
+const fileInfo = await sp.web.lists.getByTitle("Documents").rootFolder.files.addChunked("new.txt", stream, { progress: data => { console.log(`progress`); }, Overwrite: true });
 ```
 
 ### Setting Associated Item Values
@@ -196,7 +202,7 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 
 const sp = spfi(...);
-const file = await sp.web.getFolderByServerRelativePath("/sites/dev/Shared%20Documents/test/").files.addUsingPath("file.name", "content", {Overwrite: true});
+const fileInfo = await sp.web.getFolderByServerRelativePath("/sites/dev/Shared%20Documents/test/").files.addUsingPath("file.name", "content", {Overwrite: true});
 const item = await file.file.getItem();
 await item.update({
   Title: "A Title",
@@ -327,18 +333,15 @@ Both the addChunked and setContentChunked methods support options beyond just su
 
 A method that is called each time a chunk is uploaded and provides enough information to report progress or update a progress bar easily. The method has the signature:
 
-`(data: ChunkedFileUploadProgressData) => void`
+`(data: IFileUploadProgressData) => void`
 
 The data interface is:
 
 ```typescript
-export interface ChunkedFileUploadProgressData {
+export interface IFileUploadProgressData {
+    uploadId: string;
     stage: "starting" | "continue" | "finishing";
-    blockNumber: number;
-    totalBlocks: number;
-    chunkSize: number;
-    currentPointer: number;
-    fileSize: number;
+    offset: number;
 }
 ```
 
@@ -556,4 +559,3 @@ import "@pnp/sp/files";
 const sp = spfi(...);
 const user = await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("name.txt").getLockedByUser();
 ```
-

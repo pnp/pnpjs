@@ -11,11 +11,11 @@ import {
     deleteable,
     SPInit,
     ISPQueryable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
 import { IChangeQuery } from "../types.js";
-import { odataUrlFrom } from "../utils/odata-url-from.js";
-import { spPost, spPostMerge } from "../operations.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { combine, isArray } from "@pnp/core";
 import { encodePath } from "../utils/encode-path-str.js";
@@ -33,7 +33,7 @@ export class _Webs extends _SPCollection<IWebInfo[]> {
      * @param language The locale id that specifies the new web's language (default = 1033 [English, US])
      * @param inheritPermissions When true, permissions will be inherited from the new web's parent (default = true)
      */
-    public async add(Title: string, Url: string, Description = "", WebTemplate = "STS", Language = 1033, UseSamePermissionsAsParentSite = true): Promise<IWebAddResult> {
+    public async add(Title: string, Url: string, Description = "", WebTemplate = "STS", Language = 1033, UseSamePermissionsAsParentSite = true): Promise<IWebInfo> {
 
         const postBody = body({
             "parameters": {
@@ -46,12 +46,7 @@ export class _Webs extends _SPCollection<IWebInfo[]> {
             },
         });
 
-        const data = await spPost(Webs(this, "add"), postBody);
-
-        return {
-            data,
-            web: Web([this, odataUrlFrom(data).replace(/_api\/web\/?/i, "")]),
-        };
+        return spPost(Webs(this, "add"), postBody);
     }
 }
 export interface IWebs extends _Webs { }
@@ -71,7 +66,7 @@ function rebaseWebUrl(candidate: string, path: string | undefined): string {
     // - test if `candidate` already has an api path
     // - ensure that we append the correct one as sometimes a web is not defined
     //   by _api/web, in the case of _api/site/rootweb for example
-    const matches = /(_api[/|\\](site|web))/i.exec(candidate);
+    const matches = /(_api[/|\\](site\/rootweb|site|web))/i.exec(candidate);
     if (matches?.length > 0) {
         // we want just the base url part (before the _api)
         candidate = extractWebUrl(candidate);
@@ -262,24 +257,6 @@ export class _Web extends _SPInstance<IWebInfo> {
 }
 export interface IWeb extends _Web, IDeleteable { }
 export const Web = spInvokableFactory<IWeb>(_Web);
-
-/**
- * Result from adding a web
- *
- */
-export interface IWebAddResult {
-    data: IWebInfo;
-    web: IWeb;
-}
-
-/**
- * Result from updating a web
- *
- */
-export interface IWebUpdateResult {
-    data: any;
-    web: IWeb;
-}
 
 export interface IWebInfosData {
     Configuration: number;

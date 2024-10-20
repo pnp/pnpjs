@@ -365,8 +365,8 @@ describe("Clientside Pages", function () {
             pageUrl = combine("/", serverRelUrl, (<any>page).json.Url);
 
             const ensureTestUser = await this.pnp.sp.web.ensureUser(this.pnp.settings.testUser);
-            userId = ensureTestUser.data.Id;
-            userPrincipalName = ensureTestUser.data.Email;
+            userId = ensureTestUser.Id;
+            userPrincipalName = ensureTestUser.Email;
         }));
 
         it("setAuthorById()", pnpTest("d57adc36-191a-43bc-9992-b6f236ae1db7", async function () {
@@ -375,17 +375,21 @@ describe("Clientside Pages", function () {
             await page.save();
 
             const page2 = await this.pnp.sp.web.loadClientsidePage(pageUrl);
-            expect(page2.authorByLine).to.eq(userPrincipalName);
+            expect(page2.authorByLine.toLowerCase()).to.eq(userPrincipalName.toLowerCase());
         }));
 
         it("setAuthorByLoginName()", pnpTest("8eb5897e-8b43-45ba-acbc-468495e189fe", async function () {
+
+            if (stringIsNullOrEmpty(this.pnp.settings.testUser)) {
+                this.skip();
+            }
 
             await page.setAuthorByLoginName(this.pnp.settings.testUser);
             await page.save();
 
             const page2 = await this.pnp.sp.web.loadClientsidePage(pageUrl);
 
-            expect(page2.authorByLine).to.eq(userPrincipalName);
+            expect(page2.authorByLine.toLowerCase()).to.eq(userPrincipalName.toLowerCase());
         }));
     });
 

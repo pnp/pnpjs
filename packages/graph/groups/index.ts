@@ -6,7 +6,6 @@ export {
     GroupType,
     Groups,
     IGroup,
-    IGroupAddResult,
     IGroups,
 } from "./types.js";
 
