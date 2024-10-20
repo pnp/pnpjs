@@ -141,8 +141,16 @@ export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
      *
      * @param filter The string representing the filter query
      */
-    public filter(filter: string): this {
-        this.query.set("$filter", filter);
+    public filter<T = UnwrapArray<GetType>>(filter: string | ComparisonResult<T> | ((f: InitialFieldQuery<T>) => ComparisonResult<T>)): this {
+        if (typeof filter === "object") {
+            this.query.set("$filter", filter.toString());
+            return this;
+        }
+        if (typeof filter === "function") {
+            this.query.set("$filter", filter(SPOData.Where<T>()).toString());
+            return this;
+        }
+        this.query.set("$filter", filter.toString());
         return this;
     }
 
@@ -254,3 +262,296 @@ export const spPostDeleteETag = <T = any>(o: ISPQueryable<any>, init?: RequestIn
 export const spDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, del, init);
 
 export const spPatch = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, patch, init);
+
+
+
+type KeysMatching<T, V> = { [K in keyof T]: T[K] extends V ? K : never }[keyof T];
+type KeysMatchingObjects<T> = { [K in keyof T]: T[K] extends object ? (T[K] extends Date ? never : K) : never }[keyof T];
+type UnwrapArray<T> = T extends (infer U)[] ? U : T;
+
+enum FilterOperation {
+    Equals = "eq",
+    NotEquals = "ne",
+    GreaterThan = "gt",
+    GreaterThanOrEqualTo = "ge",
+    LessThan = "lt",
+    LessThanOrEqualTo = "le",
+    StartsWith = "startswith",
+    SubstringOf = "substringof"
+}
+
+enum FilterJoinOperator {
+    And = "and",
+    AndWithSpace = " and ",
+    Or = "or",
+    OrWithSpace = " or "
+}
+
+class SPOData {
+    public static Where<T = any>() {
+        return new InitialFieldQuery<T>([]);
+    }
+}
+
+// Linting complains that TBaseInterface is unused, but without it all the intellisense is lost since it's carrying it through the chain
+class BaseQuery<TBaseInterface> {
+    protected query: string[] = [];
+
+    constructor(query: string[]) {
+        this.query = query;
+    }
+}
+
+
+class QueryableFields<TBaseInterface> extends BaseQuery<TBaseInterface> {
+    constructor(q: string[]) {
+        super(q);
+    }
+
+    public text(internalName: KeysMatching<TBaseInterface, string>): TextField<TBaseInterface> {
+        return new TextField<TBaseInterface>([...this.query, (internalName as string)]);
+    }
+
+    public choice(internalName: KeysMatching<TBaseInterface, string>): TextField<TBaseInterface> {
+        return new TextField<TBaseInterface>([...this.query, (internalName as string)]);
+    }
+
+    public multiChoice(internalName: KeysMatching<TBaseInterface, string[]>): TextField<TBaseInterface> {
+        return new TextField<TBaseInterface>([...this.query, (internalName as string)]);
+    }
+
+    public number(internalName: KeysMatching<TBaseInterface, number>): NumberField<TBaseInterface> {
+        return new NumberField<TBaseInterface>([...this.query, (internalName as string)]);
+    }
+
+    public date(internalName: KeysMatching<TBaseInterface, Date>): DateField<TBaseInterface> {
+        return new DateField<TBaseInterface>([...this.query, (internalName as string)]);
+    }
+
+    public boolean(internalName: KeysMatching<TBaseInterface, boolean>): BooleanField<TBaseInterface> {
+        return new BooleanField<TBaseInterface>([...this.query, (internalName as string)]);
+    }
+
+    public lookup<TKey extends KeysMatchingObjects<TBaseInterface>>(internalName: TKey): LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]> {
+        return new LookupQueryableFields<TBaseInterface, TBaseInterface[TKey]>([...this.query], internalName as string);
+    }
+
+    public lookupId<TKey extends KeysMatching<TBaseInterface, number>>(internalName: TKey): NumberField<TBaseInterface> {
+        const col: string = (internalName as string).endsWith("Id") ? internalName as string : `${internalName as string}Id`;
+        return new NumberField<TBaseInterface>([...this.query, col]);
+    }
+}
+
+class QueryableAndResult<TBaseInterface> extends QueryableFields<TBaseInterface> {
+    public or(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, `(${queries.map(x => x.toString()).join(FilterJoinOperator.OrWithSpace)})`]);
+    }
+}
+
+class QueryableOrResult<TBaseInterface> extends QueryableFields<TBaseInterface> {
+    public and(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, `(${queries.map(x => x.toString()).join(FilterJoinOperator.AndWithSpace)})`]);
+    }
+}
+
+class InitialFieldQuery<TBaseInterface> extends QueryableFields<TBaseInterface> {
+    public or(): QueryableFields<TBaseInterface>;
+    public or(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface>;
+    public or(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): (ComparisonResult<TBaseInterface> | QueryableFields<TBaseInterface>) {
+        if (queries == null || queries.length == 0) 
+            return new QueryableFields<TBaseInterface>([...this.query, FilterJoinOperator.Or]);
+        return new ComparisonResult<TBaseInterface>([...this.query, `(${queries.map(x => x.toString()).join(FilterJoinOperator.OrWithSpace)})`]);
+    }
+
+    public and(): QueryableFields<TBaseInterface>;
+    public and(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface>
+    public and(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): (ComparisonResult<TBaseInterface> | QueryableFields<TBaseInterface>) {
+        if (queries == null || queries.length == 0)
+            return new QueryableFields<TBaseInterface>([...this.query, FilterJoinOperator.And]);
+        return new ComparisonResult<TBaseInterface>([...this.query, `(${queries.map(x => x.toString()).join(FilterJoinOperator.AndWithSpace)})`]);
+    }
+}
+
+
+
+class LookupQueryableFields<TBaseInterface, TExpandedType> extends BaseQuery<TExpandedType> {
+    private LookupField: string;
+    constructor(q: string[], LookupField: string) {
+        super(q);
+        this.LookupField = LookupField;
+    }
+
+    public Id(id: number): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, `${this.LookupField}/Id`, FilterOperation.Equals, id.toString()]);
+    }
+
+    public text(internalName: KeysMatching<TExpandedType, string>): TextField<TBaseInterface> {
+        return new TextField<TBaseInterface>([...this.query, `${this.LookupField}/${internalName as string}`]);
+    }
+
+    public number(internalName: KeysMatching<TExpandedType, number>): NumberField<TBaseInterface> {
+        return new NumberField<TBaseInterface>([...this.query, `${this.LookupField}/${internalName as string}`]);
+    }
+
+    // Support has been announced, but is not yet available in SharePoint Online
+    // https://www.microsoft.com/en-ww/microsoft-365/roadmap?filters=&searchterms=100503
+    // public boolean(InternalName: KeysMatching<TExpandedType, boolean>): BooleanField<TBaseInterface> {
+    //     return new BooleanField<TBaseInterface>([...this.query, `${this.LookupField}/${InternalName as string}`]);
+    // }
+}
+
+class NullableField<TBaseInterface, TInputValueType> extends BaseQuery<TBaseInterface> {
+    protected LastIndex: number;
+    protected InternalName: string;
+
+    constructor(q: string[]) {
+        super(q);
+        this.LastIndex = q.length - 1;
+        this.InternalName = q[this.LastIndex];
+    }
+
+    protected toODataValue(value: TInputValueType): string {
+        return `'${value}'`;
+    }
+
+    public isNull(): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.Equals, "null"]);
+    }
+
+    public isNotNull(): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.NotEquals, "null"]);
+    }
+}
+
+class ComparableField<TBaseInterface, TInputValueType> extends NullableField<TBaseInterface, TInputValueType> {
+    public equal(value: TInputValueType): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.Equals, this.toODataValue(value)]);
+    }
+
+    public notEqual(value: TInputValueType): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.NotEquals, this.toODataValue(value)]);
+    }
+
+    public in(...values: TInputValueType[]): ComparisonResult<TBaseInterface> {
+        return SPOData.Where<TBaseInterface>().or(...values.map(x => this.equal(x)));
+    }
+
+    public notIn(...values: TInputValueType[]): ComparisonResult<TBaseInterface> {
+        return SPOData.Where<TBaseInterface>().and(...values.map(x => this.notEqual(x)));
+    }
+}
+
+class TextField<TBaseInterface> extends ComparableField<TBaseInterface, string> {
+    public startsWith(value: string): ComparisonResult<TBaseInterface> {
+        const filter = `${FilterOperation.StartsWith}(${this.InternalName}, ${this.toODataValue(value)})`;
+        this.query[this.LastIndex] = filter;
+        return new ComparisonResult<TBaseInterface>([...this.query]);
+    }
+
+    public contains(value: string): ComparisonResult<TBaseInterface> {
+        const filter = `${FilterOperation.SubstringOf}(${this.toODataValue(value)}, ${this.InternalName})`;
+        this.query[this.LastIndex] = filter;
+        return new ComparisonResult<TBaseInterface>([...this.query]);
+    }
+}
+
+class BooleanField<TBaseInterface> extends NullableField<TBaseInterface, boolean> {
+    protected override toODataValue(value: boolean | null): string {
+        return `${value == null ? "null" : value ? 1 : 0}`;
+    }
+
+    public isTrue(): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.Equals, this.toODataValue(true)]);
+    }
+
+    public isFalse(): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.Equals, this.toODataValue(false)]);
+    }
+
+    public isFalseOrNull(): ComparisonResult<TBaseInterface> {
+        const filter = `(${[
+            this.InternalName,
+            FilterOperation.Equals,
+            this.toODataValue(null),
+            FilterJoinOperator.Or,
+            this.InternalName,
+            FilterOperation.Equals,
+            this.toODataValue(false),
+        ].join(" ")})`;
+        this.query[this.LastIndex] = filter;
+        return new ComparisonResult<TBaseInterface>([...this.query]);
+    }
+}
+
+class NumericField<TBaseInterface, TInputValueType> extends ComparableField<TBaseInterface, TInputValueType> {
+    public greaterThan(value: TInputValueType): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.GreaterThan, this.toODataValue(value)]);
+    }
+
+    public greaterThanOrEqual(value: TInputValueType): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.GreaterThanOrEqualTo, this.toODataValue(value)]);
+    }
+
+    public lessThan(value: TInputValueType): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.LessThan, this.toODataValue(value)]);
+    }
+
+    public lessThanOrEqual(value: TInputValueType): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.LessThanOrEqualTo, this.toODataValue(value)]);
+    }
+}
+
+
+class NumberField<TBaseInterface> extends NumericField<TBaseInterface, number> {
+    protected override toODataValue(value: number): string {
+        return `${value}`;
+    }
+}
+
+class DateField<TBaseInterface> extends NumericField<TBaseInterface, Date> {
+    protected override toODataValue(value: Date): string {
+        return `'${value.toISOString()}'`;
+    }
+
+    public isBetween(startDate: Date, endDate: Date): ComparisonResult<TBaseInterface> {
+        const filter = `(${[
+            this.InternalName,
+            FilterOperation.GreaterThan,
+            this.toODataValue(startDate),
+            FilterJoinOperator.And,
+            this.InternalName,
+            FilterOperation.LessThan,
+            this.toODataValue(endDate),
+        ].join(" ")})`;
+        this.query[this.LastIndex] = filter;
+        return new ComparisonResult<TBaseInterface>([...this.query]);
+    }
+
+    public isToday(): ComparisonResult<TBaseInterface> {
+        const StartToday = new Date(); StartToday.setHours(0, 0, 0, 0);
+        const EndToday = new Date(); EndToday.setHours(23, 59, 59, 999);
+        return this.isBetween(StartToday, EndToday);
+    }
+}
+
+class ComparisonResult<TBaseInterface> extends BaseQuery<TBaseInterface> {
+    public and(): QueryableAndResult<TBaseInterface>;
+    public and(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface>
+    public and(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): (ComparisonResult<TBaseInterface> | QueryableAndResult<TBaseInterface>) {
+        if (queries == null || queries.length == 0) 
+            return new QueryableAndResult<TBaseInterface>([...this.query, FilterJoinOperator.And]);
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterJoinOperator.And, `(${queries.map(x => x.toString()).join(FilterJoinOperator.AndWithSpace)})`]);
+    }
+
+    public or(): QueryableOrResult<TBaseInterface>;
+    public or(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface>;
+    public or(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): (ComparisonResult<TBaseInterface> | QueryableOrResult<TBaseInterface>) {
+        if (queries == null || queries.length == 0) 
+            return new QueryableOrResult<TBaseInterface>([...this.query, FilterJoinOperator.Or]);
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterJoinOperator.Or, `(${queries.map(x => x.toString()).join(FilterJoinOperator.OrWithSpace)})`]);
+    }
+
+    public toString(): string {
+        return this.query.join(" ");
+    }
+}
