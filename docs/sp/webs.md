@@ -254,12 +254,15 @@ const infos2 = await web.webinfos.select("Title", "Description")();
 
 // or filter
 const infos3 = await web.webinfos.filter("Title eq 'MyWebTitle'")();
+// Using fluent filter
+const infos4 = await web.webinfos.filter(w => w.text("Title").equal('MyWebTitle'))();
+
 
 // or both
-const infos4 = await web.webinfos.select("Title", "Description").filter("Title eq 'MyWebTitle'")();
+const infos5 = await web.webinfos.select("Title", "Description").filter(w => w.text("Title").equal('MyWebTitle'))();
 
 // get the top 4 ordered by Title
-const infos5 = await web.webinfos.top(4).orderBy("Title")();
+const infos6 = await web.webinfos.top(4).orderBy("Title")();
 ```
 
 > Note: webinfos returns [IWebInfosData](#IWebInfosData) which is a subset of all the available fields on IWebInfo.
@@ -537,9 +540,12 @@ const folders = await sp.web.folders();
 
 // you can also filter and select as with any collection
 const folders2 = await sp.web.folders.select("ServerRelativeUrl", "TimeLastModified").filter("ItemCount gt 0")();
+// Using fluent filter
+const folders3 = await sp.web.folders.select("ServerRelativeUrl", "TimeLastModified").filter(f => f.number("ItemCount").greaterThan(0))();
+
 
 // or get the most recently modified folder
-const folders2 = await sp.web.folders.orderBy("TimeLastModified").top(1)();
+const folders4 = await sp.web.folders.orderBy("TimeLastModified").top(1)();
 ```
 
 ### rootFolder
@@ -856,6 +862,9 @@ const users = await sp.web.siteUsers();
 const users2 = await sp.web.siteUsers.top(5)();
 
 const users3 = await sp.web.siteUsers.filter(`startswith(LoginName, '${encodeURIComponent("i:0#.f|m")}')`)();
+// Using fluent filter
+const user4 = await sp.web.siteUsers.filter(u => u.text("LoginName").startsWith(encodeURIComponent("i:0#.f|m")))();
+
 ```
 
 ### currentUser

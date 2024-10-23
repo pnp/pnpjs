@@ -113,6 +113,89 @@ const r = await sp.web.lists.getByTitle("TaxonomyList").getItemsByCAMLQuery({
 });
 ```
 
+### Filter using fluent filter
+
+>Note: This feature is currently in preview and may not work as expected.
+
+PnPjs supports a fluent filter for all OData endpoints, including the items endpoint. this allows you to write a strongly fluent filter that will be parsed into an OData filter.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
+
+const r = await  sp.web.lists.filter(l => l.number("ItemCount").greaterThan(5000))();
+```
+
+The following field types are supported in the fluent filter:
+
+- Text
+- Choice
+- MultiChoice
+- Number
+- Date
+- Boolean
+- Lookup
+- LookupId
+
+The following operations are supported in the fluent filter:
+
+| Field Type           | Operators/Values                                                                           |
+| -------------------- | ------------------------------------------------------------------------------------------ |
+| All field types      | `equal`, `notEqual`, `in`, `notIn`                                                         |
+| Text & choice fields | `startsWith`, `contains`                                                                   |
+| Numeric fields       | `greaterThan`, `greaterThanOrEqual`, `lessThan`, `lessThanOrEqual`                         |
+| Date fields          | `greaterThan`, `greaterThanOrEqual`, `lessThan`, `lessThanOrEqual`, `isBetween`, `isToday` |
+| Boolean fields       | `isTrue`, `isFalse`, `isFalseOrNull`                                                       |
+| Lookup               | `id`, Text, Number                                                                         |
+
+#### Complex Filter
+
+For all the regular endpoints, the fluent filter will infer the type automatically, but for the list items filter, you'll need to provide your own types to make the parser work.
+
+You can use the `and` and `or` operators to create complex filters that nest different grouping.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi(...);
+
+interface ListItem extends IListItem {
+    FirstName: string;
+    LastName: string;
+    Age: number;
+    Manager: IListItem;
+    StartDate: Date;
+}
+
+
+// Get all employees named John
+const r = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.text("FirstName").equal("John"))();
+
+// Get all employees not named John who are over 30
+const r1 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.text("FirstName").notEqual("John").and().number("Age").greaterThan(30))();
+
+// Get all employees that are named John Doe or Jane Doe
+const r2 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.or(
+    f.and(
+        f.text("FirstName").equal("John"),
+        f.text("LastName").equal("Doe")
+    ),
+    f.and(
+        f.text("FirstName").equal("Jane"),
+        f.text("LastName").equal("Doe")
+    )
+))();
+
+// Get all employees who are managed by John and start today
+const r3 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.lookup("Manager").text("FirstName").equal("John").and().date("StartDate").isToday())();
+```
+
 ### Retrieving PublishingPageImage
 
 The PublishingPageImage and some other publishing-related fields aren't stored in normal fields, rather in the MetaInfo field. To get these values you need to use the technique shown below, and originally outlined in [this thread](https://github.com/SharePoint/PnP-JS-Core/issues/178). Note that a lot of information can be stored in this field so will pull back potentially a significant amount of data, so limit the rows as possible to aid performance.
@@ -326,6 +409,8 @@ const sp = spfi(...);
 
 // you are getting back a collection here
 const items: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'")();
+// Using fluent filter
+const items1: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter(f => f.text("Title").equal("A Title"))();
 
 // see if we got something
 if (items.length > 0) {
@@ -425,6 +510,9 @@ const sp = spfi(...);
 // first we need to get the hidden field's internal name.
 // The Title of that hidden field is, in my case and in the linked article just the visible field name with "_0" appended.
 const fields = await sp.web.lists.getByTitle("TestList").fields.filter("Title eq 'MultiMetaData_0'").select("Title", "InternalName")();
+// Using fluent filter
+const fields1 = await sp.web.lists.getByTitle("TestList").fields.filter(f => f.text("Title").equal("MultiMetaData_0")).select("Title", "InternalName")();
+
 // get an item to update, here we just create one for testing
 const newItem = await sp.web.lists.getByTitle("TestList").items.add({
   Title: "Testing",
@@ -591,6 +679,15 @@ const response =
     .fields
     .select('Title, EntityPropertyName')
     .filter(`Hidden eq false and Title eq '[Field's_Display_Name]'`)
+    ();
+
+// Using fluent filter
+const response1 =
+  await sp.web.lists
+    .getByTitle('[Lists_Title]')
+    .fields
+    .select('Title, EntityPropertyName')
+    .filter(l => l.boolean("Hidden").isFalse().and().text("Title").equal("[Field's_Display_Name]"))
     ();
 
 console.log(response.map(field => {
