@@ -255,11 +255,11 @@ const infos2 = await web.webinfos.select("Title", "Description")();
 // or filter
 const infos3 = await web.webinfos.filter("Title eq 'MyWebTitle'")();
 // Using fluent filter
-const infos4 = await web.webinfos.filter(w => w.text("Title").equal('MyWebTitle'))();
+const infos4 = await web.webinfos.filter(w => w.text("Title").equals('MyWebTitle'))();
 
 
 // or both
-const infos5 = await web.webinfos.select("Title", "Description").filter(w => w.text("Title").equal('MyWebTitle'))();
+const infos5 = await web.webinfos.select("Title", "Description").filter(w => w.text("Title").equals('MyWebTitle'))();
 
 // get the top 4 ordered by Title
 const infos6 = await web.webinfos.top(4).orderBy("Title")();

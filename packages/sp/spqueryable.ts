@@ -424,20 +424,20 @@ class NullableField<TBaseInterface, TInputValueType> extends BaseQuery<TBaseInte
 }
 
 class ComparableField<TBaseInterface, TInputValueType> extends NullableField<TBaseInterface, TInputValueType> {
-    public equal(value: TInputValueType): ComparisonResult<TBaseInterface> {
+    public equals(value: TInputValueType): ComparisonResult<TBaseInterface> {
         return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.Equals, this.toODataValue(value)]);
     }
 
-    public notEqual(value: TInputValueType): ComparisonResult<TBaseInterface> {
+    public notEquals(value: TInputValueType): ComparisonResult<TBaseInterface> {
         return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.NotEquals, this.toODataValue(value)]);
     }
 
     public in(...values: TInputValueType[]): ComparisonResult<TBaseInterface> {
-        return SPOData.Where<TBaseInterface>().or(...values.map(x => this.equal(x)));
+        return SPOData.Where<TBaseInterface>().or(...values.map(x => this.equals(x)));
     }
 
     public notIn(...values: TInputValueType[]): ComparisonResult<TBaseInterface> {
-        return SPOData.Where<TBaseInterface>().and(...values.map(x => this.notEqual(x)));
+        return SPOData.Where<TBaseInterface>().and(...values.map(x => this.notEquals(x)));
     }
 }
 
@@ -488,7 +488,7 @@ class NumericField<TBaseInterface, TInputValueType> extends ComparableField<TBas
         return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.GreaterThan, this.toODataValue(value)]);
     }
 
-    public greaterThanOrEqual(value: TInputValueType): ComparisonResult<TBaseInterface> {
+    public greaterThanOrEquals(value: TInputValueType): ComparisonResult<TBaseInterface> {
         return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.GreaterThanOrEqualTo, this.toODataValue(value)]);
     }
 
@@ -496,7 +496,7 @@ class NumericField<TBaseInterface, TInputValueType> extends ComparableField<TBas
         return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.LessThan, this.toODataValue(value)]);
     }
 
-    public lessThanOrEqual(value: TInputValueType): ComparisonResult<TBaseInterface> {
+    public lessThanOrEquals(value: TInputValueType): ComparisonResult<TBaseInterface> {
         return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.LessThanOrEqualTo, this.toODataValue(value)]);
     }
 }

@@ -142,14 +142,14 @@ The following field types are supported in the fluent filter:
 
 The following operations are supported in the fluent filter:
 
-| Field Type           | Operators/Values                                                                           |
-| -------------------- | ------------------------------------------------------------------------------------------ |
-| All field types      | `equal`, `notEqual`, `in`, `notIn`                                                         |
-| Text & choice fields | `startsWith`, `contains`                                                                   |
-| Numeric fields       | `greaterThan`, `greaterThanOrEqual`, `lessThan`, `lessThanOrEqual`                         |
-| Date fields          | `greaterThan`, `greaterThanOrEqual`, `lessThan`, `lessThanOrEqual`, `isBetween`, `isToday` |
-| Boolean fields       | `isTrue`, `isFalse`, `isFalseOrNull`                                                       |
-| Lookup               | `id`, Text, Number                                                                         |
+| Field Type           | Operators/Values                                                                             |
+| -------------------- | -------------------------------------------------------------------------------------------- |
+| All field types      | `equals`, `notEquals`, `in`, `notIn`                                                         |
+| Text & choice fields | `startsWith`, `contains`                                                                     |
+| Numeric fields       | `greaterThan`, `greaterThanOrEquals`, `lessThan`, `lessThanOrEquals`                         |
+| Date fields          | `greaterThan`, `greaterThanOrEquals`, `lessThan`, `lessThanOrEquals`, `isBetween`, `isToday` |
+| Boolean fields       | `isTrue`, `isFalse`, `isFalseOrNull`                                                         |
+| Lookup               | `id`, Text and Number field types                                                            |
 
 #### Complex Filter
 
@@ -178,22 +178,22 @@ interface ListItem extends IListItem {
 const r = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.text("FirstName").equal("John"))();
 
 // Get all employees not named John who are over 30
-const r1 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.text("FirstName").notEqual("John").and().number("Age").greaterThan(30))();
+const r1 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.text("FirstName").notEquals("John").and().number("Age").greaterThan(30))();
 
 // Get all employees that are named John Doe or Jane Doe
 const r2 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.or(
     f.and(
-        f.text("FirstName").equal("John"),
-        f.text("LastName").equal("Doe")
+        f.text("FirstName").equals("John"),
+        f.text("LastName").equals("Doe")
     ),
     f.and(
-        f.text("FirstName").equal("Jane"),
-        f.text("LastName").equal("Doe")
+        f.text("FirstName").equals("Jane"),
+        f.text("LastName").equals("Doe")
     )
 ))();
 
 // Get all employees who are managed by John and start today
-const r3 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.lookup("Manager").text("FirstName").equal("John").and().date("StartDate").isToday())();
+const r3 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.lookup("Manager").text("FirstName").equals("John").and().date("StartDate").isToday())();
 ```
 
 ### Retrieving PublishingPageImage
@@ -410,7 +410,7 @@ const sp = spfi(...);
 // you are getting back a collection here
 const items: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'")();
 // Using fluent filter
-const items1: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter(f => f.text("Title").equal("A Title"))();
+const items1: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter(f => f.text("Title").equals("A Title"))();
 
 // see if we got something
 if (items.length > 0) {
@@ -511,7 +511,7 @@ const sp = spfi(...);
 // The Title of that hidden field is, in my case and in the linked article just the visible field name with "_0" appended.
 const fields = await sp.web.lists.getByTitle("TestList").fields.filter("Title eq 'MultiMetaData_0'").select("Title", "InternalName")();
 // Using fluent filter
-const fields1 = await sp.web.lists.getByTitle("TestList").fields.filter(f => f.text("Title").equal("MultiMetaData_0")).select("Title", "InternalName")();
+const fields1 = await sp.web.lists.getByTitle("TestList").fields.filter(f => f.text("Title").equals("MultiMetaData_0")).select("Title", "InternalName")();
 
 // get an item to update, here we just create one for testing
 const newItem = await sp.web.lists.getByTitle("TestList").items.add({
@@ -687,7 +687,7 @@ const response1 =
     .getByTitle('[Lists_Title]')
     .fields
     .select('Title, EntityPropertyName')
-    .filter(l => l.boolean("Hidden").isFalse().and().text("Title").equal("[Field's_Display_Name]"))
+    .filter(l => l.boolean("Hidden").isFalse().and().text("Title").equals("[Field's_Display_Name]"))
     ();
 
 console.log(response.map(field => {
