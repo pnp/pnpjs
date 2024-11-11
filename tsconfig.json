@@ -11,6 +11,7 @@
             "ES2015",
             "dom",
             "ES2017.Object",
+            "ES2015.Iterable"
         ],
         "baseUrl": ".",
         "rootDir": ".",

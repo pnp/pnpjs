@@ -1,8 +1,8 @@
 
 import { combine } from "@pnp/core";
+import { body } from "@pnp/queryable";
 import { IDeleteable, IGetById, IUpdateable, defaultPath, deleteable, getById, updateable } from "../decorators.js";
 import { graphInvokableFactory, _GraphCollection, _GraphInstance, GraphInit, graphPost } from "../graphqueryable.js";
-import { body } from "@pnp/queryable";
 import { ValidWebpart } from "./webpart-types.js";
 
 /**
@@ -126,7 +126,6 @@ export class _HorizontalSection extends _GraphInstance<IHorizontalSectionInfo> {
 export interface IHorizontalSection extends _HorizontalSection, IUpdateable, IDeleteable { }
 export const HorizontalSection = graphInvokableFactory<IHorizontalSection>(_HorizontalSection);
 
-// @getById(HorizontalSection)
 @defaultPath("canvasLayout/horizontalSections")
 export class _HorizontalSections extends _GraphCollection<IHorizontalSectionInfo[]> {
 
@@ -139,7 +138,7 @@ export class _HorizontalSections extends _GraphCollection<IHorizontalSectionInfo
         return section.concat(`('${id}')`);
     }
 }
-export interface IHorizontalSections extends _HorizontalSections, IGetById<IHorizontalSection, number> { }
+export interface IHorizontalSections extends _HorizontalSections, IGetById<IHorizontalSection, string | number> { }
 export const HorizontalSections = graphInvokableFactory<IHorizontalSections>(_HorizontalSections);
 
 export class _HorizontalSectionColumn extends _GraphInstance<IHorizontalSectionColumnInfo> {
@@ -152,9 +151,14 @@ export interface IHorizontalSectionColumn extends _HorizontalSectionColumn { }
 export const HorizontalSectionColumn = graphInvokableFactory<IHorizontalSectionColumn>(_HorizontalSectionColumn);
 
 @defaultPath("columns")
-@getById(HorizontalSectionColumn)
-export class _HorizontalSectionColumns extends _GraphCollection<IHorizontalSectionColumnInfo[]> { }
-export interface IHorizontalSectionColumns extends _HorizontalSectionColumns, IGetById<IHorizontalSectionColumn, number> { }
+export class _HorizontalSectionColumns extends _GraphCollection<IHorizontalSectionColumnInfo[]> {
+
+    public getById(id: string | number): IHorizontalSectionColumn {
+        const column = HorizontalSectionColumn(this);
+        return column.concat(`('${id}')`);
+    }
+}
+export interface IHorizontalSectionColumns extends _HorizontalSectionColumns, IGetById<IHorizontalSectionColumn, string | number> { }
 export const HorizontalSectionColumns = graphInvokableFactory<IHorizontalSectionColumns>(_HorizontalSectionColumns);
 
 @updateable()
@@ -189,27 +193,22 @@ export class _Webparts extends _GraphCollection<ValidWebpart[]> {
         const base = url.slice(0, url.indexOf(SitePageTypeString) + SitePageTypeString.length);
         return Webpart([this, base], `webparts/${id}`);
     }
-
-    /**
-     * Gets the webpart information by id from the page's collection
-     * @param id string id of the webpart
-     * @returns The IWebpart instance
-     */
-    public getByIndex(index: number): IWebpart {
-        return Webpart(this, `${index}`);
-    }
 }
 export interface IWebparts extends _Webparts, IGetById<IWebpart> { }
 export const Webparts = graphInvokableFactory<IWebparts>(_Webparts);
 
 
-
+/**
+ * Contains info representing a vertical section
+ */
 export interface IVerticalSectionInfo {
     emphasis: "none" | "netural" | "soft" | "strong" | "unknownFutureValue";
     id: string;
 }
 
-
+/**
+ * Contains info representing a horizontal section
+ */
 export interface IHorizontalSectionInfo {
     emphasis: "none" | "netural" | "soft" | "strong" | "unknownFutureValue";
     id: string;
@@ -217,13 +216,18 @@ export interface IHorizontalSectionInfo {
     columns: IHorizontalSectionColumnInfo[];
 }
 
+/**
+ * Contains info representing a horizontal section column
+ */
 export interface IHorizontalSectionColumnInfo {
     id: string;
     width: string;
     webparts: any[];
 }
 
-
+/**
+ * Contains info representing a path user
+ */
 export interface IPageUserInfo {
     displayName: string;
     email?: string;

@@ -52,6 +52,11 @@ export type QueryParams = {
 
     /** Returns a string containing a query string suitable for use in a URL. Does not include the question mark. */
     toString(): string;
+
+    /**
+     * Iterator accessor
+     */
+    [Symbol.iterator](): Iterator<[string, string]>;
 };
 
 @invokable()

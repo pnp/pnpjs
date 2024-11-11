@@ -34,8 +34,7 @@ export function combine(...paths: (string | null | undefined)[]): string {
 
     return paths
         .filter(path => !stringIsNullOrEmpty(path))
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        .map(path => path!.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""))
+        .map(path => path.replace(/^[\\|/]/, "").replace(/[\\|/]$/, ""))
         .join("/")
         .replace(/\\/g, "/");
 }
