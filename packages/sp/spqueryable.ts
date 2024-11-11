@@ -358,7 +358,7 @@ class InitialFieldQuery<TBaseInterface> extends QueryableFields<TBaseInterface> 
     public or(): QueryableFields<TBaseInterface>;
     public or(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface>;
     public or(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): (ComparisonResult<TBaseInterface> | QueryableFields<TBaseInterface>) {
-        if (queries == null || queries.length == 0) 
+        if (queries == null || queries.length == 0)
             return new QueryableFields<TBaseInterface>([...this.query, FilterJoinOperator.Or]);
         return new ComparisonResult<TBaseInterface>([...this.query, `(${queries.map(x => x.toString()).join(FilterJoinOperator.OrWithSpace)})`]);
     }
@@ -536,18 +536,23 @@ class DateField<TBaseInterface> extends NumericField<TBaseInterface, Date> {
 
 class ComparisonResult<TBaseInterface> extends BaseQuery<TBaseInterface> {
     public and(): QueryableAndResult<TBaseInterface>;
+    // eslint-disable-next-line @typescript-eslint/semi
     public and(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface>
+    // eslint-disable-next-line max-len
     public and(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): (ComparisonResult<TBaseInterface> | QueryableAndResult<TBaseInterface>) {
-        if (queries == null || queries.length == 0) 
+        if (queries == null || queries.length === 0) {
             return new QueryableAndResult<TBaseInterface>([...this.query, FilterJoinOperator.And]);
+        }
         return new ComparisonResult<TBaseInterface>([...this.query, FilterJoinOperator.And, `(${queries.map(x => x.toString()).join(FilterJoinOperator.AndWithSpace)})`]);
     }
 
     public or(): QueryableOrResult<TBaseInterface>;
     public or(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): ComparisonResult<TBaseInterface>;
+    // eslint-disable-next-line max-len
     public or(...queries: (ComparisonResult<TBaseInterface> | ((f: QueryableFields<TBaseInterface>) => ComparisonResult<TBaseInterface>))[]): (ComparisonResult<TBaseInterface> | QueryableOrResult<TBaseInterface>) {
-        if (queries == null || queries.length == 0) 
+        if (queries == null || queries.length === 0) {
             return new QueryableOrResult<TBaseInterface>([...this.query, FilterJoinOperator.Or]);
+        }
         return new ComparisonResult<TBaseInterface>([...this.query, FilterJoinOperator.Or, `(${queries.map(x => x.toString()).join(FilterJoinOperator.OrWithSpace)})`]);
     }
 
