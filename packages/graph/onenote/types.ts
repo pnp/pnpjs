@@ -32,8 +32,8 @@ export class _OneNote extends _GraphInstance<IOnenoteType> {
         return Notebooks(this);
     }
 
-    public get pages(): IPages {
-        return Pages(this);
+    public get pages(): IOnenotePages {
+        return OnenotePages(this);
     }
 
     public get resources(): IResources {
@@ -107,8 +107,8 @@ export const Notebooks = graphInvokableFactory<INotebooks>(_Notebooks);
  */
 export class _Section extends _GraphInstance<IOnenoteSectionType> {
 
-    public get pages(): IPages {
-        return Pages(this);
+    public get pages(): IOnenotePages {
+        return OnenotePages(this);
     }
 
     /**
@@ -187,7 +187,7 @@ export const SectionGroups = graphInvokableFactory<ISectionGroups>(_SectionGroup
  *
  */
 @deleteable()
-export class _Page extends _GraphInstance<IOnenotePageType> {
+export class _OnenotePage extends _GraphInstance<IOnenotePageType> {
     /**
      * Copy page to section
      * @param props of type ICopyPageProps. groupId (id of group to copy to. Use only when copying to M365 group), id of destination  notebook
@@ -202,7 +202,7 @@ export class _Page extends _GraphInstance<IOnenotePageType> {
      * @param includeIDs page html body
      */
     public async content(includeIDs = false): Promise<string> {
-        return Page(this, `content?includeIDs=${includeIDs}`).using(TextParse())();
+        return OnenotePage(this, `content?includeIDs=${includeIDs}`).using(TextParse())();
     }
 
     /**
@@ -213,16 +213,16 @@ export class _Page extends _GraphInstance<IOnenotePageType> {
         return graphPatch(GraphQueryable(this, "content"), body(props));
     }
 }
-export interface IPage extends _Page, IDeleteable { }
-export const Page = graphInvokableFactory<IPage>(_Page);
+export interface IOnenotePage extends _OnenotePage, IDeleteable { }
+export const OnenotePage = graphInvokableFactory<IOnenotePage>(_OnenotePage);
 
 /**
  * Describes a collection of page objects
  *
  */
 @defaultPath("pages")
-@getById(Page)
-export class _Pages extends _GraphCollection<IOnenotePageType[]> {
+@getById(OnenotePage)
+export class _OnenotePages extends _GraphCollection<IOnenotePageType[]> {
     /**
      * Create a new page as specified in the request body.
      *
@@ -237,8 +237,8 @@ export class _Pages extends _GraphCollection<IOnenotePageType[]> {
         return graphPost(q, { body: html });
     }
 }
-export interface IPages extends _Pages, IGetById<IPage> { }
-export const Pages = graphInvokableFactory<IPages>(_Pages);
+export interface IOnenotePages extends _OnenotePages, IGetById<IOnenotePage> { }
+export const OnenotePages = graphInvokableFactory<IOnenotePages>(_OnenotePages);
 
 /**
  * Describes a resources

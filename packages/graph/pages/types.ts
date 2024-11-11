@@ -3,6 +3,7 @@ import { combine } from "@pnp/core";
 import { IDeleteable, IGetById, IUpdateable, defaultPath, deleteable, getById, updateable } from "../decorators.js";
 import { graphInvokableFactory, _GraphCollection, _GraphInstance, GraphInit, graphPost } from "../graphqueryable.js";
 import { body } from "@pnp/queryable";
+import { ValidWebpart } from "./webpart-types.js";
 
 /**
  * Page
@@ -51,10 +52,38 @@ export class _SitePage extends _GraphInstance<ISitePageInfo> {
     }
 
     /**
+     * Get a listing of all the webparts in this page
+     */
+    public get webparts(): IWebparts {
+        return Webparts(this);
+    }
+
+    /**
      * Gets the set of horizontal sections
      */
     public get horizontalSections(): IHorizontalSections {
         return HorizontalSections(this);
+    }
+
+    /**
+     * Gets the set of vertical section
+     */
+    public get verticalSection(): IVerticalSection {
+        return VerticalSection(this);
+    }
+
+    /**
+     * Creates a vertical section if none exists, returns the vertical section
+     */
+    public ensureVerticalSection(): IVerticalSection {
+
+        const y = this.select("verticalSection")();
+
+        console.log(y);
+
+
+        return null;
+
     }
 }
 export interface ISitePage extends _SitePage, IUpdateable<Partial<ISitePageInfo>>, IDeleteable { }
@@ -86,25 +115,99 @@ export class _SitePages extends _GraphCollection<ISitePageInfo[]> {
 export interface ISitePages extends _SitePages { }
 export const SitePages = graphInvokableFactory<ISitePages>(_SitePages);
 
-export class _HorizontalSection extends _GraphInstance<IHorizontalSectionInfo> {}
-export interface IHorizontalSection extends _HorizontalSection { }
+@updateable()
+@deleteable()
+export class _HorizontalSection extends _GraphInstance<IHorizontalSectionInfo> {
+
+    public get columns(): IHorizontalSectionColumns {
+        return HorizontalSectionColumns(this);
+    }
+}
+export interface IHorizontalSection extends _HorizontalSection, IUpdateable, IDeleteable { }
 export const HorizontalSection = graphInvokableFactory<IHorizontalSection>(_HorizontalSection);
 
-@getById(HorizontalSection)
+// @getById(HorizontalSection)
 @defaultPath("canvasLayout/horizontalSections")
 export class _HorizontalSections extends _GraphCollection<IHorizontalSectionInfo[]> {
 
     public async add(props: Partial<IHorizontalSectionInfo>): Promise<IHorizontalSectionInfo> {
         return graphPost(this, body(props));
     }
+
+    public getById(id: string | number): IHorizontalSection {
+        const section = HorizontalSection(this);
+        return section.concat(`('${id}')`);
+    }
 }
 export interface IHorizontalSections extends _HorizontalSections, IGetById<IHorizontalSection, number> { }
 export const HorizontalSections = graphInvokableFactory<IHorizontalSections>(_HorizontalSections);
 
+export class _HorizontalSectionColumn extends _GraphInstance<IHorizontalSectionColumnInfo> {
+
+    public get webparts(): IWebparts {
+        return Webparts(this);
+    }
+}
+export interface IHorizontalSectionColumn extends _HorizontalSectionColumn { }
+export const HorizontalSectionColumn = graphInvokableFactory<IHorizontalSectionColumn>(_HorizontalSectionColumn);
+
+@defaultPath("columns")
+@getById(HorizontalSectionColumn)
+export class _HorizontalSectionColumns extends _GraphCollection<IHorizontalSectionColumnInfo[]> { }
+export interface IHorizontalSectionColumns extends _HorizontalSectionColumns, IGetById<IHorizontalSectionColumn, number> { }
+export const HorizontalSectionColumns = graphInvokableFactory<IHorizontalSectionColumns>(_HorizontalSectionColumns);
+
+@updateable()
+@deleteable()
+@defaultPath("canvasLayout/verticalSection")
+export class _VerticalSection extends _GraphInstance<IVerticalSectionInfo> {
+    /**
+     * Get a listing of all the webparts in this vertical section
+     */
+    public get webparts(): IWebparts {
+        return Webparts(this);
+    }
+}
+export interface IVerticalSection extends _VerticalSection, IUpdateable, IDeleteable { }
+export const VerticalSection = graphInvokableFactory<IVerticalSection>(_VerticalSection);
+
+export class _Webpart extends _GraphInstance<ValidWebpart> { }
+export interface IWebpart extends _Webpart { }
+export const Webpart = graphInvokableFactory<IWebpart>(_Webpart);
+
+@defaultPath("webparts")
+export class _Webparts extends _GraphCollection<ValidWebpart[]> {
+
+    /**
+     * Gets the webpart information by id from the page's collection
+     * @param id string id of the webpart
+     * @returns The IWebpart instance
+     */
+    public getById(id: string): IWebpart {
+
+        const url = this.toUrl();
+        const base = url.slice(0, url.indexOf(SitePageTypeString) + SitePageTypeString.length);
+        return Webpart([this, base], `webparts/${id}`);
+    }
+
+    /**
+     * Gets the webpart information by id from the page's collection
+     * @param id string id of the webpart
+     * @returns The IWebpart instance
+     */
+    public getByIndex(index: number): IWebpart {
+        return Webpart(this, `${index}`);
+    }
+}
+export interface IWebparts extends _Webparts, IGetById<IWebpart> { }
+export const Webparts = graphInvokableFactory<IWebparts>(_Webparts);
 
 
 
-
+export interface IVerticalSectionInfo {
+    emphasis: "none" | "netural" | "soft" | "strong" | "unknownFutureValue";
+    id: string;
+}
 
 
 export interface IHorizontalSectionInfo {
