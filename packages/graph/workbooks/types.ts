@@ -16,7 +16,10 @@ import {
     WorkbookFormatProtection as WorkbookFormatProtectionType,
     WorkbookTableSort as WorkbookTableSortType,
     WorkbookFilter as WorkbookFilterType,
-    WorkbookSortField
+    WorkbookWorksheetProtection as WorkbookWorksheetProtectionType,
+    WorkbookPivotTable as WorkbookPivotTableType,
+    WorkbookSortField,
+    WorkbookWorksheetProtectionOptions
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
 import { getRange, IGetRange } from "./decorators.js";
@@ -300,6 +303,14 @@ export class _Worksheet extends _GraphInstance<WorksheetType> {
     public get tables(): ITables {
         return Tables(this);
     }
+
+    public get pivotTables(): IPivotTables {
+        return PivotTables(this, "pivotTables");
+    }
+
+    public get protection(): IWorksheetProtection {
+        return WorksheetProtection(this, "protection");
+    }
 }
 export interface IWorksheet extends _Worksheet, IUpdateable, IDeleteable { }
 export const Worksheet = graphInvokableFactory<IWorksheet>(_Worksheet);
@@ -311,6 +322,18 @@ export class _Worksheets extends _GraphCollection<WorksheetType[]> {
 }
 export interface IWorksheets extends _Worksheets, IAddable, IGetById<IWorksheet> { }
 export const Worksheets = graphInvokableFactory<IWorksheets>(_Worksheets);
+
+export class _WorksheetProtection extends _GraphInstance<WorkbookWorksheetProtectionType> {
+    public protect(options?: WorkbookWorksheetProtectionOptions): Promise<void> {
+        return graphPost(GraphQueryable(this, "protect"), body(options))
+    }
+
+    public unprotect(): Promise<void> {
+        return graphPost(GraphQueryable(this, "unprotect"));
+    }
+}
+export interface IWorksheetProtection extends _WorksheetProtection {}
+export const WorksheetProtection = graphInvokableFactory<IWorksheetProtection>(_WorksheetProtection);
 
 @getRange()
 @updateable()
@@ -473,3 +496,20 @@ export class _TableSort extends _GraphInstance<WorkbookTableSortType> {
 
 export interface ITableSort extends _TableSort {}
 export const TableSort = graphInvokableFactory<ITableSort>(_TableSort);
+
+export class _PivotTable extends _GraphInstance<WorkbookPivotTableType> {
+    public refresh(): Promise<void> {
+        return graphPost(GraphQueryable(this, "refresh"));
+    }
+}
+export interface IPivotTable extends _PivotTable {}
+export const PivotTable = graphInvokableFactory<IPivotTable>(_PivotTable);
+
+@getById(PivotTable)
+export class _PivotTables extends _GraphCollection<WorkbookPivotTableType[]> {
+    public refreshAll(): Promise<void> {
+        return graphPost(GraphQueryable(this, "refreshAll"));
+    }
+}
+export interface IPivotTables extends _PivotTables, IGetById<IPivotTable> {}
+export const PivotTables = graphInvokableFactory<IPivotTables>(_PivotTables);
