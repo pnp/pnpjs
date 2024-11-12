@@ -11,6 +11,7 @@ import {
     WorkbookRangeBorder as WorkbookRangeBorderType,
     WorkbookRangeFont as WorkbookRangeFontType,
     WorkbookRangeFill as WorkbookRangeFillType,
+    WorkbookRangeView as WorkbookRangeViewType,
     WorkbookFormatProtection as WorkbookFormatProtectionType,
     WorkbookTableSort as WorkbookTableSortType,
     WorkbookFilter as WorkbookFilterType,
@@ -51,21 +52,95 @@ export class _Range extends _GraphInstance<WorkbookRangeType> {
         return RangeFormat(this);
     }
 
-    public getCell(row: number, column: number): IRange {
+    public cell(row: number, column: number): IRange {
         return Range(this, `cell(row=${row},column=${column})`);
     }
 
-    public getColumn(column: number): IRange {
+    public column(column: number): IRange {
         return Range(this, `column(column=${column})`);
     }
 
+    public columnsAfter(count: number = 1): IRange {
+        return Range(this, `columnsAfter(count=${count})`);
+    }
+
+    public columnsBefore(count: number = 1): IRange {
+        return Range(this, `columnsBefore(count=${count})`);
+    }
+
+    public row(row: number): IRange {
+        return Range(this, `row(row=${row})`);
+    }
+
+    public rowsAbove(count: number = 1): IRange {
+        return Range(this, `rowsAbove(count=${count})`);
+    }
+
+    public rowsBelow(count: number = 1): IRange {
+        return Range(this, `rowsBelow(count=${count})`);
+    }
+
+    public get entireColumn(): IRange {
+        return Range(this, `entireColumn`);
+    }
+
+    public get entireRow(): IRange {
+        return Range(this, `entireRow`);
+    }
+
+    // NOTE: A few methods here are documented incorrectly.
+    // They're GET methods, but specify that their arguments
+    // are supposed to be passed in the request body.
+    // The API actually wants them in the query string, so
+    // that's what we do here.
+
+    public intersection(anotherRange: string): IRange {
+        return Range(this, `intersection(anotherRange='${anotherRange}')`);
+    }
+
     public boundingRect(anotherRange: string): IRange {
-        /**
-         * NOTE: At the time of writing, the docs for this method are incorrect.
-         * They state that anotherRange should be in the request body,
-         * but the API actually wants them in the path.
-         */
         return Range(this, `boundingRect(anotherRange='${anotherRange}')`);
+    }
+
+    public get lastCell(): IRange {
+        return Range(this, 'lastCell');
+    }
+
+    public get lastColumn(): IRange {
+        return Range(this, 'lastColumn');
+    }
+
+    public get lastRow(): IRange {
+        return Range(this, 'lastRow');
+    }
+
+    public offsetRange(rowOffset: number, columnOffset: number): IRange {
+        return Range(this, `offsetRange(rowOffset=${rowOffset}, columnOffset=${columnOffset})`);
+    }
+
+    // NOTE: Docs say this is a POST. It's a GET.
+    public resizedRange(deltaRows: number, deltaColumns: number): IRange {
+        return Range(this, `resizedRange(deltaRows=${deltaRows}, deltaColumns=${deltaColumns})`);
+    }
+
+    public usedRange(valuesOnly: boolean): IRange {
+        return Range(this, `usedRange(valuesOnly=${valuesOnly})`);
+    }
+
+    public get visibleView(): IRangeView {
+        return RangeView(this, 'visibleView');
+    }
+
+    public insert(shift: "Down" | "Right"): Promise<WorkbookRangeType> {
+        return graphPost(GraphQueryable(this, "insert"), body({ shift }));
+    }
+
+    public merge(across: boolean): Promise<void> {
+        return graphPost(GraphQueryable(this, "merge"), body({ across }));
+    }
+
+    public unmerge(): Promise<void> {
+        return graphPost(GraphQueryable(this, "unmerge"));
     }
 
     public clear(applyTo: "All" | "Formats" | "Contents"): Promise<void> {
@@ -78,6 +153,12 @@ export class _Range extends _GraphInstance<WorkbookRangeType> {
 }
 export interface IRange extends _Range, IUpdateable { }
 export const Range = graphInvokableFactory<IRange>(_Range);
+
+export class _RangeView extends _GraphInstance<WorkbookRangeViewType> {
+
+}
+export interface IRangeView extends _RangeView {}
+const RangeView = graphInvokableFactory<IRangeView>(_RangeView);
 
 @updateable()
 @defaultPath("format")
