@@ -11,6 +11,7 @@ import {
     WorkbookRangeBorder as WorkbookRangeBorderType,
     WorkbookRangeFont as WorkbookRangeFontType,
     WorkbookRangeFill as WorkbookRangeFillType,
+    WorkbookRangeSort as WorkbookRangeSortType,
     WorkbookRangeView as WorkbookRangeViewType,
     WorkbookFormatProtection as WorkbookFormatProtectionType,
     WorkbookTableSort as WorkbookTableSortType,
@@ -50,6 +51,10 @@ export const WorkbookWithSession = graphInvokableFactory<IWorkbookWithSession>(_
 export class _Range extends _GraphInstance<WorkbookRangeType> {
     public get format(): IRangeFormat {
         return RangeFormat(this);
+    }
+
+    public get sort(): IRangeSort {
+        return RangeSort(this);
     }
 
     public cell(row: number, column: number): IRange {
@@ -155,10 +160,39 @@ export interface IRange extends _Range, IUpdateable { }
 export const Range = graphInvokableFactory<IRange>(_Range);
 
 export class _RangeView extends _GraphInstance<WorkbookRangeViewType> {
+    public get rows(): IRangeViews {
+        return RangeViews(this, "rows");
+    }
 
+    public get range(): IRange {
+        return Range(this, "range");
+    }
 }
 export interface IRangeView extends _RangeView {}
 const RangeView = graphInvokableFactory<IRangeView>(_RangeView);
+
+@getItemAt(RangeView)
+export class _RangeViews extends _GraphCollection<WorkbookRangeViewType[]> {
+}
+export interface IRangeViews extends _RangeViews, IGetItemAt<IRangeView> {}
+const RangeViews = graphInvokableFactory<IRangeViews>(_RangeViews);
+
+export interface RangeSortParameters {
+    fields: WorkbookSortField[],
+    matchCase?: boolean,
+    hasHeaders?: boolean,
+    orientation?: "Rows" | "Columns",
+    method?: "PinYin" | "StrokeCount"
+}
+
+@defaultPath("sort")
+export class _RangeSort extends _GraphInstance<WorkbookRangeSortType> {
+    public apply(params: RangeSortParameters): Promise<void> {
+        return graphPost(GraphQueryable(this, "apply"), body(params));
+    }
+}
+export interface IRangeSort extends _RangeSort {}
+const RangeSort = graphInvokableFactory<IRangeSort>(_RangeSort);
 
 @updateable()
 @defaultPath("format")
