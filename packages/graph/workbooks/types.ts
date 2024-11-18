@@ -23,6 +23,8 @@ import {
     WorkbookOperation as WorkbookOperationType,
     WorkbookWorksheetProtectionOptions,
     WorkbookIcon as WorkbookIconType,
+    WorkbookComment as WorkbookCommentType,
+    WorkbookCommentReply as WorkbookCommentReplyType
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
 import { getRange, IGetRange } from "./decorators.js";
@@ -36,6 +38,10 @@ export class _Workbook extends _GraphInstance<WorkbookType> {
 
     public get tables(): ITables {
         return Tables(this);
+    }
+
+    public get comments(): IComments {
+        return Comments(this);
     }
 
     public get names(): INamedItems {
@@ -606,6 +612,31 @@ export class _NamedItems extends _GraphCollection<WorkbookNamedItemType[]> {
 }
 export interface INamedItems extends _NamedItems {}
 export const NamedItems = graphInvokableFactory<INamedItems>(_NamedItems);
+
+export class _Comment extends _GraphInstance<WorkbookCommentType> {
+    public get replies(): ICommentReplies {
+        return CommentReplies(this);
+    }
+}
+export interface IComment extends _Comment {}
+export const Comment = graphInvokableFactory<IComment>(_Comment);
+
+@getById(Comment)
+@defaultPath("comments")
+export class _Comments extends _GraphCollection<WorkbookCommentType[]> {}
+export interface IComments extends _Comments, IGetById<IComment> {}
+export const Comments = graphInvokableFactory<IComments>(_Comments);
+
+export class _CommentReply extends _GraphInstance<WorkbookCommentReplyType> {}
+export interface ICommentReply extends _CommentReply {}
+export const CommentReply = graphInvokableFactory<ICommentReply>(_CommentReply);
+
+@defaultPath("replies")
+@getById(CommentReply)
+@addable()
+export class _CommentReplies extends _GraphInstance<WorkbookCommentReplyType[]> {}
+export interface ICommentReplies extends _CommentReplies, IGetById<ICommentReply>, IAddable<WorkbookCommentReplyType> {}
+export const CommentReplies = graphInvokableFactory<ICommentReplies>(_CommentReplies);
 
 export class _Operation extends _GraphInstance<WorkbookOperationType> {}
 export interface IOperation extends _Operation {}
