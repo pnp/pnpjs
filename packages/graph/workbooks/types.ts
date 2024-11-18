@@ -19,8 +19,9 @@ import {
     WorkbookWorksheetProtection as WorkbookWorksheetProtectionType,
     WorkbookPivotTable as WorkbookPivotTableType,
     WorkbookNamedItem as WorkbookNamedItemType,
-    WorkbookSortField,
-    WorkbookWorksheetProtectionOptions
+    WorkbookSortField as WorkbookSortFieldType,
+    WorkbookWorksheetProtectionOptions,
+    WorkbookIcon as WorkbookIconType,
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
 import { getRange, IGetRange } from "./decorators.js";
@@ -186,7 +187,7 @@ export interface IRangeViews extends _RangeViews, IGetItemAt<IRangeView> {}
 const RangeViews = graphInvokableFactory<IRangeViews>(_RangeViews);
 
 export interface RangeSortParameters {
-    fields: WorkbookSortField[],
+    fields: WorkbookSortFieldType[],
     matchCase?: boolean,
     hasHeaders?: boolean,
     orientation?: "Rows" | "Columns",
@@ -486,7 +487,7 @@ export const WorkbookFilter = graphInvokableFactory<IWorkbookFilter>(_WorkbookFi
 
 @defaultPath("sort")
 export class _TableSort extends _GraphInstance<WorkbookTableSortType> {
-    public apply(fields: WorkbookSortField[], matchCase?: boolean, method?: string): Promise<void> {
+    public apply(fields: WorkbookSortFieldType[], matchCase?: boolean, method?: string): Promise<void> {
         return graphPost(GraphQueryable(this, "apply"), body({ fields, matchCase, method }));
     }
 
@@ -497,10 +498,38 @@ export class _TableSort extends _GraphInstance<WorkbookTableSortType> {
     public reapply(): Promise<void> {
         return graphPost(GraphQueryable(this, "reapply"));
     }
-}
 
-export interface ITableSort extends _TableSort {}
+    /**
+     * This is documented on the pages for "WorkbookTableSort"
+     * and "Icon", but whenever I try to access `table/sort/fields`, 
+     * I get "GeneralException" from Graph API.
+     * 
+     * This means the Icon class is useless, as you can't get
+     * to any endpoint that returns it.
+     * 
+     * IMO, I think the "Icon" page on the docs is a mistake.
+     * There's no reason for it to be a separate endpoint. You
+     * would simply call clear() and apply() on this sort
+     * if you wanted to update its icon.
+     * 
+     * I have left the Icon class in this file as it's 
+     * technically in the docs, but atm there's no API call that uses it.
+     */
+    // public get fields(): ISortFields {
+    //     return SortFields(this, "fields");
+    // }
+}
+export class ITableSort extends _TableSort {}
 export const TableSort = graphInvokableFactory<ITableSort>(_TableSort);
+
+// See above
+// export class _SortFields extends _GraphInstance<WorkbookSortFieldType[]> {
+//     public get icon(): IIcon {
+//         return Icon(this, "icon");
+//     }
+// }
+// export interface ISortFields extends _SortFields {}
+// export const SortFields = graphInvokableFactory<ISortFields>(_SortFields);
 
 export class _PivotTable extends _GraphInstance<WorkbookPivotTableType> {
     public refresh(): Promise<void> {
@@ -572,3 +601,8 @@ export class _NamedItems extends _GraphCollection<WorkbookNamedItemType[]> {
 }
 export interface INamedItems extends _NamedItems {}
 export const NamedItems = graphInvokableFactory<INamedItems>(_NamedItems);
+
+@updateable()
+export class _Icon extends _GraphInstance<WorkbookIconType> {}
+export interface IIcon extends _Icon, IUpdateable {}
+export const Icon = graphInvokableFactory<IIcon>(_Icon);
