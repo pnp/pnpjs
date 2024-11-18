@@ -181,7 +181,7 @@ export class _Range extends _GraphInstance<WorkbookRangeType> {
         return graphPost(GraphQueryable(this, "delete"), body({ shift }));
     }
 }
-export interface IRange extends _Range, IUpdateable { }
+export interface IRange extends _Range, IUpdateable<WorkbookRangeType> { }
 export const Range = graphInvokableFactory<IRange>(_Range);
 
 export class _RangeView extends _GraphInstance<WorkbookRangeViewType> {
@@ -247,13 +247,13 @@ export class _RangeFormat extends _GraphInstance<WorkbookRangeFormatType> {
     }
 }
 
-export interface IRangeFormat extends _RangeFormat, IUpdateable { }
+export interface IRangeFormat extends _RangeFormat, IUpdateable<WorkbookRangeFormatType> { }
 export const RangeFormat = graphInvokableFactory<IRangeFormat>(_RangeFormat);
 
 @defaultPath("font")
 @updateable()
 export class _RangeFont extends _GraphInstance<WorkbookRangeFontType> { }
-export interface IRangeFont extends _RangeFont, IUpdateable { }
+export interface IRangeFont extends _RangeFont, IUpdateable<WorkbookRangeFontType> { }
 export const RangeFont = graphInvokableFactory<IRangeFont>(_RangeFont);
 
 @defaultPath("fill")
@@ -263,14 +263,14 @@ export class _RangeFill extends _GraphInstance<WorkbookRangeFillType> {
         return graphPost(GraphQueryable(this, "clear"));
     }
 }
-export interface IRangeFill extends _RangeFill, IUpdateable { }
+export interface IRangeFill extends _RangeFill, IUpdateable<WorkbookRangeFillType> { }
 export const RangeFill = graphInvokableFactory<IRangeFill>(_RangeFill);
 
 @defaultPath("protection")
 @updateable()
 export class _RangeFormatProtection extends _GraphInstance<WorkbookFormatProtectionType> { }
 
-export interface IRangeFormatProtection extends _RangeFormatProtection, IUpdateable { }
+export interface IRangeFormatProtection extends _RangeFormatProtection, IUpdateable<WorkbookFormatProtectionType> { }
 export const RangeFormatProtection = graphInvokableFactory<IRangeFormatProtection>(_RangeFormatProtection);
 
 @updateable()
@@ -283,7 +283,7 @@ export class _RangeBorder extends _GraphInstance<WorkbookRangeBorderType> { }
  * try to manually set border styles in Excel, it's not possible to select
  * a thick dashed line.
  */
-export interface IRangeBorder extends _RangeBorder, IUpdateable { }
+export interface IRangeBorder extends _RangeBorder, IUpdateable<WorkbookRangeBorderType> { }
 export const RangeBorder = graphInvokableFactory<IRangeBorder>(_RangeBorder);
 
 @defaultPath("borders")
@@ -322,6 +322,14 @@ export class _Worksheet extends _GraphInstance<WorksheetType> {
         }
     }
 
+    public getUsedRange(valuesOnly?: boolean): IRange {
+        if (valuesOnly) {
+            return Range(this, `usedRange(valuesOnly=${valuesOnly})`);
+        } else {
+            return Range(this, "usedRange");
+        }
+    }
+
     public get tables(): ITables {
         return Tables(this);
     }
@@ -330,19 +338,27 @@ export class _Worksheet extends _GraphInstance<WorksheetType> {
         return PivotTables(this, "pivotTables");
     }
 
+    public get names(): INamedItems {
+        return NamedItems(this, "names");
+    }
+
     public get protection(): IWorksheetProtection {
         return WorksheetProtection(this, "protection");
     }
 }
-export interface IWorksheet extends _Worksheet, IUpdateable, IDeleteable { }
+export interface IWorksheet extends _Worksheet, IUpdateable<WorksheetType>, IDeleteable { }
 export const Worksheet = graphInvokableFactory<IWorksheet>(_Worksheet);
+
+export interface IAddWorksheet {
+    name?: string;
+}
 
 @defaultPath("worksheets")
 @addable()
 @getById(Worksheet)
 export class _Worksheets extends _GraphCollection<WorksheetType[]> {
 }
-export interface IWorksheets extends _Worksheets, IAddable, IGetById<IWorksheet> { }
+export interface IWorksheets extends _Worksheets, IAddable<IAddWorksheet, WorksheetType>, IGetById<IWorksheet> { }
 export const Worksheets = graphInvokableFactory<IWorksheets>(_Worksheets);
 
 export class _WorksheetProtection extends _GraphInstance<WorkbookWorksheetProtectionType> {
@@ -405,7 +421,7 @@ export class _Table extends _GraphInstance<WorkbookTableType> {
         return graphPost(GraphQueryable(this, "convertToRange"));
     }
 }
-export interface ITable extends _Table, IUpdateable, IDeleteable, IGetRange { }
+export interface ITable extends _Table, IUpdateable<WorkbookTableType>, IDeleteable, IGetRange { }
 export const Table = graphInvokableFactory<ITable>(_Table);
 
 @defaultPath("tables")
@@ -428,8 +444,13 @@ export const Tables = graphInvokableFactory<ITables>(_Tables);
 export class _TableRow extends _GraphInstance<WorkbookTableRowType> {
 
 }
-export interface ITableRow extends _TableRow, IUpdateable, IDeleteable, IGetRange { }
+export interface ITableRow extends _TableRow, IUpdateable<WorkbookTableRowType>, IDeleteable, IGetRange { }
 export const TableRow = graphInvokableFactory<ITableRow>(_TableRow);
+
+export interface IAddRow {
+    index?: number,
+    values?: any[][]
+}
 
 @defaultPath("rows")
 @addable()
@@ -443,7 +464,7 @@ export class _TableRows extends _GraphCollection<WorkbookTableRowType[]> {
         return TableRow(this, `${index}`);
     }
 }
-export interface ITableRows extends _TableRows, IAddable, IGetItemAt<ITableRow> { }
+export interface ITableRows extends _TableRows, IAddable<IAddRow, WorkbookTableRowType>, IGetItemAt<ITableRow> { }
 export const TableRows = graphInvokableFactory<ITableRows>(_TableRows);
 
 @getRange()
@@ -466,8 +487,14 @@ export class _TableColumn extends _GraphInstance<WorkbookTableColumnType> {
         return Range(this, "totalRowRange");
     }
 }
-export interface ITableColumn extends _TableColumn, IUpdateable, IDeleteable, IGetRange { }
+export interface ITableColumn extends _TableColumn, IUpdateable<WorkbookTableColumnType>, IDeleteable, IGetRange { }
 export const TableColumn = graphInvokableFactory<ITableColumn>(_TableColumn);
+
+export interface IAddColumn {
+    name?: string;
+    index?: number;
+    values?: any[][],
+}
 
 @defaultPath("columns")
 @addable()
@@ -477,7 +504,7 @@ export class _TableColumns extends _GraphCollection<WorkbookTableColumnType[]> {
         return TableColumn(this, name);
     }
 }
-export interface ITableColumns extends _TableColumns, IAddable { }
+export interface ITableColumns extends _TableColumns, IAddable<IAddColumn, WorkbookTableColumnType> { }
 export const TableColumns = graphInvokableFactory<ITableColumns>(_TableColumns);
 
 @defaultPath("filter")
@@ -640,7 +667,7 @@ export const CommentReply = graphInvokableFactory<ICommentReply>(_CommentReply);
 @getById(CommentReply)
 @addable()
 export class _CommentReplies extends _GraphInstance<WorkbookCommentReplyType[]> {}
-export interface ICommentReplies extends _CommentReplies, IGetById<ICommentReply>, IAddable<WorkbookCommentReplyType> {}
+export interface ICommentReplies extends _CommentReplies, IGetById<ICommentReply>, IAddable<WorkbookCommentReplyType, WorkbookCommentReplyType> {}
 export const CommentReplies = graphInvokableFactory<ICommentReplies>(_CommentReplies);
 
 @defaultPath("application")
@@ -664,5 +691,5 @@ export const Operations = graphInvokableFactory<IOperations>(_Operations);
 
 @updateable()
 export class _Icon extends _GraphInstance<WorkbookIconType> {}
-export interface IIcon extends _Icon, IUpdateable {}
+export interface IIcon extends _Icon, IUpdateable<WorkbookIconType> {}
 export const Icon = graphInvokableFactory<IIcon>(_Icon);
