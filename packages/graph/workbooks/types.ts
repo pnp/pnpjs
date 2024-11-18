@@ -24,7 +24,8 @@ import {
     WorkbookWorksheetProtectionOptions,
     WorkbookIcon as WorkbookIconType,
     WorkbookComment as WorkbookCommentType,
-    WorkbookCommentReply as WorkbookCommentReplyType
+    WorkbookCommentReply as WorkbookCommentReplyType,
+    WorkbookApplication as WorkbookApplicationType
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
 import { getRange, IGetRange } from "./decorators.js";
@@ -49,7 +50,11 @@ export class _Workbook extends _GraphInstance<WorkbookType> {
     }
     
     public get operations(): IOperations {
-        return Operations(this, "operations");
+        return Operations(this);
+    }
+
+    public get application(): IApplication {
+        return Application(this);
     }
 }
 export interface IWorkbook extends _Workbook { }
@@ -638,10 +643,20 @@ export class _CommentReplies extends _GraphInstance<WorkbookCommentReplyType[]> 
 export interface ICommentReplies extends _CommentReplies, IGetById<ICommentReply>, IAddable<WorkbookCommentReplyType> {}
 export const CommentReplies = graphInvokableFactory<ICommentReplies>(_CommentReplies);
 
+@defaultPath("application")
+export class _Application extends _GraphInstance<WorkbookApplicationType> {
+    public calculate(calculationType: 'Recalculate' | 'Full' | 'FullRebuild'): Promise<void> {
+        return graphPost(GraphQueryable(this, "calculate"), body({ calculationType }));
+    }
+}
+export interface IApplication extends _Application {}
+export const Application = graphInvokableFactory<IApplication>(_Application);
+
 export class _Operation extends _GraphInstance<WorkbookOperationType> {}
 export interface IOperation extends _Operation {}
 export const Operation = graphInvokableFactory<IOperation>(_Operation);
 
+@defaultPath("operations")
 @getById(Operation)
 export class _Operations extends _GraphCollection<WorkbookOperationType[]> {}
 export interface IOperations extends _Operations, IGetById<IOperation> {}
