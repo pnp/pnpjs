@@ -18,12 +18,13 @@ import {
     WorkbookFilter as WorkbookFilterType,
     WorkbookWorksheetProtection as WorkbookWorksheetProtectionType,
     WorkbookPivotTable as WorkbookPivotTableType,
+    WorkbookNamedItem as WorkbookNamedItemType,
     WorkbookSortField,
     WorkbookWorksheetProtectionOptions
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
 import { getRange, IGetRange } from "./decorators.js";
-import { body } from "@pnp/queryable/index.js";
+import { body, JSONParse } from "@pnp/queryable/index.js";
 
 @defaultPath("workbook")
 export class _Workbook extends _GraphInstance<WorkbookType> {
@@ -33,6 +34,10 @@ export class _Workbook extends _GraphInstance<WorkbookType> {
 
     public get tables(): ITables {
         return Tables(this);
+    }
+
+    public get names(): INamedItems {
+        return NamedItems(this);
     }
 }
 export interface IWorkbook extends _Workbook { }
@@ -513,3 +518,57 @@ export class _PivotTables extends _GraphCollection<WorkbookPivotTableType[]> {
 }
 export interface IPivotTables extends _PivotTables, IGetById<IPivotTable> {}
 export const PivotTables = graphInvokableFactory<IPivotTables>(_PivotTables);
+
+interface IUpdateNamedItem {
+    comment?: string,
+    visible?: boolean
+}
+
+@updateable()
+export class _NamedItem extends _GraphInstance<WorkbookNamedItemType> {
+    public get range(): IRange {
+        return Range(this, "range");
+    }
+}
+export interface INamedItem extends _NamedItem, IUpdateable<IUpdateNamedItem> {}
+export const NamedItem = graphInvokableFactory<INamedItem>(_NamedItem);
+
+interface IAddNamedItem {
+    name: string,
+    reference: string,
+    comment: string
+}
+
+@defaultPath("names")
+// @getById(NamedItem)
+export class _NamedItems extends _GraphCollection<WorkbookNamedItemType[]> {
+    /**
+     * The NamedItem object contains string property named "value". 
+     * This causes an issue with the DefaultParse
+     * parser (namely parseODataJSON), because it's set up to throw away
+     * the rest of the object if it contains a field "value".
+     * 
+     * Below I'm manually replacing the parser with JSONParse. This works,
+     * but is unideal because it would replace any custom parser a user
+     * may have set up earlier.
+     * 
+     * I know the docs caution against making changes in the
+     * core classes - my suggestion would be to change
+     * the check in parseODataJSON from `hasOwnProperty` to something like
+     * `typeof json["value"] === "object"`. Thoughts?
+     */
+
+    public add(item: IAddNamedItem): Promise<WorkbookNamedItemType> {
+        const q = GraphQueryable(this, "add");
+        q.using(JSONParse());
+        return graphPost(q, body(item));
+    }
+
+    public getByName(name: string): INamedItem {
+        const q = NamedItem(this, name);
+        q.using(JSONParse());
+        return q;
+    }
+}
+export interface INamedItems extends _NamedItems {}
+export const NamedItems = graphInvokableFactory<INamedItems>(_NamedItems);
