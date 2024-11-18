@@ -20,6 +20,7 @@ import {
     WorkbookPivotTable as WorkbookPivotTableType,
     WorkbookNamedItem as WorkbookNamedItemType,
     WorkbookSortField as WorkbookSortFieldType,
+    WorkbookOperation as WorkbookOperationType,
     WorkbookWorksheetProtectionOptions,
     WorkbookIcon as WorkbookIconType,
 } from "@microsoft/microsoft-graph-types";
@@ -39,6 +40,10 @@ export class _Workbook extends _GraphInstance<WorkbookType> {
 
     public get names(): INamedItems {
         return NamedItems(this);
+    }
+    
+    public get operations(): IOperations {
+        return Operations(this, "operations");
     }
 }
 export interface IWorkbook extends _Workbook { }
@@ -601,6 +606,15 @@ export class _NamedItems extends _GraphCollection<WorkbookNamedItemType[]> {
 }
 export interface INamedItems extends _NamedItems {}
 export const NamedItems = graphInvokableFactory<INamedItems>(_NamedItems);
+
+export class _Operation extends _GraphInstance<WorkbookOperationType> {}
+export interface IOperation extends _Operation {}
+export const Operation = graphInvokableFactory<IOperation>(_Operation);
+
+@getById(Operation)
+export class _Operations extends _GraphCollection<WorkbookOperationType[]> {}
+export interface IOperations extends _Operations, IGetById<IOperation> {}
+export const Operations = graphInvokableFactory<IOperations>(_Operations);
 
 @updateable()
 export class _Icon extends _GraphInstance<WorkbookIconType> {}
