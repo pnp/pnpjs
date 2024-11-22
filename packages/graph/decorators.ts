@@ -162,24 +162,6 @@ export interface IGetById<R = any, T = string> {
     getById(id: T): R;
 }
 
-export function getItemAt<R>(factory: (...args: any[]) => R) {
-    return function <T extends { new(...args: any[]): {} }>(target: T) {
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        return class extends target {
-            public getItemAt(this: IGraphQueryable, index: number): R {
-                return factory(this, `itemAt(index=${index})`);
-            }
-        };
-    };
-}
-export interface IGetItemAt<R = any, T = number> {
-    /**
-     * Get an item based on its position in the collection.
-     * @param index Index of the item to be retrieved. Zero-indexed.
-     */
-    getItemAt(index: T): R;
-}
-
 /**
  * Adds the getByName method to a collection
  */

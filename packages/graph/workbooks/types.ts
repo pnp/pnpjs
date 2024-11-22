@@ -1,5 +1,5 @@
-import { updateable, IUpdateable, addable, getById, IAddable, IGetById, deleteable, IDeleteable, defaultPath, getItemAt, IGetItemAt } from "../decorators.js";
-import { _GraphCollection, graphInvokableFactory, _GraphInstance, GraphQueryable } from "../graphqueryable.js";
+import { updateable, IUpdateable, addable, getById, IAddable, IGetById, deleteable, IDeleteable, defaultPath, } from "../decorators.js";
+import { _GraphCollection, graphInvokableFactory, _GraphInstance, GraphQueryable, IGraphQueryable } from "../graphqueryable.js";
 import {
     Workbook as WorkbookType,
     WorkbookWorksheet as WorksheetType,
@@ -28,7 +28,6 @@ import {
     WorkbookApplication as WorkbookApplicationType
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
-import { getRange, IGetRange } from "./decorators.js";
 import { body, JSONParse } from "@pnp/queryable/index.js";
 
 @defaultPath("workbook")
@@ -693,3 +692,43 @@ export const Operations = graphInvokableFactory<IOperations>(_Operations);
 export class _Icon extends _GraphInstance<WorkbookIconType> {}
 export interface IIcon extends _Icon, IUpdateable<WorkbookIconType> {}
 export const Icon = graphInvokableFactory<IIcon>(_Icon);
+
+export function getItemAt<R>(factory: (...args: any[]) => R) {
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        return class extends target {
+            public getItemAt(this: IGraphQueryable, index: number): R {
+                return factory(this, `itemAt(index=${index})`);
+            }
+        };
+    };
+}
+export interface IGetItemAt<R = any, T = number> {
+    /**
+     * Get an item based on its position in the collection.
+     * @param index Index of the item to be retrieved. Zero-indexed.
+     */
+    getItemAt(index: T): R;
+}
+
+/**
+ * Adds the getRange method to the tagged class
+ */
+export function getRange() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+
+        return class extends target {
+            public getRange(this: IGraphQueryable): IRange {
+                return Range(this, "range");
+            }
+        };
+    };
+}
+
+export interface IGetRange {
+    /**
+     * Get the range of cells contained by this element.
+     */
+    getRange(): IRange;
+}
