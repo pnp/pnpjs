@@ -97,7 +97,7 @@ The [test recording](./test-recording.ts) replaces the default `.send` behavior 
 
 1. Generate file names for body and init
 2. Look-up if files exist, and if so construct and return a new Response object based on the data
-3. If no files exist and operating in read mode, make the request with node-fetch and return the Response 
-4. If no files exist and operating in write mode, make the request with node-fetch and write the response data to the fs
+3. If no files exist and operating in read mode, make the request and return the Response 
+4. If no files exist and operating in write mode, make the request and write the response data to the fs
 
 

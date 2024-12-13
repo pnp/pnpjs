@@ -28,7 +28,6 @@
         "findup-sync": "5.0.0",
         "globby": "14.0.2",
         "mocha": "10.7.3",
-        "node-fetch": "3.3.2",
         "prettyjson": "1.2.5",
         "string-replace-loader": "3.1.0",
         "tslib": "2.7.0",
