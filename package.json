@@ -71,7 +71,7 @@
         "sharepoint framework"
     ],
     "engines": {
-        "node": ">=14.15.1"
+        "node": ">=18.17.1"
     },
     "engineStrict": true,
     "maintainers": [
