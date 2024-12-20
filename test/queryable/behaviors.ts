@@ -10,7 +10,7 @@ import {
     ResolveOnData,
     CacheKey,
 } from "@pnp/queryable";
-import { default as nodeFetch } from "node-fetch";
+
 import "@pnp/sp/webs";
 import "@pnp/sp/fields";
 import { getRandomString } from "@pnp/core";
@@ -166,7 +166,7 @@ describe("Behaviors", function () {
         query.using(Timeout(50));
         query.using(ResolveOnData(), RejectOnError());
 
-        query.on.send.replace(async (url, init) => <any>nodeFetch(url.toString(), <any>init));
+        query.on.send.replace(async (url, init) => <any>fetch(url.toString(), <any>init));
 
         try {
 

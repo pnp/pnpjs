@@ -57,7 +57,7 @@ export function CompanyDefault(): TimelinePipe<Queryable> {
             DefaultHeaders(),
             // use the default init, but change the base url to beta
             DefaultInit("https://graph.microsoft.com/beta"),
-            // use node-fetch with retry
+            // use fetch with retry
             NodeFetchWithRetry(),
             // use the default parsing
             DefaultParse(),

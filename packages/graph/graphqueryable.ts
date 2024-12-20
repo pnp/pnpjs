@@ -1,4 +1,4 @@
-import { isArray, objectDefinedNotNull } from "@pnp/core";
+import { isArray } from "@pnp/core";
 import { IInvokable, Queryable, queryableFactory, op, get, post, patch, del, put } from "@pnp/queryable";
 import { ConsistencyLevel } from "./behaviors/consistency-level.js";
 import { IPagedResult, Paged } from "./behaviors/paged.js";
@@ -80,17 +80,12 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      *
      * @param factory The contructor for the class to create
      */
-    protected getParent<T extends _GraphQueryable>(
-        factory: IGraphConstructor<T>,
-        base: GraphInit = this.parentUrl,
-        path?: string): T {
+    protected getParent<T extends IGraphQueryable>(
+        factory: IGraphInvokableFactory<any>,
+        path?: string,
+        base: string = this.parentUrl): T {
 
-        if (typeof base === "string") {
-            // we need to ensure the parent has observers, even if we are rebasing the url (#2435)
-            base = [this, base];
-        }
-
-        return new factory(base, path);
+        return factory([this, base], path);
     }
 }
 
@@ -169,13 +164,9 @@ export class _GraphCollection<GetType = any[]> extends _GraphQueryable<GetType> 
 
         const q = GraphCollection(this).using(Paged(), ConsistencyLevel());
 
-        const queryParams = ["$search", "$top", "$select", "$expand", "$filter", "$orderby"];
-
-        for (let i = 0; i < queryParams.length; i++) {
-            const param = this.query.get(queryParams[i]);
-            if (objectDefinedNotNull(param)) {
-                q.query.set(queryParams[i], param);
-            }
+        // Issue #3136, some APIs take other query params that need to persist through the paging, so we just include everything
+        for (const [key, value] of this.query) {
+            q.query.set(key, value);
         }
 
         return <AsyncIterator<GetType>>{
@@ -201,7 +192,6 @@ export class _GraphCollection<GetType = any[]> extends _GraphQueryable<GetType> 
         };
     }
 }
-
 export interface IGraphCollection<GetType = any[]> extends _GraphCollection<GetType> { }
 export const GraphCollection = graphInvokableFactory<IGraphCollection>(_GraphCollection);
 
@@ -210,7 +200,6 @@ export const GraphCollection = graphInvokableFactory<IGraphCollection>(_GraphCol
  *
  */
 export class _GraphInstance<GetType = any> extends _GraphQueryable<GetType> { }
-
 export interface IGraphInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> { }
 export const GraphInstance = graphInvokableFactory<IGraphInstance>(_GraphInstance);
 
