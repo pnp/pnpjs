@@ -65,7 +65,7 @@ export async function getUploadSession(resuableUploadOptions: any): Promise<{ses
     const session = await graphPost(q, body(postBody));
 
     // Create a new queryable for the upload session
-    const uploadQueryable = GraphQueryable(session.uploadUrl).using(CopyFrom(this, "replace", (k) => /(pre|init|send|parse|post|data)/i.test(k)));
+    const uploadQueryable = GraphQueryable(session.uploadUrl).using(CopyFrom(this, "replace", (k) => /(pre|init|send|parse|post|data|error)/i.test(k)));
 
     const resumableUpload = ResumableUpload(uploadQueryable);
 
