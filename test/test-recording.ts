@@ -5,7 +5,6 @@ import { join, resolve } from "path";
 import { Context, Suite } from "mocha";
 import { TestProps } from "./test-props.js";
 import { PnPTestHeaderName } from "./pnp-test.js";
-import { default as nodeFetch } from "node-fetch";
 
 // TODO:: a way to record tests from the browser -> console.log what we would save in a file along with the generated filename
 
@@ -135,7 +134,7 @@ function RequestRecorderCache(resolvedRecordingPath: string, mode: "playback" | 
                 }
             }
 
-            const response: Response = await <any>nodeFetch(url.toString(), <any>init);
+            const response: Response = await <any>fetch(url.toString(), <any>init);
 
             if (mode === "record") {
 

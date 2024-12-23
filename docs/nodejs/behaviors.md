@@ -4,7 +4,7 @@ The article describes the behaviors exported by the `@pnp/nodejs` library. Pleas
 
 ## NodeFetch
 
-This behavior, for use in nodejs, provides basic fetch support through the `node-fetch` package. It replaces any other registered observers on the send moment by default, but this can be controlled via the props. Remember, when registering observers on the send moment only the first one will be used so not replacing
+This behavior, for use in nodejs, provides basic fetch support using native fetch api. It replaces any other registered observers on the send moment by default, but this can be controlled via the props. Remember, when registering observers on the send moment only the first one will be used so not replacing
 
 > For fetch configuration in browsers please see [@pnp/queryable behaviors]("../../../queryable/behaviors.md).
 

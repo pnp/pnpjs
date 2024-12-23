@@ -26,6 +26,17 @@ export interface ISettings {
             scopes: string[];
         };
     };
+    spadmin?: {
+        testWebUrl?: string;
+        id?: string;
+        notificationUrl?: string | null;
+        secret?: string;
+        url: string;
+        msal?: {
+            init: Configuration;
+            scopes: string[];
+        };
+    };
 }
 
 export interface ITestingSettings {

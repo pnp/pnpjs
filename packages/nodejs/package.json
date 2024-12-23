@@ -5,13 +5,12 @@
     "main": "./index.js",
     "typings": "./index",
     "dependencies": {
-        "@azure/msal-node": "2.15.0",
+        "@azure/msal-node": "2.16.2",
         "@pnp/core": "0.0.0-PLACEHOLDER",
         "@pnp/logging": "0.0.0-PLACEHOLDER",
         "@pnp/queryable": "0.0.0-PLACEHOLDER",
         "@pnp/sp": "0.0.0-PLACEHOLDER",
         "@pnp/graph": "0.0.0-PLACEHOLDER",
-        "node-fetch": "3.3.2",
-        "tslib": "2.7.0"
+        "tslib": "2.8.1"
     }
 }

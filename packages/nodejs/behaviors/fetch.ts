@@ -1,6 +1,5 @@
 import { LogLevel } from "@pnp/logging";
 import { HttpRequestError, Queryable } from "@pnp/queryable";
-import { default as nodeFetch } from "node-fetch";
 import { delay, TimelinePipe } from "@pnp/core";
 
 export interface INodeFetchProps {
@@ -24,7 +23,7 @@ export function NodeFetch(props?: INodeFetchProps): TimelinePipe<Queryable> {
 
             this.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
-            return <any>nodeFetch(url.toString(), <any>init);
+            return <any>fetch(url.toString(), <any>init);
         });
 
         return instance;
@@ -93,7 +92,7 @@ export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePi
 
                         this.log(`Fetch: ${init.method} ${url.toString()}`, LogLevel.Verbose);
 
-                        response = await <any>nodeFetch(url.toString(), <any>init);
+                        response = await <any>fetch(url.toString(), <any>init);
 
                         // if we got a good response, return it, otherwise see if we can retry
                         return response.ok ? response : retry();
