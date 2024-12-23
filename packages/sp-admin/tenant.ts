@@ -1,5 +1,5 @@
 import { body, BufferParse } from "@pnp/queryable";
-import { _SPInstance, defaultPath, spInvokableFactory, spPost } from "@pnp/sp";
+import { _SPInstance, defaultPath, spInvokableFactory, spPatch, spPost } from "@pnp/sp";
 import { IRenderListDataParameters } from "@pnp/sp/lists";
 import { IHubSiteInfo } from "@pnp/sp/hubsites";
 import {
@@ -47,6 +47,16 @@ class _Tenant extends _SPInstance<ITenantInfo> {
             url,
             includeDetail,
         }));
+    }
+
+    /**
+     * Sets site object for the given site id
+     *
+     * @param siteId the id of the site (i.e. _api/site -- not root web)
+     * @param props properties to be updated
+     */
+    public setSitePropertiesById(siteId: string, properties: Partial<ITenantSitePropertiesInfo>): Promise<void> {
+        return spPatch(Tenant(this, `sites('${siteId}')`), body(properties));
     }
 
     /**

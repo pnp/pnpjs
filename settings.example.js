@@ -41,6 +41,23 @@ export const settings = {
             },
             testWebUrl:"{ site collection for testing }"
         },
+        spadmin: {
+            // legacy client id (optional if using msal)
+            id: "{ client id }",
+            // legacy client secret (optional if using msal)
+            secret: "{ client secret }",
+            // required for legacy or msal auth
+            url: "{ site collection url }",
+            // optional: tests of webhooks will fail if not provided
+            notificationUrl: "{ notification url }",
+            // for new deployments we recommend the msal settings that can then be applied to both graph and SharePoint
+            msal: {
+                init: msalInit,
+                // set your scopes as needed here
+                scopes: ["https://{tenant}.sharepoint.com/.default"]
+            },
+            testWebUrl:"{ site collection for testing }"
+        },
         // all are optional if using msal
         graph: {
             // all three of these are optional if using msal
