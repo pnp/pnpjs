@@ -36,6 +36,7 @@ site
 # allow folks to add things to the debug /launch and /serve folder, but don't include them in git
 debug/launch/*
 !debug/launch/main.ts
+!debug/launch/spadmin.ts
 !debug/launch/sp.ts
 !debug/launch/graph.ts
 !debug/launch/tsconfig.json

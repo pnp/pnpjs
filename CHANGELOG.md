@@ -5,19 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 4.8.0 - 2024-Dec-23
+
+- graph
+  - Fixed issue with resumableUpload
+
+- nodejs
+  - Removed node-fetch as minimum supported NodeJS version support native fetch.
+
+- queryable
+  - reversed removal of .clone()
+
 ## 4.7.0 - 2024-Nov-18
 
 - sp
-    - Introduces new filter lamda patterns as beta
+  - Introduces new filter lamda patterns as beta
 
 - graph
-    - Renamed OneNote Pages to OneNotePages
-    - Basic Pages API support as beta
-    - Site Open Extensions as beta
-    - Fixed #3136 for improving paging support for query params
+  - Renamed OneNote Pages to OneNotePages
+  - Basic Pages API support as beta
+  - Site Open Extensions as beta
+  - Fixed #3136 for improving paging support for query params
 
 - queryable
-    - Introduced DebugHeaders behavior
+  - Introduced DebugHeaders behavior
 
 ## 4.6.0 - 2024-Oct-14
 

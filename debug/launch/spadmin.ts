@@ -1,24 +1,21 @@
 import { ITestingSettings } from "../../test/load-settings.js";
 import { Logger, LogLevel } from "@pnp/logging";
-import { spSetup } from "./setup.js";
-import "@pnp/sp/webs";
-import "@pnp/sp/lists";
+import { spAdminSetup } from "./setup.js";
+import "@pnp/sp-admin/index.js";
 
 declare var process: { exit(code?: number): void };
 
 export async function Example(settings: ITestingSettings) {
 
-  const sp = spSetup(settings);
+  const spAdmin = spAdminSetup(settings);
 
-  const w = await sp.web.lists();
+  const s = await spAdmin.admin.tenant.getSitePropertiesByUrl('https://sympjt.sharepoint.com/sites/pnpjsteam', true);
 
   Logger.log({
-    data: w,
+    data: s,
     level: LogLevel.Info,
     message: "Web Data",
   });
-  
+
   process.exit(0);
 }
-
-

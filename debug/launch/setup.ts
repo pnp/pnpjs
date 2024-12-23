@@ -29,6 +29,28 @@ export function spSetup(settings: ITestingSettings): SPFI {
     return sp;
 }
 
+export function spAdminSetup(settings: ITestingSettings): SPFI {
+
+    const sp = spfi(settings.testing.spadmin.url).using(SPDefault({
+        msal: {
+            config: settings.testing.spadmin.msal.init,
+            scopes: settings.testing.spadmin.msal.scopes,
+        },
+    })).using(
+        PnPLogging(LogLevel.Verbose),
+        function (instance: Queryable) {
+
+            instance.on.pre(async (url, init, result) => {
+
+                // we remove telemetry for debugging
+                delete init.headers["X-ClientService-ClientTag"];
+                return [url, init, result];
+            });
+        });
+
+    return sp;
+}
+
 export function graphSetup(settings: ITestingSettings): GraphFI {
 
     const graph = graphfi().using(

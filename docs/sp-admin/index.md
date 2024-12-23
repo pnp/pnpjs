@@ -49,21 +49,27 @@ The `tenant` node represents calls to the `_api/Microsoft.Online.SharePoint.Tena
 import { spfi } from "@pnp/sp";
 import "@pnp/sp-admin";
 
-const sp = spfi("https://{tenant}-admin.sharepoint.com");
+const spAdmin = spfi("https://{tenant}-admin.sharepoint.com");
 
 // The MSAL scope will be: "https://{tenant}-admin.sharepoint.com/.default"
 
 // default props
-const defaultProps = await sp.admin.tenant();
+const defaultProps = await spAdmin.admin.tenant();
 
 // all props
-const allProps = await sp.admin.tenant.select("*")();
+const allProps = await spAdmin.admin.tenant.select("*")();
 
 // select specific props
-const selectedProps = await sp.admin.tenant.select("AllowEditing", "DefaultContentCenterSite")();
+const selectedProps = await spAdmin.admin.tenant.select("AllowEditing", "DefaultContentCenterSite")();
 
 // call method
-const templates = await sp.admin.tenant.getSPOTenantAllWebTemplates();
+const templates = await spAdmin.admin.tenant.getSPOTenantAllWebTemplates();
+
+// get site properties by url
+const props = await spAdmin.admin.tenant.getSitePropertiesByUrl("https://contoso.sharepoint.com/sites/dev", true);
+
+// set site properties by id -- GUID of SharePoint site (not root web)
+await spAdmin.admin.tenant.setSitePropertiesById("{siteId}", {LockedState: "ReadOnly"});
 ```
 
 ## office365Tenant
@@ -116,7 +122,7 @@ await sp.admin.siteProperties.clearSharingLockDown("https://tenant.sharepoint.co
 
 ## call
 
-All those nodes support a `call` method to easily allow calling methods not explictly added to the library. If there is a method you use often that would be a good candidate to add, please open an issue or submit a PR. The call method is meant to help unblock folks before methods are added.
+All those nodes support a `call` method to easily allow calling methods not explicitly added to the library. If there is a method you use often that would be a good candidate to add, please open an issue or submit a PR. The call method is meant to help unblock folks before methods are added.
 
 This sample shows using call to invoke the "AddTenantCdnOrigin" method of office365Tenant. While we already support for this method, it helps to show the relationship between `call` and an existing method.
 
