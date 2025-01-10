@@ -2,6 +2,7 @@ import { GraphFI } from "../fi.js";
 import "./users.js";
 import "./groups.js";
 import "./sites.js";
+import "./lists.js";
 import { Drives, IDrives } from "./types.js";
 
 export {
