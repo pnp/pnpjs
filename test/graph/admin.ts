@@ -144,9 +144,13 @@ describe("Admin", function () {
 
         it("Get Health Message by ID", pnpTest("2cc3edd5-b7af-4967-b8b4-840d161f1b61", async function  () {
             const messages = await this.pnp.graph.admin.serviceAnnouncements.messages();
-
-            const messageById = await this.pnp.graph.admin.serviceAnnouncements.messages.getById(messages[0]?.id)();
-            return expect(messageById).is.not.null;
+            if(messages.length > 0){
+                const messageById = await this.pnp.graph.admin.serviceAnnouncements.messages.getById(messages[0]?.id)();
+                return expect(messageById).is.not.null;
+            }else{
+                console.log("No messages to test");
+                return true;
+            }
         }));
 
         it("Get Health Message Attachments", pnpTest("2e26b2a1-5ce8-4cf9-a0dc-4decddba5641", async function  () {
