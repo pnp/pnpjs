@@ -1,30 +1,16 @@
-import { addProp } from "@pnp/queryable";
-import { _List } from "../lists/types.js";
-import { IDrive, Drive, _DriveItem } from "./types.js";
-import { checkIn, ICheckInOptions, checkOut } from "./funcs.js";
+import { graphGet } from "../graphqueryable.js";
+import { _List, List } from "../lists/types.js";
+import { Drive as  IDriveType } from "@microsoft/microsoft-graph-types";
 
-declare module "../sites/types" {
+declare module "../lists/types" {
     interface _List {
-        readonly drive: IDrive;
+        drive(): Promise<IDriveType>;
     }
     interface IList {
-        readonly drive: IDrive;
+        drive(): Promise<IDriveType>;
     }
 }
 
-addProp(_List, "drive", Drive);
-
-declare module "./types" {
-    interface _DriveItem {
-        checkIn(checkInOptions?: ICheckInOptions): Promise<void>;
-        checkOut(): Promise<void>;
-    }
-
-    interface DriveItem {
-        checkIn(checkInOptions?: ICheckInOptions): Promise<void>;
-        checkOut(): Promise<void>;
-    }
-}
-
-_DriveItem.prototype.checkIn = checkIn;
-_DriveItem.prototype.checkOut = checkOut;
+_List.prototype.drive = function drive(): Promise<IDriveType> {
+    return graphGet(List(this, "drive"));
+};

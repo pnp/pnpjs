@@ -10,7 +10,6 @@ export {
 } from "./users.js";
 
 export {
-    ICheckInOptions,
     encodeSharingUrl,
 } from "./funcs.js";
 
@@ -46,6 +45,7 @@ export {
     IPreviewOptions,
     IFileUploadOptions,
     ISensitivityLabel,
+    ICheckInOptions,
 } from "./types.js";
 
 declare module "../fi" {

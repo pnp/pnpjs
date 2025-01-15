@@ -385,6 +385,14 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
         const postBody = { name };
         return graphPatch(DriveItem(this, "retentionLabel"), body(postBody));
     }
+
+    public async checkIn(checkInOptions?: ICheckInOptions): Promise<void> {
+        return graphPost(DriveItem(this, "checkin"), body(checkInOptions));
+    }
+
+    public async checkOut(): Promise<void> {
+        return graphPost(DriveItem(this, "checkout"));
+    }
 }
 
 export interface IDriveItem extends _DriveItem, IDeleteable, IUpdateable { }
@@ -526,4 +534,14 @@ export interface ISensitivityLabel {
     sensitivityLabelId: string;
     assignmentMethod: ISensitivityLabelAssignmentMethodType;
     justificationText: string;
+}
+
+/**
+ * ICheckInOptions - parameters for checkIn a DriveItem
+ * @param checkInAs - string - Optional. The status of the document after the check-in operation is complete. Can be `published` or unspecified.
+ * @param comment - string - A check-in comment that is associated with the version.
+ */
+export interface ICheckInOptions {
+    checkInAs?: string;
+    comment?: string;
 }
