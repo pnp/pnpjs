@@ -1,21 +1,7 @@
-import { body, InjectHeaders } from "@pnp/queryable";
-import { graphPost, graphPut } from "../graphqueryable.js";
+import { InjectHeaders } from "@pnp/queryable";
+import { graphPut } from "../graphqueryable.js";
 import { DriveItem, IFileUploadOptions } from "./types.js";
 import { DriveItem as IDriveItemType } from "@microsoft/microsoft-graph-types";
-
-
-export interface ICheckInOptions {
-    checkInAs?: string;
-    comment?: string;
-}
-
-export function checkIn(checkInOptions?: ICheckInOptions): Promise<void> {
-    return graphPost(DriveItem(this, "checkin"), body(checkInOptions));
-}
-
-export function checkOut(): Promise<void> {
-    return graphPost(DriveItem(this, "checkout"));
-}
 
 export function encodeSharingUrl(url: string): string {
     return "u!" + Buffer.from(url, "utf8").toString("base64").replace(/=$/i, "").replace("/", "_").replace("+", "-");

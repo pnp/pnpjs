@@ -55,6 +55,7 @@ Because the High and Low values in the BasePermission don't obviously mean anyth
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/web";
+import "@pnp/sp/security";
 import { PermissionKind } from "@pnp/sp/security";
 
 const sp = spfi(...);
@@ -71,6 +72,7 @@ If you need to check multiple permissions it can be more efficient to get the Ba
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/web";
+import "@pnp/sp/security";
 import { PermissionKind } from "@pnp/sp/security";
 
 const sp = spfi(...);
