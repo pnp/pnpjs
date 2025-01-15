@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import "@pnp/graph/sites";
 import "@pnp/graph/lists";
+import "@pnp/graph/files";
 import { List } from "@microsoft/microsoft-graph-types";
 import { ISite } from "@pnp/graph/sites";
 import { getRandomString } from "@pnp/core";
@@ -85,5 +86,22 @@ describe("Lists", function () {
             // do nothing
         }
         return expect(deletedList).to.be.null;
+    }));
+
+    it("drive", pnpTest("3a9243d6-738d-4583-b185-ffe0ac4a1158", async function () {
+        const lists = await site.lists();
+        let listId = "";
+        if (lists.length > 0) {
+            lists.forEach((o) => {
+                if(o.displayName === "Documents"){
+                    listId = o.id;
+                }
+            });
+        }
+        let listDrive = null;
+        if(listId.length > 0){
+            listDrive = await site.lists.getById(listId).drive();
+        }
+        return expect(listDrive).to.not.be.null && expect(listDrive).to.haveOwnProperty("id");
     }));
 });
