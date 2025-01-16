@@ -81,6 +81,18 @@ const graph = graphfi(...);
 await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").columns();
 ```
 
+## Get the corresponding drive to a list
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/lists";
+import "@pnp/graph/files";
+
+const graph = graphfi(...);
+
+await graph.sites.getById("{site identifier}").lists.getById("{list identifier}").drive();
+```
+
 ## Get List Items
 
 Currently, recieving list items via @pnpjs/graph API is not possible.

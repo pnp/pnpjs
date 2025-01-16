@@ -2,6 +2,7 @@ import { GraphFI } from "../fi.js";
 import "./users.js";
 import "./groups.js";
 import "./sites.js";
+import "./lists.js";
 import { Drives, IDrives } from "./types.js";
 
 export {
@@ -9,7 +10,6 @@ export {
 } from "./users.js";
 
 export {
-    ICheckInOptions,
     encodeSharingUrl,
 } from "./funcs.js";
 
@@ -45,6 +45,7 @@ export {
     IPreviewOptions,
     IFileUploadOptions,
     ISensitivityLabel,
+    ICheckInOptions,
 } from "./types.js";
 
 declare module "../fi" {
