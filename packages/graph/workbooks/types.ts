@@ -497,13 +497,13 @@ export interface IAddColumn {
 
 @defaultPath("columns")
 @addable()
-@getById(TableColumn)
+@getItemAt(TableColumn)
 export class _TableColumns extends _GraphCollection<WorkbookTableColumnType[]> {
     public getByName(name: string): ITableColumn {
         return TableColumn(this, name);
     }
 }
-export interface ITableColumns extends _TableColumns, IAddable<IAddColumn, WorkbookTableColumnType> { }
+export interface ITableColumns extends _TableColumns, IAddable<IAddColumn, WorkbookTableColumnType>, IGetItemAt<ITableColumn> { }
 export const TableColumns = graphInvokableFactory<ITableColumns>(_TableColumns);
 
 @defaultPath("filter")
