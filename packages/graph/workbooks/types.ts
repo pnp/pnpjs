@@ -47,7 +47,7 @@ export class _Workbook extends _GraphInstance<WorkbookType> {
     public get names(): INamedItems {
         return NamedItems(this);
     }
-    
+
     public get operations(): IOperations {
         return Operations(this);
     }
@@ -192,13 +192,13 @@ export class _RangeView extends _GraphInstance<WorkbookRangeViewType> {
         return Range(this, "range");
     }
 }
-export interface IRangeView extends _RangeView {}
+export interface IRangeView extends _RangeView { }
 const RangeView = graphInvokableFactory<IRangeView>(_RangeView);
 
 @getItemAt(RangeView)
 export class _RangeViews extends _GraphCollection<WorkbookRangeViewType[]> {
 }
-export interface IRangeViews extends _RangeViews, IGetItemAt<IRangeView> {}
+export interface IRangeViews extends _RangeViews, IGetItemAt<IRangeView> { }
 const RangeViews = graphInvokableFactory<IRangeViews>(_RangeViews);
 
 export interface RangeSortParameters {
@@ -215,7 +215,7 @@ export class _RangeSort extends _GraphInstance<WorkbookRangeSortType> {
         return graphPost(GraphQueryable(this, "apply"), body(params));
     }
 }
-export interface IRangeSort extends _RangeSort {}
+export interface IRangeSort extends _RangeSort { }
 const RangeSort = graphInvokableFactory<IRangeSort>(_RangeSort);
 
 @updateable()
@@ -257,7 +257,7 @@ export const RangeFont = graphInvokableFactory<IRangeFont>(_RangeFont);
 
 @defaultPath("fill")
 @updateable()
-export class _RangeFill extends _GraphInstance<WorkbookRangeFillType> { 
+export class _RangeFill extends _GraphInstance<WorkbookRangeFillType> {
     public clear(): Promise<void> {
         return graphPost(GraphQueryable(this, "clear"));
     }
@@ -369,7 +369,7 @@ export class _WorksheetProtection extends _GraphInstance<WorkbookWorksheetProtec
         return graphPost(GraphQueryable(this, "unprotect"));
     }
 }
-export interface IWorksheetProtection extends _WorksheetProtection {}
+export interface IWorksheetProtection extends _WorksheetProtection { }
 export const WorksheetProtection = graphInvokableFactory<IWorksheetProtection>(_WorksheetProtection);
 
 @getRange()
@@ -524,7 +524,7 @@ export class _WorkbookFilter extends _GraphInstance<WorkbookFilterType> {
         return graphPost(GraphQueryable(this, "clear"));
     }
 }
-export interface IWorkbookFilter extends _WorkbookFilter {}
+export interface IWorkbookFilter extends _WorkbookFilter { }
 export const WorkbookFilter = graphInvokableFactory<IWorkbookFilter>(_WorkbookFilter);
 
 @defaultPath("sort")
@@ -561,7 +561,7 @@ export class _TableSort extends _GraphInstance<WorkbookTableSortType> {
     //     return SortFields(this, "fields");
     // }
 }
-export class ITableSort extends _TableSort {}
+export class ITableSort extends _TableSort { }
 export const TableSort = graphInvokableFactory<ITableSort>(_TableSort);
 
 // See above
@@ -578,7 +578,7 @@ export class _PivotTable extends _GraphInstance<WorkbookPivotTableType> {
         return graphPost(GraphQueryable(this, "refresh"));
     }
 }
-export interface IPivotTable extends _PivotTable {}
+export interface IPivotTable extends _PivotTable { }
 export const PivotTable = graphInvokableFactory<IPivotTable>(_PivotTable);
 
 @getById(PivotTable)
@@ -587,7 +587,7 @@ export class _PivotTables extends _GraphCollection<WorkbookPivotTableType[]> {
         return graphPost(GraphQueryable(this, "refreshAll"));
     }
 }
-export interface IPivotTables extends _PivotTables, IGetById<IPivotTable> {}
+export interface IPivotTables extends _PivotTables, IGetById<IPivotTable> { }
 export const PivotTables = graphInvokableFactory<IPivotTables>(_PivotTables);
 
 interface IUpdateNamedItem {
@@ -601,7 +601,7 @@ export class _NamedItem extends _GraphInstance<WorkbookNamedItemType> {
         return Range(this, "range");
     }
 }
-export interface INamedItem extends _NamedItem, IUpdateable<IUpdateNamedItem> {}
+export interface INamedItem extends _NamedItem, IUpdateable<IUpdateNamedItem> { }
 export const NamedItem = graphInvokableFactory<INamedItem>(_NamedItem);
 
 interface IAddNamedItem {
@@ -641,7 +641,7 @@ export class _NamedItems extends _GraphCollection<WorkbookNamedItemType[]> {
         return q;
     }
 }
-export interface INamedItems extends _NamedItems {}
+export interface INamedItems extends _NamedItems { }
 export const NamedItems = graphInvokableFactory<INamedItems>(_NamedItems);
 
 export class _Comment extends _GraphInstance<WorkbookCommentType> {
@@ -649,24 +649,24 @@ export class _Comment extends _GraphInstance<WorkbookCommentType> {
         return CommentReplies(this);
     }
 }
-export interface IComment extends _Comment {}
+export interface IComment extends _Comment { }
 export const Comment = graphInvokableFactory<IComment>(_Comment);
 
 @getById(Comment)
 @defaultPath("comments")
-export class _Comments extends _GraphCollection<WorkbookCommentType[]> {}
-export interface IComments extends _Comments, IGetById<IComment> {}
+export class _Comments extends _GraphCollection<WorkbookCommentType[]> { }
+export interface IComments extends _Comments, IGetById<IComment> { }
 export const Comments = graphInvokableFactory<IComments>(_Comments);
 
-export class _CommentReply extends _GraphInstance<WorkbookCommentReplyType> {}
-export interface ICommentReply extends _CommentReply {}
+export class _CommentReply extends _GraphInstance<WorkbookCommentReplyType> { }
+export interface ICommentReply extends _CommentReply { }
 export const CommentReply = graphInvokableFactory<ICommentReply>(_CommentReply);
 
 @defaultPath("replies")
 @getById(CommentReply)
 @addable()
-export class _CommentReplies extends _GraphInstance<WorkbookCommentReplyType[]> {}
-export interface ICommentReplies extends _CommentReplies, IGetById<ICommentReply>, IAddable<WorkbookCommentReplyType, WorkbookCommentReplyType> {}
+export class _CommentReplies extends _GraphInstance<WorkbookCommentReplyType[]> { }
+export interface ICommentReplies extends _CommentReplies, IGetById<ICommentReply>, IAddable<WorkbookCommentReplyType, WorkbookCommentReplyType> { }
 export const CommentReplies = graphInvokableFactory<ICommentReplies>(_CommentReplies);
 
 @defaultPath("application")
@@ -675,22 +675,22 @@ export class _Application extends _GraphInstance<WorkbookApplicationType> {
         return graphPost(GraphQueryable(this, "calculate"), body({ calculationType }));
     }
 }
-export interface IApplication extends _Application {}
+export interface IApplication extends _Application { }
 export const Application = graphInvokableFactory<IApplication>(_Application);
 
-export class _Operation extends _GraphInstance<WorkbookOperationType> {}
-export interface IOperation extends _Operation {}
+export class _Operation extends _GraphInstance<WorkbookOperationType> { }
+export interface IOperation extends _Operation { }
 export const Operation = graphInvokableFactory<IOperation>(_Operation);
 
 @defaultPath("operations")
 @getById(Operation)
-export class _Operations extends _GraphCollection<WorkbookOperationType[]> {}
-export interface IOperations extends _Operations, IGetById<IOperation> {}
+export class _Operations extends _GraphCollection<WorkbookOperationType[]> { }
+export interface IOperations extends _Operations, IGetById<IOperation> { }
 export const Operations = graphInvokableFactory<IOperations>(_Operations);
 
 @updateable()
-export class _Icon extends _GraphInstance<WorkbookIconType> {}
-export interface IIcon extends _Icon, IUpdateable<WorkbookIconType> {}
+export class _Icon extends _GraphInstance<WorkbookIconType> { }
+export interface IIcon extends _Icon, IUpdateable<WorkbookIconType> { }
 export const Icon = graphInvokableFactory<IIcon>(_Icon);
 
 export function getItemAt<R>(factory: (...args: any[]) => R) {
