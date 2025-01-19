@@ -455,13 +455,13 @@ export interface IAddRow {
 @addable()
 @getItemAt(TableRow)
 export class _TableRows extends _GraphCollection<WorkbookTableRowType[]> {
-    public getByIndex(index: number): ITableRow {
-        /**
-         * NOTE: Although documented, this doesn't work for me.
-         * Returns 400 with code ApiNotFound.
-         */
-        return TableRow(this, `${index}`);
-    }
+    // public getByIndex(index: number): ITableRow {
+    //     /**
+    //      * NOTE: Although documented, this doesn't work for me.
+    //      * Returns 400 with code ApiNotFound.
+    //      */
+    //     return TableRow(this, `${index}`);
+    // }
 }
 export interface ITableRows extends _TableRows, IAddable<IAddRow, WorkbookTableRowType>, IGetItemAt<ITableRow> { }
 export const TableRows = graphInvokableFactory<ITableRows>(_TableRows);
