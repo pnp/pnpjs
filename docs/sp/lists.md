@@ -241,7 +241,7 @@ import { IChangeQuery } from "@pnp/sp";
 
 //Resource is the list Id (as Guid)
 const resource = list.Id;
-const changeStart = new Date("2022-02-22").getTime();
+const changeStart = (new Date("2022-02-22").getTime() * 10000) + 621355968000000000); // We need to convert the timestamp to ticks
 const changeTokenStart = `1;3;${resource};${changeStart};-1`;
 
 // build the changeQuery object, here we look at changes regarding Add and Update for Items.
