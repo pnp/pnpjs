@@ -126,3 +126,90 @@ await myColumn.filter.apply({
 await table.sort.apply([{ key: 0, ascending: true }]);
 ```
 ## Working with ranges
+### Getting a range
+```Typescript
+// Create a range using Excel A1 coordinates
+const sheet = workbook.worksheets.getByID("Sheet1");
+const range = sheet.getRange("A1:C3");
+
+// Get the full "used range" of the worksheet
+const usedRange = sheet.getUsedRange();
+const usedAddress = (await usedRange()).address // = e.g. "B2:L21"
+
+// Named objects (like tables) have an underlying range, too
+const tableRange = table.getRange();
+```
+### Modifying values
+```Typescript
+// A single cell in a range
+const sheetRange = sheet.getRange();
+const cell = sheetRange.cell(0, 1);
+await cell.update({ values: [["Hello, world!"]] });
+
+// Multiple cells in a range
+const values = [
+    ["a", "b", "c"],
+    [1, 2, 3],
+    [1, 2, "=SUM(A3:B3)"]
+];
+await sheet.getRange("A1:C3").update({ values });
+```
+### Sorting and formatting
+```Typescript
+// Sort a range in descending order based on its first column
+const sort: WorkbookSortField = {
+    key: 0, sortOn: "Value",
+    dataOption: "TextAsNumber",
+    ascending: false
+};
+
+await range.sort.apply({
+    fields: [ sort ], hasHeaders: false,
+});
+
+// Get and set a fill on a range
+const oldFill = await range.format.fill();
+await range.format.fill.update({ color: "#FF0000" });
+
+// Add a purple dashed line to the top border of a range
+await range.format.borders.getBySideIndex("EdgeTop").update({
+    color: "#8C34EB",
+    style: "Dash",
+    weight: "Medium"
+});
+```
+## Full example: Creating a table from data
+```Typescript
+const sheet = workbook.worksheets.getById(TEST_SHEET_NAME);
+
+// Add data to the worksheet
+const addr = "A1:C4";
+const data = [
+    ["Name", "Age", "Department"],
+    ["Alice", 30, "Engineering"],
+    ["Bob", 25, "HR"],
+    ["Charlie", 35, "Finance"]
+];
+
+const range = sheet.getRange(addr);
+await range.update({ values: data });
+
+// Convert the range into a named table
+const tableInfo = await sheet.tables.add(addr, true);
+const table = workbook.tables.getById(tableInfo.id!);
+
+// Rename the table and enable banded rows
+await table.update({
+    name: "Staff_list",
+    showBandedRows: true
+});
+
+// Autofit column width
+await table.getRange().format.autofitColumns();
+
+// Sort the table in ascending order on the "Age" column
+await table.sort.apply([{ key: 1, ascending: true }]);
+```
+Output:
+
+![Table example output](../img/Basic_table_example.png)
