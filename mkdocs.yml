@@ -180,6 +180,8 @@ markdown_extensions:
   - admonition
   - toc:
       permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
 
 plugins:
   - search
