@@ -237,12 +237,10 @@ console.log(r);
 To get changes from a specific time range you can use the ChangeTokenStart or a combination of ChangeTokenStart and ChangeTokenEnd.
 
 ```TypeScript
-import { IChangeQuery } from "@pnp/sp";
+import { IChangeQuery, createChangeToken } from "@pnp/sp";
 
 //Resource is the list Id (as Guid)
-const resource = list.Id;
-const changeStart = new Date("2022-02-22").getTime();
-const changeTokenStart = `1;3;${resource};${changeStart};-1`;
+const changeTokenStart = createChangeToken("list", list.Id, new Date("2022-02-22"));
 
 // build the changeQuery object, here we look at changes regarding Add and Update for Items.
 const changeQuery: IChangeQuery = {
@@ -250,7 +248,7 @@ const changeQuery: IChangeQuery = {
     Update: true,
     Item: true,
     ChangeTokenEnd: null,
-    ChangeTokenStart: { StringValue: changeTokenStart },
+    ChangeTokenStart: changeTokenStart,
 };
 
 // get list changes
