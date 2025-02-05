@@ -21,11 +21,13 @@ _DriveItem.prototype.getWorkbookSession = getWorkbookSession;
 export async function getWorkbookSession(this: _DriveItem, persistChanges: boolean): Promise<IWorkbookWithSession> {
     const workbook = WorkbookWithSession(this);
     const sessionResult = await graphPost<WorkbookSessionInfo>(
-        GraphQueryable(workbook, 'createSession'), body({
-            persistChanges
+        GraphQueryable(workbook, "createSession"), body({
+            persistChanges,
         }));
 
-    if (!sessionResult.id) throw new Error("createSession did not respond with a session ID");
+    if (!sessionResult.id) {
+        throw new Error("createSession did not respond with a session ID");
+    }
 
     workbook.using(InjectHeaders({ "workbook-session-id": sessionResult.id }));
     return workbook;

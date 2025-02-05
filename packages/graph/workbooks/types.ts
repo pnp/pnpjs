@@ -1,4 +1,4 @@
-import { updateable, IUpdateable, addable, getById, IAddable, IGetById, deleteable, IDeleteable, defaultPath, } from "../decorators.js";
+import { updateable, IUpdateable, addable, getById, IAddable, IGetById, deleteable, IDeleteable, defaultPath } from "../decorators.js";
 import { _GraphCollection, graphInvokableFactory, _GraphInstance, GraphQueryable, IGraphQueryable } from "../graphqueryable.js";
 import {
     Workbook as WorkbookType,
@@ -25,7 +25,7 @@ import {
     WorkbookIcon as WorkbookIconType,
     WorkbookComment as WorkbookCommentType,
     WorkbookCommentReply as WorkbookCommentReplyType,
-    WorkbookApplication as WorkbookApplicationType
+    WorkbookApplication as WorkbookApplicationType,
 } from "@microsoft/microsoft-graph-types";
 import { graphPost } from "@pnp/graph";
 import { body, JSONParse } from "@pnp/queryable/index.js";
@@ -89,11 +89,11 @@ export class _Range extends _GraphInstance<WorkbookRangeType> {
         return Range(this, `column(column=${column})`);
     }
 
-    public columnsAfter(count: number = 1): IRange {
+    public columnsAfter(count = 1): IRange {
         return Range(this, `columnsAfter(count=${count})`);
     }
 
-    public columnsBefore(count: number = 1): IRange {
+    public columnsBefore(count = 1): IRange {
         return Range(this, `columnsBefore(count=${count})`);
     }
 
@@ -101,20 +101,20 @@ export class _Range extends _GraphInstance<WorkbookRangeType> {
         return Range(this, `row(row=${row})`);
     }
 
-    public rowsAbove(count: number = 1): IRange {
+    public rowsAbove(count = 1): IRange {
         return Range(this, `rowsAbove(count=${count})`);
     }
 
-    public rowsBelow(count: number = 1): IRange {
+    public rowsBelow(count = 1): IRange {
         return Range(this, `rowsBelow(count=${count})`);
     }
 
     public get entireColumn(): IRange {
-        return Range(this, `entireColumn`);
+        return Range(this, "entireColumn");
     }
 
     public get entireRow(): IRange {
-        return Range(this, `entireRow`);
+        return Range(this, "entireRow");
     }
 
     // NOTE: A few methods here are documented incorrectly.
@@ -132,15 +132,15 @@ export class _Range extends _GraphInstance<WorkbookRangeType> {
     }
 
     public get lastCell(): IRange {
-        return Range(this, 'lastCell');
+        return Range(this, "lastCell");
     }
 
     public get lastColumn(): IRange {
-        return Range(this, 'lastColumn');
+        return Range(this, "lastColumn");
     }
 
     public get lastRow(): IRange {
-        return Range(this, 'lastRow');
+        return Range(this, "lastRow");
     }
 
     public offsetRange(rowOffset: number, columnOffset: number): IRange {
@@ -157,7 +157,7 @@ export class _Range extends _GraphInstance<WorkbookRangeType> {
     }
 
     public get visibleView(): IRangeView {
-        return RangeView(this, 'visibleView');
+        return RangeView(this, "visibleView");
     }
 
     public insert(shift: "Down" | "Right"): Promise<WorkbookRangeType> {
@@ -202,11 +202,11 @@ export interface IRangeViews extends _RangeViews, IGetItemAt<IRangeView> { }
 const RangeViews = graphInvokableFactory<IRangeViews>(_RangeViews);
 
 export interface RangeSortParameters {
-    fields: WorkbookSortFieldType[],
-    matchCase?: boolean,
-    hasHeaders?: boolean,
-    orientation?: "Rows" | "Columns",
-    method?: "PinYin" | "StrokeCount"
+    fields: WorkbookSortFieldType[];
+    matchCase?: boolean;
+    hasHeaders?: boolean;
+    orientation?: "Rows" | "Columns";
+    method?: "PinYin" | "StrokeCount";
 }
 
 @defaultPath("sort")
@@ -275,7 +275,7 @@ export const RangeFormatProtection = graphInvokableFactory<IRangeFormatProtectio
 @updateable()
 export class _RangeBorder extends _GraphInstance<WorkbookRangeBorderType> { }
 /**
- * NOTE: When updating RangeBorder, there are some combinations of style 
+ * NOTE: When updating RangeBorder, there are some combinations of style
  * and weight that silently fail.
  * For example, setting "Dash - Thick" always sets "Continuous - Thick".
  * This isn't documented, but it's also not really a bug. When you
@@ -300,9 +300,9 @@ export class _RangeBorders extends _GraphCollection<WorkbookRangeBorderType[]> {
 }
 export interface IRangeBorders extends _RangeBorders, IGetItemAt<IRangeBorder> { }
 export const RangeBorders = graphInvokableFactory<IRangeBorders>(_RangeBorders);
-export type RangeBorderSideIndex = 'EdgeTop' | 'EdgeBottom' | 'EdgeLeft' | 'EdgeRight' |
-    'InsideVertical' | 'InsideHorizontal' | 'DiagonalDown' |
-    'DiagonalUp';
+export type RangeBorderSideIndex = "EdgeTop" | "EdgeBottom" | "EdgeLeft" | "EdgeRight" |
+"InsideVertical" | "InsideHorizontal" | "DiagonalDown" |
+"DiagonalUp";
 
 @updateable()
 @deleteable()
@@ -310,7 +310,7 @@ export class _Worksheet extends _GraphInstance<WorksheetType> {
     /**
      * Get a range of cells within the worksheet.
      *
-     * @param address (Optional) An A1-notation address of a range within this worksheet. 
+     * @param address (Optional) An A1-notation address of a range within this worksheet.
      * If omitted, a range containing the entire worksheet is returned.
      */
     public getRange(address?: string): IRange {
@@ -362,7 +362,7 @@ export const Worksheets = graphInvokableFactory<IWorksheets>(_Worksheets);
 
 export class _WorksheetProtection extends _GraphInstance<WorkbookWorksheetProtectionType> {
     public protect(options?: WorkbookWorksheetProtectionOptions): Promise<void> {
-        return graphPost(GraphQueryable(this, "protect"), body(options))
+        return graphPost(GraphQueryable(this, "protect"), body(options));
     }
 
     public unprotect(): Promise<void> {
@@ -447,8 +447,8 @@ export interface ITableRow extends _TableRow, IUpdateable<WorkbookTableRowType>,
 export const TableRow = graphInvokableFactory<ITableRow>(_TableRow);
 
 export interface IAddRow {
-    index?: number,
-    values?: any[][]
+    index?: number;
+    values?: any[][];
 }
 
 @defaultPath("rows")
@@ -492,7 +492,7 @@ export const TableColumn = graphInvokableFactory<ITableColumn>(_TableColumn);
 export interface IAddColumn {
     name?: string;
     index?: number;
-    values?: any[][],
+    values?: any[][];
 }
 
 @defaultPath("columns")
@@ -543,18 +543,18 @@ export class _TableSort extends _GraphInstance<WorkbookTableSortType> {
 
     /**
      * This is documented on the pages for "WorkbookTableSort"
-     * and "Icon", but whenever I try to access `table/sort/fields`, 
+     * and "Icon", but whenever I try to access `table/sort/fields`,
      * I get "GeneralException" from Graph API.
-     * 
+     *
      * This means the Icon class is useless, as you can't get
      * to any endpoint that returns it.
-     * 
+     *
      * IMO, I think the "Icon" page on the docs is a mistake.
      * There's no reason for it to be a separate endpoint. You
      * would simply call clear() and apply() on this sort
      * if you wanted to update its icon.
-     * 
-     * I have left the Icon class in this file as it's 
+     *
+     * I have left the Icon class in this file as it's
      * technically in the docs, but atm there's no API call that uses it.
      */
     // public get fields(): ISortFields {
@@ -591,8 +591,8 @@ export interface IPivotTables extends _PivotTables, IGetById<IPivotTable> { }
 export const PivotTables = graphInvokableFactory<IPivotTables>(_PivotTables);
 
 interface IUpdateNamedItem {
-    comment?: string,
-    visible?: boolean
+    comment?: string;
+    visible?: boolean;
 }
 
 @updateable()
@@ -605,24 +605,24 @@ export interface INamedItem extends _NamedItem, IUpdateable<IUpdateNamedItem> { 
 export const NamedItem = graphInvokableFactory<INamedItem>(_NamedItem);
 
 interface IAddNamedItem {
-    name: string,
-    reference: string,
-    comment: string
+    name: string;
+    reference: string;
+    comment: string;
 }
 
 @defaultPath("names")
 // @getById(NamedItem)
 export class _NamedItems extends _GraphCollection<WorkbookNamedItemType[]> {
     /**
-     * The NamedItem object contains string property named "value". 
+     * The NamedItem object contains string property named "value".
      * This causes an issue with the DefaultParse
      * parser (namely parseODataJSON), because it's set up to throw away
      * the rest of the object if it contains a field "value".
-     * 
+     *
      * Below I'm manually replacing the parser with JSONParse. This works,
      * but is unideal because it would replace any custom parser a user
      * may have set up earlier.
-     * 
+     *
      * I know the docs caution against making changes in the
      * core classes - my suggestion would be to change
      * the check in parseODataJSON from `hasOwnProperty` to something like
@@ -671,7 +671,7 @@ export const CommentReplies = graphInvokableFactory<ICommentReplies>(_CommentRep
 
 @defaultPath("application")
 export class _Application extends _GraphInstance<WorkbookApplicationType> {
-    public calculate(calculationType: 'Recalculate' | 'Full' | 'FullRebuild'): Promise<void> {
+    public calculate(calculationType: "Recalculate" | "Full" | "FullRebuild"): Promise<void> {
         return graphPost(GraphQueryable(this, "calculate"), body({ calculationType }));
     }
 }
@@ -694,7 +694,7 @@ export interface IIcon extends _Icon, IUpdateable<WorkbookIconType> { }
 export const Icon = graphInvokableFactory<IIcon>(_Icon);
 
 export function getItemAt<R>(factory: (...args: any[]) => R) {
-    return function <T extends { new(...args: any[]): {} }>(target: T) {
+    return function <T extends { new(...args: any[]): any }>(target: T) {
         // eslint-disable-next-line @typescript-eslint/ban-types
         return class extends target {
             public getItemAt(this: IGraphQueryable, index: number): R {

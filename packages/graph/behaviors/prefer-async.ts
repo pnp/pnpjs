@@ -3,7 +3,7 @@ import { errorCheck, InjectHeaders } from "@pnp/queryable";
 import { GraphQueryable, _GraphQueryable, graphGet } from "../graphqueryable.js";
 import { RichLongRunningOperation } from "@microsoft/microsoft-graph-types";
 
-export function PreferAsync(pollIntervalMs: number = 25000, maxPolls: number = 4): TimelinePipe {
+export function PreferAsync(pollIntervalMs = 25000, maxPolls = 4): TimelinePipe {
     return (instance: _GraphQueryable) => {
         instance.using(InjectHeaders({ "Prefer": "respond-async" }));
         instance.on.parse(errorCheck);
@@ -17,10 +17,10 @@ export function PreferAsync(pollIntervalMs: number = 25000, maxPolls: number = 4
                     await delay(pollIntervalMs);
 
                     const status = await statusQuery<RichLongRunningOperation>();
-                    if (status.status === 'succeeded') {
-                        let resultEndpoint = status.resourceLocation.split("/").at(-1);
+                    if (status.status === "succeeded") {
+                        const resultEndpoint = status.resourceLocation.split("/").at(-1);
                         result = await graphGet(GraphQueryable(instance, resultEndpoint));
-                    } else if (status.status === 'failed') {
+                    } else if (status.status === "failed") {
                         throw status.error;
                     }
                 }
@@ -31,5 +31,5 @@ export function PreferAsync(pollIntervalMs: number = 25000, maxPolls: number = 4
         });
 
         return instance;
-    }
+    };
 }

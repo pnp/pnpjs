@@ -1,6 +1,6 @@
 import "./driveitem.js";
 
-export { 
+export {
     IWorkbook,
     IWorksheet,
     IWorksheets,
@@ -16,5 +16,5 @@ export {
     IRangeBorders,
     IRangeFill,
     IRangeFont,
-    IRangeFormatProtection
+    IRangeFormatProtection,
 } from "./types.js";
