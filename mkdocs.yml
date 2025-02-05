@@ -84,6 +84,7 @@ nav:
       - teams: 'graph/teams.md'
       - to-do: 'graph/to-do.md'
       - users: 'graph/users.md'
+      - workbooks: 'graph/workbooks.md'
     - logging: 
       - logging: 'logging/index.md'
     - msaljsclient:
