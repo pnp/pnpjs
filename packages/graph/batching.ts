@@ -95,7 +95,7 @@ function BatchParse(): TimelinePipe {
 
 class BatchQueryable extends _GraphQueryable {
 
-    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]v1\.0|beta[\\|/].*$/i || "", "")) {
+    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]v1\.0|beta[\\|/].*$/i, "")) {
 
         super(requestBaseUrl, "$batch");
 
