@@ -362,7 +362,7 @@ function parseResponse(graphResponse: IGraphBatchResponse): ParsedGraphResponse 
 
     // we need to see if we have an error and report that
     if (hOP(graphResponse, "error")) {
-        throw Error(`Error Porcessing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`);
+        throw Error(`Error Processing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`);
     }
 
     const parsedResponses: Response[] = new Array(graphResponse.responses.length).fill(null);
