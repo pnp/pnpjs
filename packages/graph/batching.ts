@@ -73,7 +73,7 @@ type ParsedGraphResponse = { nextLink?: string; responses: Response[] };
  * [3]: The resolve function back to the promise for the original operation
  * [4]: The reject function back to the promise for the original operation
  */
-type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
+type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void];
 
 const RegistrationCompleteSym = Symbol.for("batch_registration");
 const RequestCompleteSym = Symbol.for("batch_request");
@@ -95,7 +95,7 @@ function BatchParse(): TimelinePipe {
 
 class BatchQueryable extends _GraphQueryable {
 
-    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]v1\.0|beta[\\|/].*$/i || "", "")) {
+    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]v1\.0|beta[\\|/].*$/i, "")) {
 
         super(requestBaseUrl, "$batch");
 
@@ -183,12 +183,8 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
             const response: ParsedGraphResponse = await graphPost(batchQuery, body(batchRequest));
 
             for (let index = 0; index < response.responses.length; index++) {
-                const [, , , resolve, reject] = requests[index + chunkIndex];
-                try {
-                    resolve(response.responses[index]);
-                } catch (e) {
-                    reject(e);
-                }
+                // this resolves the child request's send promise with the parsed response
+                requests[index + chunkIndex][3](response.responses[index]);
             }
             chunkIndex += requestsChunk.length;
         }
@@ -229,8 +225,8 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         // we replace the send function with our batching logic
         instance.on.send.replace(async function (this: Queryable, url: URL, init: RequestInit) {
 
-            const promise = new Promise<Response>((resolve, reject) => {
-                requests.push([this, url.toString(), init, resolve, reject]);
+            const promise = new Promise<Response>((resolve) => {
+                requests.push([this, url.toString(), init, resolve]);
             });
 
             this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
