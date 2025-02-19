@@ -9,7 +9,6 @@ import { ITestingSettings } from "../../test/load-settings.js";
 // will allow you to keep all your debugging files locally
 // comment out the example
 import { Example } from "./sp.js";
-// import { Example } from "./spadmin.js";
 // import { Example } from "./graph.js";
 
 // setup the connection to SharePoint using the settings file, you can

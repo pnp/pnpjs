@@ -84,6 +84,7 @@ nav:
       - teams: 'graph/teams.md'
       - to-do: 'graph/to-do.md'
       - users: 'graph/users.md'
+      - workbooks: 'graph/workbooks.md'
     - logging: 
       - logging: 'logging/index.md'
     - msaljsclient:
@@ -137,6 +138,7 @@ nav:
       - Subscriptions: 'sp/subscriptions.md'
       - 'Tenant Properties': 'sp/tenant-properties.md'
       - 'User custom actions': 'sp/user-custom-actions.md'      
+      - 'Utils': 'sp/utils.md'
       - Views: 'sp/views.md'
       - Webs: 'sp/webs.md'
     - sp-admin:
@@ -181,6 +183,8 @@ markdown_extensions:
   - admonition
   - toc:
       permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
 
 plugins:
   - search

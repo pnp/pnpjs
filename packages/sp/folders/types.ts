@@ -272,16 +272,15 @@ export class _Folder extends _SPInstance<IFolderInfo> {
         // add our pre-request actions, this fixes issues with batching hanging #2668
         poster.on.pre(noInherit(async (url, init, result) => {
 
-            const urlInfo = await Folder(this).using(BatchNever()).getParentInfos();
+            const { ServerRelativeUrl: srcUrl, ["odata.id"]: absoluteUrl } = await Folder(this).using(BatchNever()).select("ServerRelativeUrl")();
+            const uri = new URL(extractWebUrl(absoluteUrl));
 
-            const uri = new URL(urlInfo.ParentWeb.Url);
-
-            url = combine(urlInfo.ParentWeb.Url, `/_api/SP.MoveCopyUtil.${methodName}()`);
+            url = combine(uri.href, `/_api/SP.MoveCopyUtil.${methodName}()`);
 
             init = body({
                 destPath: toResourcePath(isUrlAbsolute(destUrl) ? destUrl : combine(uri.origin, destUrl)),
                 options,
-                srcPath: toResourcePath(combine(uri.origin, urlInfo.Folder.ServerRelativeUrl)),
+                srcPath: toResourcePath(combine(uri.origin, srcUrl)),
             }, init);
 
             return [url, init, result];
@@ -343,8 +342,8 @@ export interface IFolderInfo {
     TimeLastModified: string;
     UniqueId: string;
     WelcomePage: string;
-    ContentTypeOrder: string[];
-    UniqueContentTypeOrder: string[];
+    ContentTypeOrder: { StringValue: string }[];
+    UniqueContentTypeOrder: { StringValue: string }[];
     StorageMetrics?: IStorageMetrics;
 }
 
