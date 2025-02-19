@@ -5,7 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 4.9.0 - 2024-Jan-15
+## 4.10.0 - 2025-Feb-19
+
+- graph
+  - Implemented "Workbook" package
+  - Updates batching logic for sp and graph to remove unnecessary reject carry for the send promise.
+
+- sp
+  - Adding create change token util method to sp
+  - Fixed issue when moving list instead of subfolder
+  - Fix content-type order type on folder
+  - Adds support for sp batches to auto-split if there are too many items in the batch
+  - Updates batching logic for sp and graph to remove unnecessary reject carry for the send promise.
+
+## 4.9.0 - 2025-Jan-15
 
 - graph
   - Added new drive endpoint to lists, which will get you drive information
