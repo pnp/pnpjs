@@ -12,7 +12,7 @@ declare module "./spqueryable" {
     }
 }
 
-_SPCollection.prototype.where = function <T extends _SPCollection>(this: T, cb: (this: T, builder: OpenClause<T>) => void): any {
+_SPCollection.prototype.where = function <T extends _SPCollection>(this: T, cb: (this: T, builder: OpenClause<T>) => void): T {
     const w = new _Where(this);
     cb.call(this, w);
     return this.filter(w.toString());
