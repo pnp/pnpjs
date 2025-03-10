@@ -258,7 +258,6 @@ export interface Queryable<R = any> extends IInvokable<R> { }
 // this interface is required to stop the class from recursively referencing itself through the DefaultBehaviors type
 export interface IQueryableInternal<R = any> extends Timeline<any>, IInvokable {
     readonly query: QueryParams;
-    // new(...params: any[]);
     <T = R>(this: IQueryableInternal, init?: RequestInit): Promise<T>;
     using(...behaviors: TimelinePipe[]): this;
     toRequestUrl(): string;
