@@ -25,6 +25,16 @@ import { IUserCustomActionInfo } from "../user-custom-actions/types.js";
 import { IResourcePath, toResourcePath } from "../utils/to-resource-path.js";
 import { encodePath } from "../utils/encode-path-str.js";
 
+type b2 = ExtractGeneric<_Lists>;
+
+type ExtractGeneric<T extends _SPCollection> = T extends _SPCollection<infer X> ? X : never;
+
+// <T extends U, U extends number[]>
+// ReturnType<Type>
+// type T3 = ReturnType<<T extends U, U extends number[]>() => T>;
+
+
+
 @defaultPath("lists")
 export class _Lists extends _SPCollection<IListInfo[]> {
 
@@ -121,8 +131,8 @@ export class _Lists extends _SPCollection<IListInfo[]> {
         return List([this, odataUrlFrom(json)]);
     }
 }
-export interface ILists extends _Lists { }
-export const Lists = spInvokableFactory<ILists>(_Lists);
+// export interface ILists extends _Lists { }
+export const Lists = spInvokableFactory<_Lists>(_Lists);
 
 export class _List extends _SPInstance<IListInfo> {
 
