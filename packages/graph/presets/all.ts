@@ -21,6 +21,7 @@ import "../lists/index.js";
 import "../mail/index.js";
 import "../members/index.js";
 import "../onenote/index.js";
+import "../open-extensions/index.js";
 import "../operations/index.js";
 import "../pages/index.js";
 import "../permissions/index.js";
