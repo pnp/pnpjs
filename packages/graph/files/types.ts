@@ -185,7 +185,7 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
      * Method for retrieving thumbnails of the drive items.
      * @returns Microsoft Graph - ThumbnailSet
      */
-    public get thumbnails(): IGraphCollection<IThumbnailSetType> {
+    public get thumbnails(): IGraphCollection<IThumbnailSetType[]> {
         return <any>GraphCollection(this, "thumbnails");
     }
 
@@ -193,7 +193,7 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
      * Method for retrieving the versions of a drive item.
      * @returns IDriveItemVersionInfo
      */
-    public get versions(): IGraphCollection<IDriveItemVersionType> {
+    public get versions(): IGraphCollection<IDriveItemVersionType[]> {
         return <any>GraphCollection(this, "versions");
     }
 
