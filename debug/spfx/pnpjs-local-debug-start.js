@@ -10,10 +10,12 @@ const isWin = process.platform === "win32";
 child_process.spawn(isWin ? "npx.cmd" : "npx", ["tsc", "-p", "./packages/tsconfig-watch.json"], {
     cwd: projectRoot,
     stdio: "inherit",
+    shell:true,
 });
 
 // run our server
 child_process.spawn(isWin ? "npx.cmd" : "npx", ["gulp", "serve", "--nobrowser"], {
     cwd: __dirname,
     stdio: "inherit",
+    shell: true,
 });
