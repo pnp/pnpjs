@@ -27,7 +27,7 @@
         "eslint": "8.57.0",
         "findup-sync": "5.0.0",
         "globby": "14.0.2",
-        "mocha": "10.7.3",
+        "mocha": "11.1.0",
         "prettyjson": "1.2.5",
         "string-replace-loader": "3.1.0",
         "tslib": "2.8.1",
