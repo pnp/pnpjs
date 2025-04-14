@@ -32,7 +32,7 @@ describe("Query Escaping", function () {
         expect(value).to.eq("_api/web/getFileByUrl(@p1)?%40p1=%27%2Fsites%2Fdev%2Fdocuments%2Ffolder%27%27s+root%2Fsomething.txt%27");
 
         value = getTestValue(sp.web.getFolderByServerRelativePath("/sites/dev/documents/folder's root/"));
-        expect(value).to.eq(`_api/web/getFolderByServerRelativePath(decodedUrl='${encodeURIComponent("/sites/dev/documents/folder''s root/")}')`);
+        expect(value).to.eq("_api/web/getFolderByServerRelativePath(decodedUrl='/sites/dev/documents/folder''s root/')");
 
         value = getTestValue(sp.web.folders.getByUrl("/sites/dev/documents/folder's root/"));
         expect(value).to.eq(`_api/web/folders('${encodeURIComponent("/sites/dev/documents/folder''s root/")}')`);
@@ -47,7 +47,7 @@ describe("Query Escaping", function () {
         expect(value).to.eq("_api/web/getFileByUrl(@p1)?%40p1=%27%2Fsites%2Fdev%2Fshared+documents%2F%23%21%40%23%24%25%5E%26%28%29_%2B-%2Freadme.md%27");
 
         value = getTestValue(sp.web.getFolderByServerRelativePath("/sites/dev/documents/folder #!@#$%^&()_+-"));
-        expect(value).to.eq("_api/web/getFolderByServerRelativePath(decodedUrl='%2Fsites%2Fdev%2Fdocuments%2Ffolder%20%23!%40%23%24%25%5E%26()_%2B-')");
+        expect(value).to.eq("_api/web/getFolderByServerRelativePath(decodedUrl='/sites/dev/documents/folder #!@#$%^&()_+-')");
 
         value = getTestValue(sp.web.folders.getByUrl("/sites/dev/documents/folder #!@#$%^&()_+-"));
         expect(value).to.eq("_api/web/folders('%2Fsites%2Fdev%2Fdocuments%2Ffolder%20%23!%40%23%24%25%5E%26()_%2B-')");
