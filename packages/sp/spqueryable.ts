@@ -355,7 +355,7 @@ class QueryableOrResult<T> extends QueryableFields<T> {
     }
 }
 
-class InitialFieldQuery<T> extends QueryableFields<T> {
+export class InitialFieldQuery<T> extends QueryableFields<T> {
     public or(): QueryableFields<T>;
     public or(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): ComparisonResult<T>;
     public or(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): (ComparisonResult<T> | QueryableFields<T>) {
@@ -537,7 +537,7 @@ class DateField<TBaseInterface> extends NumericField<TBaseInterface, Date> {
     }
 }
 
-class ComparisonResult<T> extends BaseQuery {
+export class ComparisonResult<T> extends BaseQuery {
     public and(): QueryableAndResult<T>;
     // eslint-disable-next-line @typescript-eslint/semi
     public and(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): ComparisonResult<T>
