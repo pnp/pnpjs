@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 4.13.0 - 2025-May-12
+
+- Documentation and package updates only
+
 ## 4.12.0 - 2025-Apr 14
 
 - Windows 11 introduces an issue with the use of nodejs Spawn when not run through Shell. Updating Spawn Methods where needed to include shell:true.
