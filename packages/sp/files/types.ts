@@ -397,7 +397,7 @@ export class _File extends ReadableFile<IFileInfo> {
     @cancelableScope
     public async setContentChunked(file: ValidFileContentSource, props: Partial<IChunkedOperationProps>): Promise<IFileInfo> {
 
-        const { progress } = applyChunckedOperationDefaults(props);
+        const { progress, chunkSize = 10485760 } = applyChunckedOperationDefaults(props);
 
         const uploadId = getGUID();
         let first = true;
@@ -411,23 +411,36 @@ export class _File extends ReadableFile<IFileInfo> {
         const contentStream = sourceToReadableStream(file);
         const reader = contentStream.getReader();
 
+        let buffer = new Uint8Array();
+
         while ((chunk = await reader.read())) {
 
+            if (chunk.value) {
+                const newBuffer = new Uint8Array(buffer.length + chunk.value.length);
+                newBuffer.set(buffer);
+                newBuffer.set(chunk.value, buffer.length);
+                buffer = newBuffer;
+            }
+
+            while (buffer.length >= chunkSize || (chunk.done && buffer.length > 0)) {
+                const chunkToUpload = buffer.slice(0, chunkSize);
+                buffer = buffer.slice(chunkSize);
+
+                if (first) {
+                    progress({ offset, stage: "starting", uploadId });
+                    offset = await spPost(File(fileRef, `startUpload(uploadId=guid'${uploadId}')`), { body: chunkToUpload });
+                    first = false;
+                } else if (chunk.done && buffer.length === 0) {
+                    progress({ offset, stage: "finishing", uploadId });
+                    return spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunkToUpload });
+                } else {
+                    progress({ offset, stage: "continue", uploadId });
+                    offset = await spPost(File(fileRef, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunkToUpload });
+                }
+            }
+
             if (chunk.done) {
-
-                progress({ offset, stage: "finishing", uploadId });
-                return spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunk?.value || "" });
-
-            } else if (first) {
-
-                progress({ offset, stage: "starting", uploadId });
-                offset = await spPost(File(fileRef, `startUpload(uploadId=guid'${uploadId}')`), { body: chunk.value });
-                first = false;
-
-            } else {
-
-                progress({ offset, stage: "continue", uploadId });
-                offset = await spPost(File(fileRef, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunk.value });
+                break;
             }
         }
     }
@@ -705,6 +718,7 @@ export interface IFileDeleteParams {
 
 export interface IChunkedOperationProps {
     progress: (data: IFileUploadProgressData) => void;
+    chunkSize?: number;
 }
 
 export type ValidFileContentSource = Blob | ReadableStream | TransformStream | Stream | PassThrough | ArrayBuffer;
