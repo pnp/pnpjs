@@ -6,12 +6,12 @@ import { pnpTest } from "../pnp-test.js";
 
 describe("Content Types", function () {
 
-    before(function () {
+    before(pnpTest("d4f5e6a7-b8c9-4d10-9e11-f12a13b14c15", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-    });
+    }));
 
     it("addAvailableContentType", pnpTest("e0e0a639-8e6d-4c59-affd-da531b63767b", async function () {
 

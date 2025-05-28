@@ -24,12 +24,12 @@ describe("Fields", function () {
     const testFieldDescription = "PnPJS Test Description";
     const listName = "Documents";
 
-    before(function () {
+    before(pnpTest("123e4567-e89b-12d3-a456-426614174000", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-    });
+    }));
 
     describe("Web", function () {
         // Web Tests
@@ -63,31 +63,42 @@ describe("Fields", function () {
         }));
 
         it("add", pnpTest("80e75ef7-3d5a-4880-9b28-67143ce6d058", async function () {
-            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const { testFieldNameRand } = await this.props({
+                testFieldNameRand: `${testFieldName}_${getRandomString(10)}`,
+            });
             const field = await this.pnp.sp.web.fields.add(testFieldNameRand, FieldTypes.Text, { Group: testFieldGroup });
             return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addText", pnpTest("54ce0598-f27c-4787-9d39-3f31cedaacbd", async function () {
-            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const { testFieldNameRand } = await this.props({
+                testFieldNameRand: `${testFieldName}_${getRandomString(10)}`,
+            });
             const field = await this.pnp.sp.web.fields.addText(testFieldNameRand, { Group: testFieldGroup });
             return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addImageField", pnpTest("76b940f7-2113-4adb-adad-230e119b5450", async function () {
-            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const { testFieldNameRand } = await this.props({
+                testFieldNameRand: `${testFieldName}_${getRandomString(10)}`,
+            });
             const field = await this.pnp.sp.web.fields.addImageField(testFieldNameRand, { Group: testFieldGroup});
             return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addNumber", pnpTest("5f3f2ba5-d467-4ebb-8161-3589c35f62c4", async function () {
-            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const { testFieldNameRand } = await this.props({
+                testFieldNameRand: `${testFieldName}_${getRandomString(10)}`,
+            });
             const field = await this.pnp.sp.web.fields.addNumber(testFieldNameRand, { Group: testFieldGroup });
             return expect(field.Title).to.be.equal(testFieldNameRand);
         }));
 
         it("addCalculated", pnpTest("4dc773f4-6f65-44e9-8ff6-8a03fe4dcb31", async function () {
-            const testFieldNameRand = `${testFieldName}_${getRandomString(10)}`;
+            const { testFieldNameRand } = await this.props({
+                testFieldNameRand: `${testFieldName}_${getRandomString(10)}`,
+            });
+
             const field = await this.pnp.sp.web.fields
                 .addCalculated(testFieldNameRand, {
                     Formula: "=Modified+1",
@@ -549,7 +560,7 @@ describe("Fields", function () {
             return expect(this.pnp.sp.web.lists.getByTitle(listName).fields.getByTitle(name).setShowInDisplayForm(true)).to.eventually.be.fulfilled;
         }));
 
-        it("setShowInEditForm", async function () {
+        it("setShowInEditForm", pnpTest("f7758cd9-fde4-4d22-9c70-9ade1bd685da", async function () {
 
             const { name } = await this.props({
                 name: `${testFieldName}_${getRandomString(10)}`,
@@ -558,7 +569,7 @@ describe("Fields", function () {
             await this.pnp.sp.web.lists.getByTitle(listName).fields.add(name, FieldTypes.Text, { Group: testFieldGroup });
 
             return expect(this.pnp.sp.web.lists.getByTitle(listName).fields.getByTitle(name).setShowInEditForm(true)).to.eventually.be.fulfilled;
-        });
+        }));
 
         it("setShowInNewForm", pnpTest("2d042af3-b23f-42d8-9028-5b2dc7a03d7f", async function () {
 
@@ -571,7 +582,7 @@ describe("Fields", function () {
             return expect(this.pnp.sp.web.lists.getByTitle(listName).fields.getByTitle(name).setShowInNewForm(true)).to.eventually.be.fulfilled;
         }));
 
-        it("delete", async function () {
+        it("delete", pnpTest("9de29564-1766-43c6-bb04-91156f69b0ef", async function () {
 
             const { name } = await this.props({
                 name: `${testFieldName}_${getRandomString(10)}`,
@@ -579,6 +590,6 @@ describe("Fields", function () {
 
             const f = await this.pnp.sp.web.lists.getByTitle(listName).fields.add(name, FieldTypes.Text, { Group: testFieldGroup });
             return expect(this.pnp.sp.web.lists.getByTitle(listName).fields.getById(f.Id).delete()).to.eventually.be.fulfilled;
-        });
+        }));
     });
 });
