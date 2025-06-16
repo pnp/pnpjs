@@ -8,11 +8,12 @@ import "@pnp/graph/onenote";
 import "@pnp/graph/files";
 import getValidUser from "./utilities/getValidUser.js";
 
-describe("OneNote", function () {
+// skip. OneNote API no longer supports App-only authentication
+describe.skip("OneNote", function () {
     let notebookId: string;
     let testUserName: string;
 
-    before(async function () {
+    before(pnpTest("07bac9d2-53d7-4f60-afd0-b9580d26336c", async function () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -20,16 +21,19 @@ describe("OneNote", function () {
 
         const userInfo = await getValidUser.call(this);
         testUserName = userInfo.userPrincipalName;
-        const notebook = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.add(getRandomString(10));
+        const { noteBookName } = await this.props({
+            noteBookName: getRandomString(10),
+        });
+        const notebook = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.add(noteBookName);
         if(notebook != null){
             notebookId = notebook.id;
         }
         if (stringIsNullOrEmpty(notebookId)) {
             this.skip();
         }
-    });
+    }));
 
-    after(async function  () {
+    after(pnpTest("45a1d20d-10e2-464b-97ba-e0d16db6dcc5", async function  () {
         if (!stringIsNullOrEmpty(notebookId)) {
             try {
                 const notebookFolder = await this.pnp.graph.users.getById(testUserName).drive.getItemByPath("notebooks").children();
@@ -44,7 +48,7 @@ describe("OneNote", function () {
             }
         }
         return;
-    });
+    }));
 
     it("List notebooks", pnpTest("9d0fe4b3-dc62-4699-be83-cc6f72daa62", async function () {
         const oneNoteNoteBooks = await this.pnp.graph.users.getById(testUserName).onenote.notebooks();
@@ -62,7 +66,10 @@ describe("OneNote", function () {
     }));
 
     it("Add notebook", pnpTest("81c342d9-d943-4a18-a8c3-828ef090d447", async function () {
-        const oneNodeNotebooksAdd = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.add(getRandomString(10));
+        const { name } = await this.props({
+            name: getRandomString(10),
+        });
+        const oneNodeNotebooksAdd = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.add(name);
         return expect(oneNodeNotebooksAdd.id).is.not.null;
     }));
 
@@ -73,9 +80,12 @@ describe("OneNote", function () {
 
     // TODO: Seeing if there's something we can do but throwing 500 errors
     it.skip("Notebook copy", pnpTest("aa57039b-4c75-437d-92ae-bb2a06c7b802", async function () {
+        const { name } = await this.props({
+            name: getRandomString(10),
+        });
         const notebooks = await this.pnp.graph.users.getById(testUserName).onenote.notebooks();
         if (notebooks.length > 0) {
-            const copy = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebooks[0].id).copy({ renameAs: getRandomString(10) });
+            const copy = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebooks[0].id).copy({ renameAs: name });
             return expect(copy.id).is.not.null;
         }
         this.skip();
@@ -83,9 +93,13 @@ describe("OneNote", function () {
 
     // TODO: Seeing if there's something we can do but throwing 500 errors
     it.skip("Section copyToNotebook()", pnpTest("b5cc2f9b-0a19-4d42-a041-1a68a2cfd915", async function () {
-        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(getRandomString(10));
+        const { name, newName } = await this.props({
+            name: getRandomString(10),
+            newName: getRandomString(10),
+        });
+        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(name);
         if (section) {
-            const copy = await this.pnp.graph.users.getById(testUserName).onenote.sections.getById(section.id).copyToNotebook({ id: notebookId, renameAs: getRandomString(10) });
+            const copy = await this.pnp.graph.users.getById(testUserName).onenote.sections.getById(section.id).copyToNotebook({ id: notebookId, renameAs: newName});
             return expect(copy.id).is.not.null;
         }
         this.skip();
@@ -93,10 +107,15 @@ describe("OneNote", function () {
 
     // TODO: Seeing if there's something we can do but throwing 500 errors
     it.skip("Section copyToSectionGroup()", pnpTest("b48e5d00-7806-4bde-96fe-1650dea1e1e4", async function () {
-        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(getRandomString(10));
-        const group = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sectionGroups.add(getRandomString(10));
+        const { name, groupName, groupName2 } = await this.props({
+            name: getRandomString(10),
+            groupName: getRandomString(5),
+            groupName2: getRandomString(10),
+        });
+        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(name);
+        const group = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sectionGroups.add(groupName);
         if (section.id && group.id) {
-            const copy = await this.pnp.graph.users.getById(testUserName).onenote.sections.getById(section.id).copyToSectionGroup({ id: group.id, renameAs: getRandomString(5) });
+            const copy = await this.pnp.graph.users.getById(testUserName).onenote.sections.getById(section.id).copyToSectionGroup({ id: group.id, renameAs: groupName2 });
             return expect(copy.id).is.not.null;
         }
         this.skip();
@@ -119,7 +138,10 @@ describe("OneNote", function () {
     }));
 
     it("Pages copyToSection", pnpTest("e8c21973-8d90-4bc4-947f-ef39198832dd", async function () {
-        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(getRandomString(10));
+        const { name } = await this.props({
+            name: getRandomString(10),
+        });
+        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(name);
         const pages = await this.pnp.graph.users.getById(testUserName).onenote.sections.getById(section.id).pages();
         if (section.id && pages.length > 0) {
             const pageCopy = await this.pnp.graph.users.getById(testUserName).onenote.sections.getById(section.id).pages.getById(pages[0].id).copyToSection({ id: section.id });
@@ -130,7 +152,10 @@ describe("OneNote", function () {
     }));
 
     it("Add page", pnpTest("60a4fd91-3f6b-4f6f-a5bb-e11f57186eaf", async function () {
-        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(getRandomString(10));
+        const { name } = await this.props({
+            name: getRandomString(10),
+        });
+        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(name);
         if (section.id) {
             const pageData = `<!DOCTYPE html>
                 <html>
@@ -154,7 +179,10 @@ describe("OneNote", function () {
     }));
 
     it("Sections list pages", pnpTest("5f44bc04-6119-432e-ac92-602085c4dc91", async function () {
-        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(getRandomString(10));
+        const { name } = await this.props({
+            name: getRandomString(10),
+        });
+        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(name);
         if (section.id) {
             const pages = await this.pnp.graph.users.getById(testUserName).onenote.sections.getById(section.id).pages();
             return expect(pages).to.be.an("array");
@@ -164,7 +192,10 @@ describe("OneNote", function () {
 
 
     it("Sections add page", pnpTest("48744c5a-999a-40fb-9ab8-9d06e0b544a2", async function () {
-        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(getRandomString(10));
+        const { name } = await this.props({
+            name: getRandomString(10),
+        });
+        const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(name);
         if (section.id) {
             const pageData = `<!DOCTYPE html>
                 <html>
@@ -212,9 +243,12 @@ describe("OneNote", function () {
 
     // TODO: Seeing if there's something we can do but throwing 500 errors
     it.skip("Create section in section group", pnpTest("4959895e-404f-4068-bf5f-85b0d2db9bcf", async function () {
+        const { name } = await this.props({
+            name: getRandomString(10),
+        });
         const sectionGroups = await this.pnp.graph.users.getById(testUserName).onenote.sectionGroups();
         if (sectionGroups.length > 0) {
-            const section = await this.pnp.graph.users.getById(testUserName).onenote.sectionGroups.getById(sectionGroups[0].id).sections.add(getRandomString(10));
+            const section = await this.pnp.graph.users.getById(testUserName).onenote.sectionGroups.getById(sectionGroups[0].id).sections.add(name);
             return expect(section.id).is.not.null;
         }
         this.skip();
@@ -227,7 +261,10 @@ describe("OneNote", function () {
         }));
 
         it("Add section", pnpTest("1298ee0d-0566-4144-ab56-d8e3c89654c7", async function () {
-            const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(getRandomString(10));
+            const { name } = await this.props({
+                name: getRandomString(10),
+            });
+            const section = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sections.add(name);
             return expect(section.id).is.not.null;
         }));
 
@@ -237,7 +274,10 @@ describe("OneNote", function () {
         }));
 
         it("Add section group", pnpTest("cb1d6d80-d5dc-4879-ac5a-288a5f0249ba", async function () {
-            const sectionGroup = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sectionGroups.add(getRandomString(10));
+            const { name } = await this.props({
+                name: getRandomString(10),
+            });
+            const sectionGroup = await this.pnp.graph.users.getById(testUserName).onenote.notebooks.getById(notebookId).sectionGroups.add(name);
             return expect(sectionGroup.id).is.not.null;
         }));
     });

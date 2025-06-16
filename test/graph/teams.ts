@@ -3,6 +3,7 @@ import { expect } from "chai";
 import "@pnp/graph/teams";
 import "@pnp/graph/groups";
 import getValidUser from "./utilities/getValidUser.js";
+import { pnpTest } from "../pnp-test.js";
 
 // skipping because this is a very time intensive test for an API that is unlikely to change frequently
 describe.skip("Teams", function () {
@@ -12,7 +13,7 @@ describe.skip("Teams", function () {
     let teamID = "";
     let operationID = "";
 
-    before(async function () {
+    before(pnpTest("af8f6e86-0905-4bbf-8b74-dd4b1ce1bdda", async function () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -32,7 +33,7 @@ describe.skip("Teams", function () {
                 },
             ],
         };
-    });
+    }));
 
 
     beforeEach(async function () {
@@ -41,16 +42,18 @@ describe.skip("Teams", function () {
         operationID = "";
     });
 
-    it("create()", async function () {
-        const teamName = `TestTeam_${getRandomString(4)}`;
+    it("create()", pnpTest("10a95c84-3001-4093-aef0-d59fc1245234", async function () {
+        const { teamName } = await this.props({
+            teamName: `TestTeam_${getRandomString(4)}`,
+        });
         (<any>teamBody).displayName = teamName;
         const teamCreateResult = await this.pnp.graph.teams.create(teamBody);
         teamID = teamCreateResult.teamId;
         operationID = teamCreateResult.operationId;
         return expect(teamID.length > 0).is.true && expect(operationID.length > 0).is.true;
-    });
+    }));
 
-    after(async function () {
+    after(pnpTest("4bd4e8f9-afb9-4338-b4e3-84f52188f158", async function () {
 
         // Added delays to try and deal with async nature of adding a team. At this time it seems to be enough.
         if (teamID !== "" && operationID !== "") {
@@ -72,5 +75,5 @@ describe.skip("Teams", function () {
                 // eslint-disable-next-line no-empty
             } catch (e) { }
         }
-    });
+    }));
 });

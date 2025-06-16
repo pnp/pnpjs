@@ -6,12 +6,12 @@ import { ConsistencyLevel, AdvancedQuery } from "@pnp/graph/index.js";
 
 describe("Graph Query Params", function () {
 
-    before(async function () {
+    before(pnpTest("5491208f-ca7f-4c9d-b52a-b1dc473932d0", async function () {
 
         if ((!this.pnp.settings.enableWebTests)) {
             this.skip();
         }
-    });
+    }));
 
     it("groupTypes/any(c:c eq 'Unified')", pnpTest("158a6aa2-3d0e-4435-88e0-11a146db133e", async function () {
 
