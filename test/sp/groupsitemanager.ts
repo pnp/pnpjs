@@ -65,7 +65,7 @@ describe.skip("GroupSiteManager (group context)", function () {
             groupName: `TestGroup_${getRandomString(4)}`,
         };
 
-        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
+        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Microsoft365);
         groupId = groupAddResult.id;
     }));
 
