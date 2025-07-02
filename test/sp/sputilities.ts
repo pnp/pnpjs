@@ -4,7 +4,6 @@ import "@pnp/sp/site-users/web";
 import "@pnp/sp/sputilities";
 import { PrincipalType, PrincipalSource } from "@pnp/sp";
 import { combine, stringIsNullOrEmpty } from "@pnp/core";
-import { IEmailProperties } from "@pnp/sp/sputilities";
 
 // cannot test with app permissions
 describe.skip("SPUtilities", function () {
@@ -37,30 +36,6 @@ describe.skip("SPUtilities", function () {
 
     it("expandGroupsToPrincipals", async function () {
         return expect(this.pnp.sp.utility.expandGroupsToPrincipals(["Everyone"], 10)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;
-    });
-
-    it("sendEmail", async function () {
-
-        if (stringIsNullOrEmpty(this.pnp.settings.testUser)) {
-            this.skip();
-        }
-
-        const currentUserEmailAddress = await this.pnp.sp.utility.getCurrentUserEmailAddresses();
-
-        const headers = {
-            "content-type": "text/html",
-        };
-
-        const emailProps: IEmailProperties = {
-            AdditionalHeaders: headers,
-            BCC: [currentUserEmailAddress],
-            Body: "Here is the body. <b>It supports html</b>",
-            CC: [currentUserEmailAddress],
-            Subject: "This email is about...",
-            To: [currentUserEmailAddress],
-        };
-
-        return expect(this.pnp.sp.utility.sendEmail(emailProps)).to.eventually.be.fulfilled;
     });
 
     it("searchPrincipals", async function () {
