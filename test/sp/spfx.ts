@@ -6,12 +6,13 @@ import "@pnp/sp/lists/web";
 import { ISPFXContext, SPFI, spfi, SPFx } from "@pnp/sp";
 import { NodeFetchWithRetry } from "@pnp/nodejs";
 import { CopyFrom, isArray } from "@pnp/core";
+import { pnpTest } from  "../pnp-test.js";
 
 describe("SPFx", function () {
 
     let spfxSP: SPFI;
 
-    before(function () {
+    before(pnpTest("8e4fb159-d27c-42af-8950-2480ea61173e", function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
@@ -31,22 +32,22 @@ describe("SPFx", function () {
             SPFx(SPFxContext),
             NodeFetchWithRetry({ replace: true }),
             CopyFrom(this.pnp.sp.web, "replace", (m) => m === "auth"));
-    });
+    }));
 
-    it("get web", async function () {
+    it("get web", pnpTest("866395db-e8a3-4370-8e4c-1c8f53ae4e86", async function () {
 
         const webInfo = await spfxSP.web();
         return expect(webInfo).to.haveOwnProperty("Title");
-    });
+    }));
 
-    it("get lists", async function () {
+    it("get lists", pnpTest("2862fb8c-7ec3-4b24-89ce-10834a64c160", async function () {
 
         const listsInfo = await spfxSP.web.lists();
 
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(isArray(listsInfo)).to.be.true;
         return expect(listsInfo).property("length").to.be.greaterThan(0);
-    });
+    }));
 });
 
 
