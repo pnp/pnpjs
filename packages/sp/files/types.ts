@@ -442,6 +442,7 @@ export class _File extends ReadableFile<IFileInfo> {
                     progress({ offset, stage: "starting", uploadId });
                     offset = await spPost(File(fileRef, `startUpload(uploadId=guid'${uploadId}')`), { body: buffer });
                     first = false;
+                    buffer = new Uint8Array(); // reset buffer on small file upload, so we don't duplicate the buffer on finishUpload. Issue #3278
                 }
                 progress({ offset, stage: "finishing", uploadId });
                 return spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: buffer.length ? buffer : "" });
