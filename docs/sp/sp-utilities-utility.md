@@ -4,6 +4,9 @@ Through the REST api you are able to call a subset of the SP.Utilities.Utility m
 
 ## sendEmail
 
+> ⚠️ **Deprecated**: This method is deprecated in favor of the [Graph module's `sendMessage`](https://pnp.github.io/pnpjs/graph/mail-messages/#send-message).
+> Please migrate to the Graph module for sending emails. This functionality will be removed in future versions.
+
 This methods allows you to send an email based on the supplied arguments. The method takes a single argument, a plain object defined by the EmailProperties interface (shown below).
 
 ### EmailProperties
@@ -63,7 +66,8 @@ const sp = spfi(...);
 
 let addressString: string = await sp.utility.getCurrentUserEmailAddresses();
 
-// and use it with sendEmail
+// and use it with sendEmail 
+// note: sendEmail has been deprecated in favor of Graph module's sendMessage functionality
 await sp.utility.sendEmail({
     To: [addressString],
     Subject: "This email is about...",
