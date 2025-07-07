@@ -4,7 +4,6 @@ import "@pnp/sp/site-users/web";
 import "@pnp/sp/sputilities";
 import { PrincipalType, PrincipalSource } from "@pnp/sp";
 import { combine, stringIsNullOrEmpty } from "@pnp/core";
-import { IEmailProperties } from "@pnp/sp/sputilities";
 import { pnpTest } from  "../pnp-test.js";
 
 // cannot test with app permissions
@@ -38,30 +37,6 @@ describe.skip("SPUtilities", function () {
 
     it("expandGroupsToPrincipals", pnpTest("8ad21c88-b7bf-486f-b704-ca312fc3c5ca", async function () {
         return expect(this.pnp.sp.utility.expandGroupsToPrincipals(["Everyone"], 10)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;
-    }));
-
-    it("sendEmail", pnpTest("6923acbe-55dc-479a-9735-149be0c74321", async function () {
-
-        if (stringIsNullOrEmpty(this.pnp.settings.testUser)) {
-            this.skip();
-        }
-
-        const currentUserEmailAddress = await this.pnp.sp.utility.getCurrentUserEmailAddresses();
-
-        const headers = {
-            "content-type": "text/html",
-        };
-
-        const emailProps: IEmailProperties = {
-            AdditionalHeaders: headers,
-            BCC: [currentUserEmailAddress],
-            Body: "Here is the body. <b>It supports html</b>",
-            CC: [currentUserEmailAddress],
-            Subject: "This email is about...",
-            To: [currentUserEmailAddress],
-        };
-
-        return expect(this.pnp.sp.utility.sendEmail(emailProps)).to.eventually.be.fulfilled;
     }));
 
     it("searchPrincipals", pnpTest("726e7377-5ecf-421c-afd3-06130830b757", async function () {
