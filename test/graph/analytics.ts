@@ -20,18 +20,26 @@ describe("Analytics", function () {
     let listResultId = null;
     let listItemId = null;
 
-    const fileOptions = {
-        content: "This is some test content",
-        filePathName: `pnpTest${getRandomString(5)}.txt`,
-        contentType: "text/plain;charset=utf-8",
-    };
-    const sampleList: List = {
-        displayName: `PnPGraphTestListItemAnalytics${getRandomString(5)}`,
-        list: { "template": "genericList" },
-    };
+    let fileOptions ;
+    let sampleList: List;
 
     // Ensure we have the data to test against
     before(pnpTest("6ffe9e49-a6d0-48a5-9adb-64cd85f7ef73", async function () {
+
+        const { filePathName, listDisplayName } = await this.props({
+            filePathName: `pnpTest${getRandomString(5)}.txt`,
+            listDisplayName: `PnPGraphTestListItemAnalytics${getRandomString(5)}`,
+        });
+
+        fileOptions = {
+            content: "This is some test content",
+            filePathName: filePathName,
+            contentType: "text/plain;charset=utf-8",
+        };
+        sampleList = {
+            displayName: listDisplayName,
+            list: { "template": "genericList" },
+        };
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();

@@ -5,11 +5,12 @@ import "@pnp/graph/files";
 import { Drive, Group } from "@microsoft/microsoft-graph-types";
 import { hOP, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
+import { pnpTest } from "../pnp-test.js";
 
 describe("Queryable", function () {
     let testUserName = "";
 
-    before(async function () {
+    before(pnpTest("74bb3ab1-7dc3-488d-8691-ce05a96277ff",async function () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -17,9 +18,9 @@ describe("Queryable", function () {
 
         const userInfo = await getValidUser.call(this);
         testUserName = userInfo.userPrincipalName;
-    });
+    }));
 
-    it("$orderBy", async function () {
+    it("$orderBy", pnpTest("17ba91dc-c70f-4154-9eb5-6440b0795125", async function () {
         const groups = await this.pnp.graph.groups.orderBy("displayName")();
         const groupsClone: Group[] = JSON.parse(JSON.stringify(groups));
         const groupsResort: Group[] = groupsClone.sort((a, b) => {
@@ -39,9 +40,9 @@ describe("Queryable", function () {
             }
         }
         return expect(sortTrue).to.be.true;
-    });
+    }));
 
-    it("$orderBy-two", async function () {
+    it("$orderBy-two", pnpTest("63085b50-a892-4bfb-b235-25d0cdbb6de1", async function () {
         const drives = await this.pnp.graph.users.getById(testUserName).drives.orderBy("lastModifiedBy/user/displayName")();
         const drivesClone: Drive[] = JSON.parse(JSON.stringify(drives));
         const drivesResort: Drive[] = drivesClone.sort((a, b) => {
@@ -61,9 +62,9 @@ describe("Queryable", function () {
             }
         }
         return expect(sortTrue).to.be.true;
-    });
+    }));
 
-    it("$select", async function () {
+    it("$select", pnpTest("3d52bdef-420f-4972-ad63-1e2616d4fac8", async function () {
         const groups = await this.pnp.graph.groups.select("displayName, description, mail")();
         let group: Group = { "displayName": "", "description": "", "mail": "" };
         if (groups.length > 0) {
@@ -80,9 +81,9 @@ describe("Queryable", function () {
             hasProps = false;
         }
         return expect(hasProps).to.be.true;
-    });
+    }));
 
-    it("$expand", async function () {
+    it("$expand", pnpTest("5b41d896-8bb8-458e-9108-37631412028a", async function () {
         const groups = await this.pnp.graph.groups.expand("members")();
         let hasMembers = true;
         for (let i = 0; i < groups.length; i++) {
@@ -92,6 +93,6 @@ describe("Queryable", function () {
             }
         }
         return expect(hasMembers).to.be.true;
-    });
+    }));
 
 });
