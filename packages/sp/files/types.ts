@@ -422,7 +422,7 @@ export class _File extends ReadableFile<IFileInfo> {
                 buffer = newBuffer;
             }
 
-            while (buffer.length >= chunkSize || (chunk.done && buffer.length > 0)) {
+            while (buffer.length >= chunkSize) {
                 const chunkToUpload = buffer.slice(0, chunkSize);
                 buffer = buffer.slice(chunkSize);
 
@@ -430,9 +430,6 @@ export class _File extends ReadableFile<IFileInfo> {
                     progress({ offset, stage: "starting", uploadId });
                     offset = await spPost(File(fileRef, `startUpload(uploadId=guid'${uploadId}')`), { body: chunkToUpload });
                     first = false;
-                } else if (chunk.done && buffer.length === 0) {
-                    progress({ offset, stage: "finishing", uploadId });
-                    return spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunkToUpload });
                 } else {
                     progress({ offset, stage: "continue", uploadId });
                     offset = await spPost(File(fileRef, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunkToUpload });
@@ -440,7 +437,15 @@ export class _File extends ReadableFile<IFileInfo> {
             }
 
             if (chunk.done) {
-                break;
+                if (first) {
+                    // Small file: not enough data to trigger a chunk upload
+                    progress({ offset, stage: "starting", uploadId });
+                    offset = await spPost(File(fileRef, `startUpload(uploadId=guid'${uploadId}')`), { body: buffer });
+                    first = false;
+                    buffer = new Uint8Array(); // reset buffer on small file upload, so we don't duplicate the buffer on finishUpload. Issue #3278
+                }
+                progress({ offset, stage: "finishing", uploadId });
+                return spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: buffer.length ? buffer : "" });
             }
         }
     }
