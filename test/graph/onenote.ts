@@ -8,7 +8,8 @@ import "@pnp/graph/onenote";
 import "@pnp/graph/files";
 import getValidUser from "./utilities/getValidUser.js";
 
-describe("OneNote", function () {
+// App permissions removed for OneNote, can no longer test
+describe.skip("OneNote", function () {
     let notebookId: string;
     let testUserName: string;
 
