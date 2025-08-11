@@ -398,9 +398,9 @@ const sp = spfi(...).using(ResolveOnData(), RejectOnError());
 
 ## Timeout
 
-The Timeout behavior allows you to include a timeout in requests. You can specify either a number, representing the number of milliseconds until the request should timeout or an AbortSignal.
+The Timeout behavior allows you to include a timeout in requests. You can specify a number, representing the number of milliseconds until the request should timeout.
 
-> In Nodejs you will need to polyfill `AbortController` if your version (&lt;15) does not include it when using Timeout and passing a number. If you are supplying your own AbortSignal you do not.
+> In Nodejs you will need to polyfill `AbortController` if your version (&lt;15) does not include it.
 
 ```TypeScript
 import { Timeout } from "@pnp/queryable";
@@ -411,34 +411,13 @@ import "@pnp/sp/webs";
 const sp = spfi(...).using(Timeout(5000));
 ```
 
-```TypeScript
-import { Timeout } from "@pnp/queryable";
-
-import "@pnp/sp/webs";
-
-const controller = new AbortController();
-
-const sp = spfi(...).using(Timeout(controller.signal));
-
-// abort requests after 6 seconds using our own controller
-const timer = setTimeout(() => {
-    controller.abort();
-}, 6000);
-
-// this request will be cancelled if it doesn't complete in 6 seconds
-const webInfo = await sp.webs();
-
-// be a good citizen and cancel unneeded timers
-clearTimeout(timer);
-```
-
 ## Cancelable
 
 ![Beta](https://img.shields.io/badge/Beta-important.svg)
 
 _Updated as Beta 2 in 3.5.0_
 
-This behavior allows you to cancel requests before they are complete. It is similar to timeout however you control when and if the request is canceled. Please consider this behavior as beta while we work to stabalize the functionality.
+This behavior allows you to cancel requests before they are complete. It is similar to timeout however you control when and if the request is canceled. 
 
 ### Known Issues
 
