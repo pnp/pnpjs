@@ -6,12 +6,12 @@ import { pnpTest } from "../pnp-test.js";
 
 describe("Features", function () {
 
-    before(function () {
+    before(pnpTest("d9f8c3a7-4b2e-4c8a-9e3f-2a6b7d8e9f0c", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-    });
+    }));
 
     describe("Web", function () {
 
