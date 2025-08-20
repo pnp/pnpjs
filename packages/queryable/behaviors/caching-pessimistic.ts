@@ -30,8 +30,7 @@ export function CachingPessimisticRefresh(props?: ICachingProps): TimelinePipe {
                 // set our result
                 result = cached;
 
-                setTimeout(async () => {
-
+                queueMicrotask(async () => {
                     const q = new Queryable(this);
                     const a = q.on.pre.toArray();
                     q.on.pre.clear();
@@ -42,8 +41,7 @@ export function CachingPessimisticRefresh(props?: ICachingProps): TimelinePipe {
                     const value = await q(init);
 
                     setCachedValue(value);
-
-                }, 0);
+                });
 
             } else {
 

@@ -76,11 +76,6 @@ type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<Defau
 export type TimelinePipe<T extends Timeline<any> = any> = (intance: T) => T;
 
 /**
- * Field name to hold any flags on observer functions used to modify their behavior
- */
-const flags = Symbol.for("ObserverLifecycleFlags");
-
-/**
  * Bitwise flags to indicate modified behavior
  */
 const enum ObserverLifecycleFlags {
@@ -96,19 +91,22 @@ const enum ObserverLifecycleFlags {
  * @param flag The flag used to exclude observers
  * @returns An Array.filter function
  */
+const lifecycleFlags = new WeakMap<ValidObserver, number>();
+
 // eslint-disable-next-line no-bitwise
-const byFlag = (flag: ObserverLifecycleFlags) => ((observer) => !((observer[flags] || 0) & flag));
+const byFlag = (flag: ObserverLifecycleFlags) => ((observer: ValidObserver) => !((lifecycleFlags.get(observer) || 0) & flag));
 
 /**
  * Creates an observer lifecycle modification flag application function
  * @param flag The flag to the bound function should add
  * @returns A function that can be used to apply [flag] to any valid observer
  */
-const addFlag = (flag: ObserverLifecycleFlags) => (<T extends ValidObserver>(observer: T): T => {
+const addFlag = (flag: ObserverLifecycleFlags) => <T extends ValidObserver>(observer: T): T => {
     // eslint-disable-next-line no-bitwise
-    observer[flags] = (observer[flags] || 0) | flag;
+    const v = (lifecycleFlags.get(observer) || 0) | flag;
+    lifecycleFlags.set(observer, v);
     return observer;
-});
+};
 
 /**
  * Observer lifecycle modifier that indicates this observer should NOT be inherited by any child

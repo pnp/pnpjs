@@ -165,8 +165,8 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
             throw Error("No observers registered for this request. (https://pnp.github.io/pnpjs/queryable/queryable#no-observers-registered-for-this-request)");
         }
 
-        // schedule the execution after we return the promise below in the next event loop
-        setTimeout(async () => {
+        // schedule execution as a microtask so the returned promise is wired before the work starts
+        queueMicrotask(async () => {
 
             const requestId = getGUID();
             let requestUrl: URL;
@@ -234,7 +234,7 @@ export class Queryable<R> extends Timeline<typeof DefaultMoments> implements IQu
                 log("Finished request", 0);
             }
 
-        }, 0);
+        });
 
         // this allows us to internally hook the promise creation and modify it. This was introduced to allow for
         // cancelable to work as envisioned, but may have other users. Meant for internal use in the library accessed via behaviors.
@@ -328,16 +328,12 @@ export function invokable(invokeableAction?: (this: any, init?: RequestInit) => 
 
             construct(clz, args, newTarget: any) {
 
+                const defaultAction = isFunc(invokeableAction) ? invokeableAction : function (this: any, init?: RequestInit) {
+                    return op(this, get, init);
+                };
+
                 const invokableInstance = Object.assign(function (init?: RequestInit) {
-
-                    if (!isFunc(invokeableAction)) {
-                        invokeableAction = function (this: any, init?: RequestInit) {
-                            return op(this, get, init);
-                        };
-                    }
-
-                    return Reflect.apply(invokeableAction, invokableInstance, [init]);
-
+                    return Reflect.apply(defaultAction, invokableInstance, [init]);
                 }, Reflect.construct(clz, args, newTarget));
 
                 Reflect.setPrototypeOf(invokableInstance, newTarget.prototype);
