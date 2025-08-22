@@ -1,4 +1,4 @@
-import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphInstance, graphPost } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphInstance, graphPost, graphGet, GraphQueryable, graphPatch, graphDelete } from "../graphqueryable.js";
 import { body, HeaderParse } from "@pnp/queryable";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
 import { defaultPath } from "../decorators.js";
@@ -7,7 +7,12 @@ import {
     TeamsAsyncOperation as ITeamsAsyncOperation,
     TeamsTab as ITeamsTabType,
     TeamsAppInstallation as ITeamsAppInstallation,
-    ChatMessage as IChatMessage,
+    Channel as IChannelType,
+    Message as IMessageType,
+    DriveItem as IDriveItemType,
+    ConversationMember as IConversationMemberType,
+    User as IUserType,
+    SharedWithChannelTeamInfo as ISharedWithChannelTeamInfoType,
 } from "@microsoft/microsoft-graph-types";
 
 /**
@@ -96,6 +101,14 @@ export class _Team extends _GraphInstance<ITeamType> {
     public getOperationById(id: string): Promise<ITeamsAsyncOperation> {
         return GraphInstance(this, `operations/${id}`)();
     }
+
+    public async incomingChannels(): Promise<IChannelType[]> {
+        return graphGet(GraphQueryable(this, "incomingChannels"));
+    }
+
+    public async removeIncomingChannel(channelId: string): Promise<void> {
+        return graphDelete(GraphQueryable(this, `incomingChannels/${channelId}/$ref`));
+    }
 }
 export interface ITeam extends _Team, IUpdateable<ITeamType> { }
 export const Team = graphInvokableFactory<ITeam>(_Team);
@@ -127,6 +140,44 @@ export interface ITeams extends _Teams, IGetById<ITeam> { }
 export const Teams = graphInvokableFactory<ITeams>(_Teams);
 
 /**
+ * Channel Member
+ */
+export class _ChannelMember extends _GraphInstance<IChannelMember> {
+    /**
+     * Update channel member role
+     * @returns ConversationMember
+     */
+    public async updateChannelMember(member: IChannelMemberUpdate): Promise<IConversationMemberType> {
+        member["@odata.type"] = "#microsoft.graph.aadUserConversationMember";
+        return graphPatch(GraphQueryable(this), body(member));
+    }
+}
+export interface IChannelMember extends _Channel, IDeleteable { }
+export const ChannelMember = graphInvokableFactory<IChannelMember>(_ChannelMember);
+
+/**
+ * Channel Members
+ */
+@defaultPath("members")
+@getById(ChannelMember)
+export class _ChannelMembers extends _GraphCollection<IConversationMemberType[]> {
+    public get channelMembers(): IChannelMember {
+        return ChannelMember(this);
+    }
+
+    /**
+     * Add member to a private or shared channel
+     * @returns ConversationMember
+     */
+    public async addChannelMember(member: IChannelMemberAdd): Promise<IConversationMemberType> {
+        member["@odata.type"] = "#microsoft.graph.aadUserConversationMember";
+        return graphPost(GraphQueryable(this), body(member));
+    }
+}
+export interface IChannelMembers extends _ChannelMembers, IGetById<IChannelMember> { }
+export const ChannelMembers = graphInvokableFactory<IChannelMembers>(_ChannelMembers);
+
+/**
  * Channel
  */
 export class _Channel extends _GraphInstance<IChannel> {
@@ -137,8 +188,125 @@ export class _Channel extends _GraphInstance<IChannel> {
     public get messages(): IMessages {
         return Messages(this);
     }
+
+    /**
+     * Gets all the messages in a channel.
+     * @param model optionally specify the licensing and payment model
+     *
+     */
+    public async filesFolder(): Promise<IDriveItemType> {
+        return graphGet(GraphQueryable(this, "filesFolder"));
+    }
+
+    // /**
+    //  * Get a list of members in a channel, including direct members of standard, private, and shared channels.
+    //  * @returns ConversationMember array
+    //  */
+    // public async channelMembers(): Promise<IConversationMemberType[]> {
+    //     return graphGet(GraphQueryable(this, "members"));
+    // }
+
+    /**
+     * Get a list of members in a channel, including direct and indirect members of standard, private, and shared channels.
+     * @returns ConversationMember array
+     */
+    public async allMembers(): Promise<IConversationMemberType[]> {
+        return graphGet(GraphQueryable(this, "allMembers"));
+    }
+
+    // /**
+    //  * Get a conversationMember from a channel.
+    //  * @returns ConversationMember
+    //  */
+    // public async getMemberById(membershipId: string): Promise<IConversationMemberType> {
+    //     return graphGet(GraphQueryable(this, `members/${membershipId}`));
+    // }
+
+    /**
+     * Archive a channel
+     * @param shouldSetSpoSiteReadOnlyForMembers, default false
+     */
+    public async archive(shouldSetSpoSiteReadOnlyForMembers = false): Promise<void> {
+        const postBody = {
+            shouldSetSpoSiteReadOnlyForMembers,
+        };
+        return graphPost(GraphQueryable(this, "archive"), body(postBody));
+    }
+
+    /**
+     * Unarchive a channel
+     */
+    public async unarchive(): Promise<void> {
+        return graphPost(GraphQueryable(this, "unarchive"));
+    }
+
+    /**
+     * Complete channel migration
+     */
+    public async completeMigration(): Promise<void> {
+        return graphPost(GraphQueryable(this, "completeMigration"));
+    }
+
+    /**
+     * Provision an email address for a channel.
+     */
+    public async provisionEmail(): Promise<void> {
+        return graphPost(GraphQueryable(this, "provisionEmail"));
+    }
+
+    /**
+     * Remove an email address for a channel.
+     */
+    public async removeEmail(): Promise<void> {
+        return graphPost(GraphQueryable(this, "removeEmail"));
+    }
+
+    /**
+     * Get the list of teams that has been shared a specified channel.
+     * This operation is allowed only for channels with a membershipType value of shared.
+     */
+    public async sharedWithTeams(): Promise<ISharedWithChannelTeamInfoType[]> {
+        return graphGet(GraphQueryable(this, "sharedWithTeams"));
+    }
+
+    /**
+     * Get a team that has been shared with a specified channel.
+     * This operation is allowed only for channels with a membershipType value of shared.
+     * @param sharedWithTeamsId: string
+     */
+    public async sharedWithChannelTeamInfo(sharedWithTeamsId: string): Promise<ISharedWithChannelTeamInfoType> {
+        return graphGet(GraphQueryable(this, `sharedWithTeams/${sharedWithTeamsId}`));
+    }
+
+    /**
+     * Get a team that has been shared with a specified channel.
+     * This operation is allowed only for channels with a membershipType value of shared.
+     * @param sharedWithTeamsId: string
+     */
+    public async removeSharedWithChannelTeamInfo(sharedWithTeamsId: string): Promise<void> {
+        return graphDelete(GraphQueryable(this, `sharedWithTeams/${sharedWithTeamsId}`));
+    }
+
+    /**
+     * Get the list of conversationMembers who can access a shared channel.
+     * This operation is allowed only for channels with a membershipType value of shared.
+     * @param sharedWithTeamsId: string
+     */
+    public async sharedWithChannelMembers(sharedWithTeamsId: string): Promise<IConversationMemberType> {
+        return graphGet(GraphQueryable(this, `sharedWithTeams/${sharedWithTeamsId}/allowedMembers`));
+    }
+
+    /**
+     * Determine whether a user has access to a shared channel.
+     * This operation is allowed only for channels with a membershipType value of shared.
+     * @param sharedWithTeamsId: string
+     */
+    public async doesUserHaveAccess(userAccess: IUserAccessRequest): Promise<IConversationMemberType> {
+        const path = `doesUserHaveAccess(userId='${userAccess.userId}',tenantId='${userAccess.tenantId}',userPrincipalName='${userAccess.userPrincipalName}')`;
+        return graphGet(GraphQueryable(this, path));
+    }
 }
-export interface IChannel extends _Channel { }
+export interface IChannel extends _Channel, IUpdateable<IChannelType>, IDeleteable { }
 export const Channel = graphInvokableFactory<IChannel>(_Channel);
 
 /**
@@ -168,6 +336,26 @@ export class _Channels extends _GraphCollection<IChannel[]> {
             data,
         };
     }
+
+    /**
+     * Gets all the messages in a channel.
+     * @param model optionally specify the licensing and payment model
+     *
+     */
+    public async getAllMessages(model: "A" | "B" | undefined): Promise<IMessageType[]> {
+        const qString = `getAllMessages${model ? `?model=${model}` : ""}`;
+        return graphGet(GraphQueryable(this, qString));
+    }
+
+    /**
+     * Gets all the retained messages in a channel.
+     * @param model optionally specify the licensing and payment model
+     *
+     */
+    public async getAllRetainedMessages(model: "A" | "B" | undefined): Promise<IMessageType[]> {
+        const qString = `getAllRetainedMessages${model ? `?model=${model}` : ""}`;
+        return graphGet(GraphQueryable(this, qString));
+    }
 }
 export interface IChannels extends _Channels, IGetById<IChannel> { }
 export const Channels = graphInvokableFactory<IChannels>(_Channels);
@@ -175,7 +363,15 @@ export const Channels = graphInvokableFactory<IChannels>(_Channels);
 /**
  * Message
  */
-export class _Message extends _GraphInstance<IChatMessage> { }
+export class _Message extends _GraphInstance<IMessageType> {
+    /**
+     * Gets all the replies to a message.
+     *
+     */
+    public async replies(): Promise<IMessageType> {
+        return graphGet(GraphQueryable(this, "replies"));
+    }
+}
 export interface IMessage extends _Message { }
 export const Message = graphInvokableFactory<IMessage>(_Message);
 
@@ -184,14 +380,14 @@ export const Message = graphInvokableFactory<IMessage>(_Message);
  */
 @defaultPath("messages")
 @getById(Message)
-export class _Messages extends _GraphCollection<IChatMessage[]> {
+export class _Messages extends _GraphCollection<IMessageType[]> {
 
     /**
      * Adds a message
      * @param message ChatMessage object that defines the message
      *
      */
-    public async add(message: IChatMessage): Promise<IMessageCreateResult> {
+    public async add(message: IMessageType): Promise<IMessageCreateResult> {
 
         const data = await graphPost(this, body(message));
 
@@ -323,4 +519,19 @@ export const InstalledApps = graphInvokableFactory<IInstalledApps>(_InstalledApp
 export interface IAppAddResult {
     data: any;
     app: IInstalledApp;
+}
+
+export interface IChannelMemberAdd {
+    roles: string[];
+    user: IUserType;
+}
+
+export interface IChannelMemberUpdate {
+    roles: string[];
+}
+
+export interface IUserAccessRequest {
+    tenantId: string;
+    userId: string;
+    userPrincipalName: string;
 }

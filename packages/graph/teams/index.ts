@@ -26,6 +26,9 @@ export {
     Tabs,
     Team,
     Teams,
+    IChannelMemberAdd,
+    IChannelMemberUpdate,
+    IUserAccessRequest,
 } from "./types.js";
 
 // ITeamProperties, ITabsConfiguration,
