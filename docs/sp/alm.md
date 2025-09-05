@@ -1,6 +1,6 @@
 # @pnp/sp/appcatalog
 
-The ALM api allows you to manage app installations both in the tenant app catalog and individual site app catalogs. Some of the methods are still in beta and as such may change in the future. This article outlines how to call this api using @pnp/sp. Remember all these actions are bound by permissions so it is likely most users will not have the rights to perform these ALM actions.
+The ALM api allows you to manage app installations both in the tenant app catalog and individual site app catalogs as well as installation of apps to sites. Some of the methods are still in beta and as such may change in the future. This article outlines how to call this api using @pnp/sp. Remember all these actions are bound by permissions so it is likely most users will not have the rights to perform these ALM actions.
 
 ## Understanding the App Catalog Hierarchy
 
@@ -46,6 +46,7 @@ If you know the url of the site collection whose app catalog you want you can us
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import { Web } from '@pnp/sp/webs';
+import "@pnp/sp/appcatalog";
 
 const sp = spfi(...);
 const web = Web([sp.web, "https://mytenant.sharepoint.com/sites/mysite"]);
@@ -120,6 +121,39 @@ await catalog.getAppById(myAppId).upgrade();
 // remove
 await catalog.getAppById(myAppId).remove();
 
+```
+
+## Install an application from the tenant app catalog into a site
+
+You can also uninstall and upgrade.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import { Web } from '@pnp/sp/webs';
+import "@pnp/sp/appcatalog";
+
+// Initialize spfi with sharepoint site you want to install the application into. 
+// "https://mytenant.sharepoint.com/sites/mysite"
+const sp = spfi(...);
+// GUID of SPFx app package: from package-solution.json -> id
+const APP_ID = "72a81c57-2216-4e09-b67a-28d8722dabef";
+// Check if app is installed
+let isInstalled = false;
+// Try to install the app
+const targetApp = await spSite.tenantAppcatalog.getAppById(this.APP_ID)();
+
+if (targetApp) {
+    try {
+        void await spSite.tenantAppcatalog.getAppById(this.APP_ID).install();
+        isInstalled = true;
+        console.log(this.LOG_SOURCE, "App installed");
+    } catch (err) {
+        if (err.message.indexOf("An instance of this App already exists at the specified location") > 0) {
+            isInstalled = true;
+            console.log(this.LOG_SOURCE, "App already installed");
+        }
+    }
+}
 ```
 
 ## Synchronize a solution/app to the Microsoft Teams App Catalog

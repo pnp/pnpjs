@@ -155,6 +155,17 @@ const graph = graphfi(...);
 const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528').channels();
 ```
 
+### Get all messages from all channels of a Team
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const chatMessages = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getAllMessages();
+```
+
 ### Get primary channel
 
 Using the teams.getById() you can get a specific Team.
@@ -190,7 +201,7 @@ const newChannel = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d82265
 
 ```
 
-### List Messages
+### Channel operations
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -198,7 +209,58 @@ import "@pnp/graph/teams";
 
 const graph = graphfi(...);
 
+// archive a channel
+const archive = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').archive();
+// unarchive a channel
+const unarchive = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').unarchive();
+// complete migration
+const completeMigration = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').completeMigration();
+// provision e-mail
+const provisionEmail = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').provisionEmail();
+// remove e-mail
+const removeEmail = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').removeEmail();
+// Shared with teams
+const sharedWithTeams = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').sharedWithTeams();
+// shared with channel team info
+const sharedWithChannelTeamInfo = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').sharedWithChannelTeamInfo();
+// remove shared with channel team info
+const removeSharedWithChannelTeamInfo = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').removeSharedWithChannelTeamInfo();
+// shared with channel members
+const sharedWithChannelMembers = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').sharedWithChannelMembers();
+// does user have access
+const doesUserHaveAccess = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').doesUserHaveAccess();
+// Get metadata for where Files in channel are stored
+const filesFolder = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').filesFolder();
+```
+
+### Channel Members
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+// list channel members
+const channelMembers = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').channelMembers();
+// get channel member by id
+const channelMember = await this.pnp.graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').channelMembers.getById('26773f02-ce55-4ec1-853d-33434d590507')();
+```
+
+### Messages
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+// list channel messages
 const chatMessages = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').messages();
+// get channel message by id
+const chatMessage = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').messages.getById('cdd49e2d-8f0e-4a85-af33-f72f1056f33b')();
+// get channel message replies
+const chatMessage = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').messages.getById('cdd49e2d-8f0e-4a85-af33-f72f1056f33b').replies();
 ```
 
 ### Add chat message to Channel
@@ -327,9 +389,7 @@ Get the members and/or owners of a group.
 
 See [Groups](./groups.md)
 
-
 ## Users
-
 
 ### Get installed Apps
 

@@ -16,7 +16,8 @@ describe.skip("AppCatalog", function () {
 
     let appCatalog: IAppCatalog;
     const dirname = path.join(projectRoot, "test/sp/assets", "helloworld.sppkg");
-    const sppkgData: Uint8Array = new Uint8Array(fs.readFileSync(dirname));
+    const buffer = fs.readFileSync(dirname);
+    const sppkgData = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength) as ArrayBuffer;
     const appId = "b1403d3c-d4c4-41f7-8141-776ff1498100";
 
     before(pnpTest("1a21b796-fe8d-46d6-b9ac-a83d26062ce3", async function () {
