@@ -169,7 +169,7 @@ export class _ChannelMembers extends _GraphCollection<IConversationMemberType[]>
      * Add member to a private or shared channel
      * @returns ConversationMember
      */
-    public async addChannelMember(member: IChannelMemberAdd): Promise<IConversationMemberType> {
+    public async add(member: IChannelMemberAdd): Promise<IConversationMemberType> {
         member["@odata.type"] = "#microsoft.graph.aadUserConversationMember";
         return graphPost(GraphQueryable(this), body(member));
     }
@@ -189,22 +189,13 @@ export class _Channel extends _GraphInstance<IChannel> {
         return Messages(this);
     }
 
-    /**
-     * Gets all the messages in a channel.
-     * @param model optionally specify the licensing and payment model
-     *
-     */
     public async filesFolder(): Promise<IDriveItemType> {
         return graphGet(GraphQueryable(this, "filesFolder"));
     }
 
-    // /**
-    //  * Get a list of members in a channel, including direct members of standard, private, and shared channels.
-    //  * @returns ConversationMember array
-    //  */
-    // public async channelMembers(): Promise<IConversationMemberType[]> {
-    //     return graphGet(GraphQueryable(this, "members"));
-    // }
+    public get channelMembers(): IChannelMembers {
+        return ChannelMembers(this);
+    }
 
     /**
      * Get a list of members in a channel, including direct and indirect members of standard, private, and shared channels.
@@ -314,7 +305,7 @@ export const Channel = graphInvokableFactory<IChannel>(_Channel);
  */
 @defaultPath("channels")
 @getById(Channel)
-export class _Channels extends _GraphCollection<IChannel[]> {
+export class _Channels extends _GraphCollection<IChannelType[]> {
 
     /**
      * Creates a new Channel in the Team
@@ -406,7 +397,7 @@ export const Messages = graphInvokableFactory<IMessages>(_Messages);
 @defaultPath("tab")
 @updateable()
 @deleteable()
-export class _Tab extends _GraphInstance { }
+export class _Tab extends _GraphInstance<ITeamsTabType> { }
 export interface ITab extends _Tab, IUpdateable, IDeleteable { }
 export const Tab = graphInvokableFactory<ITab>(_Tab);
 
@@ -415,7 +406,7 @@ export const Tab = graphInvokableFactory<ITab>(_Tab);
  */
 @defaultPath("tabs")
 @getById(Tab)
-export class _Tabs extends _GraphCollection {
+export class _Tabs extends _GraphCollection<ITeamsTabType[]> {
 
     /**
      * Adds a tab to the channel
