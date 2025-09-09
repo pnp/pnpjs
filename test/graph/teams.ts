@@ -3,8 +3,9 @@ import { expect } from "chai";
 import "@pnp/graph/teams";
 import "@pnp/graph/groups";
 import getValidUser from "./utilities/getValidUser.js";
+import { ITeamTagAdd } from "@pnp/graph/teams";
 
-describe.only("Teams", function () {
+describe("Teams", function () {
 
     let testUserId = "";
     let teamBody = {};
@@ -60,6 +61,152 @@ describe.only("Teams", function () {
         it("team.primaryChannel", async function () {
             const primaryChannel = await this.pnp.graph.teams.getById(teamID).primaryChannel();
             return expect(primaryChannel).is.not.null;
+        });
+
+        it("team.tags", async function () {
+            const tags = await this.pnp.graph.teams.getById(teamID).tags();
+            return expect(tags).is.not.null;
+        });
+
+        it("team.tags.getById", async function () {
+            const tags = await this.pnp.graph.teams.getById(teamID).tags();
+            if (tags.length > 0) {
+                const tag = await this.pnp._graph.teams.getById(teamID).tags.getById(tags[0].id)();
+                return expect(tag).is.not.null;
+            } else {
+                this.skip();
+            }
+        });
+
+        it("team.tags.add", async function () {
+            const tagName = `TestTag_${getRandomString(4)}`;
+            const newTag: ITeamTagAdd = {
+                displayName: tagName,
+                members: [{ userId: testUserId }],
+            };
+            const tag = await this.pnp.graph.teams.getById(teamID).tags.add(newTag);
+            const success = tag != null;
+            if (tag != null) {
+                await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
+            }
+            return expect(success).is.true;
+        });
+
+        it("team.tags.update", async function () {
+            const tagName = `TestTag_${getRandomString(4)}`;
+            const newTag: ITeamTagAdd = {
+                displayName: tagName,
+                members: [{ userId: testUserId }],
+            };
+            const tag = await this.pnp.graph.teams.getById(teamID).tags.add(newTag);
+            let success = false;
+            if (tag != null) {
+                const newTagName = `TestTag_${getRandomString(4)}`;
+                await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).update({ displayName: newTagName });
+                const updatedTag = await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id)();
+                success = updatedTag.displayName === newTagName;
+                await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
+            }
+            return expect(success).is.true;
+        });
+
+        it("team.tags.delete", async function () {
+            const tagName = `TestTag_${getRandomString(4)}`;
+            const newTag: ITeamTagAdd = {
+                displayName: tagName,
+                members: [{ userId: testUserId }],
+            };
+            const tag = await this.pnp.graph.teams.getById(teamID).tags.add(newTag);
+            let success = false;
+            if (tag != null) {
+                await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
+                try {
+                    await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id)();
+                } catch (err) {
+                    success = true;
+                }
+            }
+            return expect(success).is.true;
+        });
+
+        it("team.tags.members", async function () {
+            const tagName = `TestTag_${getRandomString(4)}`;
+            const newTag: ITeamTagAdd = {
+                displayName: tagName,
+                members: [{ userId: testUserId }],
+            };
+            const tag = await this.pnp.graph.teams.getById(teamID).tags.add(newTag);
+            let success = false;
+            if (tag != null) {
+                const members = await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).members();
+                if (members != null) {
+                    success = true;
+                }
+                await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
+            }
+            return expect(success).is.true;
+        });
+
+        // cannot test without multiple members
+        it.skip("team.tags.members.add", async function () {
+            const tagName = `TestTag_${getRandomString(4)}`;
+            const newTag: ITeamTagAdd = {
+                displayName: tagName,
+                members: [{ userId: testUserId }],
+            };
+            const tag = await this.pnp.graph.teams.getById(teamID).tags.add(newTag);
+            let success = false;
+            if (tag != null) {
+                const members = await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).members.add(testUserId);
+                if (members != null) {
+                    success = true;
+                }
+                await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
+            }
+            return expect(success).is.true;
+        });
+
+        it("team.tags.members.getById", async function () {
+            const tagName = `TestTag_${getRandomString(4)}`;
+            const newTag: ITeamTagAdd = {
+                displayName: tagName,
+                members: [{ userId: testUserId }],
+            };
+            const tag = await this.pnp.graph.teams.getById(teamID).tags.add(newTag);
+            let success = false;
+            if (tag != null) {
+                const members = await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).members();
+                if (members != null && members.length > 0) {
+                    const member = await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).members.getById(members[0].id)();
+                    if (member != null) {
+                        success = true;
+                    }
+                } else {
+                    this.skip();
+                }
+                await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
+
+            }
+            return expect(success).is.true;
+        });
+
+        it("team.tags.members.delete", async function () {
+            const tagName = `TestTag_${getRandomString(4)}`;
+            const newTag: ITeamTagAdd = {
+                displayName: tagName,
+                members: [{ userId: testUserId }],
+            };
+            const tag = await this.pnp.graph.teams.getById(teamID).tags.add(newTag);
+            let success = false;
+            if (tag != null) {
+                try {
+                    await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).members.getById(testUserId).delete();
+                } catch (err) {
+                    success = true;
+                }
+                await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
+            }
+            return expect(success).is.true;
         });
 
         // skipping because time consuming, destructive, or not feasible

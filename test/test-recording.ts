@@ -5,6 +5,7 @@ import { join, resolve } from "path";
 import { Context, Suite } from "mocha";
 import { TestProps } from "./test-props.js";
 import { PnPTestHeaderName } from "./pnp-test.js";
+import { Readable } from "stream";
 
 // TODO:: a way to record tests from the browser -> console.log what we would save in a file along with the generated filename
 
@@ -155,9 +156,13 @@ function RequestRecorderCache(resolvedRecordingPath: string, mode: "playback" | 
                 // write the init details
                 writeFileSync(this[initFilePath], JSON.stringify(responseToCache));
 
-                // write the body in parallel for efficiency
-                const fileStream = createWriteStream(this[bodyFilePath], "utf-8");
-                (<any>clonedResponse).body.pipe(fileStream);
+                if (clonedResponse.body != null) {
+                    // write the body in parallel for efficiency
+                    const fileStream = createWriteStream(this[bodyFilePath], "utf-8");
+                    await Readable.fromWeb(clonedResponse.body as any).pipe(fileStream);
+                } else {
+                    writeFileSync(this[bodyFilePath], JSON.stringify(""));
+                }
             }
 
             return response;

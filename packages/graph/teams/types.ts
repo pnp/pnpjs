@@ -13,6 +13,8 @@ import {
     ConversationMember as IConversationMemberType,
     User as IUserType,
     SharedWithChannelTeamInfo as ISharedWithChannelTeamInfoType,
+    TeamworkTagMember as ITeamworkTagMember,
+    TeamworkTag as ITeamworkTag,
 } from "@microsoft/microsoft-graph-types";
 
 /**
@@ -108,6 +110,10 @@ export class _Team extends _GraphInstance<ITeamType> {
 
     public async removeIncomingChannel(channelId: string): Promise<void> {
         return graphDelete(GraphQueryable(this, `incomingChannels/${channelId}/$ref`));
+    }
+
+    public get tags(): ITags {
+        return Tags(this);
     }
 }
 export interface ITeam extends _Team, IUpdateable<ITeamType> { }
@@ -433,40 +439,6 @@ export class _Tabs extends _GraphCollection<ITeamsTabType[]> {
 export interface ITabs extends _Tabs, IGetById<ITab> { }
 export const Tabs = graphInvokableFactory<ITabs>(_Tabs);
 
-export interface ITeamUpdateResult {
-    data: any;
-    team: ITeam;
-}
-
-export interface IChannelCreateResult {
-    data: any;
-    channel: IChannel;
-}
-
-export interface IMessageCreateResult {
-    data: any;
-    message: IMessage;
-}
-
-export interface ITabCreateResult {
-    data: any;
-    tab: ITab;
-}
-
-export interface ITabUpdateResult {
-    data: any;
-    tab: ITab;
-}
-
-export interface ITeamCreateResultAsync {
-    teamId: string;
-    operationId: string;
-}
-
-export interface ITeamCreateResult {
-    data: any;
-    team: ITeam;
-}
 
 /**
  * InstalledApp
@@ -507,6 +479,56 @@ export class _InstalledApps extends _GraphCollection<ITeamsAppInstallation[]> {
 export interface IInstalledApps extends _InstalledApps, IGetById<IInstalledApp> { }
 export const InstalledApps = graphInvokableFactory<IInstalledApps>(_InstalledApps);
 
+/**
+ * Team Tags
+ */
+
+@deleteable()
+export class _TagMember extends _GraphInstance<ITeamworkTagMember> {}
+export interface ITagMember extends _TagMember, IDeleteable { }
+export const TagMember = graphInvokableFactory<ITagMember>(_TagMember);
+
+@defaultPath("members")
+@getById(TagMember)
+export class _TagMembers extends _GraphCollection<ITeamworkTagMember[]> {
+    /**
+    * Adds a tag member
+    * @param teamTag - ITeamTagAdd properties
+    *
+    */
+    public async add(userId: string): Promise<ITeamworkTagMember> {
+        return graphPost(this, body({userId}));
+    }
+}
+export interface ITagMembers extends _TagMembers, IGetById<ITagMember> { }
+export const TagMembers = graphInvokableFactory<ITagMembers>(_TagMembers);
+
+@deleteable()
+@updateable()
+export class _Tag extends _GraphInstance<ITeamworkTag> {
+
+    public get members(): ITagMembers {
+        return TagMembers(this);
+    }
+}
+export interface ITag extends _Tag, IDeleteable, IUpdateable { }
+export const Tag = graphInvokableFactory<ITag>(_Tag);
+
+@defaultPath("tags")
+@getById(Tag)
+export class _Tags extends _GraphCollection<ITeamworkTag[]> {
+    /**
+    * Adds a tag
+    * @param teamTag - ITeamTagAdd properties
+    *
+    */
+    public async add(teamTag: ITeamTagAdd): Promise<ITeamworkTag> {
+        return graphPost(this, body(teamTag));
+    }
+}
+export interface ITags extends _Tags, IGetById<ITag> { }
+export const Tags = graphInvokableFactory<ITags>(_Tags);
+
 export interface IAppAddResult {
     data: any;
     app: IInstalledApp;
@@ -525,4 +547,45 @@ export interface IUserAccessRequest {
     tenantId: string;
     userId: string;
     userPrincipalName: string;
+}
+
+export interface ITeamTagAdd {
+    displayName: string;
+    members?: ITeamworkTagMember[];
+}
+
+
+export interface ITeamUpdateResult {
+    data: any;
+    team: ITeam;
+}
+
+export interface IChannelCreateResult {
+    data: any;
+    channel: IChannel;
+}
+
+export interface IMessageCreateResult {
+    data: any;
+    message: IMessage;
+}
+
+export interface ITabCreateResult {
+    data: any;
+    tab: ITab;
+}
+
+export interface ITabUpdateResult {
+    data: any;
+    tab: ITab;
+}
+
+export interface ITeamCreateResultAsync {
+    teamId: string;
+    operationId: string;
+}
+
+export interface ITeamCreateResult {
+    data: any;
+    team: ITeam;
 }
