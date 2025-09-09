@@ -2,7 +2,6 @@ import { SPFI } from "../fi.js";
 import { IUtilities, Utilities } from "./types.js";
 
 export {
-    IEmailProperties,
     IUtilities,
     IWikiPageCreationInfo,
     Utilities,
