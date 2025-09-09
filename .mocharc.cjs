@@ -1,4 +1,6 @@
-const yargs = require("yargs").argv;
+const yargs = require("yargs");
+const { hideBin } = require("yargs/helpers");
+const argv = yargs(hideBin(process.argv)).parseSync();
 const resolve = require("path").resolve;
 const join = require("path").join;
 const fs = require("fs");
@@ -17,9 +19,9 @@ const basePath = "./build/testing/test/";
 let paths = [];
 
 // handle package specific config
-if (yargs.packages || yargs.p) {
+if (argv.packages || argv.p) {
 
-    const packageNames = (yargs.packages || yargs.p).split(",").map(s => s.trim().toLowerCase());
+    const packageNames = (argv.packages || argv.p).split(",").map(s => s.trim().toLowerCase());
 
     const processingPackages = [];
 
@@ -33,9 +35,9 @@ if (yargs.packages || yargs.p) {
         processingPackages.push(...found);
     }
 
-    if (yargs.single || yargs.s) {
+    if (argv.single || argv.s) {
         // and only a single set of tests
-        paths.push(resolve(`${basePath}${processingPackages[0]}/`, (yargs.single || yargs.s) + ".js"));
+        paths.push(resolve(`${basePath}${processingPackages[0]}/`, (argv.single || argv.s) + ".js"));
     } else {
         paths.push(...processingPackages.map(p => `${basePath}${p}/**/*.js`));
     }
@@ -43,8 +45,8 @@ if (yargs.packages || yargs.p) {
     paths.push(`${basePath}**/*.js`);
 }
 
-const reporter = yargs.verbose ? "spec" : "dot";
-const retries = yargs.noretries ? "0" : "2";
+const reporter = argv.verbose ? "spec" : "dot";
+const retries = argv.noretries ? "0" : "2";
 
 const config = {
     package: "./package.json",
