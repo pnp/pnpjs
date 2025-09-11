@@ -8,7 +8,7 @@ import "@pnp/graph/onenote";
 import "@pnp/graph/files";
 import getValidUser from "./utilities/getValidUser.js";
 
-// skip. OneNote API no longer supports App-only authentication
+// No longer supports app permissions and cannot be tested.
 describe.skip("OneNote", function () {
     let notebookId: string;
     let testUserName: string;

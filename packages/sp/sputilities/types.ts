@@ -15,21 +15,6 @@ export class _Utilities extends _SPQueryable implements IUtilities {
         return spPost(this, body(props));
     }
 
-    public sendEmail(properties: IEmailProperties): Promise<void> {
-
-        if (properties.AdditionalHeaders) {
-
-            // we have to remap the additional headers into this format #2253
-            properties.AdditionalHeaders = <any>Reflect.ownKeys(properties.AdditionalHeaders).map(key => ({
-                Key: key,
-                Value: Reflect.get(properties.AdditionalHeaders, key),
-                ValueType: "Edm.String",
-            }));
-        }
-
-        return UtilitiesCloneFactory(this, "SendEmail").excute<void>({ properties });
-    }
-
     public getCurrentUserEmailAddresses(): Promise<string> {
         return UtilitiesCloneFactory(this, "GetCurrentUserEmailAddresses").excute<string>({});
     }
@@ -89,12 +74,6 @@ export class _Utilities extends _SPQueryable implements IUtilities {
 export interface IUtilities {
 
     /**
-     * This methods will send an e-mail based on the incoming properties of the IEmailProperties parameter.
-     * @param props IEmailProperties object
-     */
-    sendEmail(props: IEmailProperties): Promise<void>;
-
-    /**
      * This method returns the current user's email addresses known to SharePoint.
      */
     getCurrentUserEmailAddresses(): Promise<string>;
@@ -142,46 +121,6 @@ export interface IUtilities {
 export const Utilities: (base: SPInit, path?: string) => IUtilities = <any>spInvokableFactory(_Utilities);
 type UtilitiesCloneType = IUtilities & ISPQueryable & { excute<T>(props: any): Promise<T> };
 const UtilitiesCloneFactory = (base: SPInit, path?: string): UtilitiesCloneType => <any>Utilities(base, path);
-
-export interface IEmailProperties {
-    /**
-     * The list of receivers represented by a string array.
-     */
-    To: string[];
-
-    /**
-     * The list of receivers as CC (carbon copy) represented by a string array.
-     * This is optional.
-     */
-    CC?: string[];
-
-    /**
-     * The list of receivers as BCC (blind carbon copy) represented by a string array.
-     * This is optional.
-     */
-    BCC?: string[];
-
-    /**
-     * The subject of the email.
-     */
-    Subject: string;
-
-    /**
-     * The body of the email.
-     */
-    Body: string;
-
-    /**
-     * The additional headers appened to the request in key/value pairs.
-     */
-    AdditionalHeaders?: Record<string, string>;
-
-    /**
-     * The from address of the email.
-     * This is optional.
-     */
-    From?: string;
-}
 
 export interface IWikiPageCreationInfo {
     /**

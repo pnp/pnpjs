@@ -36,11 +36,11 @@ describe("Batching", function () {
 
         const [batchedGraph, execute] = this.pnp.graph.batched();
 
-        batchedGraph.users().then(function () {
+        batchedGraph.users.top(1)().then(function () {
             order.push(1);
         });
 
-        batchedGraph.sites().then(function () {
+        batchedGraph.users.top(1)().then(function () {
             order.push(2);
         });
 
@@ -57,15 +57,15 @@ describe("Batching", function () {
 
         const [batchedGraph, execute] = this.pnp.graph.batched();
 
-        batchedGraph.users().then(function () {
+        batchedGraph.users.top(1)().then(function () {
             order.push(1);
         });
 
-        batchedGraph.sites().then(function () {
+        batchedGraph.users.top(1)().then(function () {
             order.push(2);
         });
 
-        batchedGraph.groups.top(1)().then(function () {
+        batchedGraph.users.top(1)().then(function () {
             order.push(3);
         });
 
