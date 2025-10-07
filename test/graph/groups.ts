@@ -26,7 +26,7 @@ describe("Groups", function () {
             groupName: `TestGroup_${getRandomString(4)}`,
         });
 
-        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
+        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Microsoft365);
         const group = await this.pnp.graph.groups.getById(groupAddResult.id)();
         groupID = groupAddResult.id;
         return expect(group.displayName).is.not.undefined;
@@ -39,7 +39,7 @@ describe("Groups", function () {
         });
 
         // Create a new group
-        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
+        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Microsoft365);
         // Delete the group
         // Potential Bug. Delete is only available off of getByID
         await this.pnp.graph.groups.getById(groupAddResult.id).delete();
@@ -62,7 +62,7 @@ describe("Groups", function () {
         });
 
         // Create a new group
-        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
+        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Microsoft365);
         // Get the group by ID
         const group = await this.pnp.graph.groups.getById(groupAddResult.id)();
         return expect(group).is.not.undefined;
@@ -75,7 +75,7 @@ describe("Groups", function () {
         });
 
         // Create a new group
-        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Office365);
+        const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Microsoft365);
         groupID = groupAddResult.id;
 
         // Update the display name of the group
@@ -112,6 +112,49 @@ describe("Groups", function () {
 
         return expect(root).is.not.null;
     }));
+
+    // Skipping test as not feasible to run in Test environment
+    it.skip("groupLifecyclePolicies", pnpTest("dad748d9-1db8-4976-b2de-0c49dfb3283e", async function () {
+        // Find an existing group
+        const groups = await this.pnp.graph.groups();
+        const grpID = groups[0].id;
+
+        // Get the groups lifecycle policies
+        const policies = await this.pnp.graph.groups.getById(grpID).groupLifecyclePolicies();
+
+        return expect(policies).is.not.null;
+    }));
+
+    it("transitiveMembers", pnpTest("2d70b7d4-1562-4d63-97f6-68156801c955", async function () {
+        // Find an existing group
+        const groups = await this.pnp.graph.groups();
+        const grpID = groups[0].id;
+
+        // Get the groups members
+        const members = await this.pnp.graph.groups.getById(grpID).transitiveMembers();
+
+        return expect(members).is.not.null;
+    }));
+
+    it("transitiveMembersOf", pnpTest("78d279b5-75b0-4e4c-bb06-826a5bbfdeb7", async function () {
+        // Find an existing group
+        const groups = await this.pnp.graph.groups();
+        const grpID = groups[0].id;
+
+        // Get the groups members
+        const members = await this.pnp.graph.groups.getById(grpID).transitiveMemberOf();
+
+        return expect(members).is.not.null;
+    }));
+
+    // Skipping test as not feasible to run in Test environment
+    it.skip("assignLicense");
+
+    // Skipping test as not feasible to run in Test environment
+    it.skip("renew");
+
+    // Skipping test as not feasible to run in Test environment
+    it.skip("validateProperties");
 
     afterEach(async function () {
         if (groupID !== "") {

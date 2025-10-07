@@ -94,7 +94,9 @@ describe("Comments", function () {
         }));
 
         it("clear", pnpTest("d5d4eda1-8f12-48e0-906e-a6a3c6800e89", async function () {
-            const pageName = `CommentPage_${getRandomString(4)}`;
+            const { pageName } = await this.props({
+                pageName: `CommentPage_${getRandomString(4)}`,
+            });
             const newPage = await CreateClientsidePage(this.pnp.sp.web, pageName, pageName, "Article");
             await newPage.save();
             await newPage.addComment("A test comment");
@@ -155,9 +157,12 @@ describe("Comments", function () {
         before(pnpTest("679261d7-d620-4480-afa1-eb2fa2d9d1cf", async function () {
             const ler = await this.pnp.sp.web.lists.ensure(listTitle, "Used to test item comment operations");
             list = ler.list;
+            const { title } = await this.props({
+                title: `Item ${getRandomString(4)}`,
+            });
 
             if (ler.created){
-                const itemData = await list.items.add({ Title: `Item ${getRandomString(4)}` });
+                const itemData = await list.items.add({ Title: title });
                 item = list.items.getById(itemData.Id);
             }
         }));
@@ -183,7 +188,10 @@ describe("Comments", function () {
         }));
 
         it("clear", pnpTest("82b74a1d-14cb-4412-8d63-e5cda4c58754", async function () {
-            const itemData = await list.items.add({ Title: `Item ${getRandomString(4)}` });
+            const { title } = await this.props({
+                title: `Item ${getRandomString(4)}`,
+            });
+            const itemData = await list.items.add({ Title: title});
             const newItem = list.items.getById(itemData.Id);
 
             await newItem.comments.add("A test comment");

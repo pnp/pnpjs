@@ -1,14 +1,18 @@
-import { Event as IEventType, Group as IGroupType } from "@microsoft/microsoft-graph-types";
+import { Event as IEventType,
+    Group as IGroupType,
+    AssignedLicense as IAssignedLicense,
+    DirectoryObject as IDirectoryObjectType,
+    GroupLifecyclePolicy as IGroupLifecyclePolicyType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
-import { graphInvokableFactory, graphPost } from "../graphqueryable.js";
+import { graphGet, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
 import { _DirectoryObject, _DirectoryObjects } from "../directory-objects/types.js";
 
 export enum GroupType {
     /**
-     * Office 365 (aka unified group)
+     * Microsoft 365 (aka unified group)
      */
-    Office365,
+    Microsoft365,
     /**
      * Dynamic membership
      */
@@ -26,13 +30,13 @@ export enum GroupType {
 @updateable()
 export class _Group extends _DirectoryObject<IGroupType> {
     /**
-     * Add the group to the list of the current user's favorite groups. Supported for only Office 365 groups
+     * Add the group to the list of the current user's favorite groups. Supported for only Microsoft 365 groups
      */
     public addFavorite(): Promise<void> {
         return graphPost(Group(this, "addFavorite"));
     }
     /**
-     * Remove the group from the list of the current user's favorite groups. Supported for only Office 365 groups
+     * Remove the group from the list of the current user's favorite groups. Supported for only Microsoft 365 groups
      */
     public removeFavorite(): Promise<void> {
         return graphPost(Group(this, "removeFavorite"));
@@ -45,14 +49,14 @@ export class _Group extends _DirectoryObject<IGroupType> {
     }
     /**
      * Calling this method will enable the current user to receive email notifications for this group,
-     * about new posts, events, and files in that group. Supported for only Office 365 groups
+     * about new posts, events, and files in that group. Supported for only Microsoft 365 groups
      */
     public subscribeByMail(): Promise<void> {
         return graphPost(Group(this, "subscribeByMail"));
     }
     /**
      * Calling this method will prevent the current user from receiving email notifications for this group
-     * about new posts, events, and files in that group. Supported for only Office 365 groups
+     * about new posts, events, and files in that group. Supported for only Microsoft 365 groups
      */
     public unsubscribeByMail(): Promise<void> {
         return graphPost(Group(this, "unsubscribeByMail"));
@@ -69,6 +73,49 @@ export class _Group extends _DirectoryObject<IGroupType> {
         view.query.set("startDateTime", start.toISOString());
         view.query.set("endDateTime", end.toISOString());
         return view();
+    }
+    /**
+     * Retrieves a list of groupLifecyclePolicy objects to which a group belongs.
+     */
+    public groupLifecyclePolicies(): Promise<IGroupLifecyclePolicyType[]> {
+        return graphGet(Group(this, "groupLifecyclePolicies"));
+    }
+    /**
+     * Retrieves a list of group members.
+     */
+    public transitiveMembers(): Promise<IDirectoryObjectType[]> {
+        return graphGet(Group(this, "transitiveMembers"));
+    }
+    /**
+     * Retrieves a list of group members.
+     */
+    public transitiveMemberOf(): Promise<IDirectoryObjectType[]> {
+        return graphGet(Group(this, "transitiveMemberOf"));
+    }
+    /**
+     * Add or remove licenses on a group. Licenses assigned to the group will be assigned to all users in the group.
+     * Group-based licensing is an alternative to direct user licensing.
+     * @param addLicenses The licenses to add to the group. Each license is represented by an AssignedLicense object.
+     * @param removeLicenses The SKUs to remove from the group. Each SKU is represented by its unique SKU ID (GUID).
+     */
+    public assignLicense(addLicenses: IAssignedLicense[] = [], removeLicenses: string[] = []): Promise<IGroupType> {
+        const postBody = {
+            addLicenses: addLicenses,
+            removeLicenses: removeLicenses,
+        };
+        return graphPost(Group(this, "assignLicense"), body(postBody));
+    }
+    /**
+     * Renew a group's expiration. When a group is renewed, the group expiration is extended by the number of days defined in the policy.
+     */
+    public renew(): Promise<void> {
+        return graphPost(Group(this, "renew"));
+    }
+    /**
+     * Validate that a Microsoft 365 group's display name or mail nickname complies with naming policies.
+     */
+    public validateProperties(validatePropObj: IValidatePropObj): Promise<void> {
+        return graphPost(Group(this, "validateProperties"), body(validatePropObj));
     }
 }
 export interface IGroup extends _Group, IDeleteable, IUpdateable { }
@@ -94,9 +141,9 @@ export class _Groups extends _DirectoryObjects<IGroupType[]> {
 
         let postBody = {
             displayName: name,
-            mailEnabled: groupType === GroupType.Office365,
+            mailEnabled: groupType === GroupType.Microsoft365,
             mailNickname: mailNickname,
-            securityEnabled: groupType !== GroupType.Office365,
+            securityEnabled: groupType !== GroupType.Microsoft365,
             ...additionalProperties,
         };
 
@@ -105,7 +152,7 @@ export class _Groups extends _DirectoryObjects<IGroupType[]> {
 
             postBody = <any>{
                 ...postBody,
-                groupTypes: groupType === GroupType.Office365 ? ["Unified"] : ["DynamicMembership"],
+                groupTypes: groupType === GroupType.Microsoft365 ? ["Unified"] : ["DynamicMembership"],
             };
         }
 
@@ -115,3 +162,18 @@ export class _Groups extends _DirectoryObjects<IGroupType[]> {
 }
 export interface IGroups extends _Groups, IGetById<IGroup> { }
 export const Groups = graphInvokableFactory<IGroups>(_Groups);
+
+export interface IValidatePropObj {
+    /**
+     * The display name of the group to validate
+     */
+    displayName?: string;
+    /**
+     * The mail nickname of the group to validate
+     */
+    mailNickname?: string;
+    /**
+    * The ID (GUID) of the user on whose behalf the request is made
+    */
+    onBehalfOfUserId?: string;
+}
