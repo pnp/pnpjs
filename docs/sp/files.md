@@ -540,3 +540,17 @@ import "@pnp/sp/files";
 const sp = spfi(...);
 const user = await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("name.txt").getLockedByUser();
 ```
+### recycle
+
+Moves the file to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+const sp = spfi(...);
+
+const item = await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("name.txt").recycle();
+
+```
