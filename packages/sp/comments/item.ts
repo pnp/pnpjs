@@ -63,6 +63,9 @@ _Item.prototype.unlike = async function (this: _Item) {
     return spPost(SPQueryable([this, likeUrl]));
 };
 
+ /**
+     * @deprecated This method is deprecated as this navigation property does not work in the Microsoft SharePoint REST API.
+*/
 _Item.prototype.getLikedByInformation = function (this: _Item): Promise<ILikedByInformation> {
     return Item(this, "likedByInformation").expand("likedby")<ILikedByInformation>();
 };
