@@ -1,7 +1,8 @@
-import { graphInvokableFactory } from "../graphqueryable.js";
+import { graphInvokableFactory, graphPatch, graphPost } from "../graphqueryable.js";
 import { User as IUserType, Person as IPersonType } from "@microsoft/microsoft-graph-types";
 import { _DirectoryObject, DirectoryObjects, IDirectoryObjects, _DirectoryObjects } from "../directory-objects/types.js";
-import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
+import { defaultPath, deleteable, IDeleteable, getById, IGetById, updateable, IUpdateable } from "../decorators.js";
+import { body } from "@pnp/queryable/index.js";
 
 @updateable()
 @deleteable()
@@ -40,13 +41,26 @@ export class _User extends _DirectoryObject<IUserType> {
     public get manager(): IUser {
         return User(this, "manager");
     }
+
+    public async update(user: IUserType): Promise<void> {
+        return graphPatch(this, body(user));
+    }
 }
 export interface IUser extends _User, IUpdateable<IUserType>, IDeleteable { }
 export const User = graphInvokableFactory<IUser>(_User);
 
 @defaultPath("users")
 @getById(User)
-export class _Users extends _DirectoryObjects<IUserType[]> { }
+export class _Users extends _DirectoryObjects<IUserType[]> {
+    /**
+        * Adds a user
+        * @param user object to be added
+        *
+        */
+    public async add(user: IUserType): Promise<IUserType> {
+        return graphPost(this, body(user));
+    }
+}
 export interface IUsers extends _Users, IGetById<IUser> { }
 export const Users = graphInvokableFactory<IUsers>(_Users);
 
