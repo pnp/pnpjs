@@ -186,7 +186,8 @@ export class _File extends ReadableFile<IFileInfo> {
             throw Error("The maximum comment length is 1023 characters.");
         }
 
-        return spPost(File(this, `checkin(comment='${encodePath(comment)}',checkintype=${checkinType})`));
+        return spPost(File(this, `checkin(comment=@a2,checkintype=@a3)?@a2=${encodeURIComponent(`'${comment.replace(/'/g, "''")}'`)}&@a3=${checkinType}`));
+
     }
 
     /**
