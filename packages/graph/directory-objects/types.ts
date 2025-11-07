@@ -1,6 +1,6 @@
 import { _GraphCollection, _GraphInstance, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { DirectoryObject as IDirectoryObjectType } from "@microsoft/microsoft-graph-types";
-import { defaultPath, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
+import { defaultPath, getById, IGetById, deleteable, IDeleteable, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
 import { body } from "@pnp/queryable";
 import { Count } from "../behaviors/paged.js";
 
@@ -47,6 +47,7 @@ export const DirectoryObject = graphInvokableFactory<IDirectoryObject>(_Director
  */
 @defaultPath("directoryObjects")
 @getById(DirectoryObject)
+@hasDelta()
 export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphCollection<GetType> {
     /**
   * Returns the directory objects specified in a list of ids. NOTE: The directory objects returned are the full objects containing all their properties.
@@ -67,7 +68,7 @@ export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphC
         return Count(this);
     }
 }
-export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObject> { }
+export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObject>, IHasDelta<IDeltaProps, IDirectoryObjectType> { }
 export const DirectoryObjects = graphInvokableFactory<IDirectoryObjects>(_DirectoryObjects);
 
 /**

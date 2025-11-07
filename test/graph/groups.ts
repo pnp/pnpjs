@@ -147,6 +147,11 @@ describe("Groups", function () {
         return expect(members).is.not.null;
     }));
 
+    it("delta", pnpTest("fb8ec138-6820-4109-8d4b-049b60f002f2", async function () {
+        const delta = await this.pnp.graph.groups.delta();
+        return expect(delta).is.not.null;
+    }));
+
     // Skipping test as not feasible to run in Test environment
     it.skip("assignLicense");
 

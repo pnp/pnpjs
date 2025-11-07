@@ -3,6 +3,7 @@ import "@pnp/graph/users";
 import "@pnp/graph/contacts";
 import { HttpRequestError } from "@pnp/queryable";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
+import { pnpTest } from "test/pnp-test";
 
 // TODO:: make work with test recording
 
@@ -128,6 +129,10 @@ describe("Contacts", function () {
         return expect(deletedUserFound).is.false;
     });
 
+    it("contacts - delta", pnpTest("78242191-51e0-45c4-a6ce-ced0f9b15784", async function(){
+        const delta = await this.pnp.graph.users.getById(testUserName).contacts.delta();
+        return expect(delta).is.not.null;
+    }));
 
     it("Get Contact Folders", async function () {
         const contactFolders = await this.pnp.graph.users.getById(testUserName).contactFolders();

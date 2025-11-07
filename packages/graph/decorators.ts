@@ -186,16 +186,24 @@ export interface IGetByName<R = any, T = string> {
 }
 
 
-export function hasDelta() {
+export function hasDelta(basePath = "delta") {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
             public delta(this: IGraphQueryable, properties: IDeltaProps = {}): IGraphCollection<T[] | IDeltaItems<T>> {
-                const querystring = Object.keys(properties)?.map(key => `${key}=${properties[key]}`).join("&") || "";
-                const path = (querystring.length > 0) ? `delta?${querystring}` : "delta";
+                // Build delta path with proper token parameters
+                const querystring = Object.keys(properties)?.map(key => `${key === "deltatoken" ? "$deltatoken" : key}=${properties[key]}`).join("&") || "";
+                const path = querystring ? `${basePath}?${querystring}` : basePath;
 
                 const query: IGraphCollection<any> = <any>GraphCollection(this, path);
+
+                // Copy existing query parameters from 'this' to the new collection. Is this the right way to do this?
+                if ((<any>this)._query) {
+                    (<any>this)._query.forEach((value: string, key: string) => {
+                        (<any>query).query.set(key, value);
+                    });
+                }
 
                 if(properties?.maxPageSize){
                     query.using(InjectHeaders({
@@ -209,10 +217,9 @@ export function hasDelta() {
                     const json = await response.json();
                     const nextLink = json["@odata.nextLink"];
                     const deltaLink = json["@odata.deltaLink"];
-
                     result = {
                         next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
-                        delta: () => (deltaLink ? GraphCollection([query, deltaLink])() : null),
+                        delta: () => (deltaLink ? GraphCollection([this, deltaLink]) : null),
                         values: json.value,
                     };
 
@@ -230,7 +237,7 @@ export interface IHasDelta<T = any, R = any> {
      * Gets the delta of the queryable
      *
      */
-    delta(properties?: T): IGraphCollection<R[] | IDeltaItems<R>>;
+    delta(properties?: T): IGraphCollection<IDeltaItems<R>>;
 }
 
 export interface IDeltaItems<R = any> {

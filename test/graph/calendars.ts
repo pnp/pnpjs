@@ -7,6 +7,7 @@ import { HttpRequestError } from "@pnp/queryable";
 import { getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
 import { fail } from "assert";
+
 // TODO:: test recording setup
 describe("Calendar", function () {
 
@@ -306,6 +307,7 @@ describe("Calendar", function () {
             }
         )).eventually.be.fulfilled;
     });
+
 
     it("Dismiss Reminder", async function () {
         const startDate: Date = new Date();
