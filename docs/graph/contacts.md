@@ -296,3 +296,14 @@ const addedContact = await graph.users.getById('user@tenant.onmicrosoft.com').co
 const addedContact2 = await graph.me.contactFolders.getById(folderID).childFolders.getById(subFolderID).contacts.add('Pavel', 'Bansky', [<EmailAddress>{address: 'pavelb@fabrikam.onmicrosoft.com', name: 'Pavel Bansky' }], ['+1 732 555 0102']);
 
 ```
+
+Get Exchange Organizational Contacts
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/contacts";
+
+const graph = graphfi(...);
+
+const orgContacts = await graph.contacts();
+```
