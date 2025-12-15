@@ -8,7 +8,7 @@ describe("Admin", function () {
     // let propertyId = "";
 
     // Ensure we have the data to test against
-    before(async function  () {
+    before(pnpTest("56a7e82b-a530-466d-8f63-d6fe9e488ccb", async function  () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -33,7 +33,7 @@ describe("Admin", function () {
         // } catch (err) {
         //     console.log("Could not set test values for Admin");
         // }
-    });
+    }));
 
     describe("SharePoint", function () {
         it("Get SharePoint Settings", pnpTest("923c1bd6-8621-41d2-9ea9-004a4a735c9f", async function  () {
@@ -87,11 +87,13 @@ describe("Admin", function () {
         }));
 
         it.skip("Update Profile Card Property", pnpTest("04fb914e-41c6-4b8e-a326-63c41e6672a4", async function  () {
-            const displayName = getRandomString(5) + "Cost Center";
+            const { displayName } = await this.props({
+                displayName: getRandomString(5) + "Cost Center",
+            });
             const property = await this.pnp.graph.admin.people.profileCardProperties.getById(customUserProperty).update({
                 directoryPropertyName: this.customUserProperty,
                 annotations: [{
-                    displayName: getRandomString(5) + "Cost Center",
+                    displayName: displayName,
                     localizations: [
                         {
                             languageTag: "ru-RU",
@@ -104,8 +106,11 @@ describe("Admin", function () {
         }));
 
         it.skip("Delete Profile Card Property", pnpTest("fbfae956-d776-4bd7-8ad2-3db384ec02c3", async function  () {
-            const property = await this.pnp.graph.admin.people.profileCardProperties.add({
+            const { directoryPropertyName } = await this.props({
                 directoryPropertyName: getRandomString(5) + "CustomAttribute2",
+            });
+            const property = await this.pnp.graph.admin.people.profileCardProperties.add({
+                directoryPropertyName: directoryPropertyName,
                 annotations: [{
                     displayName: "Cost Center",
                     localizations: [
@@ -170,7 +175,7 @@ describe("Admin", function () {
     });
 
 
-    after(async function  () {
+    after(pnpTest("68797c5e-7412-4be7-a547-196a3851e139", async function  () {
 
         // Only needed when profile card properties can be created with application permissions
         // if (!stringIsNullOrEmpty(propertyId)) {
@@ -183,5 +188,5 @@ describe("Admin", function () {
         //     }
         // }
         return;
-    });
+    }));
 });
