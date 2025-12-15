@@ -89,8 +89,14 @@ export class _Utilities extends _SPQueryable implements IUtilities {
 export interface IUtilities {
 
     /**
-     * This methods will send an e-mail based on the incoming properties of the IEmailProperties parameter.
-     * @param props IEmailProperties object
+     * Sends an email based on the provided {@link IEmailProperties}.
+     *
+     * @param props - The email configuration object.
+     *
+     * @deprecated This method is deprecated in favor of the Graph module's email functionality.
+     * Use {@link https://pnp.github.io/pnpjs/graph/mail-messages/#send-message | Graph: sendMessage} instead.
+     *
+     * @see {@link https://pnp.github.io/pnpjs/graph/mail-messages/#send-message}
      */
     sendEmail(props: IEmailProperties): Promise<void>;
 
