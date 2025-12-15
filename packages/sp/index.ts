@@ -9,6 +9,8 @@ export {
 
 export * from "./types.js";
 
+export * from "./filter-builder.js";
+
 export * from "./utils/create-change-token.js";
 export * from "./utils/extract-web-url.js";
 export * from "./utils/file-names.js";

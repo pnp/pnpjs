@@ -2,8 +2,6 @@ PnPjs is a fluent JavaScript API for consuming SharePoint and Microsoft Graph RE
 
 Please use [http://aka.ms/community/home](http://aka.ms/community/home) for the latest updates around the whole *Microsoft 365 and Power Platform Community(PnP)* initiative.
 
->If you are moving from v2 please review the [transition guide](https://pnp.github.io/pnpjs/transition-guide/)
-
 ## Getting Started
 
 Please see the [Getting Started guide](https://pnp.github.io/pnpjs/getting-started/) in the main documentation.

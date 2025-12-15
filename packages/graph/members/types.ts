@@ -25,13 +25,13 @@ export const Member = graphInvokableFactory<IMember>(_Member);
 export class _Members extends _GraphCollection<IMemberType[]> {
 
     /**
-     * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through
+     * Use this API to add a member to an Microsoft 365 group, a security group or a mail-enabled security group through
      * the members navigation property. You can add users or other groups.
-     * Important: You can add only users to Office 365 groups.
+     * Important: You can add only users to Microsoft 365 groups.
      *
      * @param id Full @odata.id of the directoryObject, user, or group object you want to add (ex: `https://graph.microsoft.com/v1.0/directoryObjects/${id}`)
      */
-    public add(id: string): Promise<any> {
+    public add(id: string): Promise<void> {
         return graphPost(Members(this, "$ref"), body({ "@odata.id": id }));
     }
 }

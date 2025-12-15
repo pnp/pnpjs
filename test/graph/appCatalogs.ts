@@ -5,12 +5,12 @@ import { pnpTest } from "../pnp-test.js";
 
 describe("AppCatalog", function () {
 
-    before(async function () {
+    before(pnpTest("c4ece750-944f-42b3-bc83-6738b02a2a03", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-    });
+    }));
 
     it("teamsApps", pnpTest("32d84a70-52cb-47c8-8957-cda902c07d85", async function () {
         const apps = await this.pnp.graph.appCatalog.teamsApps();
