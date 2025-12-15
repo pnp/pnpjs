@@ -450,7 +450,7 @@ export const DriveItems = graphInvokableFactory<IDriveItems>(_DriveItems);
 export interface IDriveItemAdd {
     filename: string;
     content: string;
-    contentType: string;
+    contentType?: string;
     driveItem?: IDriveItem;
     conflictBehavior?: "rename" | "replace" | "fail" | "defaultName";
 }
