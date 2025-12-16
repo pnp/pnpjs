@@ -79,7 +79,7 @@ class _Where<T> implements OpenClause<T>, Clause<T> {
         }
 
         return this.clauses.join(" ");
-    }    
+    }
 
     private createOperator(op: "and" | "or"): Op<T> {
 
