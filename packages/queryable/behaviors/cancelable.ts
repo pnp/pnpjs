@@ -56,21 +56,26 @@ const cancelScopes = new Map<string, IScopeInfo>();
  * @param scopeId Id bound at creation time
  */
 async function cancelPrimitive(scopeId: string): Promise<void> {
-
     const scope = cancelScopes.get(scopeId);
+    if (!scope) {
+        return;
+    }
 
-    scope.controller.abort();
+    if (scope.controller) {
+        scope.controller.abort();
+    }
 
-    if (isArray(scope?.actions)) {
+    if (isArray(scope.actions)) {
         scope.actions.map(action => scope.currentSelf.on[MomentName](action));
     }
 
     try {
-
         await (<any>scope.currentSelf).emit[MomentName]();
-
     } catch (e) {
         scope.currentSelf.log(`Error in cancel: ${e}`, 3);
+    } finally {
+        // remove to avoid retaining references
+        cancelScopes.delete(scopeId);
     }
 }
 

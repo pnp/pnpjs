@@ -2,6 +2,51 @@
 
 Through the REST api you are able to call a subset of the SP.Utilities.Utility methods. We have explicitly defined some of these methods and provided a method to call any others in a generic manner. These methods are exposed on pnp.sp.utility and support batching and caching.
 
+### EmailProperties
+
+```TypeScript
+export interface TypedHash<T> {
+    [key: string]: T;
+}
+
+export interface EmailProperties {
+
+    To: string[];
+    CC?: string[];
+    BCC?: string[];
+    Subject: string;
+    Body: string;
+    AdditionalHeaders?: TypedHash<string>;
+    From?: string;
+}
+```
+
+### Usage
+
+You must define the To, Subject, and Body values - the remaining are optional.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/sputilities";
+import { IEmailProperties } from "@pnp/sp/sputilities";
+
+const sp = spfi(...);
+
+const emailProps: IEmailProperties = {
+    To: ["user@site.com"],
+    CC: ["user2@site.com", "user3@site.com"],
+    BCC: ["user4@site.com", "user5@site.com"],
+    Subject: "This email is about...",
+    Body: "Here is the body. <b>It supports html</b>",
+    AdditionalHeaders: {
+        "content-type": "text/html"
+    }
+};
+
+await sp.utility.sendEmail(emailProps);
+console.log("Email Sent!");
+```
+
 ## getCurrentUserEmailAddresses
 
 This method returns the current user's email addresses known to SharePoint.
@@ -15,7 +60,6 @@ const sp = spfi(...);
 let addressString: string = await sp.utility.getCurrentUserEmailAddresses();
 
 ```
-
 ## resolvePrincipal
 
 Gets information about a principal that matches the specified Search criteria

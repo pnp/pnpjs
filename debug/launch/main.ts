@@ -9,8 +9,7 @@ import { ITestingSettings } from "../../test/load-settings.js";
 // will allow you to keep all your debugging files locally
 // comment out the example
 // import { Example } from "./sp.js";
-// import { Example } from "./graph.js";
-import { Example } from "./filter-builder.js";
+import { Example } from "./graph.js";
 
 // setup the connection to SharePoint using the settings file, you can
 // override any of the values as you want here, just be sure not to commit

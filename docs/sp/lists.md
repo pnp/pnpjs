@@ -56,14 +56,15 @@ You can add a list to the web's list collection using the .add-method. To invoke
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
+import { IListInfo } from '@pnp/sp/lists';
 
 const sp = spfi(...);
 
 // create a new list, passing only the title
-const listAddResult = await sp.web.lists.add("My new list");
+const listAddResult: IListInfo = await sp.web.lists.add("My new list");
 
 // we can work with the list created using the IListAddResult.list property:
-const r = await sp.web.lists.getByTitle(listAddResult.list.select("Title")();
+const r = await sp.web.lists.getByTitle(listAddResult.Title)();
 
 // log newly created list title to console
 console.log(r.Title);

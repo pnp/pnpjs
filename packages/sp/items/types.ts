@@ -195,7 +195,6 @@ export class _Item extends _SPInstance {
         }));
 
         return spPost(Item(this).using(ItemUpdatedParser()), postBody);
-
     }
 
     /**

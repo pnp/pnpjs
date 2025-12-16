@@ -185,7 +185,7 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
      * Method for retrieving thumbnails of the drive items.
      * @returns Microsoft Graph - ThumbnailSet
      */
-    public get thumbnails(): IGraphCollection<IThumbnailSetType> {
+    public get thumbnails(): IGraphCollection<IThumbnailSetType[]> {
         return <any>GraphCollection(this, "thumbnails");
     }
 
@@ -193,7 +193,7 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
      * Method for retrieving the versions of a drive item.
      * @returns IDriveItemVersionInfo
      */
-    public get versions(): IGraphCollection<IDriveItemVersionType> {
+    public get versions(): IGraphCollection<IDriveItemVersionType[]> {
         return <any>GraphCollection(this, "versions");
     }
 
@@ -211,11 +211,8 @@ export class _DriveItem extends _GraphInstance<IDriveItemType> {
      * @returns Blob
      */
     public async getContent(): Promise<Blob> {
-        const info = await this();
-        const query = GraphQueryable([this, info["@microsoft.graph.downloadUrl"]], null)
-            .using(BlobParse())
-            .using(CacheNever());
 
+        const query = GraphQueryable(this, "content").using(BlobParse(), CacheNever());
         query.on.pre(async (url, init, result) => {
 
             (<any>init).responseType = "arraybuffer";
@@ -412,20 +409,15 @@ export class _DriveItems extends _GraphCollection<IDriveItemType[]> {
      * @returns Microsoft Graph - DriveItem
      */
     public async add(fileInfo: IDriveItemAdd): Promise<IDriveItemType> {
-        const postBody = {
-            name: fileInfo.filename,
-            file: fileInfo.driveItem || {},
-            "@microsoft.graph.conflictBehavior": fileInfo.conflictBehavior || "rename",
-        };
 
-        const driveItem = await graphPost(this, body(postBody));
-
-        const q = DriveItem([this, `${combine("drives", driveItem.parentReference.driveId, "items", driveItem.id)}`], "content");
-        q.using(InjectHeaders({
-            "Content-Type": fileInfo.contentType || "application/json",
+        const q = DriveItem([this, this.parentUrl]).concat(`:/${fileInfo.filename}:/content`).using(InjectHeaders({
+            "Content-Type": fileInfo.contentType,
         }));
+        q.query.set("@name.conflictBehavior", fileInfo.conflictBehavior);
 
-        return await graphPut(q, { body: fileInfo.content });
+        return  graphPut(q, {
+            body: fileInfo.content,
+        });
     }
 
     /**
@@ -460,7 +452,7 @@ export interface IDriveItemAdd {
     content: string;
     contentType?: string;
     driveItem?: IDriveItem;
-    conflictBehavior?: "rename" | "replace" | "fail";
+    conflictBehavior?: "rename" | "replace" | "fail" | "defaultName";
 }
 
 /**
