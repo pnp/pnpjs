@@ -43,11 +43,9 @@ export class BuildTimeline extends Timeline<typeof BuildMoments> {
             throw Error("No observers registered for this request. (https://pnp.github.io/pnpjs/queryable/queryable#no-observers-registered-for-this-request)");
         }
 
-        // schedule the execution after we return the promise below in the next event loop
-        setTimeout(async () => {
-
+    // schedule the execution after we return the promise below as a microtask
+    queueMicrotask(async () => {
             try {
-
                 const { context } = this;
                 context.buildId = getGUID();
 
@@ -66,11 +64,9 @@ export class BuildTimeline extends Timeline<typeof BuildMoments> {
                 this.emit[this.InternalResolve]();
 
             } catch (e) {
-
                 this.emit[this.InternalReject](e);
             }
-
-        }, 0);
+        });
 
         // this is the promise that the calling code will recieve and await
         let promise = new Promise<void>((resolve, reject) => {

@@ -7,12 +7,12 @@ import { pnpTest } from "../pnp-test.js";
 
 describe("Batching", function () {
 
-    before(function () {
+    before(pnpTest("7b8d310e-c260-4202-b428-7df7c2ca62df", function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-    });
+    }));
 
     it("Single Request", pnpTest("104a9d10-ef6f-485f-961e-45014147f52a", async function () {
         const order: number[] = [];

@@ -5,12 +5,12 @@ import { getRandomString } from "@pnp/core";
 
 describe("Places", function () {
 
-    before(async function () {
+    before(pnpTest("f126e315-0cf1-4291-acf1-0c8949a57245", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
-    });
+    }));
 
     it("get rooms", pnpTest("7b9a74f6-22f3-4859-bae2-ddb3cba99324", async function () {
         const rooms = await this.pnp.graph.places.rooms();
@@ -42,7 +42,9 @@ describe("Places", function () {
 
     it.skip("update place", pnpTest("7c3f4418-f1b7-46bf-8944-ee7c7cf896ff", async function () {
         const rooms = await this.pnp.graph.places.rooms();
-        const randomName = `Conf Room_${getRandomString(4)}`;
+        const { randomName } = await this.props({
+            randomName: `Conf Room_${getRandomString(4)}`,
+        });
         if(rooms.length > 0){
             const room = await this.pnp.graph.places.getById(rooms[0].id)();
             const update = await this.pnp.graph.places.getById(room.id).update(

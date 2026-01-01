@@ -15,10 +15,12 @@ const isWin = process.platform === "win32";
 spawn(isWin ? "npx.cmd" : "npx", ["tsc", "-p", "./debug/serve/tsconfig.json", "--watch"], {
     cwd: projectRoot,
     stdio: "inherit",
+    shell:true,
 });
 
 // run our server
 spawn("node", ["./serve.js"], {
     cwd: __dirname,
     stdio: "inherit",
+    shell:true
 });

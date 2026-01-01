@@ -113,87 +113,132 @@ const r = await sp.web.lists.getByTitle("TaxonomyList").getItemsByCAMLQuery({
 });
 ```
 
-### Filter using fluent filter
+### Filter using fluent filter builder
 
->Note: This feature is currently in preview and may not work as expected.
+PnPjs supports a fluent filter for all OData endpoints, including the items endpoint. This allows you to write a strongly typed fluent filter that will be parsed into an OData filter. Unlike the typical .filter() method, the fluent filter builder is expressed via a .where<T>() method
 
-PnPjs supports a fluent filter for all OData endpoints, including the items endpoint. this allows you to write a strongly fluent filter that will be parsed into an OData filter.
-
-```TypeScript
-import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/lists";
-
-const sp = spfi(...);
-
-const r = await  sp.web.lists.filter(l => l.number("ItemCount").greaterThan(5000))();
-```
-
-The following field types are supported in the fluent filter:
-
-- Text
-- Choice
-- MultiChoice
-- Number
-- Date
-- Boolean
-- Lookup
-- LookupId
-
-The following operations are supported in the fluent filter:
-
-| Field Type           | Operators/Values                                                                             |
-| -------------------- | -------------------------------------------------------------------------------------------- |
-| All field types      | `equals`, `notEquals`, `in`, `notIn`                                                         |
-| Text & choice fields | `startsWith`, `contains`                                                                     |
-| Numeric fields       | `greaterThan`, `greaterThanOrEquals`, `lessThan`, `lessThanOrEquals`                         |
-| Date fields          | `greaterThan`, `greaterThanOrEquals`, `lessThan`, `lessThanOrEquals`, `isBetween`, `isToday` |
-| Boolean fields       | `isTrue`, `isFalse`, `isFalseOrNull`                                                         |
-| Lookup               | `id`, Text and Number field types                                                            |
-
-#### Complex Filter
-
-For all the regular endpoints, the fluent filter will infer the type automatically, but for the list items filter, you'll need to provide your own types to make the parser work.
-
-You can use the `and` and `or` operators to create complex filters that nest different grouping.
+> Note: This was changed from v4 and in addition this is a selective import
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import "@pnp/sp/filter-builder";
 
 const sp = spfi(...);
 
-interface ListItem extends IListItem {
-    FirstName: string;
-    LastName: string;
-    Age: number;
-    Manager: IListItem;
-    StartDate: Date;
+// Filter lists by ItemCount greater than 5000
+const lists = await sp.web.lists.where(l => l.number("ItemCount").gt(5000))();
+
+// Filter list items by Status equals "Active"
+const items = await sp.web.lists.getByTitle("MyList").items.where(item => 
+    item.text("Status").eq("Active")
+)();
+```
+The following data types are supported in the fluent filter. These methods work across various field types based on their underlying data type:
+
+- **Text** - Fields with text/string values (Text, Choice, Multi-line text, etc.)
+- **Number** - Fields with numeric values (Number, Currency, etc.)
+- **Date** - Fields with date/time values (Date and Time, etc.)
+- **Boolean** - Fields with true/false values (Yes/No, etc.)
+
+The following operations are supported in the fluent filter:
+
+| Field Type     | Method        | Operators                                    |
+| -------------- | ------------- | -------------------------------------------- |
+| Text fields    | `.text()`     | `eq`, `ne`, `startsWith`, `substringOf`      |
+| Numeric fields | `.number()`   | `eq`, `ne`, `gt`, `lt`, `ge`, `le`           |
+| Date fields    | `.date()`     | `eq`, `ne`, `gt`, `lt`, `ge`, `le`           |
+| Boolean fields | `.bool()`     | `eq`, `ne`                                   |
+
+#### Complex Filter
+
+You can use the `and` and `or` operators to create complex filters with different grouping. The filter builder supports both chaining and grouping syntax. The where<T> is a generic is not required, but it does improve IntelliSense.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/filter-builder";
+
+interface IMyListItem {
+  Title: string;
+  Status: string;
+  Priority: number;
+  DueDate: Date;
+  IsUrgent: boolean;
+  Published: boolean;
+  Created: Date;
 }
 
+const sp = spfi(...);
 
-// Get all employees named John
-const r = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.text("FirstName").equal("John"))();
+// Simple text filter - Get all items with Status "Active"
+const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
+  item.text("Status").eq("Active")
+)();
 
-// Get all employees not named John who are over 30
-const r1 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.text("FirstName").notEquals("John").and().number("Age").greaterThan(30))();
+// Chained AND filter - Get active items with Priority greater than 5
+const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
+  item.text("Status").eq("Active").and.number("Priority").gt(5)
+)();
 
-// Get all employees that are named John Doe or Jane Doe
-const r2 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.or(
-    f.and(
-        f.text("FirstName").equals("John"),
-        f.text("LastName").equals("Doe")
-    ),
-    f.and(
-        f.text("FirstName").equals("Jane"),
-        f.text("LastName").equals("Doe")
-    )
-))();
+// Chained OR filter - Get items that are Active OR Pending
+const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
+  item.text("Status").eq("Active").or.text("Status").eq("Pending")
+)();
 
-// Get all employees who are managed by John and start today
-const r3 = await sp.web.lists.getByTitle("ListName").items.filter<ListItem>(f => f.lookup("Manager").text("FirstName").equals("John").and().date("StartDate").isToday())();
+// Grouped filter with parentheses - Get TestItems that are Active OR Inactive
+const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
+  item.text("Title").startsWith("TestItem").and(i =>
+    i.text("Status").eq("Active").or.text("Status").eq("Inactive")
+  )
+)();
+
+// Complex nested grouping
+const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
+  item.number("Priority").gt(1).and(i =>
+    i.text("Status").eq("Active").or.text("Title").startsWith("Important")
+  )
+)();
+
+// Date filters
+const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
+  item.date("Created").gt(new Date("2024-01-01"))
+)();
+
+// Boolean filters
+const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
+  item.bool("Published").eq(true)
+)();
+
+// Multiple field types combined
+const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
+  item.text("Status").eq("Active")
+    .and.number("Priority").ge(5)
+    .and.date("DueDate").gt(new Date())
+    .and.bool("IsUrgent").eq(false)
+)();
+```
+#### Using with other OData operations
+
+The filter builder works seamlessly with other OData operations:
+
+```TypeScript
+// Combine with select, top, and orderBy
+const results = await sp.web.lists.getByTitle("MyList").items
+    .where(item => item.text("Status").eq("Active"))
+    .select("Title", "Priority", "Status")
+    .top(10)
+    .orderBy("Priority", false)();
+
+// Filter with expand for lookup fields
+const itemsWithLookups = await sp.web.lists.getByTitle("MyList").items
+    .where(item => item.number("Priority").gt(5))
+    .select("Title", "AssignedTo/Title")
+    .expand("AssignedTo")();
 ```
 
 ### Retrieving PublishingPageImage
@@ -404,13 +449,14 @@ import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import "@pnp/sp/filter-builder";
 
 const sp = spfi(...);
 
 // you are getting back a collection here
 const items: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter("Title eq 'A Title'")();
 // Using fluent filter
-const items1: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).filter(f => f.text("Title").equals("A Title"))();
+const items1: any[] = await sp.web.lists.getByTitle("MyList").items.top(1).where(item => item.text("Title").eq("A Title"))();
 
 // see if we got something
 if (items.length > 0) {
@@ -511,7 +557,7 @@ const sp = spfi(...);
 // The Title of that hidden field is, in my case and in the linked article just the visible field name with "_0" appended.
 const fields = await sp.web.lists.getByTitle("TestList").fields.filter("Title eq 'MultiMetaData_0'").select("Title", "InternalName")();
 // Using fluent filter
-const fields1 = await sp.web.lists.getByTitle("TestList").fields.filter(f => f.text("Title").equals("MultiMetaData_0")).select("Title", "InternalName")();
+const fields1 = await sp.web.lists.getByTitle("TestList").fields.where(f => f.text("Title").eq("MultiMetaData_0")).select("Title", "InternalName")();
 
 // get an item to update, here we just create one for testing
 const newItem = await sp.web.lists.getByTitle("TestList").items.add({
@@ -670,6 +716,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/fields";
+import "@pnp/sp/filter-builder";
 
 const sp = spfi(...);
 
@@ -687,7 +734,7 @@ const response1 =
     .getByTitle('[Lists_Title]')
     .fields
     .select('Title, EntityPropertyName')
-    .filter(l => l.boolean("Hidden").isFalse().and().text("Title").equals("[Field's_Display_Name]"))
+    .where(field => field.bool("Hidden").eq(false).and.text("Title").eq("[Field's_Display_Name]"))
     ();
 
 console.log(response.map(field => {

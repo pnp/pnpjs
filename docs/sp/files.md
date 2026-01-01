@@ -191,25 +191,6 @@ const sp = spfi(...);
 const fileInfo = await sp.web.lists.getByTitle("Documents").rootFolder.files.addChunked("new.txt", stream, { progress: data => { console.log(`progress`); }, Overwrite: true });
 ```
 
-### Setting Associated Item Values
-
-You can also update the file properties of a newly uploaded file using code similar to the below snippet:
-
-```TypeScript
-import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/files";
-import "@pnp/sp/folders";
-
-const sp = spfi(...);
-const fileInfo = await sp.web.getFolderByServerRelativePath("/sites/dev/Shared%20Documents/test/").files.addUsingPath("file.name", "content", {Overwrite: true});
-const item = await file.file.getItem();
-await item.update({
-  Title: "A Title",
-  OtherField: "My Other Value"
-});
-```
-
 ## Update File Content
 
 You can of course use similar methods to update existing files as shown below. This overwrites the existing content in the file.
@@ -558,4 +539,18 @@ import "@pnp/sp/files";
 
 const sp = spfi(...);
 const user = await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("name.txt").getLockedByUser();
+```
+### recycle
+
+Moves the file to the Recycle Bin and returns the identifier of the new Recycle Bin item.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/files";
+
+const sp = spfi(...);
+
+const item = await sp.web.getFolderByServerRelativePath("{folder relative path}").files.getByUrl("name.txt").recycle();
+
 ```

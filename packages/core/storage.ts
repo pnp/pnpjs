@@ -115,14 +115,23 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
             return;
         }
 
+        // snapshot keys first to avoid mutation issues while deleting
+        const keys: string[] = [];
         for (let i = 0; i < this.store.length; i++) {
-            const key = this.store.key(i);
-            if (key !== null) {
-                // test the stored item to see if we stored it
-                if (/["|']?pnp["|']? ?: ?1/i.test(<string>this.store.getItem(key))) {
-                    // get those items as get will delete from cache if they are expired
+            const k = this.store.key(i);
+            if (k !== null) {
+                keys.push(k);
+            }
+        }
+
+        for (const key of keys) {
+            try {
+                const item = this.store.getItem(key);
+                if (typeof item === "string" && /["|']?pnp["|']? ?: ?1/i.test(item)) {
                     await this.get(key);
                 }
+            } catch {
+                // ignore malformed entries
             }
         }
     }

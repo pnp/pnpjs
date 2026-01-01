@@ -186,7 +186,8 @@ export class _File extends ReadableFile<IFileInfo> {
             throw Error("The maximum comment length is 1023 characters.");
         }
 
-        return spPost(File(this, `checkin(comment='${encodePath(comment)}',checkintype=${checkinType})`));
+        return spPost(File(this, `checkin(comment=@a2,checkintype=@a3)?@a2=${encodeURIComponent(`'${comment.replace(/'/g, "''")}'`)}&@a3=${checkinType}`));
+
     }
 
     /**
@@ -397,7 +398,7 @@ export class _File extends ReadableFile<IFileInfo> {
     @cancelableScope
     public async setContentChunked(file: ValidFileContentSource, props: Partial<IChunkedOperationProps>): Promise<IFileInfo> {
 
-        const { progress } = applyChunckedOperationDefaults(props);
+        const { progress, chunkSize = 10485760 } = applyChunckedOperationDefaults(props);
 
         const uploadId = getGUID();
         let first = true;
@@ -411,23 +412,41 @@ export class _File extends ReadableFile<IFileInfo> {
         const contentStream = sourceToReadableStream(file);
         const reader = contentStream.getReader();
 
+        let buffer = new Uint8Array();
+
         while ((chunk = await reader.read())) {
 
+            if (chunk.value) {
+                const newBuffer = new Uint8Array(buffer.length + chunk.value.length);
+                newBuffer.set(buffer);
+                newBuffer.set(chunk.value, buffer.length);
+                buffer = newBuffer;
+            }
+
+            while (buffer.length >= chunkSize) {
+                const chunkToUpload = buffer.slice(0, chunkSize);
+                buffer = buffer.slice(chunkSize);
+
+                if (first) {
+                    progress({ offset, stage: "starting", uploadId });
+                    offset = await spPost(File(fileRef, `startUpload(uploadId=guid'${uploadId}')`), { body: chunkToUpload });
+                    first = false;
+                } else {
+                    progress({ offset, stage: "continue", uploadId });
+                    offset = await spPost(File(fileRef, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunkToUpload });
+                }
+            }
+
             if (chunk.done) {
-
+                if (first) {
+                    // Small file: not enough data to trigger a chunk upload
+                    progress({ offset, stage: "starting", uploadId });
+                    offset = await spPost(File(fileRef, `startUpload(uploadId=guid'${uploadId}')`), { body: buffer });
+                    first = false;
+                    buffer = new Uint8Array(); // reset buffer on small file upload, so we don't duplicate the buffer on finishUpload. Issue #3278
+                }
                 progress({ offset, stage: "finishing", uploadId });
-                return spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunk?.value || "" });
-
-            } else if (first) {
-
-                progress({ offset, stage: "starting", uploadId });
-                offset = await spPost(File(fileRef, `startUpload(uploadId=guid'${uploadId}')`), { body: chunk.value });
-                first = false;
-
-            } else {
-
-                progress({ offset, stage: "continue", uploadId });
-                offset = await spPost(File(fileRef, `continueUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: chunk.value });
+                return spPost(File(fileRef, `finishUpload(uploadId=guid'${uploadId}',fileOffset=${offset})`), { body: buffer.length ? buffer : "" });
             }
         }
     }
@@ -705,6 +724,7 @@ export interface IFileDeleteParams {
 
 export interface IChunkedOperationProps {
     progress: (data: IFileUploadProgressData) => void;
+    chunkSize?: number;
 }
 
 export type ValidFileContentSource = Blob | ReadableStream | TransformStream | Stream | PassThrough | ArrayBuffer;

@@ -252,7 +252,7 @@ await item.like();
 // unlike an item
 await item.unlike();
 
-// get the liked by information
+// ⚠️ getLikedByInformation is deprecated for Items, as the SharePoint REST API no longer works for regular list items. Will continue to work for pages & comments.
 const likedByInfo: ILikedByInformation = await item.getLikedByInformation();
 ```
 
