@@ -439,9 +439,9 @@ describe("Calendar", function () {
         const startDate: Date = new Date();
         const endDate: Date = new Date();
         startDate.setDate(endDate.getDate() - 10);
-        const deltaEvents = await this.pnp.graph.users.getById(testUserName).calendarView(startDate.toISOString(), endDate.toISOString()).delta();
+        const deltaEvents = await this.pnp.graph.users.getById(testUserName).calendarView(startDate.toISOString(), endDate.toISOString()).delta()();
 
-        return expect(deltaEvents).is.not.null;
+        return expect(deltaEvents.values).is.an("array");
     }));
 
     it("Get Instances", pnpTest("bf4e26ca-a608-4bee-bdb3-92285e2f9f55",  async function () {

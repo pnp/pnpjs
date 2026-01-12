@@ -191,7 +191,7 @@ export function hasDelta(basePath = "delta") {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public delta(this: IGraphQueryable, properties: IDeltaProps = {}): IGraphCollection<T[] | IDeltaItems<T>> {
+            public delta(this: IGraphQueryable, properties: IDeltaProps = {}): IDeltaCollection<T> {
                 // Build delta path with proper token parameters
                 const querystring = Object.keys(properties)?.map(key => `${key === "deltatoken" ? "$deltatoken" : key}=${properties[key]}`).join("&") || "";
                 const path = querystring ? `${basePath}?${querystring}` : basePath;
@@ -209,27 +209,56 @@ export function hasDelta(basePath = "delta") {
                     query.using(InjectHeaders({
                         "Prefer": `odata.maxpagesize=${properties.maxPageSize}`,
                     }));
-                }
-
-                query.on.parse.replace(errorCheck);
+                }                
+                query.on.parse.replace(errorCheck);      
                 query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
 
                     const json = await response.json();
                     const nextLink = json["@odata.nextLink"];
                     const deltaLink = json["@odata.deltaLink"];
                     result = {
-                        next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
-                        delta: () => (deltaLink ? GraphCollection([this, deltaLink]) : null),
+                        nextLink,
+                        deltaLink,
+                        next: nextLink ? GraphCollection([query, nextLink]) : null,
+                        delta: deltaLink ? GraphCollection([query, deltaLink]) : null,
                         values: json.value,
                     };
 
                     return [url, response, result];
                 });
 
-                return query;
+                // Add async iterator to the query object
+                (<any>query)[Symbol.asyncIterator] = function() {
+                    return <AsyncIterator<T[]>>{
+                        _next: query,
+
+                        async next() {
+                            if (this._next === null) {
+                                return { done: true, value: undefined };
+                            }
+
+                            const result: IDeltaItems<T> = await this._next();
+
+                            if (result.next) {
+                                this._next = result.next;
+                                return { done: false, value: result.values };
+                            } else {
+                                this._next = null;
+                                return { done: false, value: result.values };
+                            }
+                        },
+                    };
+                };
+
+                return <IDeltaCollection<T>>query;
             }
         };
     };
+}
+
+export interface IDeltaCollection<T = any> {
+    (): Promise<IDeltaItems<T>>;
+    [Symbol.asyncIterator](): AsyncIterator<T[]>;
 }
 
 export interface IHasDelta<T = any, R = any> {
@@ -237,12 +266,19 @@ export interface IHasDelta<T = any, R = any> {
      * Gets the delta of the queryable
      *
      */
-    delta(properties?: T): IGraphCollection<IDeltaItems<R>>;
+    delta(properties?: T): IDeltaCollection<R>;
 }
 
 export interface IDeltaItems<R = any> {
-    next: IGraphCollection<IDeltaItems>;
-    delta: IGraphCollection<IDeltaItems>;
+    /** URL to get the next page of results, null if no more pages */
+    nextLink: string | null;
+    /** URL to get delta changes - save this to get changes later */
+    deltaLink: string | null;
+    /** Queryable to get the next page of results, null if no more pages */
+    next: IGraphCollection<IDeltaItems<R>> | null;
+    /** Queryable to get delta changes, null if more pages remain */
+    delta: IGraphCollection<IDeltaItems<R>> | null;
+    /** The values returned */
     values: R[];
 }
 

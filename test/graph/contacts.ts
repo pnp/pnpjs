@@ -136,13 +136,18 @@ describe("Contacts", function () {
     }));
 
     it("contacts - delta", pnpTest("78242191-51e0-45c4-a6ce-ced0f9b15784", async function(){
-        const delta = await this.pnp.graph.users.getById(testUserName).contacts.delta();
-        return expect(delta).is.not.null;
+        const delta = await this.pnp.graph.users.getById(testUserName).contacts.delta()();
+        return expect(delta.values).is.an("array");
     }));
 
     it("Get Contact Folders", pnpTest("2269c0d2-9e89-4046-85b0-106f38aa255d", async function () {
         const contactFolders = await this.pnp.graph.users.getById(testUserName).contactFolders();
         return expect(contactFolders.length).is.greaterThan(0);
+    }));
+
+    it("contact folders - delta", pnpTest("2732b186-ced1-44ea-9c45-3de289483698", async function(){
+        const delta = await this.pnp.graph.users.getById(testUserName).contactFolders.delta()();
+        return expect(delta.values).is.an("array");
     }));
 
     it("Get Contact Folder By ID", pnpTest("cac287f9-f57f-4aa1-8d5a-a2d27220c566", async function () {

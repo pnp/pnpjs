@@ -467,21 +467,6 @@ export interface IDriveItemAddFolder {
     conflictBehavior?: "rename" | "replace" | "fail";
 }
 
-
-export interface IDriveDeltaProps {
-    deltatoken?: string;
-    skiptoken?: string;
-    maxPageSize?: number;
-    includeSharing?: boolean;
-    allowThrottleableQueries?: boolean;
-}
-
-export interface IDriveDeltaItems {
-    next: () => IGraphCollection<IDriveDeltaItems> | null;
-    delta: () => IGraphCollection<IDriveDeltaItems> | null;
-    values: (IDriveItem & { "@removed"?: { reason: string } })[];
-}
-
 /**
  * ISharingWithMeOptions - Sharing file with me options
  * @param allowExternal - boolean - To include items shared from external tenants set to true - default false

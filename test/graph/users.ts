@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { pnpTest } from "../pnp-test.js";
-import { stringIsNullOrEmpty } from "@pnp/core/util.js";
+import { stringIsNullOrEmpty } from "@pnp/core";
+import "@pnp/graph/users";
 
 describe("Users", function () {
 
@@ -26,8 +27,8 @@ describe("Users", function () {
     }));
 
     it("users - delta", pnpTest("63ff45a4-a90b-40a0-91a2-10ed5a2a8e2f", async function () {
-        const delta = await this.pnp.graph.users.delta();
-        return expect(delta).is.not.null;
+        const delta = await this.pnp.graph.users.delta()();
+        return expect(delta.values).is.an("array");
     }));
 
 });

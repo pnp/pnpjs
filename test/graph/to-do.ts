@@ -87,7 +87,7 @@ describe.skip("To-do", function () {
 
     it("lists - delta", pnpTest("70cb936e-9ee5-4630-a3c7-6fdf60bbd6fe", async function () {
         const delta = await user.todo.lists.delta()();
-        return expect(delta).haveOwnProperty("values");
+        return expect(delta.values).is.an("array");
     }));
 
     it("tasks", pnpTest("87475a79-f33a-44ff-a998-a5024ad77e13", async function () {
@@ -133,7 +133,7 @@ describe.skip("To-do", function () {
 
     it("tasks - delta", pnpTest("8167699b-acd8-4e03-b14c-e5a347b0a131", async function () {
         const delta = await taskList.tasks.delta()();
-        return expect(delta).haveOwnProperty("values");
+        return expect(delta.values).is.an("array");
     }));
 
     it("fileAttachments", pnpTest("a4fedae2-3116-4488-a743-03253f59a579", async function () {

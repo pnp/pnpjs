@@ -59,7 +59,7 @@ describe("Mail: Folders", function () {
 
     it("Mail: Folder List - Delta", pnpTest("690c748d-ca43-4676-9d80-f74a9c9199f2", async function () {
         const folders = await this.pnp.graph.users.getById(testUserName).mailFolders.delta()();
-        return expect(folders).haveOwnProperty("values");
+        return expect(folders.values).is.an("array");
     }));
 
     it("Mail: Get Folder by Id (Add/Delete)", pnpTest("61224dbc-e2b9-4606-968b-3ef85d31097f", async function () {

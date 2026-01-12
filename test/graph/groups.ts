@@ -148,8 +148,8 @@ describe("Groups", function () {
     }));
 
     it("delta", pnpTest("fb8ec138-6820-4109-8d4b-049b60f002f2", async function () {
-        const delta = await this.pnp.graph.groups.delta();
-        return expect(delta).is.not.null;
+        const delta = await this.pnp.graph.groups.delta()();
+        return expect(delta.values).is.an("array");
     }));
 
     // Skipping test as not feasible to run in Test environment
