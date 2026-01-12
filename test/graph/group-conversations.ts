@@ -9,6 +9,7 @@ import {
     Post as IPostType,
 } from "@microsoft/microsoft-graph-types";
 import { getRandomString } from "@pnp/core";
+import { pnpTest } from "../pnp-test.js";
 
 describe("Group Conversations", function () {
     let groupId = "";
@@ -35,7 +36,7 @@ describe("Group Conversations", function () {
         ],
     };
 
-    before(async function () {
+    before(pnpTest("42d4f63f-5529-4ca3-8df3-cbde6a847c3f", async function () {
 
         if (!this.pnp.settings.enableWebTests || !this.pnp.settings.testGroupId) {
             this.skip();
@@ -46,34 +47,34 @@ describe("Group Conversations", function () {
         postForwardInfo.toRecipients[0].emailAddress.address = userInfo.userPrincipalName;
         postForwardInfo.toRecipients[0].emailAddress.name = userInfo.displayName;
         groupId = this.pnp.settings.testGroupId;
-    });
+    }));
 
     describe("Group Conversations", function () {
-        it("list conversations", async function () {
+        it("list conversations", pnpTest("54785ebe-ee80-4d04-baf8-3a3bcd364fcf", async function () {
             const conversations = await this.pnp.graph.groups.getById(groupId).conversations();
             return expect(conversations.length).to.be.greaterThan(0);
-        });
+        }));
 
-        it("conversation getById", async function () {
+        it("conversation getById", pnpTest("8b303d42-e943-4163-a94d-eb1bc4c6ec9c", async function () {
             const conversations = await this.pnp.graph.groups.getById(groupId).conversations();
             const conversation = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id)();
             return expect(conversation).to.have.property("id");
-        });
+        }));
 
-        it("list threads", async function () {
+        it("list threads", pnpTest("c1611502-bb67-4e86-909e-8fc577c87830", async function () {
             const conversations = await this.pnp.graph.groups.getById(groupId).conversations();
             const convThreads = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads();
             return expect(convThreads).is.not.null;
-        });
+        }));
 
-        it("thread getById", async function () {
+        it("thread getById", pnpTest("8d00a458-be13-4b29-a20d-211fb2a44c0d", async function () {
             const conversations = await this.pnp.graph.groups.getById(groupId).conversations();
             const convThreads = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads();
             const thread = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads.getById(convThreads[0].id)();
             return expect(thread).to.have.property("id");
-        });
+        }));
 
-        it("list posts", async function () {
+        it("list posts", pnpTest("997dcbc7-79e4-4c81-b282-b69e942e58f2", async function () {
             const conversations = await this.pnp.graph.groups.getById(groupId).conversations();
             const convThreads = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads();
             let threadPost = null;
@@ -81,32 +82,35 @@ describe("Group Conversations", function () {
                 threadPost = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads.getById(convThreads[0].id).posts();
             }
             return expect(threadPost).is.not.null;
-        });
+        }));
 
-        it("post getById", async function () {
+        it("post getById", pnpTest("4e19a73a-2fa1-4c5b-9334-c933b295fd19", async function () {
             const conversations = await this.pnp.graph.groups.getById(groupId).conversations();
             const convThreads = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads();
             const threadPost = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads.getById(convThreads[0].id).posts();
             const post = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id)
                 .threads.getById(convThreads[0].id).posts.getById(threadPost[0].id)();
             return expect(post).to.have.property("id");
-        });
+        }));
 
         // Even though docs say you can do this with app permissions throwing a 403, that said conversations do not support app permissions so it feels like a bug in the docs.
-        it.skip("post reply", async function () {
+        it.skip("post reply", pnpTest("b47e84e3-9245-4b15-9bbe-b8ef2f20f3a9", async function () {
+            const { replyText } = await this.props({
+                replyText: `Test Reply ${getRandomString(4)}`,
+            });
             const conversations = await this.pnp.graph.groups.getById(groupId).conversations();
             const convThreads = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads();
             const threadPost = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads.getById(convThreads[0].id).posts();
             const post = this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id)
                 .threads.getById(convThreads[0].id).posts.getById(threadPost[0].id);
             const p = JSON.parse(JSON.stringify(draftPost));
-            p.body.content = `Test Reply ${getRandomString(4)}`;
+            p.body.content = replyText;
             const reply = await post.reply(p);
             return expect(reply).to.have.property("id");
-        });
+        }));
 
         // Even though docs say you can do this with app permissions throwing a 403, that said conversations do not support app permissions so it feels like a bug in the docs.
-        it.skip("post forward", async function () {
+        it.skip("post forward", pnpTest("f7800f30-2196-41e2-acf2-73c6e859a151", async function () {
             let success = false;
             const conversations = await this.pnp.graph.groups.getById(groupId).conversations();
             const convThreads = await this.pnp.graph.groups.getById(groupId).conversations.getById(conversations[0].id).threads();
@@ -116,7 +120,7 @@ describe("Group Conversations", function () {
             await post.forward(postForwardInfo);
             success = true;
             return expect(success).to.be.true;
-        });
+        }));
 
         // Remaining endpoints not supported by app permissions
     });

@@ -142,3 +142,21 @@ const sp = spfi(...);
 // Update the owner with a user id
 await sp.web.siteGroups.getById(7).setUserAsOwner(4);
 ```
+
+### Add a Entra Id group as a member of a SharePoint Group
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/site-groups";
+
+const sp = spfi(...);
+
+// Get the groupId from Entra Id
+const groupId = "6b4daf05-6a15-4b0c-b838-0a84e0c858b9"
+const groupLoginName = `c:0o.c|federateddirectoryclaimprovider|${groupId}`;
+// Add the group to the site's visitors group
+await sp.web.associatedVisitorGroup.users.add(groupLoginName);
+// Add the group to a custom SharePoint group
+await sp.web.siteGroups.getById(7).users.add(groupLoginName);
+```

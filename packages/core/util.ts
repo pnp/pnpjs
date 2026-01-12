@@ -135,7 +135,7 @@ export function hOP<T extends string>(o: any, p: T): boolean {
 /**
  * @returns validates and returns a valid atob conversion
 */
-export function parseToAtob(str: string): string {
+export function parseToAtob(str: string): string | null {
     const base64Regex = /^[A-Za-z0-9+/]+={0,2}$/;
     try {
         // test if str has been JSON.stringified
