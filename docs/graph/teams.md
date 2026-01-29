@@ -160,6 +160,7 @@ const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
+import "@pnp/graph/messages/channels";
 
 const graph = graphfi(...);
 
@@ -249,36 +250,7 @@ const channelMember = await this.pnp.graph.teams.getById('3531fzfb-f9ee-4f43-982
 
 ### Messages
 
-```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/teams";
-
-const graph = graphfi(...);
-
-// list channel messages
-const chatMessages = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').messages();
-// get channel message by id
-const chatMessage = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').messages.getById('cdd49e2d-8f0e-4a85-af33-f72f1056f33b')();
-// get channel message replies
-const chatMessage = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').messages.getById('cdd49e2d-8f0e-4a85-af33-f72f1056f33b').replies();
-```
-
-### Add chat message to Channel
-
-```TypeScript
-import { graphfi } from "@pnp/graph";
-import "@pnp/graph/teams";
-import { ChatMessage } from "@microsoft/microsoft-graph-types";
-
-const graph = graphfi(...);
-
-const message = {
-      "body": {
-        "content": "Hello World"
-      }
-    }
-const chatMessage: ChatMessage = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getById('19:65723d632b384xa89c81115c281428a3@thread.skype').messages.add(message);
-```
+[See Messages](./messages.md)
 
 ### Get installed Apps
 
