@@ -209,8 +209,8 @@ export function hasDelta(basePath = "delta") {
                     query.using(InjectHeaders({
                         "Prefer": `odata.maxpagesize=${properties.maxPageSize}`,
                     }));
-                }                
-                query.on.parse.replace(errorCheck);      
+                }
+                query.on.parse.replace(errorCheck);
                 query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
 
                     const json = await response.json();
