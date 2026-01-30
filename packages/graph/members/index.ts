@@ -6,3 +6,8 @@ export {
     Member,
     Members,
 } from "./types.js";
+
+export {
+    IGroupMembers,
+    GroupMembers,
+} from "./groups.js";
