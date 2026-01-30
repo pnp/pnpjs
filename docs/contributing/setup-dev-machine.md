@@ -10,16 +10,9 @@ These steps will help you get your environment setup for contributing to the cor
 
 1. Install [Node JS](https://nodejs.org/en/download/) - this provides two key capabilities; the first is the nodejs server which will act as our development server (think iisexpress), the second is npm a package manager (think nuget).
 
-    > This library requires node >= 10.18.0
+    > This library requires Node.js 18 or later.
 
 1. On Windows: Install [Python](https://www.python.org/downloads)
-
-1. [Optional] Install the tslint extension in VS Code:
-
-    1. Press Shift + Ctrl + "p" to open the command panel
-    2. Begin typing "install extension" and select the command when it appears in view
-    3. Begin typing "tslint" and select the package when it appears in view
-    4. Restart Code after installation
 
 ## Fork The Repo
 

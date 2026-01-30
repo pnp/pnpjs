@@ -60,7 +60,7 @@ import "@pnp/sp/webs";
 import { IList } from "@pnp/sp/lists";
 
 // do this instead
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import { IList } from "@pnp/sp/lists";
@@ -68,7 +68,7 @@ import { IList } from "@pnp/sp/lists";
 // placeholder for fully configuring the sp interface
 const sp = spfi();
 
-const lists = await sp.web.lists();
+const lists: IList[] = await sp.web.lists();
 ```
 
 ## Presets

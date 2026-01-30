@@ -1,6 +1,6 @@
-## Contributing Guidance - v3
+## Contributing Guidance - v5
 
-* Target your pull requests to the **version-3** branch
+* Target your pull requests to the **version-5** branch
 * Add/Update any docs articles related to your changes
 * Include a test for any new functionality and ensure all existing tests are passing by running `npm test`
   * If you are fixing a bug, include a test that would have caught the bug you are fixing
