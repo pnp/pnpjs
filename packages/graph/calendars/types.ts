@@ -9,8 +9,8 @@ import {
     Recipient,
     TimeSlot,
 } from "@microsoft/microsoft-graph-types";
-import {  GraphQueryable, IGraphQueryable, _GraphCollection, _GraphInstance, _GraphQueryable, graphInvokableFactory, graphPost } from "../graphqueryable.js";
-import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById, IAddable, addable } from "../decorators.js";
+import { IGraphQueryable, _GraphCollection, _GraphInstance, _GraphQueryable, graphInvokableFactory, graphPost } from "../graphqueryable.js";
+import { defaultPath, IDeleteable, deleteable, IUpdateable, updateable, getById, IGetById, IAddable, addable, IHasDelta, IDeltaProps, hasDelta} from "../decorators.js";
 import { calendarView, instances } from "./funcs.js";
 
 /**
@@ -54,19 +54,16 @@ export const Calendars = graphInvokableFactory<ICalendars>(_Calendars);
 /**
  * CalendarView
  */
+@hasDelta()
 export class _CalendarView extends _GraphCollection<IEventType[]> {
     constructor(baseUrl: string | _GraphQueryable, start: string, end: string) {
         super(baseUrl, "calendarView");
         this.query.set("startDateTime", start);
         this.query.set("endDateTime", end);
     }
-
-    public async delta(token?: string): Promise<IEventType[]> {
-        return graphPost(GraphQueryable(this, `delta?${this.query}`), body({ token }));
-    }
 }
-export interface ICalendarView extends _CalendarView { }
-export const CalendarView = (baseUrl: string | IGraphQueryable, start: string, end: string): _CalendarView =>  new _CalendarView(baseUrl, start, end);
+export interface ICalendarView extends _CalendarView, IHasDelta<IDeltaProps, IEventType> { }
+export const CalendarView = (baseUrl: string | IGraphQueryable, start: string, end: string): ICalendarView =>  new _CalendarView(baseUrl, start, end) as ICalendarView;
 
 /**
  * Event
@@ -121,7 +118,7 @@ export const Event = graphInvokableFactory<IEvent>(_Event);
 @getById(Event)
 @addable()
 export class _Events extends _GraphCollection<IEventType[]> { }
-export interface IEvents extends _Events, IGetById<IEvent>, IAddable<IEventType, IEventType> { }
+export interface IEvents extends _Events, IGetById<IEvent>, IAddable<IEventType, IEventType>{ }
 export const Events = graphInvokableFactory<IEvents>(_Events);
 
 /**

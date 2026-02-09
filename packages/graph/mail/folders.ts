@@ -5,7 +5,7 @@ import {
 import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphQueryable, graphPost } from "../graphqueryable.js";
 import { defaultPath, getById, addable, IGetById, IAddable, updateable, IUpdateable, IDeleteable, deleteable, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
 import { body } from "@pnp/queryable/index.js";
-import { IMessageRules, IMessages, MessageRules, Messages } from "./messages.js";
+import { IMessageRules, MessageRules, IMessagesWithDelta, MessagesWithDelta } from "./messages.js";
 
 /**
  * Mail Folder or Mail Search Folder
@@ -19,14 +19,12 @@ export class _MailFolder extends _GraphInstance<IMailFolderType | IMailSearchFol
      */
     public get childFolders(): IMailFolders {
         return MailFolders(this, "childFolders");
-    }
-
-    /**
+    }    /**
      * Gets the messages in this mail folder
      *
      */
-    public get messages(): IMessages {
-        return Messages(this);
+    public get messages(): IMessagesWithDelta {
+        return MessagesWithDelta(this);
     }
 
     /**

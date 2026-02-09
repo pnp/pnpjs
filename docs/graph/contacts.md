@@ -32,7 +32,20 @@ const contacts = await graph.users.getById('user@tenant.onmicrosoft.com').contac
 const contacts2 = await graph.me.contacts();
 
 ```
+## Get Contacts - Delta
 
+Gets Delta changes of Contacts
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users"
+import "@pnp/graph/contacts"
+
+const graph = graphfi(...);
+
+const contactsDelta = await graph.users.getById('user@tenant.onmicrosoft.com').contacts.delta()();
+
+```
 ## Get Contact by Id
 
 Gets a specific contact by ID for the user.
@@ -122,6 +135,20 @@ const graph = graphfi(...);
 const contactFolders = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders();
 
 const contactFolders2 = await graph.me.contactFolders();
+
+```
+## Get Contact Folders Delta
+
+Get Delta changes for contact folders
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/contacts";
+
+const graph = graphfi(...);
+
+const contactFoldersDelta = await graph.users.getById('user@tenant.onmicrosoft.com').contactFolders.delta()();
 
 ```
 

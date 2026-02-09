@@ -1,6 +1,6 @@
 import { _GraphCollection, _GraphInstance, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { Contact as IContactType, ContactFolder as IContactFolderType, EmailAddress as IEmailAddressType } from "@microsoft/microsoft-graph-types";
-import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
+import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
 import { body } from "@pnp/queryable";
 
 /**
@@ -17,6 +17,7 @@ export const Contact = graphInvokableFactory<IContact>(_Contact);
  */
 @defaultPath("contacts")
 @getById(Contact)
+@hasDelta()
 export class _Contacts extends _GraphCollection<IContactType[]> {
 
     /**
@@ -46,7 +47,7 @@ export class _Contacts extends _GraphCollection<IContactType[]> {
         return graphPost(this, body(postBody));
     }
 }
-export interface IContacts extends _Contacts, IGetById<IContact> { }
+export interface IContacts extends _Contacts, IGetById<IContact>, IHasDelta<IDeltaProps, IContactType> { }
 export const Contacts = graphInvokableFactory<IContacts>(_Contacts);
 
 /**
@@ -77,6 +78,7 @@ export const ContactFolder = graphInvokableFactory<IContactFolder>(_ContactFolde
  */
 @defaultPath("contactFolders")
 @getById(ContactFolder)
+@hasDelta()
 export class _ContactFolders extends _GraphCollection<IContactFolderType[]> {
 
     /**
@@ -95,5 +97,5 @@ export class _ContactFolders extends _GraphCollection<IContactFolderType[]> {
         return graphPost(this, body(postBody));
     }
 }
-export interface IContactFolders extends _ContactFolders, IGetById<IContactFolder> { }
+export interface IContactFolders extends _ContactFolders, IGetById<IContactFolder>, IHasDelta<IDeltaProps, IContactFolderType> { }
 export const ContactFolders = graphInvokableFactory<IContactFolders>(_ContactFolders);
