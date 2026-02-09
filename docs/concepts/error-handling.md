@@ -23,9 +23,11 @@ All errors resulting from executed web requests will be returned as an `HttpRequ
 For all operations involving a web request you should account for the possibility they might fail. That failure might be transient or permanent - you won't know until they happen 😉. The most basic type of error handling involves a simple try-catch when using the [async/await promises pattern](https://javascript.info/async-await).
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
+
+const sp = spfi().using(SPFx(this.context));
 
 try {
 
@@ -51,10 +53,12 @@ This is very descriptive and provides full details as to what happened, but you 
 In some cases the response body will have additional details such as a localized error messages which can be nicer to display rather than our normalized string. You can read the response directly and process it however you desire:
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { HttpRequestError } from "@pnp/queryable";
+
+const sp = spfi().using(SPFx(this.context));
 
 try {
   
@@ -92,9 +96,11 @@ Using the [PnPjs Logging Framework](../logging/index.md) you can directly pass t
 
 ```TypeScript
 import { Logger } from "@pnp/logging";
-import { sp } from "@pnp/sp";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
+
+const sp = spfi().using(SPFx(this.context));
 
 try {
   // get a list that doesn't exist
@@ -108,11 +114,13 @@ try {
 You may want to read the response and customize the message as described above:
 
 ```TypeScript
-import { Logger } from "@pnp/logging";
-import { sp } from "@pnp/sp";
+import { Logger, LogLevel } from "@pnp/logging";
+import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import { HttpRequestError } from "@pnp/queryable";
+
+const sp = spfi().using(SPFx(this.context));
 
 try {
   // get a list that doesn't exist

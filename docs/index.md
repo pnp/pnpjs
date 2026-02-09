@@ -2,10 +2,31 @@
 
 PnPjs is a collection of fluent libraries for consuming SharePoint, Graph, and Office 365 REST APIs in a type-safe way. You can use it within SharePoint Framework, Nodejs, or any JavaScript project. This an open source initiative and we encourage contributions and constructive feedback from the community.
 
+## What can you do with PnPjs?
+
+- Read and write SharePoint list items, documents, site data and more with simple, chainable syntax
+- Query Microsoft Graph for Organizational Microsoft 365 Data
+- Handle authentication automatically in SPFx, Node.js, or browser apps
+- Batch multiple requests together to improve performance
+- and more...
+
+**Quick Example: Get items from a SharePoint list**
+
+```typescript
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+
+const sp = spfi().using(SPFx(this.context));
+const items = await sp.web.lists.getByTitle("My List").items();
+```
+
 These articles provide general guidance for working with the libraries. If you are migrating from V2 please review the [transition guide](transition-guide.md).
 
 * **[Getting Started](getting-started.md)**
 * [Authentication](concepts/authentication.md)
+* [Troubleshooting](troubleshooting.md)
 * [Get Started Contributing](contributing/index.md)
 
 ![Fluent API in action](img/PnPjsFluentAPI.gif)

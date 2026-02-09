@@ -22,19 +22,22 @@ async function(url, init) {
 You can follow this example as a general pattern to build your own custom authentication model. You can then wrap your authentication in a [behavior](../core/behaviors.md) for easy reuse.
 
 ```TypeScript
-import { spfi } from "@pnp/sp";
+import { spfi, SPBrowser } from "@pnp/sp";
 import "@pnp/sp/webs";
 
-const sp = spfi().using({behaviors});
+// Use custom auth when built-in behaviors don't meet your needs
+// For example, integrating with a custom identity provider
+const sp = spfi("https://tenant.sharepoint.com").using(SPBrowser());
 const web = sp.web;
 
-// we will use custom auth on this web
+// Add custom authentication to this web instance
 web.on.auth(async function(url, init) {
 
-    // some code to get a token
-    const token = getToken();
+    // Replace with your actual token acquisition logic
+    const token = await myCustomAuthProvider.getAccessToken();
 
     // set the Authorization header in the init (this init is what is passed directly to the fetch call)
+    init.headers = init.headers || {};
     init.headers["Authorization"] = `Bearer ${token}`;
 
     return [url, init];
