@@ -17,7 +17,7 @@ import { IItem, Item } from "../items/types.js";
 import { defaultPath } from "../decorators.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { toResourcePath, IResourcePath } from "../utils/to-resource-path.js";
-import { encodePath, encodePathNoURIEncode } from "../utils/encode-path-str.js";
+import { encodePath } from "../utils/encode-path-str.js";
 import "../context-info/index.js";
 import { IMoveCopyOptions } from "../types.js";
 import { BatchNever } from "../batching.js";
@@ -301,7 +301,12 @@ export const Folder = spInvokableFactory<IFolder>(_Folder);
  */
 export function folderFromServerRelativePath(base: ISPQueryable, serverRelativePath: string): IFolder {
 
-    return Folder([base, extractWebUrl(base.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${encodePathNoURIEncode(serverRelativePath)}')`);
+    /**
+     * Replaced `encodePathNoURIEncode` with `encodePath` which was added by PR in #3230 we think mistakenly as it doesn't seem to be part of the fix #3223 the pr references.
+     * New issue #3250 identified this change as a breaking one so this feels like the right adjustment.
+     **/
+
+    return Folder([base, extractWebUrl(base.toUrl())], `_api/web/getFolderByServerRelativePath(decodedUrl='${encodePath(serverRelativePath)}')`);
 }
 
 /**
