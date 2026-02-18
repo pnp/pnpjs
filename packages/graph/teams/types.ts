@@ -8,6 +8,7 @@ import {
     TeamsTab as ITeamsTabType,
     TeamsAppInstallation as ITeamsAppInstallation,
     ChatMessage as IChatMessage,
+    Channel as IChannelType,
 } from "@microsoft/microsoft-graph-types";
 
 /**
@@ -129,7 +130,7 @@ export const Teams = graphInvokableFactory<ITeams>(_Teams);
 /**
  * Channel
  */
-export class _Channel extends _GraphInstance<IChannel> {
+export class _Channel extends _GraphInstance<IChannelType> {
     public get tabs(): ITabs {
         return Tabs(this);
     }
@@ -146,7 +147,7 @@ export const Channel = graphInvokableFactory<IChannel>(_Channel);
  */
 @defaultPath("channels")
 @getById(Channel)
-export class _Channels extends _GraphCollection<IChannel[]> {
+export class _Channels extends _GraphCollection<IChannelType[]> {
 
     /**
      * Creates a new Channel in the Team
