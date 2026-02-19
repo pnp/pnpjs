@@ -194,7 +194,7 @@ As of now, by default the template for new Azure Functions uses CommonJS modules
     ```
 
 We recommend switching the project to ESModules by making the following changes:
-> An [Azure Function sample](../samples/azure-function/) is available.
+> An [Azure Function sample](https://github.com/pnp/pnpjs/tree/version-4/samples/azure-function) is available.
 
 #### Modification for `package.json`
 
