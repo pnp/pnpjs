@@ -137,6 +137,7 @@ nav:
       - 'SP.Utilities.Utility': 'sp/sp-utilities-utility.md'
       - Subscriptions: 'sp/subscriptions.md'
       - 'Tenant Properties': 'sp/tenant-properties.md'
+      - 'Theme Manager': 'sp/thememanager.md'
       - 'User custom actions': 'sp/user-custom-actions.md'      
       - 'Utils': 'sp/utils.md'
       - Views: 'sp/views.md'
