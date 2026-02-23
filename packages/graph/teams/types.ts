@@ -1,19 +1,32 @@
-import { _GraphQueryableInstance, _GraphQueryableCollection, graphInvokableFactory, GraphQueryableInstance } from "../graphqueryable.js";
+import { _GraphInstance, _GraphCollection, graphInvokableFactory, GraphInstance, graphPost } from "../graphqueryable.js";
 import { body, HeaderParse } from "@pnp/queryable";
 import { updateable, IUpdateable, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
-import { graphPost } from "../operations.js";
 import { defaultPath } from "../decorators.js";
-import { Team as ITeamType, TeamsAsyncOperation as ITeamsAsyncOperation, TeamsTab as ITeamsTabType } from "@microsoft/microsoft-graph-types";
+import {
+    Team as ITeamType,
+    TeamsAsyncOperation as ITeamsAsyncOperation,
+    TeamsTab as ITeamsTabType,
+    TeamsAppInstallation as ITeamsAppInstallation,
+    ChatMessage as IChatMessage,
+} from "@microsoft/microsoft-graph-types";
 
 /**
  * Represents a Microsoft Team
  */
 @defaultPath("team")
 @updateable()
-export class _Team extends _GraphQueryableInstance<ITeamType> {
+export class _Team extends _GraphInstance<ITeamType> {
+
+    public get primaryChannel(): IChannel {
+        return Channel(this, "primaryChannel");
+    }
 
     public get channels(): IChannels {
         return Channels(this);
+    }
+
+    public get installedApps(): IInstalledApps {
+        return InstalledApps(this);
     }
 
     /**
@@ -81,7 +94,7 @@ export class _Team extends _GraphQueryableInstance<ITeamType> {
     }
 
     public getOperationById(id: string): Promise<ITeamsAsyncOperation> {
-        return GraphQueryableInstance(this, `operations/${id}`)();
+        return GraphInstance(this, `operations/${id}`)();
     }
 }
 export interface ITeam extends _Team, IUpdateable<ITeamType> { }
@@ -92,7 +105,7 @@ export const Team = graphInvokableFactory<ITeam>(_Team);
  */
 @defaultPath("teams")
 @getById(Team)
-export class _Teams extends _GraphQueryableCollection<ITeamType[]> {
+export class _Teams extends _GraphCollection<ITeamType[]> {
     public async create(team: ITeamType): Promise<ITeamCreateResultAsync> {
 
         const creator = Teams(this, null).using(HeaderParse());
@@ -116,9 +129,13 @@ export const Teams = graphInvokableFactory<ITeams>(_Teams);
 /**
  * Channel
  */
-export class _Channel extends _GraphQueryableInstance {
+export class _Channel extends _GraphInstance<IChannel> {
     public get tabs(): ITabs {
         return Tabs(this);
+    }
+
+    public get messages(): IMessages {
+        return Messages(this);
     }
 }
 export interface IChannel extends _Channel { }
@@ -129,7 +146,7 @@ export const Channel = graphInvokableFactory<IChannel>(_Channel);
  */
 @defaultPath("channels")
 @getById(Channel)
-export class _Channels extends _GraphQueryableCollection {
+export class _Channels extends _GraphCollection<IChannel[]> {
 
     /**
      * Creates a new Channel in the Team
@@ -156,12 +173,44 @@ export interface IChannels extends _Channels, IGetById<IChannel> { }
 export const Channels = graphInvokableFactory<IChannels>(_Channels);
 
 /**
+ * Message
+ */
+export class _Message extends _GraphInstance<IChatMessage> { }
+export interface IMessage extends _Message { }
+export const Message = graphInvokableFactory<IMessage>(_Message);
+
+/**
+ * Messages
+ */
+@defaultPath("messages")
+@getById(Message)
+export class _Messages extends _GraphCollection<IChatMessage[]> {
+
+    /**
+     * Adds a message
+     * @param message ChatMessage object that defines the message
+     *
+     */
+    public async add(message: IChatMessage): Promise<IMessageCreateResult> {
+
+        const data = await graphPost(this, body(message));
+
+        return {
+            message: (<any>this).getById(data.id),
+            data,
+        };
+    }
+}
+export interface IMessages extends _Messages, IGetById<IMessage> { }
+export const Messages = graphInvokableFactory<IMessages>(_Messages);
+
+/**
  * Tab
  */
 @defaultPath("tab")
 @updateable()
 @deleteable()
-export class _Tab extends _GraphQueryableInstance { }
+export class _Tab extends _GraphInstance { }
 export interface ITab extends _Tab, IUpdateable, IDeleteable { }
 export const Tab = graphInvokableFactory<ITab>(_Tab);
 
@@ -170,7 +219,7 @@ export const Tab = graphInvokableFactory<ITab>(_Tab);
  */
 @defaultPath("tabs")
 @getById(Tab)
-export class _Tabs extends _GraphQueryableCollection {
+export class _Tabs extends _GraphCollection {
 
     /**
      * Adds a tab to the channel
@@ -207,6 +256,11 @@ export interface IChannelCreateResult {
     channel: IChannel;
 }
 
+export interface IMessageCreateResult {
+    data: any;
+    message: IMessage;
+}
+
 export interface ITabCreateResult {
     data: any;
     tab: ITab;
@@ -225,4 +279,48 @@ export interface ITeamCreateResultAsync {
 export interface ITeamCreateResult {
     data: any;
     team: ITeam;
+}
+
+/**
+ * InstalledApp
+ */
+@deleteable()
+export class _InstalledApp extends _GraphInstance<ITeamsAppInstallation> {
+    public upgrade(): Promise<void> {
+        return graphPost(InstalledApp(this, "upgrade"));
+    }
+}
+export interface IInstalledApp extends _InstalledApp, IDeleteable { }
+export const InstalledApp = graphInvokableFactory<IInstalledApp>(_InstalledApp);
+
+/**
+ * InstalledApps
+ */
+@defaultPath("installedApps")
+@getById(InstalledApp)
+export class _InstalledApps extends _GraphCollection<ITeamsAppInstallation[]> {
+
+    /**
+     * Adds an installed app to the collection
+     * @param teamsAppId The id of the app to add.
+     */
+    public async add(teamsAppId: string): Promise<IAppAddResult> {
+
+        const data = await graphPost(this, body({
+            "teamsApp@odata.bind": teamsAppId,
+        }));
+
+        return {
+            data,
+            app: (<any>this).getById(data.id),
+        };
+    }
+
+}
+export interface IInstalledApps extends _InstalledApps, IGetById<IInstalledApp> { }
+export const InstalledApps = graphInvokableFactory<IInstalledApps>(_InstalledApps);
+
+export interface IAppAddResult {
+    data: any;
+    app: IInstalledApp;
 }

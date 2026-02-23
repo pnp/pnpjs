@@ -20,6 +20,7 @@ import "@pnp/sp/security";
 import { INavNodeInfo } from "@pnp/sp/navigation/types.js";
 import testSPInvokables from "../test-invokable-props.js";
 import { Web } from "@pnp/sp/webs";
+import { odataUrlFrom } from "@pnp/sp/index.js";
 
 describe("Webs", function () {
 
@@ -137,7 +138,7 @@ describe("Web", function () {
     });
 
     // skipping this test as the code hasn't changed in years and it takes longer than any other test
-    it.skip(".applyTheme", function () {
+    it.skip("applyTheme", function () {
 
         const index = this.pnp.settings.sp.testWebUrl.indexOf("/sites/");
         const colorUrl = "/" + combine(this.pnp.settings.sp.testWebUrl.substr(index), "/_catalogs/theme/15/palette011.spcolor");
@@ -170,7 +171,8 @@ describe("Web", function () {
     it("delete", async function () {
         const url = getRandomString(4);
         const result = await this.pnp.sp.web.webs.add("Better be deleted!", url);
-        return expect(result.web.delete()).to.eventually.be.fulfilled;
+        const web = Web([this.pnp.sp.web, odataUrlFrom(result).replace(/_api\/web\/?/i, "")]);
+        return expect(web.delete()).to.eventually.be.fulfilled;
     });
 
     describe("client-side-pages", function () {

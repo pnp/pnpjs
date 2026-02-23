@@ -1,0 +1,2 @@
+mkdocs-markdownextradata-plugin
+mkdocs-redirects

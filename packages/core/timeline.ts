@@ -9,6 +9,11 @@ export type ObserverAction = (this: Timeline<any>, ...args: any[]) => void;
 /**
  * Represents an observer with side effects within the timeline
  */
+export type ObserverSyncFunction<R = any> = (this: Timeline<any>, ...args: any[]) => R;
+
+/**
+ * Represents an observer with side effects within the timeline
+ */
 export type ObserverFunction<R = any> = (this: Timeline<any>, ...args: any[]) => Promise<R>;
 
 /**
@@ -71,6 +76,61 @@ type EmitProxyType<T extends Moments> = DistributeEmit<T> & DistributeEmit<Defau
 export type TimelinePipe<T extends Timeline<any> = any> = (intance: T) => T;
 
 /**
+ * Field name to hold any flags on observer functions used to modify their behavior
+ */
+const flags = Symbol.for("ObserverLifecycleFlags");
+
+/**
+ * Bitwise flags to indicate modified behavior
+ */
+const enum ObserverLifecycleFlags {
+    // eslint-disable-next-line no-bitwise
+    noInherit = 1 << 0,
+    // eslint-disable-next-line no-bitwise
+    once = 1 << 1,
+}
+
+/**
+ * Creates a filter function for use in Array.filter that will filter OUT any observers with the specified [flag]
+ *
+ * @param flag The flag used to exclude observers
+ * @returns An Array.filter function
+ */
+// eslint-disable-next-line no-bitwise
+const byFlag = (flag: ObserverLifecycleFlags) => ((observer) => !((observer[flags] || 0) & flag));
+
+/**
+ * Creates an observer lifecycle modification flag application function
+ * @param flag The flag to the bound function should add
+ * @returns A function that can be used to apply [flag] to any valid observer
+ */
+const addFlag = (flag: ObserverLifecycleFlags) => (<T extends ValidObserver>(observer: T): T => {
+    // eslint-disable-next-line no-bitwise
+    observer[flags] = (observer[flags] || 0) | flag;
+    return observer;
+});
+
+/**
+ * Observer lifecycle modifier that indicates this observer should NOT be inherited by any child
+ * timelines.
+ */
+export const noInherit = addFlag(ObserverLifecycleFlags.noInherit);
+
+/**
+ * Observer lifecycle modifier that indicates this observer should only fire once per instance, it is then removed.
+ *
+ * Note: If you have a parent and child timeline "once" will affect both and the observer will fire once for a parent lifecycle
+ * and once for a child lifecycle
+ */
+export const once = addFlag(ObserverLifecycleFlags.once);
+
+const enum ObserverAddBehavior {
+    Add = 1,
+    Prepend = 2,
+    Replace = 3,
+}
+
+/**
  * Timeline represents a set of operations executed in order of definition,
  * with each moment's behavior controlled by the implementing function
  */
@@ -116,7 +176,7 @@ export abstract class Timeline<T extends Moments> {
                 get: (target: any, p: string) => Object.assign((handler: ValidObserver) => {
 
                     target.cloneObserversOnChange();
-                    addObserver(target.observers, p, handler, "add");
+                    addObserver(target.observers, p, handler, ObserverAddBehavior.Add);
                     return target;
 
                 }, {
@@ -126,13 +186,13 @@ export abstract class Timeline<T extends Moments> {
                     replace: (handler: ValidObserver) => {
 
                         target.cloneObserversOnChange();
-                        addObserver(target.observers, p, handler, "replace");
+                        addObserver(target.observers, p, handler, ObserverAddBehavior.Replace);
                         return target;
                     },
                     prepend: (handler: ValidObserver) => {
 
                         target.cloneObserversOnChange();
-                        addObserver(target.observers, p, handler, "prepend");
+                        addObserver(target.observers, p, handler, ObserverAddBehavior.Prepend);
                         return target;
                     },
                     clear: (): boolean => {
@@ -213,6 +273,13 @@ export abstract class Timeline<T extends Moments> {
                             // if all else fails, re-throw as we are getting errors from error observers meaning something is sideways
                             throw e;
                         }
+
+                    } finally {
+
+                        // here we need to remove any "once" observers
+                        if (observers && observers.length > 0) {
+                            Reflect.set(target.observers, p, observers.filter(byFlag(ObserverLifecycleFlags.once)));
+                        }
                     }
                 },
             });
@@ -229,19 +296,16 @@ export abstract class Timeline<T extends Moments> {
      * @param init A value passed into the execute logic from the initiator of the timeline
      * @returns The result of this.execute
      */
-    protected async start(init?: any): Promise<any> {
+    protected start(init?: any): Promise<any> {
 
-        try {
+        // initialize our timeline
+        this.emit.init();
 
-            // initialize our timeline
-            this.emit.init();
+        // get a ref to the promise returned by execute
+        const p = this.execute(init);
 
-            // execute the timeline
-            // (this await is required to ensure dispose is called AFTER execute completes)
-            // we do not catch here so that any promise rejects in execute bubble up to the caller
-            return await this.execute(init);
-
-        } finally {
+        // attach our dispose logic
+        p.finally(() => {
 
             try {
 
@@ -251,13 +315,14 @@ export abstract class Timeline<T extends Moments> {
             } catch (e) {
 
                 // shouldn't happen, but possible dispose throws - which may be missed as the usercode await will have resolved.
-                const e2 = Object.assign(Error("Error in dispose."), {
-                    innerException: e,
-                });
+                const e2 = Object.assign(Error("Error in dispose."), { innerException: e });
 
                 this.error(e2);
             }
-        }
+        }).catch(() => void (0));
+
+        // give the promise back to the caller
+        return p;
     }
 
     /**
@@ -288,7 +353,7 @@ export abstract class Timeline<T extends Moments> {
  * @param addBehavior Determines how the observer is added to the collection
  *
  */
-function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: "add" | "replace" | "prepend"): any[] {
+function addObserver(target: Record<string, any>, moment: string, observer: ValidObserver, addBehavior: ObserverAddBehavior): any[] {
 
     if (!isFunc(observer)) {
         throw Error("Observers must be functions.");
@@ -303,13 +368,13 @@ function addObserver(target: Record<string, any>, moment: string, observer: Vali
 
         // if we have an existing property then we follow the specified behavior
         switch (addBehavior) {
-            case "add":
+            case ObserverAddBehavior.Add:
                 target[moment].push(observer);
                 break;
-            case "prepend":
+            case ObserverAddBehavior.Prepend:
                 target[moment].unshift(observer);
                 break;
-            case "replace":
+            case ObserverAddBehavior.Replace:
                 target[moment].length = 0;
                 target[moment].push(observer);
                 break;
@@ -323,7 +388,7 @@ export function cloneObserverCollection(source: ObserverCollection): ObserverCol
 
     return Reflect.ownKeys(source).reduce((clone: ObserverCollection, key: string) => {
 
-        clone[key] = [...source[key]];
+        clone[key] = [...source[key].filter(byFlag(ObserverLifecycleFlags.noInherit))];
 
         return clone;
     }, {});

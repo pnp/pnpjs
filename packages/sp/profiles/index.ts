@@ -25,6 +25,6 @@ Reflect.defineProperty(SPFI.prototype, "profiles", {
     configurable: true,
     enumerable: true,
     get: function (this: SPFI) {
-        this.create(Profiles);
+        return this.create(Profiles);
     },
 });

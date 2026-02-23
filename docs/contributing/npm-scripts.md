@@ -24,7 +24,7 @@ npm run serve
 
 Runs the tests and coverage for the library.
 
-[More details on setting up MSAL for node.](https://pnp.github.io/pnpjs/authentication/server-nodejs/#msal)
+[More details on setting up MSAL for node.](https://pnp.github.io/pnpjs/getting-started/#getting-started-with-nodejs)
 
 ### Options
 
@@ -91,6 +91,18 @@ If you include this flag a console logger will be subscribed and the log level w
 ```cmd
 # enable logging during testing
 npm test -- --logging
+```
+
+You can also optionally set a log level of error, warning, info, or verbose:
+
+```cmd
+# enable logging during testing in verbose (lots of info)
+npm test -- --logging verbose
+```
+
+```cmd
+# enable logging during testing in error
+npm test -- --logging error
 ```
 
 #### spVerbose

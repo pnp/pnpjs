@@ -16,5 +16,5 @@ declare module "../groups/types" {
 }
 
 addProp(_Group, "conversations", Conversations);
-addProp(_Group, "acceptedSenders", Senders, "acceptedsenders");
-addProp(_Group, "rejectedSenders", Senders, "rejectedsenders");
+addProp(_Group, "acceptedSenders", Senders);
+addProp(_Group, "rejectedSenders", Senders);

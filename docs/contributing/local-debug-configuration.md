@@ -14,13 +14,11 @@ You can control which tests are run by including or omitting sp and graph sectio
 The following configuration file allows you to run all the tests that do not contact services.
 
 ```js
- var sets = {
-     testing: {
-         enableWebTests: false,
-     }
- }
-
-module.exports = sets;
+export const settings = {
+  testing: {
+    enableWebTests: false,
+  },
+}
 ```
 
 ## Test your setup

@@ -1,46 +1,40 @@
 import { Configuration } from "@azure/msal-node";
-import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
+import { combine, TimelinePipe } from "@pnp/core";
 import { DefaultParse, Queryable } from "@pnp/queryable";
-import { DefaultHeaders, DefaultInit } from "@pnp/graph";
+import { DEFAULT_GRAPH_URL, DefaultHeaders, DefaultInit } from "@pnp/graph";
 import { NodeFetchWithRetry } from "./fetch.js";
 import { MSAL } from "./msal.js";
 
 export interface IGraphDefaultProps {
     baseUrl?: string;
-    msal: {
+    msal?: {
         config: Configuration;
         scopes?: string[];
     };
 }
 
-export function GraphDefault(props: IGraphDefaultProps): TimelinePipe<Queryable> {
-
-    if (props.baseUrl && !isUrlAbsolute(props.baseUrl)) {
-        throw Error("GraphDefault props.baseUrl must be absolute when supplied.");
-    }
+/**
+ * Behavior for adding the default observers to the Graph queryable object
+ * @param props - Specify the IGraphDefaultProps for configuring the object
+ *        props.msal: (deprecated, use separate MSAL behavior)
+ */
+export function GraphDefault(props?: IGraphDefaultProps): TimelinePipe<Queryable> {
 
     const { baseUrl, msal } = {
-        baseUrl: "https://graph.microsoft.com/",
+        baseUrl: DEFAULT_GRAPH_URL,
         ...props,
     };
 
     return (instance: Queryable) => {
 
-        instance.using(
-            MSAL(msal.config, msal?.scopes || [combine(baseUrl, ".default")]),
-            NodeFetchWithRetry(),
-            DefaultParse(),
-            DefaultHeaders(),
-            DefaultInit());
+        const behaviors: TimelinePipe<any>[] = [DefaultHeaders(), DefaultInit(baseUrl), NodeFetchWithRetry(), DefaultParse()];
 
-        instance.on.pre(async (url, init, result) => {
+        if (props?.msal) {
+            const u = new URL(baseUrl);
+            behaviors.push(MSAL(msal.config, msal?.scopes || [combine(`${u.protocol}//${u.host}`, ".default")]));
+        }
 
-            if (!isUrlAbsolute(url)) {
-                url = combine(baseUrl, url);
-            }
-
-            return [url, init, result];
-        });
+        instance.using(...behaviors);
 
         return instance;
     };

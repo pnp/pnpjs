@@ -1,13 +1,13 @@
-import { TimelinePipe } from "@pnp/core";
-import { headers, BlobParse, TextParse, JSONParse, BufferParse } from "@pnp/queryable";
+import { headers } from "@pnp/queryable";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
+import { ReadableFile } from "../files/readable-file.js";
+import { encodePath } from "../utils/encode-path-str.js";
 import {
     IDeleteableWithETag,
     _SPCollection,
     spInvokableFactory,
-    _SPInstance,
     deleteableWithETag,
+    spPost,
 } from "../spqueryable.js";
 
 @defaultPath("AttachmentFiles")
@@ -20,7 +20,7 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
     */
     public getByName(name: string): IAttachment {
         const f = Attachment(this);
-        f.concat(`('${name}')`);
+        f.concat(`('${encodePath(name)}')`);
         return f;
     }
 
@@ -31,7 +31,7 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
      * @param content The Base64 file content.
      */
     public async add(name: string, content: string | Blob | ArrayBuffer): Promise<IAttachmentAddResult> {
-        const response = await spPost(Attachments(this, `add(FileName='${name}')`), { body: content });
+        const response = await spPost(Attachments(this, `add(FileName='${encodePath(name)}')`), { body: content });
         return {
             data: response,
             file: this.getByName(name),
@@ -41,54 +41,18 @@ export class _Attachments extends _SPCollection<IAttachmentInfo[]> {
 export interface IAttachments extends _Attachments { }
 export const Attachments = spInvokableFactory<IAttachments>(_Attachments);
 
-export class _Attachment extends _SPInstance<IAttachmentInfo> {
+export class _Attachment extends ReadableFile<IAttachmentInfo> {
 
     public delete = deleteableWithETag();
-
-    /**
-     * Gets the contents of the file as text
-     *
-     */
-    public getText(): Promise<string> {
-
-        return this.getParsed(TextParse());
-    }
-
-    /**
-     * Gets the contents of the file as a blob, does not work in Node.js
-     *
-     */
-    public getBlob(): Promise<Blob> {
-
-        return this.getParsed(BlobParse());
-    }
-
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    public getBuffer(): Promise<ArrayBuffer> {
-
-        return this.getParsed(BufferParse());
-    }
-
-    /**
-     * Gets the contents of a file as an ArrayBuffer, works in Node.js
-     */
-    public getJSON(): Promise<any> {
-
-        return this.getParsed(JSONParse());
-    }
 
     /**
      * Sets the content of a file. Not supported for batching
      *
      * @param content The value to set for the file contents
      */
-    public async setContent(content: string | ArrayBuffer | Blob): Promise<IAttachment> {
+    public async setContent(body: string | ArrayBuffer | Blob): Promise<IAttachment> {
 
-        await spPost(Attachment(this, "$value"), headers({ "X-HTTP-Method": "PUT" }, {
-            body: content,
-        }));
+        await spPost(Attachment(this, "$value"), headers({ "X-HTTP-Method": "PUT" }, { body }));
 
         return this;
     }
@@ -104,10 +68,6 @@ export class _Attachment extends _SPInstance<IAttachmentInfo> {
             "IF-Match": eTag,
             "X-HTTP-Method": "DELETE",
         }));
-    }
-
-    private getParsed<T>(parser: TimelinePipe): Promise<T> {
-        return Attachment(this, "$value").using(parser)();
     }
 }
 export interface IAttachment extends _Attachment, IDeleteableWithETag { }

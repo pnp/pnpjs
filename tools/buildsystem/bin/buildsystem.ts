@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 
-import Liftoff from "liftoff";
+import * as Liftoff from "liftoff";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { join } from "path";
+import { dirname, join, resolve } from "path";
 import { cwd } from "process";
-import { ConfigCollection, BuildSchema, PackageSchema, PublishSchema } from "../src/config.js";
-import { builder } from "../src/builder.js";
-import { packager } from "../src/packager.js";
-import { publisher } from "../src/publisher.js";
-import importJSON from "../src/lib/importJSON.js";
+import importJSON from "../src/lib/import-json.js";
+import { BuildTimeline, BuildMoments } from "../src/build-timeline.js";
+import { IBuildContext, BuildSchema, TSConfig } from "../src/types.js";
 
 const args: any = yargs(hideBin(process.argv)).argv;
 
-const packagePath = join(cwd(), 'package.json');
+const context: Partial<IBuildContext> = {
+    resolvedProjectRoot: join(cwd(), "package.json"),
+};
 
-const BuildSystem = new Liftoff({
+const BuildSystem = new (<any>Liftoff).default({
     configName: "buildsystem-config",
     name: "buildsystem",
 });
@@ -28,11 +28,12 @@ BuildSystem.prepare({}, function (env) {
             throw Error("No config file found.");
         }
 
-        const configs: { default: ConfigCollection } = await import("file://" + env.configPath);
-        const pkg: { version: string } = importJSON(packagePath);
+        const configs: { default: BuildSchema[] } = await import("file://" + env.configPath);
+        const pkg: { version: string } = importJSON(context.resolvedProjectRoot);
+
+        context.version = pkg.version;
 
         let name = <string>(args.n || args.name);
-
         if (typeof name === "undefined" || name === null || name === "") {
             // default to build if no name is supplied
             name = "build";
@@ -45,26 +46,67 @@ BuildSystem.prepare({}, function (env) {
             throw Error(`No configuration entry found in ${env.configPath} with name ${name}.`);
         }
 
-        switch (config[0].role) {
+        const activeConfig = config[0];
 
-            case "build":
+        // setup other context values from config
+        context.distRoot = config[0].distFolder || "./dist/packages";
 
-                await builder(pkg.version, <BuildSchema>config[0]);
-                break;
+        // now we make an array of timelines 1/target
+        context.targets = config[0].targets.map(tsconfigPath => {
 
-            case "package":
+            const tsconfigRoot = resolve(dirname(tsconfigPath));
+            const parsedTSConfig: TSConfig = importJSON(tsconfigPath);
+            const resolvedOutDir = resolve(tsconfigRoot, parsedTSConfig.compilerOptions.outDir);
 
-                await packager(pkg.version, <PackageSchema>config[0]);
-                break;
+            const packages = [];
 
-            case "publish":
+            if (parsedTSConfig.references) {
+                // we need to resolve some extra data for each package
+                packages.push(...parsedTSConfig.references.map(ref => ({
 
-                await publisher(pkg.version, <PublishSchema>config[0]);
-                break;
+                    name: dirname(ref.path).replace(/^\.\//, ""),
+                    resolvedPkgSrcTSConfigPath: resolve(tsconfigRoot, ref.path),
+                    resolvedPkgSrcRoot: dirname(resolve(tsconfigRoot, ref.path)),
+                    resolvedPkgOutRoot: resolve(resolvedOutDir, dirname(ref.path)),
+                    resolvedPkgDistRoot: resolve(context.distRoot, dirname(ref.path)),
+                    relativePkgDistModulePath: resolvedOutDir.replace(dirname(resolvedOutDir), "").replace(/^\\|\//, ""),
+                })));
+            } else {
+                // we have a single package (debug for example)
+                packages.push({
+                    name: "root",
+                    resolvedPkgSrcTSConfigPath: tsconfigRoot,
+                    resolvedPkgSrcRoot: tsconfigRoot,
+                    resolvedPkgOutRoot: resolvedOutDir,
+                    resolvedPkgDistRoot: context.distRoot,
+                    relativePkgDistModulePath: context.distRoot,
+                });
+            }
 
-            default:
+            return {
+                tsconfigPath,
+                tsconfigRoot,
+                parsedTSConfig,
+                resolvedOutDir,
+                packages,
+            };
+        })
 
-                throw Error(`Unrecognized role in config.`);
+        const timeline = new BuildTimeline(context);
+
+        // now we apply all our configs
+        if (activeConfig.behaviors) {
+            timeline.using(...activeConfig.behaviors);
         }
+
+        // read in any moment defined observers
+        for (let key in BuildMoments) {
+            if (activeConfig[key]) {
+                timeline.on[key](...activeConfig[key]);
+            }
+        }
+
+        // we start one timeline per target
+        await timeline.start();
     });
 });

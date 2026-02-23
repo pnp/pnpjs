@@ -4,13 +4,13 @@ Where possible batching can significantly increase application performance by co
 
 ## SP Example
 
-```ts
-import { spfi, SPFx } from "@pnp/sp";
+```TypeScript
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/batching";
 
-const sp = spfi().using(SPFx(this.context));
+const sp = spfi(...);
 
 const [batchedSP, execute] = sp.batched();
 
@@ -34,13 +34,13 @@ for(let i = 0; i < res.length; i++) {
 
 ### Using a batched web
 
-```ts
-import { spfi, SPFx } from "@pnp/sp";
+```TypeScript
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/batching";
 
-const sp = spfi().using(SPFx(this.context));
+const sp = spfi(...);
 
 const [batchedWeb, execute] = sp.web.batched();
 
@@ -66,7 +66,7 @@ for(let i = 0; i < res.length; i++) {
 
 ## Graph Example
 
-```ts
+```TypeScript
 import { graphfi } from "@pnp/graph";
 import { GraphDefault } from "@pnp/nodejs";
 import "@pnp/graph/users";
@@ -158,7 +158,7 @@ await execute();
 
 It shouldn't come up often, but you can not make multiple requests using the same instance of a queryable in a batch. Let's consider the **incorrect** example below:
 
-> The error message will be "This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse."
+> The error message will be "This instance is already part of a batch. Please review the docs at <https://pnp.github.io/pnpjs/concepts/batching#reuse>."
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -217,41 +217,3 @@ await execute();
 ```
 
 > In addition you cannot continue using a batch after execute. Once execute has resolved the batch is done. You should create a new batch using one of the described methods to conduct another batched call.
-
-## Case where batch result returns an object that can be invoked
-
-In the following example, the results of adding items to the list is an object with a type of **IItemAddResult** which is `{data: any, item: IItem}`. Since version v1 the expectation is that the `item` object is immediately usable to make additional queries. When this object is the result of a batched call, this was not the case so we have added additional code to reset the observers using the original base from witch the batch was created, mimicing the behavior had the **IItem** been created from that base withyout a batch involved. We use [CopyFrom](../core/behaviors.md#CopyFrom) to ensure that we maintain the references to the InternalResolve and InternalReject events through the end of this timelines lifecycle. 
-
-```TypeScript
-import { createBatch } from "@pnp/sp/batching";
-import { SPDefault } from "@pnp/nodejs";
-import { IList } from "@pnp/sp/lists";
-import "@pnp/sp/items/list";
-
-const sp = spfi("https://tenant.sharepoint.com/sites/dev").using(SPDefault({ /* ... */ }));
-
-// in one part of your application you setup a list instance
-const list: IList = sp.web.lists.getByTitle("MyList");
-
-const [batchedListBehavior, execute] = createBatch(list);
-// this list is now batching all its requests
-list.using(batchedListBehavior);
-
-let res: IItemAddResult[] = [];
-
-// these will all occur within a single batch
-list.items.add({ Title: `1: ${getRandomString(4)}` }).then(r => res.push(r));
-list.items.add({ Title: `2: ${getRandomString(4)}` }).then(r => res.push(r));
-list.items.add({ Title: `3: ${getRandomString(4)}` }).then(r => res.push(r));
-list.items.add({ Title: `4: ${getRandomString(4)}` }).then(r => res.push(r));
-
-await execute();
-
-let newItems: IItem[] = [];
-
-for(let i=0; i<res.length; i++){
-    //This line will correctly resolve
-    const newItem = await res[i].item.select("Title")<{Title: string}>();
-    newItems.push(newItem);
-}
-```

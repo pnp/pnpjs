@@ -14,3 +14,10 @@ Shows how to create a custom bundle using webpack.
 
 Shows how to create a custom bundle using rollup.
 
+## [Azure Function v4](./azure-function/readme.md)
+
+Shows how to utilize PnPjs v4 in an Azure Function v4.
+
+## [SPFx React Project](./spfx-react-components)
+
+Shows how to create a SPFx project that utilizes PnPjs.

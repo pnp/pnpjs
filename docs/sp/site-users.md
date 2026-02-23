@@ -6,18 +6,14 @@ The site users module provides methods to manage users for a sharepoint site.
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
-|Preset: All|import {sp, SiteUsers } from "@pnp/sp/presets/all";|
-
 ### Get all site user
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
+
+const sp = spfi(...);
 
 const users = await sp.web.siteUsers();
 ```
@@ -25,9 +21,11 @@ const users = await sp.web.siteUsers();
 ### Get Current user
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
+
+const sp = spfi(...);
 
 let user = await sp.web.currentUser();
 ```
@@ -35,20 +33,24 @@ let user = await sp.web.currentUser();
 ### Get user by id
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
+const sp = spfi(...);
+
 const id = 6;
-user = await sp.web.getUserById(id);
+user = await sp.web.getUserById(id)();
 ```
 
 ### Ensure user
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
+
+const sp = spfi(...);
 
 const username = "usernames@microsoft.com";
 result = await sp.web.ensureUser(username);
@@ -60,16 +62,18 @@ result = await sp.web.ensureUser(username);
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
-|Selective 3|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
+|Selective 2|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users";|
+|Selective 3|import "@pnp/sp/webs";<br />import "@pnp/sp/site-users/web";|
 |Preset: All|import {sp, SiteUsers, SiteUser } from "@pnp/sp/presets/all";|
 
 ### Get user Groups
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
+
+const sp = spfi(...);
 
 let groups = await sp.web.currentUser.groups();
 ```
@@ -77,39 +81,45 @@ let groups = await sp.web.currentUser.groups();
 ### Add user to Site collection
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
+
+const sp = spfi(...);
 
 const user = await sp.web.ensureUser("userLoginname")
 const users = await sp.web.siteUsers;
   
-await users.add(user.data.LoginName);
+await users.add(user.LoginName);
 ```
 
-### Get user
+### Get user by Id, Email, or LoginName
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
 
+const sp = spfi(...);
+
 // get user object by id
-const user = await sp.web.siteUsers.getById(6);
+const user = await sp.web.siteUsers.getById(6)();
 
 //get user object by Email
-const user = await sp.web.siteUsers.getByEmail("user@mail.com");
+const user = await sp.web.siteUsers.getByEmail("user@mail.com")();
 
 //get user object by LoginName
-const user = await sp.web.siteUsers.getByLoginName("userLoginName");
+const user = await sp.web.siteUsers.getByLoginName("userLoginName")();
 ```
 
 ### Update user
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
+
+const sp = spfi(...);
 
 let userProps = await sp.web.currentUser();
 userProps.Title = "New title";
@@ -119,9 +129,11 @@ await sp.web.currentUser.update(userProps);
 ### Remove user
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/site-users/web";
+
+const sp = spfi(...);
 
 // remove user by id
 await sp.web.siteUsers.removeById(6);

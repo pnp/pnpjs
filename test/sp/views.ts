@@ -55,7 +55,7 @@ describe("Views", function () {
     it("add", async function () {
         const viewTitle = `Test-Add-View_${getRandomString(4)}`;
         const av = await list.views.add(viewTitle, false);
-        return expect(av.data.Title).to.eq(viewTitle);
+        return expect(av.Title).to.eq(viewTitle);
     });
 
     it("fields", async function () {
@@ -65,10 +65,10 @@ describe("Views", function () {
 
     it("update", async function () {
         const r = await list.views.add(`Update-Test-View_${getRandomString(4)}`);
-        await r.view.update({
+        await list.views.getById(r.Id).update({
             RowLimit: 20,
         });
-        const v = await list.views.getById(r.data.Id)();
+        const v = await list.views.getById(r.Id)();
         return expect(v.RowLimit).to.eq(20);
     });
 
@@ -80,7 +80,7 @@ describe("Views", function () {
     it("setViewXml", async function () {
         const r = await list.views.add(`setViewXml-Test-View_${getRandomString(4)}`);
         const xml = "<View><Query><Where><Eq><FieldRef Name='Title'/><Value Type='Text'>Test</Value></Eq></Where></Query></View>";
-        return expect(r.view.setViewXml(xml)).to.eventually.be.fulfilled;
+        return expect(list.views.getById(r.Id).setViewXml(xml)).to.eventually.be.fulfilled;
     });
 
     describe("ViewFields", function () {
@@ -92,24 +92,24 @@ describe("Views", function () {
 
         it("add", async function () {
             const r = await list.views.add(`add-Test-ViewFields_${getRandomString(4)}`);
-            return expect(r.view.fields.add("Created")).to.eventually.be.fulfilled;
+            return expect(list.views.getById(r.Id).fields.add("Created")).to.eventually.be.fulfilled;
         });
 
         it("move", async function () {
             const r = await list.views.add(`move-Test-ViewFields_${getRandomString(4)}`);
-            await r.view.fields.add("Modified");
-            return expect(r.view.fields.move("Modified", 0)).to.eventually.be.fulfilled;
+            await list.views.getById(r.Id).fields.add("Modified");
+            return expect(list.views.getById(r.Id).fields.move("Modified", 0)).to.eventually.be.fulfilled;
         });
 
         it("remove", async function () {
             const r = await list.views.add(`remove-Test-ViewFields_${getRandomString(4)}`);
-            await r.view.fields.add("Author");
-            return expect(r.view.fields.remove("Author")).to.eventually.be.fulfilled;
+            await list.views.getById(r.Id).fields.add("Author");
+            return expect(list.views.getById(r.Id).fields.remove("Author")).to.eventually.be.fulfilled;
         });
 
         it("removeAll", async function () {
             const r = await list.views.add(`removeAll-Test-ViewFields_${getRandomString(4)}`);
-            return expect(r.view.fields.removeAll()).to.eventually.be.fulfilled;
+            return expect(list.views.getById(r.Id).fields.removeAll()).to.eventually.be.fulfilled;
         });
     });
 });

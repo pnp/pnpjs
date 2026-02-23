@@ -7,7 +7,6 @@ export {
     IFile,
     Files,
     IFiles,
-    IFileAddResult,
     IFileUploadProgressData,
     CheckinType,
     MoveOperations,
@@ -18,4 +17,8 @@ export {
     Versions,
     IAddUsingPathProps,
     IFileInfo,
+    fileFromServerRelativePath,
+    fileFromAbsolutePath,
+    fileFromPath,
+    IFileDeleteParams,
 } from "./types.js";

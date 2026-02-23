@@ -23,13 +23,15 @@ import "@pnp/sp/security";
 ## Securable Methods
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/security/list";
 import "@pnp/sp/site-users/web";
 import { IList } from "@pnp/sp/lists";
 import { PermissionKind } from "@pnp/sp/security";
+
+const sp = spfi(...);
 
 // ensure we have a list
 const ler = await sp.web.lists.ensure("SecurityTestingList");
@@ -68,9 +70,11 @@ await list.resetRoleInheritance();
 ## Web Specific methods
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/security/web";
+
+const sp = spfi(...);
 
 // role definitions (see section below)
 const defs = await sp.web.roleDefinitions();
@@ -81,13 +85,15 @@ const defs = await sp.web.roleDefinitions();
 Allows you to list and manipulate the set of role assignments for the given securable. Again we show usage using list, but the examples apply to web and item as well.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/security/web";
 import "@pnp/sp/site-users/web";
 import { IList } from "@pnp/sp/lists";
 import { PermissionKind } from "@pnp/sp/security";
+
+const sp = spfi(...);
 
 // ensure we have a list
 const ler = await sp.web.lists.ensure("SecurityTestingList");
@@ -102,11 +108,12 @@ const user = await sp.web.currentUser();
 const r = await list.roleAssignments.add(user.Id, defs[0].Id);
 
 // remove a role assignment
+const { Id: fullRoleDefId } = await sp.web.roleDefinitions.getByName('Full Control')();
 const ras = await list.roleAssignments();
 // filter/find the role assignment you want to remove
 // here we just grab the first
 const ra = ras.find(v => true);
-const r = await list.roleAssignments.remove(ra.Id);
+const r = await list.roleAssignments.remove(ra.PrincipalId, fullRoleDefId);
 
 // read role assignment info
 const info = await list.roleAssignments.getById(ra.Id)();
@@ -130,9 +137,11 @@ await list.roleAssignments.getById(ra.Id).delete();
 ## Role Definitions
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/security/web";
+
+const sp = spfi(...);
 
 // read role definitions
 const defs = await sp.web.roleDefinitions();
@@ -146,8 +155,8 @@ const def = await sp.web.roleDefinitions.getByName("Full Control")();
 const def = await sp.web.roleDefinitions.getByName("Full Control").select("Name", "Order")();
 
 // get by type
-const def = await sp.web.roleDefinitions.getByName(5)();
-const def = await sp.web.roleDefinitions.getByName(5).select("Name", "Order")();
+const def = await sp.web.roleDefinitions.getByType(5)();
+const def = await sp.web.roleDefinitions.getByType(5).select("Name", "Order")();
 
 // add
 // name The new role definition's name
@@ -165,4 +174,23 @@ await sp.web.roleDefinitions.getById(5).delete();
 
 // update
 const res = sp.web.roleDefinitions.getById(5).update({ Name: "New Name" });
+```
+
+## Get List Items with Unique Permissions
+
+In order to get a list of items that have unique permissions you have to specifically select the '' field and then filter on the client.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/security/items";
+
+const sp = spfi(...);
+
+const listItems = await sp.web.lists.getByTitle("pnplist").items.select("Id, HasUniqueRoleAssignments")();
+
+//Loop over list items filtering for HasUniqueRoleAssignments value
+
 ```

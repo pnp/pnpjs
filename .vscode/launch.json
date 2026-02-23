@@ -36,7 +36,10 @@
       "outFiles": [],
       "args": [
         "--verbose",
-        "--logging"
+        "--logging",
+        "verbose",
+        "--record",
+        "write"
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
@@ -57,7 +60,9 @@
       "preLaunchTask": "build-buildsystem",
       "runtimeExecutable": null,
       "runtimeArgs": [
-        "--nolazy"
+        "--nolazy",
+        "--experimental-loader",
+        "file://${workspaceRoot}/build/debugging/tools/local-module-resolver/esm-packages.js"
       ],
       "env": {
         "NODE_ENV": "development"
@@ -66,11 +71,35 @@
       "internalConsoleOptions": "openOnSessionStart",
       "sourceMaps": true,
       "outFiles": [
-        "${workspaceRoot}/tools/buildsystem/**/*.js"
+        "${workspaceRoot}/build/build-system/**/*.js"
       ],
       "skipFiles": [
         "<node_internals>/**"
       ]
     },
+    {
+      "name": "Debug Watch",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/debug/launch/main.ts",
+      "args": [],
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "build-watch",
+      "runtimeExecutable": null,
+      "runtimeArgs": [
+        "--nolazy",
+        "--experimental-loader",
+        "file://${workspaceRoot}/build/debugging/tools/local-module-resolver/esm-debug.js"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/build/debugging/**/*.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    }
   ]
 }

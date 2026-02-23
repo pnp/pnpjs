@@ -4,7 +4,8 @@ import "@pnp/graph/teams";
 import "@pnp/graph/groups";
 import getValidUser from "./utilities/getValidUser.js";
 
-describe("Teams", function () {
+// skipping because this is a very time intensive test for an API that is unlikely to change frequently
+describe.skip("Teams", function () {
 
     let testUserId = "";
     let teamBody = {};
@@ -68,7 +69,7 @@ describe("Teams", function () {
                 }
                 await this.pnp.graph.groups.getById(teamID).delete();
 
-            // eslint-disable-next-line no-empty
+                // eslint-disable-next-line no-empty
             } catch (e) { }
         }
     });

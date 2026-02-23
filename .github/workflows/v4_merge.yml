@@ -1,0 +1,39 @@
+name: V4 Merge Testing
+on:
+  push:
+    branches:
+        - version-4
+env:
+  PNPTESTING_MSAL_GRAPH_CONFIG: ${{ secrets.PNPTESTING_MSAL_GRAPH_CONFIG }}
+  PNPTESTING_MSAL_GRAPH_SCOPES: ${{ secrets.PNPTESTING_MSAL_GRAPH_SCOPES }}
+  PNPTESTING_MSAL_SP_CONFIG: ${{ secrets.PNPTESTING_MSAL_SP_CONFIG }}
+  PNPTESTING_MSAL_SP_SCOPES: ${{ secrets.PNPTESTING_MSAL_SP_SCOPES }}
+  PNPTESTING_NOTIFICATIONURL: ${{ secrets.PNPTESTING_NOTIFICATIONURL }}
+  PNPTESTING_SITEURL: ${{ secrets.PNPTESTING_SITEURL }} 
+  PNPTESTING_TESTUSER: ${{ secrets.PNPTESTING_TESTUSER }} 
+  PNPTESTING_TESTGROUPID: ${{ secrets.PNPTESTING_TESTGROUPID }} 
+jobs:
+  run_push_tests:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+        with:
+          ref: version-4
+      # setup nodejs
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+          
+      # Run the npm install          
+      - run: npm ci
+      - name: Run lint 
+        run: npm run lint
+      - name: Run package
+        run: npm run package
+      - name: Run tests
+        run: npm test -- --mode push --cleanup --msal

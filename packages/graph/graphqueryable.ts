@@ -1,9 +1,11 @@
 import { isArray } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
+import { IInvokable, Queryable, queryableFactory, op, get, post, patch, del, put } from "@pnp/queryable";
+import { ConsistencyLevel } from "./behaviors/consistency-level.js";
+import { IPagedResult, Paged } from "./behaviors/paged.js";
 
 export type GraphInit = string | IGraphQueryable | [IGraphQueryable, string];
 
-export interface IGraphQueryableConstructor<T> {
+export interface IGraphConstructor<T> {
     new(base: GraphInit, path?: string): T;
 }
 
@@ -32,6 +34,9 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
 
         super(base, path);
 
+        // we need to use the graph implementation to handle our special encoding
+        this._query = new GraphQueryParams();
+
         if (typeof base === "string") {
 
             this.parentUrl = base;
@@ -53,7 +58,7 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      */
     public select(...selects: string[]): this {
         if (selects.length > 0) {
-            this.query.set("$select", selects.map(encodeURIComponent).join(","));
+            this.query.set("$select", selects.join(","));
         }
         return this;
     }
@@ -65,25 +70,9 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      */
     public expand(...expands: string[]): this {
         if (expands.length > 0) {
-            this.query.set("$expand", expands.map(encodeURIComponent).join(","));
+            this.query.set("$expand", expands.join(","));
         }
         return this;
-    }
-
-    /**
-     * Gets the full url with query information
-     *
-     */
-    public toUrlAndQuery(): string {
-
-        let url = this.toUrl();
-
-        if (this.query.size > 0) {
-            const char = url.indexOf("?") > -1 ? "&" : "?";
-            url += `${char}${Array.from(this.query).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
-        }
-
-        return url;
     }
 
     /**
@@ -91,28 +80,12 @@ export class _GraphQueryable<GetType = any> extends Queryable<GetType> {
      *
      * @param factory The contructor for the class to create
      */
-    protected getParent<T extends _GraphQueryable>(
-        factory: IGraphQueryableConstructor<T>,
-        base: GraphInit = this.parentUrl,
-        path?: string): T {
+    protected getParent<T extends IGraphQueryable>(
+        factory: IGraphInvokableFactory<any>,
+        path?: string,
+        base: string = this.parentUrl): T {
 
-        return new factory(base, path);
-    }
-
-    /**
-     * Gets the current base url of this object (https://graph.microsoft.com/v1.0 or https://graph.microsoft.com/beta)
-     */
-    protected getUrlBase(): string {
-        const url = this.toUrl();
-        let index = url.indexOf("v1.0/");
-        if (index > -1) {
-            return url.substring(0, index + 5);
-        }
-        index = url.indexOf("beta/");
-        if (index > -1) {
-            return url.substring(0, index + 5);
-        }
-        return url;
+        return factory([this, base], path);
     }
 }
 
@@ -123,7 +96,7 @@ export const GraphQueryable = graphInvokableFactory<IGraphQueryable>(_GraphQuery
  * Represents a REST collection which can be filtered, paged, and selected
  *
  */
-export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<GetType> {
+export class _GraphCollection<GetType = any[]> extends _GraphQueryable<GetType> {
 
     /**
      *
@@ -143,7 +116,7 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     public orderBy(orderBy: string, ascending = true): this {
         const o = "$orderby";
         const query = this.query.get(o)?.split(",") || [];
-        query.push(`${encodeURIComponent(orderBy)} ${ascending ? "asc" : "desc"}`);
+        query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
         this.query.set(o, query.join(","));
         return this;
     }
@@ -169,6 +142,17 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
     }
 
     /**
+     * Skips a set number of items in the return set
+     *
+     * @param num Number of items to skip
+     */
+    public search(query: string): this {
+        this.using(ConsistencyLevel());
+        this.query.set("$search", query);
+        return this;
+    }
+
+    /**
      * 	To request second and subsequent pages of Graph data
      */
     public skipToken(token: string): this {
@@ -176,79 +160,88 @@ export class _GraphQueryableCollection<GetType = any[]> extends _GraphQueryable<
         return this;
     }
 
-    /**
-     * 	Retrieves the total count of matching resources
-     */
-    public get count(): this {
-        this.query.set("$count", "true");
-        return this;
+    public [Symbol.asyncIterator]() {
+
+        const q = GraphCollection(this).using(Paged(), ConsistencyLevel());
+
+        // Issue #3136, some APIs take other query params that need to persist through the paging, so we just include everything
+        for (const [key, value] of this.query) {
+            q.query.set(key, value);
+        }
+
+        return <AsyncIterator<GetType>>{
+
+            _next: q,
+
+            async next() {
+
+                if (this._next === null) {
+                    return { done: true, value: undefined };
+                }
+
+                const result: IPagedResult<any> = await this._next();
+
+                if (result.hasNext) {
+                    this._next = GraphCollection([this._next, result.nextLink]);
+                    return { done: false, value: result.value };
+                } else {
+                    this._next = null;
+                    return { done: false, value: result.value };
+                }
+            },
+        };
     }
 }
-
-export interface IGraphQueryableCollection<GetType = any[]> extends IInvokable, IGraphQueryable<GetType> {
-
-    /**
-     * 	Retrieves the total count of matching resources
-     */
-    count: this;
-
-    /**
-     *
-     * @param filter The string representing the filter query
-     */
-    filter(filter: string): this;
-
-    /**
-     * Orders based on the supplied fields
-     *
-     * @param orderby The name of the field on which to sort
-     * @param ascending If false DESC is appended, otherwise ASC (default)
-     */
-    orderBy(orderBy: string, ascending?: boolean): this;
-
-    /**
-     * Limits the query to only return the specified number of items
-     *
-     * @param top The query row limit
-     */
-    top(top: number): this;
-
-    /**
-     * Skips a set number of items in the return set
-     *
-     * @param num Number of items to skip
-     */
-    skip(num: number): this;
-
-    /**
-     * 	To request second and subsequent pages of Graph data
-     */
-    skipToken(token: string): this;
-}
-export const GraphQueryableCollection = graphInvokableFactory<IGraphQueryableCollection>(_GraphQueryableCollection);
-
-export class _GraphQueryableSearchableCollection extends _GraphQueryableCollection {
-
-    /**
-     * 	To request second and subsequent pages of Graph data
-     */
-    public search(query: string): this {
-        this.query.set("$search", query);
-        return this;
-    }
-}
-
-export interface IGraphQueryableSearchableCollection<GetType = any> extends IInvokable, IGraphQueryable<GetType> {
-    search(query: string): this;
-}
-export const GraphQueryableSearchableCollection = graphInvokableFactory<IGraphQueryableSearchableCollection>(_GraphQueryableSearchableCollection);
-
+export interface IGraphCollection<GetType = any[]> extends _GraphCollection<GetType> { }
+export const GraphCollection = graphInvokableFactory<IGraphCollection>(_GraphCollection);
 
 /**
  * Represents an instance that can be selected
  *
  */
-export class _GraphQueryableInstance<GetType = any> extends _GraphQueryable<GetType> { }
+export class _GraphInstance<GetType = any> extends _GraphQueryable<GetType> { }
+export interface IGraphInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> { }
+export const GraphInstance = graphInvokableFactory<IGraphInstance>(_GraphInstance);
 
-export interface IGraphQueryableInstance<GetType = any> extends IInvokable, IGraphQueryable<GetType> { }
-export const GraphQueryableInstance = graphInvokableFactory<IGraphQueryableInstance>(_GraphQueryableInstance);
+export const graphGet = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, get, init);
+};
+
+export const graphPost = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, post, init);
+};
+
+export const graphDelete = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, del, init);
+};
+
+export const graphPatch = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, patch, init);
+};
+
+export const graphPut = <T = any>(o: IGraphQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, put, init);
+};
+
+class GraphQueryParams extends Map<string, string> {
+
+    public toString(): string {
+
+        const params = new URLSearchParams();
+        const literals: string[] = [];
+
+        for (const item of this) {
+
+            // and here is where we add some "enhanced" parsing as we get issues.
+            if (/\/any\(.*?\)/i.test(item[1])) {
+                literals.push(`${item[0]}=${item[1]}`);
+            } else {
+                params.append(item[0], item[1]);
+            }
+        }
+
+        literals.push(params.toString());
+
+        return literals.join("&");
+    }
+}

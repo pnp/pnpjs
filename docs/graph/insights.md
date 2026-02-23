@@ -2,14 +2,14 @@
 
 This module helps you get Insights in form of ***Trending***, ***Used*** and ***Shared***. The results are based on relationships calculated using advanced analytics and machine learning techniques.
 
+More information can be found in the official Graph documentation:
+
+- [Insights Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/officegraphinsights?view=graph-rest-1.0)
+
+
 ## IInsights
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
-
-| Scenario    | Import Statement                                                  |
-| ----------- | ----------------------------------------------------------------- |
-| Selective   | import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/insights"; |
-| Preset: All | import "@pnp/graph/presets/all";    |
 
 ### Get all Trending documents
 
@@ -20,9 +20,11 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const trending = await graphfi().me.insights.trending()
+const graph = graphfi(...);
 
-const trending = await graphfi().users.getById("userId").insights.trending()
+const trending = await graph.me.insights.trending()
+
+const trending = await graph.users.getById("userId").insights.trending()
 ```
 
 ### Get a Trending document by Id
@@ -34,9 +36,11 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const trendingDoc = await graphfi().me.insights.trending.getById('Id')()
+const graph = graphfi(...);
 
-const trendingDoc = await graphfi().users.getById("userId").insights.trending.getById('Id')()
+const trendingDoc = await graph.me.insights.trending.getById('Id')()
+
+const trendingDoc = await graph.users.getById("userId").insights.trending.getById('Id')()
 ```
 
 ### Get the resource from Trending document
@@ -48,9 +52,11 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const resource = await graphfi().me.insights.trending.getById('Id').resource()
+const graph = graphfi(...);
 
-const resource = await graphfi().users.getById("userId").insights.trending.getById('Id').resource()
+const resource = await graph.me.insights.trending.getById('Id').resource()
+
+const resource = await graph.users.getById("userId").insights.trending.getById('Id').resource()
 ```
 
 ### Get all Used documents
@@ -62,9 +68,11 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const used = await graphfi().me.insights.used()
+const graph = graphfi(...);
 
-const used = await graphfi().users.getById("userId").insights.used()
+const used = await graph.me.insights.used()
+
+const used = await graph.users.getById("userId").insights.used()
 ```
 
 ### Get a Used document by Id
@@ -76,9 +84,11 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const usedDoc = await graphfi().me.insights.used.getById('Id')()
+const graph = graphfi(...);
 
-const usedDoc = await graphfi().users.getById("userId").insights.used.getById('Id')()
+const usedDoc = await graph.me.insights.used.getById('Id')()
+
+const usedDoc = await graph.users.getById("userId").insights.used.getById('Id')()
 ```
 
 ### Get the resource from Used document
@@ -90,9 +100,11 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const resource = await graphfi().me.insights.used.getById('Id').resource()
+const graph = graphfi(...);
 
-const resource = await graphfi().users.getById("userId").insights.used.getById('Id').resource()
+const resource = await graph.me.insights.used.getById('Id').resource()
+
+const resource = await graph.users.getById("userId").insights.used.getById('Id').resource()
 ```
 
 ### Get all Shared documents
@@ -104,9 +116,11 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const shared = await graphfi().me.insights.shared()
+const graph = graphfi(...);
 
-const shared = await graphfi().users.getById("userId").insights.shared()
+const shared = await graph.me.insights.shared()
+
+const shared = await graph.users.getById("userId").insights.shared()
 ```
 
 ### Get a Shared document by Id
@@ -118,9 +132,11 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const sharedDoc = await graphfi().me.insights.shared.getById('Id')()
+const graph = graphfi(...);
 
-const sharedDoc = await graphfi().users.getById("userId").insights.shared.getById('Id')()
+const sharedDoc = await graph.me.insights.shared.getById('Id')()
+
+const sharedDoc = await graph.users.getById("userId").insights.shared.getById('Id')()
 ```
 
 ### Get the resource from a Shared document
@@ -132,8 +148,9 @@ import { graphfi } from "@pnp/graph";
 import "@pnp/graph/insights";
 import "@pnp/graph/users";
 
-const resource = await graphfi().me.insights.shared.getById('Id').resource()
+const graph = graphfi(...);
 
-const resource = await graphfi().users.getById("userId").insights.shared.getById('Id').resource()
+const resource = await graph.me.insights.shared.getById('Id').resource()
+
+const resource = await graph.users.getById("userId").insights.shared.getById('Id').resource()
 ```
-

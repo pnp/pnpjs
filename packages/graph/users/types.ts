@@ -1,6 +1,6 @@
-import { _GraphQueryableCollection, graphInvokableFactory } from "../graphqueryable.js";
+import { graphInvokableFactory } from "../graphqueryable.js";
 import { User as IUserType, Person as IPersonType } from "@microsoft/microsoft-graph-types";
-import { _DirectoryObject, DirectoryObjects, IDirectoryObjects } from "../directory-objects/types.js";
+import { _DirectoryObject, DirectoryObjects, IDirectoryObjects, _DirectoryObjects } from "../directory-objects/types.js";
 import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
 
 @updateable()
@@ -11,6 +11,13 @@ export class _User extends _DirectoryObject<IUserType> {
     */
     public get memberOf(): IDirectoryObjects {
         return DirectoryObjects(this, "memberOf");
+    }
+
+    /**
+    * The groups and directory roles associated with the user
+    */
+    public get transitiveMemberOf(): IDirectoryObjects {
+        return DirectoryObjects(this, "transitiveMemberOf");
     }
 
     /**
@@ -39,11 +46,11 @@ export const User = graphInvokableFactory<IUser>(_User);
 
 @defaultPath("users")
 @getById(User)
-export class _Users extends _GraphQueryableCollection<IUserType[]> { }
+export class _Users extends _DirectoryObjects<IUserType[]> { }
 export interface IUsers extends _Users, IGetById<IUser> { }
 export const Users = graphInvokableFactory<IUsers>(_Users);
 
 @defaultPath("people")
-export class _People extends _GraphQueryableCollection<IPersonType[]> { }
+export class _People extends _DirectoryObjects<IPersonType[]> { }
 export interface IPeople extends _People { }
 export const People = graphInvokableFactory<IPeople>(_People);

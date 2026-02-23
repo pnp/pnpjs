@@ -1,13 +1,12 @@
 import { body } from "@pnp/queryable";
 import { User as IMemberType } from "@microsoft/microsoft-graph-types";
-import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphCollection, _GraphInstance, graphInvokableFactory, graphDelete, graphPost } from "../graphqueryable.js";
 import { defaultPath, getById, IGetById } from "../decorators.js";
-import { graphDelete, graphPost } from "../operations.js";
 
 /**
  * Member
  */
-export class _Member extends _GraphQueryableInstance<IMemberType> {
+export class _Member extends _GraphInstance<IMemberType> {
     /**
      * Removes this Member
      */
@@ -23,7 +22,7 @@ export const Member = graphInvokableFactory<IMember>(_Member);
  */
 @defaultPath("members")
 @getById(Member)
-export class _Members extends _GraphQueryableCollection<IMemberType[]> {
+export class _Members extends _GraphCollection<IMemberType[]> {
 
     /**
      * Use this API to add a member to an Office 365 group, a security group or a mail-enabled security group through

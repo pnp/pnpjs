@@ -70,7 +70,7 @@ describe.skip("SPUtilities", function () {
         }
 
         const ensureTestUser = await this.pnp.sp.web.ensureUser(this.pnp.settings.testUser);
-        const userId = ensureTestUser.data.Id;
+        const userId = ensureTestUser.Id;
         const user = await this.pnp.sp.web.siteUsers.getById(userId)();
 
         return expect(this.pnp.sp.utility.searchPrincipals(user.Title, PrincipalType.User, PrincipalSource.All, "", 1)).to.eventually.be.an.instanceOf(Array).and.not.be.empty;

@@ -5,9 +5,11 @@ import {
     _SPInstance,
     deleteable,
     IDeleteable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost, spPostMerge } from "../operations.js";
+import { encodePath } from "../utils/encode-path-str.js";
 
 @defaultPath("views")
 export class _Views extends _SPCollection<IViewInfo[]> {
@@ -19,18 +21,13 @@ export class _Views extends _SPCollection<IViewInfo[]> {
      * @param personalView True if this is a personal view, otherwise false, default = false
      * @param additionalSettings Will be passed as part of the view creation body
      */
-    public async add(Title: string, PersonalView = false, additionalSettings: Record<string, any> = {}): Promise<IViewAddResult> {
+    public async add(Title: string, PersonalView = false, additionalSettings: Record<string, any> = {}): Promise<IViewInfo> {
 
-        const data = await spPost(this, body({
+        return spPost(this, body({
             PersonalView,
             Title,
             ...additionalSettings,
         }));
-
-        return {
-            data,
-            view: this.getById(data.Id),
-        };
     }
 
     /**
@@ -48,7 +45,7 @@ export class _Views extends _SPCollection<IViewInfo[]> {
      * @param title The case-sensitive title of the view
      */
     public getByTitle(title: string): IView {
-        return View(this, `getByTitle('${title}')`);
+        return View(this, `getByTitle('${encodePath(title)}')`);
     }
 }
 export interface IViews extends _Views { }
@@ -67,14 +64,10 @@ export class _View extends _SPInstance<IViewInfo> {
      *
      * @param properties A plain object hash of values to update for the view
      */
-    public async update(props: Partial<IViewInfo>): Promise<IViewUpdateResult> {
+    public async update(props: Partial<IViewInfo>): Promise<IViewInfo> {
 
-        const data = await spPostMerge(this, body(props));
+        return await spPostMerge(this, body(props));
 
-        return {
-            data,
-            view: this,
-        };
     }
 
     // : any = this._update<IViewUpdateResult, ITypedHash<any>>("SP.View", data => ({ data, view: <any>this }));
@@ -100,7 +93,7 @@ export interface IView extends _View, IDeleteable { }
 export const View = spInvokableFactory<IView>(_View);
 
 @defaultPath("viewfields")
-export class _ViewFields extends _SPCollection<{ SchemaXml: string }> {
+export class _ViewFields extends _SPCollection<{ Items: string[]; SchemaXml: string }> {
 
     /**
      * Gets a value that specifies the XML schema that represents the collection.
@@ -115,7 +108,7 @@ export class _ViewFields extends _SPCollection<{ SchemaXml: string }> {
      * @param fieldTitleOrInternalName The case-sensitive internal name or display name of the field to add.
      */
     public add(fieldTitleOrInternalName: string): Promise<void> {
-        return spPost(ViewFields(this, `addviewfield('${fieldTitleOrInternalName}')`));
+        return spPost(ViewFields(this, `addviewfield('${encodePath(fieldTitleOrInternalName)}')`));
     }
 
     /**
@@ -141,21 +134,11 @@ export class _ViewFields extends _SPCollection<{ SchemaXml: string }> {
      * @param fieldInternalName The case-sensitive internal name of the field to remove from the view.
      */
     public remove(fieldInternalName: string): Promise<void> {
-        return spPost(ViewFields(this, `removeviewfield('${fieldInternalName}')`));
+        return spPost(ViewFields(this, `removeviewfield('${encodePath(fieldInternalName)}')`));
     }
 }
 export interface IViewFields extends _ViewFields { }
 export const ViewFields = spInvokableFactory<IViewFields>(_ViewFields);
-
-export interface IViewAddResult {
-    view: IView;
-    data: IViewInfo;
-}
-
-export interface IViewUpdateResult {
-    view: IView;
-    data: IViewInfo;
-}
 
 export enum ViewScope {
     DefaultValue,
@@ -165,6 +148,11 @@ export enum ViewScope {
 }
 
 export interface IViewInfo {
+    AssociatedContentTypeId: string | null;
+    CalendarViewStyles: string | null;
+    CustomFormatter: string | null;
+    DefaultView: boolean;
+    DefaultViewForContentType: boolean;
     EditorModified: boolean;
     Formats: string | null;
     Hidden: boolean;
@@ -199,5 +187,6 @@ export interface IViewInfo {
     ViewProjectedFields: { SchemaXml: string } | null;
     ViewQuery: string;
     ViewType: string;
+    ViewType2: "KANBAN" | "TILES" | "COMPACTLIST" | "MODERNCALENDAR" | null;
     VisualizationInfo: any | null;
 }

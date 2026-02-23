@@ -1,5 +1,8 @@
-name: Merge Testing
-on: push
+name: V3 Merge Testing
+on:
+  push:
+    branches:
+        - version-3
 env:
   PNPTESTING_MSAL_GRAPH_CONFIG: ${{ secrets.PNPTESTING_MSAL_GRAPH_CONFIG }}
   PNPTESTING_MSAL_GRAPH_SCOPES: ${{ secrets.PNPTESTING_MSAL_GRAPH_SCOPES }}
@@ -11,15 +14,21 @@ jobs:
   run_push_tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          ref: version-3
       # setup nodejs
       - name: Use Node.js 16
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: 'https://registry.npmjs.org'
-      - name: Install dependencies
-        run: npm ci
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+          
+      # Run the npm install          
+      - run: npm ci
       - name: Run lint 
         run: npm run lint
       - name: Run package

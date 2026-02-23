@@ -1,4 +1,6 @@
 import "./conversations.js";
+import "./message.js";
+import "./event.js";
 
 export {
     Attachment,

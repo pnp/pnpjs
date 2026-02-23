@@ -2,14 +2,14 @@
 
 The search module allows you to access the Microsoft Graph Search API. You can read full details of using the API, for library examples please see below.
 
+More information can be found in the official Graph documentation:
+
+- [Search Resource Type](https://docs.microsoft.com/en-us/graph/api/resources/search-api-overview?view=graph-rest-1.0)
+
+
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-| Scenario    | Import Statement                                                  |
-| ----------- | ----------------------------------------------------------------- |
-| Selective   | import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/search"; |
-| Preset: All | import "@pnp/graph/presets/all";    |
-
-## Call graphfi().query
+## Call graph.query
 
 This example shows calling the search API via the `query` method of the root graph object.
 
@@ -17,7 +17,9 @@ This example shows calling the search API via the `query` method of the root gra
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/search";
 
-const results = await graphfi().query({
+const graph = graphfi(...);
+
+const results = await graph.query({
     entityTypes: ["site"],
     query: {
         queryString: "test"

@@ -1,8 +1,7 @@
 import { body } from "@pnp/queryable";
-import { _SPQueryable, spInvokableFactory, ISPQueryable, SPInit } from "../spqueryable.js";
+import { _SPQueryable, spInvokableFactory, ISPQueryable, SPInit, spPost } from "../spqueryable.js";
 import { IPrincipalInfo, PrincipalType, PrincipalSource } from "../types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
-import { spPost } from "../operations.js";
 import { combine } from "@pnp/core";
 
 export class _Utilities extends _SPQueryable implements IUtilities {
@@ -16,38 +15,16 @@ export class _Utilities extends _SPQueryable implements IUtilities {
         return spPost(this, body(props));
     }
 
-    public sendEmail(props: IEmailProperties): Promise<void> {
+    public sendEmail(properties: IEmailProperties): Promise<void> {
 
-        let properties: any = {
-            Body: props.Body,
-            From: props.From,
-            Subject: props.Subject,
-        };
+        if (properties.AdditionalHeaders) {
 
-        if (props.To && props.To.length > 0) {
-
-            properties = { ...properties, To: { results: props.To } };
-        }
-
-        if (props.CC && props.CC.length > 0) {
-
-            properties = { ...properties, CC: { results: props.CC } };
-        }
-
-        if (props.BCC && props.BCC.length > 0) {
-
-            properties = { ...properties, BCC: { results: props.BCC } };
-        }
-
-        if (props.AdditionalHeaders) {
-
-            const headers = Reflect.ownKeys(props.AdditionalHeaders).map(k => ({
-                Key: k,
-                Value: Reflect.get(props.AdditionalHeaders, k),
+            // we have to remap the additional headers into this format #2253
+            properties.AdditionalHeaders = <any>Reflect.ownKeys(properties.AdditionalHeaders).map(key => ({
+                Key: key,
+                Value: Reflect.get(properties.AdditionalHeaders, key),
                 ValueType: "Edm.String",
             }));
-
-            properties = { ...properties, AdditionalHeaders: headers };
         }
 
         return UtilitiesCloneFactory(this, "SendEmail").excute<void>({ properties });
@@ -112,8 +89,14 @@ export class _Utilities extends _SPQueryable implements IUtilities {
 export interface IUtilities {
 
     /**
-     * This methods will send an e-mail based on the incoming properties of the IEmailProperties parameter.
-     * @param props IEmailProperties object
+     * Sends an email based on the provided {@link IEmailProperties}.
+     *
+     * @param props - The email configuration object.
+     *
+     * @deprecated This method is deprecated in favor of the Graph module's email functionality.
+     * Use {@link https://pnp.github.io/pnpjs/graph/mail-messages/#send-message | Graph: sendMessage} instead.
+     *
+     * @see {@link https://pnp.github.io/pnpjs/graph/mail-messages/#send-message}
      */
     sendEmail(props: IEmailProperties): Promise<void>;
 

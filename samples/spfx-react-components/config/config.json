@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "pn-pjs-v-3-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/pnpjs/pnpjsWebPart.js",
+          "manifest": "./src/webparts/pnpjs/pnpjsWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "pnpjsWebPartStrings": "lib/webparts/pnpjs/loc/{locale}.js"
+  }
+}

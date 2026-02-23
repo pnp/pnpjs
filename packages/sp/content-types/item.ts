@@ -14,4 +14,4 @@ declare module "../items/types" {
     }
 }
 
-addProp(_Item, "contentType", ContentType, "ContentType");
+addProp(_Item, "contentType", ContentType);

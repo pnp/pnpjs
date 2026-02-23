@@ -1,9 +1,9 @@
-import { join, resolve as presolve, dirname, isAbsolute } from "path";
+import { join, resolve, dirname, isAbsolute, basename } from "path";
 import { existsSync } from "fs";
 import findup from "findup-sync";
 
 // give ourselves a single reference to the projectRoot
-const projectRoot = presolve(dirname(findup("package.json")));
+const projectRoot = resolve(dirname(findup("package.json")!));
 
 function log(_message: string) {
     // console.log(`PnP Node Local Module Loader: ${message}`);
@@ -16,23 +16,30 @@ const cache = new Map<string, ResolvedValue>();
 
 export function createResolve(innerPath: string): ResolverFunc {
 
-    return async function (specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue> {
+    return async function (specifier: string, context: ResolveContext, defaultResolve: ResolverFunc): Promise<ResolvedValue> {
 
         if (specifier.startsWith("@pnp")) {
 
             const modulePath = specifier.substring(4);
 
+            log(`modulePath: ${modulePath}`);
+
             if (cache.has(modulePath)) {
-                return cache.get(modulePath);
+                return cache.get(modulePath)!;
             }
 
             let candidate = join(projectRoot, innerPath, modulePath);
+
+            // hack to enable debugging the buildsystem
+            if (modulePath === "/buildsystem") {
+                candidate = resolve("./build/build-system")
+            }
 
             if (existsSync(candidate + ".js")) {
 
                 candidate = candidate + ".js"
 
-            } else {
+            } else if (basename(candidate).toLowerCase() !== "index.js") {
 
                 candidate = join(candidate, "index.js");
             }
@@ -46,6 +53,7 @@ export function createResolve(innerPath: string): ResolverFunc {
                 const resolved: ResolvedValue = {
                     url,
                     format: "module",
+                    shortCircuit: true,
                 };
 
                 cache.set(modulePath, resolved);
@@ -69,21 +77,22 @@ export function createResolve(innerPath: string): ResolverFunc {
             } else {
 
                 // any relative resolves will be our code (probably :))
-                specifier = defaultResolve(specifier, context, defaultResolve);
+                const localSpecifier = await Promise.resolve(defaultResolve(specifier, context, defaultResolve));
 
-                if ((<any>specifier).url.indexOf("node_modules") > -1 || (<any>specifier).url.indexOf("node:") > -1) {
+                if (localSpecifier.url.indexOf("node_modules") > -1 || localSpecifier.url.indexOf("node:") > -1) {
 
-                    return <any>specifier;
+                    return localSpecifier;
 
                 } else {
 
-                    if (/^[^(file:\/\/)]/.test((<any>specifier).url)) {
-                        (<any>specifier).url = "file://" + (<any>specifier).url;
+                    if (/^[^(file:\/\/)]/.test(localSpecifier.url)) {
+                        localSpecifier.url = "file://" + localSpecifier.url;
                     }
 
                     return {
-                        ...<any>specifier,
+                        ...localSpecifier,
                         format: "module",
+                        shortCircuit: true,
                     };
                 }
             }
@@ -97,6 +106,7 @@ export function createResolve(innerPath: string): ResolverFunc {
 export interface ResolvedValue {
     url: string;
     format?: "module";
+    shortCircuit?: boolean;
 }
 
 export interface ResolveContext {
@@ -105,5 +115,5 @@ export interface ResolveContext {
 }
 
 export interface ResolverFunc {
-    (specifier: string, context: ResolveContext, defaultResolve: Function): Promise<ResolvedValue>;
+    (specifier: string, context: ResolveContext, defaultResolve: ResolverFunc): Promise<ResolvedValue> | ResolvedValue;
 }

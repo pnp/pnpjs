@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
+    "SiteUrl": "https://contoso.sharepoint.com/sites/pnpjs",
+    "Tenant": "contoso",
+    "ListGUID": "99999999-9999-9999-9999-999999999999",
+    // Next 3 setting are only for local Azure Identity debugging
+    "AZURE_CLIENT_ID": "99999999-9999-9999-9999-999999999999",
+    "AZURE_TENANT_ID": "99999999-9999-9999-9999-999999999999",
+    // path to .pem file
+    "AZURE_CLIENT_CERTIFICATE_PATH":"c:\\cert.pem"
+  }
+}

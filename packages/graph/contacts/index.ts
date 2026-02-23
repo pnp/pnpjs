@@ -2,9 +2,7 @@ import "./users.js";
 
 export {
     Contact,
-    IContactAddResult,
     ContactFolder,
-    IContactFolderAddResult,
     ContactFolders,
     Contacts,
     IContact,

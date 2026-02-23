@@ -3,10 +3,11 @@ import {
     _SPCollection,
     spInvokableFactory,
     _SPInstance,
+    spDelete,
+    spPost,
 } from "../spqueryable.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { body } from "@pnp/queryable";
-import { spDelete, spPost } from "../operations.js";
 
 @defaultPath("comments")
 export class _Comments extends _SPCollection<ICommentInfo[]> {
@@ -73,7 +74,6 @@ export class _Comment extends _SPInstance<ICommentInfo> {
      * Deletes this comment
      */
     public delete(): Promise<void> {
-        // return spPost(Comment(this, "DeleteComment"));
         return spDelete(this);
     }
 }
@@ -96,7 +96,7 @@ export class _Replies extends _SPCollection<ICommentInfo[]> {
 
         const d = await spPost(Replies(this, null), body(info));
 
-        return Object.assign(Comment(odataUrlFrom(d)), d);
+        return Object.assign(Comment([this, odataUrlFrom(d)]), d);
     }
 }
 export interface IReplies extends _Replies { }
@@ -158,3 +158,4 @@ export interface ILikedByInformation {
     isLikedByUser: boolean;
     likeCount: number;
 }
+export type RatingValues = 1|2|3|4|5;

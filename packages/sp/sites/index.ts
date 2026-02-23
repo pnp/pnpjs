@@ -5,8 +5,10 @@ export {
     IOpenWebByIdResult,
     ISite,
     Site,
-    IContextInfo,
     IDocumentLibraryInformation,
+    SiteLogoAspect,
+    SiteLogoType,
+    ISiteLogoProperties,
 } from "./types.js";
 
 declare module "../fi" {

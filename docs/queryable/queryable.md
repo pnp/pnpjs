@@ -7,18 +7,58 @@ Queryable is the base class for both the sp and graph fluent interfaces and prov
 By design the library is meant to allow creating the next part of a url from the current part. In this way each queryable instance is built from a previous instance. As such understanding the Queryable constructor's behavior is important. The constructor takes two parameters, the first required and the second optional.
 
 The first parameter can be another queryable, a string, or a tuple of [Queryable, string].
+
 |Parameter|Behavior|
 |---|---|
 |Queryable|The new queryable inherits all of the supplied queryable's observers. Any supplied path (second constructor param) is appended to the supplied queryable's url becoming the url of the newly constructed queryable|
 |string|The new queryable will have NO registered observers. Any supplied path (second constructor param) is appended to the string becoming the url of the newly constructed queryable|
-|[Queryable, string]|The observers from the supplied queryable are used by the new queryable. The url is a combination of the second tuple argument (string) and any supplied path.
+|[Queryable, string]|The observers from the supplied queryable are used by the new queryable. The url is a combination of the second tuple argument (absolute url string) and any supplied path.
 
-> The tuple constructor call can be used to rebase a queryable to call a different host in an otherwise identical way to another queryable.
+> The tuple constructor call can be used to rebase a queryable to call a different host in an otherwise identical way to another queryable. When using the tuple constructor the url provided must be absolute.
+
+### Examples
+
+```TS
+// represents a fully configured queryable with url and registered observers
+// url: https://something.com
+const baseQueryable;
+
+// child1 will:
+// - reference the observers of baseQueryable
+// - have a url of "https://something.com/subpath"
+const child1 = Child(baseQueryable, "subpath");
+
+// child2 will:
+// - reference the observers of baseQueryable
+// - have a url of "https://something.com"
+const child2 = Child(baseQueryable);
+
+// nonchild1 will:
+// - have NO registered observers or connection to baseQueryable
+// - have a url of "https://somethingelse.com"
+const nonchild1 = Child("https://somethingelse.com");
+
+// nonchild2 will:
+// - have NO registered observers or connection to baseQueryable
+// - have a url of "https://somethingelse.com/subpath"
+const nonchild2 = Child("https://somethingelse.com", "subpath");
+
+// rebased1 will:
+// - reference the observers of baseQueryable
+// - have a url of "https://somethingelse.com"
+const rebased1 = Child([baseQueryable, "https://somethingelse.com"]);
+
+// rebased2 will:
+// - reference the observers of baseQueryable
+// - have a url of "https://somethingelse.com/subpath"
+const rebased2 = Child([baseQueryable, "https://somethingelse.com"], "subpath");
+```
 
 # Queryable Lifecycle
 
 The Queryable lifecycle is:
 
+- `construct` (Added in 3.5.0)
 - `init`
 - `pre`
 - `auth`
@@ -29,6 +69,12 @@ The Queryable lifecycle is:
 - `dispose`
 
 As well `log` and `error` can emit at any point during the lifecycle.
+
+## No observers registered for this request
+
+If you see an error thrown with the message `No observers registered for this request.` it means at the time of execution the given object has no actions to take. Because all the request logic is defined within observers, an absence of observers is _likely_ an error condition. If the object was created by a method within the library please report an issue as it is likely a bug. If you created the object through direct use of one of the factory functions, please be sure you have registered observers with `using` or `on` as appropriate. [More information on observers is available in this article](../core/observers.md).
+
+If you for some reason want to execute a queryable with no registred observers, you can simply register a noop observer to any of the moments.
 
 ## Queryable Observers
 
@@ -98,6 +144,46 @@ query.on.error((err) => {
         console.error(err);
         // do other stuff with the error (send it to telemetry)
     }
+});
+```
+
+### construct
+
+_Added in 3.5.0_
+
+This moment exists to assist behaviors that need to transfer some information from a parent to a child through the fluent chain. We added this to support cancelable scopes for the Cancelable behavior, but it may have other uses. It is invoked AFTER the new instance is fully realized via `new` and supplied with the parameters used to create the new instance. As with all moments the "this" within the observer is the current (NEW) instance.
+
+For your observers on the construct method to work correctly they must be registered before the instance is created.
+
+> The construct moment is NOT async and is designed to support simple operations.
+
+```TypeScript
+query.on.construct(function (this: Queryable, init: QueryableInit, path?: string): void {
+    if (typeof init !== "string") {
+        
+        // get a ref to the parent Queryable instance used to create this new instance
+        const parent = isArray(init) ? init[0] : init;
+
+        if (Reflect.has(parent, "SomeSpecialValueKey")) {
+
+            // copy that specail value to the new child
+            this["SomeSpecialValueKey"] = parent["SomeSpecialValueKey"];
+        }
+    }     
+});
+
+query.on.pre(async function(url, init, result) {
+
+    // we have access to the copied special value throughout the lifecycle
+    this.log(this["SomeSpecialValueKey"]);
+
+    return [url, init, result];
+});
+
+query.on.dispose(() => {
+
+    // be a good citizen and clean up your behavior's values when you're done
+    delete this["SomeSpecialValueKey"];
 });
 ```
 

@@ -1,6 +1,5 @@
-import { IGraphQueryable } from "./graphqueryable.js";
-import { graphDelete, graphPatch, graphPost } from "./operations.js";
-import { body, headers } from "@pnp/queryable";
+import { GraphCollection, IGraphCollection, IGraphQueryable, graphDelete, graphPatch, graphPost } from "./graphqueryable.js";
+import { InjectHeaders, body, errorCheck, headers } from "@pnp/queryable";
 
 /**
  * Decorator used to specify the default path for Queryable objects
@@ -74,7 +73,7 @@ export function updateable() {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public update(this: IGraphQueryable, props: any): Promise<void> {
+            public update(this: IGraphQueryable, props: any): Promise<T> {
                 return graphPatch(this, body(props));
             }
         };
@@ -87,7 +86,7 @@ export interface IUpdateable<T = any> {
      *
      * @param props Set of properties to update
      */
-    update(props: T): Promise<void>;
+    update(props: T): Promise<T>;
 }
 
 /**
@@ -98,7 +97,7 @@ export function updateableWithETag() {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public update(this: IGraphQueryable, props: any, eTag = "*"): Promise<void> {
+            public update(this: IGraphQueryable, props: any, eTag = "*"): Promise<T> {
                 return graphPatch(this, body(props, headers({
                     "If-Match": eTag,
                 })));
@@ -113,7 +112,7 @@ export interface IUpdateableWithETag<T = any> {
      *
      * @param props Set of properties to update
      */
-    update(props: T, eTag?: string): Promise<void>;
+    update(props: T, eTag?: string): Promise<T>;
 }
 
 /**
@@ -148,8 +147,8 @@ export function getById<R>(factory: (...args: any[]) => R) {
     return function <T extends { new(...args: any[]): {} }>(target: T) {
 
         return class extends target {
-            public getById(this: IGraphQueryable, id: string): R {
-                return factory(this, id);
+            public getById(this: IGraphQueryable, id: any): R {
+                return factory(this, `${id}`);
             }
         };
     };
@@ -161,4 +160,87 @@ export interface IGetById<R = any, T = string> {
      * @param props properties used to create the new thread
      */
     getById(id: T): R;
+}
+
+/**
+ * Adds the getByName method to a collection
+ */
+export function getByName<R>(factory: (...args: any[]) => R) {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+
+        return class extends target {
+            public getByName(this: IGraphQueryable, name: string): R {
+                return factory(this, name);
+            }
+        };
+    };
+}
+export interface IGetByName<R = any, T = string> {
+    /**
+     * Adds a new item to this collection
+     *
+     * @param props properties used to create the new thread
+     */
+    getByName(name: T): R;
+}
+
+
+export function hasDelta() {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    return function <T extends { new(...args: any[]): {} }>(target: T) {
+
+        return class extends target {
+            public delta(this: IGraphQueryable, properties: IDeltaProps = {}): IGraphCollection<T[] | IDeltaItems<T>> {
+                const querystring = Object.keys(properties)?.map(key => `${key}=${properties[key]}`).join("&") || "";
+                const path = (querystring.length > 0) ? `delta?${querystring}` : "delta";
+
+                const query: IGraphCollection<any> = <any>GraphCollection(this, path);
+
+                if(properties?.maxPageSize){
+                    query.using(InjectHeaders({
+                        "Prefer": `odata.maxpagesize=${properties.maxPageSize}`,
+                    }));
+                }
+
+                query.on.parse.replace(errorCheck);
+                query.on.parse(async (url: URL, response: Response, result: any): Promise<[URL, Response, any]> => {
+
+                    const json = await response.json();
+                    const nextLink = json["@odata.nextLink"];
+                    const deltaLink = json["@odata.deltaLink"];
+
+                    result = {
+                        next: () => (nextLink ? GraphCollection([this, nextLink]) : null),
+                        delta: () => (deltaLink ? GraphCollection([query, deltaLink])() : null),
+                        values: json.value,
+                    };
+
+                    return [url, response, result];
+                });
+
+                return query;
+            }
+        };
+    };
+}
+
+export interface IHasDelta<T = any, R = any> {
+    /**
+     * Gets the delta of the queryable
+     *
+     */
+    delta(properties?: T): IGraphCollection<R[] | IDeltaItems<R>>;
+}
+
+export interface IDeltaItems<R = any> {
+    next: IGraphCollection<IDeltaItems>;
+    delta: IGraphCollection<IDeltaItems>;
+    values: R[];
+}
+
+export interface IDeltaProps {
+    deltatoken?: string;
+    token?: string;
+    maxPageSize?: number;
 }

@@ -2,14 +2,13 @@
 
 The ability invite an external user via the invitation manager
 
+More information can be found in the official Graph documentation:
+
+- [Invitations Resource Type](https://docs.microsoft.com/en-us/graph/api/invitation-post?view=graph-rest-1.0)
+
 ## IInvitations
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
-
-| Scenario    | Import Statement                                                  |
-| ----------- | ----------------------------------------------------------------- |
-| Selective   | import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/invitations"; |
-| Preset: All | import "@pnp/graph/presets/all";    |
 
 ## Create Invitation
 
@@ -18,8 +17,10 @@ We need the email address of the user being invited and the URL user should be r
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/invitations"
+import "@pnp/graph/invitations";
 
-const invitationResult = await graphfi().invitations.create('external.user@email-address.com', 'https://tenant.sharepoint.com/sites/redirecturi');
+const graph = graphfi(...);
+
+const invitationResult = await graph.invitations.create('external.user@email-address.com', 'https://tenant.sharepoint.com/sites/redirecturi');
 
 ```

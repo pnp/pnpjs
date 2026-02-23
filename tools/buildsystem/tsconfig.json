@@ -19,7 +19,7 @@
         "forceConsistentCasingInFileNames": true,
         "moduleResolution": "node",
         "noUnusedLocals": true,
-        "noUnusedParameters": false,
+        "noUnusedParameters": true,
         "pretty": true,
         "experimentalDecorators": true,
         "noFallthroughCasesInSwitch": true,
@@ -29,11 +29,9 @@
         "strictNullChecks": false,
         "preserveConstEnums": true,
         "importHelpers": true,
-        "resolveJsonModule": true,
-        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true
     },
     "include": [
-        "./index.ts",
-        "./**/*.*"
+        "./**/*.ts"
     ]
 }

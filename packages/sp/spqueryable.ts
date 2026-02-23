@@ -1,6 +1,5 @@
-import { combine, isUrlAbsolute, isArray } from "@pnp/core";
-import { IInvokable, Queryable, queryableFactory } from "@pnp/queryable";
-import { spPostDelete, spPostDeleteETag } from "./operations.js";
+import { combine, isUrlAbsolute, isArray, stringIsNullOrEmpty } from "@pnp/core";
+import { Queryable, queryableFactory, op, get, post, patch, del, IInvokable } from "@pnp/queryable";
 
 export type SPInit = string | ISPQueryable | [ISPQueryable, string];
 
@@ -65,13 +64,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
             super(base, path);
 
             const q: Queryable<any> = isArray(base) ? base[0] : base;
-
-            this.parentUrl = q.toUrl();
-
-            const target = q.query.get("@target");
-            if (target !== undefined) {
-                this.query.set("@target", target);
-            }
+            this.parentUrl = isArray(base) ? base[1] : q.toUrl();
         }
     }
 
@@ -80,17 +73,18 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      */
     public toRequestUrl(): string {
 
-        const aliasedParams = new Map<string, string>(this.query);
+        const aliasedParams = new URLSearchParams(<any>this.query);
 
-        let url = this.toUrl().replace(/'!(@.*?)::(.*?)'/ig, (match, labelName, value) => {
+        // this regex is designed to locate aliased parameters within url paths
+        let url = this.toUrl().replace(/'!(@.+?)::((?:[^']|'')+)'/ig, (match, labelName, value) => {
             this.log(`Rewriting aliased parameter from match ${match} to label: ${labelName} value: ${value}`, 0);
             aliasedParams.set(labelName, `'${value}'`);
             return labelName;
         });
 
-        if (aliasedParams.size > 0) {
-            const char = url.indexOf("?") > -1 ? "&" : "?";
-            url += `${char}${Array.from(aliasedParams).map((v: [string, string]) => v[0] + "=" + v[1]).join("&")}`;
+        const query = aliasedParams.toString();
+        if (!stringIsNullOrEmpty(query)) {
+            url += `${url.indexOf("?") > -1 ? "&" : "?"}${query}`;
         }
 
         return url;
@@ -103,7 +97,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      */
     public select(...selects: string[]): this {
         if (selects.length > 0) {
-            this.query.set("$select", selects.map(encodeURIComponent).join(","));
+            this.query.set("$select", selects.join(","));
         }
         return this;
     }
@@ -115,7 +109,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
      */
     public expand(...expands: string[]): this {
         if (expands.length > 0) {
-            this.query.set("$expand", expands.map(encodeURIComponent).join(","));
+            this.query.set("$expand", expands.join(","));
         }
         return this;
     }
@@ -130,14 +124,7 @@ export class _SPQueryable<GetType = any> extends Queryable<GetType> {
         path?: string,
         base: string = this.parentUrl): T {
 
-        const parent = factory([this, base], path);
-
-        const t = "@target";
-        if (this.query.has(t)) {
-            parent.query.set(t, this.query.get(t));
-        }
-
-        return parent;
+        return factory([this, base], path);
     }
 }
 export interface ISPQueryable<GetType = any> extends _SPQueryable<GetType> { }
@@ -154,8 +141,16 @@ export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
      *
      * @param filter The string representing the filter query
      */
-    public filter(filter: string): this {
-        this.query.set("$filter", encodeURIComponent(filter));
+    public filter<T = UnwrapArray<GetType>>(filter: string | ComparisonResult<T> | ((f: InitialFieldQuery<T>) => ComparisonResult<T>)): this {
+        if (typeof filter === "object") {
+            this.query.set("$filter", filter.toString());
+            return this;
+        }
+        if (typeof filter === "function") {
+            this.query.set("$filter", filter(SPOData.Where<T>()).toString());
+            return this;
+        }
+        this.query.set("$filter", filter.toString());
         return this;
     }
 
@@ -168,7 +163,7 @@ export class _SPCollection<GetType = any[]> extends _SPQueryable<GetType> {
     public orderBy(orderBy: string, ascending = true): this {
         const o = "$orderby";
         const query = this.query.has(o) ? this.query.get(o).split(",") : [];
-        query.push(`${encodeURIComponent(orderBy)} ${ascending ? "asc" : "desc"}`);
+        query.push(`${orderBy} ${ascending ? "asc" : "desc"}`);
         this.query.set(o, query.join(","));
         return this;
     }
@@ -235,4 +230,336 @@ export interface IDeleteableWithETag {
      * @param eTag Value used in the IF-Match header, by default "*"
      */
     delete(eTag?: string): Promise<void>;
+}
+
+export const spGet = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
+    return op(o, get, init);
+};
+
+export const spPost = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, post, init);
+
+export const spPostMerge = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
+    init = init || {};
+    init.headers = { ...init.headers, "X-HTTP-Method": "MERGE" };
+
+    return spPost<T>(o, init);
+};
+
+export const spPostDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => {
+    init = init || {};
+    init.headers = { ...init.headers || {}, "X-HTTP-Method": "DELETE" };
+
+    return spPost<T>(o, init);
+};
+
+export const spPostDeleteETag = <T = any>(o: ISPQueryable<any>, init?: RequestInit, eTag = "*"): Promise<T> => {
+    init = init || {};
+    init.headers = { ...init.headers || {}, "IF-Match": eTag };
+
+    return spPostDelete<T>(o, init);
+};
+
+export const spDelete = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, del, init);
+
+export const spPatch = <T = any>(o: ISPQueryable<any>, init?: RequestInit): Promise<T> => op(o, patch, init);
+
+
+
+type KeysMatching<T, V> = { [K in keyof T]: T[K] extends V ? K : never }[keyof T];
+type KeysMatchingObjects<T> = { [K in keyof T]: T[K] extends object ? (T[K] extends Date ? never : K) : never }[keyof T];
+type UnwrapArray<T> = T extends (infer U)[] ? U : T;
+
+enum FilterOperation {
+    Equals = "eq",
+    NotEquals = "ne",
+    GreaterThan = "gt",
+    GreaterThanOrEqualTo = "ge",
+    LessThan = "lt",
+    LessThanOrEqualTo = "le",
+    StartsWith = "startswith",
+    SubstringOf = "substringof"
+}
+
+enum FilterJoinOperator {
+    And = "and",
+    AndWithSpace = " and ",
+    Or = "or",
+    OrWithSpace = " or "
+}
+
+class SPOData {
+    public static Where<T = any>() {
+        return new InitialFieldQuery<T>([]);
+    }
+}
+
+// Linting complains that TBaseInterface is unused, but without it all the intellisense is lost since it's carrying it through the chain
+class BaseQuery {
+
+    protected query: string[] = [];
+
+    constructor(query: string[]) {
+        this.query = query;
+    }
+}
+
+
+class QueryableFields<T> extends BaseQuery {
+    constructor(q: string[]) {
+        super(q);
+    }
+
+    public text(internalName: KeysMatching<T, string>): TextField<T> {
+        return new TextField<T>([...this.query, (internalName as string)]);
+    }
+
+    public choice(internalName: KeysMatching<T, string>): TextField<T> {
+        return new TextField<T>([...this.query, (internalName as string)]);
+    }
+
+    public multiChoice(internalName: KeysMatching<T, string[]>): TextField<T> {
+        return new TextField<T>([...this.query, (internalName as string)]);
+    }
+
+    public number(internalName: KeysMatching<T, number>): NumberField<T> {
+        return new NumberField<T>([...this.query, (internalName as string)]);
+    }
+
+    public date(internalName: KeysMatching<T, Date>): DateField<T> {
+        return new DateField<T>([...this.query, (internalName as string)]);
+    }
+
+    public boolean(internalName: KeysMatching<T, boolean>): BooleanField<T> {
+        return new BooleanField<T>([...this.query, (internalName as string)]);
+    }
+
+    public lookup<TKey extends KeysMatchingObjects<T>>(internalName: TKey): LookupQueryableFields<T, T[TKey]> {
+        return new LookupQueryableFields<T, T[TKey]>([...this.query], internalName as string);
+    }
+
+    public lookupId<TKey extends KeysMatching<T, number>>(internalName: TKey): NumberField<T> {
+        const col: string = (internalName as string).endsWith("Id") ? internalName as string : `${internalName as string}Id`;
+        return new NumberField<T>([...this.query, col]);
+    }
+}
+
+class QueryableAndResult<T> extends QueryableFields<T> {
+    public or(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): ComparisonResult<T> {
+        return new ComparisonResult<T>([...this.query, `(${queries.map(x => x.toString()).join(FilterJoinOperator.OrWithSpace)})`]);
+    }
+}
+
+class QueryableOrResult<T> extends QueryableFields<T> {
+    public and(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): ComparisonResult<T> {
+        return new ComparisonResult<T>([...this.query, `(${queries.map(x => x.toString()).join(FilterJoinOperator.AndWithSpace)})`]);
+    }
+}
+
+export class InitialFieldQuery<T> extends QueryableFields<T> {
+    public or(): QueryableFields<T>;
+    public or(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): ComparisonResult<T>;
+    public or(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): (ComparisonResult<T> | QueryableFields<T>) {
+        if (queries == null || queries.length === 0) {
+            return new QueryableFields<T>([...this.query, FilterJoinOperator.Or]);
+        }
+        return new ComparisonResult<T>([...this.query, `(${queries.map(x => x.toString()).join(FilterJoinOperator.OrWithSpace)})`]);
+    }
+
+    public and(): QueryableFields<T>;
+    public and(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): ComparisonResult<T>;
+    public and(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): (ComparisonResult<T> | QueryableFields<T>) {
+        if (queries == null || queries.length === 0) {
+            return new QueryableFields<T>([...this.query, FilterJoinOperator.And]);
+        }
+        return new ComparisonResult<T>([...this.query, `(${queries.map(x => x.toString()).join(FilterJoinOperator.AndWithSpace)})`]);
+    }
+}
+
+
+
+class LookupQueryableFields<TBaseInterface, TExpandedType> extends BaseQuery {
+    private LookupField: string;
+    constructor(q: string[], LookupField: string) {
+        super(q);
+        this.LookupField = LookupField;
+    }
+
+    public Id(id: number): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, `${this.LookupField}/Id`, FilterOperation.Equals, id.toString()]);
+    }
+
+    public text(internalName: KeysMatching<TExpandedType, string>): TextField<TBaseInterface> {
+        return new TextField<TBaseInterface>([...this.query, `${this.LookupField}/${internalName as string}`]);
+    }
+
+    public number(internalName: KeysMatching<TExpandedType, number>): NumberField<TBaseInterface> {
+        return new NumberField<TBaseInterface>([...this.query, `${this.LookupField}/${internalName as string}`]);
+    }
+
+    // Support has been announced, but is not yet available in SharePoint Online
+    // https://www.microsoft.com/en-ww/microsoft-365/roadmap?filters=&searchterms=100503
+    // public boolean(InternalName: KeysMatching<TExpandedType, boolean>): BooleanField<TBaseInterface> {
+    //     return new BooleanField<TBaseInterface>([...this.query, `${this.LookupField}/${InternalName as string}`]);
+    // }
+}
+
+class NullableField<TBaseInterface, TInputValueType> extends BaseQuery {
+    protected LastIndex: number;
+    protected InternalName: string;
+
+    constructor(q: string[]) {
+        super(q);
+        this.LastIndex = q.length - 1;
+        this.InternalName = q[this.LastIndex];
+    }
+
+    protected toODataValue(value: TInputValueType): string {
+        return `'${value}'`;
+    }
+
+    public isNull(): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.Equals, "null"]);
+    }
+
+    public isNotNull(): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.NotEquals, "null"]);
+    }
+}
+
+class ComparableField<T, TInputValueType> extends NullableField<T, TInputValueType> {
+    public equals(value: TInputValueType): ComparisonResult<T> {
+        return new ComparisonResult<T>([...this.query, FilterOperation.Equals, this.toODataValue(value)]);
+    }
+
+    public notEquals(value: TInputValueType): ComparisonResult<T> {
+        return new ComparisonResult<T>([...this.query, FilterOperation.NotEquals, this.toODataValue(value)]);
+    }
+
+    public in(...values: TInputValueType[]): ComparisonResult<T> {
+        return SPOData.Where<T>().or(...values.map(x => this.equals(x)));
+    }
+
+    public notIn(...values: TInputValueType[]): ComparisonResult<T> {
+        return SPOData.Where<T>().and(...values.map(x => this.notEquals(x)));
+    }
+}
+
+class TextField<TBaseInterface> extends ComparableField<TBaseInterface, string> {
+    public startsWith(value: string): ComparisonResult<TBaseInterface> {
+        const filter = `${FilterOperation.StartsWith}(${this.InternalName}, ${this.toODataValue(value)})`;
+        this.query[this.LastIndex] = filter;
+        return new ComparisonResult<TBaseInterface>([...this.query]);
+    }
+
+    public contains(value: string): ComparisonResult<TBaseInterface> {
+        const filter = `${FilterOperation.SubstringOf}(${this.toODataValue(value)}, ${this.InternalName})`;
+        this.query[this.LastIndex] = filter;
+        return new ComparisonResult<TBaseInterface>([...this.query]);
+    }
+}
+
+class BooleanField<TBaseInterface> extends NullableField<TBaseInterface, boolean> {
+    protected override toODataValue(value: boolean | null): string {
+        return `${value == null ? "null" : value ? 1 : 0}`;
+    }
+
+    public isTrue(): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.Equals, this.toODataValue(true)]);
+    }
+
+    public isFalse(): ComparisonResult<TBaseInterface> {
+        return new ComparisonResult<TBaseInterface>([...this.query, FilterOperation.Equals, this.toODataValue(false)]);
+    }
+
+    public isFalseOrNull(): ComparisonResult<TBaseInterface> {
+        const filter = `(${[
+            this.InternalName,
+            FilterOperation.Equals,
+            this.toODataValue(null),
+            FilterJoinOperator.Or,
+            this.InternalName,
+            FilterOperation.Equals,
+            this.toODataValue(false),
+        ].join(" ")})`;
+        this.query[this.LastIndex] = filter;
+        return new ComparisonResult<TBaseInterface>([...this.query]);
+    }
+}
+
+class NumericField<T, TInputValueType> extends ComparableField<T, TInputValueType> {
+    public greaterThan(value: TInputValueType): ComparisonResult<T> {
+        return new ComparisonResult<T>([...this.query, FilterOperation.GreaterThan, this.toODataValue(value)]);
+    }
+
+    public greaterThanOrEquals(value: TInputValueType): ComparisonResult<T> {
+        return new ComparisonResult<T>([...this.query, FilterOperation.GreaterThanOrEqualTo, this.toODataValue(value)]);
+    }
+
+    public lessThan(value: TInputValueType): ComparisonResult<T> {
+        return new ComparisonResult<T>([...this.query, FilterOperation.LessThan, this.toODataValue(value)]);
+    }
+
+    public lessThanOrEquals(value: TInputValueType): ComparisonResult<T> {
+        return new ComparisonResult<T>([...this.query, FilterOperation.LessThanOrEqualTo, this.toODataValue(value)]);
+    }
+}
+
+
+class NumberField<T> extends NumericField<T, number> {
+    protected override toODataValue(value: number): string {
+        return `${value}`;
+    }
+}
+
+class DateField<TBaseInterface> extends NumericField<TBaseInterface, Date> {
+    protected override toODataValue(value: Date): string {
+        return `'${value.toISOString()}'`;
+    }
+
+    public isBetween(startDate: Date, endDate: Date): ComparisonResult<TBaseInterface> {
+        const filter = `(${[
+            this.InternalName,
+            FilterOperation.GreaterThan,
+            this.toODataValue(startDate),
+            FilterJoinOperator.And,
+            this.InternalName,
+            FilterOperation.LessThan,
+            this.toODataValue(endDate),
+        ].join(" ")})`;
+        this.query[this.LastIndex] = filter;
+        return new ComparisonResult<TBaseInterface>([...this.query]);
+    }
+
+    public isToday(): ComparisonResult<TBaseInterface> {
+        const StartToday = new Date(); StartToday.setHours(0, 0, 0, 0);
+        const EndToday = new Date(); EndToday.setHours(23, 59, 59, 999);
+        return this.isBetween(StartToday, EndToday);
+    }
+}
+
+export class ComparisonResult<T> extends BaseQuery {
+    public and(): QueryableAndResult<T>;
+    // eslint-disable-next-line @typescript-eslint/semi
+    public and(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): ComparisonResult<T>
+    // eslint-disable-next-line max-len
+    public and(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): (ComparisonResult<T> | QueryableAndResult<T>) {
+        if (queries == null || queries.length === 0) {
+            return new QueryableAndResult<T>([...this.query, FilterJoinOperator.And]);
+        }
+        return new ComparisonResult<T>([...this.query, FilterJoinOperator.And, `(${queries.map(x => x.toString()).join(FilterJoinOperator.AndWithSpace)})`]);
+    }
+
+    public or(): QueryableOrResult<T>;
+    public or(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): ComparisonResult<T>;
+    // eslint-disable-next-line max-len
+    public or(...queries: (ComparisonResult<T> | ((f: QueryableFields<T>) => ComparisonResult<T>))[]): (ComparisonResult<T> | QueryableOrResult<T>) {
+        if (queries == null || queries.length === 0) {
+            return new QueryableOrResult<T>([...this.query, FilterJoinOperator.Or]);
+        }
+        return new ComparisonResult<T>([...this.query, FilterJoinOperator.Or, `(${queries.map(x => x.toString()).join(FilterJoinOperator.OrWithSpace)})`]);
+    }
+
+    public toString(): string {
+        return this.query.join(" ");
+    }
 }

@@ -12,4 +12,4 @@ Scenarios could include:
 
 ### Webpack
 
-You can see/clone a [sample project of this example here](https://github.com/pnp/pnpjs/tree/version-2/samples/custom-bundle-webpack).
+You can see/clone a [sample project of this example here](https://github.com/pnp/pnpjs/tree/version-3/samples/custom-bundle-webpack).

@@ -8,25 +8,16 @@ Folders serve as a container for your files and list items.
 
 Represents a collection of folders. SharePoint webs, lists, and list items have a collection of folders under their properties.
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";|
-|Selective 2|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";|
-|Selective 3|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";|
-|Selective 4|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";|
-|Selective 5|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";|
-|Preset: All|import { spfi, SPFx, IFolders, Folders } from "@pnp/sp/presets/all";|
-
 ### Get folders collection for various SharePoint objects
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/items";
 import "@pnp/sp/folders";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // gets web's folders
 const webFolders = await sp.web.folders();
@@ -38,33 +29,121 @@ const listFolders = await sp.web.lists.getByTitle("My List").rootFolder.folders(
 const itemFolders = await sp.web.lists.getByTitle("My List").items.getById(1).folder.folders();
 ```
 
+### folderFromServerRelativePath
+
+_Added in 3.3.0_
+
+Utility method allowing you to get an IFolder reference using any SPQueryable as a base and the server relative path to the folder. Helpful when you do not have convenient access to an IWeb to use `getFolderByServerRelativePath`.
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { folderFromServerRelativePath } from "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+// URL CANNOT BE ENCODED, URL CANNOT END IN "/"
+const url = "/sites/dev/documents/folder4";
+
+// folder is an IFolder and supports all the folder operations
+const folder: IFolder = folderFromServerRelativePath(sp.web, url);
+
+// for example
+const folderInfo = await folder();
+const files = await folder.files();
+```
+
+### folderFromAbsolutePath
+
+_Added in 3.8.0_
+
+Utility method allowing you to get an IFile reference using any SPQueryable as a base and an absolute path to the file.
+
+> Works across site collections within the same tenant
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { folderFromAbsolutePath } from "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+const url = "https://tenant.sharepoint.com/sites/dev/documents/folder";
+
+// folder is an IFolder and supports all the folder operations
+// Unlike folderFromServerRelativePath, this method must be await'd to resolve folder from absolute Url.
+const folder: IFolder = await folderFromAbsolutePath(sp.web, url);
+
+// for example
+const folderInfo = await folder();
+const files = await folder.files();
+```
+
+### folderFromPath
+
+_Added in 3.8.0_
+
+Utility method allowing you to get an IFolder reference using any SPQueryable as a base and an absolute OR server relative path to the file.
+
+> Works across site collections within the same tenant
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import { folderFromPath } from "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+const url = "https://tenant.sharepoint.com/sites/dev/documents/folder";
+
+// folder is an IFolder and supports all the folder operations
+const folder = folderFromPath(sp.web, url);
+
+// for example
+const folderInfo = await folder();
+
+const url2 = "/sites/dev/documents/folder";
+
+// folder is an IFolder and supports all the folder operations
+const folder2 = folderFromPath(sp.web, url2);
+
+// for example
+const folderInfo2 = await folder2();
+```
+
 ### add
 
 Adds a new folder to collection of folders
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
-// creates a new folder for web with specified url
-const folderAddResult = await sp.web.folders.addUsingPath("folder url");
+// URL CANNOT BE ENCODED
+const url = "/sites/dev/Shared Documents/MyFolder"
+
+// creates a new folder for web with specified server relative url
+const folderAddResult = await sp.web.folders.addUsingPath(url);
 ```
 
 ### getByUrl
 
-Gets a folder instance from a collection by folder's name
+Gets a folder instance from a collection by folder's name.
+This call is the equivalent of getting the document libraries root folder.
+e.g. `const listFolders = await sp.web.lists.getByTitle("Documents").rootFolder();`
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
-const folder = await sp.web.folders.getByUrl("folder name")();
+// pass the name of the document library, cannot include relative paths for subfolders.
+const folder = await sp.web.folders.getByUrl("Shared Documents")();
 ```
 
 ## IFolder  
@@ -73,25 +152,16 @@ Represents an instance of a SharePoint folder.
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import { IFolders, Folders } from "@pnp/sp/folders";|
-|Selective 2|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders";|
-|Selective 3|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/web";|
-|Selective 4|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";|
-|Selective 5|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/folders/list";<br/>import "@pnp/sp/folders/item";|
-|Preset: All|import { spfi, SPFx, IFolders, Folders } from "@pnp/sp/presets/all";|
-
 ### Get a folder object associated with different SharePoint artifacts (web, list, list item)
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 // web's folder
 const rootFolder = await sp.web.rootFolder();
@@ -108,111 +178,145 @@ const itemFolder = await sp.web.lists.getByTitle("234").items.getById(1).folder(
 Gets list item associated with a folder
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const folderItem = await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").getItem();
 ```
 
-### move
+### storageMetrics
 
-It's possible to move a folder to a new destination within a site collection  
+_Added in 3.8.0_
 
-```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+Gets a set of metrics describing the total file size contained in the folder.
+
+```TS
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
+// URL CANNOT BE ENCODED
+const url = "/sites/dev/shared documents/target";
 
-await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").moveByPath(destinationUrl);
-```  
+const metrics = await sp.web.getFolderByServerRelativePath(url).storageMetrics();
 
-### copy
-
-It's possible to copy a folder to a new destination within a site collection  
-
-```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/folders";
-
-const sp = spfi("{tenant url}").using(SPFx(this.context));
-
-// destination is a server-relative url of a new folder
-const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
-
-await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").copyByPath(destinationUrl);
-```  
+// you can also select specific metrics if desired:
+const metrics2 = await sp.web.getFolderByServerRelativePath(url).storageMetrics.select("TotalSize")();
+```
 
 ### move by path
 
 It's possible to move a folder to a new destination within the same or a different site collection  
 
+> If you change the filename during the move operation this is considered an "edit" and the file's modified information will be updated regardless of the "RetainEditorAndModifiedOnMove" setting.
+
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED - will get "Access is denied" error.
 // destination is a server-relative url of a new folder
 const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
 
 await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").moveByPath(destinationUrl, true);
 ```  
 
+_Added in 3.8.0_
+
+You can also supply a set of detailed options to better control the move process:
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+// URL CANNOT BE ENCODED - will get "Access is denied" error.
+// destination is a server-relative url of a new file
+const destinationUrl = `/sites/dev2/SiteAssets/folder`;
+
+await sp.web.getFolderByServerRelativePath("/sites/dev/Shared Documents/folder").moveByPath(destinationUrl, {
+    KeepBoth: false,
+    RetainEditorAndModifiedOnMove: true,
+    ShouldBypassSharedLocks: false,
+});
+```
+
 ### copy by path
 
 It's possible to copy a folder to a new destination within the same or a different site collection  
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED - will get "Access is denied" error.
 // destination is a server-relative url of a new folder
 const destinationUrl = `/sites/my-site/SiteAssets/new-folder`;
 
 await sp.web.rootFolder.folders.getByUrl("SiteAssets").folders.getByUrl("My Folder").copyByPath(destinationUrl, true);
 ```  
 
+_Added in 3.8.0_
+
+You can also supply a set of detailed options to better control the copy process:
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/folders";
+
+const sp = spfi(...);
+
+// URL CANNOT BE ENCODED - will get "Access is denied" error.
+// destination is a server-relative url of a new file
+const destinationUrl = `/sites/dev2/SiteAssets/folder`;
+
+await sp.web.getFolderByServerRelativePath("/sites/dev/Shared Documents/folder").copyByPath(destinationUrl, false, {
+    KeepBoth: false,
+    ResetAuthorAndCreatedOnCopy: true,
+    ShouldBypassSharedLocks: false,
+});
+```
+
 ### delete
 
 Deletes a folder
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
-await sp.web.rootFolder.folders.getByUrl("My Folder").delete();
+await sp.web.rootFolder.folders.getByUrl("Shared Documents").delete();
 ```  
 
 ### delete with params
 
-
-
 Deletes a folder with options
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
-await sp.web.rootFolder.folders.getByUrl("My Folder").deleteWithParams({
+await sp.web.rootFolder.folders.getByUrl("Shared Documents").deleteWithParams({
                 BypassSharedLock: true,
                 DeleteIfEmpty: true,
             });
@@ -223,13 +327,13 @@ await sp.web.rootFolder.folders.getByUrl("My Folder").deleteWithParams({
 Recycles a folder
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
-await sp.web.rootFolder.folders.getByUrl("My Folder").recycle();
+await sp.web.rootFolder.folders.getByUrl("Shared Documents").recycle();
 ```  
 
 ### serverRelativeUrl
@@ -237,11 +341,11 @@ await sp.web.rootFolder.folders.getByUrl("My Folder").recycle();
 Gets folder's server relative url
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const relUrl = await sp.web.rootFolder.folders.getByUrl("SiteAssets").select('ServerRelativeUrl')();
 ```  
@@ -251,11 +355,11 @@ const relUrl = await sp.web.rootFolder.folders.getByUrl("SiteAssets").select('Se
 Updates folder's properties
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").update({
         "Name": "New name",
@@ -267,11 +371,11 @@ await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").update({
 Gets content type order of a folder
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const order = await sp.web.getFolderByServerRelativePath("Shared Documents").select('contentTypeOrder')();
 ```
@@ -281,11 +385,11 @@ const order = await sp.web.getFolderByServerRelativePath("Shared Documents").sel
 Gets all child folders associated with the current folder
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const folders = await sp.web.rootFolder.folders();
 ```
@@ -295,13 +399,14 @@ const folders = await sp.web.rootFolder.folders();
 Gets all files inside a folder
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 import "@pnp/sp/files/folder";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const files = await sp.web.getFolderByServerRelativePath("Shared Documents").files();
 ```
 
@@ -310,12 +415,13 @@ const files = await sp.web.getFolderByServerRelativePath("Shared Documents").fil
 Gets this folder's list item field values
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const itemFields = await sp.web.getFolderByServerRelativePath("Shared Documents/My Folder").listItemAllFields();
 ```
 
@@ -324,12 +430,13 @@ const itemFields = await sp.web.getFolderByServerRelativePath("Shared Documents/
 Gets the parent folder, if available
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const parentFolder = await sp.web.getFolderByServerRelativePath("Shared Documents/My Folder").parentFolder();
 ```
 
@@ -338,12 +445,13 @@ const parentFolder = await sp.web.getFolderByServerRelativePath("Shared Document
 Gets this folder's properties
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const properties = await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").properties();
 ```
 
@@ -352,12 +460,13 @@ const properties = await sp.web.getFolderByServerRelativePath("Shared Documents/
 Gets a value that specifies the content type order.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const contentTypeOrder = await sp.web.getFolderByServerRelativePath("Shared Documents/Folder2").select('uniqueContentTypeOrder')();
 ```
 
@@ -366,12 +475,13 @@ const contentTypeOrder = await sp.web.getFolderByServerRelativePath("Shared Docu
 You can rename a folder by updating `FileLeafRef` property:
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const folder = sp.web.getFolderByServerRelativePath("Shared Documents/My Folder");
 
 const item = await folder.getItem();
@@ -383,16 +493,17 @@ const result = await item.update({ FileLeafRef: "Folder2" });
 Below code creates a new folder under Document library and assigns custom folder content type to a newly created folder. Additionally it sets a field of a custom folder content type.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/items";
 import "@pnp/sp/folders";
 import "@pnp/sp/lists";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED
 const newFolderResult = await sp.web.rootFolder.folders.getByUrl("Shared Documents").folders.addUsingPath("My New Folder");
-const item = await newFolderResult.folder.listItemAllFields();
+const item = await sp.web.rootFolder.folders.getByUrl("Shared Documents").folders.getByUrl(newFolderResult.Name).listItemAllFields();
 
 await sp.web.lists.getByTitle("Documents").items.getById(item.ID).update({
     ContentTypeId: "0x0120001E76ED75A3E3F3408811F0BF56C4CDDD",
@@ -403,49 +514,48 @@ await sp.web.lists.getByTitle("Documents").items.getById(item.ID).update({
 
 ### addSubFolderUsingPath
 
-
-
 You can use the addSubFolderUsingPath method to add a folder with some special chars supported
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 import { IFolder } from "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
+// URL CANNOT BE ENCODED and cannot include sub-paths.
+const url = "Folder Name";
 // add a folder to site assets
-const folder: IFolder = await sp.web.rootFolder.folders.getByUrl("SiteAssets").addSubFolderUsingPath("folder name");
+const folder: IFolder = await sp.web.rootFolder.folders.getByUrl("SiteAssets").addSubFolderUsingPath(url);
 ```
 
 ### getFolderById
 
-You can get a folder by Id from a web.
+You can get a folder by UniqueId from a web.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 import { IFolder } from "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
-const folder: IFolder = sp.web.getFolderById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
+const folderItem = sp.web.lists.getByTitle("My List").items.getById(1).select("UniqueId")()
+const folder: IFolder = sp.web.getFolderById(folderItem.UniqueId);
 ```
 
 ### getParentInfos
 
-
-
 Gets information about folder, including details about the parent list, parent list root folder, and parent web.
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/folders";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 const folder: IFolder = sp.web.getFolderById("2b281c7b-ece9-4b76-82f9-f5cf5e152ba0");
 await folder.getParentInfos();

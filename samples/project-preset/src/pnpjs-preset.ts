@@ -69,6 +69,3 @@ export function mySPFi(context: WebPartContext): SPFI {
 
     return sp;
 }
-
-
-

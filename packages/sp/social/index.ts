@@ -28,6 +28,6 @@ Reflect.defineProperty(SPFI.prototype, "social", {
     configurable: true,
     enumerable: true,
     get: function (this: SPFI) {
-        this.create(<any>Social);
+        return this.create(<any>Social);
     },
 });

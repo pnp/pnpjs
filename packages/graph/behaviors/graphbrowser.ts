@@ -1,6 +1,7 @@
-import { combine, isUrlAbsolute, TimelinePipe } from "@pnp/core";
+import { TimelinePipe } from "@pnp/core";
 import { BrowserFetchWithRetry, DefaultParse, Queryable } from "@pnp/queryable";
 import { DefaultHeaders, DefaultInit } from "./defaults.js";
+import { DEFAULT_GRAPH_URL } from "../index.js";
 
 export interface IGraphBrowserProps {
     baseUrl?: string;
@@ -8,30 +9,18 @@ export interface IGraphBrowserProps {
 
 export function GraphBrowser(props?: IGraphBrowserProps): TimelinePipe<Queryable> {
 
-    if (props?.baseUrl && !isUrlAbsolute(props.baseUrl)) {
-        throw Error("GraphBrowser props.baseUrl must be absolute when supplied.");
-    }
+    const { baseUrl } = {
+        baseUrl: DEFAULT_GRAPH_URL,
+        ...props,
+    };
 
     return (instance: Queryable) => {
 
         instance.using(
             DefaultHeaders(),
-            DefaultInit(),
+            DefaultInit(baseUrl),
             BrowserFetchWithRetry(),
             DefaultParse());
-
-        if (props?.baseUrl) {
-
-            // we want to fix up the url first
-            instance.on.pre.prepend(async (url, init, result) => {
-
-                if (!isUrlAbsolute(url)) {
-                    url = combine(props.baseUrl, url);
-                }
-
-                return [url, init, result];
-            });
-        }
 
         return instance;
     };

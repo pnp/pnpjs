@@ -5,6 +5,7 @@ import findup from "findup-sync";
 export interface ISettings {
     enableWebTests: boolean;
     testUser?: string;
+    testGroupId?: string;
     graph?: {
         id?: string;
         secret?: string;
@@ -15,6 +16,17 @@ export interface ISettings {
         };
     };
     sp?: {
+        testWebUrl?: string;
+        id?: string;
+        notificationUrl?: string | null;
+        secret?: string;
+        url: string;
+        msal?: {
+            init: Configuration;
+            scopes: string[];
+        };
+    };
+    spadmin?: {
         testWebUrl?: string;
         id?: string;
         notificationUrl?: string | null;
@@ -42,6 +54,7 @@ export async function getSettings(args: IProcessArgs): Promise<ISettings> {
             settings = {
                 testing: {
                     testUser: readEnvVar("PNPTESTING_TESTUSER") || null,
+                    testGroupId: readEnvVar("PNPTESTING_TESTGROUPID") || null,
                     enableWebTests: true,
                     graph: {
                         msal: {

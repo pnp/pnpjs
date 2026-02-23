@@ -1,6 +1,6 @@
 # @pnp/core : timeline
 
-Timeline provides base functionality for ochestrating async operations. A timeline defines a set of [moments](./moments.md) to which observers can be registered. [Observers](./observers.md) are functions that can act independetly or together during a moment in the timeline. The model is event like but each moment's implementation can be unique in how it interacts with the registered observers. Keep reading under [Define Moments](#define-moments) to understand more about what a moment is and how to create one.
+Timeline provides base functionality for ochestrating async operations. A timeline defines a set of [moments](./moments.md) to which observers can be registered. [Observers](./observers.md) are functions that can act independently or together during a moment in the timeline. The model is event-like but each moment's implementation can be unique in how it interacts with the registered observers. Keep reading under [Define Moments](#define-moments) to understand more about what a moment is and how to create one.
 
 ![Timeline Architecture](../img/TimelineArchitecture.jpg)
 
@@ -136,7 +136,7 @@ const h = await tl.go(0);
 const h2 = await tl.go(5);
 ```
 
-## Understanding the Timline Lifecycle
+## Understanding the Timeline Lifecycle
 
 Now that you implemented a simple timeline let's take a minute to understand the lifecycle of a timeline execution. There are four moments always defined for every timeline: init, dispose, log, and error. Of these init and dispose are used within the lifecycle, while log and error are used as you need.
 

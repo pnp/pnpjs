@@ -3,16 +3,11 @@
     "include": [
         "./**/*.ts",
         "../core/**/*.ts",
-        "../logging/**/*.ts",
-        "../queryable/**/*.ts",
-        "./presets/**/*.ts"
+        "../queryable/**/*.ts"
     ],
     "references": [
         {
             "path": "../core/tsconfig.json"
-        },
-        {
-            "path": "../logging/tsconfig.json"
         },
         {
             "path": "../queryable/tsconfig.json"

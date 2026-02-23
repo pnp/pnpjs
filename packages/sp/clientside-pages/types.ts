@@ -2,13 +2,12 @@ import { body, headers } from "@pnp/queryable";
 import { getGUID, hOP, stringIsNullOrEmpty, objectDefinedNotNull, combine, isUrlAbsolute, isArray } from "@pnp/core";
 import { IFile, IFileInfo } from "../files/types.js";
 import { Item, IItem } from "../items/types.js";
-import { _SPQueryable, SPQueryable, SPCollection, SPInit } from "../spqueryable.js";
+import { _SPQueryable, SPQueryable, SPCollection, SPInit, spPost } from "../spqueryable.js";
 import { List } from "../lists/types.js";
 import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { Web, IWeb } from "../webs/types.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
 import { Site } from "../sites/types.js";
-import { spPost } from "../operations.js";
 import { getNextOrder, reindex } from "./funcs.js";
 import "../files/web.js";
 import "../comments/item.js";
@@ -17,7 +16,7 @@ import { createBatch } from "../batching.js";
 /**
  * Page promotion state
  */
-export const enum PromotedState {
+export enum PromotedState {
     /**
      * Regular client side page
      */
@@ -101,6 +100,7 @@ export class _ClientsidePage extends _SPQueryable {
                 textAlignment: "Left",
                 title: "",
                 topicHeader: "",
+                enableGradientEffect: true,
             },
             reservedHeight: 280,
             serverProcessedContent: { htmlStrings: {}, searchablePlainTexts: {}, imageSources: {}, links: {} },
@@ -147,7 +147,7 @@ export class _ClientsidePage extends _SPQueryable {
     }
 
     public get title(): string {
-        return this._layoutPart.properties.title;
+        return this.json.Title;
     }
 
     public set title(value: string) {
@@ -302,7 +302,10 @@ export class _ClientsidePage extends _SPQueryable {
             throw Error("The id for this page is null. If you want to create a new page, please use ClientSidePage.Create");
         }
 
-        if (this._bannerImageDirty) {
+        const previewPartialUrl = "_layouts/15/getpreview.ashx";
+
+        // If new banner image, and banner image url is not in getpreview.ashx format
+        if (this._bannerImageDirty && !this.bannerImageUrl.includes(previewPartialUrl)) {
 
             const serverRelativePath = this.bannerImageUrl;
 
@@ -321,7 +324,7 @@ export class _ClientsidePage extends _SPQueryable {
             // we know the .then calls above will run before execute resolves, ensuring the vars are set
             await execute();
 
-            const f = SPQueryable(webUrl, "_layouts/15/getpreview.ashx");
+            const f = SPQueryable(webUrl, previewPartialUrl);
             f.query.set("guidSite", `${imgInfo.SiteId}`);
             f.query.set("guidWeb", `${imgInfo.WebId}`);
             f.query.set("guidFile", `${imgInfo.UniqueId}`);
@@ -362,6 +365,7 @@ export class _ClientsidePage extends _SPQueryable {
             LayoutWebpartsContent: this.getLayoutWebpartsContent(),
             Title: this.title,
             TopicHeader: this.topicHeader,
+            BannerImageUrl: this.bannerImageUrl,
         };
 
         if (this._bannerImageDirty || this._bannerImageThumbnailUrlDirty) {
@@ -388,6 +392,9 @@ export class _ClientsidePage extends _SPQueryable {
 
         this._bannerImageDirty = false;
         this._bannerImageThumbnailUrlDirty = false;
+
+        // we need to ensure we reload from the latest data to ensure all urls are updated and current in the object (expecially for new pages)
+        await this.load();
 
         return r;
     }
@@ -473,9 +480,40 @@ export class _ClientsidePage extends _SPQueryable {
      */
     public async copyTo(page: IClientsidePage, publish = true): Promise<IClientsidePage> {
 
-
         // we know the method is on the class - but it is protected so not part of the interface
         (<any>page).setControls(this.getControls());
+
+        // copy page properties
+        if (this._layoutPart.properties) {
+
+            if (hOP(this._layoutPart.properties, "topicHeader")) {
+                page.topicHeader = this._layoutPart.properties.topicHeader;
+            }
+
+            if (hOP(this._layoutPart.properties, "imageSourceType")) {
+                page._layoutPart.properties.imageSourceType = this._layoutPart.properties.imageSourceType;
+            }
+
+            if (hOP(this._layoutPart.properties, "layoutType")) {
+                page._layoutPart.properties.layoutType = this._layoutPart.properties.layoutType;
+            }
+
+            if (hOP(this._layoutPart.properties, "textAlignment")) {
+                page._layoutPart.properties.textAlignment = this._layoutPart.properties.textAlignment;
+            }
+
+            if (hOP(this._layoutPart.properties, "showTopicHeader")) {
+                page._layoutPart.properties.showTopicHeader = this._layoutPart.properties.showTopicHeader;
+            }
+
+            if (hOP(this._layoutPart.properties, "showPublishDate")) {
+                page._layoutPart.properties.showPublishDate = this._layoutPart.properties.showPublishDate;
+            }
+
+            if (hOP(this._layoutPart.properties, "enableGradientEffect")) {
+                page._layoutPart.properties.enableGradientEffect = this._layoutPart.properties.enableGradientEffect;
+            }
+        }
 
         // we need to do some work to set the banner image url in the copied page
         if (!stringIsNullOrEmpty(this.json.BannerImageUrl)) {
@@ -600,9 +638,9 @@ export class _ClientsidePage extends _SPQueryable {
         const filename = fileUrl.pathname.split(/[\\/]/i).pop();
 
         const request = ClientsidePage(this, "_api/sitepages/AddImageFromExternalUrl");
-        request.query.set("imageFileName", `'${encodeURIComponent(filename)}'`);
-        request.query.set("pageName", `'${encodeURIComponent(pageName)}'`);
-        request.query.set("externalUrl", `'${encodeURIComponent(url)}'`);
+        request.query.set("imageFileName", `'${filename}'`);
+        request.query.set("pageName", `'${pageName}'`);
+        request.query.set("externalUrl", `'${url}'`);
         request.select("ServerRelativeUrl");
 
         const result = await spPost<Pick<IFileInfo, "ServerRelativeUrl">>(request);
@@ -664,6 +702,63 @@ export class _ClientsidePage extends _SPQueryable {
         const item = List([this, listData["odata.id"]]).items.getById(this.json.Id);
         const itemData: T = await item.select(...selects)();
         return Object.assign(Item([this, odataUrlFrom(itemData)]), itemData);
+    }
+
+    /**
+         * Recycle this page
+         */
+    public async recycle(): Promise<void> {
+        const item = await this.getItem();
+        await item.recycle();
+    }
+
+    /**
+     * Delete this page
+     */
+    public async delete(): Promise<void> {
+        const item = await this.getItem();
+        await item.delete();
+    }
+
+    /**
+     * Schedules a page for publishing
+     *
+     * @param publishDate Date to publish the item
+     * @returns Version which was scheduled to be published
+     */
+    public async schedulePublish(publishDate: Date): Promise<string> {
+        return spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/SchedulePublish`), body({
+            sitePage: { PublishStartDate: publishDate },
+        }));
+    }
+
+    /**
+     * Saves a copy of this page as a template in this library's Templates folder
+     *
+     * @param publish If true the template is published, false the template is not published (default: true)
+     * @returns IClientsidePage instance representing the new template page
+     */
+    public async saveAsTemplate(publish = true): Promise<IClientsidePage> {
+        const data = await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/SavePageAsTemplate`));
+        const page = ClientsidePage(this, null, data);
+        page.title = this.title;
+        await page.save(publish);
+        return page;
+    }
+
+    /**
+     * Share this Page's Preview content by Email
+     *
+     * @param emails Set of emails to which the preview is shared
+     * @param message The message to include
+     * @returns void
+     */
+    public share(emails: string[], message: string): Promise<void> {
+        return spPost(ClientsidePage(this, "_api/SP.Publishing.RichSharing/SharePageByEmail"), body({
+            recipientEmails: emails,
+            message,
+            url: this.json.AbsoluteUrl,
+        }));
     }
 
     protected getCanvasContent1(): string {
@@ -739,7 +834,7 @@ export class _ClientsidePage extends _SPQueryable {
                 } else {
                     column.controls.forEach(control => {
                         control.data.emphasis = this.getEmphasisObj(section.emphasis);
-                        canvasData.push(control.data);
+                        canvasData.push(this.specialSaveHandling(control).data);
                     });
                 }
             });
@@ -775,7 +870,7 @@ export class _ClientsidePage extends _SPQueryable {
             }
         }
 
-        return await spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
+        return spPost(ClientsidePage(this, `_api/sitepages/pages(${this.json.Id})/${method}`));
     }
 
     /**
@@ -857,6 +952,31 @@ export class _ClientsidePage extends _SPQueryable {
         }
 
         return section;
+    }
+
+    /**
+     * Based on issue #1690 we need to take special case actions to ensure some things
+     * can be saved properly without breaking existing pages.
+     *
+     * @param control The control we are ensuring is "ready" to be saved
+     */
+    private specialSaveHandling(control: ColumnControl<any>): ColumnControl<any> {
+
+        // this is to handle the special case in issue #1690
+        // must ensure that searchablePlainTexts values have < replaced with &lt; in links web part
+        // For #2561 need to process for code snippet webpart and any control && (<any>control).data.webPartId === "c70391ea-0b10-4ee9-b2b4-006d3fcad0cd"
+        if ((<any>control).data.controlType === 3) {
+            const texts = (<any>control).data?.webPartData?.serverProcessedContent?.searchablePlainTexts || null;
+            if (objectDefinedNotNull(texts)) {
+                const keys = Object.getOwnPropertyNames(texts);
+                for (let i = 0; i < keys.length; i++) {
+                    texts[keys[i]] = texts[keys[i]].replace(/</ig, "&lt;");
+                    (<any>control).data.webPartData.serverProcessedContent.searchablePlainTexts = texts;
+                }
+            }
+        }
+
+        return control;
     }
 }
 export interface IClientsidePage extends _ClientsidePage { }
@@ -1499,6 +1619,7 @@ interface ILayoutPartsContent {
         showTopicHeader: boolean;
         showPublishDate: boolean;
         topicHeader: string;
+        enableGradientEffect: boolean;
         authorByline: string[];
         authors: {
             id: string;
@@ -1513,6 +1634,7 @@ interface ILayoutPartsContent {
         translateX?: number;
         translateY?: number;
         altText?: string;
+        hasTitleBeenCommitted?: boolean;
     };
     reservedHeight: number;
 }
@@ -1522,4 +1644,17 @@ export interface IBannerImageProps {
     imageSourceType?: number;
     translateX?: number;
     translateY?: number;
+}
+
+export interface IRepostPage {
+    Description?: string;
+    IsBannerImageUrlExternal?: boolean;
+    OriginalSourceListId?: string;
+    ShouldSaveAsDraft?: boolean;
+    OriginalSourceSiteId?: string;
+    BannerImageUrl?: string;
+    Title?: string;
+    OriginalSourceItemId?: string;
+    OriginalSourceUrl?: string;
+    OriginalSourceWebId?: string;
 }

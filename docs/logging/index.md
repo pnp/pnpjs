@@ -113,7 +113,7 @@ import {
 } from "@pnp/logging";
 
 // subscribe a listener
-Logger.subscribe(new ConsoleListener());
+Logger.subscribe(ConsoleListener());
 
 // set the active log level
 Logger.activeLogLevel = LogLevel.Info;
@@ -143,7 +143,7 @@ import {
 } from "@pnp/logging";
 
 const LOG_SOURCE: string = 'MyAwesomeWebPart';
-Logger.subscribe(new ConsoleListener(LOG_SOURCE));
+Logger.subscribe(ConsoleListener(LOG_SOURCE));
 Logger.activeLogLevel = LogLevel.Info;
 ```
 
@@ -166,7 +166,7 @@ import {
 } from "@pnp/logging";
 
 const LOG_SOURCE: string = 'MyAwesomeWebPart';
-Logger.subscribe(new ConsoleListener(LOG_SOURCE, {color:'#0b6a0b',warningColor:'magenta'}));
+Logger.subscribe(ConsoleListener(LOG_SOURCE, {color:'#0b6a0b',warningColor:'magenta'}));
 Logger.activeLogLevel = LogLevel.Info;
 ```
 
@@ -192,7 +192,7 @@ Color options:
 To set colors without a prefix, specify either `undefined` or an empty string for the first parameter:
 
 ```TypeScript
-Logger.subscribe(new ConsoleListener(undefined, {color:'purple'}));
+Logger.subscribe(ConsoleListener(undefined, {color:'purple'}));
 ```
 
 ### FunctionListener
@@ -247,7 +247,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 
 // subscribe a listener
-Logger.subscribe(new ConsoleListener());
+Logger.subscribe(ConsoleListener());
 
 // at the root we only want to log errors, which will be sent to all subscribed loggers on Logger
 const sp = spfi().using(SPFx(this.context), PnPLogging(LogLevel.Error));

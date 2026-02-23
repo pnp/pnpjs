@@ -20,4 +20,4 @@ declare module "../webs/types" {
 }
 
 addProp(_Web, "fields", Fields);
-addProp(_Web, "availablefields", Fields, "availablefields");
+addProp(_Web, "availablefields", Fields);

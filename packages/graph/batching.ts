@@ -1,7 +1,6 @@
-import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull, isFunc, combine } from "@pnp/core";
+import { isUrlAbsolute, hOP, TimelinePipe, getGUID, CopyFrom, objectDefinedNotNull, isFunc, combine, jsS } from "@pnp/core";
 import { parseBinderWithErrorCheck, Queryable, body, InjectHeaders } from "@pnp/queryable";
-import { IGraphQueryable, _GraphQueryable } from "./graphqueryable.js";
-import { graphPost } from "./operations.js";
+import { IGraphQueryable, _GraphQueryable, graphPost } from "./graphqueryable.js";
 import { GraphFI } from "./fi.js";
 
 declare module "./fi" {
@@ -48,9 +47,7 @@ interface IGraphBatchResponseFragment {
     statusText?: string;
     method: string;
     url: string;
-    headers?: string[][] | {
-        [key: string]: string;
-    };
+    headers?: [string, string][] | Record<string, string>;
     body?: any;
 }
 
@@ -76,7 +73,7 @@ type ParsedGraphResponse = { nextLink?: string; responses: Response[] };
  * [3]: The resolve function back to the promise for the original operation
  * [4]: The reject function back to the promise for the original operation
  */
-type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void, (reason?: any) => void];
+type RequestRecord = [Queryable, string, RequestInit, (value: Response | PromiseLike<Response>) => void];
 
 const RegistrationCompleteSym = Symbol.for("batch_registration");
 const RequestCompleteSym = Symbol.for("batch_request");
@@ -98,7 +95,7 @@ function BatchParse(): TimelinePipe {
 
 class BatchQueryable extends _GraphQueryable {
 
-    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]v1\.0|beta[\\|/].*$/i || "", "")) {
+    constructor(base: IGraphQueryable, public requestBaseUrl = base.toUrl().replace(/[\\|/]v1\.0|beta[\\|/].*$/i, "")) {
 
         super(requestBaseUrl, "$batch");
 
@@ -114,7 +111,7 @@ class BatchQueryable extends _GraphQueryable {
         // do a fix up on the url once other pre behaviors have had a chance to run
         this.on.pre(async function (this: BatchQueryable, url, init, result) {
 
-            const versRegex = /(https:\/\/.*?[\\|/]v1\.0|beta[\\|/])/i;
+            const versRegex = /(https:\/\/.*?\/(v1.0|beta)\/)/i;
 
             const m = url.match(versRegex);
 
@@ -154,10 +151,11 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
     const completePromises: Promise<void>[] = [];
     const requests: RequestRecord[] = [];
     const batchId = getGUID();
+    const refQuery = new BatchQueryable(base);
     const batchQuery = new BatchQueryable(base);
 
     const { maxRequests } = {
-        maxRequests: 30,
+        maxRequests: 20,
         ...props,
     };
 
@@ -166,13 +164,14 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         await Promise.all(registrationPromises);
 
         if (requests.length < 1) {
-            return;
+            return Promise.all(completePromises).then(() => void (0));
         }
 
         // create a working copy of our requests
         const requestsWorkingCopy = requests.slice();
 
         // this is the root of our promise chain
+        let chunkIndex = 0;
         while (requestsWorkingCopy.length > 0) {
 
             const requestsChunk = requestsWorkingCopy.splice(0, maxRequests);
@@ -183,22 +182,13 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
 
             const response: ParsedGraphResponse = await graphPost(batchQuery, body(batchRequest));
 
-            // this structure ensures that we resolve the batched requests in the order we expect
-            await response.responses.reduce((p, resp, index) => p.then(() => {
-
-                const [, , , resolve, reject] = requestsChunk[index];
-
-                try {
-
-                    resolve(resp);
-
-                } catch (e) {
-
-                    reject(e);
-                }
-
-            }), Promise.resolve(void (0))).then(() => Promise.all(completePromises).then(() => void (0)));
+            for (let index = 0; index < response.responses.length; index++) {
+                // this resolves the child request's send promise with the parsed response
+                requests[index + chunkIndex][3](response.responses[index]);
+            }
+            chunkIndex += requestsChunk.length;
         }
+        await Promise.all(completePromises).then(() => void (0));
     };
 
     const register = (instance: Queryable) => {
@@ -235,8 +225,8 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         // we replace the send function with our batching logic
         instance.on.send.replace(async function (this: Queryable, url: URL, init: RequestInit) {
 
-            const promise = new Promise<Response>((resolve, reject) => {
-                requests.push([this, url.toString(), init, resolve, reject]);
+            const promise = new Promise<Response>((resolve) => {
+                requests.push([this, url.toString(), init, resolve]);
             });
 
             this.log(`[batch:${batchId}] (${(new Date()).getTime()}) Adding request ${init.method} ${url.toString()} to batch.`, 0);
@@ -255,6 +245,11 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         instance.on.dispose(function () {
 
             if (isFunc(this[RegistrationCompleteSym])) {
+
+                // if this request is in a batch and caching is in play we need to resolve the registration promises to unblock processing of the batch
+                // because the request will never reach the "send" moment as the result is returned from "pre"
+                this[RegistrationCompleteSym]();
+
                 // remove the symbol props we added for good hygene
                 delete this[RegistrationCompleteSym];
             }
@@ -277,7 +272,7 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
                 // that we maintain the references to the InternalResolve and InternalReject events through
                 // the end of this timeline lifecycle. This works because CopyFrom by design uses Object.keys
                 // which ignores symbol properties.
-                this.using(CopyFrom(batchQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
+                this.using(CopyFrom(refQuery, "replace", (k) => /(auth|send|init|dispose)/i.test(k)));
             }
         });
 
@@ -359,36 +354,61 @@ function formatRequests(requests: RequestRecord[], batchId: string): IGraphBatch
     });
 }
 
-function parseResponse(graphResponse: IGraphBatchResponse): Promise<ParsedGraphResponse> {
+function parseResponse(graphResponse: IGraphBatchResponse): ParsedGraphResponse {
 
-    return new Promise((resolve, reject) => {
+    // we need to see if we have an error and report that
+    if (hOP(graphResponse, "error")) {
+        throw Error(`Error Porcessing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`);
+    }
 
-        // we need to see if we have an error and report that
-        if (hOP(graphResponse, "error")) {
-            return reject(Error(`Error Porcessing Batch: (${graphResponse.error.code}) ${graphResponse.error.message}`));
+    const parsedResponses: Response[] = new Array(graphResponse.responses.length).fill(null);
+
+    for (let i = 0; i < graphResponse.responses.length; ++i) {
+
+        const response = graphResponse.responses[i];
+
+        // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
+        // the array of requests and make it easier to map them by index
+        const responseId = parseInt(response.id, 10) - 1;
+
+        const { status, statusText, headers, body } = response;
+
+        const init = { status, statusText, headers };
+
+        // this is to handle special cases before we pass to the default parsing logic
+        if (status === 204) {
+
+            // this handles cases where the response body is empty and has a 204 response status (No Content)
+            parsedResponses[responseId] = new Response(null, init);
+
+        } else if (status === 302) {
+
+            // this is the case where (probably) a file download was included in the batch and the service has returned a 302 redirect to that file
+            // the url should be in the response's location header, so we transform the response to a 200 with the location in the body as 302 will be an
+            // error in the default parser used on the individual request
+
+            init.status = 200;
+            // eslint-disable-next-line @typescript-eslint/dot-notation
+            parsedResponses[responseId] = new Response(jsS({ location: headers["Location"] || "" }), init);
+
+        } else if (status === 200 && /^image[\\|/]/i.test(headers["Content-Type"] || "")) {
+
+            // this handles the case where image content is returned as base 64 data in the batch body, such as /me/photos/$value (https://github.com/pnp/pnpjs/issues/2825)
+
+            const encoder = new TextEncoder();
+            parsedResponses[responseId] = new Response(encoder.encode(body), init);
+
+        } else {
+
+            // this is the default case where we have a json body which we remake into a string for the downstream parser to parse again
+            // a bit circular, but this provides consistent behavior for downstream parsers
+
+            parsedResponses[responseId] = new Response(jsS(body), init);
         }
+    }
 
-        const parsedResponses: Response[] = new Array(graphResponse.responses.length).fill(null);
-
-        for (let i = 0; i < graphResponse.responses.length; ++i) {
-
-            const response = graphResponse.responses[i];
-            // we create the request id by adding 1 to the index, so we place the response by subtracting one to match
-            // the array of requests and make it easier to map them by index
-            const responseId = parseInt(response.id, 10) - 1;
-
-            if (response.status === 204) {
-
-                parsedResponses[responseId] = new Response();
-            } else {
-
-                parsedResponses[responseId] = new Response(JSON.stringify(response.body), response);
-            }
-        }
-
-        resolve({
-            nextLink: graphResponse.nextLink,
-            responses: parsedResponses,
-        });
-    });
+    return {
+        nextLink: graphResponse.nextLink,
+        responses: parsedResponses,
+    };
 }

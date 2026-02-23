@@ -1,7 +1,6 @@
 import { addProp } from "@pnp/queryable";
 import { _Web } from "../webs/types.js";
-import { Folders, IFolders, Folder, IFolder } from "./types.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
+import { Folders, IFolders, Folder, IFolder, folderFromServerRelativePath } from "./types.js";
 
 declare module "../webs/types" {
     interface _Web {
@@ -40,10 +39,10 @@ declare module "../webs/types" {
 }
 
 addProp(_Web, "folders", Folders);
-addProp(_Web, "rootFolder", Folder, "rootFolder");
+addProp(_Web, "rootFolder", Folder);
 
 _Web.prototype.getFolderByServerRelativePath = function (this: _Web, folderRelativeUrl: string): IFolder {
-    return Folder(this, `getFolderByServerRelativePath(decodedUrl='${escapeQueryStrValue(folderRelativeUrl)}')`);
+    return folderFromServerRelativePath(this, folderRelativeUrl);
 };
 
 _Web.prototype.getFolderById = function (this: _Web, uniqueId: string): IFolder {

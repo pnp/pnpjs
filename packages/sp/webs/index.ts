@@ -5,8 +5,6 @@ export {
     IWeb,
     IWebs,
     Web,
-    IWebAddResult,
-    IWebUpdateResult,
     Webs,
     IWebInfo,
     IStorageEntity,

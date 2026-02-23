@@ -12,7 +12,7 @@ import "@pnp/graph/users";
 
 const graph = graphfi().using(DefaultInit());
 
-await graphfi().users();
+await graph.users();
 ```
 
 ## DefaultHeaders
@@ -25,7 +25,7 @@ import "@pnp/graph/users";
 
 const graph = graphfi().using(DefaultHeaders());
 
-await graphfi().users();
+await graph.users();
 ```
 
 > DefaultInit and DefaultHeaders are separated to make it easier to create your own default headers or init behavior. You should include both if composing your own default behavior.
@@ -56,7 +56,7 @@ import "@pnp/graph/users";
 // will point to v1 by default
 const graph = graphfi().using();
 
-const user = graphfi().users.getById("{id}");
+const user = graph.users.getById("{id}");
 
 // this only applies to the "user" instance now
 const userInfoFromBeta = user.using(Endpoint("beta"))();
@@ -67,7 +67,7 @@ Finally, if you always want to make your requests to the beta end point (as an e
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 
-const beta = graphfi("https://graphfi().microsoft.com/beta");
+const beta = graphfi("https://graph.microsoft.com/beta");
 ```
 
 ## GraphBrowser
@@ -84,7 +84,7 @@ import "@pnp/graph/users";
 
 const graph = graphfi().using(GraphBrowser());
 
-await graphfi().users();
+await graph.users();
 ```
 
 You can also set a baseUrl. This is equivelent to calling graphfi with an absolute url.
@@ -93,12 +93,12 @@ You can also set a baseUrl. This is equivelent to calling graphfi with an absolu
 import { graphfi, GraphBrowser } from "@pnp/graph";
 import "@pnp/graph/users";
 
-const graph = graphfi().using(GraphBrowser({ baseUrl: "https://graphfi().microsoft.com/v1.0" }));
+const graph = graphfi().using(GraphBrowser({ baseUrl: "https://graph.microsoft.com/v1.0" }));
 
 // this is the same as the above, and maybe a litter easier to read, and is more efficient
-// const graph = graphfi("https://graphfi().microsoft.com/v1.0").using(GraphBrowser());
+// const graph = graphfi("https://graph.microsoft.com/v1.0").using(GraphBrowser());
 
-await graphfi().users();
+await graph.users();
 ```
 
 ## SPFx
@@ -106,26 +106,52 @@ await graphfi().users();
 This behavior is designed to work closely with SPFx. The only parameter is the current SPFx Context. `SPFx` is a composed behavior including DefaultHeaders, DefaultInit, BrowserFetchWithRetry, and DefaultParse. It also replaces any authentication present with a method to get a token from the SPFx aadTokenProviderFactory.
 
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
 import "@pnp/graph/users";
 
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
-const graph = graphfi().using(SPFx(this.context));
+const graph = graphfi(...).using(SPFx(this.context));
 
-await graphfi().users();
+await graph.users();
+```
+
+Note that both the sp and graph libraries export an SPFx behavior. They are unique to their respective libraries and cannot be shared, i.e. you can't use the graph SPFx to setup sp and vice-versa.
+
+```TypeScript
+import { GraphFI, graphfi, SPFx as graphSPFx } from '@pnp/graph'
+import { SPFI, spfi, SPFx as spSPFx } from '@pnp/sp'
+
+const sp = spfi().using(spSPFx(this.context));
+const graph = graphfi().using(graphSPFx(this.context));
 ```
 
 If you want to use a different form of authentication you can apply that behavior after `SPFx` to override it. In this case we are using the [client MSAL authentication](../msaljsclient).
 
+## SPFxToken
+
+_Added in 3.12_
+
+Allows you to include the SharePoint Framework application token in requests. This behavior is include within the SPFx behavior, but is available separately should you wish to compose it into your own behaviors.
+
 ```TypeScript
-import { graphfi, SPFx } from "@pnp/graph";
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+
+// this.context represents the context object within an SPFx webpart, application customizer, or ACE.
+const graph = graphfi(...).using(SPFxToken(this.context));
+
+await graph.users();
+```
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
 import { MSAL } from "@pnp/msaljsclient";
 import "@pnp/graph/users";
 
 // this.context represents the context object within an SPFx webpart, application customizer, or ACE.
 const graph = graphfi().using(SPFx(this.context), MSAL({ /* proper MSAL settings */}));
 
-await graphfi().users();
+await graph.users();
 ```
 
 ## Telemetry
@@ -140,5 +166,46 @@ import "@pnp/graph/users";
 
 const graph = graphfi().using(Telemetry());
 
-await graphfi().users();
+await graph.users();
+```
+
+## ConsistencyLevel
+
+Using this behavior you can set the consistency level of your requests. You likely won't need to use this directly as we include it where needed.
+
+Basic usage:
+
+```TypeScript
+import { graphfi, ConsistencyLevel } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(ConsistencyLevel());
+
+await graph.users();
+```
+
+If in the future there is another value other than "eventual" you can supply it to the behavior. For now only "eventual" is a valid value, which is the default, so you do not need to pass it as a param.
+
+```TypeScript
+import { graphfi, ConsistencyLevel } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(ConsistencyLevel("{level value}"));
+
+await graph.users();
+```
+
+## AdvancedQuery
+
+Using this behaviour, you can enable [advanced query capabilities](https://learn.microsoft.com/en-us/graph/aad-advanced-queries?tabs=http) when filtering supported collections.
+
+This sets the consistency level to eventual and enables the `$count` query parameter.
+
+```TypeScript
+import { graphfi, AdvancedQuery } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi().using(AdvancedQuery());
+
+await graph.users.filter("companyName ne null and NOT(companyName eq 'Microsoft')")();
 ```

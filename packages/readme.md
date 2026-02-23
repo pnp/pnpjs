@@ -4,8 +4,7 @@ The SharePoint Patterns and Practices client side libraries were created to help
 REST api details. Built with feedback from the community they represent a way to simplify your day-to-day dev cycle while relying on tested and proven
 patterns.
 
-Please use [http://aka.ms/sppnp](http://aka.ms/sppnp) for the latest updates around the whole *SharePoint Patterns and Practices (PnP) initiative*.
-
+Please use [http://aka.ms/community/home](http://aka.ms/community/home) for the latest updates around the whole *Microsoft 365 and Power Platform Community(PnP)* initiative.
 ## Source & Docs
 
 This code is managed within the [main pnp repo](https://github.com/pnp/pnpjs), please report issues and submit pull requests there.

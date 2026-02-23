@@ -1,0 +1,38 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": ".",
+        "outDir": "../build/packages/commonjs",
+        "module": "CommonJS"
+    },
+    "include": [],
+    "references": [
+        {
+            "path": "./azidjsclient/tsconfig-commonjs.json"
+        },
+        {
+            "path": "./core/tsconfig-commonjs.json"
+        },
+        {
+            "path": "./graph/tsconfig-commonjs.json"
+        },
+        {
+            "path": "./logging/tsconfig-commonjs.json"
+        },
+        {
+            "path": "./msaljsclient/tsconfig-commonjs.json"
+        },
+        {
+            "path": "./nodejs/tsconfig-commonjs.json"
+        },
+        {
+            "path": "./queryable/tsconfig-commonjs.json"
+        },
+        {
+            "path": "./sp/tsconfig-commonjs.json"
+        },
+        {
+            "path": "./sp-admin/tsconfig-commonjs.json"
+        }
+    ]
+}

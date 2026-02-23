@@ -9,27 +9,26 @@ interface ISPFXContext {
             getToken(resource: string): Promise<string>;
         }>;
     };
-
-    msGraphClientFactory?: {
-        getClient: () => Promise<any>;
-    };
-
-    pageContext: {
-        web: {
-            absoluteUrl: string;
-        };
-    };
 }
 
-export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
+class SPFxTokenNullOrUndefinedError extends Error {
+
+    constructor(behaviorName: string) {
+        super(`SPFx Context supplied to ${behaviorName} Behavior is null or undefined.`);
+    }
+
+    public static check(behaviorName: string, context?: ISPFXContext): void {
+        if (typeof context === "undefined" || context === null) {
+            throw new SPFxTokenNullOrUndefinedError(behaviorName);
+        }
+    }
+}
+
+export function SPFxToken(context: ISPFXContext): TimelinePipe<Queryable> {
+
+    SPFxTokenNullOrUndefinedError.check("SPFxToken", context);
 
     return (instance: Queryable) => {
-
-        instance.using(
-            DefaultHeaders(),
-            DefaultInit(),
-            BrowserFetchWithRetry(),
-            DefaultParse());
 
         instance.on.auth.replace(async function (url: URL, init: RequestInit) {
 
@@ -41,6 +40,23 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
 
             return [url, init];
         });
+
+        return instance;
+    };
+}
+
+export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
+
+    SPFxTokenNullOrUndefinedError.check("SPFx", context);
+
+    return (instance: Queryable) => {
+
+        instance.using(
+            DefaultHeaders(),
+            DefaultInit(),
+            BrowserFetchWithRetry(),
+            DefaultParse(),
+            SPFxToken(context));
 
         return instance;
     };

@@ -35,11 +35,11 @@ const txt = await new Promise<string>((resolve) => {
 ```TypeScript
 import { SPDefault } from "@pnp/nodejs";
 import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/folders/web";
-import "@pnp/sp/folders/list";
-import "@pnp/sp/files/web";
-import "@pnp/sp/files/folder";
+import "@pnp/sp/webs/index.js";
+import "@pnp/sp/folders/web.js";
+import "@pnp/sp/folders/list.js";
+import "@pnp/sp/files/web.js";
+import "@pnp/sp/files/folder.js";
 import * as fs from "fs";
 
 const sp = spfi("https://something.com").using(SPDefault({
@@ -59,11 +59,11 @@ await files.addChunked(name, stream, null, true);
 ```TypeScript
 import { SPDefault } from "@pnp/nodejs";
 import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/folders/web";
-import "@pnp/sp/folders/list";
-import "@pnp/sp/files/web";
-import "@pnp/sp/files/folder";
+import "@pnp/sp/webs/index.js";
+import "@pnp/sp/folders/web.js";
+import "@pnp/sp/folders/list.js";
+import "@pnp/sp/files/web.js";
+import "@pnp/sp/files/folder.js";
 import * as fs from "fs";
 
 const sp = spfi("https://something.com").using(SPDefault({

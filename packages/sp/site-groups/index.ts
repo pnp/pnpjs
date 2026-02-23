@@ -2,8 +2,6 @@ import "./web.js";
 
 export {
     ISiteGroup,
-    IGroupAddResult,
-    IGroupUpdateResult,
     ISiteGroups,
     SiteGroup,
     SiteGroups,

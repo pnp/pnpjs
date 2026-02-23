@@ -7,19 +7,19 @@ The profile services allows you to work with the SharePoint User Profile Store.
 Profiles is accessed directly from the root sp object.
 
 ```typescript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/profiles";
 ```
 
 ## Get edit profile link for the current user
 
 ```typescript
-editProfileLink(): Promise<string>
+getEditProfileLink(): Promise<string>
 ```
 
 ```typescript
-const editProfileLink = await sp.profiles.editProfileLink();
-console.log("My edit profile link =" + editProfileLink);
+const sp = spfi(...);
+const editProfileLink = await sp.profiles.getEditProfileLink();
 ```
 
 ## Is My People List Public
@@ -27,12 +27,12 @@ console.log("My edit profile link =" + editProfileLink);
 Provides a boolean that indicates if the current users "People I'm Following" list is public or not
 
 ```typescript
-isMyPeopleListPublic(): Promise<boolean>
+getIsMyPeopleListPublic(): Promise<boolean>
 ```
 
 ```typescript
-const isPublic = await sp.profiles.isMyPeopleListPublic();
-console.log("Is my Following list Public =" + isPubic);
+const sp = spfi(...);
+const isPublic = await sp.profiles.getIsMyPeopleListPublic();
 ```
 
 ## Find out if the current user is followed by another user
@@ -44,9 +44,9 @@ amIFollowedBy(loginName: string): Promise<boolean>
 ```
 
 ```typescript
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const isFollowedBy = await sp.profiles.amIFollowedBy(loginName);
-console.log("Is " + loginName + " following me? " + isFollowedBy);
 ```
 
 ## Find out if I am following a specific user
@@ -58,9 +58,9 @@ amIFollowing(loginName: string): Promise<boolean>
 ```
 
 ```typescript
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const following = await sp.profiles.amIFollowing(loginName);
-console.log("Am I following " + loginName + "? " + following);
 ```
 
 ## Get the tags I follow
@@ -72,8 +72,8 @@ getFollowedTags(maxCount = 20): Promise<string[]>
 ```
 
 ```typescript
+const sp = spfi(...);
 const tags = await sp.profiles.getFollowedTags();
-console.log(tags);
 ```
 
 ## Get followers for a specific user
@@ -85,10 +85,11 @@ getFollowersFor(loginName: string): Promise<any[]>
 ```
 
 ```typescript
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const followers = await sp.profiles.getFollowersFor(loginName);
 followers.forEach((value) => {
-  console.log(value);
+  ...
 });
 ```
 
@@ -97,12 +98,12 @@ followers.forEach((value) => {
 Gets the people who are following the current user.
 
 ```typescript
-myFollowers(): ISharePointQueryableCollection
+myFollowers(): ISPCollection
 ```
 
 ```typescript
+const sp = spfi(...);
 const folowers = await sp.profiles.myFollowers();
-console.log(folowers);
 ```
 
 ## Get the properties for the current user
@@ -110,10 +111,11 @@ console.log(folowers);
 Gets user properties for the current user.
 
 ```typescript
-myProperties(): _SharePointQueryableInstance
+myProperties(): ISPInstance
 ```
 
 ```typescript
+const sp = spfi(...);
 const profile = await sp.profiles.myProperties();
 console.log(profile.DisplayName);
 console.log(profile.Email);
@@ -130,6 +132,14 @@ profile.userProperties = props;
 console.log("Account Name: " + profile.userProperties.AccountName);
 ```
 
+```TypeScript
+// you can also select properties to return before
+const sp = spfi(...);
+const profile = await sp.profiles.myProperties.select("Title", "Email")();
+console.log(profile.Email);
+console.log(profile.Title);
+```
+
 ## Gets people specified user is following
 
 ```typescript
@@ -137,10 +147,11 @@ getPeopleFollowedBy(loginName: string): Promise<any[]>
 ```
 
 ```typescript
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const folowers = await sp.profiles.getFollowersFor(loginName);
 followers.forEach((value) => {
-  console.log(value);
+  ...
 });
 ```
 
@@ -151,6 +162,7 @@ getPropertiesFor(loginName: string): Promise<any>
 ```
 
 ```typescript
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const profile = await sp.profiles.getPropertiesFor(loginName);
 console.log(profile.DisplayName);
@@ -178,9 +190,10 @@ trendingTags(): Promise<IHashTagCollection>
 ```
 
 ```typescript
+const sp = spfi(...);
 const tags = await sp.profiles.trendingTags();
 tags.Items.forEach((tag) => {
-  console.log(tag);
+  ...
 });
 ```
 
@@ -191,10 +204,10 @@ getUserProfilePropertyFor(loginName: string, propertyName: string): Promise<stri
 ```
 
 ```typescript
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const propertyName = "AccountName";
 const property = await sp.profiles.getUserProfilePropertyFor(loginName, propertyName);
-console.log(property);
 ```
 
 ## Hide specific user from list of suggested people
@@ -206,6 +219,7 @@ hideSuggestion(loginName: string): Promise<void>
 ```
 
 ```typescript
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 await sp.profiles.hideSuggestion(loginName);
 ```
@@ -221,10 +235,10 @@ isFollowing(follower: string, followee: string): Promise<boolean>
 ```
 
 ```typescript
+const sp = spfi(...);
 const follower = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const followee = "i:0#.f|membership|testuser2@mytenant.onmicrosoft.com";
 const isFollowing = await sp.profiles.isFollowing(follower, followee);
-console.log(isFollowing);
 ```
 
 ## Set User Profile Picture
@@ -232,17 +246,21 @@ console.log(isFollowing);
 Uploads and sets the user profile picture (Users can upload a picture to their own profile only). Not supported for batching.
 Accepts the profilePicSource Blob data representing the user's picture in BMP, JPEG, or PNG format of up to 4.76MB.
 
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```typescript
 setMyProfilePic(profilePicSource: Blob): Promise<void>
 ```
 
 ```typescript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists/web";
 import "@pnp/sp/profiles";
 import "@pnp/sp/folders";
 import "@pnp/sp/files";
+
+const sp = spfi(...);
 
 // get the blob object through a request or from a file input
 const blob = await sp.web.lists.getByTitle("Documents").rootFolder.files.getByName("profile.jpg").getBlob();
@@ -261,6 +279,7 @@ setSingleValueProfileProperty(accountName: string, propertyName: string, propert
 ```
 
 ```typescript
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 await sp.profiles.setSingleValueProfileProperty(loginName, "CellPhone", "(123) 555-1212");
 ```
@@ -276,6 +295,7 @@ setMultiValuedProfileProperty(accountName: string, propertyName: string, propert
 ```
 
 ```typescript
+const sp = spfi(...);
 const loginName = "i:0#.f|membership|testuser@mytenant.onmicrosoft.com";
 const propertyName = "SPS-Skills";
 const propertyValues = ["SharePoint", "Office 365", "Architecture", "Azure"];
@@ -299,6 +319,7 @@ createPersonalSiteEnqueueBulk(...emails: string[]): Promise<void>
 ```
 
 ```typescript
+const sp = spfi(...);
 let userEmails: string[] = ["testuser1@mytenant.onmicrosoft.com", "testuser2@mytenant.onmicrosoft.com"];
 await sp.profiles.createPersonalSiteEnqueueBulk(userEmails);
 ```
@@ -310,8 +331,8 @@ ownerUserProfile(): Promise<IUserProfile>
 ```
 
 ```typescript
+const sp = spfi(...);
 const profile = await sp.profiles.ownerUserProfile();
-console.log(profile);
 ```
 
 ## Get the user profile of the current user
@@ -321,8 +342,8 @@ userProfile(): Promise<any>
 ```
 
 ```typescript
+const sp = spfi(...);
 const profile = await sp.profiles.userProfile();
-console.log(profile);
 ```
 
 ## Create personal site for current user
@@ -332,6 +353,7 @@ createPersonalSite(interactiveRequest = false): Promise<void>
 ```
 
 ```typescript
+const sp = spfi(...);
 await sp.profiles.createPersonalSite();
 ```
 
@@ -344,6 +366,7 @@ shareAllSocialData(share: boolean): Promise<void>
 ```
 
 ```typescript
+const sp = spfi(...);
 await sp.profiles.shareAllSocialData(true);
 ```
 
@@ -356,13 +379,13 @@ clientPeoplePickerResolveUser(queryParams: IClientPeoplePickerQueryParameters): 
 ```
 
 ```typescript
-const result = await sp.profiles.clientPeoplePickerSearchUser({
+const sp = spfi(...);
+const result = await sp.profiles.clientPeoplePickerResolveUser({
   AllowEmailAddresses: true,
   AllowMultipleEntities: false,
   MaximumEntitySuggestions: 25,
-  QueryString: 'John'
+  QueryString: 'mbowen@contoso.com'
 });
-console.log(result);
 ```
 
 ## Search a user or group
@@ -374,11 +397,11 @@ clientPeoplePickerSearchUser(queryParams: IClientPeoplePickerQueryParameters): P
 ```
 
 ```typescript
+const sp = spfi(...);
 const result = await sp.profiles.clientPeoplePickerSearchUser({
   AllowEmailAddresses: true,
   AllowMultipleEntities: false,
   MaximumEntitySuggestions: 25,
   QueryString: 'John'
 });
-console.log(result);
 ```

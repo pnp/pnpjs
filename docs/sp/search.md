@@ -6,17 +6,14 @@ Using search you can access content throughout your organization in a secure and
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/search";<br />import { ISearchQuery, SearchResults } from "@pnp/sp/search";|
-|Preset: All|import { sp, ISearchQuery, SearchResults } from "@pnp/sp/presets/all";|
-
 Search is accessed directly from the root sp object and can take either a string representing the query text, a plain object matching the ISearchQuery interface, or a SearchQueryBuilder instance.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/search";
 import { ISearchQuery, SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+
+const sp = spfi(...);
 
 // text search using SharePoint default values for other parameters
 const results: SearchResults = await sp.search("test");
@@ -46,20 +43,38 @@ console.log(results3.RowCount);
 console.log(results3.PrimarySearchResults);
 ```
 
-## Search Result Caching
-
-You can use the searchWithCaching method to enable cache support for your search results this option works with any of the options for providing a query, just replace "search" with "searchWithCaching" in your method chain and gain all the benefits of caching. The second parameter is optional and allows you to specify the cache options
+## People Search Example
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/search";
+import { SearchQueryInit, SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+
+const sp = spfi(...);
+
+// Where source id is the built in Search Source for People and is the same for every tenant.
+const q: SearchQueryInit = SearchQueryBuilder(`Joe`)
+        .sourceId("B09A7990-05EA-4AF9-81EF-EDFAB16C4E31")
+        .rowLimit(500)
+        .rowsPerPage(500)
+        .selectProperties("SipAddress", "PreferredName", "AccountName", "Department", "JobTitle")
+        .trimDuplicates;
+const people: SearchResults = await this._sp.search(q);
+```
+
+## Search Result Caching
+
+Starting with v3 you can use any of the caching behaviors with search and the results will be cached. Please see here [for more details on caching options](https://pnp.github.io/pnpjs/queryable/behaviors/#caching).
+
+```TypeScript
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/search";
 import { ISearchQuery, SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+import { Caching } from "@pnp/queryable";
 
-sp.searchWithCaching({
-    Querytext: "test",
-    RowLimit: 10,
-    EnableInterleaving: true,
-} as ISearchQuery).then((r: SearchResults) => {
+const sp = spfi(...).using(Caching());
+
+sp.search({/* ... query */}).then((r: SearchResults) => {
 
     console.log(r.ElapsedTime);
     console.log(r.RowCount);
@@ -70,7 +85,7 @@ sp.searchWithCaching({
 const builder = SearchQueryBuilder("test").rowLimit(3);
 
 // supply a search query builder and caching options
-const results2 = await sp.searchWithCaching(builder, { key: "mykey", expiration: dateAdd(new Date(), "month", 1) });
+const results2 = await sp.search(builder);
 
 console.log(results2.TotalRows);
 ```
@@ -80,9 +95,11 @@ console.log(results2.TotalRows);
 Paging is controlled by a start row and page size parameter. You can specify both arguments in your initial query however you can use the getPage method to jump to any page. The second parameter page size is optional and will use the previous RowLimit or default to 10.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/search";
 import { SearchResults, SearchQueryBuilder } from "@pnp/sp/search";
+
+const sp = spfi(...);
 
 // this will hold our current results
 let currentResults: SearchResults = null;
@@ -119,9 +136,11 @@ async function prev() {
 The SearchQueryBuilder allows you to build your queries in a fluent manner. It also accepts constructor arguments for query text and a base query plain object, should you have a shared configuration for queries in an application you can define them once. The methods and properties match those on the SearchQuery interface. Boolean properties add the flag to the query while methods require that you supply one or more arguments. Also arguments supplied later in the chain will overwrite previous values.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/search";
 import { SearchQueryBuilder, SearchResults, ISearchQuery } from "@pnp/sp/search";
+
+const sp = spfi(...);
 
 // basic usage
 let q = SearchQueryBuilder().text("test").rowLimit(4).enablePhonetic;
@@ -152,9 +171,11 @@ const results3 = sp.search(q4);
 Search suggest works in much the same way as search, except against the suggest end point. It takes a string or a plain object that matches ISuggestQuery.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/search";
 import { ISuggestQuery, ISuggestResult } from "@pnp/sp/search";
+
+const sp = spfi(...);
 
 const results = await sp.searchSuggest("test");
 
@@ -168,13 +189,19 @@ const results2 = await sp.searchSuggest({
 
 You can also configure a search or suggest query against any valid SP url using the factory methods.
 
+> In this case you'll need to ensure you add observers, or use the [tuple constructor](../queryable/queryable.md/#queryable-constructor) to inherit
+
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/web";
 import "@pnp/sp/search";
 import { Search, Suggest } from "@pnp/sp/search";
+import { SPDefault } from "@pnp/nodejs";
+
+const sp = spfi(...);
 
 // set the url for search
-const searcher = Search("https://mytenant.sharepoint.com/sites/dev");
+const searcher = Search([sp.web, "https://mytenant.sharepoint.com/sites/dev"]);
 
 // this can accept any of the query types (text, ISearchQuery, or SearchQueryBuilder)
 const results = await searcher("test");
@@ -183,7 +210,17 @@ const results = await searcher("test");
 const results2 = await searcher("another query");
 
 // same process works for Suggest
-const suggester = Suggest("https://mytenant.sharepoint.com/sites/dev");
+const suggester = Suggest([sp.web, "https://mytenant.sharepoint.com/sites/dev"]);
 
 const suggestions = await suggester({ querytext: "test" });
+
+// resetting the observers on the instance
+const searcher2 = Search("https://mytenant.sharepoint.com/sites/dev").using(SPDefault({
+  msal: {
+    config: {...},
+    scopes: [...],
+  },
+}));
+
+const results3 = await searcher2("test");
 ```

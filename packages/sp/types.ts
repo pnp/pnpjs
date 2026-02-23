@@ -13,6 +13,31 @@ export interface IChangeToken {
 }
 
 /**
+ * Contains options used to modify the behaviour of a move or copy operation
+ */
+export interface IMoveCopyOptions {
+    /**
+     * Boolean specifying whether to rename and copy the source file when the destination file exists
+     */
+    KeepBoth: boolean;
+
+    /**
+     * Boolean specifying whether to reset the destination of the copy author to the current user and the created by datetime to the current time.
+     */
+    ResetAuthorAndCreatedOnCopy: boolean;
+
+    /**
+     * Boolean specifying whether to allow File and Folder Move operations when file contain co-authoring shared locks
+     */
+    ShouldBypassSharedLocks: boolean;
+
+    /**
+     * Boolean specifying whether to retain the source of the move's editor and modified by datetime.
+     */
+    RetainEditorAndModifiedOnMove: boolean;
+}
+
+/**
  * Defines a query that is performed against the change log.
  */
 export interface IChangeQuery {
@@ -170,7 +195,7 @@ export interface IChangeQuery {
 /**
  * Specifies the type of a principal.
  */
-export const enum PrincipalType {
+export enum PrincipalType {
     /**
      * Enumeration whose value specifies no principal type.
      */
@@ -201,7 +226,7 @@ export const enum PrincipalType {
 /**
  * Specifies the source of a principal.
  */
-export const enum PrincipalSource {
+export enum PrincipalSource {
     /**
      * Enumeration whose value specifies no principal source.
      */

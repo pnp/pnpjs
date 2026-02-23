@@ -1,16 +1,15 @@
 # @pnp/graph/planner
 
-The ability to manage plans and tasks in Planner is a capability introduced in version 1.2.4 of @pnp/graphfi(). Through the methods described
+The ability to manage plans and tasks in Planner is a capability introduced in version 1.2.4 of @pnp/graph. Through the methods described
 you can add, update and delete items in Planner.
+
+More information can be found in the official Graph documentation:
+
+- [Tasks and plans](https://learn.microsoft.com/en-us/graph/api/resources/planner-overview?view=graph-rest-1.0)
 
 ## IInvitations
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
-
-| Scenario    | Import Statement                                                  |
-| ----------- | ----------------------------------------------------------------- |
-| Selective   | import { graphfi } from "@pnp/graph";<br />import "@pnp/graph/planner"; |
-| Preset: All | import "@pnp/graph/presets/all";    |
 
 ## Get Plans by Id
 
@@ -19,9 +18,11 @@ Planner.plans is not an available endpoint, you need to get a specific Plan.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const plan = await graphfi().planner.plans.getById('planId')();
+const graph = graphfi(...);
+
+const plan = await graph.planner.plans.getById({planId})();
 
 ```
 
@@ -31,9 +32,18 @@ Using the planner.plans.add() you can create a new Plan.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const newPlan = await graphfi().planner.plans.add('groupObjectId', 'title');
+const graph = graphfi(...);
+
+const planTemplate: IPlanAdd = {
+    container: {
+        url: "",
+    },
+    title: "",
+};
+
+const plan = await graph.planner.plans.add(planTemplate);
 
 ```
 
@@ -43,9 +53,11 @@ Using the tasks() you can get the Tasks in a Plan.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const planTasks = await graphfi().planner.plans.getById('planId').tasks();
+const graph = graphfi(...);
+
+const planTasks = await graph.planner.plans.getById({planId}).tasks();
 
 ```
 
@@ -55,9 +67,11 @@ Using the buckets() you can get the Buckets in a Plan.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const planBuckets = await graphfi().planner.plans.getById('planId').buckets();
+const graph = graphfi(...);
+
+const planBuckets = await graph.planner.plans.getById({planId}).buckets();
 
 ```
 
@@ -67,9 +81,11 @@ Using the details() you can get the details in a Plan.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const planDetails = await graphfi().planner.plans.getById('planId').details();
+const graph = graphfi(...);
+
+const planDetails = await graph.planner.plans.getById({planId}).details();
 
 ```
 
@@ -79,9 +95,12 @@ Using the delete() you can get delete a Plan.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const delPlan = await graphfi().planner.plans.getById('planId').delete('planEtag');
+const graph = graphfi(...);
+
+// Note the planETag cannot be "*" and is required.
+const delPlan = await graph.planner.plans.getById({planId}).delete({planEtag});
 
 ```
 
@@ -91,9 +110,27 @@ Using the update() you can get update a Plan.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const updPlan = await graphfi().planner.plans.getById('planId').update({title: 'New Title', eTag: 'planEtag'});
+const graph = graphfi(...);
+
+const updPlan = await graph.planner.plans.getById({planId}).update({title: 'New Title', eTag: {planEtag}});
+
+```
+
+## Get All My Tasks from all plans
+
+Using the tasks() you can get the Tasks across all plans
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/planner";
+
+const graph = graphfi(...);
+
+const planTasks = await graph.me.tasks();
+const planTasks = await graph.users.getById({userId}).tasks();
 
 ```
 
@@ -104,9 +141,11 @@ Planner.tasks is not an available endpoint, you need to get a specific Task.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const task = await graphfi().planner.tasks.getById('taskId')();
+const graph = graphfi(...);
+
+const task = await graph.planner.tasks.getById({taskId})();
 
 ```
 
@@ -116,9 +155,21 @@ Using the planner.tasks.add() you can create a new Task.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const newTask = await graphfi().planner.tasks.add('planId', 'title');
+const graph = graphfi(...);
+
+const taskTemplate = {
+    planId: {planId},
+    title: "My New Task",
+    assignments: { 
+        {userId}: {
+            "@odata.type": "#microsoft.graph.plannerAssignment",
+            orderHint: " !",
+        }
+    },
+};
+const newTask = await graph.planner.tasks.add({taskTemplate});
 
 ```
 
@@ -128,9 +179,11 @@ Using the details() you can get the details in a Task.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const taskDetails = await graphfi().planner.tasks.getById('taskId').details();
+const graph = graphfi(...);
+
+const taskDetails = await graph.planner.tasks.getById({taskId}).details();
 
 ```
 
@@ -140,9 +193,12 @@ Using the delete() you can get delete a Task.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const delTask = await graphfi().planner.tasks.getById('taskId').delete('taskEtag');
+const graph = graphfi(...);
+
+// Note the taskEtag cannot be "*" and is required.
+const delTask = await graph.planner.tasks.getById({taskId}).delete({taskEtag});
 
 ```
 
@@ -152,9 +208,11 @@ Using the update() you can get update a Task.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const updTask = await graphfi().planner.tasks.getById('taskId').update({properties, eTag:'taskEtag'});
+const graph = graphfi(...);
+
+const updTask = await graph.planner.tasks.getById({taskId}).update({properties, eTag: {taskEtag}});
 
 ```
 
@@ -165,9 +223,11 @@ planner.buckets is not an available endpoint, you need to get a specific Bucket.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const bucket = await graphfi().planner.buckets.getById('bucketId')();
+const graph = graphfi(...);
+
+const bucket = await graph.planner.buckets.getById({bucketId})();
 
 ```
 
@@ -177,9 +237,15 @@ Using the planner.buckets.add() you can create a new Bucket.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const newBucket = await graphfi().planner.buckets.add('name', 'planId');
+const graph = graphfi(...);
+
+const bucketTemplate = {
+    planId: {planId},
+    name: "My Task Bucket",
+};
+const newBucket = await graph.planner.buckets.add(bucketTemplate);
 
 ```
 
@@ -189,9 +255,11 @@ Using the update() you can get update a Bucket.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const updBucket = await graphfi().planner.buckets.getById('bucketId').update({name: "Name", eTag:'bucketEtag'});
+const graph = graphfi(...);
+
+const updBucket = await graph.planner.buckets.getById({bucketId}).update({name: "New Name", eTag: {bucketEtag}});
 
 ```
 
@@ -201,9 +269,12 @@ Using the delete() you can get delete a Bucket.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const delBucket = await graphfi().planner.buckets.getById('bucketId').delete(eTag:'bucketEtag');
+const graph = graphfi(...);
+
+// Note the bucketEtag cannot be "*" and is required.
+const delBucket = await graph.planner.buckets.getById({bucketId}).delete(eTag: {bucketEtag});
 
 ```
 
@@ -213,8 +284,51 @@ Using the tasks() you can get Tasks in a Bucket.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
-import "@pnp/graph/planner"
+import "@pnp/graph/planner";
 
-const bucketTasks = await graphfi().planner.buckets.getById('bucketId').tasks();
+const graph = graphfi(...);
 
+const bucketTasks = await graph.planner.buckets.getById({bucketId}).tasks();
+
+```
+
+## Get Plans for a group
+
+Gets all the plans for a group
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/groups";
+import "@pnp/graph/planner";
+
+const graph = graphfi(...);
+
+const plans = await graph.groups.getById("b179a282-9f94-4bb5-a395-2a80de5a5a78").plans();
+
+```
+
+## Get AssignedToTaskBoardFormat, BucketTaskBoardFormat, ProgressTaskBoardTaskFormat
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/planner";
+
+const graph = graphfi(...);
+
+const assignedToTaskBoardFormat = await this.pnp.graph.planner.tasks.getById({taskId}).assignedToTaskBoardFormat();
+const bucketTaskBoardFormat = await this.pnp.graph.planner.tasks.getById({taskId}).assignedToTaskBoardFormat();
+const progressTaskBoardTaskFormat = await this.pnp.graph.planner.tasks.getById({taskId}).progressTaskBoardTaskFormat();
+```
+
+## Update AssignedToTaskBoardFormat, BucketTaskBoardFormat, ProgressTaskBoardTaskFormat
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/planner";
+
+const graph = graphfi(...);
+
+await this.pnp.graph.planner.tasks.getById({taskId}).assignedToTaskBoardFormat.update({ unassignedOrderHint: " abc!" }, {taskETag});
+await this.pnp.graph.planner.tasks.getById({taskId}).assignedToTaskBoardFormat.update({orderHint: " abc!" }, {taskETag});
+await this.pnp.graph.planner.tasks.getById({taskId}).progressTaskBoardTaskFormat.update({orderHint: " abc!" }, {taskETag});
 ```

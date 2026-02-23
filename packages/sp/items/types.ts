@@ -8,13 +8,15 @@ import {
     ISPQueryable,
     SPInstance,
     ISPInstance,
+    SPCollection,
+    spPost,
 } from "../spqueryable.js";
-import { hOP } from "@pnp/core";
+import { hOP, objectDefinedNotNull } from "@pnp/core";
+import { extractWebUrl } from "@pnp/sp";
 import { IListItemFormUpdateValue, List } from "../lists/types.js";
 import { body, headers, parseBinderWithErrorCheck, parseODataJSON } from "@pnp/queryable";
 import { IList } from "../lists/index.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
 import { IResourcePath } from "../utils/to-resource-path.js";
 
 /**
@@ -22,7 +24,7 @@ import { IResourcePath } from "../utils/to-resource-path.js";
  *
  */
 @defaultPath("items")
-export class _Items extends _SPCollection {
+export class _Items<GetType = any[]> extends _SPCollection<GetType> {
 
     /**
     * Gets an Item by id
@@ -40,7 +42,7 @@ export class _Items extends _SPCollection {
      */
     public getItemByStringId(stringId: string): IItem {
         // creates an item with the parent list path and append out method call
-        return Item(this.parentUrl, `getItemByStringId('${stringId}')`);
+        return Item([this, this.parentUrl], `getItemByStringId('${stringId}')`);
     }
 
     /**
@@ -51,19 +53,57 @@ export class _Items extends _SPCollection {
      */
     public skip(skip: number, reverse = false): this {
         if (reverse) {
-            this.query.set("$skiptoken", encodeURIComponent(`Paged=TRUE&PagedPrev=TRUE&p_ID=${skip}`));
+            this.query.set("$skiptoken", `Paged=TRUE&PagedPrev=TRUE&p_ID=${skip}`);
         } else {
-            this.query.set("$skiptoken", encodeURIComponent(`Paged=TRUE&p_ID=${skip}`));
+            this.query.set("$skiptoken", `Paged=TRUE&p_ID=${skip}`);
         }
         return this;
     }
 
-    /**
-     * Gets a collection designed to aid in paging through data
-     *
-     */
-    public getPaged<T = any[]>(): Promise<PagedItemCollection<T>> {
-        return this.using(PagedItemParser(this))();
+    public [Symbol.asyncIterator]() {
+
+        const nextInit = SPCollection(this).using(parseBinderWithErrorCheck(async (r) => {
+
+            const json = await r.json();
+            const nextLink = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
+
+            return <IPagedResult<GetType>>{
+                hasNext: typeof nextLink === "string" && nextLink.length > 0,
+                nextLink,
+                value: parseODataJSON(json),
+            };
+        }));
+
+        const queryParams = ["$top", "$select", "$expand", "$filter", "$orderby", "$skiptoken"];
+
+        for (let i = 0; i < queryParams.length; i++) {
+            const param = this.query.get(queryParams[i]);
+            if (objectDefinedNotNull(param)) {
+                nextInit.query.set(queryParams[i], param);
+            }
+        }
+
+        return <AsyncIterator<GetType>>{
+
+            _next: nextInit,
+
+            async next() {
+
+                if (this._next === null) {
+                    return { done: true, value: undefined };
+                }
+
+                const result: IPagedResult<GetType> = await this._next();
+
+                if (result.hasNext) {
+                    this._next = SPCollection([this._next, result.nextLink]);
+                    return { done: false, value: result.value };
+                } else {
+                    this._next = null;
+                    return { done: false, value: result.value };
+                }
+            },
+        };
     }
 
     /**
@@ -72,12 +112,8 @@ export class _Items extends _SPCollection {
      * @param properties The new items's properties
      * @param listItemEntityTypeFullName The type name of the list's entities
      */
-    public async add(properties: Record<string, any> = {}): Promise<IItemAddResult> {
-
-        return spPost<{ Id: number }>(this, body(properties)).then((data) => ({
-            data: data,
-            item: this.getById(data.Id),
-        }));
+    public async add(properties: Record<string, any> = {}): Promise<any> {
+        return spPost(this, body(properties));
     }
 }
 export interface IItems extends _Items { }
@@ -142,7 +178,7 @@ export class _Item extends _SPInstance {
      * this item's list
      */
     public get list(): IList {
-        return this.getParent<IList>(List, "", this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
+        return this.getParent<IList>(List, "", this.parentUrl.substring(0, this.parentUrl.lastIndexOf("/")));
     }
 
     /**
@@ -151,19 +187,14 @@ export class _Item extends _SPInstance {
      * @param properties A plain object hash of values to update for the list
      * @param eTag Value used in the IF-Match header, by default "*"
      */
-    public async update(properties: Record<string, any>, eTag = "*"): Promise<IItemUpdateResult> {
+    public async update(properties: Record<string, any>, eTag = "*"): Promise<any> {
 
         const postBody = body(properties, headers({
             "IF-Match": eTag,
             "X-HTTP-Method": "MERGE",
         }));
 
-        const data = await spPost(Item(this).using(ItemUpdatedParser()), postBody);
-
-        return {
-            data,
-            item: this,
-        };
+        return spPost(Item(this).using(ItemUpdatedParser()), postBody);
     }
 
     /**
@@ -214,6 +245,7 @@ export class _Item extends _SPInstance {
             await this.select(
                 "Id",
                 "ParentList/Id",
+                "ParentList/Title",
                 "ParentList/RootFolder/UniqueId",
                 "ParentList/RootFolder/ServerRelativeUrl",
                 "ParentList/RootFolder/ServerRelativePath",
@@ -232,6 +264,7 @@ export class _Item extends _SPInstance {
             },
             ParentList: {
                 Id: urlInfo.ParentList.Id,
+                Title: urlInfo.ParentList.Title,
                 RootFolderServerRelativePath: urlInfo.ParentList.RootFolder.ServerRelativePath,
                 RootFolderServerRelativeUrl: urlInfo.ParentList.RootFolder.ServerRelativeUrl,
                 RootFolderUniqueId: urlInfo.ParentList.RootFolder.UniqueId,
@@ -244,6 +277,38 @@ export class _Item extends _SPInstance {
             },
         };
     }
+
+    public async setImageField(fieldName: string, imageName: string, imageContent: any): Promise<any> {
+
+        const contextInfo = await this.getParentInfos();
+
+        const webUrl = extractWebUrl(this.toUrl());
+
+        const q = SPQueryable([this, webUrl], "/_api/web/UploadImage");
+        q.concat("(listTitle=@a1,imageName=@a2,listId=@a3,itemId=@a4)");
+        q.query.set("@a1", `'${contextInfo.ParentList.Title}'`);
+        q.query.set("@a2", `'${imageName}'`);
+        q.query.set("@a3", `'${contextInfo.ParentList.Id}'`);
+        q.query.set("@a4", contextInfo.Item.Id);
+
+        const result = await spPost<IItemImageUploadResult>(q, { body: imageContent });
+
+        const itemInfo = {
+            "type": "thumbnail",
+            "fileName": result.Name,
+            "nativeFile": {},
+            "fieldName": fieldName,
+            "serverUrl": contextInfo.ParentWeb.Url.replace(contextInfo.ParentWeb.ServerRelativeUrl, ""),
+            "serverRelativeUrl": result.ServerRelativeUrl,
+            "id": result.UniqueId,
+        };
+
+        return this.validateUpdateListItem([{
+            FieldName: fieldName,
+            FieldValue: JSON.stringify(itemInfo),
+        }]);
+    }
+
 }
 export interface IItem extends _Item, IDeleteableWithETag { }
 export const Item = spInvokableFactory<IItem>(_Item);
@@ -276,41 +341,10 @@ export class _ItemVersion extends _SPInstance {
 export interface IItemVersion extends _ItemVersion, IDeleteableWithETag { }
 export const ItemVersion = spInvokableFactory<IItemVersion>(_ItemVersion);
 
-/**
- * Provides paging functionality for list items
- */
-export class PagedItemCollection<T> {
-
-    constructor(private parent: _Items, private nextUrl: string, public results: T) { }
-
-    /**
-     * If true there are more results available in the set, otherwise there are not
-     */
-    public get hasNext(): boolean {
-        return typeof this.nextUrl === "string" && this.nextUrl.length > 0;
-    }
-
-    /**
-     * Gets the next set of results, or resolves to null if no results are available
-     */
-    public async getNext(): Promise<PagedItemCollection<T> | null> {
-
-        if (this.hasNext) {
-            const items = <IItems>Items([this.parent, this.nextUrl], "");
-            return items.getPaged<T>();
-        }
-
-        return null;
-    }
-}
-
-function PagedItemParser(parent: _Items) {
-
-    return parseBinderWithErrorCheck(async (r) => {
-        const json = await r.json();
-        const nextUrl = hOP(json, "d") && hOP(json.d, "__next") ? json.d.__next : json["odata.nextLink"];
-        return new PagedItemCollection(parent, nextUrl, parseODataJSON(json));
-    });
+export interface IPagedResult<T> {
+    value: T;
+    hasNext: boolean;
+    nextLink: string;
 }
 
 function ItemUpdatedParser() {
@@ -319,18 +353,14 @@ function ItemUpdatedParser() {
     }));
 }
 
-export interface IItemAddResult {
-    item: IItem;
-    data: any;
-}
-
-export interface IItemUpdateResult {
-    item: IItem;
-    data: IItemUpdateResultData;
-}
-
 export interface IItemUpdateResultData {
     etag: string;
+}
+
+export interface IItemImageUploadResult {
+    Name: string;
+    ServerRelativeUrl: string;
+    UniqueId: string;
 }
 
 export interface IItemDeleteParams {
@@ -350,6 +380,7 @@ export interface IItemParentInfos {
     };
     ParentList: {
         Id: string;
+        Title: string;
         RootFolderServerRelativePath: IResourcePath;
         RootFolderServerRelativeUrl: string;
         RootFolderUniqueId: string;

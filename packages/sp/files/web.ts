@@ -1,6 +1,6 @@
+import { encodePath } from "../utils/encode-path-str.js";
 import { _Web } from "../webs/types.js";
-import { File, IFile } from "./types.js";
-import { escapeQueryStrValue } from "../utils/escape-query-str.js";
+import { File, fileFromServerRelativePath, IFile } from "./types.js";
 
 declare module "../webs/types" {
     interface _Web {
@@ -34,7 +34,7 @@ declare module "../webs/types" {
 }
 
 _Web.prototype.getFileByServerRelativePath = function (this: _Web, fileRelativeUrl: string): IFile {
-    return File(this, `getFileByServerRelativePath(decodedUrl='${escapeQueryStrValue(fileRelativeUrl)}')`);
+    return fileFromServerRelativePath(this, fileRelativeUrl);
 };
 
 _Web.prototype.getFileById = function (this: _Web, uniqueId: string): IFile {
@@ -42,5 +42,5 @@ _Web.prototype.getFileById = function (this: _Web, uniqueId: string): IFile {
 };
 
 _Web.prototype.getFileByUrl = function (this: _Web, fileUrl: string): IFile {
-    return File(this, `getFileByUrl('!@p1::${escapeQueryStrValue(fileUrl)}')`);
+    return File(this, `getFileByUrl('${encodePath("!@p1::" + fileUrl)}')`);
 };

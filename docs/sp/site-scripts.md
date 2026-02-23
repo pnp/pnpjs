@@ -2,16 +2,13 @@
 
 [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import "@pnp/sp/site-scripts";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
-
 ## Create a new site script
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-scripts";
+
+const sp = spfi(...);
 
 const sitescriptContent = {
     "$schema": "schema.json",
@@ -33,8 +30,10 @@ console.log(siteScript.Title);
 ## Retrieval
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-scripts";
+
+const sp = spfi(...);
 
 // Retrieving all site scripts
 const allSiteScripts = await sp.siteScripts.getSiteScripts();
@@ -48,8 +47,10 @@ console.log(siteScript.Title);
 ## Update and delete
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-scripts";
+
+const sp = spfi(...);
 
 // Update
 const updatedSiteScript = await sp.siteScripts.updateSiteScript({ Id: "884ed56b-1aab-4653-95cf-4be0bfa5ef0a", Title: "New Title" });
@@ -62,8 +63,10 @@ await sp.siteScripts.deleteSiteScript("884ed56b-1aab-4653-95cf-4be0bfa5ef0a");
 ## Get site script from a list
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-scripts";
+
+const sp = spfi(...);
 
 // Using the absolute URL of the list
 const ss = await sp.siteScripts.getSiteScriptFromList("https://TENANT.sharepoint.com/Lists/mylist");
@@ -75,7 +78,7 @@ const ss2 = await sp.web.lists.getByTitle("mylist").getSiteScript();
 ## Get site script from a web
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-scripts";
 
 const extractInfo = {
@@ -96,8 +99,10 @@ const ss2 = await sp.web.getSiteScript(extractInfo);
 ## Execute Site Script Action
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/site-scripts";
+
+const sp = spfi(...);
 
 const siteScript = "your site script action...";
 
@@ -107,7 +112,7 @@ const ss = await sp.siteScripts.executeSiteScriptAction(siteScript);
 ### Execute site script for a specific web
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import { SiteScripts } "@pnp/sp/site-scripts";
 
 const siteScript = "your site script action...";

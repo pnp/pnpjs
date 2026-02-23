@@ -1,0 +1,28 @@
+{
+    "extends": "../tsconfig-commonjs.json",
+    "include": [
+        "./**/*.ts",
+        "../core/**/*.ts",
+        "../graph/**/*.ts",
+        "../queryable/**/*.ts",
+        "../logging/**/*.ts",
+        "../sp/**/*.ts"
+    ],
+    "references": [
+        {
+            "path": "../core/tsconfig-commonjs.json"
+        },
+        {
+            "path": "../graph/tsconfig-commonjs.json"
+        },
+        {
+            "path": "../logging/tsconfig-commonjs.json"
+        },
+        {
+            "path": "../queryable/tsconfig-commonjs.json"
+        },
+        {
+            "path": "../sp/tsconfig-commonjs.json"
+        }
+    ]
+}

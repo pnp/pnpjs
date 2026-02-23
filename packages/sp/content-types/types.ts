@@ -7,9 +7,10 @@ import {
     ISPCollection,
     deleteable,
     IDeleteable,
+    spPost,
+    spPostMerge,
 } from "../spqueryable.js";
 import { defaultPath } from "../decorators.js";
-import { spPost } from "../operations.js";
 
 @defaultPath("contenttypes")
 export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
@@ -39,7 +40,8 @@ export class _ContentTypes extends _SPCollection<IContentTypeInfo[]> {
     /**
      * Adds a new content type to the collection
      *
-     * @param id The desired content type id for the new content type (also determines the parent content type)
+     * @param id The desired content type id for the new content type (also determines the parent
+     *   content type)
      * @param name The name of the content type
      * @param description The description of the content type
      * @param group The group in which to add the content type
@@ -72,6 +74,15 @@ export const ContentTypes = spInvokableFactory<IContentTypes>(_ContentTypes);
 export class _ContentType extends _SPInstance<IContentTypeInfo> {
 
     public delete = deleteable();
+
+    /**
+     * Updates this list instance with the supplied properties
+     *
+     * @param properties A plain object hash of values to update for the web
+     */
+    public async update(properties: Record<string, any>): Promise<void> {
+        return spPostMerge(this, body(properties));
+    }
 
     /**
      * Gets the column (also known as field) references in the content type.
@@ -133,10 +144,14 @@ export const FieldLink = spInvokableFactory<IFieldLink>(_FieldLink);
 
 export interface IContentTypeInfo {
     Description: string;
+    DispFormClientSideComponentId: string;
+    DispFormClientSideComponentProperties: string;
     DisplayFormTemplateName: string;
     DisplayFormUrl: string;
     DocumentTemplate: string;
     DocumentTemplateUrl: string;
+    EditFormClientSideComponentId: string;
+    EditFormClientSideComponentProperties: string;
     EditFormTemplateName: string;
     EditFormUrl: string;
     Group: string;
@@ -147,6 +162,8 @@ export interface IContentTypeInfo {
     MobileEditFormUrl: string;
     MobileNewFormUrl: string;
     Name: string;
+    NewFormClientSideComponentId: string;
+    NewFormClientSideComponentProperties: string;
     NewFormTemplateName: string;
     NewFormUrl: string;
     ReadOnly: boolean;

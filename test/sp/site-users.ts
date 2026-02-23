@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "@pnp/sp/site-users";
-import { ISiteUserProps, IUserUpdateResult, ISiteUserInfo } from "@pnp/sp/site-users";
+import { ISiteUserProps, ISiteUserInfo } from "@pnp/sp/site-users";
 import { ISiteGroups } from "@pnp/sp/presets/all";
 import { stringIsNullOrEmpty } from "@pnp/core";
 
@@ -85,8 +85,8 @@ describe("Site Users", function () {
         it("update", async function () {
             const _props: ISiteUserProps = await this.pnp.sp.web.currentUser();
             _props.Title = "Changed Title";
-            const e: IUserUpdateResult = await this.pnp.sp.web.currentUser.update(_props);
-            const _newProps = await e.user();
+            await this.pnp.sp.web.currentUser.update(_props);
+            const _newProps = await this.pnp.sp.web.currentUser();
             return expect(_newProps.Title).to.be.eq("Changed Title");
         });
     });

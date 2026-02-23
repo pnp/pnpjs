@@ -6,21 +6,16 @@ Lists in SharePoint are collections of information built in a structural way usi
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { Webs, IWebs } from "@pnp/sp/webs"; <br />import { Lists, ILists } from "@pnp/sp/lists";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/webs";<br />import "@pnp/sp/lists";|
-|Preset: All|import { sp, Lists, ILists } from "@pnp/sp/presets/all";|
-|Preset: Core|import { sp, Lists, ILists } from "@pnp/sp/presets/core";|
-
 ### Get List by Id
 
 Gets a list from the collection by id (guid). Note that the library will handle a guid formatted with curly braces (i.e. '{03b05ff4-d95d-45ed-841d-3855f77a2483}') as well as without curly braces (i.e. '03b05ff4-d95d-45ed-841d-3855f77a2483'). The Id parameter is also case insensitive.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
+
+const sp = spfi(...);
 
 // get the list by Id
 const list = sp.web.lists.getById("03b05ff4-d95d-45ed-841d-3855f77a2483");
@@ -37,9 +32,11 @@ console.log(r.Title);
 You can also get a list from the collection by title.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
+
+const sp = spfi(...);
 
 // get the default document library 'Documents'
 const list = sp.web.lists.getByTitle("Documents");
@@ -56,18 +53,25 @@ console.log(r.Id);
 You can add a list to the web's list collection using the .add-method. To invoke this method in its most simple form, you can provide only a title as a parameter. This will result in a standard out of the box list with all default settings, and the title you provide.
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import { IListInfo } from '@pnp/sp/lists';
+
+const sp = spfi(...);
+
 // create a new list, passing only the title
-const listAddResult = await sp.web.lists.add("My new list");
+const listAddResult: IListInfo = await sp.web.lists.add("My new list");
 
 // we can work with the list created using the IListAddResult.list property:
-const r = await listAddResult.list.select("Title")();
+const r = await sp.web.lists.getByTitle(listAddResult.Title)();
 
 // log newly created list title to console
 console.log(r.Title);
 });
 ```
 
-You can also provide other (optional) parameters like description, template and enableContentTypes. If that is not enough for you, you can use the parameter named 'additionalSettings' which is just a TypedHash, meaning you can sent whatever properties you'd like in the body (provided that the property is supported by the SharePoint API). You can find a [listing of list template codes](https://docs.microsoft.com/en-us/dotnet/api/microsoft.sharepoint.splisttemplatetype?view=sharepoint-server) in the official docs.
+You can also provide other (optional) parameters like description, template and enableContentTypes. If that is not enough for you, you can use the parameter named 'additionalSettings' which is just a TypedHash, meaning you can sent whatever properties you'd like in the body (provided that the property is supported by the SharePoint API). You can find a [listing of list template codes](https://learn.microsoft.com/en-us/openspecs/sharepoint_protocols/ms-wssts/8bf797af-288c-4a1d-a14b-cf5394e636cf) in the official docs.
 
 ```TypeScript
 // this will create a list with template 101 (Document library), content types enabled and show it on the quick launch (using additionalSettings)
@@ -84,7 +88,14 @@ console.log(r.Id);
 
 Ensures that the specified list exists in the collection (note: this method not supported for batching). Just like with the add-method (see examples above) you can provide only the title, or any or all of the optional parameters desc, template, enableContentTypes and additionalSettings.
 
+![Batching Not Supported Banner](https://img.shields.io/badge/Batching%20Not%20Supported-important.svg)
+
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
 // ensure that a list exists. If it doesn't it will be created with the provided title (the rest of the settings will be default):
 const listEnsureResult = await sp.web.lists.ensure("My List");
 
@@ -105,6 +116,11 @@ console.log(r.Id);
 If the list already exists, the other settings you provide will be used to update the existing list.
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
 // add a new list to the lists collection of the web
 sp.web.lists.add("My List 2").then(async () => {
 
@@ -124,6 +140,11 @@ console.log(r.Description);
 Gets a list that is the default asset location for images or other files, which the users upload to their wiki pages.
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
 // get Site Assets library
 const siteAssetsList = await sp.web.lists.ensureSiteAssetsLibrary();
 
@@ -139,6 +160,11 @@ console.log(r.Title);
 Gets a list that is the default location for wiki pages.
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
 // get Site Pages library
 const siteAssetsList = await sp.web.lists.ensureSitePagesLibrary();
 
@@ -155,8 +181,8 @@ console.log(r.Title);
 
 |Scenario|Import Statement|
 |--|--|
-|Selective 1|import { sp } from "@pnp/sp";<br />import { List, IList } from "@pnp/sp/lists";|
-|Selective 2|import { sp } from "@pnp/sp";<br />import "@pnp/sp/lists";|
+|Selective 1|import { List, IList } from "@pnp/sp/lists";|
+|Selective 2|import "@pnp/sp/lists";|
 |Preset: All|import { sp, List, IList } from "@pnp/sp/presets/all";|
 |Preset: Core|import { sp, List, IList } from "@pnp/sp/presets/core";|
 
@@ -190,7 +216,7 @@ list.update(updateProperties).then(async (l: IListUpdateResult) => {
 From the change log, you can get a collection of changes that have occurred within the list based on the specified query.
 
 ```TypeScript
-import { sp, IChangeQuery } from "@pnp/sp";
+import { IChangeQuery } from "@pnp/sp";
 
 // build the changeQuery object, here we look att changes regarding Add, DeleteObject and Restore
 const changeQuery: IChangeQuery = {
@@ -200,6 +226,30 @@ const changeQuery: IChangeQuery = {
     DeleteObject: true,
     Rename: true,
     Restore: true,
+};
+
+// get list changes
+const r = await list.getChanges(changeQuery);
+
+// log changes to console
+console.log(r);
+```
+
+To get changes from a specific time range you can use the ChangeTokenStart or a combination of ChangeTokenStart and ChangeTokenEnd.
+
+```TypeScript
+import { IChangeQuery, createChangeToken } from "@pnp/sp";
+
+//Resource is the list Id (as Guid)
+const changeTokenStart = createChangeToken("list", list.Id, new Date("2022-02-22"));
+
+// build the changeQuery object, here we look at changes regarding Add and Update for Items.
+const changeQuery: IChangeQuery = {
+    Add: true,
+    Update: true,
+    Item: true,
+    ChangeTokenEnd: null,
+    ChangeTokenStart: changeTokenStart,
 };
 
 // get list changes
@@ -292,15 +342,35 @@ console.log(r.Row);
 
 ```TypeScript
 import { IRenderListDataParameters } from "@pnp/sp/lists";
-
 // setup parameters object
 const renderListDataParams: IRenderListDataParameters = {
     ViewXml: "<View><RowLimit>5</RowLimit></View>",
 };
-
 // render list data as stream
 const r = await list.renderListDataAsStream(renderListDataParams);
+// log array of items in response
+console.log(r.Row);
+```
 
+You can also supply other options to renderListDataAsStream including [override parameters](https://docs.microsoft.com/en-us/dotnet/api/microsoft.sharepoint.client.renderlistdataoverrideparameters?view=sharepoint-csom) and query params. This can be helpful when looking to apply sorting to the returned data.
+
+```TypeScript
+import { IRenderListDataParameters } from "@pnp/sp/lists";
+// setup parameters object
+const renderListDataParams: IRenderListDataParameters = {
+    ViewXml: "<View><RowLimit>5</RowLimit></View>",
+};
+const overrideParams = {
+    ViewId = "{view guid}"
+};
+// OR if you don't want to supply override params use null
+// overrideParams = null;
+// Set the query params using a map
+const query = new Map<string, string>();
+query.set("SortField", "{AField}");
+query.set("SortDir", "Desc");
+// render list data as stream
+const r = await list.renderListDataAsStream(renderListDataParams, overrideParams, query);
 // log array of items in response
 console.log(r.Row);
 ```
@@ -314,18 +384,15 @@ const listItemId = await list.reserveListItemId();
 console.log(listItemId);
 ```
 
-### Get list item entity type name
-
-```TypeScript
-const entityTypeFullName = await list.getListItemEntityTypeFullName();
-
-// log entity type name
-console.log(entityTypeFullName);
-```
-
 ### Add a list item using path (folder), validation and set field values
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
+
 const list = await sp.webs.lists.getByTitle("MyList").select("Title", "ParentWebUrl")();
 const formValues: IListItemFormUpdateValue[] = [
                 {
@@ -340,17 +407,18 @@ list.addValidateUpdateItemUsingPath(formValues,`${list.ParentWebUrl}/Lists/${lis
 
 ## content-types imports
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import "@pnp/sp/content-types";|
-|Selective 2|import "@pnp/sp/content-types/list";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
-
 ### contentTypes
 
 Get all content types for a list
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
+import "@pnp/sp/content-types/list";
+
 const list = sp.web.lists.getByTitle("Documents");
 const r = await list.contentTypes();
 ```
@@ -368,6 +436,13 @@ const r = await list.contentTypes();
 Get all the fields for a list
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
+import "@pnp/sp/fields/list";
+
 const list = sp.web.lists.getByTitle("Documents");
 const r = await list.fields();
 ```
@@ -375,70 +450,60 @@ const r = await list.fields();
 Add a field to the site, then add the site field to a list
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
 const fld = await sp.site.rootWeb.fields.addText("MyField");
-await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.data.SchemaXml);
+await sp.web.lists.getByTitle("MyList").fields.createFieldAsXml(fld.SchemaXml);
 ```
-
-## folders imports
-
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import "@pnp/sp/folders";|
-|Selective 2|import "@pnp/sp/folders/list";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
 
 ### folders
 
 Get the root folder of a list.
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/folders/list";
+
+const sp = spfi(...);
+
 const list = sp.web.lists.getByTitle("Documents");
 const r = await list.rootFolder();
 ```
 
-## forms imports
-
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import "@pnp/sp/forms";|
-|Selective 2|import "@pnp/sp/forms/list";|
-|Preset: All|import { sp } from "@pnp/sp/presets/all";|
-
 ### forms
 
 ```TypeScript
+import "@pnp/sp/forms/list";
+
 const r = await list.forms();
 ```
-
-## items imports
-
-Scenario|Import Statement
---|--
-Selective 1|import "@pnp/sp/items";
-Selective 2|import "@pnp/sp/items/list";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### items
 
 Get a collection of list items.
 
 ```TypeScript
+import "@pnp/sp/items/list";
+
 const r = await list.items();
 ```
-
-## views imports
-
-Scenario|Import Statement
---|--
-Selective 1|import "@pnp/sp/views";
-Selective 2|import "@pnp/sp/views/list";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ### views
 
 Get the default view of the list
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/views/list";
+
+const sp = spfi(...);
 const list = sp.web.lists.getByTitle("Documents");
 const views = await list.views();
 const defaultView = await list.defaultView();
@@ -460,50 +525,46 @@ import "@pnp/sp/security/list";
 
 For more information on how to call security methods for lists, please refer to the [@pnp/sp/security](security.md) documentation.
 
-## subscriptions imports
-
-Scenario|Import Statement
---|--
-Selective 1|import "@pnp/sp/subscriptions";
-Selective 2|import "@pnp/sp/subscriptions/list";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
-
 ### subscriptions
 
 Get all subscriptions on the list
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/subscriptions/list";
+
+const sp = spfi(...);
 const list = sp.web.lists.getByTitle("Documents");
 const subscriptions = await list.subscriptions();
 ```
-
-## user-custom-actions imports
-
-Scenario|Import Statement
---|--
-Selective 1|import "@pnp/sp/user-custom-actions";
-Selective 2|import "@pnp/sp/user-custom-actions/web";
-Preset: All|import { sp } from "@pnp/sp/presets/all";
 
 ## userCustomActions
 
 Get a collection of the list's user custom actions.
 
 ```TypeScript
+import { spfi } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/user-custom-actions/web"
+
+const sp = spfi(...);
 const list = sp.web.lists.getByTitle("Documents");
 const r = await list.userCustomActions();
 ```
 
 ### getParentInfos
 
-
-
 Gets information about an list, including details about the parent list root folder, and parent web.
 
 ```TypeScript
-import { sp } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
-import "@pnp/sp/items";
+import "@pnp/sp/lists";
+
+const sp = spfi(...);
 
 const list = sp.web.lists.getByTitle("Documents");
 await list.getParentInfos();

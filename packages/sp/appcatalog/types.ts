@@ -4,16 +4,30 @@ import {
     _SPInstance,
     ISPQueryable,
     SPCollection,
+    spPost,
 } from "../spqueryable.js";
-import { spPost } from "../operations.js";
-import { odataUrlFrom } from "../utils/odata-url-from.js";
 import { extractWebUrl } from "../utils/extract-web-url.js";
-import { File, IFile } from "../files/types.js";
 import { combine } from "@pnp/core";
+import { defaultPath } from "../decorators.js";
 
+function getAppCatalogPath(base: string, path: string): string {
+
+    const paths = ["_api/web/tenantappcatalog/", "_api/web/sitecollectionappcatalog/"];
+
+    for (let i = 0; i < paths.length; i++) {
+        const index = base.indexOf(paths[i]);
+        if (index > -1) {
+            return combine(base.substring(index, index + paths[i].length), path);
+        }
+    }
+
+    return combine(base, path);
+}
+
+@defaultPath("_api/web/tenantappcatalog/AvailableApps")
 export class _AppCatalog extends _SPCollection {
 
-    constructor(base: string | ISPQueryable, path = "_api/web/tenantappcatalog/AvailableApps") {
+    constructor(base: string | ISPQueryable, path?: string) {
         super(base, null);
         this._url = combine(extractWebUrl(this._url), path);
     }
@@ -30,13 +44,13 @@ export class _AppCatalog extends _SPCollection {
      * Synchronize a solution to the Microsoft Teams App Catalog
      * @param id - Specify the guid of the app
      * @param useSharePointItemId (optional) - By default this REST call requires the SP Item id of the app, not the app id.
-     *                            PnPjs will try to fetch the item id by default, you can still use this parameter to pass your own item id in the first parameter
+     *                            PnPjs will try to fetch the item id, you can still use this parameter to pass your own item id in the first parameter
      */
     public async syncSolutionToTeams(id: string | number, useSharePointItemId = false): Promise<void> {
 
         // This REST call requires that you refer the list item id of the solution in the app catalog site.
         let appId = null;
-        const webUrl = extractWebUrl(this.toUrl()) + "_api/web";
+        const webUrl = combine(extractWebUrl(this.toUrl()), "_api/web");
 
         if (useSharePointItemId) {
 
@@ -57,9 +71,7 @@ export class _AppCatalog extends _SPCollection {
             }
         }
 
-        const poster = AppCatalog([this, webUrl], `/tenantappcatalog/SyncSolutionToTeams(id=${appId})`);
-
-        return await spPost(poster);
+        return spPost(AppCatalog(this, getAppCatalogPath(this.toUrl(), `SyncSolutionToTeams(id=${appId})`)));
     }
 
     /**
@@ -70,21 +82,16 @@ export class _AppCatalog extends _SPCollection {
      * @param shouldOverWrite Should an app with the same name in the same location be overwritten? (default: true)
      * @returns Promise<IAppAddResult>
      */
-    public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<IAppAddResult> {
+    public async add(filename: string, content: string | ArrayBuffer | Blob, shouldOverWrite = true): Promise<any> {
 
         // you don't add to the availableapps collection
-        const adder = AppCatalog([this, extractWebUrl(this.toUrl())], `_api/web/tenantappcatalog/add(overwrite=${shouldOverWrite},url='${filename}')`);
+        const adder = AppCatalog(this, getAppCatalogPath(this.toUrl(), `add(overwrite=${shouldOverWrite},url='${filename}')`));
 
-        const r = await spPost(adder, {
+        return spPost(adder, {
             body: content, headers: {
                 "binaryStringRequestBody": "true",
             },
         });
-
-        return {
-            data: r,
-            file: File(odataUrlFrom(r)),
-        };
     }
 }
 export interface IAppCatalog extends _AppCatalog { }
@@ -146,17 +153,3 @@ export class _App extends _SPInstance {
 }
 export interface IApp extends _App { }
 export const App = spInvokableFactory<IApp>(_App);
-
-/**
- * Result object after adding an app
- */
-export interface IAppAddResult {
-    /**
-     * Contains metadata of the added app
-     */
-    data: any;
-    /**
-     * A File instance to the item in SharePoint
-     */
-    file: IFile;
-}

@@ -8,19 +8,14 @@ Features module provides method to get the details of activated features. And to
 
 Represents a collection of features. SharePoint Sites and Webs will have a collection of features
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/sites";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/features";|
-|Preset: All|import { spfi, SPFx, IFeatures, Features } from "@pnp/sp/presets/all";|
-
 ### getById
 
 Gets the information about a feature for the given GUID
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
 const webFeatureId = "guid-of-web-feature";
@@ -35,9 +30,9 @@ const siteFeature = await sp.site.features.getById(siteFeatureId)();
 Adds (activates) a feature at the Site or Web level
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
 const webFeatureId = "guid-of-web-feature";
@@ -51,10 +46,9 @@ res = await sp.web.features.add(webFeatureId, true);
 Removes and deactivates the specified feature from the SharePoint Site or Web
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 
-
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
 const webFeatureId = "guid-of-web-feature";
@@ -69,22 +63,16 @@ Represents an instance of a SharePoint feature.
 
 [![Invokable Banner](https://img.shields.io/badge/Invokable-informational.svg)](../concepts/invokable.md) [![Selective Imports Banner](https://img.shields.io/badge/Selective%20Imports-informational.svg)](../concepts/selective-imports.md)  
 
-|Scenario|Import Statement|
-|--|--|
-|Selective 1|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/features/web";|
-|Selective 2|import { spfi, SPFx } from "@pnp/sp";<br />import "@pnp/sp/webs";<br/>import "@pnp/sp/features";|
-|Preset: All|import { spfi, SPFx, IFeatures, Features, IFeature, Feature } from "@pnp/sp/presets/all";|
-
 ### deactivate
 
 Deactivates the specified feature from the SharePoint Site or Web
 
 ```TypeScript
-import { spfi, SPFx } from "@pnp/sp";
+import { spfi } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/features";
 
-const sp = spfi("{tenant url}").using(SPFx(this.context));
+const sp = spfi(...);
 
 //Example of GUID format a7a2793e-67cd-4dc1-9fd0-43f61581207a
 const webFeatureId = "guid-of-web-feature";

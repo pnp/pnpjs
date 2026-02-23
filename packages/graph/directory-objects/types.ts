@@ -1,14 +1,14 @@
-import { _GraphQueryableCollection, _GraphQueryableInstance, graphInvokableFactory } from "../graphqueryable.js";
+import { _GraphCollection, _GraphInstance, graphInvokableFactory, graphPost } from "../graphqueryable.js";
 import { DirectoryObject as IDirectoryObjectType } from "@microsoft/microsoft-graph-types";
 import { defaultPath, getById, IGetById, deleteable, IDeleteable } from "../decorators.js";
 import { body } from "@pnp/queryable";
-import { graphPost } from "../operations.js";
+import { Count } from "../behaviors/paged.js";
 
 /**
  * Represents a Directory Object entity
  */
 @deleteable()
-export class _DirectoryObject<GetType = IDirectoryObjectType> extends _GraphQueryableInstance<GetType> {
+export class _DirectoryObject<GetType = IDirectoryObjectType> extends _GraphInstance<GetType> {
 
     /**
    * Returns all the groups and directory roles that the specified Directory Object is a member of. The check is transitive
@@ -47,7 +47,7 @@ export const DirectoryObject = graphInvokableFactory<IDirectoryObject>(_Director
  */
 @defaultPath("directoryObjects")
 @getById(DirectoryObject)
-export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphQueryableCollection<GetType> {
+export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphCollection<GetType> {
     /**
   * Returns the directory objects specified in a list of ids. NOTE: The directory objects returned are the full objects containing all their properties.
   * The $select query option is not available for this operation.
@@ -58,8 +58,16 @@ export class _DirectoryObjects<GetType = IDirectoryObjectType[]> extends _GraphQ
     public getByIds(ids: string[], type: DirectoryObjectTypes = DirectoryObjectTypes.directoryObject): Promise<IDirectoryObjectType[]> {
         return graphPost(DirectoryObjects(this, "getByIds"), body({ ids, type }));
     }
+
+    /**
+     * 	Retrieves the total count of matching resources
+     *  If the resource doesn't support count, this value will always be zero
+     */
+    public async count(): Promise<number> {
+        return Count(this);
+    }
 }
-export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObjectType> { }
+export interface IDirectoryObjects extends _DirectoryObjects, IGetById<IDirectoryObject> { }
 export const DirectoryObjects = graphInvokableFactory<IDirectoryObjects>(_DirectoryObjects);
 
 /**
