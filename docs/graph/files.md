@@ -531,7 +531,7 @@ const move = await graph.me.drives.getById({drive id}).getItemById("{item id}").
 
 ## Copy drive item
 
-Using the copy() you can copy the current item to a new location, returns the path to the new location
+Using the copy() you can copy the current item to a new location, returns a URL used to monitor the progress of the asynchronous copy operation.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
