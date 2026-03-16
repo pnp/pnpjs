@@ -543,15 +543,15 @@ const graph = graphfi(...);
 // Requires a parentReference to the destination folder location
 const copyOptions: IItemOptions = {
   parentReference: {
-    id?: {parentLocationId};
-    driveId?: {parentLocationDriveId}};
-  };
-  name?: {newName};
+    id?: {parentLocationId},
+    driveId?: {parentLocationDriveId},
+  },
+  name?: {newName}
 };
 
-const copy = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").copy(copyOptions);
+const copy = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").copyItem(copyOptions);
 
-const copy = await graph.me.drives.getById({drive id}).getItemById("{item id}").copy(copyOptions);
+const copy = await graph.me.drives.getById({drive id}).getItemById("{item id}").copyItem(copyOptions);
 
 ```
 
