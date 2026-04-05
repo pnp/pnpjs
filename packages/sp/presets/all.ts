@@ -18,6 +18,7 @@ import "../lists/index.js";
 import "../navigation/index.js";
 import "../profiles/index.js";
 import "../publishing-sitepageservice/index.js";
+import "../recycle-bin/index.js";
 import "../regional-settings/index.js";
 import "../related-items/index.js";
 import "../search/index.js";
