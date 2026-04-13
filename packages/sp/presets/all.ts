@@ -65,6 +65,7 @@ export * from "../navigation/index.js";
 export * from "../utils/odata-url-from.js";
 export * from "../profiles/index.js";
 export * from "../publishing-sitepageservice/index.js";
+export * from "../recycle-bin/index.js";
 export * from "../regional-settings/index.js";
 export * from "../related-items/index.js";
 export * from "../search/index.js";
