@@ -6,7 +6,7 @@
     "rootDir": ".",
     "sourceMap": true,
     "strict": false,
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "typeRoots": [
       "./node_modules/@types"
