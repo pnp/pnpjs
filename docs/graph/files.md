@@ -531,7 +531,7 @@ const move = await graph.me.drives.getById({drive id}).getItemById("{item id}").
 
 ## Copy drive item
 
-Using the copy() you can copy the current item to a new location, returns the path to the new location
+Using the copy() you can copy the current item to a new location, returns a URL used to monitor the progress of the asynchronous copy operation.
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -543,15 +543,15 @@ const graph = graphfi(...);
 // Requires a parentReference to the destination folder location
 const copyOptions: IItemOptions = {
   parentReference: {
-    id?: {parentLocationId};
-    driveId?: {parentLocationDriveId}};
-  };
-  name?: {newName};
+    id?: {parentLocationId},
+    driveId?: {parentLocationDriveId},
+  },
+  name?: {newName}
 };
 
-const copy = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").copy(copyOptions);
+const copy = await graph.users.getById({user id}).drives.getById({drive id}).getItemById("{item id}").copyItem(copyOptions);
 
-const copy = await graph.me.drives.getById({drive id}).getItemById("{item id}").copy(copyOptions);
+const copy = await graph.me.drives.getById({drive id}).getItemById("{item id}").copyItem(copyOptions);
 
 ```
 
