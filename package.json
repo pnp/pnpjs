@@ -7,7 +7,7 @@
     "devDependencies": {
         "@azure/identity": "4.13.1",
         "@azure/msal-browser": "3.28.1",
-        "@azure/msal-node": "2.16.2",
+        "@azure/msal-node": "3.8.10",
         "@microsoft/microsoft-graph-types": "2.43.1",
         "@pnp/buildsystem": "^4.0.1",
         "@pnp/logging": "^4.17.0",
