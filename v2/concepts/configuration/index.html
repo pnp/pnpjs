@@ -1,0 +1,2685 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/concepts/configuration/">
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.0.2">
+    
+    
+      
+        <title>Configuration - PnP/PnPjs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.38780c08.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f72e892.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/concepts/configuration/" alt="spacer" width="1" height="1" />
+
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="blue" data-md-color-accent="">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pnpjs-configuration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://pnp.github.io/pnpjs/" title="PnP/PnPjs" class="md-header-nav__button md-logo" aria-label="PnP/PnPjs">
+      
+  <img src="../../img/Logo.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            PnP/PnPjs
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Configuration
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/pnp/pnpjs/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://pnp.github.io/pnpjs/" title="PnP/PnPjs" class="md-nav__button md-logo" aria-label="PnP/PnPjs">
+      
+  <img src="../../img/Logo.png" alt="logo">
+
+    </a>
+    PnP/PnPjs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/pnp/pnpjs/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../getting-started/" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../news/2020-year-in-review/" class="md-nav__link">
+      2020 Year In Review
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      General
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="General" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        General
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../getting-started/" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../transition-guide/" class="md-nav__link">
+      Transition Guide
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../npm-scripts/" class="md-nav__link">
+      Npm Scripts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../SPFx-on-premises/" class="md-nav__link">
+      SPFx On-Premises
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs-support/" class="md-nav__link">
+      Working in Nodejs
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Library Concepts
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Library Concepts" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        Library Concepts
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Configuration
+    </a>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../selective-imports/" class="md-nav__link">
+      Selective Imports
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../custom-bundle/" class="md-nav__link">
+      Custom Bundle
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ie11-mode/" class="md-nav__link">
+      IE11 Mode
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../invokable/" class="md-nav__link">
+      Invokables
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../polyfill/" class="md-nav__link">
+      Polyfills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../settings/" class="md-nav__link">
+      Settings
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../error-handling/" class="md-nav__link">
+      Error Handling
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-9" type="checkbox" id="nav-5-9">
+    
+    <label class="md-nav__link" for="nav-5-9">
+      Authentication
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Authentication" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-9">
+        <span class="md-nav__icon md-icon"></span>
+        Authentication
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/client-spfx/" class="md-nav__link">
+      SPFx Auth
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/msaljsclient/" class="md-nav__link">
+      MSAL Client
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/adaljsclient/" class="md-nav__link">
+      ADAL Client
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/client-spa/" class="md-nav__link">
+      SPA Auth
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/server-nodejs/" class="md-nav__link">
+      NodeJS Auth
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/sp-app-registration/" class="md-nav__link">
+      SP App Reg
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/bearertokenclient/" class="md-nav__link">
+      Bearer Token Client
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../authentication/lambdaclient/" class="md-nav__link">
+      Lambda Token Client
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Packages
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Packages" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        <span class="md-nav__icon md-icon"></span>
+        Packages
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../packages/" class="md-nav__link">
+      Packages
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-2" type="checkbox" id="nav-6-2">
+    
+    <label class="md-nav__link" for="nav-6-2">
+      common
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="common" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-2">
+        <span class="md-nav__icon md-icon"></span>
+        common
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/collections/" class="md-nav__link">
+      collections
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/custom-httpclientimpl/" class="md-nav__link">
+      Custom HttpClientImpl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/libconfig/" class="md-nav__link">
+      libconfig
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/netutil/" class="md-nav__link">
+      netutil
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/storage/" class="md-nav__link">
+      storage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../common/util/" class="md-nav__link">
+      util
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-3" type="checkbox" id="nav-6-3">
+    
+    <label class="md-nav__link" for="nav-6-3">
+      config-store
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="config-store" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-3">
+        <span class="md-nav__icon md-icon"></span>
+        config-store
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../config-store/" class="md-nav__link">
+      config-store
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../config-store/configuration/" class="md-nav__link">
+      configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../config-store/providers/" class="md-nav__link">
+      providers
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-4" type="checkbox" id="nav-6-4">
+    
+    <label class="md-nav__link" for="nav-6-4">
+      graph
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="graph" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-4">
+        <span class="md-nav__icon md-icon"></span>
+        graph
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/" class="md-nav__link">
+      graph
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/groups/" class="md-nav__link">
+      groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/insights/" class="md-nav__link">
+      insights
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/contacts/" class="md-nav__link">
+      contacts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/calendars/" class="md-nav__link">
+      calendars
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/directoryobjects/" class="md-nav__link">
+      directory objects
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/invitations/" class="md-nav__link">
+      invitations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/onedrive/" class="md-nav__link">
+      onedrive
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/outlook/" class="md-nav__link">
+      outlook
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/photos/" class="md-nav__link">
+      photos
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/planner/" class="md-nav__link">
+      planner
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/search/" class="md-nav__link">
+      search
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/subscriptions/" class="md-nav__link">
+      subscriptions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/teams/" class="md-nav__link">
+      teams
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../graph/users/" class="md-nav__link">
+      users
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../logging/" class="md-nav__link">
+      logging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-6" type="checkbox" id="nav-6-6">
+    
+    <label class="md-nav__link" for="nav-6-6">
+      nodejs
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="nodejs" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-6">
+        <span class="md-nav__icon md-icon"></span>
+        nodejs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/" class="md-nav__link">
+      nodejs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/sp-fetch-client/" class="md-nav__link">
+      SPFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/adal-fetch-client/" class="md-nav__link">
+      AdalFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/bearer-token-fetch-client/" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/provider-hosted-app/" class="md-nav__link">
+      ProviderHostedRequestContext
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/sp-extensions/" class="md-nav__link">
+      sp Extensions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../nodejs/proxy/" class="md-nav__link">
+      proxy
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-7" type="checkbox" id="nav-6-7">
+    
+    <label class="md-nav__link" for="nav-6-7">
+      odata
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="odata" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-7">
+        <span class="md-nav__icon md-icon"></span>
+        odata
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/" class="md-nav__link">
+      odata
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/caching/" class="md-nav__link">
+      caching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/core/" class="md-nav__link">
+      core
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/odata-batch/" class="md-nav__link">
+      OData Batching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/extensions/" class="md-nav__link">
+      Extending an OData library
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/debug/" class="md-nav__link">
+      Debugging Proxy Objects
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/parsers/" class="md-nav__link">
+      Parsers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/pipeline/" class="md-nav__link">
+      Pipeline
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../odata/queryable/" class="md-nav__link">
+      Queryable
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-8" type="checkbox" id="nav-6-8">
+    
+    <label class="md-nav__link" for="nav-6-8">
+      pnpjs
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="pnpjs" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-8">
+        <span class="md-nav__icon md-icon"></span>
+        pnpjs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../pnpjs/" class="md-nav__link">
+      pnpjs
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-9" type="checkbox" id="nav-6-9">
+    
+    <label class="md-nav__link" for="nav-6-9">
+      sp
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="sp" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-9">
+        <span class="md-nav__icon md-icon"></span>
+        sp
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/" class="md-nav__link">
+      sp
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/alias-parameters/" class="md-nav__link">
+      Alias Parameters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/alm/" class="md-nav__link">
+      ALM api
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/attachments/" class="md-nav__link">
+      Attachments
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/clientside-pages/" class="md-nav__link">
+      Client-side Pages
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/column-defaults/" class="md-nav__link">
+      Column Defaults
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/comments-likes/" class="md-nav__link">
+      Comments and Likes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/content-types/" class="md-nav__link">
+      Content Types
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/entity-merging/" class="md-nav__link">
+      Entity Merging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/features/" class="md-nav__link">
+      Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/fields/" class="md-nav__link">
+      Fields
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/files/" class="md-nav__link">
+      Files
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/folders/" class="md-nav__link">
+      Folders
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/forms/" class="md-nav__link">
+      Forms
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/hubsites/" class="md-nav__link">
+      Hubsites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/items/" class="md-nav__link">
+      List Items
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/lists/" class="md-nav__link">
+      Lists
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/navigation/" class="md-nav__link">
+      Navigation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/permissions/" class="md-nav__link">
+      Permissions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/profiles/" class="md-nav__link">
+      Profiles
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/regional-settings/" class="md-nav__link">
+      Regional Settings
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/related-items/" class="md-nav__link">
+      Related Items
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/search/" class="md-nav__link">
+      Search
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/security/" class="md-nav__link">
+      Security
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/sharing/" class="md-nav__link">
+      Sharing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/site-designs/" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/site-groups/" class="md-nav__link">
+      Site Groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/site-scripts/" class="md-nav__link">
+      Site Scripts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/site-users/" class="md-nav__link">
+      Site Users
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/sites/" class="md-nav__link">
+      Sites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/social/" class="md-nav__link">
+      Social
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/sp-utilities-utility/" class="md-nav__link">
+      SP.Utilities.Utility
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/subscriptions/" class="md-nav__link">
+      Subscriptions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/taxonomy/" class="md-nav__link">
+      Taxonomy
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/tenant-properties/" class="md-nav__link">
+      Tenant Properties
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/user-custom-actions/" class="md-nav__link">
+      User custom actions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/views/" class="md-nav__link">
+      Views
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/webs/" class="md-nav__link">
+      Webs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp/custom-irequestclient/" class="md-nav__link">
+      Custom Request Client
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-10" type="checkbox" id="nav-6-10">
+    
+    <label class="md-nav__link" for="nav-6-10">
+      sp-addinhelpers
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="sp-addinhelpers" data-md-level="2">
+      <label class="md-nav__title" for="nav-6-10">
+        <span class="md-nav__icon md-icon"></span>
+        sp-addinhelpers
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp-addinhelpers/" class="md-nav__link">
+      sp-addinhelpers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp-addinhelpers/sp-request-executor-client/" class="md-nav__link">
+      SPRequestExecutorClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../sp-addinhelpers/sp-rest-addin/" class="md-nav__link">
+      SPRestAddIn
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Contributing
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Contributing" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        <span class="md-nav__icon md-icon"></span>
+        Contributing
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../contributing/" class="md-nav__link">
+      Contributing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../contributing/setup-dev-machine/" class="md-nav__link">
+      Setup Dev Machine
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../contributing/local-debug-configuration/" class="md-nav__link">
+      Local Debug Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../contributing/debugging/" class="md-nav__link">
+      Debugging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../contributing/extending-the-library/" class="md-nav__link">
+      Extending the library
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../contributing/debug-tests/" class="md-nav__link">
+      Writing Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../contributing/documentation/" class="md-nav__link">
+      Update Documentation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../contributing/pull-requests/" class="md-nav__link">
+      Submit a Pull Request
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      Version 1 Docs
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Version 1 Docs" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        <span class="md-nav__icon md-icon"></span>
+        Version 1 Docs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../v1/" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      Version 2 Docs
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Version 2 Docs" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        <span class="md-nav__icon md-icon"></span>
+        Version 2 Docs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../v2/index.html" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/pnp/pnpjs/tree/version-2/docs/concepts/configuration.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="pnpjs-configuration">PnPjs Configuration<a class="headerlink" href="#pnpjs-configuration" title="Permanent link">&para;</a></h1>
+<p>This article describes the configuration architecture used by the library as well as the settings available.</p>
+<blockquote>
+<p>Starting with version 2.1.0 we updated our configuration design to support the ability to isolate settings to individual objects. The first part of this article discusses the newer design, you can read about the <a href="#prior-to-v210">pre v2.1.0 configuration</a> further down.</p>
+</blockquote>
+<h1 id="post-v210">Post v2.1.0<a class="headerlink" href="#post-v210" title="Permanent link">&para;</a></h1>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<p>Starting from v2.1.0 we have modified our configuration design to allow for configuring individual queryable objects.</p>
+<h2 id="backward-compatibility">Backward Compatibility<a class="headerlink" href="#backward-compatibility" title="Permanent link">&para;</a></h2>
+<p>If you have no need to use the isolated runtimes introduced in 2.1.0 then you should see no change in library behavior from prior versions. You can continue to refer to the <a href="#prior-to-v210">pre v2.1.0 configuration</a> section - and if you see any issues please let us know.</p>
+<p>All of the available settings as described below remain, unchanged.</p>
+<blockquote>
+<p>If you previously used our internal configuration classes directly RuntimeConfigImpl, SPRuntimeConfigImpl, or GraphRuntimeConfigImpl they no longer exist. We do not consider this a breaking change as they were meant to be internal and their direct use was not documented. This includes the concrete default instances RuntimeConfig, SPRuntimeConfig, and GraphRuntimeConfig.</p>
+</blockquote>
+<h2 id="isolated-runtimes">Isolated Runtimes<a class="headerlink" href="#isolated-runtimes" title="Permanent link">&para;</a></h2>
+<p>You can create an isolated runtime when using either the sp or graph libraries. What this does is create an isolated set of properties and behaviors specific to a given fluent chain. Have a look at this basic example below:</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+
+// create an isolated sp root instance
+const isolatedSP = await sp.createIsolated();
+
+// this configuration applies to all objects created from &quot;sp&quot;
+sp.setup({
+  sp: {
+    baseUrl: &quot;https://mytenant.sharepoint.com/&quot;,
+  },
+});
+
+// this configuration applies to all objects created from &quot;isolatedSP&quot;
+isolatedSP.setup({
+  sp: {
+    baseUrl: &quot;https://mytenant.sharepoint.com/sites/dev&quot;,
+  },
+});
+
+// details for the web at https://mytenant.sharepoint.com/
+const web1 = await sp.web();
+
+// details for the web at https://mytenant.sharepoint.com/sites/dev
+const web2 = await isolatedSP.web();
+</code></pre>
+<p>This configuration is supplied to all objects down a given fluent chain:</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/lists&quot;;
+
+// create an isolated sp root instance
+const isolatedSP = await sp.createIsolated();
+
+// this configuraiton applies to all objects created from &quot;sp&quot;
+sp.setup({
+  sp: {
+    baseUrl: &quot;https://mytenant.sharepoint.com/&quot;,
+  },
+});
+
+// this configuraiton applies to all objects created from &quot;isolatedSP&quot;
+isolatedSP.setup({
+  sp: {
+    baseUrl: &quot;https://mytenant.sharepoint.com/sites/dev&quot;,
+  },
+});
+
+// details for the lists at https://mytenant.sharepoint.com/
+const lists1 = await sp.web.lists();
+
+// details for the lists at https://mytenant.sharepoint.com/sites/dev
+const lists2 = await isolatedSP.web.lists();
+</code></pre>
+<h2 id="createisolated">createIsolated<a class="headerlink" href="#createisolated" title="Permanent link">&para;</a></h2>
+<p>The createIsolated method is used to establish the isolated runtime for a given instance of either the sp or graph libraries. Once created it is no longer connected to the default instance and if you have common settings that must be updated you would need to update them across each isolated instance, this is by design. Currently sp and graph createIsolated methods accept the same init, but we have broken them out to make thing clear. All properties of the init object are optional. Any properties provided will overwrite those cloned from the default if cloneGlobal is true. If cloneGlobal is false you start with an empty config containing only the <a href="#common-configuration">core defaults</a>.</p>
+<h3 id="spcreateisolated">sp.createIsolated<a class="headerlink" href="#spcreateisolated" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { sp, ISPConfiguration } from &quot;@pnp/sp&quot;;
+
+// accept all the defaults, will clone any settings from sp
+const isolatedSP = await sp.createIsolated();
+
+// - specify all the config options, using the ISPConfiguration interface to type the config
+// - setting baseUrl in the root is equivelent to setting it with sp: { baseUrl: }, it is provided as a shortcut as this seemed to be a common use case
+//   - if you set them both the baseUrl in the root will be used.
+// - you can set some or all of the settings in config and if you clone from the global the ones you specify will overwrite the cloned values
+//   - for example your global config can specify everything and your isolated config could specify a different fetchClientFactory, see node example below
+const isolatedSP = await sp.createIsolated&lt;ISPConfiguration&gt;({
+  baseUrl: &quot;https://mytenant.sharepoint.com&quot;,
+  cloneGlobal: false,
+  config: {
+    cacheExpirationIntervalMilliseconds: 1000,
+    sp: {
+      baseUrl: &quot;https://mytenant.sharepoint.com&quot;,
+      fetchClientFactory: () =&gt; void(0),
+      headers: {
+        &quot;X-AnotherHeader&quot;: &quot;54321&quot;,
+      },
+    },
+    spfxContext: this.context, // only valid within SPFx
+  },
+  options: {
+    headers: {
+      &quot;X-SomeHeader&quot;: &quot;12345&quot;,
+    },
+  },
+});
+</code></pre>
+<p><em>Defaults</em></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseUrl</td>
+<td>""</td>
+</tr>
+<tr>
+<td>cloneGlobal</td>
+<td>true</td>
+</tr>
+<tr>
+<td>config</td>
+<td>{}</td>
+</tr>
+<tr>
+<td>options</td>
+<td>{}</td>
+</tr>
+</tbody>
+</table>
+<h3 id="graphcreateisolated">graph.createIsolated<a class="headerlink" href="#graphcreateisolated" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { graph, IGraphConfiguration } from &quot;@pnp/graph&quot;;
+
+// - specify all the config options, using the IGraphConfiguration interface to type the config
+// - setting baseUrl in the root is restricted to &quot;v1.0&quot; or &quot;beta&quot;. If you need to specify a different absolute url should use config.graph.baseUrl
+//   - in practice you should use one or the other. You can always swap Graph api version using IGraphQueryable.setEndpoint
+// - you can set some or all of the settings in config and if you clone from the global the ones you specify will overwrite the cloned values
+//   - for example your global config can specify everything and your isolated config could specify a different fetchClientFactory, see node example below
+const isolatedGraph = await graph.createIsolated&lt;IGraphConfiguration&gt;({
+  baseUrl: &quot;v1.0&quot;,
+  cloneGlobal: false,
+  config: {
+    cacheExpirationIntervalMilliseconds: 1000,
+    graph: {
+      baseUrl: &quot;https://graph.microsoft.com&quot;,
+      fetchClientFactory: () =&gt; void(0),
+      headers: {
+        &quot;X-AnotherHeader&quot;: &quot;54321&quot;,
+      },
+    },
+    spfxContext: this.context, // only valid within SPFx
+  },
+  options: {
+    headers: {
+      &quot;X-SomeHeader&quot;: &quot;12345&quot;,
+    },
+  },
+});
+</code></pre>
+<h4 id="defaults">Defaults<a class="headerlink" href="#defaults" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseUrl</td>
+<td>"v1.0"</td>
+</tr>
+<tr>
+<td>cloneGlobal</td>
+<td>true</td>
+</tr>
+<tr>
+<td>config</td>
+<td>{}</td>
+</tr>
+<tr>
+<td>options</td>
+<td>{}</td>
+</tr>
+</tbody>
+</table>
+<h2 id="additional-examples">Additional Examples<a class="headerlink" href="#additional-examples" title="Permanent link">&para;</a></h2>
+<h3 id="msal-with-node-multiple-site-requests">MSAL with Node multiple site requests<a class="headerlink" href="#msal-with-node-multiple-site-requests" title="Permanent link">&para;</a></h3>
+<p><em>MSAL Support Added in 2.0.11</em></p>
+<p>In this example you can see how you can setup the MSAL client once and then set a different baseUrl for an isolated instance. <a href="../../authentication/server-nodejs/">More information specific to setting up the MSAL client is available</a>.</p>
+<pre><code class="language-TypeScript">import { sp } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import { readFileSync } from &quot;fs&quot;;
+
+// read in our private key
+const buffer = readFileSync(&quot;c:/temp/key.pem&quot;);
+
+// configure node options
+sp.setup({
+  sp: {
+    baseUrl: &quot;https://{my tenant}.sharepoint.com/sites/dev/&quot;,
+    fetchClientFactory: () =&gt; {
+      return new MsalFetchClient({
+        auth: {
+          authority: &quot;https://login.microsoftonline.com/{tenant id or common}&quot;,
+          clientCertificate: {
+            thumbprint: &quot;{certificate thumbprint, displayed in AAD}&quot;,
+            privateKey: buffer.toString(),
+          },
+          clientId: &quot;{client id}&quot;,
+        }
+      }, [&quot;https://{my tenant}.sharepoint.com/.default&quot;]); // you must set the scope for SharePoint access
+    },
+  },
+});
+
+const isolatedSP = await sp.createIsolated&lt;ISPConfigurationPart&gt;({
+  config: {
+    sp: {
+      baseUrl: &quot;https://{my tenant}.sharepoint.com/sites/dev2/&quot;,
+    },
+  },
+});
+</code></pre>
+<h3 id="node-multiple-site-requests">Node multiple site requests<a class="headerlink" href="#node-multiple-site-requests" title="Permanent link">&para;</a></h3>
+<p>Isolated configuration was most requested for scenarios in node where you need to access information in multiple sites. This example shows setting up the global configuration and then creating an isolated config with only the baseUrl updated.</p>
+<pre><code class="language-TypeScript">import { SPFetchClient } from &quot;@pnp/nodejs&quot;;
+import { ISPConfigurationPart, sp } from &quot;@pnp/sp&quot;;
+
+sp.setup({
+  cacheExpirationIntervalMilliseconds: 1000,
+  defaultCachingStore: &quot;local&quot;,
+  sp: {
+    fetchClientFactory: () =&gt; {
+      return new SPFetchClient(&quot;https://mytenant.sharepoint.com/&quot;, &quot;id&quot;, &quot;secret&quot;);
+    },
+    headers: {
+      &quot;X-MyRequiredHeader&quot;: &quot;SomeValue&quot;,
+      &quot;X-MyRequiredHeader2&quot;: &quot;SomeValue&quot;,
+    },
+  },
+});
+
+const isolatedSP = await sp.createIsolated&lt;ISPConfigurationPart&gt;({
+  config: {
+    sp: {
+      fetchClientFactory: () =&gt; {
+        return new SPFetchClient(&quot;https://mytenant.sharepoint.com/site/dev&quot;, &quot;id&quot;, &quot;secret&quot;);
+      },
+    },
+  },
+});
+</code></pre>
+<h2 id="batching">Batching<a class="headerlink" href="#batching" title="Permanent link">&para;</a></h2>
+<p>All batching functionality works as expected, but you must take care to only associate requests from the <em>same</em> isolated instance as you create the batch. Mixing requests across isolation boundaries is not supported. This applies to sp and graph batching.</p>
+<pre><code class="language-TypeScript">sp.setup({
+    sp: {
+        fetchClientFactory: () =&gt; {
+            return new SPFetchClient(&quot;url1&quot;, &quot;id&quot;, &quot;secret&quot;);
+        },
+    },
+});
+
+const isolated = await sp.createIsolated&lt;ISPConfiguration&gt;({
+    config: {
+        sp: {
+            fetchClientFactory: () =&gt; {
+                return new SPFetchClient(&quot;url2&quot;, &quot;id&quot;, &quot;secret&quot;);
+            },
+        },
+    },
+});
+
+const batch1 = sp.createBatch();
+sp.web.lists.select(&quot;Title&quot;).top(3).inBatch(batch1)().then(r =&gt; console.log(`here 1: ${JSON.stringify(r, null, 2)}`));
+sp.web.select(&quot;Title&quot;).inBatch(batch1)().then(r =&gt; console.log(`here 2: ${JSON.stringify(r, null, 2)}`));
+await batch1.execute();
+
+const batch2 = isolated.createBatch();
+isolated.web.lists.select(&quot;Title&quot;).top(3).inBatch(batch2)().then(r =&gt; console.log(`here 3: ${JSON.stringify(r, null, 2)}`));
+isolated.web.select(&quot;Title&quot;).inBatch(batch2)().then(r =&gt; console.log(`here 4: ${JSON.stringify(r, null, 2)}`));
+await batch2.execute();
+</code></pre>
+<h2 id="ie11-mode">IE11 Mode<a class="headerlink" href="#ie11-mode" title="Permanent link">&para;</a></h2>
+<p>The IE11 mode setting is always global. There is no scenario we care to support where once instance needs to run in ie11 mode and another does not. Your code either does or does not run in ie11.</p>
+<h1 id="prior-to-v210">Prior to v2.1.0<a class="headerlink" href="#prior-to-v210" title="Permanent link">&para;</a></h1>
+<h2 id="architecture_1">Architecture<a class="headerlink" href="#architecture_1" title="Permanent link">&para;</a></h2>
+<p>PnPjs uses an additive configuration design with multiple libraries sharing a single global configuration instance. If you need non-global configuration <a href="#non-global-configuration">please see this section</a>. There are three ways to access the setup functionality - through either the common, sp, or graph library's setup method. While the configuration is global the various methods have different typing on their input parameter. You can review the <a href="../../common/libconfig/">libconfig article</a> for more details on storing your own configuration.</p>
+<h2 id="common-configuration">Common Configuration<a class="headerlink" href="#common-configuration" title="Permanent link">&para;</a></h2>
+<p>The common libary's setup method takes parameters defined by <a href="../../common/libconfig/#ilibraryconfiguration-interface">ILibraryConfiguration</a>. The properties and their defaults are listed below, followed by a code sample. You can call setup multiple times and any new values will be added to the existing configuration or replace the previous value if one existed.</p>
+<p>All values are optional.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>defaultCachingStore</td>
+<td>Where will PnPjs store cached data by default (session or local)</td>
+<td>session</td>
+</tr>
+<tr>
+<td>defaultCachingTimeoutSeconds</td>
+<td>The global default value used for cached data timeouts in seconds</td>
+<td>60</td>
+</tr>
+<tr>
+<td>globalCacheDisable</td>
+<td>Provides a way to globally within PnPjs disable all caching</td>
+<td>false</td>
+</tr>
+<tr>
+<td>enableCacheExpiration</td>
+<td>If true a timeout expired items will be removed from the cache in intervals determined by cacheTimeoutInterval</td>
+<td>false</td>
+</tr>
+<tr>
+<td>cacheExpirationIntervalMilliseconds</td>
+<td>Determines the interval in milliseconds at which the cache is checked to see if items have expired (min: 100)</td>
+<td>750</td>
+</tr>
+<tr>
+<td>spfxContext</td>
+<td>When running in SPFx the current context should always be supplied to PnPjs when available</td>
+<td>null</td>
+</tr>
+<tr>
+<td>ie11</td>
+<td>If true the library downgrades functionality to work in IE11</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>For more information on setting up in SPFx please see the <a href="../../authentication/">authentication section</a></p>
+<p>For more details on ie11 mode please see the <a href="../ie11-mode/">topic article</a></p>
+</blockquote>
+<pre><code class="language-ts">import { setup } from &quot;@pnp/core&quot;;
+
+// called before other code
+setup({
+  cacheExpirationIntervalMilliseconds: 15000,
+  defaultCachingStore: &quot;local&quot;,
+  defaultCachingTimeoutSeconds: 600,
+  enableCacheExpiration: true,
+  globalCacheDisable: false,
+  ie11: false,
+  spfxContext: this.context, // if in SPFx, otherwise leave it out
+});
+</code></pre>
+<h2 id="sp-configuration">SP Configuration<a class="headerlink" href="#sp-configuration" title="Permanent link">&para;</a></h2>
+<p>The sp library's configuration is defined by the ISPConfiguration interface which extends ILibraryConfiguration. All of the sp values are contained in a top level property named "sp". The following table describes the properties with a code sample following.</p>
+<p>All values are optional.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>headers</td>
+<td>Allows you to apply any headers to all calls made by the sp library</td>
+<td>none</td>
+</tr>
+<tr>
+<td>baseUrl</td>
+<td>Allows you to define a base site url for all requests, takes precedence over all other url logic. Must be absolute.</td>
+<td>none</td>
+</tr>
+<tr>
+<td>fetchClientFactory</td>
+<td>Allows you to specify a factory function used to produce <a href="../../common/netutil/#httpclientimpl">IHttpClientImpl</a> instances</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>There are many examples of using fetchClientFactory available in the <a href="../../authentication/">authentication section</a>.</p>
+</blockquote>
+<pre><code class="language-ts">import { sp } from &quot;@pnp/sp&quot;;
+import { SPFxAdalClient } from &quot;@pnp/core&quot;;
+
+// note you can still set the global configuration such as ie11 using the same object as 
+// the interface extends ILibraryConfiguration
+sp.setup({
+  ie11: false,
+  sp: {
+    baseUrl: &quot;https://tenant.sharepoint.com/sites/dev&quot;,
+    fetchClientFactory: () =&gt; {
+      return new SPFxAdalClient(this.context);
+    },
+    headers: {
+      &quot;Accept&quot;: &quot;application/json;odata=verbose&quot;,
+      &quot;X-Something&quot;: &quot;header-value&quot;,
+    },
+  },
+  spfxContext: this.context,
+});
+</code></pre>
+<h3 id="sharepoint-framework">SharePoint Framework<a class="headerlink" href="#sharepoint-framework" title="Permanent link">&para;</a></h3>
+<p>You can optionally supply only the SPFx context to the sp configure method.</p>
+<pre><code class="language-ts">import { sp } from &quot;@pnp/sp&quot;;
+
+// in SPFx only
+sp.setup(this.context);
+</code></pre>
+<h2 id="graph-configuration">Graph Configuration<a class="headerlink" href="#graph-configuration" title="Permanent link">&para;</a></h2>
+<p>The graph configuration works exactly the same as the sp configuration but is defined by the IGraphConfiguration interface which extends ILibraryConfiguration. All of the graph values are contained in a top level property named "graph". The following table describes the properties with a code sample following.</p>
+<p>All values are optional.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>headers</td>
+<td>Allows you to apply any headers to all calls made by the sp library</td>
+<td>none</td>
+</tr>
+<tr>
+<td>baseUrl</td>
+<td>Allows you to define a base site url for all requests, takes precedence over all other url logic. Must be absolute. (<em>Added in 2.0.8</em>)</td>
+<td>none</td>
+</tr>
+<tr>
+<td>fetchClientFactory</td>
+<td>Allows you to specify a factory function used to produce <a href="../../common/netutil/#httpclientimpl">IHttpClientImpl</a> instances</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>There are many examples of using fetchClientFactory available in the <a href="../../authentication/">authentication section</a>.</p>
+</blockquote>
+<pre><code class="language-ts">import { graph } from &quot;@pnp/graph&quot;;
+import { MsalClientSetup } from &quot;@pnp/msaljsclient&quot;;
+
+// note you can still set the global configuration such as ie11 using the same object as 
+// the interface extends ILibraryConfiguration
+graph.setup({
+  ie11: false,
+  graph: {
+    // we set the GCC url
+    baseUrl: &quot;https://graph.microsoft.us&quot;,
+    fetchClientFactory: MsalClientSetup({
+        auth: {
+            authority: &quot;https://login.microsoftonline.com/tenant.onmicrosoft.com&quot;,
+            clientId: &quot;00000000-0000-0000-0000-000000000000&quot;,
+            redirectUri: &quot;https://tenant.sharepoint.com/sites/dev/SitePages/test.aspx&quot;,
+        },
+    }, [&quot;Group.Read.All&quot;]),
+    headers: {
+      &quot;Accept&quot;: &quot;application/json;odata=verbose&quot;,
+      &quot;X-Something&quot;: &quot;header-value&quot;,
+    },
+  },
+  spfxContext: this.context,
+});
+</code></pre>
+<h3 id="sharepoint-framework_1">SharePoint Framework<a class="headerlink" href="#sharepoint-framework_1" title="Permanent link">&para;</a></h3>
+<p>You can optionally supply only the SPFx context to the graph configure method. We will attempt to set the baseUrl property from the context - but if that is failing in your environment and you need to call a special cloud (i.e. graph.microsoft.us) please set the baseUrl property.</p>
+<pre><code class="language-ts">import { graph } from &quot;@pnp/graph&quot;;
+
+// in SPFx only
+graph.setup(this.context);
+</code></pre>
+<h2 id="configure-everything-at-once">Configure Everything At Once<a class="headerlink" href="#configure-everything-at-once" title="Permanent link">&para;</a></h2>
+<p>In some cases you might want to configure everything in one go. Because the configuration is stored in a single location you can use the common library's setup method and adjust the typings to ensure you are using the correct property names while only having to setup things with a single call.</p>
+<blockquote>
+<p>In versions before 2.0.8 ISPConfigurationPart, IGraphConfigurationPart, and ILibraryConfiguration incorrectly were missing the "I" prefix. That was fixed in 2.0.8 - but note if you are using an older version of the library you'll need to use the old names. Everything else in the below example works as expected.</p>
+</blockquote>
+<pre><code class="language-ts">import { ISPConfigurationPart } from &quot;@pnp/sp&quot;;
+import { IGraphConfigurationPart } from &quot;@pnp/graph&quot;;
+import { ILibraryConfiguration, setup } from &quot;@pnp/core&quot;;
+
+// you could also include your custom configuration parts
+export interface AllConfig extends ILibraryConfiguration, ISPConfigurationPart, IGraphConfigurationPart { }
+
+// create a single big configuration entry
+const config: AllConfig = {
+  graph: {
+    baseUrl: &quot;https://graph.microsoft.us&quot;,
+  },
+  ie11: false,
+  sp: {
+    baseUrl: &quot;https://tenant.sharepoint.com/sites/dev&quot;,
+  },
+};
+
+setup(config);
+</code></pre>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../../nodejs-support/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Working in Nodejs
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../selective-imports/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Selective Imports
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/m365pnpjs" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="http://aka.ms/sppnp-videos" target="_blank" rel="noopener" title="aka.ms" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://aka.ms/sppnp" target="_blank" rel="noopener" title="aka.ms" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 32h214.6v214.6H0V32zm233.4 0H448v214.6H233.4V32zM0 265.4h214.6V480H0V265.4zm233.4 0H448V480H233.4V265.4z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.77e55a48.min.js"></script>
+      <script src="../../assets/javascripts/bundle.9554a270.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
