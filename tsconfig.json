@@ -12,12 +12,11 @@
             "dom",
             "ES2017.Object"
         ],
-        "baseUrl": ".",
         "rootDir": ".",
         "outDir": "./build",
         "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "noUnusedLocals": true,
         "noUnusedParameters": false,
         "pretty": true,
