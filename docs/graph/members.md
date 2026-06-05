@@ -22,7 +22,7 @@ const owners = await graph.groups.getById({groupId}).owners();
 
 ## Add Member/Owner
 
-Add a member/owner to an group
+Add a member/owner to a group
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -32,8 +32,21 @@ import "@pnp/graph/members";
 const graph = graphfi(...);
 const members = await graph.groups.getById({groupId}).members.add({directoryObjectId}).
 const owners = await graph.groups.getById({groupId}).owners.add({directoryObjectId});
-```
 
+```
+## Add Members to Group in bulk
+
+Add a list of members to a group in a single call
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/groups";
+import "@pnp/graph/members";
+
+const graph = graphfi(...);
+await graph.groups.getById({groupId}).members.addBulk(["https://graph.microsoft.com/v1.0/directoryObjects/f5ac7788-8ab1-5a62-bf9a-380aaf0f1afc","https://graph.microsoft.com/v1.0/directoryObjects/950381e3-9d63-561d-a160-20b95ae388d0"]).
+
+```
 ## Remove Member/Owner
 
 Remove a member/owner to an group

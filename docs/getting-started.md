@@ -4,6 +4,23 @@ This library is geared towards folks working with TypeScript but will work equal
 
 If you need to support older browsers, SharePoint on premises servers, or older versions of the SharePoint Framework, please revert to [version 2](./v2/SPFx-on-premises/index.html) of the library and see related documentation on [polyfills](./v2/concepts/polyfill/index.html) for required functionality.
 
+## Quick Start (SPFx)
+
+```bash
+npm install @pnp/sp @pnp/graph --save
+```
+
+```typescript
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+
+// In your webpart's onInit or component:
+const sp = spfi().using(SPFx(this.context));
+const webTitle = (await sp.web()).Title;
+```
+
+For more detailed setup options, continue reading below.
+
 ## Minimal Requirements
 
     - NodeJs: >= 18
@@ -18,20 +35,19 @@ First you will need to install those libraries you want to use in your applicati
 
 Next we can import and use the functionality within our application. Below is a very simple example, please see the individual package documentation for more details and examples.
 
-    ```ts
-    import { getRandomString } from "@pnp/core";
+```
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
 
-    (function() {
-
-        // get and log a random string
-        console.log(getRandomString(20));
-
-    })()
-    ```
+// Example: Get web title in SPFx
+const sp = spfi().using(SPFx(this.context));
+const web = await sp.web();
+console.log(web.Title);
+```
 
 ## Getting Started with SharePoint Framework
 
-### Quick References (v3 and v4 are the same for getting started)
+### Quick References (v3,v4,v5 are the same for getting started)
 
 - [Code Sample: SharePoint Framework 1.19.0 with PnPjs v4](https://github.com/pnp/pnpjs/tree/version-4/samples/spfx-react-components/README.md)
 - [Code Sample: SharePoint Framework 1.15.2 with PnPjs v3 utilizing ReactJS Hooks](https://github.com/pnp/sp-dev-fx-webparts/tree/main/samples/react-pnp-js-hooks)
@@ -74,29 +90,29 @@ Version 4 is not supported, you must use Version 3. In addition because as of SP
 1. Replace the contents of the gulpfile.js with:
     >Note: The only change is the addition of the line to disable tslint.
 
-        ```js
-        'use strict';
+```js
+'use strict';
 
-        const build = require('@microsoft/sp-build-web');
+const build = require('@microsoft/sp-build-web');
 
-        build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
+build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not camelCase and will not be type-safe.`);
 
-        var getTasks = build.rig.getTasks;
-        build.rig.getTasks = function () {
-            var result = getTasks.call(build.rig);
+var getTasks = build.rig.getTasks;
+build.rig.getTasks = function () {
+    var result = getTasks.call(build.rig);
 
-            result.set('serve', result.get('serve-deprecated'));
+    result.set('serve', result.get('serve-deprecated'));
 
-            return result;
-        };
+    return result;
+};
 
-        // ********* ADDED *******
-        // disable tslint
-        build.tslintCmd.enabled = false;
-        // ********* ADDED *******
+// ********* ADDED *******
+// disable tslint
+build.tslintCmd.enabled = false;
+// ********* ADDED *******
 
-        build.initialize(require('gulp'));
-        ```
+build.initialize(require('gulp'));
+```
 
 ### SPFx Version 1.11.0 & earlier
 
@@ -112,68 +128,72 @@ Depending on how you architect your solution establishing context is done where 
 
 ### Using @pnp/sp `spfi` factory interface in SPFx
 
-    ```TypeScript
-    import { spfi, SPFx } from "@pnp/sp";
+```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
 
-    // ...
+// ...
 
-    protected async onInit(): Promise<void> {
+protected async onInit(): Promise<void> {
 
-        await super.onInit();
-        const sp = spfi().using(SPFx(this.context));
-        
-    }
+    await super.onInit();
+    const sp = spfi().using(SPFx(this.context));
+    
+}
 
-    // ...
+// ...
 
-    ```
+```
 
 ### Using @pnp/graph `graphfi` factory interface in SPFx
 
-    ```TypeScript
-    import { graphfi, SPFx } from "@pnp/graph";
+```TypeScript
+import { graphfi, SPFx } from "@pnp/graph";
 
-    // ...
+// ...
 
-    protected async onInit(): Promise<void> {
+protected async onInit(): Promise<void> {
 
-        await super.onInit();
-        const graph = graphfi().using(SPFx(this.context));
+    await super.onInit();
+    const graph = graphfi().using(SPFx(this.context));
 
-    }
+}
 
-    // ...
+// ...
 
-    ```
+```
 
 ### Using both @pnp/sp and @pnp/graph in SPFx
 
-    ```TypeScript
+```TypeScript
 
-    import { spfi, SPFx as spSPFx } from "@pnp/sp";
-    import { graphfi, SPFx as graphSPFx} from "@pnp/graph";
+import { spfi, SPFx as spSPFx } from "@pnp/sp";
+import { graphfi, SPFx as graphSPFx} from "@pnp/graph";
 
-    // ...
+// ...
 
-    protected async onInit(): Promise<void> {
+protected async onInit(): Promise<void> {
 
-        await super.onInit();
-        const sp = spfi().using(spSPFx(this.context));
-        const graph = graphfi().using(graphSPFx(this.context));
+    await super.onInit();
+    const sp = spfi().using(spSPFx(this.context));
+    const graph = graphfi().using(graphSPFx(this.context));
 
-    }
+}
 
-    // ...
+// ...
 
-    ```
+```
 
 ## Project Config/Services Setup
 
-Please see the [documentation](./concepts/project-preset.md) on setting up a config file or a services for more information about establishing and instance of the spfi or graphfi interfaces that can be reused. It is a common mistake with users of V3 that they try and create the interface in event handlers which causes issues.
+Please see the [documentation](./concepts/project-preset.md) on setting up a config file or a services for more information about establishing and instance of the spfi or graphfi interfaces that can be reused. It is a common mistake with users of V3+ that they try and create the interface in event handlers which causes issues.
 
 ## Getting started with NodeJS
 
-> Due to the way in which Node resolves ESM modules when you use selective imports in node you must include the `index.js` part of the path. Meaning an import like `import "@pnp/sp/webs"` in examples must be `import "@pnp/sp/webs/index.js"`. Root level imports such as `import { spfi } from "@pnp/sp"` remain correct. The samples in this section demonstrate this for their selective imports.
+> **Important:** In Node.js ESM projects, you must include `index.js` in selective import paths due to Node's module resolution rules. This applies to sub-module imports like `@pnp/sp/webs`, but **not** to root imports like `@pnp/sp`.
+>
+> ✅ Correct: `import "@pnp/sp/webs/index.js"`  
+> ❌ Incorrect: `import "@pnp/sp/webs"`  
+> ✅ Root imports work: `import { spfi } from "@pnp/sp"`
 
 ### Importing NodeJS support
 
@@ -230,91 +250,95 @@ We recommend switching the project to ESModules by making the following changes:
 
 To call the SharePoint APIs via MSAL you are required to use certificate authentication with your application. Fully covering certificates is outside the scope of these docs, but the following commands were used with openssl to create testing certs for the sample code below.
 
-    ```cmd
-    mkdir \temp
-    cd \temp
-    openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365 -passout pass:HereIsMySuperPass -subj '/C=US/ST=Washington/L=Seattle'
-    openssl rsa -in keytmp.pem -out key.pem -passin pass:HereIsMySuperPass
-    ```
+```cmd
+mkdir \temp
+cd \temp
+openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365 -passout pass:HereIsMySuperPass -subj '/C=US/ST=Washington/L=Seattle'
+openssl rsa -in keytmp.pem -out key.pem -passin pass:HereIsMySuperPass
+```
 
 > Using the above code you end up with three files, "cert.pem", "key.pem", and "keytmp.pem". The "cert.pem" file is uploaded to your AAD application registration. The "key.pem" is read as the private key for the configuration.
 
 ### Using @pnp/sp `spfi` factory interface in NodeJS
 
-> Version 3 of this library only supports ESModules. If you still require commonjs modules please check out [version 2](./v2/SPFx-on-premises/index.html).
+> Version 4+ of this library only supports ESModules. If you still require commonjs modules please check out [version 2](./v2/SPFx-on-premises/index.html).
 
 The first step is to install the packages that will be needed. You can read more about what each package does starting on the [packages](packages.md) page.
 
-    ```cmd
-    npm i @pnp/sp @pnp/nodejs
-    ```
+```cmd
+npm i @pnp/sp @pnp/nodejs
+```
 
 Once these are installed you need to import them into your project, to communicate with SharePoint from node we'll need the following imports:
 
-    ```TypeScript
+```TypeScript
+import { spfi } from "@pnp/sp";
+import { SPDefault } from "@pnp/nodejs";
+import "@pnp/sp/webs/index.js";
+import { readFileSync } from 'fs';
+import { Configuration } from "@azure/msal-node";
 
-    import { SPDefault } from "@pnp/nodejs";
-    import "@pnp/sp/webs/index.js";
-    import { readFileSync } from 'fs';
-    import { Configuration } from "@azure/msal-node";
+function main() {
+    // configure your node options (only once in your application)
+    const buffer = readFileSync("c:/temp/key.pem");
 
-    function() {
-        // configure your node options (only once in your application)
-        const buffer = readFileSync("c:/temp/key.pem");
-
-        const config: Configuration = {
-            auth: {
-                authority: "https://login.microsoftonline.com/{tenant id or common}/",
-                clientId: "{application (client) i}",
-                clientCertificate: {
-                thumbprint: "{certificate thumbprint, displayed in AAD}",
+    const config: Configuration = {
+        auth: {
+            authority: "https://login.microsoftonline.com/{tenant id or common}/",
+            clientId: "{application-client-id}",
+            clientCertificate: {
+                thumbprint: "{certificate-thumbprint}",
                 privateKey: buffer.toString(),
-                },
             },
-        };
+        },
+    };
 
-        const sp = spfi().using(SPDefault({
-            baseUrl: 'https://{my tenant}.sharepoint.com/sites/dev/',
-            msal: {
-                config: config,
-                scopes: [ 'https://{my tenant}.sharepoint.com/.default' ]
-            }
-        }));
+    const sp = spfi().using(SPDefault({
+        baseUrl: 'https://{tenant}.sharepoint.com/sites/dev/',
+        msal: {
+            config: config,
+            scopes: ['https://{tenant}.sharepoint.com/.default']
+        }
+    }));
 
-        // make a call to SharePoint and log it in the console
-        const w = await sp.web.select("Title", "Description")();
-        console.log(JSON.stringify(w, null, 4));
-    }();
-    ```
+    // make a call to SharePoint and log it in the console
+    const w = await sp.web.select("Title", "Description")();
+    console.log(JSON.stringify(w, null, 4));
+}
+
+main();
+```
 
 ### Using @pnp/graph `graphfi` factory interface in NodeJS
 
 Similar to the above you can also make calls to the Microsoft Graph API from node using the libraries. Again we start with installing the required resources. You can see [./debug/launch/graph.ts](https://github.com/pnp/pnpjs/blob/main/debug/launch/graph.ts) for a live example.
 
-    ```cmd
-    npm i @pnp/graph @pnp/nodejs
-    ```
+```cmd
+npm i @pnp/graph @pnp/nodejs
+```
 
 Now we need to import what we'll need to call graph
 
-    ```TypeScript
-    import { graphfi } from "@pnp/graph";
-    import { GraphDefault } from "@pnp/nodejs";
-    import "@pnp/graph/users/index.js";
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import { GraphDefault } from "@pnp/nodejs";
+import "@pnp/graph/users/index.js";
 
-    function() {
-        const graph = graphfi().using(GraphDefault({
+function main() {
+    const graph = graphfi().using(GraphDefault({
         baseUrl: 'https://graph.microsoft.com',
         msal: {
             config: config,
-            scopes: [ 'https://graph.microsoft.com/.default' ]
+            scopes: ['https://graph.microsoft.com/.default']
         }
-        }));
-        // make a call to Graph and get all the groups
-        const userInfo = await graph.users.top(1)();
-        console.log(JSON.stringify(userInfo, null, 4));
-    }();
-    ```
+    }));
+    // make a call to Graph and get all the groups
+    const userInfo = await graph.users.top(1)();
+    console.log(JSON.stringify(userInfo, null, 4));
+}
+
+main();
+```
 
 ### Node project using TypeScript producing commonjs modules
 
@@ -328,49 +352,49 @@ The tsconfig file for your project should have the `"module": "CommonJS"` and `"
 
 #### tsconfig.json
 
-    ```JSON
-    {
-        "compilerOptions": {
-            "module": "CommonJS",
-            "moduleResolution": "node12"
-    }
-    ```
+```JSON
+{
+    "compilerOptions": {
+        "module": "CommonJS",
+        "moduleResolution": "node12"
+}
+```
 
 You must then import the esm dependencies using the async import pattern. This works as expected with our selective imports, and vscode will pick up the intellisense as expected.
 
 #### index.ts
 
-    ```TypeScript
-    import { settings } from "./settings.js";
+```TypeScript
+import { settings } from "./settings.js";
 
-    // this is a simple example as async await is not supported with commonjs output
-    // at the root.
-    setTimeout(async () => {
+// this is a simple example as async await is not supported with commonjs output
+// at the root.
+setTimeout(async () => {
 
-        const { spfi } = await import("@pnp/sp");
-        const { SPDefault } = await import("@pnp/nodejs");
-        await import("@pnp/sp/webs/index.js");
+    const { spfi } = await import("@pnp/sp");
+    const { SPDefault } = await import("@pnp/nodejs");
+    await import("@pnp/sp/webs/index.js");
 
-        const sp = spfi().using(SPDefault({
-            baseUrl: settings.testing.sp.url,
-            msal: {
-                config: settings.testing.sp.msal.init,
-                scopes: settings.testing.sp.msal.scopes
-            }
-        }));
-        
-        // make a call to SharePoint and log it in the console
-        const w = await sp.web.select("Title", "Description")();
-        console.log(JSON.stringify(w, null, 4));
+    const sp = spfi().using(SPDefault({
+        baseUrl: settings.testing.sp.url,
+        msal: {
+            config: settings.testing.sp.msal.init,
+            scopes: settings.testing.sp.msal.scopes
+        }
+    }));
+    
+    // make a call to SharePoint and log it in the console
+    const w = await sp.web.select("Title", "Description")();
+    console.log(JSON.stringify(w, null, 4));
 
-    }, 0);
-    ```
+}, 0);
+```
 
-Finally, when launching node you need to include the `` flag with a setting of 'node'.
+Finally, when launching node you need to include the `--experimental-specifier-resolution` flag set to `node`:
 
 `node --experimental-specifier-resolution=node dist/index.js`
 
-> Read more in the releated [TypeScript Issue](https://github.com/microsoft/TypeScript/issues/43329), [TS pull request Adding the functionality](https://github.com/microsoft/TypeScript/pull/45884), and the [TS Docs](https://www.typescriptlang.org/tsconfig#moduleResolution).
+> Read more in the related [TypeScript Issue](https://github.com/microsoft/TypeScript/issues/43329), [TS pull request Adding the functionality](https://github.com/microsoft/TypeScript/pull/45884), and the [TS Docs](https://www.typescriptlang.org/tsconfig#moduleResolution).
 
 ## Single Page Application Context
 
@@ -394,26 +418,26 @@ Because of the way the fluent library is designed by definition it's extendible.
 
 The new factory function allows you to create a connection to a different web maintaining the same setup as your existing interface. You have two options, either to  'AssignFrom' or 'CopyFrom' the base timeline's observers. The below example utilizes 'AssignFrom' but the method would be the same regadless of which route you choose. For more information on these behaviors see [Core/Behaviors](./core/behaviors.md).
 
-    ```TypeScript
-    import { spfi, SPFx } from "@pnp/sp";
-    import { AssignFrom } from "@pnp/core";
-    import "@pnp/sp/webs";
+```TypeScript
+import { spfi, SPFx } from "@pnp/sp";
+import { AssignFrom } from "@pnp/core";
+import "@pnp/sp/webs";
 
-    //Connection to the current context's Web
-    const sp = spfi(...);
+//Connection to the current context's Web
+const sp = spfi(...);
 
-    // Option 1: Create a new instance of Queryable
-    const spWebB = spfi({Other Web URL}).using(SPFx(this.context));
+// Option 1: Create a new instance of Queryable
+const spWebB = spfi({Other Web URL}).using(SPFx(this.context));
 
-    // Option 2: Copy/Assign a new instance of Queryable using the existing
-    const spWebB = spfi({Other Web URL}).using(AssignFrom(sp.web));
+// Option 2: Copy/Assign a new instance of Queryable using the existing
+const spWebB = spfi({Other Web URL}).using(AssignFrom(sp.web));
 
-    // Option 3: Create a new instance of Queryable using other credentials?
-    const spWebB = spfi({Other Web URL}).using(SPFx(this.context));
+// Option 3: Create a new instance of Queryable using other credentials?
+const spWebB = spfi({Other Web URL}).using(SPFx(this.context));
 
-    // Option 4: Create new Web instance by using copying SPQuerable and new pointing to new web url (e.g. https://contoso.sharepoint.com/sites/Web2)
-    const web = Web([sp.web, {Other Web URL}]);
-    ```
+// Option 4: Create new Web instance by using copying SPQuerable and new pointing to new web url (e.g. https://contoso.sharepoint.com/sites/Web2)
+const web = Web([sp.web, {Other Web URL}]);
+```
 
 ## Multi-Geo / Cross tenant calls in SharePoint Framework (SPFx)
 

@@ -471,7 +471,13 @@ import '@pnp/graph/users';
 
 const graph = graphfi(...);
 
-const delta = await graph.users.getById('user@tenant.onmicrosoft.com').calendarView("2020-01-01", "2020-03-01").delta()
+const delta = await graph.users.getById('user@tenant.onmicrosoft.com').calendarView("2020-01-01", "2020-03-01").delta()();
+
+//you may also use the async iterator for delta items
+for await (const delta of graph.users.getById('user@tenant.onmicrosoft.com').delta({maxPageSize:2}))
+{
+    console.log(delta);
+}
 
 ```
 ## Places

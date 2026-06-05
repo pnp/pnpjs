@@ -1,8 +1,7 @@
-import { graphInvokableFactory, graphPost } from "../graphqueryable.js";
-import { body } from "@pnp/queryable";
+import { graphInvokableFactory } from "../graphqueryable.js";
 import { User as IUserType, Person as IPersonType } from "@microsoft/microsoft-graph-types";
 import { _DirectoryObject, DirectoryObjects, IDirectoryObjects, _DirectoryObjects } from "../directory-objects/types.js";
-import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById } from "../decorators.js";
+import { defaultPath, updateable, deleteable, IUpdateable, IDeleteable, getById, IGetById, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
 
 @updateable()
 @deleteable()
@@ -47,17 +46,9 @@ export const User = graphInvokableFactory<IUser>(_User);
 
 @defaultPath("users")
 @getById(User)
-export class _Users extends _DirectoryObjects<IUserType[]> {
-    /**
-        * Adds a user
-        * @param user object to be added
-        *
-        */
-    public async add(user: IUserType): Promise<IUserType> {
-        return graphPost(this, body(user));
-    }
-}
-export interface IUsers extends _Users, IGetById<IUser> { }
+@hasDelta()
+export class _Users extends _DirectoryObjects<IUserType[]> { }
+export interface IUsers extends _Users, IGetById<IUser>, IHasDelta<IDeltaProps, IUserType> { }
 export const Users = graphInvokableFactory<IUsers>(_Users);
 
 @defaultPath("people")

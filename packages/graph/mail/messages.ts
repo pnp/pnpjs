@@ -130,8 +130,12 @@ export const Message = graphInvokableFactory<IMessage>(_Message);
 @addable()
 @hasDelta()
 export class _Messages extends _GraphCollection<IMessageType[]> { }
-export interface IMessages extends _Messages, IGetById<IMessage>, IAddable<IMessageType>, IDeleteable, IHasDelta<IMessageDelta, IMessageType> { }
+export interface IMessages extends _Messages, IGetById<IMessage>, IAddable<IMessageType>, IDeleteable { }
 export const Messages = graphInvokableFactory<IMessages>(_Messages);
+
+// Type alias for messages with delta capability (used in mail folder context)
+export type IMessagesWithDelta = IMessages & IHasDelta<IMessageDelta, IMessageType>;
+export const MessagesWithDelta = Messages as (base: any, path?: string) => IMessagesWithDelta;
 
 /**
  * Message Rule

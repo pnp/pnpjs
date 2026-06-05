@@ -160,7 +160,6 @@ export class _Bucket extends _GraphInstance<IPlannerBucketType> {
 export interface IBucket extends _Bucket, IUpdateableWithETag<IPlannerBucketType>, IDeleteableWithETag { }
 export const Bucket = graphInvokableFactory<IBucket>(_Bucket);
 
-
 /**
  * Buckets
  */
@@ -175,4 +174,3 @@ export interface IPlanAdd {
     container: IPlannerPlanContainerType;
     title: string;
 }
-

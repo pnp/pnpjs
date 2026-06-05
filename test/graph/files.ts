@@ -235,7 +235,7 @@ describe("Drive", function () {
         }
         const delta = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).root.delta()();
 
-        return expect(delta).haveOwnProperty("values");
+        return expect(delta.values).is.an("array");
     }));
 
     it("Get Drive Thumbnails", pnpTest("33d07566-18cf-4e2c-a220-7485e081cd6b", async function () {
