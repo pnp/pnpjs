@@ -7,7 +7,7 @@ import "@pnp/graph/chats";
 import "@pnp/graph/messages";
 import getValidUser from "./utilities/getValidUser.js";
 
-describe.only("Messages", function () {
+describe("Messages", function () {
 
     let testUserId = "";
     let teamID = "";
