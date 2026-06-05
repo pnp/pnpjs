@@ -68,7 +68,7 @@ describe("Mail: Messages", function () {
 
     it("Mail: Message List (Delta)", pnpTest("b4e6dd84-904e-4d04-9f93-63f526a6f26c", async function () {
         const messagesDelta = await user.mailFolders.getById(inboxFolder).messages.delta()();
-        return expect(messagesDelta).haveOwnProperty("values");
+        return expect(messagesDelta.values).is.an("array");
     }));
 
     it("Mail: Create Draft Message", pnpTest("eebab11f-dc18-47b6-a89e-444e7ba8810c", async function () {

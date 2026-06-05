@@ -34,6 +34,16 @@ const graph = graphfi(...);
 const allUsers = await graph.users();
 ```
 
+## Get Users Delta
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+
+const graph = graphfi(...);
+
+const userDelta = await graph.users.delta()();
+```
 ## Get a User by email address (or user id)
 
 ```TypeScript

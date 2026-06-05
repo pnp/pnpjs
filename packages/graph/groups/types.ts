@@ -5,7 +5,7 @@ import { Event as IEventType,
     GroupLifecyclePolicy as IGroupLifecyclePolicyType } from "@microsoft/microsoft-graph-types";
 import { body } from "@pnp/queryable";
 import { graphGet, graphInvokableFactory, graphPost } from "../graphqueryable.js";
-import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById } from "../decorators.js";
+import { defaultPath, deleteable, IDeleteable, updateable, IUpdateable, getById, IGetById, hasDelta, IHasDelta, IDeltaProps } from "../decorators.js";
 import { _DirectoryObject, _DirectoryObjects } from "../directory-objects/types.js";
 
 export enum GroupType {
@@ -127,6 +127,7 @@ export const Group = graphInvokableFactory<IGroup>(_Group);
  */
 @defaultPath("groups")
 @getById(Group)
+@hasDelta()
 export class _Groups extends _DirectoryObjects<IGroupType[]> {
 
     /**
@@ -160,7 +161,7 @@ export class _Groups extends _DirectoryObjects<IGroupType[]> {
 
     }
 }
-export interface IGroups extends _Groups, IGetById<IGroup> { }
+export interface IGroups extends _Groups, IGetById<IGroup>, IHasDelta<IDeltaProps, IGroup> { }
 export const Groups = graphInvokableFactory<IGroups>(_Groups);
 
 export interface IValidatePropObj {
