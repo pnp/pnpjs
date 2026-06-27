@@ -3,15 +3,16 @@ import { _Channel, _Channels } from "../teams/types.js";
 import { Message as IMessageType } from "@microsoft/microsoft-graph-types";
 import { IMessages, Messages } from "./types.js";
 import { getAllMessages, getAllRetainedMessages } from "./functions.js";
+import { IGraphCollection } from "../graphqueryable.js";
 
 declare module "../teams/types" {
     interface _Channels {
-        getAllMessages(model: "A" | "B" | undefined): Promise<IMessageType[]>;
-        getAllRetainedMessages(model: "A" | "B" | undefined): Promise<IMessageType[]>;
+        getAllMessages(model: "A" | "B" | undefined): IGraphCollection<IMessageType[]>;
+        getAllRetainedMessages(model: "A" | "B" | undefined): IGraphCollection<IMessageType[]>;
     }
     interface IChannels {
-        getAllMessages(model: "A" | "B" | undefined): Promise<IMessageType[]>;
-        getAllRetainedMessages(model: "A" | "B" | undefined): Promise<IMessageType[]>;
+        getAllMessages(model: "A" | "B" | undefined): IGraphCollection<IMessageType[]>;
+        getAllRetainedMessages(model: "A" | "B" | undefined): IGraphCollection<IMessageType[]>;
     }
     interface _Channel {
         readonly messages: IMessages;

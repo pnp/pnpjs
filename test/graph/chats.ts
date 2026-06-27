@@ -6,8 +6,9 @@ import "@pnp/graph/users";
 import "@pnp/graph/chats";
 import "@pnp/graph/messages";
 import getValidUser from "./utilities/getValidUser.js";
+import { pnpTest } from "../pnp-test.js";
 
-describe("Messages", function () {
+describe("Chats", function () {
 
     let testUserId = "";
     let teamID = "";
@@ -29,10 +30,10 @@ describe("Messages", function () {
 
     describe("Chats", function () {
 
-        it("user.chat.getAllMessages", async function () {
-            const getAllMessages = await this.pnp.graph.users.getById(testUserId).chats.getAllMessages(undefined);
+        it("user.chat.getAllMessages", pnpTest("6057360d-e0e6-41a1-a945-9cf7036a67ce", async function () {
+            const getAllMessages = await this.pnp.graph.users.getById(testUserId).chats.getAllMessages(undefined)();
             return expect(getAllMessages).is.not.null;
-        });
+        }));
 
         it.skip("user.chat.getAllRetainedMessages");
     });
@@ -48,25 +49,24 @@ describe("Messages", function () {
             }
         });
 
-
-        it("team.channels.getAllMessages", async function () {
-            const getAllMessages = await this.pnp.graph.teams.getById(teamID).channels.getAllMessages(undefined);
+        it("team.channels.getAllMessages", pnpTest("017883e4-1f0f-42d7-9f3b-3fdb45aa2aa5", async function () {
+            const getAllMessages = await this.pnp.graph.teams.getById(teamID).channels.getAllMessages(undefined)();
             return expect(getAllMessages).is.not.null;
-        });
+        }));
 
         // takes too long to execute
         it.skip("team.channels.getAllRetainedMessages", async function () {
             console.log("TeamId", teamID);
-            const getAllRetainedMessages = await this.pnp.graph.teams.getById(teamID).channels.getAllRetainedMessages(undefined);
+            const getAllRetainedMessages = await this.pnp.graph.teams.getById(teamID).channels.getAllRetainedMessages(undefined)();
             return expect(getAllRetainedMessages).is.not.null;
         });
 
-        it("team.channel.messages", async function () {
+        it("team.channel.messages", pnpTest("59a3c0d5-0cd2-48d2-b8d2-73b143f0dc85", async function () {
             const messages = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages();
             return expect(messages).is.not.null;
-        });
+        }));
 
-        it("team.channel.messages.getById", async function () {
+        it("team.channel.messages.getById", pnpTest("e35b3129-d325-4cb4-b251-477a012d3dde", async function () {
             const messages = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages();
             if (messages.length > 0) {
                 const messageId = messages[0].id;
@@ -75,8 +75,9 @@ describe("Messages", function () {
             } else {
                 this.skip();
             }
-        });
-        it("team.channel.message.replies", async function () {
+        }));
+
+        it("team.channel.message.replies", pnpTest("f2a0bfb4-9e3f-44f0-a715-3e28e5787404", async function () {
             const messages = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages();
             if (messages.length > 0) {
                 const messageId = messages[0].id;
@@ -85,7 +86,7 @@ describe("Messages", function () {
             } else {
                 this.skip();
             }
-        });
+        }));
 
         it.skip("team.channel.messages.add");
     });

@@ -206,14 +206,6 @@ export class _Channel extends _GraphInstance<IChannel> {
         return graphGet(GraphQueryable(this, "allMembers"));
     }
 
-    // /**
-    //  * Get a conversationMember from a channel.
-    //  * @returns ConversationMember
-    //  */
-    // public async getMemberById(membershipId: string): Promise<IConversationMemberType> {
-    //     return graphGet(GraphQueryable(this, `members/${membershipId}`));
-    // }
-
     /**
      * Archive a channel
      * @param shouldSetSpoSiteReadOnlyForMembers, default false
@@ -329,25 +321,6 @@ export class _Channels extends _GraphCollection<IChannelType[]> {
         };
     }
 
-    // /**
-    //  * Gets all the messages in a channel.
-    //  * @param model optionally specify the licensing and payment model
-    //  *
-    //  */
-    // public async getAllMessages(model: "A" | "B" | undefined): Promise<IMessageType[]> {
-    //     const qString = `getAllMessages${model ? `?model=${model}` : ""}`;
-    //     return graphGet(GraphQueryable(this, qString));
-    // }
-
-    // /**
-    //  * Gets all the retained messages in a channel.
-    //  * @param model optionally specify the licensing and payment model
-    //  *
-    //  */
-    // public async getAllRetainedMessages(model: "A" | "B" | undefined): Promise<IMessageType[]> {
-    //     const qString = `getAllRetainedMessages${model ? `?model=${model}` : ""}`;
-    //     return graphGet(GraphQueryable(this, qString));
-    // }
 }
 export interface IChannels extends _Channels, IGetById<IChannel> { }
 export const Channels = graphInvokableFactory<IChannels>(_Channels);
