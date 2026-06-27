@@ -60,3 +60,7 @@ buildsystem-config.js
 
 # never accidentally include any .js files that are generated in the main package source tree
 packages/**/*.js
+
+# Do not commit AI setups
+.claude/
+CLAUDE.md
