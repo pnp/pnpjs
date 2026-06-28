@@ -28,6 +28,8 @@ declare module "mocha" {
                 set<T>(key: string, props: T): Promise<void>;
             };
         };
+        pnpid: string;
+        props<T>(defaults: T): Promise<T>;
     }
 
     interface Suite {

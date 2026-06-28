@@ -10,6 +10,7 @@ import { IContentType } from "@pnp/graph/content-types";
 import { getRandomString } from "@pnp/core";
 import getTestingGraphSPSite from "./utilities/getTestingGraphSPSite.js";
 import { pnpTest } from "../pnp-test.js";
+import { IColumn } from "@pnp/graph/columns";
 
 describe("Columns", function () {
 
@@ -159,8 +160,8 @@ describe("Columns", function () {
         }));
     });
     describe("Content-Type", function () {
-        let siteColumn;
-        let columnTemplateName;
+        let siteColumn: IColumn;
+        let columnTemplateName: string;
 
         before(pnpTest("7b7c0559-06c7-4c7d-881e-bfc33d47c31a", async function () {
 
