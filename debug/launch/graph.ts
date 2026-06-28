@@ -1,9 +1,6 @@
 import { Logger, LogLevel } from "@pnp/logging";
 import { graphSetup } from "./setup.js";
 import "@pnp/graph/users";
-import "@pnp/graph/files";
-import { graphPost } from "@pnp/graph/graphqueryable.js";
-import { body } from "@pnp/queryable/index.js";
 
 declare var process: { exit(code?: number): void };
 
