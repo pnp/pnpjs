@@ -13,7 +13,7 @@ import { AssignFrom, getRandomString, stringIsNullOrEmpty } from "@pnp/core";
 import { IItem } from "@pnp/sp/items";
 import { pnpTest } from "../pnp-test.js";
 
-describe("Batching", function () {
+describe("Batching-SP", function () {
 
     let listId = "";
 

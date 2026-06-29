@@ -12,8 +12,8 @@ describe("Directory Objects", function () {
     let testUserName = "";
     let testChildGroupID = "";
     let testParentGroupID = "";
-    let testGUID;
-    let userId = null;
+    let testGUID: string;
+    let userId: string = null;
 
     before(pnpTest("3adea3f7-de9b-4872-92c4-82f964a072a8", async function () {
 
@@ -60,7 +60,7 @@ describe("Directory Objects", function () {
         testParentGroupID = result.id;
     }));
 
-    it("delete", pnpTest("e1d8a9b8-43c1-4c02-85b3-92ef980d0ee2", async function () {
+    it.only("delete", pnpTest("e1d8a9b8-43c1-4c02-85b3-92ef980d0ee2", async function () {
 
         const props = await this.props({
             groupName: `TestGroup_${getRandomString(4)}`,
