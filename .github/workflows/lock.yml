@@ -9,9 +9,8 @@ jobs:
   lock:
     runs-on: ubuntu-latest
     steps:
-      - uses: dessant/lock-threads@v5
+      - uses: dessant/lock-threads@v6
         with:
-          github-token: ${{ github.token }}
           issue-inactive-days: '2'
           add-issue-labels: 'auto-locked'
           issue-comment: 'This issue is locked for inactivity or age. If you have a related issue please open a new issue and reference this one. Closed issues are not tracked.'
