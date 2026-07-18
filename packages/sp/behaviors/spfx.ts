@@ -60,6 +60,21 @@ export function SPFx(context: ISPFXContext): TimelinePipe<Queryable> {
 
     SPFxTokenNullOrUndefinedError.check("SPFx", context);
 
+    // Snapshot the context at the time the behavior is applied. During client-side (non-refresh)
+    // navigation SPFx can dispose the pageContext while our closures are still active in memory,
+    context = {
+        pageContext: {
+            web: {
+                absoluteUrl: context.pageContext.web.absoluteUrl,
+            },
+            legacyPageContext: {
+                formDigestValue: context.pageContext.legacyPageContext?.formDigestValue,
+                formDigestTimeoutSeconds: context.pageContext.legacyPageContext?.formDigestTimeoutSeconds,
+            },
+        },
+        aadTokenProviderFactory: context.aadTokenProviderFactory,
+    };
+
     return (instance: Queryable) => {
 
         instance.using(
