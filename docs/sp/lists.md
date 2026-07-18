@@ -384,7 +384,7 @@ const listItemId = await list.reserveListItemId();
 console.log(listItemId);
 ```
 
-### Add a list item using path (folder), validation and set field values
+### Add a item using path (folder), validation and set field values
 
 ```TypeScript
 import { spfi } from "@pnp/sp";
@@ -393,15 +393,22 @@ import "@pnp/sp/lists";
 
 const sp = spfi(...);
 
-const list = await sp.webs.lists.getByTitle("MyList").select("Title", "ParentWebUrl")();
+const list = await sp.web.lists.getByTitle("MyList").select("Title", "ParentWebUrl")();
 const formValues: IListItemFormUpdateValue[] = [
-                {
-                    FieldName: "Title",
-                    FieldValue: title,
-                },
-            ];
+    {
+        FieldName: "Title",
+        FieldValue: "Updated from PnPjs",
+    },
+];
 
-list.addValidateUpdateItemUsingPath(formValues,`${list.ParentWebUrl}/Lists/${list.Title}/MyFolder`)
+const decodedUrl = `${list.ParentWebUrl}/Lists/${list.Title}/MyFolder`;
+
+await sp.web.lists.getByTitle("Documents").addValidateUpdateItemUsingPath({
+        formValues,
+        decodedUrl,
+        leafName: "TestFolder",
+        underlyingObjectType: 1,
+    });
 
 ```
 

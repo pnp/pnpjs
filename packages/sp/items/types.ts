@@ -229,11 +229,17 @@ export class _Item extends _SPInstance {
     /**
      * Validates and sets the values of the specified collection of fields for the list item.
      *
-     * @param formValues The fields to change and their new values.
-     * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
+     * @param props The properties to validate and set on the list item. `bNewDocumentUpdate` defaults to false.
      */
-    public validateUpdateListItem(formValues: IListItemFormUpdateValue[], bNewDocumentUpdate = false): Promise<IListItemFormUpdateValue[]> {
-        return spPost(Item(this, "validateupdatelistitem"), body({ formValues, bNewDocumentUpdate }));
+    public validateUpdateListItem(props: IValidateUpdateListItem & { sharedLockId?: string }): Promise<IListItemFormUpdateValue[]> {
+        const postBody = {
+            bNewDocumentUpdate: false,
+            ...props,
+        };
+        return spPost(
+            Item(this, "validateupdatelistitem"),
+            body(postBody),
+        );
     }
 
     /**
@@ -303,10 +309,12 @@ export class _Item extends _SPInstance {
             "id": result.UniqueId,
         };
 
-        return this.validateUpdateListItem([{
-            FieldName: fieldName,
-            FieldValue: JSON.stringify(itemInfo),
-        }]);
+        return this.validateUpdateListItem({
+            formValues: [{
+                FieldName: fieldName,
+                FieldValue: JSON.stringify(itemInfo),
+            }],
+        });
     }
 
 }
@@ -351,6 +359,14 @@ function ItemUpdatedParser() {
     return parseBinderWithErrorCheck(async (r) => (<IItemUpdateResultData>{
         etag: r.headers.get("etag"),
     }));
+}
+
+export interface IValidateUpdateListItem {
+    formValues: IListItemFormUpdateValue[];
+    bNewDocumentUpdate?: boolean;
+    checkInComment?: string;
+    datesInUTC?: boolean;
+    numberInInvariantCulture?: boolean;
 }
 
 export interface IItemUpdateResultData {
