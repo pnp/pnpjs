@@ -1,4 +1,5 @@
 import "./groups.js";
+import "./chats.js";
 
 export {
     IMember,

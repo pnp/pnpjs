@@ -236,27 +236,10 @@ describe("Teams", function () {
                 return expect(channels).is.not.null;
             });
 
-            it("team.channels.getAllMessages", async function () {
-                const getAllMessages = await this.pnp.graph.teams.getById(teamID).channels.getAllMessages(undefined);
-                return expect(getAllMessages).is.not.null;
-            });
-
-            // takes too long to execute
-            it.skip("team.channels.getAllRetainedMessages", async function () {
-                console.log("TeamId", teamID);
-                const getAllRetainedMessages = await this.pnp.graph.teams.getById(teamID).channels.getAllRetainedMessages(undefined);
-                return expect(getAllRetainedMessages).is.not.null;
-            });
-
             it("team.channel.tabs", async function () {
                 const tabs = await await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).tabs();
                 return expect(tabs).is.not.null;
 
-            });
-
-            it("team.channel.messages", async function () {
-                const messages = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages();
-                return expect(messages).is.not.null;
             });
 
             // takes too long to execute
@@ -276,27 +259,6 @@ describe("Teams", function () {
                     const id = channelMembers[0].id;
                     const channelMember = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).channelMembers.getById(id)();
                     return expect(channelMember).is.not.null;
-                } else {
-                    this.skip();
-                }
-            });
-
-            it("team.channel.messages.getById", async function () {
-                const messages = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages();
-                if (messages.length > 0) {
-                    const messageId = messages[0].id;
-                    const message = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages.getById(messageId)();
-                    return expect(message).is.not.null;
-                } else {
-                    this.skip();
-                }
-            });
-            it("team.channel.message.replies", async function () {
-                const messages = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages();
-                if (messages.length > 0) {
-                    const messageId = messages[0].id;
-                    const messageReply = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages.getById(messageId).replies();
-                    return expect(messageReply).is.not.null;
                 } else {
                     this.skip();
                 }
@@ -326,7 +288,6 @@ describe("Teams", function () {
             it.skip("team.channel.doesUserHaveAccess");
             it.skip("team.channel.channelMembers.add");
             it.skip("team.channel.channelMembers.updateChannelMember");
-            it.skip("team.channel.messages.add");
             it.skip("team.channel.tabs.add");
         });
     });

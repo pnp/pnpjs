@@ -8,7 +8,6 @@ import {
     TeamsTab as ITeamsTabType,
     TeamsAppInstallation as ITeamsAppInstallation,
     Channel as IChannelType,
-    Message as IMessageType,
     DriveItem as IDriveItemType,
     ConversationMember as IConversationMemberType,
     User as IUserType,
@@ -191,10 +190,6 @@ export class _Channel extends _GraphInstance<IChannel> {
         return Tabs(this);
     }
 
-    public get messages(): IMessages {
-        return Messages(this);
-    }
-
     public async filesFolder(): Promise<IDriveItemType> {
         return graphGet(GraphQueryable(this, "filesFolder"));
     }
@@ -210,14 +205,6 @@ export class _Channel extends _GraphInstance<IChannel> {
     public async allMembers(): Promise<IConversationMemberType[]> {
         return graphGet(GraphQueryable(this, "allMembers"));
     }
-
-    // /**
-    //  * Get a conversationMember from a channel.
-    //  * @returns ConversationMember
-    //  */
-    // public async getMemberById(membershipId: string): Promise<IConversationMemberType> {
-    //     return graphGet(GraphQueryable(this, `members/${membershipId}`));
-    // }
 
     /**
      * Archive a channel
@@ -334,68 +321,10 @@ export class _Channels extends _GraphCollection<IChannelType[]> {
         };
     }
 
-    /**
-     * Gets all the messages in a channel.
-     * @param model optionally specify the licensing and payment model
-     *
-     */
-    public async getAllMessages(model: "A" | "B" | undefined): Promise<IMessageType[]> {
-        const qString = `getAllMessages${model ? `?model=${model}` : ""}`;
-        return graphGet(GraphQueryable(this, qString));
-    }
-
-    /**
-     * Gets all the retained messages in a channel.
-     * @param model optionally specify the licensing and payment model
-     *
-     */
-    public async getAllRetainedMessages(model: "A" | "B" | undefined): Promise<IMessageType[]> {
-        const qString = `getAllRetainedMessages${model ? `?model=${model}` : ""}`;
-        return graphGet(GraphQueryable(this, qString));
-    }
 }
 export interface IChannels extends _Channels, IGetById<IChannel> { }
 export const Channels = graphInvokableFactory<IChannels>(_Channels);
 
-/**
- * Message
- */
-export class _Message extends _GraphInstance<IMessageType> {
-    /**
-     * Gets all the replies to a message.
-     *
-     */
-    public async replies(): Promise<IMessageType> {
-        return graphGet(GraphQueryable(this, "replies"));
-    }
-}
-export interface IMessage extends _Message { }
-export const Message = graphInvokableFactory<IMessage>(_Message);
-
-/**
- * Messages
- */
-@defaultPath("messages")
-@getById(Message)
-export class _Messages extends _GraphCollection<IMessageType[]> {
-
-    /**
-     * Adds a message
-     * @param message ChatMessage object that defines the message
-     *
-     */
-    public async add(message: IMessageType): Promise<IMessageCreateResult> {
-
-        const data = await graphPost(this, body(message));
-
-        return {
-            message: (<any>this).getById(data.id),
-            data,
-        };
-    }
-}
-export interface IMessages extends _Messages, IGetById<IMessage> { }
-export const Messages = graphInvokableFactory<IMessages>(_Messages);
 
 /**
  * Tab
@@ -563,11 +492,6 @@ export interface ITeamUpdateResult {
 export interface IChannelCreateResult {
     data: any;
     channel: IChannel;
-}
-
-export interface IMessageCreateResult {
-    data: any;
-    message: IMessage;
 }
 
 export interface ITabCreateResult {
