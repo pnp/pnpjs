@@ -152,4 +152,40 @@ describe("Items", function () {
         const item = await list.items.select("Id").top(1)().then(r => r[0]);
         return expect(list.items.getById(item.Id).getWopiFrameUrl()).to.eventually.be.fulfilled;
     }));
+
+    it("validateUpdateListItem", pnpTest("c8e5a1b7-9c3d-4f0e-9b1c-8a2e5c6d8f1e", async function () {
+        const item = await list.items.select("Id").top(1)().then(r => r[0]);
+        const { title } = await this.props({
+            title: `Validated ${getRandomString(4)}`,
+        });
+
+        const itemUpdated =  await list.items.getById(item.Id).validateUpdateListItem({
+            formValues: [{
+                FieldName: "Title",
+                FieldValue: title,
+            }],
+        });
+
+        return expect(itemUpdated[0].FieldValue).to.eq(title);
+
+    }));
+
+    it("validateUpdateListItem - with options", pnpTest("d1c8e5a1-9c3d-4f0e-9b1c-8a2e5c6d8f1e", async function () {
+        const item = await list.items.select("Id").top(1)().then(r => r[0]);
+        const { title } = await this.props({
+            title: `Item ${getRandomString(4)}`,
+        });
+
+        const itemUpdated = await list.items.getById(item.Id).validateUpdateListItem({
+            formValues: [{
+                FieldName: "Title",
+                FieldValue: title,
+            }],
+            bNewDocumentUpdate: true,
+            checkInComment: "Checked in by PnPjs",
+            datesInUTC: true,
+            numberInInvariantCulture: true,
+        });
+        return expect(itemUpdated[0].FieldValue).to.eq(title);
+    }));
 });

@@ -24,16 +24,7 @@ import { IViewInfo } from "../views/types.js";
 import { IUserCustomActionInfo } from "../user-custom-actions/types.js";
 import { IResourcePath, toResourcePath } from "../utils/to-resource-path.js";
 import { encodePath } from "../utils/encode-path-str.js";
-
-// type b2 = ExtractGeneric<_Lists>;
-
-// type ExtractGeneric<T extends _SPCollection> = _Lists extends _SPCollection<infer X> ? X : never;
-
-// // <T extends U, U extends number[]>
-// // ReturnType<Type>
-// // type T3 = ReturnType<<T extends U, U extends number[]>() => T>;
-
-// // _Lists extends _SPCollection<IListInfo[]>
+import { IValidateUpdateListItem } from "../items/types.js";
 
 @defaultPath("lists")
 export class _Lists extends _SPCollection<IListInfo[]> {
@@ -275,50 +266,39 @@ export class _List extends _SPInstance<IListInfo> {
     /**
      * Creates an item using path (in a folder), validates and sets its field values.
      *
-     * @param formValues The fields to change and their new values.
-     * @param decodedUrl Path decoded url; folder's server relative path.
-     * @param bNewDocumentUpdate true if the list item is a document being updated after upload; otherwise false.
-     * @param checkInComment Optional check in comment.
-     * @param additionalProps Optional set of additional properties LeafName new document file name,
+     * @param props The properties to validate and set on the list item. `bNewDocumentUpdate` defaults to false.
+     * `decodedUrl` is the path decoded url (folder's server relative path); `leafName` is an optional file name with
+     * extension; `underlyingObjectType` is an optional object type (0 for file, 1 for folder, 2 for Web).
      */
     public async addValidateUpdateItemUsingPath(
-        formValues: IListItemFormUpdateValue[],
-        decodedUrl: string,
-        bNewDocumentUpdate = false,
-        checkInComment?: string,
-        additionalProps?: {
-            /**
-             * If creating a document or folder, the name
-             */
+        props: IValidateUpdateListItem & {
+            decodedUrl: string;
             leafName?: string;
-            /**
-             * 0: File, 1: Folder, 2: Web
-             */
-            objectType?: 0 | 1 | 2;
-        },
+            underlyingObjectType?: 0 | 1 | 2;
+        }
     ): Promise<IListItemFormUpdateValue[]> {
+
+        const { decodedUrl, leafName, underlyingObjectType, ...validateProps } = props;
+        validateProps.bNewDocumentUpdate ??= false;
 
         const addProps: any = {
             FolderPath: toResourcePath(decodedUrl),
         };
 
-        if (objectDefinedNotNull(additionalProps)) {
-
-            if (additionalProps.leafName) {
-                addProps.LeafName = toResourcePath(additionalProps.leafName);
-            }
-
-            if (additionalProps.objectType) {
-                addProps.UnderlyingObjectType = additionalProps.objectType;
-            }
+        if (leafName) {
+            addProps.LeafName = toResourcePath(leafName);
         }
 
-        return spPost(List(this, "AddValidateUpdateItemUsingPath()"), body({
-            bNewDocumentUpdate,
-            checkInComment,
-            formValues,
+        if (underlyingObjectType) {
+            addProps.UnderlyingObjectType = underlyingObjectType;
+        }
+
+        const postBody = {
             listItemCreateInfo: addProps,
-        }));
+            ...validateProps,
+        };
+
+        return spPost(List(this, "AddValidateUpdateItemUsingPath()"), body(postBody));
     }
 
     /**
