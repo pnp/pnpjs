@@ -144,3 +144,7 @@ See [Messages](./mail-messages.md)
 ## User OneDrive
 
 See [Files](./files.md)
+
+## User Teams Installed Apps
+
+See [Teams](./teams.md)
