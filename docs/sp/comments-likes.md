@@ -160,6 +160,29 @@ const sp = spfi(...);
 // you can add a comment as a string
 const comment = await item.comments.add("string comment");
 
+```
+### Add Comment with Mentions
+You can tag one or more users by supplying them in the mentions array and referencing each user in the comment text using the @mention{n} placeholder, where n is the zero-based index of the corresponding entry in the mentions array. For example, @mention{0} references the first user, while @mention{0} and @mention{1} reference the first and second users, respectively. The placeholder order must match the order of the entries in the mentions array.
+
+When comments are retrieved, the text value is returned HTML-encoded. For example, @mention{0} in the `text` is returned as @mention&#123;0&#125;.
+
+```TypeScript
+import { spfi } from "@pnp/sp";
+import { ICommentInfo } from "@pnp/sp/comments";
+
+const sp = spfi(...);
+
+// you can add a comment as a string and mention specific users
+const comment = await item.comments.add({
+    text: "This is a comment added from PnPjs. @mention{0}",
+    mentions: [
+        {
+            email: "pnpjs@tenant.onmicrosoft.com",
+            loginName:"i:0#.f|membership|pnpjs@tenant.onmicrosoft.com",
+            name:"PnPjs Developer"
+        }
+    ]
+});
 
 ```
 
