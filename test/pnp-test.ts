@@ -4,20 +4,15 @@ import { Queryable } from "@pnp/queryable";
 import { Context } from "mocha";
 import { TimelinePipe } from "@pnp/core";
 
-interface IPnPTestFuncThis extends Context {
-    pnpid: string;
-    props<T>(defaults: T): Promise<T>;
-}
-
 interface IPnPTestFunc {
-    (this: IPnPTestFuncThis): any;
+    (this: Context): any;
 }
 
 export const PnPTestHeaderName = "X-PnP-TestId";
 
 // we use this to identify tests with duplicate ids, which will cause problems
 // really just a safety measure for us
-const idDupeTracker = [];
+const idDupeTracker: string[] = [];
 
 /**
  * Behavior used to inject the correct test id into the headers for each request
@@ -48,7 +43,7 @@ function PnPTestIdHeader(id: () => string): TimelinePipe {
  * @param testFunc The function to be run as a test
  * @returns The test function bound to an augmented "this"
  */
-export function pnpTest(id: string, testFunc: (this: IPnPTestFuncThis) => any): IPnPTestFunc {
+export function pnpTest(id: string, testFunc: (this: Context) => any): IPnPTestFunc {
 
     if (idDupeTracker.indexOf(id.toLowerCase()) > -1) {
         throw Error(`Test id ${id} is already in use.`);
@@ -56,15 +51,15 @@ export function pnpTest(id: string, testFunc: (this: IPnPTestFuncThis) => any): 
 
     idDupeTracker.push(id.toLowerCase());
 
-    return async function (this: IPnPTestFuncThis, ...args: any[]) {
+    return async function (this: Context) {
 
         this.pnpid = id;
-        this.props = this.pnp.testProps.get.bind(this.pnp.testProps, this.pnpid);
+        this.props = <T>(defaults: T) => this.pnp.testProps.get(this.pnpid, defaults);
 
         // clone our sp and graph for each request, include the test header
         this.pnp.sp = spfi(this.pnp._sp).using(PnPTestIdHeader(() => this.pnpid));
         this.pnp.graph = graphfi(this.pnp._graph).using(PnPTestIdHeader(() => this.pnpid));
 
-        return testFunc.apply(this, args);
+        return testFunc.call(this);
     };
 }
