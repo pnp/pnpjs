@@ -1,0 +1,4251 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/sp/clientside-pages/">
+      
+      
+        <link rel="prev" href="../attachments/">
+      
+      
+        <link rel="next" href="../column-defaults/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
+    
+    
+      
+        <title>client-side pages - PnP/PnPjs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+    <img src="https://m365-visitor-stats.azurewebsites.net/@pnp/pnpjs/ghpages/pnpjs/sp/clientside-pages/" alt="spacer" width="1" height="1" />
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pnpspclientside-pages" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="PnP/PnPjs" class="md-header__button md-logo" aria-label="PnP/PnPjs" data-md-component="logo">
+      
+  <img src="../../img/Logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PnP/PnPjs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              client-side pages
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pnp/pnpjs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="PnP/PnPjs" class="md-nav__button md-logo" aria-label="PnP/PnPjs" data-md-component="logo">
+      
+  <img src="../../img/Logo.png" alt="logo">
+
+    </a>
+    PnP/PnPjs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pnp/pnpjs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transition-guide/" class="md-nav__link">
+        V2->V3 Transition
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Year in Review
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Year in Review
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../news/2022-year-in-review/" class="md-nav__link">
+        2022
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../news/2021-year-in-review/" class="md-nav__link">
+        2021
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../news/2020-year-in-review/" class="md-nav__link">
+        2020
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Library Usage Tips
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Library Usage Tips
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/authentication/" class="md-nav__link">
+        Authentication
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/auth-spfx/" class="md-nav__link">
+        In SPFx
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/auth-browser/" class="md-nav__link">
+        In Browser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/auth-nodejs/" class="md-nav__link">
+        In NodeJS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/batching/" class="md-nav__link">
+        Batching
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/batching-caching/" class="md-nav__link">
+        Batching & Caching
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/calling-other-endpoints" class="md-nav__link">
+        Calling Other Endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/custom-bundle/" class="md-nav__link">
+        Custom Bundling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/error-handling/" class="md-nav__link">
+        Error-Handling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/project-preset/" class="md-nav__link">
+        Project Config/Services Setup
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/selective-imports/" class="md-nav__link">
+        Selective Imports
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/typings/" class="md-nav__link">
+        Typings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/behaviors/" class="md-nav__link">
+        Using Behaviors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/nightly-builds/" class="md-nav__link">
+        Nightly Builds
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Packages
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Packages
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../packages/" class="md-nav__link">
+        Packages
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+          azidjsclient
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          azidjsclient
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../azidjsclient/" class="md-nav__link">
+        azidjsclient
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+          core
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          core
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../packages/#core" class="md-nav__link">
+        core
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/behaviors/" class="md-nav__link">
+        behaviors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/observers/" class="md-nav__link">
+        observers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/moments/" class="md-nav__link">
+        moments
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/timeline/" class="md-nav__link">
+        timeline
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/storage/" class="md-nav__link">
+        storage
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/util/" class="md-nav__link">
+        util
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+          graph
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          graph
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../packages/#graph" class="md-nav__link">
+        graph
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/behaviors/" class="md-nav__link">
+        behaviors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/bookings/" class="md-nav__link">
+        bookings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/columns/" class="md-nav__link">
+        columns
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/content-types/" class="md-nav__link">
+        content types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/groups/" class="md-nav__link">
+        groups
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/insights/" class="md-nav__link">
+        insights
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/contacts/" class="md-nav__link">
+        contacts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/cloud-communications/" class="md-nav__link">
+        cloud communications
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/calendars/" class="md-nav__link">
+        calendars
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/directoryobjects/" class="md-nav__link">
+        directory objects
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/invitations/" class="md-nav__link">
+        invitations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/items/" class="md-nav__link">
+        items
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/lists/" class="md-nav__link">
+        lists
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/messages/" class="md-nav__link">
+        messages
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/onedrive/" class="md-nav__link">
+        onedrive
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/outlook/" class="md-nav__link">
+        outlook
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/photos/" class="md-nav__link">
+        photos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/planner/" class="md-nav__link">
+        planner
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/search/" class="md-nav__link">
+        search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/shares/" class="md-nav__link">
+        shares
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/sites/" class="md-nav__link">
+        sites
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/subscriptions/" class="md-nav__link">
+        subscriptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/teams/" class="md-nav__link">
+        teams
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graph/users/" class="md-nav__link">
+        users
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+          logging
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_5">
+          <span class="md-nav__icon md-icon"></span>
+          logging
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../logging/" class="md-nav__link">
+        logging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_6" id="__nav_6_6_label" tabindex="0">
+          msaljsclient
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_6">
+          <span class="md-nav__icon md-icon"></span>
+          msaljsclient
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../msaljsclient/" class="md-nav__link">
+        msaljsclient
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_7" id="__nav_6_7_label" tabindex="0">
+          nodejs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_7">
+          <span class="md-nav__icon md-icon"></span>
+          nodejs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../packages/#nodejs" class="md-nav__link">
+        nodejs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nodejs/behaviors/" class="md-nav__link">
+        behaviors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nodejs/sp-extensions/" class="md-nav__link">
+        sp Extensions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="0">
+          queryable
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_8">
+          <span class="md-nav__icon md-icon"></span>
+          queryable
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../packages/#queryable" class="md-nav__link">
+        queryable
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queryable/behaviors/" class="md-nav__link">
+        behaviors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queryable/extensions/" class="md-nav__link">
+        extensions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../queryable/queryable/" class="md-nav__link">
+        queryable
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_9" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_9" id="__nav_6_9_label" tabindex="0">
+          sp
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_9_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_6_9">
+          <span class="md-nav__icon md-icon"></span>
+          sp
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../packages/#sp" class="md-nav__link">
+        sp
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../behaviors/" class="md-nav__link">
+        behaviors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alias-parameters/" class="md-nav__link">
+        alias parameters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alm/" class="md-nav__link">
+        ALM api
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attachments/" class="md-nav__link">
+        attachments
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          client-side pages
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        client-side pages
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-new-page" class="md-nav__link">
+    Create a new Page
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a new Page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-using-iwebaddclientsidepage" class="md-nav__link">
+    Create using IWeb.addClientsidePage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-using-createclientsidepage-method" class="md-nav__link">
+    Create using CreateClientsidePage method
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-using-iwebaddfullpageapp" class="md-nav__link">
+    Create using IWeb.addFullPageApp
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-pages" class="md-nav__link">
+    Load Pages
+  </a>
+  
+    <nav class="md-nav" aria-label="Load Pages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load-using-iwebloadclientsidepage" class="md-nav__link">
+    Load using IWeb.loadClientsidePage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-using-clientsidepagefromfile" class="md-nav__link">
+    Load using ClientsidePageFromFile
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-sections-and-columns" class="md-nav__link">
+    Edit Sections and Columns
+  </a>
+  
+    <nav class="md-nav" aria-label="Edit Sections and Columns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manipulate-sections-and-columns" class="md-nav__link">
+    Manipulate Sections and Columns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vertical-section" class="md-nav__link">
+    Vertical Section
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reorder-sections" class="md-nav__link">
+    Reorder Sections
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reorder-columns" class="md-nav__link">
+    Reorder Columns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clientside-controls" class="md-nav__link">
+    Clientside Controls
+  </a>
+  
+    <nav class="md-nav" aria-label="Clientside Controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-text-content" class="md-nav__link">
+    Add Text Content
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-controls" class="md-nav__link">
+    Add Controls
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handle-different-webparts-settings" class="md-nav__link">
+    Handle Different Webpart's Settings
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#page-operations" class="md-nav__link">
+    Page Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="Page Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pagelayout" class="md-nav__link">
+    pageLayout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bannerimageurl" class="md-nav__link">
+    bannerImageUrl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thumbnailurl" class="md-nav__link">
+    thumbnailUrl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topicheader" class="md-nav__link">
+    topicHeader
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#title" class="md-nav__link">
+    title
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    description
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layouttype" class="md-nav__link">
+    layoutType
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headertextalignment" class="md-nav__link">
+    headerTextAlignment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showtopicheader" class="md-nav__link">
+    showTopicHeader
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showpublishdate" class="md-nav__link">
+    showPublishDate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-set-author-details" class="md-nav__link">
+    Get / Set author details
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load" class="md-nav__link">
+    load
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    save
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discardpagecheckout" class="md-nav__link">
+    discardPageCheckout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedulepublish" class="md-nav__link">
+    schedulePublish
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promotetonews" class="md-nav__link">
+    promoteToNews
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enablecomments-disablecomments" class="md-nav__link">
+    enableComments &amp; disableComments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findcontrolbyid" class="md-nav__link">
+    findControlById
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findcontrol" class="md-nav__link">
+    findControl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#like-unlike" class="md-nav__link">
+    like &amp; unlike
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getlikedbyinformation" class="md-nav__link">
+    getLikedByInformation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copy" class="md-nav__link">
+    copy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copyto" class="md-nav__link">
+    copyTo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setbannerimage" class="md-nav__link">
+    setBannerImage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setbannerimagefromexternalurl" class="md-nav__link">
+    setBannerImageFromExternalUrl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recycle" class="md-nav__link">
+    recycle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    delete
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saveastemplate" class="md-nav__link">
+    saveAsTemplate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share" class="md-nav__link">
+    share
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-repost-page" class="md-nav__link">
+    Add Repost Page
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../column-defaults/" class="md-nav__link">
+        column defaults
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../comments-likes/" class="md-nav__link">
+        comments and likes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../content-types/" class="md-nav__link">
+        content types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../context-info/" class="md-nav__link">
+        context info
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../favorites/" class="md-nav__link">
+        Favorites
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        Features
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fields/" class="md-nav__link">
+        Fields
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../files/" class="md-nav__link">
+        Files
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../folders/" class="md-nav__link">
+        Folders
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../forms/" class="md-nav__link">
+        Forms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../groupSiteManager/" class="md-nav__link">
+        GroupSiteManager
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hubsites/" class="md-nav__link">
+        Hubsites
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../items/" class="md-nav__link">
+        List Items
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lists/" class="md-nav__link">
+        Lists
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../navigation/" class="md-nav__link">
+        Navigation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../permissions/" class="md-nav__link">
+        Permissions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../profiles/" class="md-nav__link">
+        Profiles
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recycle-bin/" class="md-nav__link">
+        Recycle Bin
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regional-settings/" class="md-nav__link">
+        Regional Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../related-items/" class="md-nav__link">
+        Related Items
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search/" class="md-nav__link">
+        Search
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        Security
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sharing/" class="md-nav__link">
+        Sharing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../site-designs/" class="md-nav__link">
+        Site Designs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../site-groups/" class="md-nav__link">
+        Site Groups
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../site-scripts/" class="md-nav__link">
+        Site Scripts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../site-users/" class="md-nav__link">
+        Site Users
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sites/" class="md-nav__link">
+        Sites
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../social/" class="md-nav__link">
+        Social
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../publishing-sitepageservice/" class="md-nav__link">
+        SP.Publishing.SitePageService
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sp-utilities-utility/" class="md-nav__link">
+        SP.Utilities.Utility
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../subscriptions/" class="md-nav__link">
+        Subscriptions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../taxonomy/" class="md-nav__link">
+        Taxonomy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tenant-properties/" class="md-nav__link">
+        Tenant Properties
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-custom-actions/" class="md-nav__link">
+        User custom actions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../views/" class="md-nav__link">
+        Views
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../webs/" class="md-nav__link">
+        Webs
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_10" id="__nav_6_10_label" tabindex="0">
+          sp-admin
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_10">
+          <span class="md-nav__icon md-icon"></span>
+          sp-admin
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sp-admin/" class="md-nav__link">
+        sp-admin
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Advanced
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Advanced
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/custom-bundle/" class="md-nav__link">
+        Custom Bundle
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/invokable/" class="md-nav__link">
+        Custom Call/Path
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/behaviors/" class="md-nav__link">
+        Behaviors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/behavior-recipes/" class="md-nav__link">
+        Behavior Recipes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/timeline/" class="md-nav__link">
+        Timeline/Moments
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/adv-clientside-pages/" class="md-nav__link">
+        Client-Side Pages
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          Contributing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/setup-dev-machine/" class="md-nav__link">
+        Set Up Dev Machine
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/settings/" class="md-nav__link">
+        Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/timeline/" class="md-nav__link">
+        Understanding Library Internals
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/extending-the-library/" class="md-nav__link">
+        Expanding the Library
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/npm-scripts/" class="md-nav__link">
+        Npm Scripts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/local-debug-configuration/" class="md-nav__link">
+        Local Debug Config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/debugging/" class="md-nav__link">
+        Debugging
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/debug-tests/" class="md-nav__link">
+        Tests
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/documentation/" class="md-nav__link">
+        Documentation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/pull-requests/" class="md-nav__link">
+        Pull Requests
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          Legacy Docs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Legacy Docs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../v1/" class="md-nav__link">
+        V1
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../v2/" class="md-nav__link">
+        V2
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-new-page" class="md-nav__link">
+    Create a new Page
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a new Page">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-using-iwebaddclientsidepage" class="md-nav__link">
+    Create using IWeb.addClientsidePage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-using-createclientsidepage-method" class="md-nav__link">
+    Create using CreateClientsidePage method
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-using-iwebaddfullpageapp" class="md-nav__link">
+    Create using IWeb.addFullPageApp
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-pages" class="md-nav__link">
+    Load Pages
+  </a>
+  
+    <nav class="md-nav" aria-label="Load Pages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load-using-iwebloadclientsidepage" class="md-nav__link">
+    Load using IWeb.loadClientsidePage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-using-clientsidepagefromfile" class="md-nav__link">
+    Load using ClientsidePageFromFile
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edit-sections-and-columns" class="md-nav__link">
+    Edit Sections and Columns
+  </a>
+  
+    <nav class="md-nav" aria-label="Edit Sections and Columns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manipulate-sections-and-columns" class="md-nav__link">
+    Manipulate Sections and Columns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vertical-section" class="md-nav__link">
+    Vertical Section
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reorder-sections" class="md-nav__link">
+    Reorder Sections
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reorder-columns" class="md-nav__link">
+    Reorder Columns
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clientside-controls" class="md-nav__link">
+    Clientside Controls
+  </a>
+  
+    <nav class="md-nav" aria-label="Clientside Controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-text-content" class="md-nav__link">
+    Add Text Content
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-controls" class="md-nav__link">
+    Add Controls
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handle-different-webparts-settings" class="md-nav__link">
+    Handle Different Webpart's Settings
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#page-operations" class="md-nav__link">
+    Page Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="Page Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pagelayout" class="md-nav__link">
+    pageLayout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bannerimageurl" class="md-nav__link">
+    bannerImageUrl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thumbnailurl" class="md-nav__link">
+    thumbnailUrl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topicheader" class="md-nav__link">
+    topicHeader
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#title" class="md-nav__link">
+    title
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    description
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layouttype" class="md-nav__link">
+    layoutType
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#headertextalignment" class="md-nav__link">
+    headerTextAlignment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showtopicheader" class="md-nav__link">
+    showTopicHeader
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showpublishdate" class="md-nav__link">
+    showPublishDate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-set-author-details" class="md-nav__link">
+    Get / Set author details
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load" class="md-nav__link">
+    load
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    save
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discardpagecheckout" class="md-nav__link">
+    discardPageCheckout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedulepublish" class="md-nav__link">
+    schedulePublish
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promotetonews" class="md-nav__link">
+    promoteToNews
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enablecomments-disablecomments" class="md-nav__link">
+    enableComments &amp; disableComments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findcontrolbyid" class="md-nav__link">
+    findControlById
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findcontrol" class="md-nav__link">
+    findControl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#like-unlike" class="md-nav__link">
+    like &amp; unlike
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getlikedbyinformation" class="md-nav__link">
+    getLikedByInformation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copy" class="md-nav__link">
+    copy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copyto" class="md-nav__link">
+    copyTo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setbannerimage" class="md-nav__link">
+    setBannerImage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setbannerimagefromexternalurl" class="md-nav__link">
+    setBannerImageFromExternalUrl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recycle" class="md-nav__link">
+    recycle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    delete
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saveastemplate" class="md-nav__link">
+    saveAsTemplate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share" class="md-nav__link">
+    share
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-repost-page" class="md-nav__link">
+    Add Repost Page
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="pnpspclientside-pages">@pnp/sp/clientside-pages<a class="headerlink" href="#pnpspclientside-pages" title="Permanent link">&para;</a></h1>
+<p>The 'clientside-pages' module allows you to create, edit, and delete modern SharePoint pages. There are methods to update the page settings and add/remove client-side web parts.</p>
+<p><a href="../../concepts/selective-imports/"><img alt="Selective Imports Banner" src="https://img.shields.io/badge/Selective%20Imports-informational.svg" /></a></p>
+<h2 id="create-a-new-page">Create a new Page<a class="headerlink" href="#create-a-new-page" title="Permanent link">&para;</a></h2>
+<p>You can create a new client-side page in several ways, all are equivalent.</p>
+<h3 id="create-using-iwebaddclientsidepage">Create using IWeb.addClientsidePage<a class="headerlink" href="#create-using-iwebaddclientsidepage" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { spfi, SPFI } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/clientside-pages/web&quot;;
+import { PromotedState } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// Create a page providing a file name
+const page = await sp.web.addClientsidePage(&quot;mypage1&quot;);
+
+// ... other operations on the page as outlined below
+
+// the page is initially not published, you must publish it so it appears for others users
+await page.save();
+
+// include title and page layout
+const page2 = await sp.web.addClientsidePage(&quot;mypage&quot;, &quot;My Page Title&quot;, &quot;Article&quot;);
+
+// you must publish the new page
+await page2.save();
+
+// include title, page layout, and specifying the publishing status (Added in 2.0.4)
+const page3 = await sp.web.addClientsidePage(&quot;mypage&quot;, &quot;My Page Title&quot;, &quot;Article&quot;, PromotedState.PromoteOnPublish);
+
+// you must publish the new page, after which the page will immediately be promoted to a news article
+await page3.save();
+</code></pre>
+<h3 id="create-using-createclientsidepage-method">Create using CreateClientsidePage method<a class="headerlink" href="#create-using-createclientsidepage-method" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import { Web } from &quot;@pnp/sp/webs&quot;;
+import { CreateClientsidePage, PromotedState } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+const page1 = await CreateClientsidePage(sp.web, &quot;mypage2&quot;, &quot;My Page Title&quot;);
+
+// you must publish the new page
+await page1.save(true);
+
+// specify the page layout type parameter
+const page2 = await CreateClientsidePage(sp.web, &quot;mypage3&quot;, &quot;My Page Title&quot;, &quot;Article&quot;);
+
+// you must publish the new page
+await page2.save();
+
+// specify the page layout type parameter while also specifying the publishing status (Added in 2.0.4)
+const page2half = await CreateClientsidePage(sp.web, &quot;mypage3&quot;, &quot;My Page Title&quot;, &quot;Article&quot;, PromotedState.PromoteOnPublish);
+
+// you must publish the new page, after which the page will immediately be promoted to a news article
+await page2half.save();
+
+// use the web factory to create a page in a specific web
+const page3 = await CreateClientsidePage(Web([sp, &quot;https://{absolute web url}&quot;]), &quot;mypage4&quot;, &quot;My Page Title&quot;);
+
+// you must publish the new page
+await page3.save();
+</code></pre>
+<h3 id="create-using-iwebaddfullpageapp">Create using IWeb.addFullPageApp<a class="headerlink" href="#create-using-iwebaddfullpageapp" title="Permanent link">&para;</a></h3>
+<p>Using this method you can easily create a full page app page given the component id. Don't forget the page will not be published and you will need to call save.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+const page = await sp.web.addFullPageApp(&quot;name333&quot;, &quot;My Title&quot;, &quot;2CE4E250-B997-11EB-A9D2-C9D2FF95D000&quot;);
+// ... other page actions
+// you must save the page to publish it
+await page.save();
+</code></pre>
+<h2 id="load-pages">Load Pages<a class="headerlink" href="#load-pages" title="Permanent link">&para;</a></h2>
+<p>There are a few ways to load pages, each of which results in an IClientsidePage instance being returned.</p>
+<h3 id="load-using-iwebloadclientsidepage">Load using IWeb.loadClientsidePage<a class="headerlink" href="#load-using-iwebloadclientsidepage" title="Permanent link">&para;</a></h3>
+<p>This method takes a <em>server relative</em> path to the page to load.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import { Web } from &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/clientside-pages/web&quot;;
+
+const sp = spfi(...);
+
+// use from the sp.web fluent chain
+const page = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/mypage3.aspx&quot;);
+
+// use the web factory to target a specific web
+const page2 = await Web([sp.web, &quot;https://{absolute web url}&quot;]).loadClientsidePage(&quot;/sites/dev/sitepages/mypage3.aspx&quot;);
+</code></pre>
+<h3 id="load-using-clientsidepagefromfile">Load using ClientsidePageFromFile<a class="headerlink" href="#load-using-clientsidepagefromfile" title="Permanent link">&para;</a></h3>
+<p>This method takes an IFile instance and loads an IClientsidePage instance.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { ClientsidePageFromFile } from &quot;@pnp/sp/clientside-pages&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/files/web&quot;;
+
+const sp = spfi(...);
+
+const page = await ClientsidePageFromFile(sp.web.getFileByServerRelativePath(&quot;/sites/dev/sitepages/mypage3.aspx&quot;));
+</code></pre>
+<h2 id="edit-sections-and-columns">Edit Sections and Columns<a class="headerlink" href="#edit-sections-and-columns" title="Permanent link">&para;</a></h2>
+<p>Client-side pages are made up of sections, columns, and controls. Sections contain columns which contain controls. There are methods to operate on these within the page, in addition to the standard array methods available in JavaScript. These samples use a variable <code>page</code> that is understood to be an IClientsidePage instance which is either created or loaded as outlined in previous sections.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// add two columns with factor 6 - this is a two column layout as the total factor in a section should add up to 12
+const section1 = page.addSection();
+section1.addColumn(6);
+section1.addColumn(6);
+
+// create a three column layout in a new section
+const section2 = page.addSection();
+section2.addColumn(4);
+section2.addColumn(4);
+section2.addColumn(4);
+
+// publish our changes
+await page.save();
+</code></pre>
+<h3 id="manipulate-sections-and-columns">Manipulate Sections and Columns<a class="headerlink" href="#manipulate-sections-and-columns" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// drop all the columns in this section
+// this will also DELETE all controls contained in the columns
+page.sections[1].columns.length = 0;
+
+// create a new column layout
+page.sections[1].addColumn(4);
+page.sections[1].addColumn(8);
+
+// publish our changes
+await page.save();
+</code></pre>
+<h3 id="vertical-section">Vertical Section<a class="headerlink" href="#vertical-section" title="Permanent link">&para;</a></h3>
+<p>The vertical section, if on the page, is stored within the sections array. However, you access it slightly differently to make things easier.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// add or get a vertical section (handles case where section already exists)
+const vertSection = page.addVerticalSection();
+
+// ****************************************************************
+
+// if you know or want to test if a vertical section is present:
+if (page.hasVerticalSection) {
+
+    // access the vertical section (this method will NOT create the section if it does not exist)
+    page.verticalSection.addControl(new ClientsideText(&quot;hello&quot;));
+} else {
+
+    const vertSection = page.addVerticalSection();
+    vertSection.addControl(new ClientsideText(&quot;hello&quot;));
+}
+</code></pre>
+<h3 id="reorder-sections">Reorder Sections<a class="headerlink" href="#reorder-sections" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// swap the order of two sections
+// this will preserve the controls within the columns
+page.sections = [page.sections[1], page.sections[0]];
+
+// publish our changes
+await page.save();
+</code></pre>
+<h3 id="reorder-columns">Reorder Columns<a class="headerlink" href="#reorder-columns" title="Permanent link">&para;</a></h3>
+<p>The sections and columns are arrays, so normal array operations work as expected</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// swap the order of two columns
+// this will preserve the controls within the columns
+page.sections[1].columns = [page.sections[1].columns[1], page.sections[1].columns[0]];
+
+// publish our changes
+await page.save();
+</code></pre>
+<h2 id="clientside-controls">Clientside Controls<a class="headerlink" href="#clientside-controls" title="Permanent link">&para;</a></h2>
+<p>Once you have your sections and columns defined you will want to add/edit controls within those columns.</p>
+<h3 id="add-text-content">Add Text Content<a class="headerlink" href="#add-text-content" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { ClientsideText, IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+page.addSection().addControl(new ClientsideText(&quot;@pnp/sp is a great library!&quot;));
+
+await page.save();
+</code></pre>
+<h3 id="add-controls">Add Controls<a class="headerlink" href="#add-controls" title="Permanent link">&para;</a></h3>
+<p>Adding controls involves loading the available client-side part definitions from the server or creating a text part.</p>
+<pre><code class="language-TypeScript">import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/clientside-pages/web&quot;;
+import { spfi } from &quot;@pnp/sp&quot;;
+import { ClientsideWebpart } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// this will be a ClientsidePageComponent array
+// this can be cached on the client in production scenarios
+const partDefs = await sp.web.getClientsideWebParts();
+
+// find the definition we want, here by id
+const partDef = partDefs.filter(c =&gt; c.Id === &quot;490d7c76-1824-45b2-9de3-676421c997fa&quot;);
+
+// optionally ensure you found the def
+if (partDef.length &lt; 1) {
+    // we didn't find it so we throw an error
+    throw new Error(&quot;Could not find the web part&quot;);
+}
+
+// create a ClientWebPart instance from the definition
+const part = ClientsideWebpart.fromComponentDef(partDef[0]);
+
+// set the properties on the web part. Here for the embed web part we only have to supply an embedCode - in this case a YouTube video.
+// the structure of the properties varies for each web part and each version of a web part, so you will need to ensure you are setting
+// the properties correctly
+part.setProperties&lt;{ embedCode: string }&gt;({
+    embedCode: &quot;https://www.youtube.com/watch?v=IWQFZ7Lx-rg&quot;,
+});
+
+// we add that part to a new section
+page.addSection().addControl(part);
+
+await page.save();
+</code></pre>
+<h3 id="handle-different-webparts-settings">Handle Different Webpart's Settings<a class="headerlink" href="#handle-different-webparts-settings" title="Permanent link">&para;</a></h3>
+<p>There are many ways that client side web parts are implemented and we can't provide handling within the library for all possibilities. This example shows how to handle a property set within the serverProcessedContent, in this case a List part's display title.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { ClientsideWebpart } from &quot;@pnp/sp/clientside-pages&quot;;
+import &quot;@pnp/sp/webs&quot;;
+
+// we create a class to wrap our functionality in a reusable way
+class ListWebpart extends ClientsideWebpart {
+
+  constructor(control: ClientsideWebpart) {
+    super((&lt;any&gt;control).json);
+  }
+
+  // add property getter/setter for what we need, in this case &quot;listTitle&quot; within searchablePlainTexts
+  public get DisplayTitle(): string {
+    return this.json.webPartData?.serverProcessedContent?.searchablePlainTexts?.listTitle || &quot;&quot;;
+  }
+
+  public set DisplayTitle(value: string) {
+    this.json.webPartData.serverProcessedContent.searchablePlainTexts.listTitle = value;
+  }
+}
+
+const sp = spfi(...);
+
+// now we load our page
+const page = await sp.web.loadClientsidePage(&quot;/sites/dev/SitePages/List-Web-Part.aspx&quot;);
+
+// get our part and pass it to the constructor of our wrapper class
+const part = new ListWebpart(page.sections[0].columns[0].getControl(0));
+
+part.DisplayTitle = &quot;My New Title!&quot;;
+
+await page.save();
+</code></pre>
+<blockquote>
+<p>Unfortunately each webpart can be authored differently, so there isn't a way to know how the setting for a given webpart are stored without loading it and examining the properties.</p>
+</blockquote>
+<h2 id="page-operations">Page Operations<a class="headerlink" href="#page-operations" title="Permanent link">&para;</a></h2>
+<p>There are other operation you can perform on a page in addition to manipulating the content.</p>
+<h3 id="pagelayout">pageLayout<a class="headerlink" href="#pagelayout" title="Permanent link">&para;</a></h3>
+<p>You can get and set the page layout. Changing the layout after creating the page may have side effects and should be done cautiously.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.pageLayout;
+
+// set the value
+page.pageLayout = &quot;Article&quot;;
+await page.save();
+</code></pre>
+<h3 id="bannerimageurl">bannerImageUrl<a class="headerlink" href="#bannerimageurl" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.bannerImageUrl;
+
+// set the value
+page.bannerImageUrl = &quot;/server/relative/path/to/image.png&quot;;
+await page.save();
+</code></pre>
+<blockquote>
+<p>Banner images need to exist within the same site collection as the page where you want to use them.</p>
+</blockquote>
+<h3 id="thumbnailurl">thumbnailUrl<a class="headerlink" href="#thumbnailurl" title="Permanent link">&para;</a></h3>
+<p>Allows you to set the thumbnail used for the page independently of the banner.</p>
+<blockquote>
+<p>If you set the bannerImageUrl property and not thumbnailUrl the thumbnail will be reset to match the banner, mimicking the UI functionality.</p>
+</blockquote>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.thumbnailUrl;
+
+// set the value
+page.thumbnailUrl = &quot;/server/relative/path/to/image.png&quot;;
+await page.save();
+</code></pre>
+<h3 id="topicheader">topicHeader<a class="headerlink" href="#topicheader" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.topicHeader;
+
+// set the value
+page.topicHeader = &quot;My cool header!&quot;;
+await page.save();
+
+// clear the topic header and hide it
+page.topicHeader = &quot;&quot;;
+await page.save();
+</code></pre>
+<h3 id="title">title<a class="headerlink" href="#title" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.title;
+
+// set the value
+page.title = &quot;My page title&quot;;
+await page.save();
+</code></pre>
+<h3 id="description">description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Descriptions are limited to 255 chars</p>
+</blockquote>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.description;
+
+// set the value
+page.description = &quot;A description&quot;;
+await page.save();
+</code></pre>
+<h3 id="layouttype">layoutType<a class="headerlink" href="#layouttype" title="Permanent link">&para;</a></h3>
+<p>Sets the layout type of the page. The valid values are: "FullWidthImage", "NoImage", "ColorBlock", "CutInShape"</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.layoutType;
+
+// set the value
+page.layoutType = &quot;ColorBlock&quot;;
+await page.save();
+</code></pre>
+<h3 id="headertextalignment">headerTextAlignment<a class="headerlink" href="#headertextalignment" title="Permanent link">&para;</a></h3>
+<p>Sets the header text alignment to one of "Left" or "Center"</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.headerTextAlignment;
+
+// set the value
+page.headerTextAlignment = &quot;Center&quot;;
+await page.save();
+</code></pre>
+<h3 id="showtopicheader">showTopicHeader<a class="headerlink" href="#showtopicheader" title="Permanent link">&para;</a></h3>
+<p>Sets if the topic header is displayed on a page.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.showTopicHeader;
+
+// show the header
+page.showTopicHeader = true;
+await page.save();
+
+// hide the header
+page.showTopicHeader = false;
+await page.save();
+</code></pre>
+<h3 id="showpublishdate">showPublishDate<a class="headerlink" href="#showpublishdate" title="Permanent link">&para;</a></h3>
+<p>Sets if the publish date is displayed on a page.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the current value
+const value = page.showPublishDate;
+
+// show the date
+page.showPublishDate = true;
+await page.save();
+
+// hide the date
+page.showPublishDate = false;
+await page.save();
+</code></pre>
+<h3 id="get-set-author-details">Get / Set author details<a class="headerlink" href="#get-set-author-details" title="Permanent link">&para;</a></h3>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+import &quot;@pnp/sp/clientside-pages&quot;;
+import &quot;@pnp/sp/site-users&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// get the author details (string | null)
+const value = page.authorByLine;
+
+// set the author by user id
+const user = await sp.web.currentUser.select(&quot;Id&quot;, &quot;LoginName&quot;)();
+const userId = user.Id;
+const userLogin = user.LoginName;
+
+await page.setAuthorById(userId);
+await page.save();
+
+await page.setAuthorByLoginName(userLogin);
+await page.save();
+</code></pre>
+<blockquote>
+<p>you must still save the page after setting the author to persist your changes as shown in the example.</p>
+</blockquote>
+<h3 id="load">load<a class="headerlink" href="#load" title="Permanent link">&para;</a></h3>
+<p>Loads the page from the server. This will overwrite any local unsaved changes.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+await page.load();
+</code></pre>
+<h3 id="save">save<a class="headerlink" href="#save" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><img alt="Known Issue Banner" src="https://img.shields.io/badge/Known%20Issue-important.svg" /> Uncustomized home pages (i.e the home page that is generated with a site out of the box) cannot be updated by this library without becoming corrupted.</p>
+</blockquote>
+<p>Saves any changes to the page, optionally keeping them in draft state.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// changes are published
+await page.save();
+
+// changes remain in draft
+await page.save(false);
+</code></pre>
+<h3 id="discardpagecheckout">discardPageCheckout<a class="headerlink" href="#discardpagecheckout" title="Permanent link">&para;</a></h3>
+<p>Discards any current checkout of the page by the current user.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+await page.discardPageCheckout();
+</code></pre>
+<h3 id="schedulepublish">schedulePublish<a class="headerlink" href="#schedulepublish" title="Permanent link">&para;</a></h3>
+<p>Schedules the page for publishing.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// date and time to publish the page in UTC.
+const publishDate = new Date(&quot;1/1/1901&quot;);
+
+const scheduleVersion: string = await page.schedulePublish(publishDate);
+</code></pre>
+<h3 id="promotetonews">promoteToNews<a class="headerlink" href="#promotetonews" title="Permanent link">&para;</a></h3>
+<p>Promotes the page as a news article.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+await page.promoteToNews();
+</code></pre>
+<h3 id="enablecomments-disablecomments">enableComments &amp; disableComments<a class="headerlink" href="#enablecomments-disablecomments" title="Permanent link">&para;</a></h3>
+<p>Used to control the availability of comments on a page.</p>
+<p><a href="https://github.com/pnp/pnpjs/issues/1383"><img alt="Known Issue Banner" src="https://img.shields.io/badge/Known%20Issue-important.svg" /></a></p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+// you need to import the comments sub-module or use the all preset
+import &quot;@pnp/sp/comments/clientside-page&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// turn on comments
+await page.enableComments();
+
+// turn off comments
+await page.disableComments();
+</code></pre>
+<h3 id="findcontrolbyid">findControlById<a class="headerlink" href="#findcontrolbyid" title="Permanent link">&para;</a></h3>
+<p>Finds a control within the page by id.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage, ClientsideText } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+const control = page.findControlById(&quot;06d4cdf6-bce6-4200-8b93-667a1b0a6c9d&quot;);
+
+// you can also type the control
+const control = page.findControlById&lt;ClientsideText&gt;(&quot;06d4cdf6-bce6-4200-8b93-667a1b0a6c9d&quot;);
+</code></pre>
+<h3 id="findcontrol">findControl<a class="headerlink" href="#findcontrol" title="Permanent link">&para;</a></h3>
+<p>Finds a control within the page using the supplied delegate. Can also be used to iterate through all controls in the page.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// find the first control whose order is 9
+const control = page.findControl((c) =&gt; c.order === 9);
+
+// iterate all the controls and output the id to the console
+page.findControl((c) =&gt; {
+    console.log(c.id);
+    return false;
+});
+</code></pre>
+<h3 id="like-unlike">like &amp; unlike<a class="headerlink" href="#like-unlike" title="Permanent link">&para;</a></h3>
+<p>Updates the page's like value for the current user.</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+
+// like this page
+await page.like();
+
+// unlike this page
+await page.unlike();
+</code></pre>
+<h3 id="getlikedbyinformation">getLikedByInformation<a class="headerlink" href="#getlikedbyinformation" title="Permanent link">&para;</a></h3>
+<p>Gets the likes information for this page.</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+
+const info = await page.getLikedByInformation();
+</code></pre>
+<h3 id="copy">copy<a class="headerlink" href="#copy" title="Permanent link">&para;</a></h3>
+<p>Creates a copy of the page, including all controls.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+import &quot;@pnp/sp/webs&quot;;
+
+const sp = spfi(...);
+
+// our page instance
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// creates a published copy of the page
+const pageCopy = await page.copy(sp.web, &quot;newpagename&quot;, &quot;New Page Title&quot;);
+
+// creates a draft (unpublished) copy of the page
+const pageCopy2 = await page.copy(sp.web, &quot;newpagename&quot;, &quot;New Page Title&quot;, false);
+
+// edits to pageCopy2 ...
+
+// publish the page
+pageCopy2.save();
+</code></pre>
+<h3 id="copyto">copyTo<a class="headerlink" href="#copyto" title="Permanent link">&para;</a></h3>
+<p>Copies the contents of a page to another existing page instance.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+import &quot;@pnp/sp/webs&quot;;
+
+const sp = spfi(...);
+
+// our page instances, loaded in any of the ways shown above
+const source: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+const target: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/target.aspx&quot;);
+const target2: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/target2.aspx&quot;);
+
+// creates a published copy of the page
+await source.copyTo(target);
+
+// creates a draft (unpublished) copy of the page
+await source.copyTo(target2, false);
+
+// edits to target2...
+
+// publish the page
+target2.save();
+</code></pre>
+<h3 id="setbannerimage">setBannerImage<a class="headerlink" href="#setbannerimage" title="Permanent link">&para;</a></h3>
+<p>Sets the banner image url and optionally additional properties. Allows you to set additional properties if needed, if you do not need to set the additional properties they are equivalent.</p>
+<blockquote>
+<p>Banner images need to exist within the same site collection as the page where you want to use them.</p>
+</blockquote>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+page.setBannerImage(&quot;/server/relative/path/to/image.png&quot;);
+
+// save the changes
+await page.save();
+
+// set additional props
+page.setBannerImage(&quot;/server/relative/path/to/image.png&quot;, {
+  altText: &quot;Image description&quot;,
+  imageSourceType: 2,
+  translateX: 30,
+  translateY: 1234,
+});
+
+// save the changes
+await page.save();
+</code></pre>
+<p>This sample shows the full process of adding a page, image file, and setting the banner image in nodejs. The same code would work in a browser with an update on how you get the <code>file</code> - likely from a file input or similar.</p>
+<pre><code class="language-TypeScript">import { join } from &quot;path&quot;;
+import { createReadStream } from &quot;fs&quot;;
+import { spfi, SPFI, SPFx } from &quot;@pnp/sp&quot;;
+import { SPDefault } from &quot;@pnp/nodejs&quot;;
+import { LogLevel  } from &quot;@pnp/logging&quot;;
+
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/files&quot;;
+import &quot;@pnp/sp/folders&quot;;
+import &quot;@pnp/sp/clientside-pages&quot;;
+
+const buffer = readFileSync(&quot;c:/temp/key.pem&quot;);
+
+const config:any = {
+  auth: {
+    authority: &quot;https://login.microsoftonline.com/{my tenant}/&quot;,
+    clientId: &quot;{application (client) id}&quot;,
+    clientCertificate: {
+      thumbprint: &quot;{certificate thumbprint, displayed in AAD}&quot;,
+      privateKey: buffer.toString(),
+    },
+  },
+  system: {
+    loggerOptions: {
+      loggerCallback(loglevel: any, message: any, containsPii: any) {
+          console.log(message);
+      },
+      piiLoggingEnabled: false,
+      logLevel: LogLevel.Verbose
+    }
+  }
+};
+
+// configure your node options
+const sp = spfi('{site url}').using(SPDefault({
+  baseUrl: '{site url}',
+  msal: {
+    config: config,
+    scopes: [ 'https://{my tenant}.sharepoint.com/.default' ]
+  }
+}));
+
+
+// add the banner image
+const dirname = join(&quot;C:/path/to/file&quot;, &quot;img-file.jpg&quot;);
+
+const chunkedFile = createReadStream(dirname);
+
+const far = await sp.web.getFolderByServerRelativePath(&quot;/sites/dev/Shared Documents&quot;).files.addChunked( &quot;banner.jpg&quot;, chunkedFile );
+
+// add the page
+const page = await sp.web.addClientsidePage(&quot;MyPage&quot;, &quot;Page Title&quot;);
+
+// set the banner image
+page.setBannerImage(far.data.ServerRelativeUrl);
+
+// publish the page
+await page.save();
+</code></pre>
+<h3 id="setbannerimagefromexternalurl">setBannerImageFromExternalUrl<a class="headerlink" href="#setbannerimagefromexternalurl" title="Permanent link">&para;</a></h3>
+<p>Allows you to set the banner image from a source outside the current site collection. The image file will be copied to the SiteAssets library and referenced from there.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// you must await this method
+await page.setBannerImageFromExternalUrl(&quot;https://absolute.url/to/my/image.jpg&quot;);
+
+// save the changes
+await page.save();
+</code></pre>
+<p>You can optionally supply additional props for the banner image, these match the properties when calling <a href="#setbannerimage">setBannerImage</a></p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import { IClientsidePage } from &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+
+const page: IClientsidePage = await sp.web.loadClientsidePage(&quot;/sites/dev/sitepages/home.aspx&quot;);
+
+// you must await this method
+await page.setBannerImageFromExternalUrl(&quot;https://absolute.url/to/my/image.jpg&quot;, {
+  altText: &quot;Image description&quot;,
+  imageSourceType: 2,
+  translateX: 30,
+  translateY: 1234,
+});
+
+// save the changes
+await page.save();
+</code></pre>
+<h3 id="recycle">recycle<a class="headerlink" href="#recycle" title="Permanent link">&para;</a></h3>
+<p>Allows you to recycle a page without first needing to use getItem</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+// you must await this method
+await page.recycle();
+</code></pre>
+<h3 id="delete">delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h3>
+<p>Allows you to delete a page without first needing to use getItem</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+// you must await this method
+await page.delete();
+</code></pre>
+<h3 id="saveastemplate">saveAsTemplate<a class="headerlink" href="#saveastemplate" title="Permanent link">&para;</a></h3>
+<p>Save page as a template from which other pages can be created. If it doesn't exist a special folder "Templates" will be added to the doc lib</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+// you must await this method
+await page.saveAsTemplate();
+// save a template, but don't publish it allowing you to make changes before it is available to users
+// you 
+await page.saveAsTemplate(false);
+// ... changes to the page
+// you must publish the template so it is available
+await page.save();
+</code></pre>
+<h3 id="share">share<a class="headerlink" href="#share" title="Permanent link">&para;</a></h3>
+<p>Allows sharing a page with one or more email addresses, optionall including a message in the email</p>
+<pre><code class="language-TypeScript">// our page instance
+const page: IClientsidePage;
+// you must await this method
+await page.share([&quot;email@place.com&quot;, &quot;email2@otherplace.com&quot;]);
+// optionally include a message
+await page.share([&quot;email@place.com&quot;, &quot;email2@otherplace.com&quot;], &quot;Please check out this cool page!&quot;);
+</code></pre>
+<h2 id="add-repost-page">Add Repost Page<a class="headerlink" href="#add-repost-page" title="Permanent link">&para;</a></h2>
+<p>You can use the <code>addRepostPage</code> method to add a report page. The method returns the absolute url of the created page. All properties are optional but it is recommended to include as much as possible to improve the quality of the repost card's display.</p>
+<pre><code class="language-TypeScript">import { spfi } from &quot;@pnp/sp&quot;;
+import &quot;@pnp/sp/webs&quot;;
+import &quot;@pnp/sp/clientside-pages&quot;;
+
+const sp = spfi(...);
+const page = await sp.web.addRepostPage({
+    BannerImageUrl: &quot;https://some.absolute/path/to/an/image.jpg&quot;,
+    IsBannerImageUrlExternal: true,
+    Description: &quot;My Description&quot;,
+    Title: &quot;This is my title!&quot;,
+    OriginalSourceUrl: &quot;https://absolute/path/to/article&quot;,
+});
+</code></pre>
+<blockquote>
+<p>To specify an existing item in another list all of the four properties OriginalSourceSiteId, OriginalSourceWebId, OriginalSourceListId, and OriginalSourceItemId are required.</p>
+</blockquote>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/m365pnpjs" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="http://aka.ms/community/videos" target="_blank" rel="noopener" title="aka.ms" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://aka.ms/community/home" target="_blank" rel="noopener" title="aka.ms" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M0 32h214.6v214.6H0V32zm233.4 0H448v214.6H233.4V32zM0 265.4h214.6V480H0V265.4zm233.4 0H448V480H233.4V265.4z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a51614de.min.js"></script>
+      
+    
+  </body>
+</html>
