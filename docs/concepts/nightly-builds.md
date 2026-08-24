@@ -1,6 +1,6 @@
 # Nightly Builds
 
-Starting with version 3 we support nightly builds, which are built from the version-3 branch each evening and include all the changes merged ahead of a particular build. These are a great way to try out new features before a release, or get a fix or enhancement without waiting for the monthly builds.
+Starting with version 3 we support nightly builds, which are built from the current development branch (currently `version-4`) each evening and include all the changes merged ahead of a particular build. These are a great way to try out new features before a release, or get a fix or enhancement without waiting for the monthly builds.
 
 You can install the nightly builds using the below examples. While we only show examples for `sp` and `graph` nightly builds are available for all packages.
 
