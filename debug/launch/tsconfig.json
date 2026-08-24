@@ -4,6 +4,7 @@
         "composite": false,
         "rootDir": "../../",
         "outDir": "../../build/debugging",
+        "baseUrl": ".",
         "incremental": true,
         "noUnusedLocals": false,
         "allowUnreachableCode": true,
