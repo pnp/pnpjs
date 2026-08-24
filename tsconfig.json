@@ -12,6 +12,7 @@
             "dom",
             "ES2017.Object"
         ],
+        "baseUrl": ".",
         "rootDir": ".",
         "outDir": "./build",
         "allowUnreachableCode": false,
