@@ -61,6 +61,8 @@ const resource = await graph.users.getById("userId").insights.trending.getById('
 
 ### Get all Used documents
 
+> ⚠️ **Deprecated**: The `used` API will operate in a degraded state until November 2026, after which it stops returning data.
+
 Returns documents viewed and modified by a user. Includes documents the user used in OneDrive for Business, SharePoint, opened as email attachments, and as link attachments from sources like Box, DropBox and Google Drive.
 
 ```TypeScript
@@ -108,6 +110,8 @@ const resource = await graph.users.getById("userId").insights.used.getById('Id')
 ```
 
 ### Get all Shared documents
+
+> ⚠️ **Deprecated**: The `shared` API will operate in a degraded state until November 2026, after which it stops returning data.
 
 Returns documents shared with a user. Documents can be shared as email attachments or as OneDrive for Business links sent in emails.
 
