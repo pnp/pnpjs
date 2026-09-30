@@ -32,7 +32,7 @@ export function CachingPessimisticRefresh(props?: ICachingProps): TimelinePipe {
 
                 setTimeout(async () => {
 
-                    const q = new Queryable(this);
+                    const q = new Queryable([this, url]);
                     const a = q.on.pre.toArray();
                     q.on.pre.clear();
                     // filter out this pre handler from the original queryable as we don't want to re-run it
