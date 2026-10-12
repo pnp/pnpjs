@@ -194,7 +194,7 @@ export async function shareWith(
     }
 
     let postBody = {
-        includeAnonymousLinkInEmail: requireSignin,
+        includeAnonymousLinkInEmail: !requireSignin,
         peoplePickerInput: userStr,
         propagateAcl: propagateAcl,
         roleValue: `role:${def[0].Id}`,

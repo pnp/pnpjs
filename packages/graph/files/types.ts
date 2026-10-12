@@ -49,6 +49,7 @@ export class _Drive extends _GraphInstance<IDriveType> {
     /**
      * Method for retrieving recently accessed drive items by the user.
      * @returns IDriveItems
+     * @deprecated The recent API is deprecated and will operate in a degraded state until November, 2026, after which it stops returning data.
      */
     public get recent(): IDriveItems {
         return DriveItems(this, "recent");
@@ -58,6 +59,7 @@ export class _Drive extends _GraphInstance<IDriveType> {
      * Method for retrieving drive items shared with the user.
      * @param options - ISharingWithMeOptions (Optional)
      * @returns IDriveItems
+     * @deprecated The sharedWithMe API is deprecated and will operate in a degraded state until November, 2026, after which it stops returning data.
      */
     public async sharedWithMe(options: ISharingWithMeOptions = null): Promise<IDriveItems> {
         const q = DriveItems(this, "sharedWithMe");

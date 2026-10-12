@@ -92,6 +92,8 @@ const list = await graph.sites.getById("{site identifier}").getById({drive id}).
 
 ## Get the recent files
 
+> ⚠️ **Deprecated**: The `recent` API will operate in a degraded state until November 2026, after which it stops returning data.
+
 Using the recent() you get the recent files
 
 ```TypeScript
@@ -108,6 +110,8 @@ const files = await graph.me.drives.getById({drive id}).recent();
 ```
 
 ## Get the files shared with me
+
+> ⚠️ **Deprecated**: The `sharedWithMe` API will operate in a degraded state until November 2026, after which it stops returning data.
 
 Using the sharedWithMe() you get the files shared with the user
 

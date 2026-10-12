@@ -27,7 +27,7 @@ declare module "../items/types" {
          *
          * @param loginNames string or string[] of resolved login names to which this item will be shared
          * @param role The role (View | Edit) applied to the share
-         * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
+         * @param emailData Optional, if included an email will be sent. Note subject currently has no effect.
          */
         shareWith(loginNames: string | string[], role?: SharingRole, requireSignin?: boolean, emailData?: ISharingEmailData): Promise<ISharingResult>;
     }
