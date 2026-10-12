@@ -1,0 +1,2031 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/sp/docs/client-side-pages/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.3">
+    
+    
+      
+        <title>Client-side Pages - PnP/PnPjs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../../../documentation/css/extra.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="../../../#pnpspclientsidepages" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://pnp.github.io/pnpjs/" title="PnP/PnPjs" class="md-header-nav__button md-logo">
+          
+            <img src="../../../documentation/img/Logo.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                PnP/PnPjs
+              </span>
+              <span class="md-header-nav__topic">
+                Client-side Pages
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="http://github.com/pnp/pnpjs/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../../.." title="Home" class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+      
+        
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../documentation/getting-started/" title="General" class="md-tabs__link">
+          General
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../documentation/packages/" title="Packages" class="md-tabs__link md-tabs__link--active">
+          Packages
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://pnp.github.io/pnpjs/" title="PnP/PnPjs" class="md-nav__button md-logo">
+      
+        <img src="../../../documentation/img/Logo.png" width="48" height="48">
+      
+    </a>
+    PnP/PnPjs
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="http://github.com/pnp/pnpjs/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/transition-guide/" title="Transition Guide" class="md-nav__link">
+      Transition Guide
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      General
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        General
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/getting-started-dev/" title="Getting Started Contributing" class="md-nav__link">
+      Getting Started Contributing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/gulp-commands/" title="Gulp Commands" class="md-nav__link">
+      Gulp Commands
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/debugging/" title="Debugging" class="md-nav__link">
+      Debugging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
+      Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/beta-versions/" title="Install Beta Versions" class="md-nav__link">
+      Install Beta Versions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/polyfill/" title="Polyfills" class="md-nav__link">
+      Polyfills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/package-structure/" title="Package Structure" class="md-nav__link">
+      Package Structure
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/SPFx-On-Premesis-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
+      SPFx On-Premises 2016
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/transition-guide/" title="Transition Guide" class="md-nav__link">
+      Transition Guide
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Packages
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Packages
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/packages/" title="Packages" class="md-nav__link">
+      Packages
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-2" type="checkbox" id="nav-5-2">
+    
+    <label class="md-nav__link" for="nav-5-2">
+      common
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-2">
+        common
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../common/docs/" title="common" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../common/docs/adalclient/" title="adalclient" class="md-nav__link">
+      adalclient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../common/docs/blobutil.md" title="blobutil" class="md-nav__link">
+      blobutil
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../common/docs/collections/" title="collections" class="md-nav__link">
+      collections
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../common/docs/custom-httpclientimpl/" title="Custom HttpClientImpl" class="md-nav__link">
+      Custom HttpClientImpl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../common/docs/libconfig/" title="libconfig" class="md-nav__link">
+      libconfig
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../common/docs/netutil/" title="netutil" class="md-nav__link">
+      netutil
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../common/docs/storage/" title="storage" class="md-nav__link">
+      storage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../common/docs/util/" title="util" class="md-nav__link">
+      util
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-3" type="checkbox" id="nav-5-3">
+    
+    <label class="md-nav__link" for="nav-5-3">
+      config-store
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-3">
+        config-store
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../config-store/docs/" title="config-store" class="md-nav__link">
+      config-store
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../config-store/docs/configuration/" title="configuration" class="md-nav__link">
+      configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../config-store/docs/providers/" title="providers" class="md-nav__link">
+      providers
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-4" type="checkbox" id="nav-5-4">
+    
+    <label class="md-nav__link" for="nav-5-4">
+      graph
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-4">
+        graph
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/" title="graph" class="md-nav__link">
+      graph
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/contacts/" title="contacts" class="md-nav__link">
+      contacts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/directoryobjects/" title="directory objects" class="md-nav__link">
+      directory objects
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/invitations/" title="invitations" class="md-nav__link">
+      invitations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/onedrive/" title="onedrive" class="md-nav__link">
+      onedrive
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/planner/" title="planner" class="md-nav__link">
+      planner
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/subscriptions/" title="subscriptions" class="md-nav__link">
+      subscriptions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/teams/" title="teams" class="md-nav__link">
+      teams
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../logging/docs/" title="logging" class="md-nav__link">
+      logging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-6" type="checkbox" id="nav-5-6">
+    
+    <label class="md-nav__link" for="nav-5-6">
+      nodejs
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-6">
+        nodejs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/" title="nodejs" class="md-nav__link">
+      nodejs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/adal-fetch-client/" title="AdalFetchClient" class="md-nav__link">
+      AdalFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/sp-fetch-client/" title="SPFetchClient" class="md-nav__link">
+      SPFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/provider-hosted-app/" title="ProviderHostedRequestContext" class="md-nav__link">
+      ProviderHostedRequestContext
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-7" type="checkbox" id="nav-5-7">
+    
+    <label class="md-nav__link" for="nav-5-7">
+      odata
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-7">
+        odata
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
+      odata
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
+      caching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
+      core
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+      OData Batching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
+      Parsers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
+      Pipeline
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
+      Queryable
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../pnpjs/docs/" title="pnpjs" class="md-nav__link">
+      pnpjs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-9" type="checkbox" id="nav-5-9" checked>
+    
+    <label class="md-nav__link" for="nav-5-9">
+      sp
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-9">
+        sp
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="sp" class="md-nav__link">
+      sp
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../alias-parameters/" title="Alias Parameters" class="md-nav__link">
+      Alias Parameters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../alm/" title="ALM api" class="md-nav__link">
+      ALM api
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../attachments/" title="Attachments" class="md-nav__link">
+      Attachments
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Client-side Pages
+      </label>
+    
+    <a href="./" title="Client-side Pages" class="md-nav__link md-nav__link--active">
+      Client-side Pages
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#add-client-side-page" title="Add Client-side page" class="md-nav__link">
+    Add Client-side page
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-client-side-page" title="Load Client-side page" class="md-nav__link">
+    Load Client-side page
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-controls" title="Add Controls" class="md-nav__link">
+    Add Controls
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-client-side-web-parts" title="Add Client-side Web Parts" class="md-nav__link">
+    Add Client-side Web Parts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#find-controls" title="Find Controls" class="md-nav__link">
+    Find Controls
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-comments" title="Control Comments" class="md-nav__link">
+    Control Comments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#likeunlike-client-side-page-get-like-information-about-page" title="Like/Unlike Client-side page, get like information about page" class="md-nav__link">
+    Like/Unlike Client-side page, get like information about page
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample" title="Sample" class="md-nav__link">
+    Sample
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../content-types/" title="Content Types" class="md-nav__link">
+      Content Types
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../entity-merging/" title="Entity Merging" class="md-nav__link">
+      Entity Merging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../features/" title="Features" class="md-nav__link">
+      Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../fields/" title="Fields" class="md-nav__link">
+      Fields
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../files/" title="Files" class="md-nav__link">
+      Files
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../items/" title="List Items" class="md-nav__link">
+      List Items
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../navigation-service/" title="Navigation Service" class="md-nav__link">
+      Navigation Service
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../permissions/" title="Permissions" class="md-nav__link">
+      Permissions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../profiles/" title="Profiles" class="md-nav__link">
+      Profiles
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../related-items/" title="Related Items" class="md-nav__link">
+      Related Items
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../search/" title="Search" class="md-nav__link">
+      Search
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sharing/" title="Sharing" class="md-nav__link">
+      Sharing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sites/" title="Sites" class="md-nav__link">
+      Sites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../social/" title="Social" class="md-nav__link">
+      Social
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../sp-utilities-utility/" title="SP.Utilities.Utility" class="md-nav__link">
+      SP.Utilities.Utility
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tenant-properties/" title="Tenant Properties" class="md-nav__link">
+      Tenant Properties
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../views/" title="Views" class="md-nav__link">
+      Views
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../webs/" title="Webs" class="md-nav__link">
+      Webs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../comments-likes/" title="Comments and Likes" class="md-nav__link">
+      Comments and Likes
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-10" type="checkbox" id="nav-5-10">
+    
+    <label class="md-nav__link" for="nav-5-10">
+      sp-addinhelpers
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-10">
+        sp-addinhelpers
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-addinhelpers/docs/" title="sp-addinhelpers" class="md-nav__link">
+      sp-addinhelpers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-addinhelpers/docs/sp-request-executor-client/" title="SPRequestExecutorClient" class="md-nav__link">
+      SPRequestExecutorClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-addinhelpers/docs/sp-rest-addin/" title="SPRestAddIn" class="md-nav__link">
+      SPRestAddIn
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-clientsvc/docs/" title="sp-clientsvc" class="md-nav__link">
+      sp-clientsvc
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-12" type="checkbox" id="nav-5-12">
+    
+    <label class="md-nav__link" for="nav-5-12">
+      sp-taxonomy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-12">
+        sp-taxonomy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/" title="sp-taxonomy" class="md-nav__link">
+      sp-taxonomy
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/term-stores/" title="Term Stores" class="md-nav__link">
+      Term Stores
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/term-groups/" title="Term Groups" class="md-nav__link">
+      Term Groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/term-sets/" title="Term Sets" class="md-nav__link">
+      Term Sets
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/terms/" title="Terms" class="md-nav__link">
+      Terms
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/labels/" title="Labels" class="md-nav__link">
+      Labels
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/utilities/" title="Utilities" class="md-nav__link">
+      Utilities
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#add-client-side-page" title="Add Client-side page" class="md-nav__link">
+    Add Client-side page
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-client-side-page" title="Load Client-side page" class="md-nav__link">
+    Load Client-side page
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-controls" title="Add Controls" class="md-nav__link">
+    Add Controls
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-client-side-web-parts" title="Add Client-side Web Parts" class="md-nav__link">
+    Add Client-side Web Parts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#find-controls" title="Find Controls" class="md-nav__link">
+    Find Controls
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-comments" title="Control Comments" class="md-nav__link">
+    Control Comments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#likeunlike-client-side-page-get-like-information-about-page" title="Like/Unlike Client-side page, get like information about page" class="md-nav__link">
+    Like/Unlike Client-side page, get like information about page
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample" title="Sample" class="md-nav__link">
+    Sample
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="http://github.com/pnp/pnpjs/tree/dev/packages/sp/docs/client-side-pages.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="pnpspclientsidepages">@pnp/sp/clientsidepages<a class="headerlink" href="#pnpspclientsidepages" title="Permanent link">&para;</a></h1>
+<p>The ability to manage client-side pages is a capability introduced in version 1.0.2 of @pnp/sp. Through the methods described
+you can add and edit "modern" pages in SharePoint sites.</p>
+<h2 id="add-client-side-page">Add Client-side page<a class="headerlink" href="#add-client-side-page" title="Permanent link">&para;</a></h2>
+<p>Using the addClientSidePage you can add a new client side page to a site, specifying the filename.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientSidePage</span><span class="p">(</span><span class="sb">`file-name`</span><span class="p">);</span>
+
+<span class="c1">// OR</span>
+
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientSidePage</span><span class="p">(</span><span class="sb">`file-name`</span><span class="p">,</span> <span class="sb">`Page Display Title`</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Added in 1.0.5 you can also add a client side page using the list path. This gets around potential language issues with list title. You must specify the list path when calling this method in addition to the new page's filename.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">sp</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">addClientSidePageByPath</span><span class="p">(</span><span class="sb">`file-name`</span><span class="p">,</span> <span class="s2">&quot;/sites/dev/SitePages&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="load-client-side-page">Load Client-side page<a class="headerlink" href="#load-client-side-page" title="Permanent link">&para;</a></h2>
+<p>You can also load an existing page based on the file representing that page. Note that the static fromFile returns a promise which 
+resolves so the loaded page. Here we are showing use of the getFileByServerRelativeUrl method to get the File instance, but any of the ways
+of <a href="../files/">getting a File instance</a> will work. Also note we are passing the File instance, not the file content.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> 
+    <span class="nx">sp</span><span class="p">,</span>
+    <span class="nx">ClientSidePage</span><span class="p">,</span>
+<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ClientSidePage</span><span class="p">.</span><span class="nx">fromFile</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativeUrl</span><span class="p">(</span><span class="s2">&quot;/sites/dev/SitePages/ExistingFile.aspx&quot;</span><span class="p">));</span>
+</pre></div>
+
+
+<p><strong>The remaining examples below reference a variable "page" which is assumed to be a ClientSidePage instance loaded through one of the above means.</strong></p>
+<h2 id="add-controls">Add Controls<a class="headerlink" href="#add-controls" title="Permanent link">&para;</a></h2>
+<p>A client-side page is made up of sections, which have columns, which contain controls. A new page will have none of these and an existing page may have
+any combination of these. There are a few rules to understand how sections and columns layout on a page for display. A section is a horizontal piece of
+a page that extends 100% of the page width. A page with multiple sections will stack these sections based on the section's order property - a 1 based index.</p>
+<p>Within a section you can have one or more columns. Each column is ordered left to right based on the column's order property. The width of each column is
+controlled by the factor property whose value is one of 0, 2, 4, 6, 8, 10, or 12. The columns in a section should have factors that add up to 12. Meaning 
+if you wanted to have two equal columns you can set a factor of 6 for each. A page can have empty columns.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> 
+    <span class="nx">sp</span><span class="p">,</span> 
+    <span class="nx">ClientSideText</span><span class="p">,</span> 
+<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="c1">// this code adds a section, and then adds a control to that section. The control is added to the section&#39;s defaultColumn, and if there are no columns a single</span>
+<span class="c1">// column of factor 12 is created as a default. Here we add the ClientSideText part</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">addSection</span><span class="p">().</span><span class="nx">addControl</span><span class="p">(</span><span class="k">new</span> <span class="nx">ClientSideText</span><span class="p">(</span><span class="s2">&quot;@pnp/sp is a great library!&quot;</span><span class="p">));</span>
+
+<span class="c1">// here we add a section, add two columns, and add a text control to the second section so it will appear on the right of the page</span>
+<span class="c1">// add and get a reference to a new section</span>
+<span class="kr">const</span> <span class="nx">section</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">addSection</span><span class="p">();</span>
+
+<span class="c1">// add a column of factor 6</span>
+<span class="nx">section</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+
+<span class="c1">// add and get a reference to a new column of factor 6</span>
+<span class="kr">const</span> <span class="nx">column</span> <span class="o">=</span> <span class="nx">section</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+
+<span class="c1">// add a text control to the second new column</span>
+<span class="nx">column</span><span class="p">.</span><span class="nx">addControl</span><span class="p">(</span><span class="k">new</span> <span class="nx">ClientSideText</span><span class="p">(</span><span class="s2">&quot;Be sure to check out the @pnp docs at https://pnp.github.io/pnpjs/&quot;</span><span class="p">));</span>
+
+<span class="c1">// we need to save our content changes</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</pre></div>
+
+
+<h2 id="add-client-side-web-parts">Add Client-side Web Parts<a class="headerlink" href="#add-client-side-web-parts" title="Permanent link">&para;</a></h2>
+<p>Beyond the text control above you can also add any of the available client-side web parts in a given site. To find out what web parts are available you
+first call the web's getClientSideWebParts method. Once you have a list of parts you need to find the defintion you want to use, here we get the Embed web part
+whose's id is "490d7c76-1824-45b2-9de3-676421c997fa" (at least in one farm, your mmv).</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span>
+    <span class="nx">sp</span><span class="p">,</span>
+    <span class="nx">ClientSideWebpart</span><span class="p">,</span>
+    <span class="nx">ClientSideWebpartPropertyTypes</span><span class="p">,</span>
+<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="c1">// this will be a ClientSidePageComponent array</span>
+<span class="c1">// this can be cached on the client in production scenarios</span>
+<span class="kr">const</span> <span class="nx">partDefs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getClientSideWebParts</span><span class="p">();</span>
+
+<span class="c1">// find the definition we want, here by id</span>
+<span class="kr">const</span> <span class="nx">partDef</span> <span class="o">=</span> <span class="nx">partDefs</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">c</span> <span class="o">=&gt;</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Id</span> <span class="o">===</span> <span class="s2">&quot;490d7c76-1824-45b2-9de3-676421c997fa&quot;</span><span class="p">);</span>
+
+<span class="c1">// optionally ensure you found the def</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">partDef</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// we didn&#39;t find it so we throw an error</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Could not find the web part&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// create a ClientWebPart instance from the definition</span>
+<span class="kr">const</span> <span class="nx">part</span> <span class="o">=</span> <span class="nx">ClientSideWebpart</span><span class="p">.</span><span class="nx">fromComponentDef</span><span class="p">(</span><span class="nx">partDef</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+<span class="c1">// set the properties on the web part. Here we have imported the ClientSideWebpartPropertyTypes module and can use that to type</span>
+<span class="c1">// the available settings object. You can use your own types or help us out and add some typings to the module :).</span>
+<span class="c1">// here for the embed web part we only have to supply an embedCode - in this case a youtube video.</span>
+<span class="nx">part</span><span class="p">.</span><span class="nx">setProperties</span><span class="o">&lt;</span><span class="nx">ClientSideWebpartPropertyTypes</span><span class="p">.</span><span class="nx">Embed</span><span class="o">&gt;</span><span class="p">({</span>
+    <span class="nx">embedCode</span><span class="o">:</span> <span class="s2">&quot;https://www.youtube.com/watch?v=IWQFZ7Lx-rg&quot;</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="c1">// we add that part to a new section</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">addSection</span><span class="p">().</span><span class="nx">addControl</span><span class="p">(</span><span class="nx">part</span><span class="p">);</span>
+
+<span class="c1">// save our content changes back to the server</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</pre></div>
+
+
+<h2 id="find-controls">Find Controls<a class="headerlink" href="#find-controls" title="Permanent link">&para;</a></h2>
+<p>Added in <em>1.0.3</em></p>
+<p>You can use the either of the two available method to locate controls within a page. These method search through all sections, columns, and controls returning the first instance that meets the supplied criteria.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientSideWebPart</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/sp&quot;</span><span class="p">;</span>
+
+<span class="c1">// find a control by instance id</span>
+<span class="kr">const</span> <span class="nx">control1</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">findControlById</span><span class="p">(</span><span class="s2">&quot;b99bfccc-164e-4d3d-9b96-da48db62eb78&quot;</span><span class="p">);</span>
+
+<span class="c1">// type the returned control</span>
+<span class="kr">const</span> <span class="nx">control2</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">findControlById</span><span class="o">&lt;</span><span class="nx">ClientSideWebPart</span><span class="o">&gt;</span><span class="p">(</span><span class="s2">&quot;c99bfccc-164e-4d3d-9b96-da48db62eb78&quot;</span><span class="p">);</span>
+<span class="kr">const</span> <span class="nx">control3</span> <span class="o">=</span> <span class="nx">page</span><span class="p">.</span><span class="nx">findControlById</span><span class="o">&lt;</span><span class="nx">ClientSideText</span><span class="o">&gt;</span><span class="p">(</span><span class="s2">&quot;a99bfccc-164e-4d3d-9b96-da48db62eb78&quot;</span><span class="p">);</span>
+
+<span class="c1">// use any predicate to find a control</span>
+<span class="kr">const</span> <span class="nx">control4</span> <span class="o">=</span> <span class="nx">page2</span><span class="p">.</span><span class="nx">findControl</span><span class="o">&lt;</span><span class="nx">ClientSideWebpart</span><span class="o">&gt;</span><span class="p">((</span><span class="nx">c</span>: <span class="kt">CanvasControl</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="c1">// any logic you wish can be used on the control here</span>
+    <span class="c1">// return true to return that control</span>
+    <span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">order</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+
+
+<h2 id="control-comments">Control Comments<a class="headerlink" href="#control-comments" title="Permanent link">&para;</a></h2>
+<p>You can choose to enable or disable comments on a page using these methods</p>
+<div class="codehilite"><pre><span></span><span class="c1">// indicates if comments are disabled, not valid until the page is loaded (Added in _1.0.3_)</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">commentsDisabled</span>
+
+<span class="c1">// enable comments</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">enableComments</span><span class="p">();</span>
+
+<span class="c1">// disable comments</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">disableComments</span><span class="p">();</span>
+</pre></div>
+
+
+<h2 id="likeunlike-client-side-page-get-like-information-about-page">Like/Unlike Client-side page, get like information about page<a class="headerlink" href="#likeunlike-client-side-page-get-like-information-about-page" title="Permanent link">&para;</a></h2>
+<p>Added in <em>1.2.4</em></p>
+<p>You can like or unlike a modern page. You can also get information about the likes (i.e like Count and which users liked the page)</p>
+<div class="codehilite"><pre><span></span><span class="c1">// Like a Client-side page (Added in _1.2.4_)</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">like</span><span class="p">();</span>
+
+<span class="c1">// Unlike a Client-side page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">unlike</span><span class="p">();</span>
+
+<span class="c1">// Get liked by information such as like count and user&#39;s who liked the page</span>
+<span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">getLikedByInformation</span><span class="p">();</span>
+</pre></div>
+
+
+<h2 id="sample">Sample<a class="headerlink" href="#sample" title="Permanent link">&para;</a></h2>
+<p>The below sample shows the process to add a Yammer feed webpart to the page. The properties required as well as the data version are found by adding the part using the UI and reviewing the values. Some or all of these may be discoverable using <a href="https://developer.microsoft.com/en-us/yammer/docs">Yammer APIs</a>. An identical process can be used to add web parts of any type by adjusting the definition, data version, and properties appropriately.</p>
+<div class="codehilite"><pre><span></span><span class="c1">// get webpart defs</span>
+<span class="kr">const</span> <span class="nx">defs</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getClientSideWebParts</span><span class="p">();</span>
+
+<span class="c1">// this is the id of the definition in my farm</span>
+<span class="kr">const</span> <span class="nx">yammerPartDef</span> <span class="o">=</span> <span class="nx">defs</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">d</span> <span class="o">=&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Id</span> <span class="o">===</span> <span class="s2">&quot;31e9537e-f9dc-40a4-8834-0e3b7df418bc&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="c1">// page file</span>
+<span class="kr">const</span> <span class="nx">file</span> <span class="o">=</span> <span class="nx">sp</span><span class="p">.</span><span class="nx">web</span><span class="p">.</span><span class="nx">getFileByServerRelativePath</span><span class="p">(</span><span class="s2">&quot;/sites/dev/SitePages/Testing_kVKF.aspx&quot;</span><span class="p">);</span>
+
+<span class="c1">// create page instance</span>
+<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">ClientSidePage</span><span class="p">.</span><span class="nx">fromFile</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+
+<span class="c1">// create part instance from definition</span>
+<span class="kr">const</span> <span class="nx">part</span> <span class="o">=</span> <span class="nx">ClientSideWebpart</span><span class="p">.</span><span class="nx">fromComponentDef</span><span class="p">(</span><span class="nx">yammerPartDef</span><span class="p">);</span>
+
+<span class="c1">// update data version</span>
+<span class="nx">part</span><span class="p">.</span><span class="nx">dataVersion</span> <span class="o">=</span> <span class="s2">&quot;1.5&quot;</span><span class="p">;</span>
+
+<span class="c1">// set the properties required</span>
+<span class="nx">part</span><span class="p">.</span><span class="nx">setProperties</span><span class="p">({</span>
+    <span class="nx">feedType</span>: <span class="kt">0</span><span class="p">,</span>
+    <span class="nx">isSuiteConnected</span>: <span class="kt">false</span><span class="p">,</span>
+    <span class="nx">mode</span>: <span class="kt">2</span><span class="p">,</span>
+    <span class="nx">networkId</span>: <span class="kt">9999999</span><span class="p">,</span>
+    <span class="nx">yammerEmbedContainerHeight</span>: <span class="kt">400</span><span class="p">,</span>
+    <span class="nx">yammerFeedURL</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nx">yammerGroupId</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="nx">yammerGroupMugshotUrl</span><span class="o">:</span> <span class="s2">&quot;https://mug0.assets-yammer.com/mugshot/images/{width}x{height}/all_company.png&quot;</span><span class="p">,</span>
+    <span class="nx">yammerGroupName</span><span class="o">:</span> <span class="s2">&quot;All Company&quot;</span><span class="p">,</span>
+    <span class="nx">yammerGroupUrl</span><span class="o">:</span> <span class="s2">&quot;https://www.yammer.com/{tenant}/#/threads/company?type=general&quot;</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="c1">// add to the section/column you want</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">addControl</span><span class="p">(</span><span class="nx">part</span><span class="p">);</span>
+
+<span class="c1">// persist changes</span>
+<span class="nx">page</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</pre></div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../attachments/" title="Attachments" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Attachments
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../content-types/" title="Content Types" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Content Types
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../../../assets/fonts/font-awesome.css">
+    
+      <a href="https://twitter.com/officedevpnp" class="md-footer-social__link fa fa-twitter"></a>
+    
+      <a href="http://aka.ms/sppnp-videos" class="md-footer-social__link fa fa-youtube"></a>
+    
+      <a href="https://aka.ms/sppnp" class="md-footer-social__link fa fa-link"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application.583bbe55.js"></script>
+      
+      <script>app.initialize({version:"1.0.1",url:{base:"../../.."}})</script>
+      
+    
+    
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/sp/docs/client-side-pages/" alt="spacer" />
+
+  </body>
+</html>

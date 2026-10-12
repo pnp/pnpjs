@@ -1,0 +1,2058 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://pnp.github.io/pnpjs/common/docs/util/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.1, mkdocs-material-3.0.3">
+    
+    
+      
+        <title>util - PnP/PnPjs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../../../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../../../documentation/css/extra.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="../../../#pnpcommonutil" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://pnp.github.io/pnpjs/" title="PnP/PnPjs" class="md-header-nav__button md-logo">
+          
+            <img src="../../../documentation/img/Logo.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                PnP/PnPjs
+              </span>
+              <span class="md-header-nav__topic">
+                util
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="http://github.com/pnp/pnpjs/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../../.." title="Home" class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+      
+        
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../documentation/getting-started/" title="General" class="md-tabs__link">
+          General
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../../documentation/packages/" title="Packages" class="md-tabs__link md-tabs__link--active">
+          Packages
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://pnp.github.io/pnpjs/" title="PnP/PnPjs" class="md-nav__button md-logo">
+      
+        <img src="../../../documentation/img/Logo.png" width="48" height="48">
+      
+    </a>
+    PnP/PnPjs
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="http://github.com/pnp/pnpjs/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/transition-guide/" title="Transition Guide" class="md-nav__link">
+      Transition Guide
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      General
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        General
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/getting-started-dev/" title="Getting Started Contributing" class="md-nav__link">
+      Getting Started Contributing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/gulp-commands/" title="Gulp Commands" class="md-nav__link">
+      Gulp Commands
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/debugging/" title="Debugging" class="md-nav__link">
+      Debugging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/documentation/" title="Building Docs" class="md-nav__link">
+      Building Docs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/deployment/" title="Deployment" class="md-nav__link">
+      Deployment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/beta-versions/" title="Install Beta Versions" class="md-nav__link">
+      Install Beta Versions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/polyfill/" title="Polyfills" class="md-nav__link">
+      Polyfills
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/package-structure/" title="Package Structure" class="md-nav__link">
+      Package Structure
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/SPFx-On-Premesis-2016/" title="SPFx On-Premises 2016" class="md-nav__link">
+      SPFx On-Premises 2016
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/transition-guide/" title="Transition Guide" class="md-nav__link">
+      Transition Guide
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Packages
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Packages
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../documentation/packages/" title="Packages" class="md-nav__link">
+      Packages
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-2" type="checkbox" id="nav-5-2" checked>
+    
+    <label class="md-nav__link" for="nav-5-2">
+      common
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-2">
+        common
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="common" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../adalclient/" title="adalclient" class="md-nav__link">
+      adalclient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../blobutil.md" title="blobutil" class="md-nav__link">
+      blobutil
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../collections/" title="collections" class="md-nav__link">
+      collections
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../custom-httpclientimpl/" title="Custom HttpClientImpl" class="md-nav__link">
+      Custom HttpClientImpl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../libconfig/" title="libconfig" class="md-nav__link">
+      libconfig
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../netutil/" title="netutil" class="md-nav__link">
+      netutil
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../storage/" title="storage" class="md-nav__link">
+      storage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        util
+      </label>
+    
+    <a href="./" title="util" class="md-nav__link md-nav__link--active">
+      util
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getctxcallback" title="getCtxCallback" class="md-nav__link">
+    getCtxCallback
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dateadd" title="dateAdd" class="md-nav__link">
+    dateAdd
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combine" title="combine" class="md-nav__link">
+    combine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getrandomstring" title="getRandomString" class="md-nav__link">
+    getRandomString
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getguid" title="getGUID" class="md-nav__link">
+    getGUID
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isfunc" title="isFunc" class="md-nav__link">
+    isFunc
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectdefinednotnull" title="objectDefinedNotNull" class="md-nav__link">
+    objectDefinedNotNull
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isarray" title="isArray" class="md-nav__link">
+    isArray
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extend" title="extend" class="md-nav__link">
+    extend
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isurlabsolute" title="isUrlAbsolute" class="md-nav__link">
+    isUrlAbsolute
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stringisnullorempty" title="stringIsNullOrEmpty" class="md-nav__link">
+    stringIsNullOrEmpty
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removed" title="Removed" class="md-nav__link">
+    Removed
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-3" type="checkbox" id="nav-5-3">
+    
+    <label class="md-nav__link" for="nav-5-3">
+      config-store
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-3">
+        config-store
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../config-store/docs/" title="config-store" class="md-nav__link">
+      config-store
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../config-store/docs/configuration/" title="configuration" class="md-nav__link">
+      configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../config-store/docs/providers/" title="providers" class="md-nav__link">
+      providers
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-4" type="checkbox" id="nav-5-4">
+    
+    <label class="md-nav__link" for="nav-5-4">
+      graph
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-4">
+        graph
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/" title="graph" class="md-nav__link">
+      graph
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/contacts/" title="contacts" class="md-nav__link">
+      contacts
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/directoryobjects/" title="directory objects" class="md-nav__link">
+      directory objects
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/invitations/" title="invitations" class="md-nav__link">
+      invitations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/onedrive/" title="onedrive" class="md-nav__link">
+      onedrive
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/planner/" title="planner" class="md-nav__link">
+      planner
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/subscriptions/" title="subscriptions" class="md-nav__link">
+      subscriptions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../graph/docs/teams/" title="teams" class="md-nav__link">
+      teams
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../logging/docs/" title="logging" class="md-nav__link">
+      logging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-6" type="checkbox" id="nav-5-6">
+    
+    <label class="md-nav__link" for="nav-5-6">
+      nodejs
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-6">
+        nodejs
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/" title="nodejs" class="md-nav__link">
+      nodejs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/adal-fetch-client/" title="AdalFetchClient" class="md-nav__link">
+      AdalFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/sp-fetch-client/" title="SPFetchClient" class="md-nav__link">
+      SPFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/bearer-token-fetch-client/" title="BearerTokenFetchClient" class="md-nav__link">
+      BearerTokenFetchClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../nodejs/docs/provider-hosted-app/" title="ProviderHostedRequestContext" class="md-nav__link">
+      ProviderHostedRequestContext
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-7" type="checkbox" id="nav-5-7">
+    
+    <label class="md-nav__link" for="nav-5-7">
+      odata
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-7">
+        odata
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/" title="odata" class="md-nav__link">
+      odata
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/caching/" title="caching" class="md-nav__link">
+      caching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/core/" title="core" class="md-nav__link">
+      core
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/odata-batch/" title="OData Batching" class="md-nav__link">
+      OData Batching
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/parsers/" title="Parsers" class="md-nav__link">
+      Parsers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/pipeline/" title="Pipeline" class="md-nav__link">
+      Pipeline
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../queryable/docs/queryable/" title="Queryable" class="md-nav__link">
+      Queryable
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../pnpjs/docs/" title="pnpjs" class="md-nav__link">
+      pnpjs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-9" type="checkbox" id="nav-5-9">
+    
+    <label class="md-nav__link" for="nav-5-9">
+      sp
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-9">
+        sp
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/" title="sp" class="md-nav__link">
+      sp
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/alias-parameters/" title="Alias Parameters" class="md-nav__link">
+      Alias Parameters
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/alm/" title="ALM api" class="md-nav__link">
+      ALM api
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/attachments/" title="Attachments" class="md-nav__link">
+      Attachments
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/client-side-pages/" title="Client-side Pages" class="md-nav__link">
+      Client-side Pages
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/content-types/" title="Content Types" class="md-nav__link">
+      Content Types
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/entity-merging/" title="Entity Merging" class="md-nav__link">
+      Entity Merging
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/features/" title="Features" class="md-nav__link">
+      Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/fields/" title="Fields" class="md-nav__link">
+      Fields
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/files/" title="Files" class="md-nav__link">
+      Files
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/items/" title="List Items" class="md-nav__link">
+      List Items
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/navigation-service/" title="Navigation Service" class="md-nav__link">
+      Navigation Service
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/permissions/" title="Permissions" class="md-nav__link">
+      Permissions
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/profiles/" title="Profiles" class="md-nav__link">
+      Profiles
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/related-items/" title="Related Items" class="md-nav__link">
+      Related Items
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/search/" title="Search" class="md-nav__link">
+      Search
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/sharing/" title="Sharing" class="md-nav__link">
+      Sharing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/sites/" title="Sites" class="md-nav__link">
+      Sites
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/sitedesigns/" title="Site Designs" class="md-nav__link">
+      Site Designs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/social/" title="Social" class="md-nav__link">
+      Social
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/sp-utilities-utility/" title="SP.Utilities.Utility" class="md-nav__link">
+      SP.Utilities.Utility
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/tenant-properties/" title="Tenant Properties" class="md-nav__link">
+      Tenant Properties
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/views/" title="Views" class="md-nav__link">
+      Views
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/webs/" title="Webs" class="md-nav__link">
+      Webs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp/docs/comments-likes/" title="Comments and Likes" class="md-nav__link">
+      Comments and Likes
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-10" type="checkbox" id="nav-5-10">
+    
+    <label class="md-nav__link" for="nav-5-10">
+      sp-addinhelpers
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-10">
+        sp-addinhelpers
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-addinhelpers/docs/" title="sp-addinhelpers" class="md-nav__link">
+      sp-addinhelpers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-addinhelpers/docs/sp-request-executor-client/" title="SPRequestExecutorClient" class="md-nav__link">
+      SPRequestExecutorClient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-addinhelpers/docs/sp-rest-addin/" title="SPRestAddIn" class="md-nav__link">
+      SPRestAddIn
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-clientsvc/docs/" title="sp-clientsvc" class="md-nav__link">
+      sp-clientsvc
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-12" type="checkbox" id="nav-5-12">
+    
+    <label class="md-nav__link" for="nav-5-12">
+      sp-taxonomy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-12">
+        sp-taxonomy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/" title="sp-taxonomy" class="md-nav__link">
+      sp-taxonomy
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/term-stores/" title="Term Stores" class="md-nav__link">
+      Term Stores
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/term-groups/" title="Term Groups" class="md-nav__link">
+      Term Groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/term-sets/" title="Term Sets" class="md-nav__link">
+      Term Sets
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/terms/" title="Terms" class="md-nav__link">
+      Terms
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/labels/" title="Labels" class="md-nav__link">
+      Labels
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../sp-taxonomy/docs/utilities/" title="Utilities" class="md-nav__link">
+      Utilities
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getctxcallback" title="getCtxCallback" class="md-nav__link">
+    getCtxCallback
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dateadd" title="dateAdd" class="md-nav__link">
+    dateAdd
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combine" title="combine" class="md-nav__link">
+    combine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getrandomstring" title="getRandomString" class="md-nav__link">
+    getRandomString
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getguid" title="getGUID" class="md-nav__link">
+    getGUID
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isfunc" title="isFunc" class="md-nav__link">
+    isFunc
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objectdefinednotnull" title="objectDefinedNotNull" class="md-nav__link">
+    objectDefinedNotNull
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isarray" title="isArray" class="md-nav__link">
+    isArray
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extend" title="extend" class="md-nav__link">
+    extend
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isurlabsolute" title="isUrlAbsolute" class="md-nav__link">
+    isUrlAbsolute
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stringisnullorempty" title="stringIsNullOrEmpty" class="md-nav__link">
+    stringIsNullOrEmpty
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removed" title="Removed" class="md-nav__link">
+    Removed
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="http://github.com/pnp/pnpjs/tree/dev/packages/common/docs/util.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="pnpcommonutil">@pnp/core/util<a class="headerlink" href="#pnpcommonutil" title="Permanent link">&para;</a></h1>
+<p>This module contains utility methods that you can import individually from the common library.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span>
+    <span class="nx">getRandomString</span><span class="p">,</span>
+<span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
+
+<span class="c1">// use from individual;y imported method</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">getRandomString</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+</pre></div>
+
+
+<h2 id="getctxcallback">getCtxCallback<a class="headerlink" href="#getctxcallback" title="Permanent link">&para;</a></h2>
+<p>Gets a callback function which will maintain context across async calls.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getCtxCallback</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">contextThis</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">myProp</span>: <span class="kt">6</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">theFunction() {</span>
+    <span class="c1">// &quot;this&quot; within this function will be the context object supplied</span>
+    <span class="c1">// in this case the variable contextThis, so myProp will exist</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">myProp</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">callback</span> <span class="o">=</span> <span class="nx">getCtxCallback</span><span class="p">(</span><span class="nx">contextThis</span><span class="p">,</span> <span class="nx">theFunction</span><span class="p">);</span>
+
+<span class="nx">callback</span><span class="p">();</span> <span class="c1">// returns 6</span>
+
+<span class="c1">// You can also supply additional parameters if needed</span>
+
+<span class="kd">function</span> <span class="nx">theFunction2</span><span class="p">(</span><span class="nx">g</span>: <span class="kt">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// &quot;this&quot; within this function will be the context object supplied</span>
+    <span class="c1">// in this case the variable contextThis, so myProp will exist</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">myProp</span> <span class="o">+</span> <span class="nx">g</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">callback2</span> <span class="o">=</span> <span class="nx">getCtxCallback</span><span class="p">(</span><span class="nx">contextThis</span><span class="p">,</span> <span class="nx">theFunction</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+
+<span class="nx">callback2</span><span class="p">();</span> <span class="c1">// returns 10 (6 + 4)</span>
+</pre></div>
+
+
+<h2 id="dateadd">dateAdd<a class="headerlink" href="#dateadd" title="Permanent link">&para;</a></h2>
+<p>Manipulates a date, please see the <a href="https://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object">Stackoverflow discussion</a> from where this method was taken.</p>
+<h2 id="combine">combine<a class="headerlink" href="#combine" title="Permanent link">&para;</a></h2>
+<p>Combines any number of paths, normalizing the slashes as required</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">combine</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
+
+<span class="c1">// &quot;https://microsoft.com/something/more&quot;</span>
+<span class="kr">const</span> <span class="nx">paths</span> <span class="o">=</span> <span class="nx">combine</span><span class="p">(</span><span class="s2">&quot;https://microsoft.com&quot;</span><span class="p">,</span> <span class="s2">&quot;something&quot;</span><span class="p">,</span> <span class="s2">&quot;more&quot;</span><span class="p">);</span>
+
+<span class="c1">// &quot;also/works/with/relative&quot;</span>
+<span class="kr">const</span> <span class="nx">paths2</span> <span class="o">=</span> <span class="nx">combine</span><span class="p">(</span><span class="s2">&quot;/also/&quot;</span><span class="p">,</span> <span class="s2">&quot;/works&quot;</span><span class="p">,</span> <span class="s2">&quot;with/&quot;</span><span class="p">,</span> <span class="s2">&quot;/relative\\&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="getrandomstring">getRandomString<a class="headerlink" href="#getrandomstring" title="Permanent link">&para;</a></h2>
+<p>Gets a random string consisting of the number of characters requested.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">getRandomString</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">randomString</span> <span class="o">=</span> <span class="nx">getRandomString</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</pre></div>
+
+
+<h2 id="getguid">getGUID<a class="headerlink" href="#getguid" title="Permanent link">&para;</a></h2>
+<p>Creates a random guid, please see the <a href="https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript">Stackoverflow discussion</a> from where this method was taken. </p>
+<h2 id="isfunc">isFunc<a class="headerlink" href="#isfunc" title="Permanent link">&para;</a></h2>
+<p>Determines if a supplied variable represents a function.</p>
+<h2 id="objectdefinednotnull">objectDefinedNotNull<a class="headerlink" href="#objectdefinednotnull" title="Permanent link">&para;</a></h2>
+<p>Determines if an object is defined and not null.</p>
+<h2 id="isarray">isArray<a class="headerlink" href="#isarray" title="Permanent link">&para;</a></h2>
+<p>Determines if a supplied variable represents an array.</p>
+<h2 id="extend">extend<a class="headerlink" href="#extend" title="Permanent link">&para;</a></h2>
+<p>Merges a source object's own enumerable properties into a single target object. Similar to Object.assign, but allows control of overwriting of existing
+properties.</p>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">extend</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">&quot;@pnp/core&quot;</span><span class="p">;</span>
+
+<span class="kd">let</span> <span class="nx">obj1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">prop</span>: <span class="kt">1</span><span class="p">,</span>
+    <span class="nx">prop2</span>: <span class="kt">2</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="kr">const</span> <span class="nx">obj2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">prop</span>: <span class="kt">4</span><span class="p">,</span>
+    <span class="nx">prop3</span>: <span class="kt">9</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="kr">const</span> <span class="nx">example1</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">);</span>
+<span class="c1">// example1 = { prop: 4, prop2: 2, prop3: 9 }</span>
+
+<span class="kr">const</span> <span class="nx">example2</span> <span class="o">=</span> <span class="nx">extend</span><span class="p">(</span><span class="nx">obj1</span><span class="p">,</span> <span class="nx">obj2</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="c1">// example2 = { prop: 1, prop2: 2, prop3: 9 }</span>
+</pre></div>
+
+
+<h2 id="isurlabsolute">isUrlAbsolute<a class="headerlink" href="#isurlabsolute" title="Permanent link">&para;</a></h2>
+<p>Determines if a supplied url is absolute and returns true; otherwise returns false.</p>
+<h2 id="stringisnullorempty">stringIsNullOrEmpty<a class="headerlink" href="#stringisnullorempty" title="Permanent link">&para;</a></h2>
+<p>Determines if a supplied string is null or empty</p>
+<h2 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">&para;</a></h2>
+<p>Some methods that were no longer used internally by the @pnp libraries have been removed. You can find the source for those methods
+below for use in your projects should you require.</p>
+<div class="codehilite"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Loads a stylesheet into the current page</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param path The url to the stylesheet</span>
+<span class="cm"> * @param avoidCache If true a value will be appended as a query string to avoid browser caching issues</span>
+<span class="cm"> */</span>
+<span class="kr">public</span> <span class="kr">static</span> <span class="nx">loadStylesheet</span><span class="p">(</span><span class="nx">path</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">avoidCache</span>: <span class="kt">boolean</span><span class="p">)</span><span class="o">:</span> <span class="k">void</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">avoidCache</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">path</span> <span class="o">+=</span> <span class="s2">&quot;?&quot;</span> <span class="o">+</span> <span class="nb">encodeURIComponent</span><span class="p">((</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">getTime</span><span class="p">().</span><span class="nx">toString</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="kr">const</span> <span class="nx">head</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;head&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">head</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">const</span> <span class="nx">e</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">);</span>
+        <span class="nx">head</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/css&quot;</span><span class="p">);</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;rel&quot;</span><span class="p">,</span> <span class="s2">&quot;stylesheet&quot;</span><span class="p">);</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">,</span> <span class="nx">path</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Tests if a url param exists</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param name The name of the url parameter to check</span>
+<span class="cm"> */</span>
+<span class="kr">public</span> <span class="kr">static</span> <span class="nx">urlParamExists</span><span class="p">(</span><span class="nx">name</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="kr">boolean</span> <span class="p">{</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\[]/</span><span class="p">,</span> <span class="s2">&quot;\\[&quot;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\]]/</span><span class="p">,</span> <span class="s2">&quot;\\]&quot;</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s2">&quot;[\\?&amp;]&quot;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot;=([^&amp;#]*)&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">search</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Gets a url param value by name</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param name The name of the parameter for which we want the value</span>
+<span class="cm"> */</span>
+<span class="kr">public</span> <span class="kr">static</span> <span class="nx">getUrlParamByName</span><span class="p">(</span><span class="nx">name</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\[]/</span><span class="p">,</span> <span class="s2">&quot;\\[&quot;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[\]]/</span><span class="p">,</span> <span class="s2">&quot;\\]&quot;</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">regex</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s2">&quot;[\\?&amp;]&quot;</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot;=([^&amp;#]*)&quot;</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">results</span> <span class="o">=</span> <span class="nx">regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">location</span><span class="p">.</span><span class="nx">search</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">results</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="s2">&quot;&quot;</span> <span class="o">:</span> <span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">results</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\+/g</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Gets a url param by name and attempts to parse a bool value</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param name The name of the parameter for which we want the boolean value</span>
+<span class="cm"> */</span>
+<span class="kr">public</span> <span class="kr">static</span> <span class="nx">getUrlParamBoolByName</span><span class="p">(</span><span class="nx">name</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="kr">boolean</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">p</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getUrlParamByName</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">isFalse</span> <span class="o">=</span> <span class="p">(</span><span class="nx">p</span> <span class="o">===</span> <span class="s2">&quot;&quot;</span> <span class="o">||</span> <span class="sr">/false|0/i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">p</span><span class="p">));</span>
+    <span class="k">return</span> <span class="o">!</span><span class="nx">isFalse</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Inserts the string s into the string target as the index specified by index</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param target The string into which we will insert s</span>
+<span class="cm"> * @param index The location in target to insert s (zero based)</span>
+<span class="cm"> * @param s The string to insert into target at position index</span>
+<span class="cm"> */</span>
+<span class="kr">public</span> <span class="kr">static</span> <span class="nx">stringInsert</span><span class="p">(</span><span class="nx">target</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">index</span>: <span class="kt">number</span><span class="p">,</span> <span class="nx">s</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="kt">string</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">target</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">+</span> <span class="nx">s</span> <span class="o">+</span> <span class="nx">target</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">target</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">s</span> <span class="o">+</span> <span class="nx">target</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../storage/" title="storage" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                storage
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../../config-store/docs/" title="config-store" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                config-store
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../../../assets/fonts/font-awesome.css">
+    
+      <a href="https://twitter.com/officedevpnp" class="md-footer-social__link fa fa-twitter"></a>
+    
+      <a href="http://aka.ms/sppnp-videos" class="md-footer-social__link fa fa-youtube"></a>
+    
+      <a href="https://aka.ms/sppnp" class="md-footer-social__link fa fa-link"></a>
+    
+  </div>
+
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application.583bbe55.js"></script>
+      
+      <script>app.initialize({version:"1.0.1",url:{base:"../../.."}})</script>
+      
+    
+    
+    <img src="https://telemetry.sharepointpnp.com/@pnp/pnpjs/ghpages/pnpjs/common/docs/util/" alt="spacer" />
+
+  </body>
+</html>
