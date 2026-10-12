@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - graph
   - Adds 4 deprecation warnings for the following Microsoft Graph deprecations, and updates the documentation to include the deprecation warnings
+  https://learn.microsoft.com/en-us/graph/api/drive-sharedwithme?view=graph-rest-1.0&tabs=http
+  https://learn.microsoft.com/en-us/graph/api/drive-recent?view=graph-rest-1.0&tabs=http
+  https://learn.microsoft.com/en-us/graph/api/insights-list-shared?view=graph-rest-1.0&tabs=http
+  https://learn.microsoft.com/en-us/graph/api/insights-list-used?view=graph-rest-1.0&tabs=http
 
 - sp
   - Flips the requireSignIn param for setting the includeAnonymousLinkInEmail parameter for sharewith functionality.
