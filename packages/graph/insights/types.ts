@@ -21,11 +21,15 @@ export class _Insights extends _GraphInstance<IOfficeGraphInsightsType> {
     public get trending(): ITrendingInsights {
         return TrendingInsights(this);
     }
-
+    /**
+     *  @deprecated The insights used API is deprecated and will operate in a degraded state until November, 2026, after which it stops returning data.
+     */
     public get used(): IUsedInsights {
         return UsedInsights(this);
     }
-
+    /**
+     * @deprecated The insights shared API is deprecated and will operate in a degraded state until November, 2026, after which it stops returning data.
+     */
     public get shared(): ISharedInsights {
         return SharedInsights(this);
     }

@@ -26,7 +26,7 @@ declare module "../files/types" {
          * @param role The role (View | Edit) applied to the share
          * @param shareEverything Share everything in this folder, even items with unique permissions.
          * @param requireSignin If true the user must signin to view link, otherwise anyone with the link can access the resource
-         * @param emailData Optional, if inlucded an email will be sent. Note subject currently has no effect.
+         * @param emailData Optional, if included an email will be sent. Note subject currently has no effect.
          */
         shareWith(loginNames: string | string[], role?: SharingRole, requireSignin?: boolean, emailData?: ISharingEmailData): Promise<ISharingResult>;
     }
