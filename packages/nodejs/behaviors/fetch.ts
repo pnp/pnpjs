@@ -99,7 +99,7 @@ export function NodeFetchWithRetry(props?: INodeFetchWithRetryProps): TimelinePi
 
                     } catch (err) {
 
-                        if (err && err.code && [\"ETIMEDOUT\", \"ESOCKETTIMEDOUT\", \"ECONNREFUSED\", \"ECONNRESET\"].indexOf(String(err.code).toUpperCase()) < 0) {
+                        if (err && err.code && ["ETIMEDOUT", "ESOCKETTIMEDOUT", "ECONNREFUSED", "ECONNRESET"].indexOf(String(err.code).toUpperCase()) < 0) {
                             // this is some non-transient node error, no retry
                             throw err;
                         }
