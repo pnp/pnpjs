@@ -575,6 +575,7 @@ export enum ChoiceFieldFormatType {
 
 export interface IFieldInfo {
     Choices?: string[];
+    CustomFormatter: string | null;
     DefaultFormula: string | null;
     DefaultValue: string | null;
     Description: string;
