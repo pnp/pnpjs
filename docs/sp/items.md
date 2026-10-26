@@ -115,7 +115,9 @@ const r = await sp.web.lists.getByTitle("TaxonomyList").getItemsByCAMLQuery({
 
 ### Filter using fluent filter builder
 
-PnPjs supports a fluent filter for all OData endpoints, including the items endpoint. This allows you to write a strongly typed fluent filter that will be parsed into an OData filter. Unlike the typical .filter() method, the fluent filter builder is expressed via a .where<T>() method
+PnPjs supports a fluent filter builder via `.where(...)` for OData endpoints, including list items.
+
+For full coverage (supported field types, helper methods such as `in/notIn`, `isNull/isNotNull`, `isBetween/isToday`, lookup filtering, grouping, and composition), see the dedicated [Filter Builder](./filter-builder.md) page.
 
 > Note: This was changed from v4 and in addition this is a selective import
 
@@ -136,94 +138,6 @@ const items = await sp.web.lists.getByTitle("MyList").items.where(item =>
     item.text("Status").eq("Active")
 )();
 ```
-The following data types are supported in the fluent filter. These methods work across various field types based on their underlying data type:
-
-- **Text** - Fields with text/string values (Text, Choice, Multi-line text, etc.)
-- **Number** - Fields with numeric values (Number, Currency, etc.)
-- **Date** - Fields with date/time values (Date and Time, etc.)
-- **Boolean** - Fields with true/false values (Yes/No, etc.)
-
-The following operations are supported in the fluent filter:
-
-| Field Type     | Method        | Operators                                    |
-| -------------- | ------------- | -------------------------------------------- |
-| Text fields    | `.text()`     | `eq`, `ne`, `startsWith`, `substringOf`      |
-| Numeric fields | `.number()`   | `eq`, `ne`, `gt`, `lt`, `ge`, `le`           |
-| Date fields    | `.date()`     | `eq`, `ne`, `gt`, `lt`, `ge`, `le`           |
-| Boolean fields | `.bool()`     | `eq`, `ne`                                   |
-
-#### Complex Filter
-
-You can use the `and` and `or` operators to create complex filters with different grouping. The filter builder supports both chaining and grouping syntax. The where<T> is a generic is not required, but it does improve IntelliSense.
-
-```TypeScript
-import { spfi } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/lists";
-import "@pnp/sp/items";
-import "@pnp/sp/filter-builder";
-
-interface IMyListItem {
-  Title: string;
-  Status: string;
-  Priority: number;
-  DueDate: Date;
-  IsUrgent: boolean;
-  Published: boolean;
-  Created: Date;
-}
-
-const sp = spfi(...);
-
-// Simple text filter - Get all items with Status "Active"
-const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
-  item.text("Status").eq("Active")
-)();
-
-// Chained AND filter - Get active items with Priority greater than 5
-const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
-  item.text("Status").eq("Active").and.number("Priority").gt(5)
-)();
-
-// Chained OR filter - Get items that are Active OR Pending
-const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
-  item.text("Status").eq("Active").or.text("Status").eq("Pending")
-)();
-
-// Grouped filter with parentheses - Get TestItems that are Active OR Inactive
-const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
-  item.text("Title").startsWith("TestItem").and(i =>
-    i.text("Status").eq("Active").or.text("Status").eq("Inactive")
-  )
-)();
-
-// Complex nested grouping
-const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
-  item.number("Priority").gt(1).and(i =>
-    i.text("Status").eq("Active").or.text("Title").startsWith("Important")
-  )
-)();
-
-// Date filters
-const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
-  item.date("Created").gt(new Date("2024-01-01"))
-)();
-
-// Boolean filters
-const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
-  item.bool("Published").eq(true)
-)();
-
-// Multiple field types combined
-const items = await sp.web.lists.getByTitle("MyList").items.where<IMyListItem>(item => 
-  item.text("Status").eq("Active")
-    .and.number("Priority").ge(5)
-    .and.date("DueDate").gt(new Date())
-    .and.bool("IsUrgent").eq(false)
-)();
-```
-#### Using with other OData operations
-
 The filter builder works seamlessly with other OData operations:
 
 ```TypeScript

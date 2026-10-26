@@ -9,7 +9,7 @@ export {
 
 export * from "./types.js";
 
-export * from "./filter-builder.js";
+export * from "./filter-builder/index.js";
 
 export * from "./utils/create-change-token.js";
 export * from "./utils/extract-web-url.js";

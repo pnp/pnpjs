@@ -334,4 +334,24 @@ describe("List", function () {
         const list = this.pnp.sp.web.lists.getById(result.Id);
         return expect(list.delete()).to.eventually.be.fulfilled;
     }));
+
+    it("addValidateUpdateItemUsingPath", pnpTest("a933ef36-2607-4cad-b867-b2fc31a341e6", async function () {
+        const { title, folderName } = await this.props({
+            title: `Item ${getRandomString(4)}`,
+            folderName: `test_${getRandomString(5)}`,
+        });
+
+        const itemUpdated = await list.addValidateUpdateItemUsingPath({
+            formValues:[{
+                FieldName: "Title",
+                FieldValue: title,
+            }],
+            bNewDocumentUpdate: true,
+            decodedUrl: this.pnp.settings.sp.testWebUrl + "/Shared Documents",
+            leafName: folderName,
+            underlyingObjectType: 1,
+        });
+
+        return expect(itemUpdated[0].FieldValue).to.be.eq(title);
+    }));
 });
