@@ -50,7 +50,7 @@ describe.skip("OneNote", function () {
         return;
     }));
 
-    it("List notebooks", pnpTest("9d0fe4b3-dc62-4699-be83-cc6f72daa62", async function () {
+    it("List notebooks", pnpTest("5e79bbc7-7c7b-48a4-a07e-e0ca106113a8", async function () {
         const oneNoteNoteBooks = await this.pnp.graph.users.getById(testUserName).onenote.notebooks();
         return expect(oneNoteNoteBooks).to.be.an("array");
     }));

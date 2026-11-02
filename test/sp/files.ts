@@ -47,10 +47,10 @@ describe("Files", function () {
         return expect(files.getByUrl(testFileName)()).to.eventually.be.fulfilled;
     }));
 
-    it("getFileByServerRelativePath (%#)", async function () {
+    it("getFileByServerRelativePath (%#)", pnpTest("cbfdb639-2c5c-44fa-b6e8-e985362d61ec", async function () {
 
         return expect(this.pnp.sp.web.getFileByServerRelativePath(testFileNamePercentPoundServerRelPath)()).to.eventually.be.fulfilled;
-    });
+    }));
 
     it("getFileByUrl", pnpTest("e2b4c5d6-7f8a-9b0c-1d2e-3f4a5b6c7d8e", async function () {
 

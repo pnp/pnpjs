@@ -41,7 +41,6 @@ describe("Groups", function () {
         // Create a new group
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Microsoft365);
         // Delete the group
-        // Potential Bug. Delete is only available off of getByID
         await this.pnp.graph.groups.getById(groupAddResult.id).delete();
         // Check to see if the group exists
         const groups = await this.pnp.graph.groups();

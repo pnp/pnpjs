@@ -420,7 +420,7 @@ describe("Fields", function () {
             return expect(field.Title).to.be.equal(name);
         }));
 
-        it("addCurrency", async function () {
+        it("addCurrency", pnpTest("b61d8cdc-c792-4a43-82e7-d37a6d8c8126", async function () {
 
             const { name } = await this.props({
                 name: `${testFieldName}_${getRandomString(10)}`,
@@ -434,7 +434,7 @@ describe("Fields", function () {
             });
 
             return expect(field.Title).to.be.equal(name);
-        });
+        }));
 
         it("addMultilineText", pnpTest("52e64708-f16a-4fbc-81c1-a4387c786621", async function () {
 
