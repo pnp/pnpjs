@@ -65,13 +65,14 @@ describe("Drive", function () {
         return expect(list).is.not.null;
     }));
 
-    it("Get Recent Drive Items", pnpTest("f242501e-0474-42e4-ad12-360c20f24885", async function () {
+    // The recent API is deprecated (see _Drive.recent) and returns a 400 until it stops returning data in November 2026
+    it.skip("Get Recent Drive Items", async function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
         }
         const recent = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).recent();
         return expect(recent).is.not.null;
-    }));
+    });
 
     it("Get Drive Root Folder", pnpTest("f9349b01-63ab-4a01-8554-09a1ebd087f6", async function () {
         if (stringIsNullOrEmpty(driveId)) {

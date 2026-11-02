@@ -92,8 +92,21 @@ describe("Permissions", function () {
                 this.skip();
             }
 
-            const permissions = await this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(fileId).permissions.getById(permissionsId)();
-            expect(permissions).to.haveOwnProperty("id");
+            // not every permission can be retrieved by id (the owner entry always returns a 404), so use the first one that can be
+            const item = this.pnp.graph.users.getById(testUserName).drives.getById(driveId).getItemById(fileId);
+            const all = await item.permissions();
+            let permission;
+            for (let i = 0; i < all.length && !permission; i++) {
+                try {
+                    permission = await item.permissions.getById(all[i].id)();
+                } catch (err) {
+                    if (err.status !== 404) {
+                        throw err;
+                    }
+                }
+            }
+            expect(permission, "no permission could be retrieved by id").to.not.equal(undefined);
+            expect(permission).to.haveOwnProperty("id");
         }));
 
         it("Update Permissions", pnpTest("559cb82b-5a7a-49cb-9562-b63e7cba6d3e", async function () {

@@ -30,17 +30,54 @@ describe("Messages", function () {
 
     describe("Chat-Messages", function () {
 
-        it("user.chat.getAllMessages", pnpTest("695189e1-1022-4f49-b190-28ad01e7b55d", async function () {
+        it("user.chats.getAllMessages", pnpTest("695189e1-1022-4f49-b190-28ad01e7b55d", async function () {
             const getAllMessages = await this.pnp.graph.users.getById(testUserId).chats.getAllMessages(undefined)();
             return expect(getAllMessages).is.not.null;
         }));
 
-        it.skip("user.chat.getAllRetainedMessages");
+        it.skip("user.chats.getAllRetainedMessages");
+
+        it("chat.messages", pnpTest("bc606161-08f1-44bd-8303-f7db5f03e806", async function () {
+            const chats = await this.pnp.graph.users.getById(testUserId).chats();
+            if (chats.length > 0) {
+                const chatId = chats[0].id;
+                const messages = await this.pnp.graph.users.getById(testUserId).chats.getById(chatId).messages();
+                return expect(messages).is.not.null;
+            } else {
+                this.skip();
+            }
+        }));
+
+        it("chat.messages.getById", pnpTest("106cb150-d1ae-4235-86a7-a64b3656b8ca", async function () {
+            const chats = await this.pnp.graph.users.getById(testUserId).chats();
+            if (chats.length > 0) {
+                const chatId = chats[0].id;
+                const messages = await this.pnp.graph.users.getById(testUserId).chats.getById(chatId).messages();
+                if (messages.length > 0) {
+                    const messageId = messages[0].id;
+                    const message = await this.pnp.graph.users.getById(testUserId).chats.getById(chatId).messages.getById(messageId)();
+                    return expect(message).is.not.null;
+                } else {
+                    this.skip();
+                }
+            } else {
+                this.skip();
+            }
+        }));
+
+        // application permissions only support sending chat messages in migration mode
+        it.skip("chat.messages.add");
     });
 
     describe("Teams-Channels", function () {
         let channelId = "";
         before(async function () {
+
+            // skip if no team exists in the tenant
+            if (teamID === "") {
+                this.skip();
+            }
+
             const channels = await this.pnp.graph.teams.getById(teamID).channels();
             if (channels.length > 0) {
                 channelId = channels[0].id;
@@ -77,7 +114,7 @@ describe("Messages", function () {
             }
         }));
 
-        it("team.channel.message.replies", pnpTest("25bfc505-1644-48b2-b540-aea849620430", async function () {
+        it("team.channel.messages.replies", pnpTest("25bfc505-1644-48b2-b540-aea849620430", async function () {
             const messages = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages();
             if (messages.length > 0) {
                 const messageId = messages[0].id;
@@ -88,6 +125,7 @@ describe("Messages", function () {
             }
         }));
 
+        // application permissions only support sending channel messages in migration mode
         it.skip("team.channel.messages.add");
     });
 });

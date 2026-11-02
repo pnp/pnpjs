@@ -3,6 +3,8 @@ import { expect } from "chai";
 import { GroupType } from "@pnp/graph/groups";
 import "@pnp/graph/sites/group";
 import { pnpTest } from "../pnp-test.js";
+import retryOnNotFound from "./utilities/retryOnNotFound.js";
+import pollUntil from "./utilities/pollUntil.js";
 
 describe("Groups", function () {
 
@@ -27,8 +29,9 @@ describe("Groups", function () {
         });
 
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Microsoft365);
-        const group = await this.pnp.graph.groups.getById(groupAddResult.id)();
         groupID = groupAddResult.id;
+        // a newly created group can return a 404 until it has replicated
+        const group = await retryOnNotFound(() => this.pnp.graph.groups.getById(groupAddResult.id)());
         return expect(group.displayName).is.not.undefined;
     }));
 
@@ -41,9 +44,11 @@ describe("Groups", function () {
         // Create a new group
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Microsoft365);
         // Delete the group
-        await this.pnp.graph.groups.getById(groupAddResult.id).delete();
+        // a newly created group can return a 404 until it has replicated
+        await retryOnNotFound(() => this.pnp.graph.groups.getById(groupAddResult.id).delete());
         // Check to see if the group exists
-        const groups = await this.pnp.graph.groups();
+        // the group list can lag behind the delete
+        const groups = await pollUntil(() => this.pnp.graph.groups(), r => !r.some(g => g.id === groupAddResult.id));
         let groupExists = false;
         groups.forEach(element => {
             if (element.id === groupAddResult.id) {
@@ -62,8 +67,11 @@ describe("Groups", function () {
 
         // Create a new group
         const groupAddResult = await this.pnp.graph.groups.add(props.groupName, props.groupName, GroupType.Microsoft365);
+        // let afterEach remove the group, it was previously left behind
+        groupID = groupAddResult.id;
         // Get the group by ID
-        const group = await this.pnp.graph.groups.getById(groupAddResult.id)();
+        // a newly created group can return a 404 until it has replicated
+        const group = await retryOnNotFound(() => this.pnp.graph.groups.getById(groupAddResult.id)());
         return expect(group).is.not.undefined;
     }));
 
@@ -80,10 +88,12 @@ describe("Groups", function () {
         // Update the display name of the group
         const newName = '"Updated_' + groupAddResult.displayName + '"';
         // Potential Bug. Update is only available off of getByID
-        await this.pnp.graph.groups.getById(groupID).update({ displayName: newName });
+        // a newly created group can return a 404 until it has replicated
+        await retryOnNotFound(() => this.pnp.graph.groups.getById(groupID).update({ displayName: newName }));
 
         // Get the group to check and see if the names are different
-        const group = await this.pnp.graph.groups.getById(groupID)();
+        // a read straight after the update can still return the old name
+        const group = await pollUntil(() => retryOnNotFound(() => this.pnp.graph.groups.getById(groupID)()), r => r.displayName !== props.groupName);
 
         return expect(props.groupName === group.displayName).is.not.true;
     }));
@@ -162,7 +172,8 @@ describe("Groups", function () {
 
     afterEach(async function () {
         if (groupID !== "") {
-            return this.pnp.graph.groups.getById(groupID).delete();
+            // a newly created group can return a 404 until it has replicated
+            return retryOnNotFound(() => this.pnp.graph.groups.getById(groupID).delete());
         }
         return;
     });
