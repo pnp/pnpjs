@@ -64,7 +64,8 @@ describe("Drive", function () {
         return expect(list).is.not.null;
     });
 
-    it("Get Recent Drive Items", async function () {
+    // The recent API is deprecated (see _Drive.recent) and returns a 400 until it stops returning data in November 2026
+    it.skip("Get Recent Drive Items", async function () {
         if (stringIsNullOrEmpty(driveId)) {
             this.skip();
         }

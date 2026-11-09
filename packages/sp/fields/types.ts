@@ -574,8 +574,15 @@ export enum ChoiceFieldFormatType {
 }
 
 export interface IFieldInfo {
+    AutofillInfo?: string;
+    AutoIndexed?: boolean;
+    CanBeDeleted?: boolean;
     Choices?: string[];
-    CustomFormatter: string | null;
+    ClientSideComponentId?: string;
+    ClientSideComponentProperties?: string;
+    ClientValidationFormula?: string | null;
+    ClientValidationMessage?: string | null;
+    CustomFormatter?: string;
     DefaultFormula: string | null;
     DefaultValue: string | null;
     Description: string;
@@ -591,11 +598,14 @@ export interface IFieldInfo {
     Indexed: boolean;
     IndexStatus: number;
     InternalName: string;
+    IsModern?: boolean;
     JSLink: string;
+    NoCrawl?: boolean;
     PinnedToFiltersPane: boolean;
     ReadOnlyField: boolean;
     Required: boolean;
     SchemaXml: string;
+    SchemaXmlWithResourceTokens?: string;
     Scope: string;
     Sealed: boolean;
     ShowInFiltersPane: number;
