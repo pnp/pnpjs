@@ -35,7 +35,7 @@ describe("ThemeManager", function () {
         white: "#ffffff",
     };
 
-    after(async function () {
+    after(pnpTest("8c0b9bad-f7a3-4c0f-b296-b99564515578", async function () {
         // Clean up created themes
         for (const themeName of createdThemeNames) {
             try {
@@ -44,7 +44,7 @@ describe("ThemeManager", function () {
                 // Ignore errors during cleanup
             }
         }
-    });
+    }));
 
     it("getTenantThemingOptions", pnpTest("f8a1b2c3-d4e5-6789-abcd-ef0123456789", async function () {
         const options = await this.pnp.sp.themeManager.getTenantThemingOptions();

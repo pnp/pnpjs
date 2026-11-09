@@ -9,7 +9,7 @@ describe("Chats", function () {
 
     let testUserId = "";
 
-    before(async function () {
+    before(pnpTest("91171c68-4944-430c-beca-7438a499ff8b", async function () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -17,7 +17,7 @@ describe("Chats", function () {
 
         const userInfo = await getValidUser.call(this);
         testUserId = userInfo.id;
-    });
+    }));
 
     it("user.chats", pnpTest("6935ae93-9260-48fc-9d55-84be48580cd3", async function () {
         const chats = await this.pnp.graph.users.getById(testUserId).chats();

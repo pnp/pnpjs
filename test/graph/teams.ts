@@ -13,7 +13,7 @@ describe("Teams", function () {
     let teamID = "";
     let operationID = "";
 
-    before(async function () {
+    before(pnpTest("dacb7efb-626e-46fe-bf8f-f54ce8d7e74e", async function () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -38,7 +38,7 @@ describe("Teams", function () {
         if (response.length > 0) {
             teamID = response[0].id;
         }
-    });
+    }));
 
     // skipping because this is a very time intensive test for an API that is unlikely to change frequently
     it.skip("create()", async function () {
@@ -223,14 +223,14 @@ describe("Teams", function () {
 
         describe("Teams-Channels", function () {
             let channelId = "";
-            before(async function () {
+            before(pnpTest("56550b5b-595d-4772-9bdf-eea63275639c", async function () {
                 const channels = await this.pnp.graph.teams.getById(teamID).channels();
                 if (channels.length > 0) {
                     channelId = channels[0].id;
                 } else {
                     this.skip();
                 }
-            });
+            }));
 
             it("team.channels", pnpTest("02a0c670-23b4-4e98-9247-6bd23bb07942", async function () {
                 const channels = await this.pnp.graph.teams.getById(teamID).channels();
@@ -293,7 +293,7 @@ describe("Teams", function () {
         });
     });
 
-    after(async function () {
+    after(pnpTest("f79403ff-f2c8-43cc-b41c-20ded72e6218", async function () {
 
         // Added delays to try and deal with async nature of adding a team. At this time it seems to be enough.
         if (teamID !== "" && operationID !== "") {
@@ -315,5 +315,5 @@ describe("Teams", function () {
                 // eslint-disable-next-line no-empty
             } catch (e) { }
         }
-    });
+    }));
 });

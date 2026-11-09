@@ -15,14 +15,14 @@ describe("Lists", function () {
         list: { "template": "genericList" },
     };
 
-    before(async function () {
+    before(pnpTest("ec7e73a3-25fe-4a56-b723-a35ca888d891", async function () {
 
         if (!this.pnp.settings.enableWebTests) {
             this.skip();
         }
 
         site = await getTestingGraphSPSite(this);
-    });
+    }));
 
     it("lists", pnpTest("016307d3-a0e3-4c8c-94e8-4f1c8566ffbd", async function () {
         const lists = await site.lists();

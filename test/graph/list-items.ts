@@ -117,7 +117,7 @@ describe("List-Items", function () {
     }));
 
     // Remove the test list we created
-    after(async function () {
+    after(pnpTest("c48ad975-d714-4c84-ae44-8921c1209f77", async function () {
         if (list) {
             try {
                 await list.delete();
@@ -126,6 +126,6 @@ describe("List-Items", function () {
             }
         }
         return;
-    });
+    }));
 
 });

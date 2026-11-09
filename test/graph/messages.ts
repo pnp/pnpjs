@@ -13,7 +13,7 @@ describe("Messages", function () {
     let testUserId = "";
     let teamID = "";
 
-    before(async function () {
+    before(pnpTest("d951fc12-f971-4576-a792-d44d0e3ab346", async function () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -26,7 +26,7 @@ describe("Messages", function () {
         if (response.length > 0) {
             teamID = response[0].id;
         }
-    });
+    }));
 
     describe("Chat-Messages", function () {
 
@@ -71,7 +71,7 @@ describe("Messages", function () {
 
     describe("Teams-Channels", function () {
         let channelId = "";
-        before(async function () {
+        before(pnpTest("a6f61a18-1394-4a6a-92c1-95545f25a3f3", async function () {
 
             // skip if no team exists in the tenant
             if (teamID === "") {
@@ -84,7 +84,7 @@ describe("Messages", function () {
             } else {
                 this.skip();
             }
-        });
+        }));
 
         it("team.channels.getAllMessages", pnpTest("5a819b8f-9be5-4c28-86d9-e5400d4669d3", async function () {
             const getAllMessages = await this.pnp.graph.teams.getById(teamID).channels.getAllMessages(undefined)();

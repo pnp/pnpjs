@@ -170,11 +170,11 @@ describe("Groups", function () {
     // Skipping test as not feasible to run in Test environment
     it.skip("validateProperties");
 
-    afterEach(async function () {
+    afterEach(pnpTest("60cdabe8-b5c8-4bf7-bd39-4e698fb177f9", async function () {
         if (groupID !== "") {
             // a newly created group can return a 404 until it has replicated
             return retryOnNotFound(() => this.pnp.graph.groups.getById(groupID).delete());
         }
         return;
-    });
+    }));
 });
