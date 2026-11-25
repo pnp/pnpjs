@@ -44,12 +44,16 @@ describe("Comments", function () {
             }
         }));
 
-        after(async function () {
+        after(pnpTest("e5744727-2e3f-4169-b307-e6fe72841f72", async function () {
             // Cleanup list
             if (page != null) {
-                page.delete();
+                try {
+                    await page.delete();
+                } catch (err) {
+                    console.error("Cannot clean up test page");
+                }
             }
-        });
+        }));
 
         it("add", pnpTest("831a715e-60e9-4cea-b0ac-265ce2e3a5db", async function () {
 

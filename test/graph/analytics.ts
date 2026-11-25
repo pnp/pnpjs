@@ -147,7 +147,7 @@ describe("Analytics", function () {
     }));
 
     // Remove the test contact we created
-    after(async function () {
+    after(pnpTest("1b6543c4-cc2e-4eaa-8da9-9cce787ae5b5", async function () {
 
         if (!stringIsNullOrEmpty(listResultId)) {
             try {
@@ -157,5 +157,5 @@ describe("Analytics", function () {
             }
         }
         return;
-    });
+    }));
 });

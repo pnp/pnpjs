@@ -1,28 +1,28 @@
 import { defaultPath, getById, IGetById, addable, IAddable } from "../decorators.js";
 import { graphInvokableFactory, _GraphCollection, _GraphInstance, GraphQueryable, graphGet } from "../graphqueryable.js";
-import { Message as IMessageType } from "@microsoft/microsoft-graph-types";
+import { ChatMessage as IMessageType } from "@microsoft/microsoft-graph-types";
 
 /**
- * Message
+ * Teams chat or channel message
  */
-export class _Message extends _GraphInstance<IMessageType> {
+export class _TeamsChatMessage extends _GraphInstance<IMessageType> {
     /**
      * Gets all the replies to a message.
      *
      */
-    public async replies(): Promise<IMessageType> {
+    public async replies(): Promise<IMessageType[]> {
         return graphGet(GraphQueryable(this, "replies"));
     }
 }
-export interface IMessage extends _Message { }
-export const Message = graphInvokableFactory<IMessage>(_Message);
+export interface ITeamsChatMessage extends _TeamsChatMessage { }
+export const TeamsChatMessage = graphInvokableFactory<ITeamsChatMessage>(_TeamsChatMessage);
 
 /**
- * Messages
+ * Teams chat or channel messages
  */
 @defaultPath("messages")
-@getById(Message)
+@getById(TeamsChatMessage)
 @addable()
-export class _Messages extends _GraphCollection<IMessageType[]> { }
-export interface IMessages extends _Messages, IGetById<IMessage>, IAddable<IMessageType, IMessageType> { }
-export const Messages = graphInvokableFactory<IMessages>(_Messages);
+export class _TeamsChatMessages extends _GraphCollection<IMessageType[]> { }
+export interface ITeamsChatMessages extends _TeamsChatMessages, IGetById<ITeamsChatMessage>, IAddable<IMessageType, IMessageType> { }
+export const TeamsChatMessages = graphInvokableFactory<ITeamsChatMessages>(_TeamsChatMessages);

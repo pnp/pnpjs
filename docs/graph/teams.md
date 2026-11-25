@@ -160,11 +160,11 @@ const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
-import "@pnp/graph/messages/channels";
+import "@pnp/graph/messages";
 
 const graph = graphfi(...);
 
-const chatMessages = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getAllMessages();
+const chatMessages = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getAllMessages()();
 ```
 
 ### Get primary channel
@@ -363,7 +363,7 @@ See [Groups](./groups.md)
 
 ## Users
 
-### Get installed Apps
+### Get installed Apps for Users
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -374,7 +374,10 @@ const graph = graphfi(...);
 const installedApps = await graph.me.installedApps();
 const installedAppsForUsers = await graph.users('user@contoso.com').installedApps();
 
+// Helpful information about applications including application name and id's plus current manifest version.
+const installedAppsForUsers = await graph.users('user@contoso.com').installedApps.expand("teamsApp,teamsAppDefinition")();
 ```
+
 ### Get an App
 
 ```TypeScript
@@ -388,7 +391,20 @@ const addedApp = await graph.me.installedApps.getById('NWI2NDk4MzQtNzQxMi00Y2NlL
 
 ```
 
-### Add an App
+### Upgrade an App for User
+
+```TypeScript
+import { graphfi } from "@pnp/graph";
+import "@pnp/graph/users";
+import "@pnp/graph/teams";
+
+const graph = graphfi(...);
+
+const addedApp = await graph.me.installedApps.getById('NWI2NDk4MzQtNzQxMi00Y2NlLTllNjktMTc2ZTk1YTM5NGY1IyNhNmI2MzM2NS0zMWE0LTRmNDMtOTJlYy03MTBiNzE1NTdhZjk').upgrade();
+
+```
+
+### Add an App for User
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";
@@ -401,7 +417,7 @@ const addedApp = await graph.me.installedApps.add('https://graph.microsoft.com/v
 
 ```
 
-### Remove an App
+### Remove an App for User
 
 ```TypeScript
 import { graphfi } from "@pnp/graph";

@@ -4,6 +4,7 @@ import "@pnp/graph/teams";
 import "@pnp/graph/groups";
 import getValidUser from "./utilities/getValidUser.js";
 import { ITeamTagAdd } from "@pnp/graph/teams";
+import { pnpTest } from "../pnp-test.js";
 
 describe("Teams", function () {
 
@@ -12,7 +13,7 @@ describe("Teams", function () {
     let teamID = "";
     let operationID = "";
 
-    before(async function () {
+    before(pnpTest("dacb7efb-626e-46fe-bf8f-f54ce8d7e74e", async function () {
 
         if (!this.pnp.settings.enableWebTests || stringIsNullOrEmpty(this.pnp.settings.testUser)) {
             this.skip();
@@ -37,7 +38,7 @@ describe("Teams", function () {
         if (response.length > 0) {
             teamID = response[0].id;
         }
-    });
+    }));
 
     // skipping because this is a very time intensive test for an API that is unlikely to change frequently
     it.skip("create()", async function () {
@@ -58,27 +59,27 @@ describe("Teams", function () {
             }
         });
 
-        it("team.primaryChannel", async function () {
+        it("team.primaryChannel", pnpTest("1d0513c7-cd77-468a-8d67-44b98668421c", async function () {
             const primaryChannel = await this.pnp.graph.teams.getById(teamID).primaryChannel();
             return expect(primaryChannel).is.not.null;
-        });
+        }));
 
-        it("team.tags", async function () {
+        it("team.tags", pnpTest("22352393-b2f2-482d-93f4-aa5913f13b36", async function () {
             const tags = await this.pnp.graph.teams.getById(teamID).tags();
             return expect(tags).is.not.null;
-        });
+        }));
 
-        it("team.tags.getById", async function () {
+        it("team.tags.getById", pnpTest("5e10e8dd-62c8-43d0-b290-a7890380a122", async function () {
             const tags = await this.pnp.graph.teams.getById(teamID).tags();
             if (tags.length > 0) {
-                const tag = await this.pnp._graph.teams.getById(teamID).tags.getById(tags[0].id)();
+                const tag = await this.pnp.graph.teams.getById(teamID).tags.getById(tags[0].id)();
                 return expect(tag).is.not.null;
             } else {
                 this.skip();
             }
-        });
+        }));
 
-        it("team.tags.add", async function () {
+        it("team.tags.add", pnpTest("1035de97-0bdf-43c1-ae51-f9f73b4b6d29", async function () {
             const tagName = `TestTag_${getRandomString(4)}`;
             const newTag: ITeamTagAdd = {
                 displayName: tagName,
@@ -90,9 +91,9 @@ describe("Teams", function () {
                 await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
             }
             return expect(success).is.true;
-        });
+        }));
 
-        it("team.tags.update", async function () {
+        it("team.tags.update", pnpTest("12c5aacb-7f2f-4e32-968d-51ef42142d0b", async function () {
             const tagName = `TestTag_${getRandomString(4)}`;
             const newTag: ITeamTagAdd = {
                 displayName: tagName,
@@ -108,9 +109,9 @@ describe("Teams", function () {
                 await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
             }
             return expect(success).is.true;
-        });
+        }));
 
-        it("team.tags.delete", async function () {
+        it("team.tags.delete", pnpTest("1639bb3f-013a-4be8-a9f1-818048ba0fe5", async function () {
             const tagName = `TestTag_${getRandomString(4)}`;
             const newTag: ITeamTagAdd = {
                 displayName: tagName,
@@ -127,9 +128,9 @@ describe("Teams", function () {
                 }
             }
             return expect(success).is.true;
-        });
+        }));
 
-        it("team.tags.members", async function () {
+        it("team.tags.members", pnpTest("eef348ab-9749-4f24-834f-829de94e336f", async function () {
             const tagName = `TestTag_${getRandomString(4)}`;
             const newTag: ITeamTagAdd = {
                 displayName: tagName,
@@ -145,7 +146,7 @@ describe("Teams", function () {
                 await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
             }
             return expect(success).is.true;
-        });
+        }));
 
         // cannot test without multiple members
         it.skip("team.tags.members.add", async function () {
@@ -166,7 +167,7 @@ describe("Teams", function () {
             return expect(success).is.true;
         });
 
-        it("team.tags.members.getById", async function () {
+        it("team.tags.members.getById", pnpTest("4afb371c-2e9e-4740-b072-a4704a674c70", async function () {
             const tagName = `TestTag_${getRandomString(4)}`;
             const newTag: ITeamTagAdd = {
                 displayName: tagName,
@@ -188,9 +189,9 @@ describe("Teams", function () {
 
             }
             return expect(success).is.true;
-        });
+        }));
 
-        it("team.tags.members.delete", async function () {
+        it("team.tags.members.delete", pnpTest("22fa8084-49fe-4e6d-bbb5-0b753bf624bd", async function () {
             const tagName = `TestTag_${getRandomString(4)}`;
             const newTag: ITeamTagAdd = {
                 displayName: tagName,
@@ -207,7 +208,7 @@ describe("Teams", function () {
                 await this.pnp.graph.teams.getById(teamID).tags.getById(tag.id).delete();
             }
             return expect(success).is.true;
-        });
+        }));
 
         // skipping because time consuming, destructive, or not feasible
         it.skip("team.installedApps");
@@ -222,25 +223,25 @@ describe("Teams", function () {
 
         describe("Teams-Channels", function () {
             let channelId = "";
-            before(async function () {
+            before(pnpTest("56550b5b-595d-4772-9bdf-eea63275639c", async function () {
                 const channels = await this.pnp.graph.teams.getById(teamID).channels();
                 if (channels.length > 0) {
                     channelId = channels[0].id;
                 } else {
                     this.skip();
                 }
-            });
+            }));
 
-            it("team.channels", async function () {
+            it("team.channels", pnpTest("02a0c670-23b4-4e98-9247-6bd23bb07942", async function () {
                 const channels = await this.pnp.graph.teams.getById(teamID).channels();
                 return expect(channels).is.not.null;
-            });
+            }));
 
-            it("team.channel.tabs", async function () {
+            it("team.channel.tabs", pnpTest("c1094d98-f76a-4ae5-b45d-4ed1ae0ac4a7", async function () {
                 const tabs = await await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).tabs();
                 return expect(tabs).is.not.null;
 
-            });
+            }));
 
             // takes too long to execute
             it.skip("team.channel.filesFolder", async function () {
@@ -248,12 +249,12 @@ describe("Teams", function () {
                 return expect(filesFolder).is.not.null;
             });
 
-            it("team.channel.channelMembers", async function () {
+            it("team.channel.channelMembers", pnpTest("b3bf8bda-534d-44c6-a624-dbe05daf421e", async function () {
                 const channelMembers = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).channelMembers();
                 return expect(channelMembers).is.not.null;
-            });
+            }));
 
-            it("team.channel.channelMembers.getById", async function () {
+            it("team.channel.channelMembers.getById", pnpTest("c0bc9758-7d7a-4237-84b6-47173b93e198", async function () {
                 const channelMembers = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).channelMembers();
                 if (channelMembers.length > 0) {
                     const id = channelMembers[0].id;
@@ -262,9 +263,9 @@ describe("Teams", function () {
                 } else {
                     this.skip();
                 }
-            });
+            }));
 
-            it("team.channel.tabs.getById", async function () {
+            it("team.channel.tabs.getById", pnpTest("788e40e8-ddc6-4f90-afca-9078f2145769", async function () {
                 const tabs = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).tabs();
                 if (tabs.length > 0) {
                     const tabId = tabs[0].id;
@@ -273,7 +274,7 @@ describe("Teams", function () {
                 } else {
                     this.skip();
                 }
-            });
+            }));
 
             // skipping because time consuming, destructive, or not feasible
             it.skip("team.channel.archive");
@@ -292,7 +293,7 @@ describe("Teams", function () {
         });
     });
 
-    after(async function () {
+    after(pnpTest("f79403ff-f2c8-43cc-b41c-20ded72e6218", async function () {
 
         // Added delays to try and deal with async nature of adding a team. At this time it seems to be enough.
         if (teamID !== "" && operationID !== "") {
@@ -314,5 +315,5 @@ describe("Teams", function () {
                 // eslint-disable-next-line no-empty
             } catch (e) { }
         }
-    });
+    }));
 });

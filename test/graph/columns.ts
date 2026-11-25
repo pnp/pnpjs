@@ -76,14 +76,22 @@ describe("Columns", function () {
         list = site.lists.getById(addList.id);
     }));
 
-    after(async function () {
+    after(pnpTest("0dfe662d-fef6-4b1a-8fbf-f8d3dee8eada", async function () {
         if (list != null) {
-            list.delete();
+            try {
+                await list.delete();
+            } catch (err) {
+                console.error("Cannot clean up test list");
+            }
         }
         if (contentType != null) {
-            contentType.delete();
+            try {
+                await contentType.delete();
+            } catch (err) {
+                console.error("Cannot clean up test content type");
+            }
         }
-    });
+    }));
 
     describe("Site", function () {
 
@@ -182,11 +190,15 @@ describe("Columns", function () {
             siteColumn = site.columns.getById(addSiteCT.id);
         }));
 
-        after(async function () {
+        after(pnpTest("8e524f5c-fa8c-4878-878c-21c25edace96", async function () {
             if (siteColumn != null) {
-                siteColumn.delete();
+                try {
+                    await siteColumn.delete();
+                } catch (err) {
+                    console.error("Cannot clean up test site column");
+                }
             }
-        });
+        }));
 
         it("columns", pnpTest("0312da75-4067-4d63-bb2c-e5f0d35f4b53", async function () {
             const columns = await contentType.columns();

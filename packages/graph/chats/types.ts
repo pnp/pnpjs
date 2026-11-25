@@ -16,7 +16,7 @@ export class _Chat extends _GraphInstance<IChatType> {
      * @returns void
     */
     public async removeAllAccessForUser(user: ITeamworkUserIdentityType): Promise<void> {
-        return graphPost(Chat(this, "removeAllAccessForUser"), body(user));
+        return graphPost(Chat(this, "removeAllAccessForUser"), body({ user }));
     }
 }
 export interface IChat extends _Chat, IDeleteable, IUpdateable  { }

@@ -5,7 +5,7 @@ import { createBatch } from "@pnp/graph/batching";
 import { expect } from "chai";
 import { pnpTest } from "../pnp-test.js";
 
-describe("Batching", function () {
+describe("Batching-Graph", function () {
 
     before(pnpTest("7b8d310e-c260-4202-b428-7df7c2ca62df", function () {
 

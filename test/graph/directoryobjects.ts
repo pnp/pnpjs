@@ -5,6 +5,8 @@ import "@pnp/graph/directory-objects";
 import { GroupType } from "@pnp/graph/groups";
 import { getRandomString, getGUID, stringIsNullOrEmpty } from "@pnp/core";
 import getValidUser from "./utilities/getValidUser.js";
+import retryOnNotFound from "./utilities/retryOnNotFound.js";
+import pollUntil from "./utilities/pollUntil.js";
 import { pnpTest } from "../pnp-test.js";
 
 describe("Directory Objects", function () {
@@ -12,8 +14,8 @@ describe("Directory Objects", function () {
     let testUserName = "";
     let testChildGroupID = "";
     let testParentGroupID = "";
-    let testGUID;
-    let userId = null;
+    let testGUID: string;
+    let userId: string = null;
 
     before(pnpTest("3adea3f7-de9b-4872-92c4-82f964a072a8", async function () {
 
@@ -48,7 +50,8 @@ describe("Directory Objects", function () {
         });
         testChildGroupID = result.id;
 
-        result = await this.pnp.graph.groups.add(props.groupName2, props.groupName2, GroupType.Security, {
+        // the child group may not have replicated yet, so referencing it can return a 404
+        result = await retryOnNotFound(() => this.pnp.graph.groups.add(props.groupName2, props.groupName2, GroupType.Security, {
             "members@odata.bind": [
                 "https://graph.microsoft.com/v1.0/users/" + props.userId,
                 "https://graph.microsoft.com/v1.0/groups/" + testChildGroupID,
@@ -56,7 +59,7 @@ describe("Directory Objects", function () {
             "owners@odata.bind": [
                 "https://graph.microsoft.com/v1.0/users/" + props.userId,
             ],
-        });
+        }));
         testParentGroupID = result.id;
     }));
 
@@ -75,7 +78,7 @@ describe("Directory Objects", function () {
             ],
         });
         const testDeleteGroupID = result.id;
-        return expect(this.pnp.graph.groups.getById(testDeleteGroupID).delete()).eventually.be.fulfilled;
+        return expect(retryOnNotFound(() => this.pnp.graph.groups.getById(testDeleteGroupID).delete())).eventually.be.fulfilled;
     }));
 
     it("Get User Member Objects", pnpTest("ba2c72fb-d9f0-412d-988e-527d0ce9b7a6", async function () {
@@ -99,7 +102,10 @@ describe("Directory Objects", function () {
     }));
 
     it("Check User Member Groups (1)", pnpTest("fff79512-3b81-4b1f-8de2-c8c65ff3985e", async function () {
-        const memberGroups = await this.pnp.graph.users.getById(testUserName).checkMemberGroups([testChildGroupID, testParentGroupID, testGUID]);
+        // membership checks can lag behind the group creation and return an empty result
+        const memberGroups = await pollUntil(
+            () => this.pnp.graph.users.getById(testUserName).checkMemberGroups([testChildGroupID, testParentGroupID, testGUID]),
+            r => r.length === 2);
         return expect(memberGroups.length).is.equal(2);
     }));
 
@@ -119,12 +125,14 @@ describe("Directory Objects", function () {
     }));
 
     // Remove the test data we created
-    after(async function () {
+    after(pnpTest("9e0dff16-1d60-4c07-87ac-03130adc0fbd", async function () {
         const promises = [Promise.resolve()];
         if (this.pnp.settings.enableWebTests && !stringIsNullOrEmpty(this.pnp.settings.testUser)) {
-            promises.push(this.pnp.graph.groups.getById(testChildGroupID).delete());
-            promises.push(this.pnp.graph.groups.getById(testParentGroupID).delete());
+            // either id will be empty if the before hook failed part way through
+            [testChildGroupID, testParentGroupID].filter(id => !stringIsNullOrEmpty(id)).forEach(id => {
+                promises.push(retryOnNotFound(() => this.pnp.graph.groups.getById(id).delete()));
+            });
         }
         return Promise.all(promises);
-    });
+    }));
 });

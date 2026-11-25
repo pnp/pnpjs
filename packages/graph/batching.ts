@@ -225,6 +225,13 @@ export function createBatch(base: IGraphQueryable, props?: IGraphBatchProps): [T
         // we replace the send function with our batching logic
         instance.on.send.replace(async function (this: Queryable, url: URL, init: RequestInit) {
 
+            // a registered instance always has its registration symbol when it reaches send. If it is gone this instance was reused (see the init
+            // observer) and the first invocation already ran dispose, so adding it would leave a request in the batch that nothing ever completes
+            // and execute would never resolve.
+            if (!isFunc(this[RegistrationCompleteSym])) {
+                throw Error("This instance is already part of a batch. Please review the docs at https://pnp.github.io/pnpjs/concepts/batching#reuse.");
+            }
+
             const promise = new Promise<Response>((resolve) => {
                 requests.push([this, url.toString(), init, resolve]);
             });

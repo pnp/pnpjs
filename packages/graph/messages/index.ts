@@ -2,8 +2,8 @@ import "./channels.js";
 import "./chats.js";
 
 export {
-    IMessage,
-    IMessages,
-    Message,
-    Messages,
+    ITeamsChatMessage,
+    ITeamsChatMessages,
+    TeamsChatMessage,
+    TeamsChatMessages,
 } from "./types.js";

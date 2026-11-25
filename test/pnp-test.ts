@@ -12,7 +12,7 @@ export const PnPTestHeaderName = "X-PnP-TestId";
 
 // we use this to identify tests with duplicate ids, which will cause problems
 // really just a safety measure for us
-const idDupeTracker = [];
+const idDupeTracker: string[] = [];
 
 /**
  * Behavior used to inject the correct test id into the headers for each request
@@ -51,15 +51,15 @@ export function pnpTest(id: string, testFunc: (this: Context) => any): IPnPTestF
 
     idDupeTracker.push(id.toLowerCase());
 
-    return async function (this: Context, ...args: any[]) {
+    return async function (this: Context) {
 
         this.pnpid = id;
-        this.props = this.pnp.testProps.get.bind(this.pnp.testProps, this.pnpid);
+        this.props = <T>(defaults: T) => this.pnp.testProps.get(this.pnpid, defaults);
 
         // clone our sp and graph for each request, include the test header
         this.pnp.sp = spfi(this.pnp._sp).using(PnPTestIdHeader(() => this.pnpid));
         this.pnp.graph = graphfi(this.pnp._graph).using(PnPTestIdHeader(() => this.pnpid));
 
-        return testFunc.apply(this, args);
+        return testFunc.call(this);
     };
 }

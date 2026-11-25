@@ -49,6 +49,7 @@ export class _Drive extends _GraphInstance<IDriveType> {
     /**
      * Method for retrieving recently accessed drive items by the user.
      * @returns IDriveItems
+     * @deprecated The recent API is deprecated and will operate in a degraded state until November, 2026, after which it stops returning data.
      */
     public get recent(): IDriveItems {
         return DriveItems(this, "recent");
@@ -58,6 +59,7 @@ export class _Drive extends _GraphInstance<IDriveType> {
      * Method for retrieving drive items shared with the user.
      * @param options - ISharingWithMeOptions (Optional)
      * @returns IDriveItems
+     * @deprecated The sharedWithMe API is deprecated and will operate in a degraded state until November, 2026, after which it stops returning data.
      */
     public async sharedWithMe(options: ISharingWithMeOptions = null): Promise<IDriveItems> {
         const q = DriveItems(this, "sharedWithMe");
@@ -411,9 +413,9 @@ export class _DriveItems extends _GraphCollection<IDriveItemType[]> {
     public async add(fileInfo: IDriveItemAdd): Promise<IDriveItemType> {
 
         const q = DriveItem([this, this.parentUrl]).concat(`:/${fileInfo.filename}:/content`).using(InjectHeaders({
-            "Content-Type": fileInfo.contentType,
+            "Content-Type": fileInfo.contentType || "application/json",
         }));
-        q.query.set("@name.conflictBehavior", fileInfo.conflictBehavior);
+        q.query.set("@name.conflictBehavior", fileInfo.conflictBehavior || "rename");
 
         return  graphPut(q, {
             body: fileInfo.content,

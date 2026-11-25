@@ -44,11 +44,15 @@ describe("ContentTypes", function () {
         list = site.lists.getById(listTmp.id);
     }));
 
-    after(async function () {
+    after(pnpTest("f9a43ffd-9faf-4972-b775-d3ce7565d7f2", async function () {
         if (list != null) {
-            list.delete();
+            try {
+                await list.delete();
+            } catch (err) {
+                console.error("Cannot clean up test list");
+            }
         }
-    });
+    }));
 
     describe("Site", function () {
 
