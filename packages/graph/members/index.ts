@@ -12,3 +12,11 @@ export {
     IGroupMembers,
     GroupMembers,
 } from "./groups.js";
+
+export {
+    IChatMember,
+    ChatMember,
+    IChatMembers,
+    ChatMembers,
+    IChatMemberAdd,
+} from "./chats.js";

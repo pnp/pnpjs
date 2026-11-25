@@ -31,7 +31,7 @@ describe("Messages", function () {
     describe("Chat-Messages", function () {
 
         it("user.chats.getAllMessages", pnpTest("695189e1-1022-4f49-b190-28ad01e7b55d", async function () {
-            const getAllMessages = await this.pnp.graph.users.getById(testUserId).chats.getAllMessages(undefined)();
+            const getAllMessages = await this.pnp.graph.users.getById(testUserId).chats.getAllMessages()();
             return expect(getAllMessages).is.not.null;
         }));
 
@@ -87,7 +87,7 @@ describe("Messages", function () {
         }));
 
         it("team.channels.getAllMessages", pnpTest("5a819b8f-9be5-4c28-86d9-e5400d4669d3", async function () {
-            const getAllMessages = await this.pnp.graph.teams.getById(teamID).channels.getAllMessages(undefined)();
+            const getAllMessages = await this.pnp.graph.teams.getById(teamID).channels.getAllMessages()();
             return expect(getAllMessages).is.not.null;
         }));
 
@@ -119,7 +119,7 @@ describe("Messages", function () {
             if (messages.length > 0) {
                 const messageId = messages[0].id;
                 const messageReply = await this.pnp.graph.teams.getById(teamID).channels.getById(channelId).messages.getById(messageId).replies();
-                return expect(messageReply).is.not.null;
+                return expect(messageReply).is.an("array");
             } else {
                 this.skip();
             }

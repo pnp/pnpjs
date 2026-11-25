@@ -160,11 +160,11 @@ const channels = await graph.teams.getById('3531f3fb-f9ee-4f43-982a-6c90d8226528
 ```TypeScript
 import { graphfi } from "@pnp/graph";
 import "@pnp/graph/teams";
-import "@pnp/graph/messages/channels";
+import "@pnp/graph/messages";
 
 const graph = graphfi(...);
 
-const chatMessages = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getAllMessages();
+const chatMessages = await graph.teams.getById('3531fzfb-f9ee-4f43-982a-6c90d8226528').channels.getAllMessages()();
 ```
 
 ### Get primary channel

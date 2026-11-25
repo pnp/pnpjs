@@ -35,10 +35,24 @@ describe("Chats", function () {
         }
     }));
 
-    // an existing 1:1 chat is returned instead of created, and a new chat needs a second test user
-    it.skip("user.chats.add");
+    it("chats.getById", pnpTest("8b441c09-51cb-46f7-b74f-b97aef2dd46f", async function () {
+        const chats = await this.pnp.graph.users.getById(testUserId).chats();
+        if (chats.length > 0) {
+            const chatId = chats[0].id;
+            const chat = await this.pnp.graph.chats.getById(chatId)();
+            return expect(chat.id).to.equal(chatId);
+        } else {
+            this.skip();
+        }
+    }));
 
-    // needs a chat the test created, see user.chats.add
+    // lists the signed in user's chats, which needs delegated permissions
+    it.skip("chats");
+
+    // an existing 1:1 chat is returned instead of created, and a new chat needs a second test user
+    it.skip("chats.add");
+
+    // needs a chat the test created, see chats.add
     it.skip("chat.update");
 
     // destructive, soft-deletes a real conversation and needs Chat.ManageDeletion.All
