@@ -5,6 +5,7 @@ The `@pnp/sp-admin` library enables you to call the static SharePoint admin API'
 - `_api/Microsoft.Online.SharePoint.TenantManagement.Office365Tenant`
 - `_api/Microsoft.Online.SharePoint.TenantAdministration.SiteProperties`
 - `_api/Microsoft.Online.SharePoint.TenantAdministration.Tenant`
+- `_api/SiteRenameJobs`
 
 These APIs typically require an elevated level of permissions and should not be relied upon in general user facing solutions. Before using this library please understand the impact of what you are doing as you are updating settings at the tenant level for all users. Also keep in mind these endpoints do not support application permissions, therefore you will need to get a user token for delegated access, ergo they cannot be used unattended.
 
@@ -119,6 +120,100 @@ await sp.admin.siteProperties.clearSharingLockDown("https://tenant.sharepoint.co
 ```
 
 > For more information on the methods available and how to use them, please review the code comments in the source.
+
+## siteRenameJobs
+
+The `siteRenameJobs` node represents calls to the `_api/SiteRenameJobs` api, used to change the address of a site.
+
+> When calling the `siteRenameJobs` endpoint you must target the -admin site.
+
+!!! warning
+    Adding a job renames a real site. The site is read-only while the job runs.
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp-admin";
+import { SiteRenameOptions } from "@pnp/sp-admin";
+
+const spAdmin = spfi("https://{tenant}-admin.sharepoint.com");
+
+const sourceUrl = "https://{tenant}.sharepoint.com/sites/old";
+
+// queue a rename job
+const job = await spAdmin.admin.siteRenameJobs.add({
+    SourceSiteUrl: sourceUrl,
+    TargetSiteUrl: "https://{tenant}.sharepoint.com/sites/new",
+    // optional
+    TargetSiteTitle: "New Title",
+    Option: SiteRenameOptions.SuppressMarketplaceAppCheck,
+});
+
+// get the rename jobs for a site, using the source url
+const jobs = await spAdmin.admin.siteRenameJobs.getJobsBySiteUrl(sourceUrl);
+```
+
+### Option
+
+Use `Option` to change how the rename job runs. These values come from Microsoft's PowerShell cmdlet and haven't been tested through this library. If one of them doesn't work, please open an issue.
+
+| Value | Number | Effect |
+| --- | --- | --- |
+| `None` | 0 | The default |
+| `ValidationOnly` | 2 | Validate only |
+| `SuppressMarketplaceAppCheck` | 8 | Skip the marketplace app check |
+| `SuppressWorkflow2013Check` | 16 | Skip the 2013 workflow check |
+| `SuppressBcsCheck` | 128 | Skip the BCS check |
+| `SuppressAllWarnings` | -2147483648 | Suppress all warnings |
+
+!!! warning
+    Confirm `ValidationOnly` on a test site before relying on it to leave a site unchanged.
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp-admin";
+import { SiteRenameOptions } from "@pnp/sp-admin";
+
+const spAdmin = spfi("https://{tenant}-admin.sharepoint.com");
+
+await spAdmin.admin.siteRenameJobs.add({
+    SourceSiteUrl: "https://{tenant}.sharepoint.com/sites/old",
+    TargetSiteUrl: "https://{tenant}.sharepoint.com/sites/new",
+    // combine values with a bitwise OR
+    Option: SiteRenameOptions.SuppressMarketplaceAppCheck | SiteRenameOptions.SuppressWorkflow2013Check,
+});
+```
+
+### SkipGestures
+
+Use `SkipGestures` to skip steps SharePoint otherwise runs as part of a rename. Only `Redirect` has been confirmed to work. The other values are untested, and the descriptions below are presumed from their names. If one of them doesn't work, please open an issue.
+
+| Value | Skips | Confirmed |
+| --- | --- | --- |
+| `Redirect` | Creating the redirect at the old url | Yes |
+| `MRU` | Updating "most recently used" file links to the new url | No |
+| `Flow` | Updating Power Automate flows that point at the site | No |
+| `PowerApps` | Notifying Power Apps of the new url | No |
+| `PWA` | Project Web App handling | No |
+| `Scheduling` | Unknown | No |
+
+!!! warning
+    Without a redirect, anything still pointing at the old url will break.
+
+```TS
+import { spfi } from "@pnp/sp";
+import "@pnp/sp-admin";
+import { SiteRenameSkipGestures } from "@pnp/sp-admin";
+
+const spAdmin = spfi("https://{tenant}-admin.sharepoint.com");
+
+await spAdmin.admin.siteRenameJobs.add({
+    SourceSiteUrl: "https://{tenant}.sharepoint.com/sites/old",
+    TargetSiteUrl: "https://{tenant}.sharepoint.com/sites/new",
+    SkipGestures: [SiteRenameSkipGestures.Redirect],
+});
+```
+
+You can supply more than one value, they are sent to the service as a comma separated string. Sending multiple values is also unconfirmed.
 
 ## call
 

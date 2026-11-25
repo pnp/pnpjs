@@ -1677,3 +1677,52 @@ export interface IHomeSitesDetails {
     Title: string;
     MatchingAudiences: string[];
 }
+
+/**
+ * Options for a site rename job, combine values with a bitwise OR
+ */
+export enum SiteRenameOptions {
+    None = 0,
+    ValidationOnly = 2,
+    SuppressMarketplaceAppCheck = 8,
+    SuppressWorkflow2013Check = 16,
+    SuppressBcsCheck = 128,
+    SuppressAllWarnings = -2147483648,
+}
+
+/**
+ * Steps to skip during a site rename. Only Redirect has been confirmed to work
+ */
+export enum SiteRenameSkipGestures {
+    Redirect = "Redirect",
+    MRU = "MRU",
+    Flow = "Flow",
+    PowerApps = "PowerApps",
+    PWA = "PWA",
+    Scheduling = "Scheduling",
+}
+
+export interface ISiteRenameJobCreationProps {
+    SourceSiteUrl: string;
+    TargetSiteUrl: string;
+    TargetSiteTitle?: string;
+    Option?: SiteRenameOptions;
+    SkipGestures?: SiteRenameSkipGestures[];
+}
+
+export interface ISiteRenameJobInfo {
+    ErrorCode: number;
+    ErrorDescription: string;
+    JobId: string;
+    JobState: string;
+    OperationId: string;
+    Option: SiteRenameOptions;
+    ParentId: string;
+    Reserve: string;
+    SiteId: string;
+    SkipGestures: string;
+    SourceSiteUrl: string;
+    TargetSiteTitle: string;
+    TargetSiteUrl: string;
+    TriggeredBy: string;
+}
